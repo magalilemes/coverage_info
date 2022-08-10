@@ -1,0 +1,629 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - include/drm/drm_mm.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">include/drm</a> - drm_mm.h<span style="font-size: 80%;"> (source / <a href="drm_mm.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /**************************************************************************</a>
+<a name="2"><span class="lineNum">       2 </span>            :  *</a>
+<a name="3"><span class="lineNum">       3 </span>            :  * Copyright 2006-2008 Tungsten Graphics, Inc., Cedar Park, TX. USA.</a>
+<a name="4"><span class="lineNum">       4 </span>            :  * Copyright 2016 Intel Corporation</a>
+<a name="5"><span class="lineNum">       5 </span>            :  * All Rights Reserved.</a>
+<a name="6"><span class="lineNum">       6 </span>            :  *</a>
+<a name="7"><span class="lineNum">       7 </span>            :  * Permission is hereby granted, free of charge, to any person obtaining a</a>
+<a name="8"><span class="lineNum">       8 </span>            :  * copy of this software and associated documentation files (the</a>
+<a name="9"><span class="lineNum">       9 </span>            :  * &quot;Software&quot;), to deal in the Software without restriction, including</a>
+<a name="10"><span class="lineNum">      10 </span>            :  * without limitation the rights to use, copy, modify, merge, publish,</a>
+<a name="11"><span class="lineNum">      11 </span>            :  * distribute, sub license, and/or sell copies of the Software, and to</a>
+<a name="12"><span class="lineNum">      12 </span>            :  * permit persons to whom the Software is furnished to do so, subject to</a>
+<a name="13"><span class="lineNum">      13 </span>            :  * the following conditions:</a>
+<a name="14"><span class="lineNum">      14 </span>            :  *</a>
+<a name="15"><span class="lineNum">      15 </span>            :  * The above copyright notice and this permission notice (including the</a>
+<a name="16"><span class="lineNum">      16 </span>            :  * next paragraph) shall be included in all copies or substantial portions</a>
+<a name="17"><span class="lineNum">      17 </span>            :  * of the Software.</a>
+<a name="18"><span class="lineNum">      18 </span>            :  *</a>
+<a name="19"><span class="lineNum">      19 </span>            :  * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</a>
+<a name="20"><span class="lineNum">      20 </span>            :  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</a>
+<a name="21"><span class="lineNum">      21 </span>            :  * FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL</a>
+<a name="22"><span class="lineNum">      22 </span>            :  * THE COPYRIGHT HOLDERS, AUTHORS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM,</a>
+<a name="23"><span class="lineNum">      23 </span>            :  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR</a>
+<a name="24"><span class="lineNum">      24 </span>            :  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE</a>
+<a name="25"><span class="lineNum">      25 </span>            :  * USE OR OTHER DEALINGS IN THE SOFTWARE.</a>
+<a name="26"><span class="lineNum">      26 </span>            :  *</a>
+<a name="27"><span class="lineNum">      27 </span>            :  *</a>
+<a name="28"><span class="lineNum">      28 </span>            :  **************************************************************************/</a>
+<a name="29"><span class="lineNum">      29 </span>            : /*</a>
+<a name="30"><span class="lineNum">      30 </span>            :  * Authors:</a>
+<a name="31"><span class="lineNum">      31 </span>            :  * Thomas Hellstrom &lt;thomas-at-tungstengraphics-dot-com&gt;</a>
+<a name="32"><span class="lineNum">      32 </span>            :  */</a>
+<a name="33"><span class="lineNum">      33 </span>            : </a>
+<a name="34"><span class="lineNum">      34 </span>            : #ifndef _DRM_MM_H_</a>
+<a name="35"><span class="lineNum">      35 </span>            : #define _DRM_MM_H_</a>
+<a name="36"><span class="lineNum">      36 </span>            : </a>
+<a name="37"><span class="lineNum">      37 </span>            : /*</a>
+<a name="38"><span class="lineNum">      38 </span>            :  * Generic range manager structs</a>
+<a name="39"><span class="lineNum">      39 </span>            :  */</a>
+<a name="40"><span class="lineNum">      40 </span>            : #include &lt;linux/bug.h&gt;</a>
+<a name="41"><span class="lineNum">      41 </span>            : #include &lt;linux/rbtree.h&gt;</a>
+<a name="42"><span class="lineNum">      42 </span>            : #include &lt;linux/limits.h&gt;</a>
+<a name="43"><span class="lineNum">      43 </span>            : #include &lt;linux/mm_types.h&gt;</a>
+<a name="44"><span class="lineNum">      44 </span>            : #include &lt;linux/list.h&gt;</a>
+<a name="45"><span class="lineNum">      45 </span>            : #include &lt;linux/spinlock.h&gt;</a>
+<a name="46"><span class="lineNum">      46 </span>            : #ifdef CONFIG_DRM_DEBUG_MM</a>
+<a name="47"><span class="lineNum">      47 </span>            : #include &lt;linux/stackdepot.h&gt;</a>
+<a name="48"><span class="lineNum">      48 </span>            : #endif</a>
+<a name="49"><span class="lineNum">      49 </span>            : #include &lt;linux/types.h&gt;</a>
+<a name="50"><span class="lineNum">      50 </span>            : </a>
+<a name="51"><span class="lineNum">      51 </span>            : #include &lt;drm/drm_print.h&gt;</a>
+<a name="52"><span class="lineNum">      52 </span>            : </a>
+<a name="53"><span class="lineNum">      53 </span>            : #ifdef CONFIG_DRM_DEBUG_MM</a>
+<a name="54"><span class="lineNum">      54 </span>            : #define DRM_MM_BUG_ON(expr) BUG_ON(expr)</a>
+<a name="55"><span class="lineNum">      55 </span>            : #else</a>
+<a name="56"><span class="lineNum">      56 </span>            : #define DRM_MM_BUG_ON(expr) BUILD_BUG_ON_INVALID(expr)</a>
+<a name="57"><span class="lineNum">      57 </span>            : #endif</a>
+<a name="58"><span class="lineNum">      58 </span>            : </a>
+<a name="59"><span class="lineNum">      59 </span>            : /**</a>
+<a name="60"><span class="lineNum">      60 </span>            :  * enum drm_mm_insert_mode - control search and allocation behaviour</a>
+<a name="61"><span class="lineNum">      61 </span>            :  *</a>
+<a name="62"><span class="lineNum">      62 </span>            :  * The &amp;struct drm_mm range manager supports finding a suitable modes using</a>
+<a name="63"><span class="lineNum">      63 </span>            :  * a number of search trees. These trees are oranised by size, by address and</a>
+<a name="64"><span class="lineNum">      64 </span>            :  * in most recent eviction order. This allows the user to find either the</a>
+<a name="65"><span class="lineNum">      65 </span>            :  * smallest hole to reuse, the lowest or highest address to reuse, or simply</a>
+<a name="66"><span class="lineNum">      66 </span>            :  * reuse the most recent eviction that fits. When allocating the &amp;drm_mm_node</a>
+<a name="67"><span class="lineNum">      67 </span>            :  * from within the hole, the &amp;drm_mm_insert_mode also dictate whether to</a>
+<a name="68"><span class="lineNum">      68 </span>            :  * allocate the lowest matching address or the highest.</a>
+<a name="69"><span class="lineNum">      69 </span>            :  */</a>
+<a name="70"><span class="lineNum">      70 </span>            : enum drm_mm_insert_mode {</a>
+<a name="71"><span class="lineNum">      71 </span>            :         /**</a>
+<a name="72"><span class="lineNum">      72 </span>            :          * @DRM_MM_INSERT_BEST:</a>
+<a name="73"><span class="lineNum">      73 </span>            :          *</a>
+<a name="74"><span class="lineNum">      74 </span>            :          * Search for the smallest hole (within the search range) that fits</a>
+<a name="75"><span class="lineNum">      75 </span>            :          * the desired node.</a>
+<a name="76"><span class="lineNum">      76 </span>            :          *</a>
+<a name="77"><span class="lineNum">      77 </span>            :          * Allocates the node from the bottom of the found hole.</a>
+<a name="78"><span class="lineNum">      78 </span>            :          */</a>
+<a name="79"><span class="lineNum">      79 </span>            :         DRM_MM_INSERT_BEST = 0,</a>
+<a name="80"><span class="lineNum">      80 </span>            : </a>
+<a name="81"><span class="lineNum">      81 </span>            :         /**</a>
+<a name="82"><span class="lineNum">      82 </span>            :          * @DRM_MM_INSERT_LOW:</a>
+<a name="83"><span class="lineNum">      83 </span>            :          *</a>
+<a name="84"><span class="lineNum">      84 </span>            :          * Search for the lowest hole (address closest to 0, within the search</a>
+<a name="85"><span class="lineNum">      85 </span>            :          * range) that fits the desired node.</a>
+<a name="86"><span class="lineNum">      86 </span>            :          *</a>
+<a name="87"><span class="lineNum">      87 </span>            :          * Allocates the node from the bottom of the found hole.</a>
+<a name="88"><span class="lineNum">      88 </span>            :          */</a>
+<a name="89"><span class="lineNum">      89 </span>            :         DRM_MM_INSERT_LOW,</a>
+<a name="90"><span class="lineNum">      90 </span>            : </a>
+<a name="91"><span class="lineNum">      91 </span>            :         /**</a>
+<a name="92"><span class="lineNum">      92 </span>            :          * @DRM_MM_INSERT_HIGH:</a>
+<a name="93"><span class="lineNum">      93 </span>            :          *</a>
+<a name="94"><span class="lineNum">      94 </span>            :          * Search for the highest hole (address closest to U64_MAX, within the</a>
+<a name="95"><span class="lineNum">      95 </span>            :          * search range) that fits the desired node.</a>
+<a name="96"><span class="lineNum">      96 </span>            :          *</a>
+<a name="97"><span class="lineNum">      97 </span>            :          * Allocates the node from the *top* of the found hole. The specified</a>
+<a name="98"><span class="lineNum">      98 </span>            :          * alignment for the node is applied to the base of the node</a>
+<a name="99"><span class="lineNum">      99 </span>            :          * (&amp;drm_mm_node.start).</a>
+<a name="100"><span class="lineNum">     100 </span>            :          */</a>
+<a name="101"><span class="lineNum">     101 </span>            :         DRM_MM_INSERT_HIGH,</a>
+<a name="102"><span class="lineNum">     102 </span>            : </a>
+<a name="103"><span class="lineNum">     103 </span>            :         /**</a>
+<a name="104"><span class="lineNum">     104 </span>            :          * @DRM_MM_INSERT_EVICT:</a>
+<a name="105"><span class="lineNum">     105 </span>            :          *</a>
+<a name="106"><span class="lineNum">     106 </span>            :          * Search for the most recently evicted hole (within the search range)</a>
+<a name="107"><span class="lineNum">     107 </span>            :          * that fits the desired node. This is appropriate for use immediately</a>
+<a name="108"><span class="lineNum">     108 </span>            :          * after performing an eviction scan (see drm_mm_scan_init()) and</a>
+<a name="109"><span class="lineNum">     109 </span>            :          * removing the selected nodes to form a hole.</a>
+<a name="110"><span class="lineNum">     110 </span>            :          *</a>
+<a name="111"><span class="lineNum">     111 </span>            :          * Allocates the node from the bottom of the found hole.</a>
+<a name="112"><span class="lineNum">     112 </span>            :          */</a>
+<a name="113"><span class="lineNum">     113 </span>            :         DRM_MM_INSERT_EVICT,</a>
+<a name="114"><span class="lineNum">     114 </span>            : </a>
+<a name="115"><span class="lineNum">     115 </span>            :         /**</a>
+<a name="116"><span class="lineNum">     116 </span>            :          * @DRM_MM_INSERT_ONCE:</a>
+<a name="117"><span class="lineNum">     117 </span>            :          *</a>
+<a name="118"><span class="lineNum">     118 </span>            :          * Only check the first hole for suitablity and report -ENOSPC</a>
+<a name="119"><span class="lineNum">     119 </span>            :          * immediately otherwise, rather than check every hole until a</a>
+<a name="120"><span class="lineNum">     120 </span>            :          * suitable one is found. Can only be used in conjunction with another</a>
+<a name="121"><span class="lineNum">     121 </span>            :          * search method such as DRM_MM_INSERT_HIGH or DRM_MM_INSERT_LOW.</a>
+<a name="122"><span class="lineNum">     122 </span>            :          */</a>
+<a name="123"><span class="lineNum">     123 </span>            :         DRM_MM_INSERT_ONCE = BIT(31),</a>
+<a name="124"><span class="lineNum">     124 </span>            : </a>
+<a name="125"><span class="lineNum">     125 </span>            :         /**</a>
+<a name="126"><span class="lineNum">     126 </span>            :          * @DRM_MM_INSERT_HIGHEST:</a>
+<a name="127"><span class="lineNum">     127 </span>            :          *</a>
+<a name="128"><span class="lineNum">     128 </span>            :          * Only check the highest hole (the hole with the largest address) and</a>
+<a name="129"><span class="lineNum">     129 </span>            :          * insert the node at the top of the hole or report -ENOSPC if</a>
+<a name="130"><span class="lineNum">     130 </span>            :          * unsuitable.</a>
+<a name="131"><span class="lineNum">     131 </span>            :          *</a>
+<a name="132"><span class="lineNum">     132 </span>            :          * Does not search all holes.</a>
+<a name="133"><span class="lineNum">     133 </span>            :          */</a>
+<a name="134"><span class="lineNum">     134 </span>            :         DRM_MM_INSERT_HIGHEST = DRM_MM_INSERT_HIGH | DRM_MM_INSERT_ONCE,</a>
+<a name="135"><span class="lineNum">     135 </span>            : </a>
+<a name="136"><span class="lineNum">     136 </span>            :         /**</a>
+<a name="137"><span class="lineNum">     137 </span>            :          * @DRM_MM_INSERT_LOWEST:</a>
+<a name="138"><span class="lineNum">     138 </span>            :          *</a>
+<a name="139"><span class="lineNum">     139 </span>            :          * Only check the lowest hole (the hole with the smallest address) and</a>
+<a name="140"><span class="lineNum">     140 </span>            :          * insert the node at the bottom of the hole or report -ENOSPC if</a>
+<a name="141"><span class="lineNum">     141 </span>            :          * unsuitable.</a>
+<a name="142"><span class="lineNum">     142 </span>            :          *</a>
+<a name="143"><span class="lineNum">     143 </span>            :          * Does not search all holes.</a>
+<a name="144"><span class="lineNum">     144 </span>            :          */</a>
+<a name="145"><span class="lineNum">     145 </span>            :         DRM_MM_INSERT_LOWEST  = DRM_MM_INSERT_LOW | DRM_MM_INSERT_ONCE,</a>
+<a name="146"><span class="lineNum">     146 </span>            : };</a>
+<a name="147"><span class="lineNum">     147 </span>            : </a>
+<a name="148"><span class="lineNum">     148 </span>            : /**</a>
+<a name="149"><span class="lineNum">     149 </span>            :  * struct drm_mm_node - allocated block in the DRM allocator</a>
+<a name="150"><span class="lineNum">     150 </span>            :  *</a>
+<a name="151"><span class="lineNum">     151 </span>            :  * This represents an allocated block in a &amp;drm_mm allocator. Except for</a>
+<a name="152"><span class="lineNum">     152 </span>            :  * pre-reserved nodes inserted using drm_mm_reserve_node() the structure is</a>
+<a name="153"><span class="lineNum">     153 </span>            :  * entirely opaque and should only be accessed through the provided funcions.</a>
+<a name="154"><span class="lineNum">     154 </span>            :  * Since allocation of these nodes is entirely handled by the driver they can be</a>
+<a name="155"><span class="lineNum">     155 </span>            :  * embedded.</a>
+<a name="156"><span class="lineNum">     156 </span>            :  */</a>
+<a name="157"><span class="lineNum">     157 </span>            : struct drm_mm_node {</a>
+<a name="158"><span class="lineNum">     158 </span>            :         /** @color: Opaque driver-private tag. */</a>
+<a name="159"><span class="lineNum">     159 </span>            :         unsigned long color;</a>
+<a name="160"><span class="lineNum">     160 </span>            :         /** @start: Start address of the allocated block. */</a>
+<a name="161"><span class="lineNum">     161 </span>            :         u64 start;</a>
+<a name="162"><span class="lineNum">     162 </span>            :         /** @size: Size of the allocated block. */</a>
+<a name="163"><span class="lineNum">     163 </span>            :         u64 size;</a>
+<a name="164"><span class="lineNum">     164 </span>            :         /* private: */</a>
+<a name="165"><span class="lineNum">     165 </span>            :         struct drm_mm *mm;</a>
+<a name="166"><span class="lineNum">     166 </span>            :         struct list_head node_list;</a>
+<a name="167"><span class="lineNum">     167 </span>            :         struct list_head hole_stack;</a>
+<a name="168"><span class="lineNum">     168 </span>            :         struct rb_node rb;</a>
+<a name="169"><span class="lineNum">     169 </span>            :         struct rb_node rb_hole_size;</a>
+<a name="170"><span class="lineNum">     170 </span>            :         struct rb_node rb_hole_addr;</a>
+<a name="171"><span class="lineNum">     171 </span>            :         u64 __subtree_last;</a>
+<a name="172"><span class="lineNum">     172 </span>            :         u64 hole_size;</a>
+<a name="173"><span class="lineNum">     173 </span>            :         u64 subtree_max_hole;</a>
+<a name="174"><span class="lineNum">     174 </span>            :         unsigned long flags;</a>
+<a name="175"><span class="lineNum">     175 </span>            : #define DRM_MM_NODE_ALLOCATED_BIT       0</a>
+<a name="176"><span class="lineNum">     176 </span>            : #define DRM_MM_NODE_SCANNED_BIT         1</a>
+<a name="177"><span class="lineNum">     177 </span>            : #ifdef CONFIG_DRM_DEBUG_MM</a>
+<a name="178"><span class="lineNum">     178 </span>            :         depot_stack_handle_t stack;</a>
+<a name="179"><span class="lineNum">     179 </span>            : #endif</a>
+<a name="180"><span class="lineNum">     180 </span>            : };</a>
+<a name="181"><span class="lineNum">     181 </span>            : </a>
+<a name="182"><span class="lineNum">     182 </span>            : /**</a>
+<a name="183"><span class="lineNum">     183 </span>            :  * struct drm_mm - DRM allocator</a>
+<a name="184"><span class="lineNum">     184 </span>            :  *</a>
+<a name="185"><span class="lineNum">     185 </span>            :  * DRM range allocator with a few special functions and features geared towards</a>
+<a name="186"><span class="lineNum">     186 </span>            :  * managing GPU memory. Except for the @color_adjust callback the structure is</a>
+<a name="187"><span class="lineNum">     187 </span>            :  * entirely opaque and should only be accessed through the provided functions</a>
+<a name="188"><span class="lineNum">     188 </span>            :  * and macros. This structure can be embedded into larger driver structures.</a>
+<a name="189"><span class="lineNum">     189 </span>            :  */</a>
+<a name="190"><span class="lineNum">     190 </span>            : struct drm_mm {</a>
+<a name="191"><span class="lineNum">     191 </span>            :         /**</a>
+<a name="192"><span class="lineNum">     192 </span>            :          * @color_adjust:</a>
+<a name="193"><span class="lineNum">     193 </span>            :          *</a>
+<a name="194"><span class="lineNum">     194 </span>            :          * Optional driver callback to further apply restrictions on a hole. The</a>
+<a name="195"><span class="lineNum">     195 </span>            :          * node argument points at the node containing the hole from which the</a>
+<a name="196"><span class="lineNum">     196 </span>            :          * block would be allocated (see drm_mm_hole_follows() and friends). The</a>
+<a name="197"><span class="lineNum">     197 </span>            :          * other arguments are the size of the block to be allocated. The driver</a>
+<a name="198"><span class="lineNum">     198 </span>            :          * can adjust the start and end as needed to e.g. insert guard pages.</a>
+<a name="199"><span class="lineNum">     199 </span>            :          */</a>
+<a name="200"><span class="lineNum">     200 </span>            :         void (*color_adjust)(const struct drm_mm_node *node,</a>
+<a name="201"><span class="lineNum">     201 </span>            :                              unsigned long color,</a>
+<a name="202"><span class="lineNum">     202 </span>            :                              u64 *start, u64 *end);</a>
+<a name="203"><span class="lineNum">     203 </span>            : </a>
+<a name="204"><span class="lineNum">     204 </span>            :         /* private: */</a>
+<a name="205"><span class="lineNum">     205 </span>            :         /* List of all memory nodes that immediately precede a free hole. */</a>
+<a name="206"><span class="lineNum">     206 </span>            :         struct list_head hole_stack;</a>
+<a name="207"><span class="lineNum">     207 </span>            :         /* head_node.node_list is the list of all memory nodes, ordered</a>
+<a name="208"><span class="lineNum">     208 </span>            :          * according to the (increasing) start address of the memory node. */</a>
+<a name="209"><span class="lineNum">     209 </span>            :         struct drm_mm_node head_node;</a>
+<a name="210"><span class="lineNum">     210 </span>            :         /* Keep an interval_tree for fast lookup of drm_mm_nodes by address. */</a>
+<a name="211"><span class="lineNum">     211 </span>            :         struct rb_root_cached interval_tree;</a>
+<a name="212"><span class="lineNum">     212 </span>            :         struct rb_root_cached holes_size;</a>
+<a name="213"><span class="lineNum">     213 </span>            :         struct rb_root holes_addr;</a>
+<a name="214"><span class="lineNum">     214 </span>            : </a>
+<a name="215"><span class="lineNum">     215 </span>            :         unsigned long scan_active;</a>
+<a name="216"><span class="lineNum">     216 </span>            : };</a>
+<a name="217"><span class="lineNum">     217 </span>            : </a>
+<a name="218"><span class="lineNum">     218 </span>            : /**</a>
+<a name="219"><span class="lineNum">     219 </span>            :  * struct drm_mm_scan - DRM allocator eviction roaster data</a>
+<a name="220"><span class="lineNum">     220 </span>            :  *</a>
+<a name="221"><span class="lineNum">     221 </span>            :  * This structure tracks data needed for the eviction roaster set up using</a>
+<a name="222"><span class="lineNum">     222 </span>            :  * drm_mm_scan_init(), and used with drm_mm_scan_add_block() and</a>
+<a name="223"><span class="lineNum">     223 </span>            :  * drm_mm_scan_remove_block(). The structure is entirely opaque and should only</a>
+<a name="224"><span class="lineNum">     224 </span>            :  * be accessed through the provided functions and macros. It is meant to be</a>
+<a name="225"><span class="lineNum">     225 </span>            :  * allocated temporarily by the driver on the stack.</a>
+<a name="226"><span class="lineNum">     226 </span>            :  */</a>
+<a name="227"><span class="lineNum">     227 </span>            : struct drm_mm_scan {</a>
+<a name="228"><span class="lineNum">     228 </span>            :         /* private: */</a>
+<a name="229"><span class="lineNum">     229 </span>            :         struct drm_mm *mm;</a>
+<a name="230"><span class="lineNum">     230 </span>            : </a>
+<a name="231"><span class="lineNum">     231 </span>            :         u64 size;</a>
+<a name="232"><span class="lineNum">     232 </span>            :         u64 alignment;</a>
+<a name="233"><span class="lineNum">     233 </span>            :         u64 remainder_mask;</a>
+<a name="234"><span class="lineNum">     234 </span>            : </a>
+<a name="235"><span class="lineNum">     235 </span>            :         u64 range_start;</a>
+<a name="236"><span class="lineNum">     236 </span>            :         u64 range_end;</a>
+<a name="237"><span class="lineNum">     237 </span>            : </a>
+<a name="238"><span class="lineNum">     238 </span>            :         u64 hit_start;</a>
+<a name="239"><span class="lineNum">     239 </span>            :         u64 hit_end;</a>
+<a name="240"><span class="lineNum">     240 </span>            : </a>
+<a name="241"><span class="lineNum">     241 </span>            :         unsigned long color;</a>
+<a name="242"><span class="lineNum">     242 </span>            :         enum drm_mm_insert_mode mode;</a>
+<a name="243"><span class="lineNum">     243 </span>            : };</a>
+<a name="244"><span class="lineNum">     244 </span>            : </a>
+<a name="245"><span class="lineNum">     245 </span>            : /**</a>
+<a name="246"><span class="lineNum">     246 </span>            :  * drm_mm_node_allocated - checks whether a node is allocated</a>
+<a name="247"><span class="lineNum">     247 </span>            :  * @node: drm_mm_node to check</a>
+<a name="248"><span class="lineNum">     248 </span>            :  *</a>
+<a name="249"><span class="lineNum">     249 </span>            :  * Drivers are required to clear a node prior to using it with the</a>
+<a name="250"><span class="lineNum">     250 </span>            :  * drm_mm range manager.</a>
+<a name="251"><span class="lineNum">     251 </span>            :  *</a>
+<a name="252"><span class="lineNum">     252 </span>            :  * Drivers should use this helper for proper encapsulation of drm_mm</a>
+<a name="253"><span class="lineNum">     253 </span>            :  * internals.</a>
+<a name="254"><span class="lineNum">     254 </span>            :  *</a>
+<a name="255"><span class="lineNum">     255 </span>            :  * Returns:</a>
+<a name="256"><span class="lineNum">     256 </span>            :  * True if the @node is allocated.</a>
+<a name="257"><span class="lineNum">     257 </span>            :  */</a>
+<a name="258"><span class="lineNum">     258 </span>            : static inline bool drm_mm_node_allocated(const struct drm_mm_node *node)</a>
+<a name="259"><span class="lineNum">     259 </span>            : {</a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineNoCov">          0 :         return test_bit(DRM_MM_NODE_ALLOCATED_BIT, &amp;node-&gt;flags);</span></a>
+<a name="261"><span class="lineNum">     261 </span>            : }</a>
+<a name="262"><span class="lineNum">     262 </span>            : </a>
+<a name="263"><span class="lineNum">     263 </span>            : /**</a>
+<a name="264"><span class="lineNum">     264 </span>            :  * drm_mm_initialized - checks whether an allocator is initialized</a>
+<a name="265"><span class="lineNum">     265 </span>            :  * @mm: drm_mm to check</a>
+<a name="266"><span class="lineNum">     266 </span>            :  *</a>
+<a name="267"><span class="lineNum">     267 </span>            :  * Drivers should clear the struct drm_mm prior to initialisation if they</a>
+<a name="268"><span class="lineNum">     268 </span>            :  * want to use this function.</a>
+<a name="269"><span class="lineNum">     269 </span>            :  *</a>
+<a name="270"><span class="lineNum">     270 </span>            :  * Drivers should use this helper for proper encapsulation of drm_mm</a>
+<a name="271"><span class="lineNum">     271 </span>            :  * internals.</a>
+<a name="272"><span class="lineNum">     272 </span>            :  *</a>
+<a name="273"><span class="lineNum">     273 </span>            :  * Returns:</a>
+<a name="274"><span class="lineNum">     274 </span>            :  * True if the @mm is initialized.</a>
+<a name="275"><span class="lineNum">     275 </span>            :  */</a>
+<a name="276"><span class="lineNum">     276 </span>            : static inline bool drm_mm_initialized(const struct drm_mm *mm)</a>
+<a name="277"><span class="lineNum">     277 </span>            : {</a>
+<a name="278"><span class="lineNum">     278 </span>            :         return READ_ONCE(mm-&gt;hole_stack.next);</a>
+<a name="279"><span class="lineNum">     279 </span>            : }</a>
+<a name="280"><span class="lineNum">     280 </span>            : </a>
+<a name="281"><span class="lineNum">     281 </span>            : /**</a>
+<a name="282"><span class="lineNum">     282 </span>            :  * drm_mm_hole_follows - checks whether a hole follows this node</a>
+<a name="283"><span class="lineNum">     283 </span>            :  * @node: drm_mm_node to check</a>
+<a name="284"><span class="lineNum">     284 </span>            :  *</a>
+<a name="285"><span class="lineNum">     285 </span>            :  * Holes are embedded into the drm_mm using the tail of a drm_mm_node.</a>
+<a name="286"><span class="lineNum">     286 </span>            :  * If you wish to know whether a hole follows this particular node,</a>
+<a name="287"><span class="lineNum">     287 </span>            :  * query this function. See also drm_mm_hole_node_start() and</a>
+<a name="288"><span class="lineNum">     288 </span>            :  * drm_mm_hole_node_end().</a>
+<a name="289"><span class="lineNum">     289 </span>            :  *</a>
+<a name="290"><span class="lineNum">     290 </span>            :  * Returns:</a>
+<a name="291"><span class="lineNum">     291 </span>            :  * True if a hole follows the @node.</a>
+<a name="292"><span class="lineNum">     292 </span>            :  */</a>
+<a name="293"><span class="lineNum">     293 </span>            : static inline bool drm_mm_hole_follows(const struct drm_mm_node *node)</a>
+<a name="294"><span class="lineNum">     294 </span>            : {</a>
+<a name="295"><span class="lineNum">     295 </span>            :         return node-&gt;hole_size;</a>
+<a name="296"><span class="lineNum">     296 </span>            : }</a>
+<a name="297"><span class="lineNum">     297 </span>            : </a>
+<a name="298"><span class="lineNum">     298 </span>            : static inline u64 __drm_mm_hole_node_start(const struct drm_mm_node *hole_node)</a>
+<a name="299"><span class="lineNum">     299 </span>            : {</a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineNoCov">          0 :         return hole_node-&gt;start + hole_node-&gt;size;</span></a>
+<a name="301"><span class="lineNum">     301 </span>            : }</a>
+<a name="302"><span class="lineNum">     302 </span>            : </a>
+<a name="303"><span class="lineNum">     303 </span>            : /**</a>
+<a name="304"><span class="lineNum">     304 </span>            :  * drm_mm_hole_node_start - computes the start of the hole following @node</a>
+<a name="305"><span class="lineNum">     305 </span>            :  * @hole_node: drm_mm_node which implicitly tracks the following hole</a>
+<a name="306"><span class="lineNum">     306 </span>            :  *</a>
+<a name="307"><span class="lineNum">     307 </span>            :  * This is useful for driver-specific debug dumpers. Otherwise drivers should</a>
+<a name="308"><span class="lineNum">     308 </span>            :  * not inspect holes themselves. Drivers must check first whether a hole indeed</a>
+<a name="309"><span class="lineNum">     309 </span>            :  * follows by looking at drm_mm_hole_follows()</a>
+<a name="310"><span class="lineNum">     310 </span>            :  *</a>
+<a name="311"><span class="lineNum">     311 </span>            :  * Returns:</a>
+<a name="312"><span class="lineNum">     312 </span>            :  * Start of the subsequent hole.</a>
+<a name="313"><span class="lineNum">     313 </span>            :  */</a>
+<a name="314"><span class="lineNum">     314 </span>            : static inline u64 drm_mm_hole_node_start(const struct drm_mm_node *hole_node)</a>
+<a name="315"><span class="lineNum">     315 </span>            : {</a>
+<a name="316"><span class="lineNum">     316 </span>            :         DRM_MM_BUG_ON(!drm_mm_hole_follows(hole_node));</a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineNoCov">          0 :         return __drm_mm_hole_node_start(hole_node);</span></a>
+<a name="318"><span class="lineNum">     318 </span>            : }</a>
+<a name="319"><span class="lineNum">     319 </span>            : </a>
+<a name="320"><span class="lineNum">     320 </span>            : static inline u64 __drm_mm_hole_node_end(const struct drm_mm_node *hole_node)</a>
+<a name="321"><span class="lineNum">     321 </span>            : {</a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 :         return list_next_entry(hole_node, node_list)-&gt;start;</span></a>
+<a name="323"><span class="lineNum">     323 </span>            : }</a>
+<a name="324"><span class="lineNum">     324 </span>            : </a>
+<a name="325"><span class="lineNum">     325 </span>            : /**</a>
+<a name="326"><span class="lineNum">     326 </span>            :  * drm_mm_hole_node_end - computes the end of the hole following @node</a>
+<a name="327"><span class="lineNum">     327 </span>            :  * @hole_node: drm_mm_node which implicitly tracks the following hole</a>
+<a name="328"><span class="lineNum">     328 </span>            :  *</a>
+<a name="329"><span class="lineNum">     329 </span>            :  * This is useful for driver-specific debug dumpers. Otherwise drivers should</a>
+<a name="330"><span class="lineNum">     330 </span>            :  * not inspect holes themselves. Drivers must check first whether a hole indeed</a>
+<a name="331"><span class="lineNum">     331 </span>            :  * follows by looking at drm_mm_hole_follows().</a>
+<a name="332"><span class="lineNum">     332 </span>            :  *</a>
+<a name="333"><span class="lineNum">     333 </span>            :  * Returns:</a>
+<a name="334"><span class="lineNum">     334 </span>            :  * End of the subsequent hole.</a>
+<a name="335"><span class="lineNum">     335 </span>            :  */</a>
+<a name="336"><span class="lineNum">     336 </span>            : static inline u64 drm_mm_hole_node_end(const struct drm_mm_node *hole_node)</a>
+<a name="337"><span class="lineNum">     337 </span>            : {</a>
+<a name="338"><span class="lineNum">     338 </span>            :         return __drm_mm_hole_node_end(hole_node);</a>
+<a name="339"><span class="lineNum">     339 </span>            : }</a>
+<a name="340"><span class="lineNum">     340 </span>            : </a>
+<a name="341"><span class="lineNum">     341 </span>            : /**</a>
+<a name="342"><span class="lineNum">     342 </span>            :  * drm_mm_nodes - list of nodes under the drm_mm range manager</a>
+<a name="343"><span class="lineNum">     343 </span>            :  * @mm: the struct drm_mm range manager</a>
+<a name="344"><span class="lineNum">     344 </span>            :  *</a>
+<a name="345"><span class="lineNum">     345 </span>            :  * As the drm_mm range manager hides its node_list deep with its</a>
+<a name="346"><span class="lineNum">     346 </span>            :  * structure, extracting it looks painful and repetitive. This is</a>
+<a name="347"><span class="lineNum">     347 </span>            :  * not expected to be used outside of the drm_mm_for_each_node()</a>
+<a name="348"><span class="lineNum">     348 </span>            :  * macros and similar internal functions.</a>
+<a name="349"><span class="lineNum">     349 </span>            :  *</a>
+<a name="350"><span class="lineNum">     350 </span>            :  * Returns:</a>
+<a name="351"><span class="lineNum">     351 </span>            :  * The node list, may be empty.</a>
+<a name="352"><span class="lineNum">     352 </span>            :  */</a>
+<a name="353"><span class="lineNum">     353 </span>            : #define drm_mm_nodes(mm) (&amp;(mm)-&gt;head_node.node_list)</a>
+<a name="354"><span class="lineNum">     354 </span>            : </a>
+<a name="355"><span class="lineNum">     355 </span>            : /**</a>
+<a name="356"><span class="lineNum">     356 </span>            :  * drm_mm_for_each_node - iterator to walk over all allocated nodes</a>
+<a name="357"><span class="lineNum">     357 </span>            :  * @entry: &amp;struct drm_mm_node to assign to in each iteration step</a>
+<a name="358"><span class="lineNum">     358 </span>            :  * @mm: &amp;drm_mm allocator to walk</a>
+<a name="359"><span class="lineNum">     359 </span>            :  *</a>
+<a name="360"><span class="lineNum">     360 </span>            :  * This iterator walks over all nodes in the range allocator. It is implemented</a>
+<a name="361"><span class="lineNum">     361 </span>            :  * with list_for_each(), so not save against removal of elements.</a>
+<a name="362"><span class="lineNum">     362 </span>            :  */</a>
+<a name="363"><span class="lineNum">     363 </span>            : #define drm_mm_for_each_node(entry, mm) \</a>
+<a name="364"><span class="lineNum">     364 </span>            :         list_for_each_entry(entry, drm_mm_nodes(mm), node_list)</a>
+<a name="365"><span class="lineNum">     365 </span>            : </a>
+<a name="366"><span class="lineNum">     366 </span>            : /**</a>
+<a name="367"><span class="lineNum">     367 </span>            :  * drm_mm_for_each_node_safe - iterator to walk over all allocated nodes</a>
+<a name="368"><span class="lineNum">     368 </span>            :  * @entry: &amp;struct drm_mm_node to assign to in each iteration step</a>
+<a name="369"><span class="lineNum">     369 </span>            :  * @next: &amp;struct drm_mm_node to store the next step</a>
+<a name="370"><span class="lineNum">     370 </span>            :  * @mm: &amp;drm_mm allocator to walk</a>
+<a name="371"><span class="lineNum">     371 </span>            :  *</a>
+<a name="372"><span class="lineNum">     372 </span>            :  * This iterator walks over all nodes in the range allocator. It is implemented</a>
+<a name="373"><span class="lineNum">     373 </span>            :  * with list_for_each_safe(), so save against removal of elements.</a>
+<a name="374"><span class="lineNum">     374 </span>            :  */</a>
+<a name="375"><span class="lineNum">     375 </span>            : #define drm_mm_for_each_node_safe(entry, next, mm) \</a>
+<a name="376"><span class="lineNum">     376 </span>            :         list_for_each_entry_safe(entry, next, drm_mm_nodes(mm), node_list)</a>
+<a name="377"><span class="lineNum">     377 </span>            : </a>
+<a name="378"><span class="lineNum">     378 </span>            : /**</a>
+<a name="379"><span class="lineNum">     379 </span>            :  * drm_mm_for_each_hole - iterator to walk over all holes</a>
+<a name="380"><span class="lineNum">     380 </span>            :  * @pos: &amp;drm_mm_node used internally to track progress</a>
+<a name="381"><span class="lineNum">     381 </span>            :  * @mm: &amp;drm_mm allocator to walk</a>
+<a name="382"><span class="lineNum">     382 </span>            :  * @hole_start: ulong variable to assign the hole start to on each iteration</a>
+<a name="383"><span class="lineNum">     383 </span>            :  * @hole_end: ulong variable to assign the hole end to on each iteration</a>
+<a name="384"><span class="lineNum">     384 </span>            :  *</a>
+<a name="385"><span class="lineNum">     385 </span>            :  * This iterator walks over all holes in the range allocator. It is implemented</a>
+<a name="386"><span class="lineNum">     386 </span>            :  * with list_for_each(), so not save against removal of elements. @entry is used</a>
+<a name="387"><span class="lineNum">     387 </span>            :  * internally and will not reflect a real drm_mm_node for the very first hole.</a>
+<a name="388"><span class="lineNum">     388 </span>            :  * Hence users of this iterator may not access it.</a>
+<a name="389"><span class="lineNum">     389 </span>            :  *</a>
+<a name="390"><span class="lineNum">     390 </span>            :  * Implementation Note:</a>
+<a name="391"><span class="lineNum">     391 </span>            :  * We need to inline list_for_each_entry in order to be able to set hole_start</a>
+<a name="392"><span class="lineNum">     392 </span>            :  * and hole_end on each iteration while keeping the macro sane.</a>
+<a name="393"><span class="lineNum">     393 </span>            :  */</a>
+<a name="394"><span class="lineNum">     394 </span>            : #define drm_mm_for_each_hole(pos, mm, hole_start, hole_end) \</a>
+<a name="395"><span class="lineNum">     395 </span>            :         for (pos = list_first_entry(&amp;(mm)-&gt;hole_stack, \</a>
+<a name="396"><span class="lineNum">     396 </span>            :                                     typeof(*pos), hole_stack); \</a>
+<a name="397"><span class="lineNum">     397 </span>            :              &amp;pos-&gt;hole_stack != &amp;(mm)-&gt;hole_stack ? \</a>
+<a name="398"><span class="lineNum">     398 </span>            :              hole_start = drm_mm_hole_node_start(pos), \</a>
+<a name="399"><span class="lineNum">     399 </span>            :              hole_end = hole_start + pos-&gt;hole_size, \</a>
+<a name="400"><span class="lineNum">     400 </span>            :              1 : 0; \</a>
+<a name="401"><span class="lineNum">     401 </span>            :              pos = list_next_entry(pos, hole_stack))</a>
+<a name="402"><span class="lineNum">     402 </span>            : </a>
+<a name="403"><span class="lineNum">     403 </span>            : /*</a>
+<a name="404"><span class="lineNum">     404 </span>            :  * Basic range manager support (drm_mm.c)</a>
+<a name="405"><span class="lineNum">     405 </span>            :  */</a>
+<a name="406"><span class="lineNum">     406 </span>            : int drm_mm_reserve_node(struct drm_mm *mm, struct drm_mm_node *node);</a>
+<a name="407"><span class="lineNum">     407 </span>            : int drm_mm_insert_node_in_range(struct drm_mm *mm,</a>
+<a name="408"><span class="lineNum">     408 </span>            :                                 struct drm_mm_node *node,</a>
+<a name="409"><span class="lineNum">     409 </span>            :                                 u64 size,</a>
+<a name="410"><span class="lineNum">     410 </span>            :                                 u64 alignment,</a>
+<a name="411"><span class="lineNum">     411 </span>            :                                 unsigned long color,</a>
+<a name="412"><span class="lineNum">     412 </span>            :                                 u64 start,</a>
+<a name="413"><span class="lineNum">     413 </span>            :                                 u64 end,</a>
+<a name="414"><span class="lineNum">     414 </span>            :                                 enum drm_mm_insert_mode mode);</a>
+<a name="415"><span class="lineNum">     415 </span>            : </a>
+<a name="416"><span class="lineNum">     416 </span>            : /**</a>
+<a name="417"><span class="lineNum">     417 </span>            :  * drm_mm_insert_node_generic - search for space and insert @node</a>
+<a name="418"><span class="lineNum">     418 </span>            :  * @mm: drm_mm to allocate from</a>
+<a name="419"><span class="lineNum">     419 </span>            :  * @node: preallocate node to insert</a>
+<a name="420"><span class="lineNum">     420 </span>            :  * @size: size of the allocation</a>
+<a name="421"><span class="lineNum">     421 </span>            :  * @alignment: alignment of the allocation</a>
+<a name="422"><span class="lineNum">     422 </span>            :  * @color: opaque tag value to use for this node</a>
+<a name="423"><span class="lineNum">     423 </span>            :  * @mode: fine-tune the allocation search and placement</a>
+<a name="424"><span class="lineNum">     424 </span>            :  *</a>
+<a name="425"><span class="lineNum">     425 </span>            :  * This is a simplified version of drm_mm_insert_node_in_range() with no</a>
+<a name="426"><span class="lineNum">     426 </span>            :  * range restrictions applied.</a>
+<a name="427"><span class="lineNum">     427 </span>            :  *</a>
+<a name="428"><span class="lineNum">     428 </span>            :  * The preallocated node must be cleared to 0.</a>
+<a name="429"><span class="lineNum">     429 </span>            :  *</a>
+<a name="430"><span class="lineNum">     430 </span>            :  * Returns:</a>
+<a name="431"><span class="lineNum">     431 </span>            :  * 0 on success, -ENOSPC if there's no suitable hole.</a>
+<a name="432"><span class="lineNum">     432 </span>            :  */</a>
+<a name="433"><span class="lineNum">     433 </span>            : static inline int</a>
+<a name="434"><span class="lineNum">     434 </span>            : drm_mm_insert_node_generic(struct drm_mm *mm, struct drm_mm_node *node,</a>
+<a name="435"><span class="lineNum">     435 </span>            :                            u64 size, u64 alignment,</a>
+<a name="436"><span class="lineNum">     436 </span>            :                            unsigned long color,</a>
+<a name="437"><span class="lineNum">     437 </span>            :                            enum drm_mm_insert_mode mode)</a>
+<a name="438"><span class="lineNum">     438 </span>            : {</a>
+<a name="439"><span class="lineNum">     439 </span><span class="lineNoCov">          0 :         return drm_mm_insert_node_in_range(mm, node,</span></a>
+<a name="440"><span class="lineNum">     440 </span>            :                                            size, alignment, color,</a>
+<a name="441"><span class="lineNum">     441 </span>            :                                            0, U64_MAX, mode);</a>
+<a name="442"><span class="lineNum">     442 </span>            : }</a>
+<a name="443"><span class="lineNum">     443 </span>            : </a>
+<a name="444"><span class="lineNum">     444 </span>            : /**</a>
+<a name="445"><span class="lineNum">     445 </span>            :  * drm_mm_insert_node - search for space and insert @node</a>
+<a name="446"><span class="lineNum">     446 </span>            :  * @mm: drm_mm to allocate from</a>
+<a name="447"><span class="lineNum">     447 </span>            :  * @node: preallocate node to insert</a>
+<a name="448"><span class="lineNum">     448 </span>            :  * @size: size of the allocation</a>
+<a name="449"><span class="lineNum">     449 </span>            :  *</a>
+<a name="450"><span class="lineNum">     450 </span>            :  * This is a simplified version of drm_mm_insert_node_generic() with @color set</a>
+<a name="451"><span class="lineNum">     451 </span>            :  * to 0.</a>
+<a name="452"><span class="lineNum">     452 </span>            :  *</a>
+<a name="453"><span class="lineNum">     453 </span>            :  * The preallocated node must be cleared to 0.</a>
+<a name="454"><span class="lineNum">     454 </span>            :  *</a>
+<a name="455"><span class="lineNum">     455 </span>            :  * Returns:</a>
+<a name="456"><span class="lineNum">     456 </span>            :  * 0 on success, -ENOSPC if there's no suitable hole.</a>
+<a name="457"><span class="lineNum">     457 </span>            :  */</a>
+<a name="458"><span class="lineNum">     458 </span>            : static inline int drm_mm_insert_node(struct drm_mm *mm,</a>
+<a name="459"><span class="lineNum">     459 </span>            :                                      struct drm_mm_node *node,</a>
+<a name="460"><span class="lineNum">     460 </span>            :                                      u64 size)</a>
+<a name="461"><span class="lineNum">     461 </span>            : {</a>
+<a name="462"><span class="lineNum">     462 </span><span class="lineNoCov">          0 :         return drm_mm_insert_node_generic(mm, node, size, 0, 0, 0);</span></a>
+<a name="463"><span class="lineNum">     463 </span>            : }</a>
+<a name="464"><span class="lineNum">     464 </span>            : </a>
+<a name="465"><span class="lineNum">     465 </span>            : void drm_mm_remove_node(struct drm_mm_node *node);</a>
+<a name="466"><span class="lineNum">     466 </span>            : void drm_mm_replace_node(struct drm_mm_node *old, struct drm_mm_node *new);</a>
+<a name="467"><span class="lineNum">     467 </span>            : void drm_mm_init(struct drm_mm *mm, u64 start, u64 size);</a>
+<a name="468"><span class="lineNum">     468 </span>            : void drm_mm_takedown(struct drm_mm *mm);</a>
+<a name="469"><span class="lineNum">     469 </span>            : </a>
+<a name="470"><span class="lineNum">     470 </span>            : /**</a>
+<a name="471"><span class="lineNum">     471 </span>            :  * drm_mm_clean - checks whether an allocator is clean</a>
+<a name="472"><span class="lineNum">     472 </span>            :  * @mm: drm_mm allocator to check</a>
+<a name="473"><span class="lineNum">     473 </span>            :  *</a>
+<a name="474"><span class="lineNum">     474 </span>            :  * Returns:</a>
+<a name="475"><span class="lineNum">     475 </span>            :  * True if the allocator is completely free, false if there's still a node</a>
+<a name="476"><span class="lineNum">     476 </span>            :  * allocated in it.</a>
+<a name="477"><span class="lineNum">     477 </span>            :  */</a>
+<a name="478"><span class="lineNum">     478 </span>            : static inline bool drm_mm_clean(const struct drm_mm *mm)</a>
+<a name="479"><span class="lineNum">     479 </span>            : {</a>
+<a name="480"><span class="lineNum">     480 </span><span class="lineNoCov">          0 :         return list_empty(drm_mm_nodes(mm));</span></a>
+<a name="481"><span class="lineNum">     481 </span>            : }</a>
+<a name="482"><span class="lineNum">     482 </span>            : </a>
+<a name="483"><span class="lineNum">     483 </span>            : struct drm_mm_node *</a>
+<a name="484"><span class="lineNum">     484 </span>            : __drm_mm_interval_first(const struct drm_mm *mm, u64 start, u64 last);</a>
+<a name="485"><span class="lineNum">     485 </span>            : </a>
+<a name="486"><span class="lineNum">     486 </span>            : /**</a>
+<a name="487"><span class="lineNum">     487 </span>            :  * drm_mm_for_each_node_in_range - iterator to walk over a range of</a>
+<a name="488"><span class="lineNum">     488 </span>            :  * allocated nodes</a>
+<a name="489"><span class="lineNum">     489 </span>            :  * @node__: drm_mm_node structure to assign to in each iteration step</a>
+<a name="490"><span class="lineNum">     490 </span>            :  * @mm__: drm_mm allocator to walk</a>
+<a name="491"><span class="lineNum">     491 </span>            :  * @start__: starting offset, the first node will overlap this</a>
+<a name="492"><span class="lineNum">     492 </span>            :  * @end__: ending offset, the last node will start before this (but may overlap)</a>
+<a name="493"><span class="lineNum">     493 </span>            :  *</a>
+<a name="494"><span class="lineNum">     494 </span>            :  * This iterator walks over all nodes in the range allocator that lie</a>
+<a name="495"><span class="lineNum">     495 </span>            :  * between @start and @end. It is implemented similarly to list_for_each(),</a>
+<a name="496"><span class="lineNum">     496 </span>            :  * but using the internal interval tree to accelerate the search for the</a>
+<a name="497"><span class="lineNum">     497 </span>            :  * starting node, and so not safe against removal of elements. It assumes</a>
+<a name="498"><span class="lineNum">     498 </span>            :  * that @end is within (or is the upper limit of) the drm_mm allocator.</a>
+<a name="499"><span class="lineNum">     499 </span>            :  * If [@start, @end] are beyond the range of the drm_mm, the iterator may walk</a>
+<a name="500"><span class="lineNum">     500 </span>            :  * over the special _unallocated_ &amp;drm_mm.head_node, and may even continue</a>
+<a name="501"><span class="lineNum">     501 </span>            :  * indefinitely.</a>
+<a name="502"><span class="lineNum">     502 </span>            :  */</a>
+<a name="503"><span class="lineNum">     503 </span>            : #define drm_mm_for_each_node_in_range(node__, mm__, start__, end__)     \</a>
+<a name="504"><span class="lineNum">     504 </span>            :         for (node__ = __drm_mm_interval_first((mm__), (start__), (end__)-1); \</a>
+<a name="505"><span class="lineNum">     505 </span>            :              node__-&gt;start &lt; (end__);                                     \</a>
+<a name="506"><span class="lineNum">     506 </span>            :              node__ = list_next_entry(node__, node_list))</a>
+<a name="507"><span class="lineNum">     507 </span>            : </a>
+<a name="508"><span class="lineNum">     508 </span>            : void drm_mm_scan_init_with_range(struct drm_mm_scan *scan,</a>
+<a name="509"><span class="lineNum">     509 </span>            :                                  struct drm_mm *mm,</a>
+<a name="510"><span class="lineNum">     510 </span>            :                                  u64 size, u64 alignment, unsigned long color,</a>
+<a name="511"><span class="lineNum">     511 </span>            :                                  u64 start, u64 end,</a>
+<a name="512"><span class="lineNum">     512 </span>            :                                  enum drm_mm_insert_mode mode);</a>
+<a name="513"><span class="lineNum">     513 </span>            : </a>
+<a name="514"><span class="lineNum">     514 </span>            : /**</a>
+<a name="515"><span class="lineNum">     515 </span>            :  * drm_mm_scan_init - initialize lru scanning</a>
+<a name="516"><span class="lineNum">     516 </span>            :  * @scan: scan state</a>
+<a name="517"><span class="lineNum">     517 </span>            :  * @mm: drm_mm to scan</a>
+<a name="518"><span class="lineNum">     518 </span>            :  * @size: size of the allocation</a>
+<a name="519"><span class="lineNum">     519 </span>            :  * @alignment: alignment of the allocation</a>
+<a name="520"><span class="lineNum">     520 </span>            :  * @color: opaque tag value to use for the allocation</a>
+<a name="521"><span class="lineNum">     521 </span>            :  * @mode: fine-tune the allocation search and placement</a>
+<a name="522"><span class="lineNum">     522 </span>            :  *</a>
+<a name="523"><span class="lineNum">     523 </span>            :  * This is a simplified version of drm_mm_scan_init_with_range() with no range</a>
+<a name="524"><span class="lineNum">     524 </span>            :  * restrictions applied.</a>
+<a name="525"><span class="lineNum">     525 </span>            :  *</a>
+<a name="526"><span class="lineNum">     526 </span>            :  * This simply sets up the scanning routines with the parameters for the desired</a>
+<a name="527"><span class="lineNum">     527 </span>            :  * hole.</a>
+<a name="528"><span class="lineNum">     528 </span>            :  *</a>
+<a name="529"><span class="lineNum">     529 </span>            :  * Warning:</a>
+<a name="530"><span class="lineNum">     530 </span>            :  * As long as the scan list is non-empty, no other operations than</a>
+<a name="531"><span class="lineNum">     531 </span>            :  * adding/removing nodes to/from the scan list are allowed.</a>
+<a name="532"><span class="lineNum">     532 </span>            :  */</a>
+<a name="533"><span class="lineNum">     533 </span>            : static inline void drm_mm_scan_init(struct drm_mm_scan *scan,</a>
+<a name="534"><span class="lineNum">     534 </span>            :                                     struct drm_mm *mm,</a>
+<a name="535"><span class="lineNum">     535 </span>            :                                     u64 size,</a>
+<a name="536"><span class="lineNum">     536 </span>            :                                     u64 alignment,</a>
+<a name="537"><span class="lineNum">     537 </span>            :                                     unsigned long color,</a>
+<a name="538"><span class="lineNum">     538 </span>            :                                     enum drm_mm_insert_mode mode)</a>
+<a name="539"><span class="lineNum">     539 </span>            : {</a>
+<a name="540"><span class="lineNum">     540 </span>            :         drm_mm_scan_init_with_range(scan, mm,</a>
+<a name="541"><span class="lineNum">     541 </span>            :                                     size, alignment, color,</a>
+<a name="542"><span class="lineNum">     542 </span>            :                                     0, U64_MAX, mode);</a>
+<a name="543"><span class="lineNum">     543 </span>            : }</a>
+<a name="544"><span class="lineNum">     544 </span>            : </a>
+<a name="545"><span class="lineNum">     545 </span>            : bool drm_mm_scan_add_block(struct drm_mm_scan *scan,</a>
+<a name="546"><span class="lineNum">     546 </span>            :                            struct drm_mm_node *node);</a>
+<a name="547"><span class="lineNum">     547 </span>            : bool drm_mm_scan_remove_block(struct drm_mm_scan *scan,</a>
+<a name="548"><span class="lineNum">     548 </span>            :                               struct drm_mm_node *node);</a>
+<a name="549"><span class="lineNum">     549 </span>            : struct drm_mm_node *drm_mm_scan_color_evict(struct drm_mm_scan *scan);</a>
+<a name="550"><span class="lineNum">     550 </span>            : </a>
+<a name="551"><span class="lineNum">     551 </span>            : void drm_mm_print(const struct drm_mm *mm, struct drm_printer *p);</a>
+<a name="552"><span class="lineNum">     552 </span>            : </a>
+<a name="553"><span class="lineNum">     553 </span>            : #endif</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

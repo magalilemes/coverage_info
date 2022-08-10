@@ -1,0 +1,427 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - drivers/gpu/drm/amd/display/dc/clk_mgr/dcn10/rv1_clk_mgr.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../../index.html">top level</a> - <a href="index.html">drivers/gpu/drm/amd/display/dc/clk_mgr/dcn10</a> - rv1_clk_mgr.c<span style="font-size: 80%;"> (source / <a href="rv1_clk_mgr.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">120</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<a name="2"><span class="lineNum">       2 </span>            :  * Copyright 2018 Advanced Micro Devices, Inc.</a>
+<a name="3"><span class="lineNum">       3 </span>            :  *</a>
+<a name="4"><span class="lineNum">       4 </span>            :  * Permission is hereby granted, free of charge, to any person obtaining a</a>
+<a name="5"><span class="lineNum">       5 </span>            :  * copy of this software and associated documentation files (the &quot;Software&quot;),</a>
+<a name="6"><span class="lineNum">       6 </span>            :  * to deal in the Software without restriction, including without limitation</a>
+<a name="7"><span class="lineNum">       7 </span>            :  * the rights to use, copy, modify, merge, publish, distribute, sublicense,</a>
+<a name="8"><span class="lineNum">       8 </span>            :  * and/or sell copies of the Software, and to permit persons to whom the</a>
+<a name="9"><span class="lineNum">       9 </span>            :  * Software is furnished to do so, subject to the following conditions:</a>
+<a name="10"><span class="lineNum">      10 </span>            :  *</a>
+<a name="11"><span class="lineNum">      11 </span>            :  * The above copyright notice and this permission notice shall be included in</a>
+<a name="12"><span class="lineNum">      12 </span>            :  * all copies or substantial portions of the Software.</a>
+<a name="13"><span class="lineNum">      13 </span>            :  *</a>
+<a name="14"><span class="lineNum">      14 </span>            :  * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</a>
+<a name="15"><span class="lineNum">      15 </span>            :  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</a>
+<a name="16"><span class="lineNum">      16 </span>            :  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL</a>
+<a name="17"><span class="lineNum">      17 </span>            :  * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR</a>
+<a name="18"><span class="lineNum">      18 </span>            :  * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,</a>
+<a name="19"><span class="lineNum">      19 </span>            :  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR</a>
+<a name="20"><span class="lineNum">      20 </span>            :  * OTHER DEALINGS IN THE SOFTWARE.</a>
+<a name="21"><span class="lineNum">      21 </span>            :  *</a>
+<a name="22"><span class="lineNum">      22 </span>            :  * Authors: AMD</a>
+<a name="23"><span class="lineNum">      23 </span>            :  *</a>
+<a name="24"><span class="lineNum">      24 </span>            :  */</a>
+<a name="25"><span class="lineNum">      25 </span>            : </a>
+<a name="26"><span class="lineNum">      26 </span>            : #include &lt;linux/slab.h&gt;</a>
+<a name="27"><span class="lineNum">      27 </span>            : </a>
+<a name="28"><span class="lineNum">      28 </span>            : #include &quot;reg_helper.h&quot;</a>
+<a name="29"><span class="lineNum">      29 </span>            : #include &quot;core_types.h&quot;</a>
+<a name="30"><span class="lineNum">      30 </span>            : #include &quot;clk_mgr_internal.h&quot;</a>
+<a name="31"><span class="lineNum">      31 </span>            : #include &quot;rv1_clk_mgr.h&quot;</a>
+<a name="32"><span class="lineNum">      32 </span>            : #include &quot;dce100/dce_clk_mgr.h&quot;</a>
+<a name="33"><span class="lineNum">      33 </span>            : #include &quot;dce112/dce112_clk_mgr.h&quot;</a>
+<a name="34"><span class="lineNum">      34 </span>            : #include &quot;rv1_clk_mgr_vbios_smu.h&quot;</a>
+<a name="35"><span class="lineNum">      35 </span>            : #include &quot;rv1_clk_mgr_clk.h&quot;</a>
+<a name="36"><span class="lineNum">      36 </span>            : </a>
+<a name="37"><span class="lineNum">      37 </span><span class="lineNoCov">          0 : static void rv1_init_clocks(struct clk_mgr *clk_mgr)</span></a>
+<a name="38"><span class="lineNum">      38 </span>            : {</a>
+<a name="39"><span class="lineNum">      39 </span><span class="lineNoCov">          0 :         memset(&amp;(clk_mgr-&gt;clks), 0, sizeof(struct dc_clocks));</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="41"><span class="lineNum">      41 </span>            : </a>
+<a name="42"><span class="lineNum">      42 </span>            : static int rv1_determine_dppclk_threshold(struct clk_mgr_internal *clk_mgr, struct dc_clocks *new_clocks)</a>
+<a name="43"><span class="lineNum">      43 </span>            : {</a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineNoCov">          0 :         bool request_dpp_div = new_clocks-&gt;dispclk_khz &gt; new_clocks-&gt;dppclk_khz;</span></a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 :         bool dispclk_increase = new_clocks-&gt;dispclk_khz &gt; clk_mgr-&gt;base.clks.dispclk_khz;</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineNoCov">          0 :         int disp_clk_threshold = new_clocks-&gt;max_supported_dppclk_khz;</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineNoCov">          0 :         bool cur_dpp_div = clk_mgr-&gt;base.clks.dispclk_khz &gt; clk_mgr-&gt;base.clks.dppclk_khz;</span></a>
+<a name="48"><span class="lineNum">      48 </span>            : </a>
+<a name="49"><span class="lineNum">      49 </span>            :         /* increase clock, looking for div is 0 for current, request div is 1*/</a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :         if (dispclk_increase) {</span></a>
+<a name="51"><span class="lineNum">      51 </span>            :                 /* already divided by 2, no need to reach target clk with 2 steps*/</a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineNoCov">          0 :                 if (cur_dpp_div)</span></a>
+<a name="53"><span class="lineNum">      53 </span>            :                         return new_clocks-&gt;dispclk_khz;</a>
+<a name="54"><span class="lineNum">      54 </span>            : </a>
+<a name="55"><span class="lineNum">      55 </span>            :                 /* request disp clk is lower than maximum supported dpp clk,</a>
+<a name="56"><span class="lineNum">      56 </span>            :                  * no need to reach target clk with two steps.</a>
+<a name="57"><span class="lineNum">      57 </span>            :                  */</a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 :                 if (new_clocks-&gt;dispclk_khz &lt;= disp_clk_threshold)</span></a>
+<a name="59"><span class="lineNum">      59 </span>            :                         return new_clocks-&gt;dispclk_khz;</a>
+<a name="60"><span class="lineNum">      60 </span>            : </a>
+<a name="61"><span class="lineNum">      61 </span>            :                 /* target dpp clk not request divided by 2, still within threshold */</a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 :                 if (!request_dpp_div)</span></a>
+<a name="63"><span class="lineNum">      63 </span>            :                         return new_clocks-&gt;dispclk_khz;</a>
+<a name="64"><span class="lineNum">      64 </span>            : </a>
+<a name="65"><span class="lineNum">      65 </span>            :         } else {</a>
+<a name="66"><span class="lineNum">      66 </span>            :                 /* decrease clock, looking for current dppclk divided by 2,</a>
+<a name="67"><span class="lineNum">      67 </span>            :                  * request dppclk not divided by 2.</a>
+<a name="68"><span class="lineNum">      68 </span>            :                  */</a>
+<a name="69"><span class="lineNum">      69 </span>            : </a>
+<a name="70"><span class="lineNum">      70 </span>            :                 /* current dpp clk not divided by 2, no need to ramp*/</a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :                 if (!cur_dpp_div)</span></a>
+<a name="72"><span class="lineNum">      72 </span>            :                         return new_clocks-&gt;dispclk_khz;</a>
+<a name="73"><span class="lineNum">      73 </span>            : </a>
+<a name="74"><span class="lineNum">      74 </span>            :                 /* current disp clk is lower than current maximum dpp clk,</a>
+<a name="75"><span class="lineNum">      75 </span>            :                  * no need to ramp</a>
+<a name="76"><span class="lineNum">      76 </span>            :                  */</a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :                 if (clk_mgr-&gt;base.clks.dispclk_khz &lt;= disp_clk_threshold)</span></a>
+<a name="78"><span class="lineNum">      78 </span>            :                         return new_clocks-&gt;dispclk_khz;</a>
+<a name="79"><span class="lineNum">      79 </span>            : </a>
+<a name="80"><span class="lineNum">      80 </span>            :                 /* request dpp clk need to be divided by 2 */</a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineNoCov">          0 :                 if (request_dpp_div)</span></a>
+<a name="82"><span class="lineNum">      82 </span>            :                         return new_clocks-&gt;dispclk_khz;</a>
+<a name="83"><span class="lineNum">      83 </span>            :         }</a>
+<a name="84"><span class="lineNum">      84 </span>            : </a>
+<a name="85"><span class="lineNum">      85 </span>            :         return disp_clk_threshold;</a>
+<a name="86"><span class="lineNum">      86 </span>            : }</a>
+<a name="87"><span class="lineNum">      87 </span>            : </a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 : static void ramp_up_dispclk_with_dpp(</span></a>
+<a name="89"><span class="lineNum">      89 </span>            :                 struct clk_mgr_internal *clk_mgr,</a>
+<a name="90"><span class="lineNum">      90 </span>            :                 struct dc *dc,</a>
+<a name="91"><span class="lineNum">      91 </span>            :                 struct dc_clocks *new_clocks,</a>
+<a name="92"><span class="lineNum">      92 </span>            :                 bool safe_to_lower)</a>
+<a name="93"><span class="lineNum">      93 </span>            : {</a>
+<a name="94"><span class="lineNum">      94 </span>            :         int i;</a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 :         int dispclk_to_dpp_threshold = rv1_determine_dppclk_threshold(clk_mgr, new_clocks);</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 :         bool request_dpp_div = new_clocks-&gt;dispclk_khz &gt; new_clocks-&gt;dppclk_khz;</span></a>
+<a name="97"><span class="lineNum">      97 </span>            : </a>
+<a name="98"><span class="lineNum">      98 </span>            :         /* this function is to change dispclk, dppclk and dprefclk according to</a>
+<a name="99"><span class="lineNum">      99 </span>            :          * bandwidth requirement. Its call stack is rv1_update_clocks --&gt;</a>
+<a name="100"><span class="lineNum">     100 </span>            :          * update_clocks --&gt; dcn10_prepare_bandwidth / dcn10_optimize_bandwidth</a>
+<a name="101"><span class="lineNum">     101 </span>            :          * --&gt; prepare_bandwidth / optimize_bandwidth. before change dcn hw,</a>
+<a name="102"><span class="lineNum">     102 </span>            :          * prepare_bandwidth will be called first to allow enough clock,</a>
+<a name="103"><span class="lineNum">     103 </span>            :          * watermark for change, after end of dcn hw change, optimize_bandwidth</a>
+<a name="104"><span class="lineNum">     104 </span>            :          * is executed to lower clock to save power for new dcn hw settings.</a>
+<a name="105"><span class="lineNum">     105 </span>            :          *</a>
+<a name="106"><span class="lineNum">     106 </span>            :          * below is sequence of commit_planes_for_stream:</a>
+<a name="107"><span class="lineNum">     107 </span>            :          *</a>
+<a name="108"><span class="lineNum">     108 </span>            :          * step 1: prepare_bandwidth - raise clock to have enough bandwidth</a>
+<a name="109"><span class="lineNum">     109 </span>            :          * step 2: lock_doublebuffer_enable</a>
+<a name="110"><span class="lineNum">     110 </span>            :          * step 3: pipe_control_lock(true) - make dchubp register change will</a>
+<a name="111"><span class="lineNum">     111 </span>            :          * not take effect right way</a>
+<a name="112"><span class="lineNum">     112 </span>            :          * step 4: apply_ctx_for_surface - program dchubp</a>
+<a name="113"><span class="lineNum">     113 </span>            :          * step 5: pipe_control_lock(false) - dchubp register change take effect</a>
+<a name="114"><span class="lineNum">     114 </span>            :          * step 6: optimize_bandwidth --&gt; dc_post_update_surfaces_to_stream</a>
+<a name="115"><span class="lineNum">     115 </span>            :          * for full_date, optimize clock to save power</a>
+<a name="116"><span class="lineNum">     116 </span>            :          *</a>
+<a name="117"><span class="lineNum">     117 </span>            :          * at end of step 1, dcn clocks (dprefclk, dispclk, dppclk) may be</a>
+<a name="118"><span class="lineNum">     118 </span>            :          * changed for new dchubp configuration. but real dcn hub dchubps are</a>
+<a name="119"><span class="lineNum">     119 </span>            :          * still running with old configuration until end of step 5. this need</a>
+<a name="120"><span class="lineNum">     120 </span>            :          * clocks settings at step 1 should not less than that before step 1.</a>
+<a name="121"><span class="lineNum">     121 </span>            :          * this is checked by two conditions: 1. if (should_set_clock(safe_to_lower</a>
+<a name="122"><span class="lineNum">     122 </span>            :          * , new_clocks-&gt;dispclk_khz, clk_mgr_base-&gt;clks.dispclk_khz) ||</a>
+<a name="123"><span class="lineNum">     123 </span>            :          * new_clocks-&gt;dispclk_khz == clk_mgr_base-&gt;clks.dispclk_khz)</a>
+<a name="124"><span class="lineNum">     124 </span>            :          * 2. request_dpp_div = new_clocks-&gt;dispclk_khz &gt; new_clocks-&gt;dppclk_khz</a>
+<a name="125"><span class="lineNum">     125 </span>            :          *</a>
+<a name="126"><span class="lineNum">     126 </span>            :          * the second condition is based on new dchubp configuration. dppclk</a>
+<a name="127"><span class="lineNum">     127 </span>            :          * for new dchubp may be different from dppclk before step 1.</a>
+<a name="128"><span class="lineNum">     128 </span>            :          * for example, before step 1, dchubps are as below:</a>
+<a name="129"><span class="lineNum">     129 </span>            :          * pipe 0: recout=(0,40,1920,980) viewport=(0,0,1920,979)</a>
+<a name="130"><span class="lineNum">     130 </span>            :          * pipe 1: recout=(0,0,1920,1080) viewport=(0,0,1920,1080)</a>
+<a name="131"><span class="lineNum">     131 </span>            :          * for dppclk for pipe0 need dppclk = dispclk</a>
+<a name="132"><span class="lineNum">     132 </span>            :          *</a>
+<a name="133"><span class="lineNum">     133 </span>            :          * new dchubp pipe split configuration:</a>
+<a name="134"><span class="lineNum">     134 </span>            :          * pipe 0: recout=(0,0,960,1080) viewport=(0,0,960,1080)</a>
+<a name="135"><span class="lineNum">     135 </span>            :          * pipe 1: recout=(960,0,960,1080) viewport=(960,0,960,1080)</a>
+<a name="136"><span class="lineNum">     136 </span>            :          * dppclk only needs dppclk = dispclk /2.</a>
+<a name="137"><span class="lineNum">     137 </span>            :          *</a>
+<a name="138"><span class="lineNum">     138 </span>            :          * dispclk, dppclk are not lock by otg master lock. they take effect</a>
+<a name="139"><span class="lineNum">     139 </span>            :          * after step 1. during this transition, dispclk are the same, but</a>
+<a name="140"><span class="lineNum">     140 </span>            :          * dppclk is changed to half of previous clock for old dchubp</a>
+<a name="141"><span class="lineNum">     141 </span>            :          * configuration between step 1 and step 6. This may cause p-state</a>
+<a name="142"><span class="lineNum">     142 </span>            :          * warning intermittently.</a>
+<a name="143"><span class="lineNum">     143 </span>            :          *</a>
+<a name="144"><span class="lineNum">     144 </span>            :          * for new_clocks-&gt;dispclk_khz == clk_mgr_base-&gt;clks.dispclk_khz, we</a>
+<a name="145"><span class="lineNum">     145 </span>            :          * need make sure dppclk are not changed to less between step 1 and 6.</a>
+<a name="146"><span class="lineNum">     146 </span>            :          * for new_clocks-&gt;dispclk_khz &gt; clk_mgr_base-&gt;clks.dispclk_khz,</a>
+<a name="147"><span class="lineNum">     147 </span>            :          * new display clock is raised, but we do not know ratio of</a>
+<a name="148"><span class="lineNum">     148 </span>            :          * new_clocks-&gt;dispclk_khz and clk_mgr_base-&gt;clks.dispclk_khz,</a>
+<a name="149"><span class="lineNum">     149 </span>            :          * new_clocks-&gt;dispclk_khz /2 does not guarantee equal or higher than</a>
+<a name="150"><span class="lineNum">     150 </span>            :          * old dppclk. we could ignore power saving different between</a>
+<a name="151"><span class="lineNum">     151 </span>            :          * dppclk = displck and dppclk = dispclk / 2 between step 1 and step 6.</a>
+<a name="152"><span class="lineNum">     152 </span>            :          * as long as safe_to_lower = false, set dpclk = dispclk to simplify</a>
+<a name="153"><span class="lineNum">     153 </span>            :          * condition check.</a>
+<a name="154"><span class="lineNum">     154 </span>            :          * todo: review this change for other asic.</a>
+<a name="155"><span class="lineNum">     155 </span>            :          **/</a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 :         if (!safe_to_lower)</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :                 request_dpp_div = false;</span></a>
+<a name="158"><span class="lineNum">     158 </span>            : </a>
+<a name="159"><span class="lineNum">     159 </span>            :         /* set disp clk to dpp clk threshold */</a>
+<a name="160"><span class="lineNum">     160 </span>            : </a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineNoCov">          0 :         clk_mgr-&gt;funcs-&gt;set_dispclk(clk_mgr, dispclk_to_dpp_threshold);</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineNoCov">          0 :         clk_mgr-&gt;funcs-&gt;set_dprefclk(clk_mgr);</span></a>
+<a name="163"><span class="lineNum">     163 </span>            : </a>
+<a name="164"><span class="lineNum">     164 </span>            : </a>
+<a name="165"><span class="lineNum">     165 </span>            :         /* update request dpp clk division option */</a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; dc-&gt;res_pool-&gt;pipe_count; i++) {</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 :                 struct pipe_ctx *pipe_ctx = &amp;dc-&gt;current_state-&gt;res_ctx.pipe_ctx[i];</span></a>
+<a name="168"><span class="lineNum">     168 </span>            : </a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineNoCov">          0 :                 if (!pipe_ctx-&gt;plane_state)</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="171"><span class="lineNum">     171 </span>            : </a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineNoCov">          0 :                 pipe_ctx-&gt;plane_res.dpp-&gt;funcs-&gt;dpp_dppclk_control(</span></a>
+<a name="173"><span class="lineNum">     173 </span>            :                                 pipe_ctx-&gt;plane_res.dpp,</a>
+<a name="174"><span class="lineNum">     174 </span>            :                                 request_dpp_div,</a>
+<a name="175"><span class="lineNum">     175 </span>            :                                 true);</a>
+<a name="176"><span class="lineNum">     176 </span>            :         }</a>
+<a name="177"><span class="lineNum">     177 </span>            : </a>
+<a name="178"><span class="lineNum">     178 </span>            :         /* If target clk not same as dppclk threshold, set to target clock */</a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 :         if (dispclk_to_dpp_threshold != new_clocks-&gt;dispclk_khz) {</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineNoCov">          0 :                 clk_mgr-&gt;funcs-&gt;set_dispclk(clk_mgr, new_clocks-&gt;dispclk_khz);</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 :                 clk_mgr-&gt;funcs-&gt;set_dprefclk(clk_mgr);</span></a>
+<a name="182"><span class="lineNum">     182 </span>            :         }</a>
+<a name="183"><span class="lineNum">     183 </span>            : </a>
+<a name="184"><span class="lineNum">     184 </span>            : </a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 :         clk_mgr-&gt;base.clks.dispclk_khz = new_clocks-&gt;dispclk_khz;</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :         clk_mgr-&gt;base.clks.dppclk_khz = new_clocks-&gt;dppclk_khz;</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 :         clk_mgr-&gt;base.clks.max_supported_dppclk_khz = new_clocks-&gt;max_supported_dppclk_khz;</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="189"><span class="lineNum">     189 </span>            : </a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 : static void rv1_update_clocks(struct clk_mgr *clk_mgr_base,</span></a>
+<a name="191"><span class="lineNum">     191 </span>            :                         struct dc_state *context,</a>
+<a name="192"><span class="lineNum">     192 </span>            :                         bool safe_to_lower)</a>
+<a name="193"><span class="lineNum">     193 </span>            : {</a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 :         struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineNoCov">          0 :         struct dc *dc = clk_mgr_base-&gt;ctx-&gt;dc;</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :         struct dc_debug_options *debug = &amp;dc-&gt;debug;</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineNoCov">          0 :         struct dc_clocks *new_clocks = &amp;context-&gt;bw_ctx.bw.dcn.clk;</span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineNoCov">          0 :         struct pp_smu_funcs_rv *pp_smu = NULL;</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :         bool send_request_to_increase = false;</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineNoCov">          0 :         bool send_request_to_lower = false;</span></a>
+<a name="201"><span class="lineNum">     201 </span>            :         int display_count;</a>
+<a name="202"><span class="lineNum">     202 </span>            : </a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 :         bool enter_display_off = false;</span></a>
+<a name="204"><span class="lineNum">     204 </span>            : </a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 :         ASSERT(clk_mgr-&gt;pp_smu);</span></a>
+<a name="206"><span class="lineNum">     206 </span>            : </a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 :         if (dc-&gt;work_arounds.skip_clock_update)</span></a>
+<a name="208"><span class="lineNum">     208 </span>            :                 return;</a>
+<a name="209"><span class="lineNum">     209 </span>            : </a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 :         pp_smu = &amp;clk_mgr-&gt;pp_smu-&gt;rv_funcs;</span></a>
+<a name="211"><span class="lineNum">     211 </span>            : </a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineNoCov">          0 :         display_count = clk_mgr_helper_get_active_display_cnt(dc, context);</span></a>
+<a name="213"><span class="lineNum">     213 </span>            : </a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineNoCov">          0 :         if (display_count == 0)</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineNoCov">          0 :                 enter_display_off = true;</span></a>
+<a name="216"><span class="lineNum">     216 </span>            : </a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineNoCov">          0 :         if (enter_display_off == safe_to_lower) {</span></a>
+<a name="218"><span class="lineNum">     218 </span>            :                 /*</a>
+<a name="219"><span class="lineNum">     219 </span>            :                  * Notify SMU active displays</a>
+<a name="220"><span class="lineNum">     220 </span>            :                  * if function pointer not set up, this message is</a>
+<a name="221"><span class="lineNum">     221 </span>            :                  * sent as part of pplib_apply_display_requirements.</a>
+<a name="222"><span class="lineNum">     222 </span>            :                  */</a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 :                 if (pp_smu-&gt;set_display_count)</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineNoCov">          0 :                         pp_smu-&gt;set_display_count(&amp;pp_smu-&gt;pp_smu, display_count);</span></a>
+<a name="225"><span class="lineNum">     225 </span>            :         }</a>
+<a name="226"><span class="lineNum">     226 </span>            : </a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineNoCov">          0 :         if (new_clocks-&gt;dispclk_khz &gt; clk_mgr_base-&gt;clks.dispclk_khz</span></a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineNoCov">          0 :                         || new_clocks-&gt;phyclk_khz &gt; clk_mgr_base-&gt;clks.phyclk_khz</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineNoCov">          0 :                         || new_clocks-&gt;fclk_khz &gt; clk_mgr_base-&gt;clks.fclk_khz</span></a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineNoCov">          0 :                         || new_clocks-&gt;dcfclk_khz &gt; clk_mgr_base-&gt;clks.dcfclk_khz)</span></a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineNoCov">          0 :                 send_request_to_increase = true;</span></a>
+<a name="232"><span class="lineNum">     232 </span>            : </a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineNoCov">          0 :         if (should_set_clock(safe_to_lower, new_clocks-&gt;phyclk_khz, clk_mgr_base-&gt;clks.phyclk_khz)) {</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineNoCov">          0 :                 clk_mgr_base-&gt;clks.phyclk_khz = new_clocks-&gt;phyclk_khz;</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineNoCov">          0 :                 send_request_to_lower = true;</span></a>
+<a name="236"><span class="lineNum">     236 </span>            :         }</a>
+<a name="237"><span class="lineNum">     237 </span>            : </a>
+<a name="238"><span class="lineNum">     238 </span>            :         // F Clock</a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineNoCov">          0 :         if (debug-&gt;force_fclk_khz != 0)</span></a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 :                 new_clocks-&gt;fclk_khz = debug-&gt;force_fclk_khz;</span></a>
+<a name="241"><span class="lineNum">     241 </span>            : </a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineNoCov">          0 :         if (should_set_clock(safe_to_lower, new_clocks-&gt;fclk_khz, clk_mgr_base-&gt;clks.fclk_khz)) {</span></a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineNoCov">          0 :                 clk_mgr_base-&gt;clks.fclk_khz = new_clocks-&gt;fclk_khz;</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineNoCov">          0 :                 send_request_to_lower = true;</span></a>
+<a name="245"><span class="lineNum">     245 </span>            :         }</a>
+<a name="246"><span class="lineNum">     246 </span>            : </a>
+<a name="247"><span class="lineNum">     247 </span>            :         //DCF Clock</a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 :         if (should_set_clock(safe_to_lower, new_clocks-&gt;dcfclk_khz, clk_mgr_base-&gt;clks.dcfclk_khz)) {</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineNoCov">          0 :                 clk_mgr_base-&gt;clks.dcfclk_khz = new_clocks-&gt;dcfclk_khz;</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 :                 send_request_to_lower = true;</span></a>
+<a name="251"><span class="lineNum">     251 </span>            :         }</a>
+<a name="252"><span class="lineNum">     252 </span>            : </a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 :         if (should_set_clock(safe_to_lower,</span></a>
+<a name="254"><span class="lineNum">     254 </span>            :                         new_clocks-&gt;dcfclk_deep_sleep_khz, clk_mgr_base-&gt;clks.dcfclk_deep_sleep_khz)) {</a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineNoCov">          0 :                 clk_mgr_base-&gt;clks.dcfclk_deep_sleep_khz = new_clocks-&gt;dcfclk_deep_sleep_khz;</span></a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineNoCov">          0 :                 send_request_to_lower = true;</span></a>
+<a name="257"><span class="lineNum">     257 </span>            :         }</a>
+<a name="258"><span class="lineNum">     258 </span>            : </a>
+<a name="259"><span class="lineNum">     259 </span>            :         /* make sure dcf clk is before dpp clk to</a>
+<a name="260"><span class="lineNum">     260 </span>            :          * make sure we have enough voltage to run dpp clk</a>
+<a name="261"><span class="lineNum">     261 </span>            :          */</a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineNoCov">          0 :         if (send_request_to_increase) {</span></a>
+<a name="263"><span class="lineNum">     263 </span>            :                 /*use dcfclk to request voltage*/</a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 :                 if (pp_smu-&gt;set_hard_min_fclk_by_freq &amp;&amp;</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineNoCov">          0 :                                 pp_smu-&gt;set_hard_min_dcfclk_by_freq &amp;&amp;</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineNoCov">          0 :                                 pp_smu-&gt;set_min_deep_sleep_dcfclk) {</span></a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 :                         pp_smu-&gt;set_hard_min_fclk_by_freq(&amp;pp_smu-&gt;pp_smu, khz_to_mhz_ceil(new_clocks-&gt;fclk_khz));</span></a>
+<a name="268"><span class="lineNum">     268 </span><span class="lineNoCov">          0 :                         pp_smu-&gt;set_hard_min_dcfclk_by_freq(&amp;pp_smu-&gt;pp_smu, khz_to_mhz_ceil(new_clocks-&gt;dcfclk_khz));</span></a>
+<a name="269"><span class="lineNum">     269 </span><span class="lineNoCov">          0 :                         pp_smu-&gt;set_min_deep_sleep_dcfclk(&amp;pp_smu-&gt;pp_smu, khz_to_mhz_ceil(new_clocks-&gt;dcfclk_deep_sleep_khz));</span></a>
+<a name="270"><span class="lineNum">     270 </span>            :                 }</a>
+<a name="271"><span class="lineNum">     271 </span>            :         }</a>
+<a name="272"><span class="lineNum">     272 </span>            : </a>
+<a name="273"><span class="lineNum">     273 </span>            :         /* dcn1 dppclk is tied to dispclk */</a>
+<a name="274"><span class="lineNum">     274 </span>            :         /* program dispclk on = as a w/a for sleep resume clock ramping issues */</a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineNoCov">          0 :         if (should_set_clock(safe_to_lower, new_clocks-&gt;dispclk_khz, clk_mgr_base-&gt;clks.dispclk_khz)</span></a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 :                         || new_clocks-&gt;dispclk_khz == clk_mgr_base-&gt;clks.dispclk_khz) {</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineNoCov">          0 :                 ramp_up_dispclk_with_dpp(clk_mgr, dc, new_clocks, safe_to_lower);</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineNoCov">          0 :                 clk_mgr_base-&gt;clks.dispclk_khz = new_clocks-&gt;dispclk_khz;</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineNoCov">          0 :                 send_request_to_lower = true;</span></a>
+<a name="280"><span class="lineNum">     280 </span>            :         }</a>
+<a name="281"><span class="lineNum">     281 </span>            : </a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 :         if (!send_request_to_increase &amp;&amp; send_request_to_lower) {</span></a>
+<a name="283"><span class="lineNum">     283 </span>            :                 /*use dcfclk to request voltage*/</a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineNoCov">          0 :                 if (pp_smu-&gt;set_hard_min_fclk_by_freq &amp;&amp;</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 :                                 pp_smu-&gt;set_hard_min_dcfclk_by_freq &amp;&amp;</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineNoCov">          0 :                                 pp_smu-&gt;set_min_deep_sleep_dcfclk) {</span></a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :                         pp_smu-&gt;set_hard_min_fclk_by_freq(&amp;pp_smu-&gt;pp_smu, khz_to_mhz_ceil(new_clocks-&gt;fclk_khz));</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 :                         pp_smu-&gt;set_hard_min_dcfclk_by_freq(&amp;pp_smu-&gt;pp_smu, khz_to_mhz_ceil(new_clocks-&gt;dcfclk_khz));</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 :                         pp_smu-&gt;set_min_deep_sleep_dcfclk(&amp;pp_smu-&gt;pp_smu, khz_to_mhz_ceil(new_clocks-&gt;dcfclk_deep_sleep_khz));</span></a>
+<a name="290"><span class="lineNum">     290 </span>            :                 }</a>
+<a name="291"><span class="lineNum">     291 </span>            :         }</a>
+<a name="292"><span class="lineNum">     292 </span>            : }</a>
+<a name="293"><span class="lineNum">     293 </span>            : </a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineNoCov">          0 : static void rv1_enable_pme_wa(struct clk_mgr *clk_mgr_base)</span></a>
+<a name="295"><span class="lineNum">     295 </span>            : {</a>
+<a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 :         struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);</span></a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineNoCov">          0 :         struct pp_smu_funcs_rv *pp_smu = NULL;</span></a>
+<a name="298"><span class="lineNum">     298 </span>            : </a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineNoCov">          0 :         if (clk_mgr-&gt;pp_smu) {</span></a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineNoCov">          0 :                 pp_smu = &amp;clk_mgr-&gt;pp_smu-&gt;rv_funcs;</span></a>
+<a name="301"><span class="lineNum">     301 </span>            : </a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineNoCov">          0 :                 if (pp_smu-&gt;set_pme_wa_enable)</span></a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineNoCov">          0 :                         pp_smu-&gt;set_pme_wa_enable(&amp;pp_smu-&gt;pp_smu);</span></a>
+<a name="304"><span class="lineNum">     304 </span>            :         }</a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="306"><span class="lineNum">     306 </span>            : </a>
+<a name="307"><span class="lineNum">     307 </span>            : static struct clk_mgr_funcs rv1_clk_funcs = {</a>
+<a name="308"><span class="lineNum">     308 </span>            :         .init_clocks = rv1_init_clocks,</a>
+<a name="309"><span class="lineNum">     309 </span>            :         .get_dp_ref_clk_frequency = dce12_get_dp_ref_freq_khz,</a>
+<a name="310"><span class="lineNum">     310 </span>            :         .update_clocks = rv1_update_clocks,</a>
+<a name="311"><span class="lineNum">     311 </span>            :         .enable_pme_wa = rv1_enable_pme_wa,</a>
+<a name="312"><span class="lineNum">     312 </span>            : };</a>
+<a name="313"><span class="lineNum">     313 </span>            : </a>
+<a name="314"><span class="lineNum">     314 </span>            : static struct clk_mgr_internal_funcs rv1_clk_internal_funcs = {</a>
+<a name="315"><span class="lineNum">     315 </span>            :         .set_dispclk = rv1_vbios_smu_set_dispclk,</a>
+<a name="316"><span class="lineNum">     316 </span>            :         .set_dprefclk = dce112_set_dprefclk</a>
+<a name="317"><span class="lineNum">     317 </span>            : };</a>
+<a name="318"><span class="lineNum">     318 </span>            : </a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineNoCov">          0 : void rv1_clk_mgr_construct(struct dc_context *ctx, struct clk_mgr_internal *clk_mgr, struct pp_smu_funcs *pp_smu)</span></a>
+<a name="320"><span class="lineNum">     320 </span>            : {</a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineNoCov">          0 :         struct dc_debug_options *debug = &amp;ctx-&gt;dc-&gt;debug;</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 :         struct dc_bios *bp = ctx-&gt;dc_bios;</span></a>
+<a name="323"><span class="lineNum">     323 </span>            : </a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineNoCov">          0 :         clk_mgr-&gt;base.ctx = ctx;</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineNoCov">          0 :         clk_mgr-&gt;pp_smu = pp_smu;</span></a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 :         clk_mgr-&gt;base.funcs = &amp;rv1_clk_funcs;</span></a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineNoCov">          0 :         clk_mgr-&gt;funcs = &amp;rv1_clk_internal_funcs;</span></a>
+<a name="328"><span class="lineNum">     328 </span>            : </a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 :         clk_mgr-&gt;dfs_bypass_disp_clk = 0;</span></a>
+<a name="330"><span class="lineNum">     330 </span>            : </a>
+<a name="331"><span class="lineNum">     331 </span><span class="lineNoCov">          0 :         clk_mgr-&gt;dprefclk_ss_percentage = 0;</span></a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 :         clk_mgr-&gt;dprefclk_ss_divider = 1000;</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 :         clk_mgr-&gt;ss_on_dprefclk = false;</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineNoCov">          0 :         clk_mgr-&gt;base.dprefclk_khz = 600000;</span></a>
+<a name="335"><span class="lineNum">     335 </span>            : </a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineNoCov">          0 :         if (bp-&gt;integrated_info)</span></a>
+<a name="337"><span class="lineNum">     337 </span><span class="lineNoCov">          0 :                 clk_mgr-&gt;base.dentist_vco_freq_khz = bp-&gt;integrated_info-&gt;dentist_vco_freq;</span></a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineNoCov">          0 :         if (bp-&gt;fw_info_valid &amp;&amp; clk_mgr-&gt;base.dentist_vco_freq_khz == 0) {</span></a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineNoCov">          0 :                 clk_mgr-&gt;base.dentist_vco_freq_khz = bp-&gt;fw_info.smu_gpu_pll_output_freq;</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineNoCov">          0 :                 if (clk_mgr-&gt;base.dentist_vco_freq_khz == 0)</span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineNoCov">          0 :                         clk_mgr-&gt;base.dentist_vco_freq_khz = 3600000;</span></a>
+<a name="342"><span class="lineNum">     342 </span>            :         }</a>
+<a name="343"><span class="lineNum">     343 </span>            : </a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineNoCov">          0 :         if (!debug-&gt;disable_dfs_bypass &amp;&amp; bp-&gt;integrated_info)</span></a>
+<a name="345"><span class="lineNum">     345 </span><span class="lineNoCov">          0 :                 if (bp-&gt;integrated_info-&gt;gpu_cap_info &amp; DFS_BYPASS_ENABLE)</span></a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineNoCov">          0 :                         clk_mgr-&gt;dfs_bypass_enabled = true;</span></a>
+<a name="347"><span class="lineNum">     347 </span>            : </a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineNoCov">          0 :         dce_clock_read_ss_info(clk_mgr);</span></a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="350"><span class="lineNum">     350 </span>            : </a>
+<a name="351"><span class="lineNum">     351 </span>            : </a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,1552 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - drivers/dma-buf/dma-buf.c</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">drivers/dma-buf</a> - dma-buf.c<span style="font-size: 80%;"> (source / <a href="dma-buf.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntry">379</td>
+            <td class="headerCovTableEntryLo">3.2 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">33</td>
+            <td class="headerCovTableEntryLo">6.1 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // SPDX-License-Identifier: GPL-2.0-only</a>
+<a name="2"><span class="lineNum">       2 </span>            : /*</a>
+<a name="3"><span class="lineNum">       3 </span>            :  * Framework for buffer objects that can be shared across devices/subsystems.</a>
+<a name="4"><span class="lineNum">       4 </span>            :  *</a>
+<a name="5"><span class="lineNum">       5 </span>            :  * Copyright(C) 2011 Linaro Limited. All rights reserved.</a>
+<a name="6"><span class="lineNum">       6 </span>            :  * Author: Sumit Semwal &lt;sumit.semwal@ti.com&gt;</a>
+<a name="7"><span class="lineNum">       7 </span>            :  *</a>
+<a name="8"><span class="lineNum">       8 </span>            :  * Many thanks to linaro-mm-sig list, and specially</a>
+<a name="9"><span class="lineNum">       9 </span>            :  * Arnd Bergmann &lt;arnd@arndb.de&gt;, Rob Clark &lt;rob@ti.com&gt; and</a>
+<a name="10"><span class="lineNum">      10 </span>            :  * Daniel Vetter &lt;daniel@ffwll.ch&gt; for their support in creation and</a>
+<a name="11"><span class="lineNum">      11 </span>            :  * refining of this idea.</a>
+<a name="12"><span class="lineNum">      12 </span>            :  */</a>
+<a name="13"><span class="lineNum">      13 </span>            : </a>
+<a name="14"><span class="lineNum">      14 </span>            : #include &lt;linux/fs.h&gt;</a>
+<a name="15"><span class="lineNum">      15 </span>            : #include &lt;linux/slab.h&gt;</a>
+<a name="16"><span class="lineNum">      16 </span>            : #include &lt;linux/dma-buf.h&gt;</a>
+<a name="17"><span class="lineNum">      17 </span>            : #include &lt;linux/dma-fence.h&gt;</a>
+<a name="18"><span class="lineNum">      18 </span>            : #include &lt;linux/anon_inodes.h&gt;</a>
+<a name="19"><span class="lineNum">      19 </span>            : #include &lt;linux/export.h&gt;</a>
+<a name="20"><span class="lineNum">      20 </span>            : #include &lt;linux/debugfs.h&gt;</a>
+<a name="21"><span class="lineNum">      21 </span>            : #include &lt;linux/module.h&gt;</a>
+<a name="22"><span class="lineNum">      22 </span>            : #include &lt;linux/seq_file.h&gt;</a>
+<a name="23"><span class="lineNum">      23 </span>            : #include &lt;linux/poll.h&gt;</a>
+<a name="24"><span class="lineNum">      24 </span>            : #include &lt;linux/dma-resv.h&gt;</a>
+<a name="25"><span class="lineNum">      25 </span>            : #include &lt;linux/mm.h&gt;</a>
+<a name="26"><span class="lineNum">      26 </span>            : #include &lt;linux/mount.h&gt;</a>
+<a name="27"><span class="lineNum">      27 </span>            : #include &lt;linux/pseudo_fs.h&gt;</a>
+<a name="28"><span class="lineNum">      28 </span>            : </a>
+<a name="29"><span class="lineNum">      29 </span>            : #include &lt;uapi/linux/dma-buf.h&gt;</a>
+<a name="30"><span class="lineNum">      30 </span>            : #include &lt;uapi/linux/magic.h&gt;</a>
+<a name="31"><span class="lineNum">      31 </span>            : </a>
+<a name="32"><span class="lineNum">      32 </span>            : #include &quot;dma-buf-sysfs-stats.h&quot;</a>
+<a name="33"><span class="lineNum">      33 </span>            : </a>
+<a name="34"><span class="lineNum">      34 </span>            : static inline int is_dma_buf_file(struct file *);</a>
+<a name="35"><span class="lineNum">      35 </span>            : </a>
+<a name="36"><span class="lineNum">      36 </span>            : struct dma_buf_list {</a>
+<a name="37"><span class="lineNum">      37 </span>            :         struct list_head head;</a>
+<a name="38"><span class="lineNum">      38 </span>            :         struct mutex lock;</a>
+<a name="39"><span class="lineNum">      39 </span>            : };</a>
+<a name="40"><span class="lineNum">      40 </span>            : </a>
+<a name="41"><span class="lineNum">      41 </span>            : static struct dma_buf_list db_list;</a>
+<a name="42"><span class="lineNum">      42 </span>            : </a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineNoCov">          0 : static char *dmabuffs_dname(struct dentry *dentry, char *buffer, int buflen)</span></a>
+<a name="44"><span class="lineNum">      44 </span>            : {</a>
+<a name="45"><span class="lineNum">      45 </span>            :         struct dma_buf *dmabuf;</a>
+<a name="46"><span class="lineNum">      46 </span>            :         char name[DMA_BUF_NAME_LEN];</a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineNoCov">          0 :         size_t ret = 0;</span></a>
+<a name="48"><span class="lineNum">      48 </span>            : </a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineNoCov">          0 :         dmabuf = dentry-&gt;d_fsdata;</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :         spin_lock(&amp;dmabuf-&gt;name_lock);</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineNoCov">          0 :         if (dmabuf-&gt;name)</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineNoCov">          0 :                 ret = strlcpy(name, dmabuf-&gt;name, DMA_BUF_NAME_LEN);</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineNoCov">          0 :         spin_unlock(&amp;dmabuf-&gt;name_lock);</span></a>
+<a name="54"><span class="lineNum">      54 </span>            : </a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineNoCov">          0 :         return dynamic_dname(dentry, buffer, buflen, &quot;/%s:%s&quot;,</span></a>
+<a name="56"><span class="lineNum">      56 </span>            :                              dentry-&gt;d_name.name, ret &gt; 0 ? name : &quot;&quot;);</a>
+<a name="57"><span class="lineNum">      57 </span>            : }</a>
+<a name="58"><span class="lineNum">      58 </span>            : </a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 : static void dma_buf_release(struct dentry *dentry)</span></a>
+<a name="60"><span class="lineNum">      60 </span>            : {</a>
+<a name="61"><span class="lineNum">      61 </span>            :         struct dma_buf *dmabuf;</a>
+<a name="62"><span class="lineNum">      62 </span>            : </a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :         dmabuf = dentry-&gt;d_fsdata;</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 :         if (unlikely(!dmabuf))</span></a>
+<a name="65"><span class="lineNum">      65 </span>            :                 return;</a>
+<a name="66"><span class="lineNum">      66 </span>            : </a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineNoCov">          0 :         BUG_ON(dmabuf-&gt;vmapping_counter);</span></a>
+<a name="68"><span class="lineNum">      68 </span>            : </a>
+<a name="69"><span class="lineNum">      69 </span>            :         /*</a>
+<a name="70"><span class="lineNum">      70 </span>            :          * If you hit this BUG() it could mean:</a>
+<a name="71"><span class="lineNum">      71 </span>            :          * * There's a file reference imbalance in dma_buf_poll / dma_buf_poll_cb or somewhere else</a>
+<a name="72"><span class="lineNum">      72 </span>            :          * * dmabuf-&gt;cb_in/out.active are non-0 despite no pending fence callback</a>
+<a name="73"><span class="lineNum">      73 </span>            :          */</a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 :         BUG_ON(dmabuf-&gt;cb_in.active || dmabuf-&gt;cb_out.active);</span></a>
+<a name="75"><span class="lineNum">      75 </span>            : </a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :         dma_buf_stats_teardown(dmabuf);</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :         dmabuf-&gt;ops-&gt;release(dmabuf);</span></a>
+<a name="78"><span class="lineNum">      78 </span>            : </a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineNoCov">          0 :         if (dmabuf-&gt;resv == (struct dma_resv *)&amp;dmabuf[1])</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :                 dma_resv_fini(dmabuf-&gt;resv);</span></a>
+<a name="81"><span class="lineNum">      81 </span>            : </a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineNoCov">          0 :         WARN_ON(!list_empty(&amp;dmabuf-&gt;attachments));</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 :         module_put(dmabuf-&gt;owner);</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 :         kfree(dmabuf-&gt;name);</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :         kfree(dmabuf);</span></a>
+<a name="86"><span class="lineNum">      86 </span>            : }</a>
+<a name="87"><span class="lineNum">      87 </span>            : </a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 : static int dma_buf_file_release(struct inode *inode, struct file *file)</span></a>
+<a name="89"><span class="lineNum">      89 </span>            : {</a>
+<a name="90"><span class="lineNum">      90 </span>            :         struct dma_buf *dmabuf;</a>
+<a name="91"><span class="lineNum">      91 </span>            : </a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineNoCov">          0 :         if (!is_dma_buf_file(file))</span></a>
+<a name="93"><span class="lineNum">      93 </span>            :                 return -EINVAL;</a>
+<a name="94"><span class="lineNum">      94 </span>            : </a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 :         dmabuf = file-&gt;private_data;</span></a>
+<a name="96"><span class="lineNum">      96 </span>            : </a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 :         mutex_lock(&amp;db_list.lock);</span></a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineNoCov">          0 :         list_del(&amp;dmabuf-&gt;list_node);</span></a>
+<a name="99"><span class="lineNum">      99 </span><span class="lineNoCov">          0 :         mutex_unlock(&amp;db_list.lock);</span></a>
+<a name="100"><span class="lineNum">     100 </span>            : </a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="102"><span class="lineNum">     102 </span>            : }</a>
+<a name="103"><span class="lineNum">     103 </span>            : </a>
+<a name="104"><span class="lineNum">     104 </span>            : static const struct dentry_operations dma_buf_dentry_ops = {</a>
+<a name="105"><span class="lineNum">     105 </span>            :         .d_dname = dmabuffs_dname,</a>
+<a name="106"><span class="lineNum">     106 </span>            :         .d_release = dma_buf_release,</a>
+<a name="107"><span class="lineNum">     107 </span>            : };</a>
+<a name="108"><span class="lineNum">     108 </span>            : </a>
+<a name="109"><span class="lineNum">     109 </span>            : static struct vfsmount *dma_buf_mnt;</a>
+<a name="110"><span class="lineNum">     110 </span>            : </a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">          2 : static int dma_buf_fs_init_context(struct fs_context *fc)</span></a>
+<a name="112"><span class="lineNum">     112 </span>            : {</a>
+<a name="113"><span class="lineNum">     113 </span>            :         struct pseudo_fs_context *ctx;</a>
+<a name="114"><span class="lineNum">     114 </span>            : </a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">          2 :         ctx = init_pseudo(fc, DMA_BUF_MAGIC);</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">          2 :         if (!ctx)</span></a>
+<a name="117"><span class="lineNum">     117 </span>            :                 return -ENOMEM;</a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">          2 :         ctx-&gt;dops = &amp;dma_buf_dentry_ops;</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="120"><span class="lineNum">     120 </span>            : }</a>
+<a name="121"><span class="lineNum">     121 </span>            : </a>
+<a name="122"><span class="lineNum">     122 </span>            : static struct file_system_type dma_buf_fs_type = {</a>
+<a name="123"><span class="lineNum">     123 </span>            :         .name = &quot;dmabuf&quot;,</a>
+<a name="124"><span class="lineNum">     124 </span>            :         .init_fs_context = dma_buf_fs_init_context,</a>
+<a name="125"><span class="lineNum">     125 </span>            :         .kill_sb = kill_anon_super,</a>
+<a name="126"><span class="lineNum">     126 </span>            : };</a>
+<a name="127"><span class="lineNum">     127 </span>            : </a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineNoCov">          0 : static int dma_buf_mmap_internal(struct file *file, struct vm_area_struct *vma)</span></a>
+<a name="129"><span class="lineNum">     129 </span>            : {</a>
+<a name="130"><span class="lineNum">     130 </span>            :         struct dma_buf *dmabuf;</a>
+<a name="131"><span class="lineNum">     131 </span>            : </a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineNoCov">          0 :         if (!is_dma_buf_file(file))</span></a>
+<a name="133"><span class="lineNum">     133 </span>            :                 return -EINVAL;</a>
+<a name="134"><span class="lineNum">     134 </span>            : </a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 :         dmabuf = file-&gt;private_data;</span></a>
+<a name="136"><span class="lineNum">     136 </span>            : </a>
+<a name="137"><span class="lineNum">     137 </span>            :         /* check if buffer supports mmap */</a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineNoCov">          0 :         if (!dmabuf-&gt;ops-&gt;mmap)</span></a>
+<a name="139"><span class="lineNum">     139 </span>            :                 return -EINVAL;</a>
+<a name="140"><span class="lineNum">     140 </span>            : </a>
+<a name="141"><span class="lineNum">     141 </span>            :         /* check for overflowing the buffer's size */</a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineNoCov">          0 :         if (vma-&gt;vm_pgoff + vma_pages(vma) &gt;</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineNoCov">          0 :             dmabuf-&gt;size &gt;&gt; PAGE_SHIFT)</span></a>
+<a name="144"><span class="lineNum">     144 </span>            :                 return -EINVAL;</a>
+<a name="145"><span class="lineNum">     145 </span>            : </a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 :         return dmabuf-&gt;ops-&gt;mmap(dmabuf, vma);</span></a>
+<a name="147"><span class="lineNum">     147 </span>            : }</a>
+<a name="148"><span class="lineNum">     148 </span>            : </a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 : static loff_t dma_buf_llseek(struct file *file, loff_t offset, int whence)</span></a>
+<a name="150"><span class="lineNum">     150 </span>            : {</a>
+<a name="151"><span class="lineNum">     151 </span>            :         struct dma_buf *dmabuf;</a>
+<a name="152"><span class="lineNum">     152 </span>            :         loff_t base;</a>
+<a name="153"><span class="lineNum">     153 </span>            : </a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineNoCov">          0 :         if (!is_dma_buf_file(file))</span></a>
+<a name="155"><span class="lineNum">     155 </span>            :                 return -EBADF;</a>
+<a name="156"><span class="lineNum">     156 </span>            : </a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :         dmabuf = file-&gt;private_data;</span></a>
+<a name="158"><span class="lineNum">     158 </span>            : </a>
+<a name="159"><span class="lineNum">     159 </span>            :         /* only support discovering the end of the buffer,</a>
+<a name="160"><span class="lineNum">     160 </span>            :            but also allow SEEK_SET to maintain the idiomatic</a>
+<a name="161"><span class="lineNum">     161 </span>            :            SEEK_END(0), SEEK_CUR(0) pattern */</a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineNoCov">          0 :         if (whence == SEEK_END)</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineNoCov">          0 :                 base = dmabuf-&gt;size;</span></a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineNoCov">          0 :         else if (whence == SEEK_SET)</span></a>
+<a name="165"><span class="lineNum">     165 </span>            :                 base = 0;</a>
+<a name="166"><span class="lineNum">     166 </span>            :         else</a>
+<a name="167"><span class="lineNum">     167 </span>            :                 return -EINVAL;</a>
+<a name="168"><span class="lineNum">     168 </span>            : </a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineNoCov">          0 :         if (offset != 0)</span></a>
+<a name="170"><span class="lineNum">     170 </span>            :                 return -EINVAL;</a>
+<a name="171"><span class="lineNum">     171 </span>            : </a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineNoCov">          0 :         return base + offset;</span></a>
+<a name="173"><span class="lineNum">     173 </span>            : }</a>
+<a name="174"><span class="lineNum">     174 </span>            : </a>
+<a name="175"><span class="lineNum">     175 </span>            : /**</a>
+<a name="176"><span class="lineNum">     176 </span>            :  * DOC: implicit fence polling</a>
+<a name="177"><span class="lineNum">     177 </span>            :  *</a>
+<a name="178"><span class="lineNum">     178 </span>            :  * To support cross-device and cross-driver synchronization of buffer access</a>
+<a name="179"><span class="lineNum">     179 </span>            :  * implicit fences (represented internally in the kernel with &amp;struct dma_fence)</a>
+<a name="180"><span class="lineNum">     180 </span>            :  * can be attached to a &amp;dma_buf. The glue for that and a few related things are</a>
+<a name="181"><span class="lineNum">     181 </span>            :  * provided in the &amp;dma_resv structure.</a>
+<a name="182"><span class="lineNum">     182 </span>            :  *</a>
+<a name="183"><span class="lineNum">     183 </span>            :  * Userspace can query the state of these implicitly tracked fences using poll()</a>
+<a name="184"><span class="lineNum">     184 </span>            :  * and related system calls:</a>
+<a name="185"><span class="lineNum">     185 </span>            :  *</a>
+<a name="186"><span class="lineNum">     186 </span>            :  * - Checking for EPOLLIN, i.e. read access, can be use to query the state of the</a>
+<a name="187"><span class="lineNum">     187 </span>            :  *   most recent write or exclusive fence.</a>
+<a name="188"><span class="lineNum">     188 </span>            :  *</a>
+<a name="189"><span class="lineNum">     189 </span>            :  * - Checking for EPOLLOUT, i.e. write access, can be used to query the state of</a>
+<a name="190"><span class="lineNum">     190 </span>            :  *   all attached fences, shared and exclusive ones.</a>
+<a name="191"><span class="lineNum">     191 </span>            :  *</a>
+<a name="192"><span class="lineNum">     192 </span>            :  * Note that this only signals the completion of the respective fences, i.e. the</a>
+<a name="193"><span class="lineNum">     193 </span>            :  * DMA transfers are complete. Cache flushing and any other necessary</a>
+<a name="194"><span class="lineNum">     194 </span>            :  * preparations before CPU access can begin still need to happen.</a>
+<a name="195"><span class="lineNum">     195 </span>            :  */</a>
+<a name="196"><span class="lineNum">     196 </span>            : </a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineNoCov">          0 : static void dma_buf_poll_cb(struct dma_fence *fence, struct dma_fence_cb *cb)</span></a>
+<a name="198"><span class="lineNum">     198 </span>            : {</a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :         struct dma_buf_poll_cb_t *dcb = (struct dma_buf_poll_cb_t *)cb;</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineNoCov">          0 :         struct dma_buf *dmabuf = container_of(dcb-&gt;poll, struct dma_buf, poll);</span></a>
+<a name="201"><span class="lineNum">     201 </span>            :         unsigned long flags;</a>
+<a name="202"><span class="lineNum">     202 </span>            : </a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 :         spin_lock_irqsave(&amp;dcb-&gt;poll-&gt;lock, flags);</span></a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineNoCov">          0 :         wake_up_locked_poll(dcb-&gt;poll, dcb-&gt;active);</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 :         dcb-&gt;active = 0;</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 :         spin_unlock_irqrestore(&amp;dcb-&gt;poll-&gt;lock, flags);</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 :         dma_fence_put(fence);</span></a>
+<a name="208"><span class="lineNum">     208 </span>            :         /* Paired with get_file in dma_buf_poll */</a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineNoCov">          0 :         fput(dmabuf-&gt;file);</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="211"><span class="lineNum">     211 </span>            : </a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineNoCov">          0 : static bool dma_buf_poll_add_cb(struct dma_resv *resv, bool write,</span></a>
+<a name="213"><span class="lineNum">     213 </span>            :                                 struct dma_buf_poll_cb_t *dcb)</a>
+<a name="214"><span class="lineNum">     214 </span>            : {</a>
+<a name="215"><span class="lineNum">     215 </span>            :         struct dma_resv_iter cursor;</a>
+<a name="216"><span class="lineNum">     216 </span>            :         struct dma_fence *fence;</a>
+<a name="217"><span class="lineNum">     217 </span>            :         int r;</a>
+<a name="218"><span class="lineNum">     218 </span>            : </a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineNoCov">          0 :         dma_resv_for_each_fence(&amp;cursor, resv, dma_resv_usage_rw(write),</span></a>
+<a name="220"><span class="lineNum">     220 </span>            :                                 fence) {</a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineNoCov">          0 :                 dma_fence_get(fence);</span></a>
+<a name="222"><span class="lineNum">     222 </span><span class="lineNoCov">          0 :                 r = dma_fence_add_callback(fence, &amp;dcb-&gt;cb, dma_buf_poll_cb);</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 :                 if (!r)</span></a>
+<a name="224"><span class="lineNum">     224 </span>            :                         return true;</a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineNoCov">          0 :                 dma_fence_put(fence);</span></a>
+<a name="226"><span class="lineNum">     226 </span>            :         }</a>
+<a name="227"><span class="lineNum">     227 </span>            : </a>
+<a name="228"><span class="lineNum">     228 </span>            :         return false;</a>
+<a name="229"><span class="lineNum">     229 </span>            : }</a>
+<a name="230"><span class="lineNum">     230 </span>            : </a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineNoCov">          0 : static __poll_t dma_buf_poll(struct file *file, poll_table *poll)</span></a>
+<a name="232"><span class="lineNum">     232 </span>            : {</a>
+<a name="233"><span class="lineNum">     233 </span>            :         struct dma_buf *dmabuf;</a>
+<a name="234"><span class="lineNum">     234 </span>            :         struct dma_resv *resv;</a>
+<a name="235"><span class="lineNum">     235 </span>            :         __poll_t events;</a>
+<a name="236"><span class="lineNum">     236 </span>            : </a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineNoCov">          0 :         dmabuf = file-&gt;private_data;</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineNoCov">          0 :         if (!dmabuf || !dmabuf-&gt;resv)</span></a>
+<a name="239"><span class="lineNum">     239 </span>            :                 return EPOLLERR;</a>
+<a name="240"><span class="lineNum">     240 </span>            : </a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineNoCov">          0 :         resv = dmabuf-&gt;resv;</span></a>
+<a name="242"><span class="lineNum">     242 </span>            : </a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineNoCov">          0 :         poll_wait(file, &amp;dmabuf-&gt;poll, poll);</span></a>
+<a name="244"><span class="lineNum">     244 </span>            : </a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineNoCov">          0 :         events = poll_requested_events(poll) &amp; (EPOLLIN | EPOLLOUT);</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 :         if (!events)</span></a>
+<a name="247"><span class="lineNum">     247 </span>            :                 return 0;</a>
+<a name="248"><span class="lineNum">     248 </span>            : </a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineNoCov">          0 :         dma_resv_lock(resv, NULL);</span></a>
+<a name="250"><span class="lineNum">     250 </span>            : </a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 :         if (events &amp; EPOLLOUT) {</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 :                 struct dma_buf_poll_cb_t *dcb = &amp;dmabuf-&gt;cb_out;</span></a>
+<a name="253"><span class="lineNum">     253 </span>            : </a>
+<a name="254"><span class="lineNum">     254 </span>            :                 /* Check that callback isn't busy */</a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineNoCov">          0 :                 spin_lock_irq(&amp;dmabuf-&gt;poll.lock);</span></a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineNoCov">          0 :                 if (dcb-&gt;active)</span></a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineNoCov">          0 :                         events &amp;= ~EPOLLOUT;</span></a>
+<a name="258"><span class="lineNum">     258 </span>            :                 else</a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineNoCov">          0 :                         dcb-&gt;active = EPOLLOUT;</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineNoCov">          0 :                 spin_unlock_irq(&amp;dmabuf-&gt;poll.lock);</span></a>
+<a name="261"><span class="lineNum">     261 </span>            : </a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineNoCov">          0 :                 if (events &amp; EPOLLOUT) {</span></a>
+<a name="263"><span class="lineNum">     263 </span>            :                         /* Paired with fput in dma_buf_poll_cb */</a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 :                         get_file(dmabuf-&gt;file);</span></a>
+<a name="265"><span class="lineNum">     265 </span>            : </a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineNoCov">          0 :                         if (!dma_buf_poll_add_cb(resv, true, dcb))</span></a>
+<a name="267"><span class="lineNum">     267 </span>            :                                 /* No callback queued, wake up any other waiters */</a>
+<a name="268"><span class="lineNum">     268 </span><span class="lineNoCov">          0 :                                 dma_buf_poll_cb(NULL, &amp;dcb-&gt;cb);</span></a>
+<a name="269"><span class="lineNum">     269 </span>            :                         else</a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineNoCov">          0 :                                 events &amp;= ~EPOLLOUT;</span></a>
+<a name="271"><span class="lineNum">     271 </span>            :                 }</a>
+<a name="272"><span class="lineNum">     272 </span>            :         }</a>
+<a name="273"><span class="lineNum">     273 </span>            : </a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineNoCov">          0 :         if (events &amp; EPOLLIN) {</span></a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineNoCov">          0 :                 struct dma_buf_poll_cb_t *dcb = &amp;dmabuf-&gt;cb_in;</span></a>
+<a name="276"><span class="lineNum">     276 </span>            : </a>
+<a name="277"><span class="lineNum">     277 </span>            :                 /* Check that callback isn't busy */</a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineNoCov">          0 :                 spin_lock_irq(&amp;dmabuf-&gt;poll.lock);</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineNoCov">          0 :                 if (dcb-&gt;active)</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineNoCov">          0 :                         events &amp;= ~EPOLLIN;</span></a>
+<a name="281"><span class="lineNum">     281 </span>            :                 else</a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 :                         dcb-&gt;active = EPOLLIN;</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 :                 spin_unlock_irq(&amp;dmabuf-&gt;poll.lock);</span></a>
+<a name="284"><span class="lineNum">     284 </span>            : </a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 :                 if (events &amp; EPOLLIN) {</span></a>
+<a name="286"><span class="lineNum">     286 </span>            :                         /* Paired with fput in dma_buf_poll_cb */</a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :                         get_file(dmabuf-&gt;file);</span></a>
+<a name="288"><span class="lineNum">     288 </span>            : </a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 :                         if (!dma_buf_poll_add_cb(resv, false, dcb))</span></a>
+<a name="290"><span class="lineNum">     290 </span>            :                                 /* No callback queued, wake up any other waiters */</a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 :                                 dma_buf_poll_cb(NULL, &amp;dcb-&gt;cb);</span></a>
+<a name="292"><span class="lineNum">     292 </span>            :                         else</a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 :                                 events &amp;= ~EPOLLIN;</span></a>
+<a name="294"><span class="lineNum">     294 </span>            :                 }</a>
+<a name="295"><span class="lineNum">     295 </span>            :         }</a>
+<a name="296"><span class="lineNum">     296 </span>            : </a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineNoCov">          0 :         dma_resv_unlock(resv);</span></a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineNoCov">          0 :         return events;</span></a>
+<a name="299"><span class="lineNum">     299 </span>            : }</a>
+<a name="300"><span class="lineNum">     300 </span>            : </a>
+<a name="301"><span class="lineNum">     301 </span>            : /**</a>
+<a name="302"><span class="lineNum">     302 </span>            :  * dma_buf_set_name - Set a name to a specific dma_buf to track the usage.</a>
+<a name="303"><span class="lineNum">     303 </span>            :  * It could support changing the name of the dma-buf if the same</a>
+<a name="304"><span class="lineNum">     304 </span>            :  * piece of memory is used for multiple purpose between different devices.</a>
+<a name="305"><span class="lineNum">     305 </span>            :  *</a>
+<a name="306"><span class="lineNum">     306 </span>            :  * @dmabuf: [in]     dmabuf buffer that will be renamed.</a>
+<a name="307"><span class="lineNum">     307 </span>            :  * @buf:    [in]     A piece of userspace memory that contains the name of</a>
+<a name="308"><span class="lineNum">     308 </span>            :  *                   the dma-buf.</a>
+<a name="309"><span class="lineNum">     309 </span>            :  *</a>
+<a name="310"><span class="lineNum">     310 </span>            :  * Returns 0 on success. If the dma-buf buffer is already attached to</a>
+<a name="311"><span class="lineNum">     311 </span>            :  * devices, return -EBUSY.</a>
+<a name="312"><span class="lineNum">     312 </span>            :  *</a>
+<a name="313"><span class="lineNum">     313 </span>            :  */</a>
+<a name="314"><span class="lineNum">     314 </span><span class="lineNoCov">          0 : static long dma_buf_set_name(struct dma_buf *dmabuf, const char __user *buf)</span></a>
+<a name="315"><span class="lineNum">     315 </span>            : {</a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineNoCov">          0 :         char *name = strndup_user(buf, DMA_BUF_NAME_LEN);</span></a>
+<a name="317"><span class="lineNum">     317 </span>            : </a>
+<a name="318"><span class="lineNum">     318 </span><span class="lineNoCov">          0 :         if (IS_ERR(name))</span></a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineNoCov">          0 :                 return PTR_ERR(name);</span></a>
+<a name="320"><span class="lineNum">     320 </span>            : </a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineNoCov">          0 :         spin_lock(&amp;dmabuf-&gt;name_lock);</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 :         kfree(dmabuf-&gt;name);</span></a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineNoCov">          0 :         dmabuf-&gt;name = name;</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineNoCov">          0 :         spin_unlock(&amp;dmabuf-&gt;name_lock);</span></a>
+<a name="325"><span class="lineNum">     325 </span>            : </a>
+<a name="326"><span class="lineNum">     326 </span>            :         return 0;</a>
+<a name="327"><span class="lineNum">     327 </span>            : }</a>
+<a name="328"><span class="lineNum">     328 </span>            : </a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 : static long dma_buf_ioctl(struct file *file,</span></a>
+<a name="330"><span class="lineNum">     330 </span>            :                           unsigned int cmd, unsigned long arg)</a>
+<a name="331"><span class="lineNum">     331 </span>            : {</a>
+<a name="332"><span class="lineNum">     332 </span>            :         struct dma_buf *dmabuf;</a>
+<a name="333"><span class="lineNum">     333 </span>            :         struct dma_buf_sync sync;</a>
+<a name="334"><span class="lineNum">     334 </span>            :         enum dma_data_direction direction;</a>
+<a name="335"><span class="lineNum">     335 </span>            :         int ret;</a>
+<a name="336"><span class="lineNum">     336 </span>            : </a>
+<a name="337"><span class="lineNum">     337 </span><span class="lineNoCov">          0 :         dmabuf = file-&gt;private_data;</span></a>
+<a name="338"><span class="lineNum">     338 </span>            : </a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineNoCov">          0 :         switch (cmd) {</span></a>
+<a name="340"><span class="lineNum">     340 </span>            :         case DMA_BUF_IOCTL_SYNC:</a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineNoCov">          0 :                 if (copy_from_user(&amp;sync, (void __user *) arg, sizeof(sync)))</span></a>
+<a name="342"><span class="lineNum">     342 </span>            :                         return -EFAULT;</a>
+<a name="343"><span class="lineNum">     343 </span>            : </a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineNoCov">          0 :                 if (sync.flags &amp; ~DMA_BUF_SYNC_VALID_FLAGS_MASK)</span></a>
+<a name="345"><span class="lineNum">     345 </span>            :                         return -EINVAL;</a>
+<a name="346"><span class="lineNum">     346 </span>            : </a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineNoCov">          0 :                 switch (sync.flags &amp; DMA_BUF_SYNC_RW) {</span></a>
+<a name="348"><span class="lineNum">     348 </span>            :                 case DMA_BUF_SYNC_READ:</a>
+<a name="349"><span class="lineNum">     349 </span>            :                         direction = DMA_FROM_DEVICE;</a>
+<a name="350"><span class="lineNum">     350 </span>            :                         break;</a>
+<a name="351"><span class="lineNum">     351 </span>            :                 case DMA_BUF_SYNC_WRITE:</a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 :                         direction = DMA_TO_DEVICE;</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineNoCov">          0 :                         break;</span></a>
+<a name="354"><span class="lineNum">     354 </span>            :                 case DMA_BUF_SYNC_RW:</a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineNoCov">          0 :                         direction = DMA_BIDIRECTIONAL;</span></a>
+<a name="356"><span class="lineNum">     356 </span><span class="lineNoCov">          0 :                         break;</span></a>
+<a name="357"><span class="lineNum">     357 </span>            :                 default:</a>
+<a name="358"><span class="lineNum">     358 </span>            :                         return -EINVAL;</a>
+<a name="359"><span class="lineNum">     359 </span>            :                 }</a>
+<a name="360"><span class="lineNum">     360 </span>            : </a>
+<a name="361"><span class="lineNum">     361 </span><span class="lineNoCov">          0 :                 if (sync.flags &amp; DMA_BUF_SYNC_END)</span></a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineNoCov">          0 :                         ret = dma_buf_end_cpu_access(dmabuf, direction);</span></a>
+<a name="363"><span class="lineNum">     363 </span>            :                 else</a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineNoCov">          0 :                         ret = dma_buf_begin_cpu_access(dmabuf, direction);</span></a>
+<a name="365"><span class="lineNum">     365 </span>            : </a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineNoCov">          0 :                 return ret;</span></a>
+<a name="367"><span class="lineNum">     367 </span>            : </a>
+<a name="368"><span class="lineNum">     368 </span>            :         case DMA_BUF_SET_NAME_A:</a>
+<a name="369"><span class="lineNum">     369 </span>            :         case DMA_BUF_SET_NAME_B:</a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 :                 return dma_buf_set_name(dmabuf, (const char __user *)arg);</span></a>
+<a name="371"><span class="lineNum">     371 </span>            : </a>
+<a name="372"><span class="lineNum">     372 </span>            :         default:</a>
+<a name="373"><span class="lineNum">     373 </span>            :                 return -ENOTTY;</a>
+<a name="374"><span class="lineNum">     374 </span>            :         }</a>
+<a name="375"><span class="lineNum">     375 </span>            : }</a>
+<a name="376"><span class="lineNum">     376 </span>            : </a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineNoCov">          0 : static void dma_buf_show_fdinfo(struct seq_file *m, struct file *file)</span></a>
+<a name="378"><span class="lineNum">     378 </span>            : {</a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineNoCov">          0 :         struct dma_buf *dmabuf = file-&gt;private_data;</span></a>
+<a name="380"><span class="lineNum">     380 </span>            : </a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineNoCov">          0 :         seq_printf(m, &quot;size:\t%zu\n&quot;, dmabuf-&gt;size);</span></a>
+<a name="382"><span class="lineNum">     382 </span>            :         /* Don't count the temporary reference taken inside procfs seq_show */</a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineNoCov">          0 :         seq_printf(m, &quot;count:\t%ld\n&quot;, file_count(dmabuf-&gt;file) - 1);</span></a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineNoCov">          0 :         seq_printf(m, &quot;exp_name:\t%s\n&quot;, dmabuf-&gt;exp_name);</span></a>
+<a name="385"><span class="lineNum">     385 </span><span class="lineNoCov">          0 :         spin_lock(&amp;dmabuf-&gt;name_lock);</span></a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineNoCov">          0 :         if (dmabuf-&gt;name)</span></a>
+<a name="387"><span class="lineNum">     387 </span><span class="lineNoCov">          0 :                 seq_printf(m, &quot;name:\t%s\n&quot;, dmabuf-&gt;name);</span></a>
+<a name="388"><span class="lineNum">     388 </span><span class="lineNoCov">          0 :         spin_unlock(&amp;dmabuf-&gt;name_lock);</span></a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="390"><span class="lineNum">     390 </span>            : </a>
+<a name="391"><span class="lineNum">     391 </span>            : static const struct file_operations dma_buf_fops = {</a>
+<a name="392"><span class="lineNum">     392 </span>            :         .release        = dma_buf_file_release,</a>
+<a name="393"><span class="lineNum">     393 </span>            :         .mmap           = dma_buf_mmap_internal,</a>
+<a name="394"><span class="lineNum">     394 </span>            :         .llseek         = dma_buf_llseek,</a>
+<a name="395"><span class="lineNum">     395 </span>            :         .poll           = dma_buf_poll,</a>
+<a name="396"><span class="lineNum">     396 </span>            :         .unlocked_ioctl = dma_buf_ioctl,</a>
+<a name="397"><span class="lineNum">     397 </span>            :         .compat_ioctl   = compat_ptr_ioctl,</a>
+<a name="398"><span class="lineNum">     398 </span>            :         .show_fdinfo    = dma_buf_show_fdinfo,</a>
+<a name="399"><span class="lineNum">     399 </span>            : };</a>
+<a name="400"><span class="lineNum">     400 </span>            : </a>
+<a name="401"><span class="lineNum">     401 </span>            : /*</a>
+<a name="402"><span class="lineNum">     402 </span>            :  * is_dma_buf_file - Check if struct file* is associated with dma_buf</a>
+<a name="403"><span class="lineNum">     403 </span>            :  */</a>
+<a name="404"><span class="lineNum">     404 </span>            : static inline int is_dma_buf_file(struct file *file)</a>
+<a name="405"><span class="lineNum">     405 </span>            : {</a>
+<a name="406"><span class="lineNum">     406 </span>            :         return file-&gt;f_op == &amp;dma_buf_fops;</a>
+<a name="407"><span class="lineNum">     407 </span>            : }</a>
+<a name="408"><span class="lineNum">     408 </span>            : </a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineNoCov">          0 : static struct file *dma_buf_getfile(struct dma_buf *dmabuf, int flags)</span></a>
+<a name="410"><span class="lineNum">     410 </span>            : {</a>
+<a name="411"><span class="lineNum">     411 </span>            :         static atomic64_t dmabuf_inode = ATOMIC64_INIT(0);</a>
+<a name="412"><span class="lineNum">     412 </span>            :         struct file *file;</a>
+<a name="413"><span class="lineNum">     413 </span><span class="lineNoCov">          0 :         struct inode *inode = alloc_anon_inode(dma_buf_mnt-&gt;mnt_sb);</span></a>
+<a name="414"><span class="lineNum">     414 </span>            : </a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineNoCov">          0 :         if (IS_ERR(inode))</span></a>
+<a name="416"><span class="lineNum">     416 </span>            :                 return ERR_CAST(inode);</a>
+<a name="417"><span class="lineNum">     417 </span>            : </a>
+<a name="418"><span class="lineNum">     418 </span><span class="lineNoCov">          0 :         inode-&gt;i_size = dmabuf-&gt;size;</span></a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineNoCov">          0 :         inode_set_bytes(inode, dmabuf-&gt;size);</span></a>
+<a name="420"><span class="lineNum">     420 </span>            : </a>
+<a name="421"><span class="lineNum">     421 </span>            :         /*</a>
+<a name="422"><span class="lineNum">     422 </span>            :          * The -&gt;i_ino acquired from get_next_ino() is not unique thus</a>
+<a name="423"><span class="lineNum">     423 </span>            :          * not suitable for using it as dentry name by dmabuf stats.</a>
+<a name="424"><span class="lineNum">     424 </span>            :          * Override -&gt;i_ino with the unique and dmabuffs specific</a>
+<a name="425"><span class="lineNum">     425 </span>            :          * value.</a>
+<a name="426"><span class="lineNum">     426 </span>            :          */</a>
+<a name="427"><span class="lineNum">     427 </span><span class="lineNoCov">          0 :         inode-&gt;i_ino = atomic64_add_return(1, &amp;dmabuf_inode);</span></a>
+<a name="428"><span class="lineNum">     428 </span><span class="lineNoCov">          0 :         file = alloc_file_pseudo(inode, dma_buf_mnt, &quot;dmabuf&quot;,</span></a>
+<a name="429"><span class="lineNum">     429 </span>            :                                  flags, &amp;dma_buf_fops);</a>
+<a name="430"><span class="lineNum">     430 </span><span class="lineNoCov">          0 :         if (IS_ERR(file))</span></a>
+<a name="431"><span class="lineNum">     431 </span>            :                 goto err_alloc_file;</a>
+<a name="432"><span class="lineNum">     432 </span><span class="lineNoCov">          0 :         file-&gt;f_flags = flags &amp; (O_ACCMODE | O_NONBLOCK);</span></a>
+<a name="433"><span class="lineNum">     433 </span><span class="lineNoCov">          0 :         file-&gt;private_data = dmabuf;</span></a>
+<a name="434"><span class="lineNum">     434 </span><span class="lineNoCov">          0 :         file-&gt;f_path.dentry-&gt;d_fsdata = dmabuf;</span></a>
+<a name="435"><span class="lineNum">     435 </span>            : </a>
+<a name="436"><span class="lineNum">     436 </span><span class="lineNoCov">          0 :         return file;</span></a>
+<a name="437"><span class="lineNum">     437 </span>            : </a>
+<a name="438"><span class="lineNum">     438 </span>            : err_alloc_file:</a>
+<a name="439"><span class="lineNum">     439 </span><span class="lineNoCov">          0 :         iput(inode);</span></a>
+<a name="440"><span class="lineNum">     440 </span><span class="lineNoCov">          0 :         return file;</span></a>
+<a name="441"><span class="lineNum">     441 </span>            : }</a>
+<a name="442"><span class="lineNum">     442 </span>            : </a>
+<a name="443"><span class="lineNum">     443 </span>            : /**</a>
+<a name="444"><span class="lineNum">     444 </span>            :  * DOC: dma buf device access</a>
+<a name="445"><span class="lineNum">     445 </span>            :  *</a>
+<a name="446"><span class="lineNum">     446 </span>            :  * For device DMA access to a shared DMA buffer the usual sequence of operations</a>
+<a name="447"><span class="lineNum">     447 </span>            :  * is fairly simple:</a>
+<a name="448"><span class="lineNum">     448 </span>            :  *</a>
+<a name="449"><span class="lineNum">     449 </span>            :  * 1. The exporter defines his exporter instance using</a>
+<a name="450"><span class="lineNum">     450 </span>            :  *    DEFINE_DMA_BUF_EXPORT_INFO() and calls dma_buf_export() to wrap a private</a>
+<a name="451"><span class="lineNum">     451 </span>            :  *    buffer object into a &amp;dma_buf. It then exports that &amp;dma_buf to userspace</a>
+<a name="452"><span class="lineNum">     452 </span>            :  *    as a file descriptor by calling dma_buf_fd().</a>
+<a name="453"><span class="lineNum">     453 </span>            :  *</a>
+<a name="454"><span class="lineNum">     454 </span>            :  * 2. Userspace passes this file-descriptors to all drivers it wants this buffer</a>
+<a name="455"><span class="lineNum">     455 </span>            :  *    to share with: First the file descriptor is converted to a &amp;dma_buf using</a>
+<a name="456"><span class="lineNum">     456 </span>            :  *    dma_buf_get(). Then the buffer is attached to the device using</a>
+<a name="457"><span class="lineNum">     457 </span>            :  *    dma_buf_attach().</a>
+<a name="458"><span class="lineNum">     458 </span>            :  *</a>
+<a name="459"><span class="lineNum">     459 </span>            :  *    Up to this stage the exporter is still free to migrate or reallocate the</a>
+<a name="460"><span class="lineNum">     460 </span>            :  *    backing storage.</a>
+<a name="461"><span class="lineNum">     461 </span>            :  *</a>
+<a name="462"><span class="lineNum">     462 </span>            :  * 3. Once the buffer is attached to all devices userspace can initiate DMA</a>
+<a name="463"><span class="lineNum">     463 </span>            :  *    access to the shared buffer. In the kernel this is done by calling</a>
+<a name="464"><span class="lineNum">     464 </span>            :  *    dma_buf_map_attachment() and dma_buf_unmap_attachment().</a>
+<a name="465"><span class="lineNum">     465 </span>            :  *</a>
+<a name="466"><span class="lineNum">     466 </span>            :  * 4. Once a driver is done with a shared buffer it needs to call</a>
+<a name="467"><span class="lineNum">     467 </span>            :  *    dma_buf_detach() (after cleaning up any mappings) and then release the</a>
+<a name="468"><span class="lineNum">     468 </span>            :  *    reference acquired with dma_buf_get() by calling dma_buf_put().</a>
+<a name="469"><span class="lineNum">     469 </span>            :  *</a>
+<a name="470"><span class="lineNum">     470 </span>            :  * For the detailed semantics exporters are expected to implement see</a>
+<a name="471"><span class="lineNum">     471 </span>            :  * &amp;dma_buf_ops.</a>
+<a name="472"><span class="lineNum">     472 </span>            :  */</a>
+<a name="473"><span class="lineNum">     473 </span>            : </a>
+<a name="474"><span class="lineNum">     474 </span>            : /**</a>
+<a name="475"><span class="lineNum">     475 </span>            :  * dma_buf_export - Creates a new dma_buf, and associates an anon file</a>
+<a name="476"><span class="lineNum">     476 </span>            :  * with this buffer, so it can be exported.</a>
+<a name="477"><span class="lineNum">     477 </span>            :  * Also connect the allocator specific data and ops to the buffer.</a>
+<a name="478"><span class="lineNum">     478 </span>            :  * Additionally, provide a name string for exporter; useful in debugging.</a>
+<a name="479"><span class="lineNum">     479 </span>            :  *</a>
+<a name="480"><span class="lineNum">     480 </span>            :  * @exp_info:   [in]    holds all the export related information provided</a>
+<a name="481"><span class="lineNum">     481 </span>            :  *                      by the exporter. see &amp;struct dma_buf_export_info</a>
+<a name="482"><span class="lineNum">     482 </span>            :  *                      for further details.</a>
+<a name="483"><span class="lineNum">     483 </span>            :  *</a>
+<a name="484"><span class="lineNum">     484 </span>            :  * Returns, on success, a newly created struct dma_buf object, which wraps the</a>
+<a name="485"><span class="lineNum">     485 </span>            :  * supplied private data and operations for struct dma_buf_ops. On either</a>
+<a name="486"><span class="lineNum">     486 </span>            :  * missing ops, or error in allocating struct dma_buf, will return negative</a>
+<a name="487"><span class="lineNum">     487 </span>            :  * error.</a>
+<a name="488"><span class="lineNum">     488 </span>            :  *</a>
+<a name="489"><span class="lineNum">     489 </span>            :  * For most cases the easiest way to create @exp_info is through the</a>
+<a name="490"><span class="lineNum">     490 </span>            :  * %DEFINE_DMA_BUF_EXPORT_INFO macro.</a>
+<a name="491"><span class="lineNum">     491 </span>            :  */</a>
+<a name="492"><span class="lineNum">     492 </span><span class="lineNoCov">          0 : struct dma_buf *dma_buf_export(const struct dma_buf_export_info *exp_info)</span></a>
+<a name="493"><span class="lineNum">     493 </span>            : {</a>
+<a name="494"><span class="lineNum">     494 </span>            :         struct dma_buf *dmabuf;</a>
+<a name="495"><span class="lineNum">     495 </span><span class="lineNoCov">          0 :         struct dma_resv *resv = exp_info-&gt;resv;</span></a>
+<a name="496"><span class="lineNum">     496 </span>            :         struct file *file;</a>
+<a name="497"><span class="lineNum">     497 </span><span class="lineNoCov">          0 :         size_t alloc_size = sizeof(struct dma_buf);</span></a>
+<a name="498"><span class="lineNum">     498 </span>            :         int ret;</a>
+<a name="499"><span class="lineNum">     499 </span>            : </a>
+<a name="500"><span class="lineNum">     500 </span><span class="lineNoCov">          0 :         if (!exp_info-&gt;resv)</span></a>
+<a name="501"><span class="lineNum">     501 </span>            :                 alloc_size += sizeof(struct dma_resv);</a>
+<a name="502"><span class="lineNum">     502 </span>            :         else</a>
+<a name="503"><span class="lineNum">     503 </span>            :                 /* prevent &amp;dma_buf[1] == dma_buf-&gt;resv */</a>
+<a name="504"><span class="lineNum">     504 </span><span class="lineNoCov">          0 :                 alloc_size += 1;</span></a>
+<a name="505"><span class="lineNum">     505 </span>            : </a>
+<a name="506"><span class="lineNum">     506 </span><span class="lineNoCov">          0 :         if (WARN_ON(!exp_info-&gt;priv</span></a>
+<a name="507"><span class="lineNum">     507 </span>            :                           || !exp_info-&gt;ops</a>
+<a name="508"><span class="lineNum">     508 </span>            :                           || !exp_info-&gt;ops-&gt;map_dma_buf</a>
+<a name="509"><span class="lineNum">     509 </span>            :                           || !exp_info-&gt;ops-&gt;unmap_dma_buf</a>
+<a name="510"><span class="lineNum">     510 </span>            :                           || !exp_info-&gt;ops-&gt;release)) {</a>
+<a name="511"><span class="lineNum">     511 </span>            :                 return ERR_PTR(-EINVAL);</a>
+<a name="512"><span class="lineNum">     512 </span>            :         }</a>
+<a name="513"><span class="lineNum">     513 </span>            : </a>
+<a name="514"><span class="lineNum">     514 </span><span class="lineNoCov">          0 :         if (WARN_ON(exp_info-&gt;ops-&gt;cache_sgt_mapping &amp;&amp;</span></a>
+<a name="515"><span class="lineNum">     515 </span>            :                     (exp_info-&gt;ops-&gt;pin || exp_info-&gt;ops-&gt;unpin)))</a>
+<a name="516"><span class="lineNum">     516 </span>            :                 return ERR_PTR(-EINVAL);</a>
+<a name="517"><span class="lineNum">     517 </span>            : </a>
+<a name="518"><span class="lineNum">     518 </span><span class="lineNoCov">          0 :         if (WARN_ON(!exp_info-&gt;ops-&gt;pin != !exp_info-&gt;ops-&gt;unpin))</span></a>
+<a name="519"><span class="lineNum">     519 </span>            :                 return ERR_PTR(-EINVAL);</a>
+<a name="520"><span class="lineNum">     520 </span>            : </a>
+<a name="521"><span class="lineNum">     521 </span><span class="lineNoCov">          0 :         if (!try_module_get(exp_info-&gt;owner))</span></a>
+<a name="522"><span class="lineNum">     522 </span>            :                 return ERR_PTR(-ENOENT);</a>
+<a name="523"><span class="lineNum">     523 </span>            : </a>
+<a name="524"><span class="lineNum">     524 </span><span class="lineNoCov">          0 :         dmabuf = kzalloc(alloc_size, GFP_KERNEL);</span></a>
+<a name="525"><span class="lineNum">     525 </span><span class="lineNoCov">          0 :         if (!dmabuf) {</span></a>
+<a name="526"><span class="lineNum">     526 </span>            :                 ret = -ENOMEM;</a>
+<a name="527"><span class="lineNum">     527 </span>            :                 goto err_module;</a>
+<a name="528"><span class="lineNum">     528 </span>            :         }</a>
+<a name="529"><span class="lineNum">     529 </span>            : </a>
+<a name="530"><span class="lineNum">     530 </span><span class="lineNoCov">          0 :         dmabuf-&gt;priv = exp_info-&gt;priv;</span></a>
+<a name="531"><span class="lineNum">     531 </span><span class="lineNoCov">          0 :         dmabuf-&gt;ops = exp_info-&gt;ops;</span></a>
+<a name="532"><span class="lineNum">     532 </span><span class="lineNoCov">          0 :         dmabuf-&gt;size = exp_info-&gt;size;</span></a>
+<a name="533"><span class="lineNum">     533 </span><span class="lineNoCov">          0 :         dmabuf-&gt;exp_name = exp_info-&gt;exp_name;</span></a>
+<a name="534"><span class="lineNum">     534 </span><span class="lineNoCov">          0 :         dmabuf-&gt;owner = exp_info-&gt;owner;</span></a>
+<a name="535"><span class="lineNum">     535 </span><span class="lineNoCov">          0 :         spin_lock_init(&amp;dmabuf-&gt;name_lock);</span></a>
+<a name="536"><span class="lineNum">     536 </span><span class="lineNoCov">          0 :         init_waitqueue_head(&amp;dmabuf-&gt;poll);</span></a>
+<a name="537"><span class="lineNum">     537 </span><span class="lineNoCov">          0 :         dmabuf-&gt;cb_in.poll = dmabuf-&gt;cb_out.poll = &amp;dmabuf-&gt;poll;</span></a>
+<a name="538"><span class="lineNum">     538 </span><span class="lineNoCov">          0 :         dmabuf-&gt;cb_in.active = dmabuf-&gt;cb_out.active = 0;</span></a>
+<a name="539"><span class="lineNum">     539 </span>            : </a>
+<a name="540"><span class="lineNum">     540 </span><span class="lineNoCov">          0 :         if (!resv) {</span></a>
+<a name="541"><span class="lineNum">     541 </span><span class="lineNoCov">          0 :                 resv = (struct dma_resv *)&amp;dmabuf[1];</span></a>
+<a name="542"><span class="lineNum">     542 </span><span class="lineNoCov">          0 :                 dma_resv_init(resv);</span></a>
+<a name="543"><span class="lineNum">     543 </span>            :         }</a>
+<a name="544"><span class="lineNum">     544 </span><span class="lineNoCov">          0 :         dmabuf-&gt;resv = resv;</span></a>
+<a name="545"><span class="lineNum">     545 </span>            : </a>
+<a name="546"><span class="lineNum">     546 </span><span class="lineNoCov">          0 :         file = dma_buf_getfile(dmabuf, exp_info-&gt;flags);</span></a>
+<a name="547"><span class="lineNum">     547 </span><span class="lineNoCov">          0 :         if (IS_ERR(file)) {</span></a>
+<a name="548"><span class="lineNum">     548 </span><span class="lineNoCov">          0 :                 ret = PTR_ERR(file);</span></a>
+<a name="549"><span class="lineNum">     549 </span>            :                 goto err_dmabuf;</a>
+<a name="550"><span class="lineNum">     550 </span>            :         }</a>
+<a name="551"><span class="lineNum">     551 </span>            : </a>
+<a name="552"><span class="lineNum">     552 </span><span class="lineNoCov">          0 :         file-&gt;f_mode |= FMODE_LSEEK;</span></a>
+<a name="553"><span class="lineNum">     553 </span><span class="lineNoCov">          0 :         dmabuf-&gt;file = file;</span></a>
+<a name="554"><span class="lineNum">     554 </span>            : </a>
+<a name="555"><span class="lineNum">     555 </span><span class="lineNoCov">          0 :         mutex_init(&amp;dmabuf-&gt;lock);</span></a>
+<a name="556"><span class="lineNum">     556 </span><span class="lineNoCov">          0 :         INIT_LIST_HEAD(&amp;dmabuf-&gt;attachments);</span></a>
+<a name="557"><span class="lineNum">     557 </span>            : </a>
+<a name="558"><span class="lineNum">     558 </span><span class="lineNoCov">          0 :         mutex_lock(&amp;db_list.lock);</span></a>
+<a name="559"><span class="lineNum">     559 </span><span class="lineNoCov">          0 :         list_add(&amp;dmabuf-&gt;list_node, &amp;db_list.head);</span></a>
+<a name="560"><span class="lineNum">     560 </span><span class="lineNoCov">          0 :         mutex_unlock(&amp;db_list.lock);</span></a>
+<a name="561"><span class="lineNum">     561 </span>            : </a>
+<a name="562"><span class="lineNum">     562 </span><span class="lineNoCov">          0 :         ret = dma_buf_stats_setup(dmabuf);</span></a>
+<a name="563"><span class="lineNum">     563 </span>            :         if (ret)</a>
+<a name="564"><span class="lineNum">     564 </span>            :                 goto err_sysfs;</a>
+<a name="565"><span class="lineNum">     565 </span>            : </a>
+<a name="566"><span class="lineNum">     566 </span><span class="lineNoCov">          0 :         return dmabuf;</span></a>
+<a name="567"><span class="lineNum">     567 </span>            : </a>
+<a name="568"><span class="lineNum">     568 </span>            : err_sysfs:</a>
+<a name="569"><span class="lineNum">     569 </span>            :         /*</a>
+<a name="570"><span class="lineNum">     570 </span>            :          * Set file-&gt;f_path.dentry-&gt;d_fsdata to NULL so that when</a>
+<a name="571"><span class="lineNum">     571 </span>            :          * dma_buf_release() gets invoked by dentry_ops, it exits</a>
+<a name="572"><span class="lineNum">     572 </span>            :          * early before calling the release() dma_buf op.</a>
+<a name="573"><span class="lineNum">     573 </span>            :          */</a>
+<a name="574"><span class="lineNum">     574 </span>            :         file-&gt;f_path.dentry-&gt;d_fsdata = NULL;</a>
+<a name="575"><span class="lineNum">     575 </span>            :         fput(file);</a>
+<a name="576"><span class="lineNum">     576 </span>            : err_dmabuf:</a>
+<a name="577"><span class="lineNum">     577 </span><span class="lineNoCov">          0 :         kfree(dmabuf);</span></a>
+<a name="578"><span class="lineNum">     578 </span>            : err_module:</a>
+<a name="579"><span class="lineNum">     579 </span><span class="lineNoCov">          0 :         module_put(exp_info-&gt;owner);</span></a>
+<a name="580"><span class="lineNum">     580 </span><span class="lineNoCov">          0 :         return ERR_PTR(ret);</span></a>
+<a name="581"><span class="lineNum">     581 </span>            : }</a>
+<a name="582"><span class="lineNum">     582 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_export, DMA_BUF);</a>
+<a name="583"><span class="lineNum">     583 </span>            : </a>
+<a name="584"><span class="lineNum">     584 </span>            : /**</a>
+<a name="585"><span class="lineNum">     585 </span>            :  * dma_buf_fd - returns a file descriptor for the given struct dma_buf</a>
+<a name="586"><span class="lineNum">     586 </span>            :  * @dmabuf:     [in]    pointer to dma_buf for which fd is required.</a>
+<a name="587"><span class="lineNum">     587 </span>            :  * @flags:      [in]    flags to give to fd</a>
+<a name="588"><span class="lineNum">     588 </span>            :  *</a>
+<a name="589"><span class="lineNum">     589 </span>            :  * On success, returns an associated 'fd'. Else, returns error.</a>
+<a name="590"><span class="lineNum">     590 </span>            :  */</a>
+<a name="591"><span class="lineNum">     591 </span><span class="lineNoCov">          0 : int dma_buf_fd(struct dma_buf *dmabuf, int flags)</span></a>
+<a name="592"><span class="lineNum">     592 </span>            : {</a>
+<a name="593"><span class="lineNum">     593 </span>            :         int fd;</a>
+<a name="594"><span class="lineNum">     594 </span>            : </a>
+<a name="595"><span class="lineNum">     595 </span><span class="lineNoCov">          0 :         if (!dmabuf || !dmabuf-&gt;file)</span></a>
+<a name="596"><span class="lineNum">     596 </span>            :                 return -EINVAL;</a>
+<a name="597"><span class="lineNum">     597 </span>            : </a>
+<a name="598"><span class="lineNum">     598 </span><span class="lineNoCov">          0 :         fd = get_unused_fd_flags(flags);</span></a>
+<a name="599"><span class="lineNum">     599 </span><span class="lineNoCov">          0 :         if (fd &lt; 0)</span></a>
+<a name="600"><span class="lineNum">     600 </span>            :                 return fd;</a>
+<a name="601"><span class="lineNum">     601 </span>            : </a>
+<a name="602"><span class="lineNum">     602 </span><span class="lineNoCov">          0 :         fd_install(fd, dmabuf-&gt;file);</span></a>
+<a name="603"><span class="lineNum">     603 </span>            : </a>
+<a name="604"><span class="lineNum">     604 </span><span class="lineNoCov">          0 :         return fd;</span></a>
+<a name="605"><span class="lineNum">     605 </span>            : }</a>
+<a name="606"><span class="lineNum">     606 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_fd, DMA_BUF);</a>
+<a name="607"><span class="lineNum">     607 </span>            : </a>
+<a name="608"><span class="lineNum">     608 </span>            : /**</a>
+<a name="609"><span class="lineNum">     609 </span>            :  * dma_buf_get - returns the struct dma_buf related to an fd</a>
+<a name="610"><span class="lineNum">     610 </span>            :  * @fd: [in]    fd associated with the struct dma_buf to be returned</a>
+<a name="611"><span class="lineNum">     611 </span>            :  *</a>
+<a name="612"><span class="lineNum">     612 </span>            :  * On success, returns the struct dma_buf associated with an fd; uses</a>
+<a name="613"><span class="lineNum">     613 </span>            :  * file's refcounting done by fget to increase refcount. returns ERR_PTR</a>
+<a name="614"><span class="lineNum">     614 </span>            :  * otherwise.</a>
+<a name="615"><span class="lineNum">     615 </span>            :  */</a>
+<a name="616"><span class="lineNum">     616 </span><span class="lineNoCov">          0 : struct dma_buf *dma_buf_get(int fd)</span></a>
+<a name="617"><span class="lineNum">     617 </span>            : {</a>
+<a name="618"><span class="lineNum">     618 </span>            :         struct file *file;</a>
+<a name="619"><span class="lineNum">     619 </span>            : </a>
+<a name="620"><span class="lineNum">     620 </span><span class="lineNoCov">          0 :         file = fget(fd);</span></a>
+<a name="621"><span class="lineNum">     621 </span>            : </a>
+<a name="622"><span class="lineNum">     622 </span><span class="lineNoCov">          0 :         if (!file)</span></a>
+<a name="623"><span class="lineNum">     623 </span>            :                 return ERR_PTR(-EBADF);</a>
+<a name="624"><span class="lineNum">     624 </span>            : </a>
+<a name="625"><span class="lineNum">     625 </span><span class="lineNoCov">          0 :         if (!is_dma_buf_file(file)) {</span></a>
+<a name="626"><span class="lineNum">     626 </span><span class="lineNoCov">          0 :                 fput(file);</span></a>
+<a name="627"><span class="lineNum">     627 </span><span class="lineNoCov">          0 :                 return ERR_PTR(-EINVAL);</span></a>
+<a name="628"><span class="lineNum">     628 </span>            :         }</a>
+<a name="629"><span class="lineNum">     629 </span>            : </a>
+<a name="630"><span class="lineNum">     630 </span><span class="lineNoCov">          0 :         return file-&gt;private_data;</span></a>
+<a name="631"><span class="lineNum">     631 </span>            : }</a>
+<a name="632"><span class="lineNum">     632 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_get, DMA_BUF);</a>
+<a name="633"><span class="lineNum">     633 </span>            : </a>
+<a name="634"><span class="lineNum">     634 </span>            : /**</a>
+<a name="635"><span class="lineNum">     635 </span>            :  * dma_buf_put - decreases refcount of the buffer</a>
+<a name="636"><span class="lineNum">     636 </span>            :  * @dmabuf:     [in]    buffer to reduce refcount of</a>
+<a name="637"><span class="lineNum">     637 </span>            :  *</a>
+<a name="638"><span class="lineNum">     638 </span>            :  * Uses file's refcounting done implicitly by fput().</a>
+<a name="639"><span class="lineNum">     639 </span>            :  *</a>
+<a name="640"><span class="lineNum">     640 </span>            :  * If, as a result of this call, the refcount becomes 0, the 'release' file</a>
+<a name="641"><span class="lineNum">     641 </span>            :  * operation related to this fd is called. It calls &amp;dma_buf_ops.release vfunc</a>
+<a name="642"><span class="lineNum">     642 </span>            :  * in turn, and frees the memory allocated for dmabuf when exported.</a>
+<a name="643"><span class="lineNum">     643 </span>            :  */</a>
+<a name="644"><span class="lineNum">     644 </span><span class="lineNoCov">          0 : void dma_buf_put(struct dma_buf *dmabuf)</span></a>
+<a name="645"><span class="lineNum">     645 </span>            : {</a>
+<a name="646"><span class="lineNum">     646 </span><span class="lineNoCov">          0 :         if (WARN_ON(!dmabuf || !dmabuf-&gt;file))</span></a>
+<a name="647"><span class="lineNum">     647 </span>            :                 return;</a>
+<a name="648"><span class="lineNum">     648 </span>            : </a>
+<a name="649"><span class="lineNum">     649 </span><span class="lineNoCov">          0 :         fput(dmabuf-&gt;file);</span></a>
+<a name="650"><span class="lineNum">     650 </span>            : }</a>
+<a name="651"><span class="lineNum">     651 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_put, DMA_BUF);</a>
+<a name="652"><span class="lineNum">     652 </span>            : </a>
+<a name="653"><span class="lineNum">     653 </span>            : static void mangle_sg_table(struct sg_table *sg_table)</a>
+<a name="654"><span class="lineNum">     654 </span>            : {</a>
+<a name="655"><span class="lineNum">     655 </span>            : #ifdef CONFIG_DMABUF_DEBUG</a>
+<a name="656"><span class="lineNum">     656 </span>            :         int i;</a>
+<a name="657"><span class="lineNum">     657 </span>            :         struct scatterlist *sg;</a>
+<a name="658"><span class="lineNum">     658 </span>            : </a>
+<a name="659"><span class="lineNum">     659 </span>            :         /* To catch abuse of the underlying struct page by importers mix</a>
+<a name="660"><span class="lineNum">     660 </span>            :          * up the bits, but take care to preserve the low SG_ bits to</a>
+<a name="661"><span class="lineNum">     661 </span>            :          * not corrupt the sgt. The mixing is undone in __unmap_dma_buf</a>
+<a name="662"><span class="lineNum">     662 </span>            :          * before passing the sgt back to the exporter. */</a>
+<a name="663"><span class="lineNum">     663 </span>            :         for_each_sgtable_sg(sg_table, sg, i)</a>
+<a name="664"><span class="lineNum">     664 </span>            :                 sg-&gt;page_link ^= ~0xffUL;</a>
+<a name="665"><span class="lineNum">     665 </span>            : #endif</a>
+<a name="666"><span class="lineNum">     666 </span>            : </a>
+<a name="667"><span class="lineNum">     667 </span>            : }</a>
+<a name="668"><span class="lineNum">     668 </span><span class="lineNoCov">          0 : static struct sg_table * __map_dma_buf(struct dma_buf_attachment *attach,</span></a>
+<a name="669"><span class="lineNum">     669 </span>            :                                        enum dma_data_direction direction)</a>
+<a name="670"><span class="lineNum">     670 </span>            : {</a>
+<a name="671"><span class="lineNum">     671 </span>            :         struct sg_table *sg_table;</a>
+<a name="672"><span class="lineNum">     672 </span>            :         signed long ret;</a>
+<a name="673"><span class="lineNum">     673 </span>            : </a>
+<a name="674"><span class="lineNum">     674 </span><span class="lineNoCov">          0 :         sg_table = attach-&gt;dmabuf-&gt;ops-&gt;map_dma_buf(attach, direction);</span></a>
+<a name="675"><span class="lineNum">     675 </span><span class="lineNoCov">          0 :         if (IS_ERR_OR_NULL(sg_table))</span></a>
+<a name="676"><span class="lineNum">     676 </span>            :                 return sg_table;</a>
+<a name="677"><span class="lineNum">     677 </span>            : </a>
+<a name="678"><span class="lineNum">     678 </span><span class="lineNoCov">          0 :         if (!dma_buf_attachment_is_dynamic(attach)) {</span></a>
+<a name="679"><span class="lineNum">     679 </span><span class="lineNoCov">          0 :                 ret = dma_resv_wait_timeout(attach-&gt;dmabuf-&gt;resv,</span></a>
+<a name="680"><span class="lineNum">     680 </span>            :                                             DMA_RESV_USAGE_KERNEL, true,</a>
+<a name="681"><span class="lineNum">     681 </span>            :                                             MAX_SCHEDULE_TIMEOUT);</a>
+<a name="682"><span class="lineNum">     682 </span><span class="lineNoCov">          0 :                 if (ret &lt; 0) {</span></a>
+<a name="683"><span class="lineNum">     683 </span><span class="lineNoCov">          0 :                         attach-&gt;dmabuf-&gt;ops-&gt;unmap_dma_buf(attach, sg_table,</span></a>
+<a name="684"><span class="lineNum">     684 </span>            :                                                            direction);</a>
+<a name="685"><span class="lineNum">     685 </span><span class="lineNoCov">          0 :                         return ERR_PTR(ret);</span></a>
+<a name="686"><span class="lineNum">     686 </span>            :                 }</a>
+<a name="687"><span class="lineNum">     687 </span>            :         }</a>
+<a name="688"><span class="lineNum">     688 </span>            : </a>
+<a name="689"><span class="lineNum">     689 </span>            :         mangle_sg_table(sg_table);</a>
+<a name="690"><span class="lineNum">     690 </span>            :         return sg_table;</a>
+<a name="691"><span class="lineNum">     691 </span>            : }</a>
+<a name="692"><span class="lineNum">     692 </span>            : </a>
+<a name="693"><span class="lineNum">     693 </span>            : /**</a>
+<a name="694"><span class="lineNum">     694 </span>            :  * dma_buf_dynamic_attach - Add the device to dma_buf's attachments list</a>
+<a name="695"><span class="lineNum">     695 </span>            :  * @dmabuf:             [in]    buffer to attach device to.</a>
+<a name="696"><span class="lineNum">     696 </span>            :  * @dev:                [in]    device to be attached.</a>
+<a name="697"><span class="lineNum">     697 </span>            :  * @importer_ops:       [in]    importer operations for the attachment</a>
+<a name="698"><span class="lineNum">     698 </span>            :  * @importer_priv:      [in]    importer private pointer for the attachment</a>
+<a name="699"><span class="lineNum">     699 </span>            :  *</a>
+<a name="700"><span class="lineNum">     700 </span>            :  * Returns struct dma_buf_attachment pointer for this attachment. Attachments</a>
+<a name="701"><span class="lineNum">     701 </span>            :  * must be cleaned up by calling dma_buf_detach().</a>
+<a name="702"><span class="lineNum">     702 </span>            :  *</a>
+<a name="703"><span class="lineNum">     703 </span>            :  * Optionally this calls &amp;dma_buf_ops.attach to allow device-specific attach</a>
+<a name="704"><span class="lineNum">     704 </span>            :  * functionality.</a>
+<a name="705"><span class="lineNum">     705 </span>            :  *</a>
+<a name="706"><span class="lineNum">     706 </span>            :  * Returns:</a>
+<a name="707"><span class="lineNum">     707 </span>            :  *</a>
+<a name="708"><span class="lineNum">     708 </span>            :  * A pointer to newly created &amp;dma_buf_attachment on success, or a negative</a>
+<a name="709"><span class="lineNum">     709 </span>            :  * error code wrapped into a pointer on failure.</a>
+<a name="710"><span class="lineNum">     710 </span>            :  *</a>
+<a name="711"><span class="lineNum">     711 </span>            :  * Note that this can fail if the backing storage of @dmabuf is in a place not</a>
+<a name="712"><span class="lineNum">     712 </span>            :  * accessible to @dev, and cannot be moved to a more suitable place. This is</a>
+<a name="713"><span class="lineNum">     713 </span>            :  * indicated with the error code -EBUSY.</a>
+<a name="714"><span class="lineNum">     714 </span>            :  */</a>
+<a name="715"><span class="lineNum">     715 </span>            : struct dma_buf_attachment *</a>
+<a name="716"><span class="lineNum">     716 </span><span class="lineNoCov">          0 : dma_buf_dynamic_attach(struct dma_buf *dmabuf, struct device *dev,</span></a>
+<a name="717"><span class="lineNum">     717 </span>            :                        const struct dma_buf_attach_ops *importer_ops,</a>
+<a name="718"><span class="lineNum">     718 </span>            :                        void *importer_priv)</a>
+<a name="719"><span class="lineNum">     719 </span>            : {</a>
+<a name="720"><span class="lineNum">     720 </span>            :         struct dma_buf_attachment *attach;</a>
+<a name="721"><span class="lineNum">     721 </span>            :         int ret;</a>
+<a name="722"><span class="lineNum">     722 </span>            : </a>
+<a name="723"><span class="lineNum">     723 </span><span class="lineNoCov">          0 :         if (WARN_ON(!dmabuf || !dev))</span></a>
+<a name="724"><span class="lineNum">     724 </span>            :                 return ERR_PTR(-EINVAL);</a>
+<a name="725"><span class="lineNum">     725 </span>            : </a>
+<a name="726"><span class="lineNum">     726 </span><span class="lineNoCov">          0 :         if (WARN_ON(importer_ops &amp;&amp; !importer_ops-&gt;move_notify))</span></a>
+<a name="727"><span class="lineNum">     727 </span>            :                 return ERR_PTR(-EINVAL);</a>
+<a name="728"><span class="lineNum">     728 </span>            : </a>
+<a name="729"><span class="lineNum">     729 </span><span class="lineNoCov">          0 :         attach = kzalloc(sizeof(*attach), GFP_KERNEL);</span></a>
+<a name="730"><span class="lineNum">     730 </span><span class="lineNoCov">          0 :         if (!attach)</span></a>
+<a name="731"><span class="lineNum">     731 </span>            :                 return ERR_PTR(-ENOMEM);</a>
+<a name="732"><span class="lineNum">     732 </span>            : </a>
+<a name="733"><span class="lineNum">     733 </span><span class="lineNoCov">          0 :         attach-&gt;dev = dev;</span></a>
+<a name="734"><span class="lineNum">     734 </span><span class="lineNoCov">          0 :         attach-&gt;dmabuf = dmabuf;</span></a>
+<a name="735"><span class="lineNum">     735 </span><span class="lineNoCov">          0 :         if (importer_ops)</span></a>
+<a name="736"><span class="lineNum">     736 </span><span class="lineNoCov">          0 :                 attach-&gt;peer2peer = importer_ops-&gt;allow_peer2peer;</span></a>
+<a name="737"><span class="lineNum">     737 </span><span class="lineNoCov">          0 :         attach-&gt;importer_ops = importer_ops;</span></a>
+<a name="738"><span class="lineNum">     738 </span><span class="lineNoCov">          0 :         attach-&gt;importer_priv = importer_priv;</span></a>
+<a name="739"><span class="lineNum">     739 </span>            : </a>
+<a name="740"><span class="lineNum">     740 </span><span class="lineNoCov">          0 :         if (dmabuf-&gt;ops-&gt;attach) {</span></a>
+<a name="741"><span class="lineNum">     741 </span><span class="lineNoCov">          0 :                 ret = dmabuf-&gt;ops-&gt;attach(dmabuf, attach);</span></a>
+<a name="742"><span class="lineNum">     742 </span><span class="lineNoCov">          0 :                 if (ret)</span></a>
+<a name="743"><span class="lineNum">     743 </span>            :                         goto err_attach;</a>
+<a name="744"><span class="lineNum">     744 </span>            :         }</a>
+<a name="745"><span class="lineNum">     745 </span><span class="lineNoCov">          0 :         dma_resv_lock(dmabuf-&gt;resv, NULL);</span></a>
+<a name="746"><span class="lineNum">     746 </span><span class="lineNoCov">          0 :         list_add(&amp;attach-&gt;node, &amp;dmabuf-&gt;attachments);</span></a>
+<a name="747"><span class="lineNum">     747 </span><span class="lineNoCov">          0 :         dma_resv_unlock(dmabuf-&gt;resv);</span></a>
+<a name="748"><span class="lineNum">     748 </span>            : </a>
+<a name="749"><span class="lineNum">     749 </span>            :         /* When either the importer or the exporter can't handle dynamic</a>
+<a name="750"><span class="lineNum">     750 </span>            :          * mappings we cache the mapping here to avoid issues with the</a>
+<a name="751"><span class="lineNum">     751 </span>            :          * reservation object lock.</a>
+<a name="752"><span class="lineNum">     752 </span>            :          */</a>
+<a name="753"><span class="lineNum">     753 </span><span class="lineNoCov">          0 :         if (dma_buf_attachment_is_dynamic(attach) !=</span></a>
+<a name="754"><span class="lineNum">     754 </span><span class="lineNoCov">          0 :             dma_buf_is_dynamic(dmabuf)) {</span></a>
+<a name="755"><span class="lineNum">     755 </span>            :                 struct sg_table *sgt;</a>
+<a name="756"><span class="lineNum">     756 </span>            : </a>
+<a name="757"><span class="lineNum">     757 </span><span class="lineNoCov">          0 :                 if (dma_buf_is_dynamic(attach-&gt;dmabuf)) {</span></a>
+<a name="758"><span class="lineNum">     758 </span><span class="lineNoCov">          0 :                         dma_resv_lock(attach-&gt;dmabuf-&gt;resv, NULL);</span></a>
+<a name="759"><span class="lineNum">     759 </span><span class="lineNoCov">          0 :                         ret = dmabuf-&gt;ops-&gt;pin(attach);</span></a>
+<a name="760"><span class="lineNum">     760 </span><span class="lineNoCov">          0 :                         if (ret)</span></a>
+<a name="761"><span class="lineNum">     761 </span>            :                                 goto err_unlock;</a>
+<a name="762"><span class="lineNum">     762 </span>            :                 }</a>
+<a name="763"><span class="lineNum">     763 </span>            : </a>
+<a name="764"><span class="lineNum">     764 </span><span class="lineNoCov">          0 :                 sgt = __map_dma_buf(attach, DMA_BIDIRECTIONAL);</span></a>
+<a name="765"><span class="lineNum">     765 </span><span class="lineNoCov">          0 :                 if (!sgt)</span></a>
+<a name="766"><span class="lineNum">     766 </span><span class="lineNoCov">          0 :                         sgt = ERR_PTR(-ENOMEM);</span></a>
+<a name="767"><span class="lineNum">     767 </span><span class="lineNoCov">          0 :                 if (IS_ERR(sgt)) {</span></a>
+<a name="768"><span class="lineNum">     768 </span><span class="lineNoCov">          0 :                         ret = PTR_ERR(sgt);</span></a>
+<a name="769"><span class="lineNum">     769 </span>            :                         goto err_unpin;</a>
+<a name="770"><span class="lineNum">     770 </span>            :                 }</a>
+<a name="771"><span class="lineNum">     771 </span><span class="lineNoCov">          0 :                 if (dma_buf_is_dynamic(attach-&gt;dmabuf))</span></a>
+<a name="772"><span class="lineNum">     772 </span><span class="lineNoCov">          0 :                         dma_resv_unlock(attach-&gt;dmabuf-&gt;resv);</span></a>
+<a name="773"><span class="lineNum">     773 </span><span class="lineNoCov">          0 :                 attach-&gt;sgt = sgt;</span></a>
+<a name="774"><span class="lineNum">     774 </span><span class="lineNoCov">          0 :                 attach-&gt;dir = DMA_BIDIRECTIONAL;</span></a>
+<a name="775"><span class="lineNum">     775 </span>            :         }</a>
+<a name="776"><span class="lineNum">     776 </span>            : </a>
+<a name="777"><span class="lineNum">     777 </span>            :         return attach;</a>
+<a name="778"><span class="lineNum">     778 </span>            : </a>
+<a name="779"><span class="lineNum">     779 </span>            : err_attach:</a>
+<a name="780"><span class="lineNum">     780 </span><span class="lineNoCov">          0 :         kfree(attach);</span></a>
+<a name="781"><span class="lineNum">     781 </span><span class="lineNoCov">          0 :         return ERR_PTR(ret);</span></a>
+<a name="782"><span class="lineNum">     782 </span>            : </a>
+<a name="783"><span class="lineNum">     783 </span>            : err_unpin:</a>
+<a name="784"><span class="lineNum">     784 </span><span class="lineNoCov">          0 :         if (dma_buf_is_dynamic(attach-&gt;dmabuf))</span></a>
+<a name="785"><span class="lineNum">     785 </span><span class="lineNoCov">          0 :                 dmabuf-&gt;ops-&gt;unpin(attach);</span></a>
+<a name="786"><span class="lineNum">     786 </span>            : </a>
+<a name="787"><span class="lineNum">     787 </span>            : err_unlock:</a>
+<a name="788"><span class="lineNum">     788 </span><span class="lineNoCov">          0 :         if (dma_buf_is_dynamic(attach-&gt;dmabuf))</span></a>
+<a name="789"><span class="lineNum">     789 </span><span class="lineNoCov">          0 :                 dma_resv_unlock(attach-&gt;dmabuf-&gt;resv);</span></a>
+<a name="790"><span class="lineNum">     790 </span>            : </a>
+<a name="791"><span class="lineNum">     791 </span><span class="lineNoCov">          0 :         dma_buf_detach(dmabuf, attach);</span></a>
+<a name="792"><span class="lineNum">     792 </span><span class="lineNoCov">          0 :         return ERR_PTR(ret);</span></a>
+<a name="793"><span class="lineNum">     793 </span>            : }</a>
+<a name="794"><span class="lineNum">     794 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_dynamic_attach, DMA_BUF);</a>
+<a name="795"><span class="lineNum">     795 </span>            : </a>
+<a name="796"><span class="lineNum">     796 </span>            : /**</a>
+<a name="797"><span class="lineNum">     797 </span>            :  * dma_buf_attach - Wrapper for dma_buf_dynamic_attach</a>
+<a name="798"><span class="lineNum">     798 </span>            :  * @dmabuf:     [in]    buffer to attach device to.</a>
+<a name="799"><span class="lineNum">     799 </span>            :  * @dev:        [in]    device to be attached.</a>
+<a name="800"><span class="lineNum">     800 </span>            :  *</a>
+<a name="801"><span class="lineNum">     801 </span>            :  * Wrapper to call dma_buf_dynamic_attach() for drivers which still use a static</a>
+<a name="802"><span class="lineNum">     802 </span>            :  * mapping.</a>
+<a name="803"><span class="lineNum">     803 </span>            :  */</a>
+<a name="804"><span class="lineNum">     804 </span><span class="lineNoCov">          0 : struct dma_buf_attachment *dma_buf_attach(struct dma_buf *dmabuf,</span></a>
+<a name="805"><span class="lineNum">     805 </span>            :                                           struct device *dev)</a>
+<a name="806"><span class="lineNum">     806 </span>            : {</a>
+<a name="807"><span class="lineNum">     807 </span><span class="lineNoCov">          0 :         return dma_buf_dynamic_attach(dmabuf, dev, NULL, NULL);</span></a>
+<a name="808"><span class="lineNum">     808 </span>            : }</a>
+<a name="809"><span class="lineNum">     809 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_attach, DMA_BUF);</a>
+<a name="810"><span class="lineNum">     810 </span>            : </a>
+<a name="811"><span class="lineNum">     811 </span>            : static void __unmap_dma_buf(struct dma_buf_attachment *attach,</a>
+<a name="812"><span class="lineNum">     812 </span>            :                             struct sg_table *sg_table,</a>
+<a name="813"><span class="lineNum">     813 </span>            :                             enum dma_data_direction direction)</a>
+<a name="814"><span class="lineNum">     814 </span>            : {</a>
+<a name="815"><span class="lineNum">     815 </span>            :         /* uses XOR, hence this unmangles */</a>
+<a name="816"><span class="lineNum">     816 </span><span class="lineNoCov">          0 :         mangle_sg_table(sg_table);</span></a>
+<a name="817"><span class="lineNum">     817 </span>            : </a>
+<a name="818"><span class="lineNum">     818 </span><span class="lineNoCov">          0 :         attach-&gt;dmabuf-&gt;ops-&gt;unmap_dma_buf(attach, sg_table, direction);</span></a>
+<a name="819"><span class="lineNum">     819 </span>            : }</a>
+<a name="820"><span class="lineNum">     820 </span>            : </a>
+<a name="821"><span class="lineNum">     821 </span>            : /**</a>
+<a name="822"><span class="lineNum">     822 </span>            :  * dma_buf_detach - Remove the given attachment from dmabuf's attachments list</a>
+<a name="823"><span class="lineNum">     823 </span>            :  * @dmabuf:     [in]    buffer to detach from.</a>
+<a name="824"><span class="lineNum">     824 </span>            :  * @attach:     [in]    attachment to be detached; is free'd after this call.</a>
+<a name="825"><span class="lineNum">     825 </span>            :  *</a>
+<a name="826"><span class="lineNum">     826 </span>            :  * Clean up a device attachment obtained by calling dma_buf_attach().</a>
+<a name="827"><span class="lineNum">     827 </span>            :  *</a>
+<a name="828"><span class="lineNum">     828 </span>            :  * Optionally this calls &amp;dma_buf_ops.detach for device-specific detach.</a>
+<a name="829"><span class="lineNum">     829 </span>            :  */</a>
+<a name="830"><span class="lineNum">     830 </span><span class="lineNoCov">          0 : void dma_buf_detach(struct dma_buf *dmabuf, struct dma_buf_attachment *attach)</span></a>
+<a name="831"><span class="lineNum">     831 </span>            : {</a>
+<a name="832"><span class="lineNum">     832 </span><span class="lineNoCov">          0 :         if (WARN_ON(!dmabuf || !attach))</span></a>
+<a name="833"><span class="lineNum">     833 </span>            :                 return;</a>
+<a name="834"><span class="lineNum">     834 </span>            : </a>
+<a name="835"><span class="lineNum">     835 </span><span class="lineNoCov">          0 :         if (attach-&gt;sgt) {</span></a>
+<a name="836"><span class="lineNum">     836 </span><span class="lineNoCov">          0 :                 if (dma_buf_is_dynamic(attach-&gt;dmabuf))</span></a>
+<a name="837"><span class="lineNum">     837 </span><span class="lineNoCov">          0 :                         dma_resv_lock(attach-&gt;dmabuf-&gt;resv, NULL);</span></a>
+<a name="838"><span class="lineNum">     838 </span>            : </a>
+<a name="839"><span class="lineNum">     839 </span><span class="lineNoCov">          0 :                 __unmap_dma_buf(attach, attach-&gt;sgt, attach-&gt;dir);</span></a>
+<a name="840"><span class="lineNum">     840 </span>            : </a>
+<a name="841"><span class="lineNum">     841 </span><span class="lineNoCov">          0 :                 if (dma_buf_is_dynamic(attach-&gt;dmabuf)) {</span></a>
+<a name="842"><span class="lineNum">     842 </span><span class="lineNoCov">          0 :                         dmabuf-&gt;ops-&gt;unpin(attach);</span></a>
+<a name="843"><span class="lineNum">     843 </span><span class="lineNoCov">          0 :                         dma_resv_unlock(attach-&gt;dmabuf-&gt;resv);</span></a>
+<a name="844"><span class="lineNum">     844 </span>            :                 }</a>
+<a name="845"><span class="lineNum">     845 </span>            :         }</a>
+<a name="846"><span class="lineNum">     846 </span>            : </a>
+<a name="847"><span class="lineNum">     847 </span><span class="lineNoCov">          0 :         dma_resv_lock(dmabuf-&gt;resv, NULL);</span></a>
+<a name="848"><span class="lineNum">     848 </span><span class="lineNoCov">          0 :         list_del(&amp;attach-&gt;node);</span></a>
+<a name="849"><span class="lineNum">     849 </span><span class="lineNoCov">          0 :         dma_resv_unlock(dmabuf-&gt;resv);</span></a>
+<a name="850"><span class="lineNum">     850 </span><span class="lineNoCov">          0 :         if (dmabuf-&gt;ops-&gt;detach)</span></a>
+<a name="851"><span class="lineNum">     851 </span><span class="lineNoCov">          0 :                 dmabuf-&gt;ops-&gt;detach(dmabuf, attach);</span></a>
+<a name="852"><span class="lineNum">     852 </span>            : </a>
+<a name="853"><span class="lineNum">     853 </span><span class="lineNoCov">          0 :         kfree(attach);</span></a>
+<a name="854"><span class="lineNum">     854 </span>            : }</a>
+<a name="855"><span class="lineNum">     855 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_detach, DMA_BUF);</a>
+<a name="856"><span class="lineNum">     856 </span>            : </a>
+<a name="857"><span class="lineNum">     857 </span>            : /**</a>
+<a name="858"><span class="lineNum">     858 </span>            :  * dma_buf_pin - Lock down the DMA-buf</a>
+<a name="859"><span class="lineNum">     859 </span>            :  * @attach:     [in]    attachment which should be pinned</a>
+<a name="860"><span class="lineNum">     860 </span>            :  *</a>
+<a name="861"><span class="lineNum">     861 </span>            :  * Only dynamic importers (who set up @attach with dma_buf_dynamic_attach()) may</a>
+<a name="862"><span class="lineNum">     862 </span>            :  * call this, and only for limited use cases like scanout and not for temporary</a>
+<a name="863"><span class="lineNum">     863 </span>            :  * pin operations. It is not permitted to allow userspace to pin arbitrary</a>
+<a name="864"><span class="lineNum">     864 </span>            :  * amounts of buffers through this interface.</a>
+<a name="865"><span class="lineNum">     865 </span>            :  *</a>
+<a name="866"><span class="lineNum">     866 </span>            :  * Buffers must be unpinned by calling dma_buf_unpin().</a>
+<a name="867"><span class="lineNum">     867 </span>            :  *</a>
+<a name="868"><span class="lineNum">     868 </span>            :  * Returns:</a>
+<a name="869"><span class="lineNum">     869 </span>            :  * 0 on success, negative error code on failure.</a>
+<a name="870"><span class="lineNum">     870 </span>            :  */</a>
+<a name="871"><span class="lineNum">     871 </span><span class="lineNoCov">          0 : int dma_buf_pin(struct dma_buf_attachment *attach)</span></a>
+<a name="872"><span class="lineNum">     872 </span>            : {</a>
+<a name="873"><span class="lineNum">     873 </span><span class="lineNoCov">          0 :         struct dma_buf *dmabuf = attach-&gt;dmabuf;</span></a>
+<a name="874"><span class="lineNum">     874 </span><span class="lineNoCov">          0 :         int ret = 0;</span></a>
+<a name="875"><span class="lineNum">     875 </span>            : </a>
+<a name="876"><span class="lineNum">     876 </span><span class="lineNoCov">          0 :         WARN_ON(!dma_buf_attachment_is_dynamic(attach));</span></a>
+<a name="877"><span class="lineNum">     877 </span>            : </a>
+<a name="878"><span class="lineNum">     878 </span>            :         dma_resv_assert_held(dmabuf-&gt;resv);</a>
+<a name="879"><span class="lineNum">     879 </span>            : </a>
+<a name="880"><span class="lineNum">     880 </span><span class="lineNoCov">          0 :         if (dmabuf-&gt;ops-&gt;pin)</span></a>
+<a name="881"><span class="lineNum">     881 </span><span class="lineNoCov">          0 :                 ret = dmabuf-&gt;ops-&gt;pin(attach);</span></a>
+<a name="882"><span class="lineNum">     882 </span>            : </a>
+<a name="883"><span class="lineNum">     883 </span><span class="lineNoCov">          0 :         return ret;</span></a>
+<a name="884"><span class="lineNum">     884 </span>            : }</a>
+<a name="885"><span class="lineNum">     885 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_pin, DMA_BUF);</a>
+<a name="886"><span class="lineNum">     886 </span>            : </a>
+<a name="887"><span class="lineNum">     887 </span>            : /**</a>
+<a name="888"><span class="lineNum">     888 </span>            :  * dma_buf_unpin - Unpin a DMA-buf</a>
+<a name="889"><span class="lineNum">     889 </span>            :  * @attach:     [in]    attachment which should be unpinned</a>
+<a name="890"><span class="lineNum">     890 </span>            :  *</a>
+<a name="891"><span class="lineNum">     891 </span>            :  * This unpins a buffer pinned by dma_buf_pin() and allows the exporter to move</a>
+<a name="892"><span class="lineNum">     892 </span>            :  * any mapping of @attach again and inform the importer through</a>
+<a name="893"><span class="lineNum">     893 </span>            :  * &amp;dma_buf_attach_ops.move_notify.</a>
+<a name="894"><span class="lineNum">     894 </span>            :  */</a>
+<a name="895"><span class="lineNum">     895 </span><span class="lineNoCov">          0 : void dma_buf_unpin(struct dma_buf_attachment *attach)</span></a>
+<a name="896"><span class="lineNum">     896 </span>            : {</a>
+<a name="897"><span class="lineNum">     897 </span><span class="lineNoCov">          0 :         struct dma_buf *dmabuf = attach-&gt;dmabuf;</span></a>
+<a name="898"><span class="lineNum">     898 </span>            : </a>
+<a name="899"><span class="lineNum">     899 </span><span class="lineNoCov">          0 :         WARN_ON(!dma_buf_attachment_is_dynamic(attach));</span></a>
+<a name="900"><span class="lineNum">     900 </span>            : </a>
+<a name="901"><span class="lineNum">     901 </span>            :         dma_resv_assert_held(dmabuf-&gt;resv);</a>
+<a name="902"><span class="lineNum">     902 </span>            : </a>
+<a name="903"><span class="lineNum">     903 </span><span class="lineNoCov">          0 :         if (dmabuf-&gt;ops-&gt;unpin)</span></a>
+<a name="904"><span class="lineNum">     904 </span><span class="lineNoCov">          0 :                 dmabuf-&gt;ops-&gt;unpin(attach);</span></a>
+<a name="905"><span class="lineNum">     905 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="906"><span class="lineNum">     906 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_unpin, DMA_BUF);</a>
+<a name="907"><span class="lineNum">     907 </span>            : </a>
+<a name="908"><span class="lineNum">     908 </span>            : /**</a>
+<a name="909"><span class="lineNum">     909 </span>            :  * dma_buf_map_attachment - Returns the scatterlist table of the attachment;</a>
+<a name="910"><span class="lineNum">     910 </span>            :  * mapped into _device_ address space. Is a wrapper for map_dma_buf() of the</a>
+<a name="911"><span class="lineNum">     911 </span>            :  * dma_buf_ops.</a>
+<a name="912"><span class="lineNum">     912 </span>            :  * @attach:     [in]    attachment whose scatterlist is to be returned</a>
+<a name="913"><span class="lineNum">     913 </span>            :  * @direction:  [in]    direction of DMA transfer</a>
+<a name="914"><span class="lineNum">     914 </span>            :  *</a>
+<a name="915"><span class="lineNum">     915 </span>            :  * Returns sg_table containing the scatterlist to be returned; returns ERR_PTR</a>
+<a name="916"><span class="lineNum">     916 </span>            :  * on error. May return -EINTR if it is interrupted by a signal.</a>
+<a name="917"><span class="lineNum">     917 </span>            :  *</a>
+<a name="918"><span class="lineNum">     918 </span>            :  * On success, the DMA addresses and lengths in the returned scatterlist are</a>
+<a name="919"><span class="lineNum">     919 </span>            :  * PAGE_SIZE aligned.</a>
+<a name="920"><span class="lineNum">     920 </span>            :  *</a>
+<a name="921"><span class="lineNum">     921 </span>            :  * A mapping must be unmapped by using dma_buf_unmap_attachment(). Note that</a>
+<a name="922"><span class="lineNum">     922 </span>            :  * the underlying backing storage is pinned for as long as a mapping exists,</a>
+<a name="923"><span class="lineNum">     923 </span>            :  * therefore users/importers should not hold onto a mapping for undue amounts of</a>
+<a name="924"><span class="lineNum">     924 </span>            :  * time.</a>
+<a name="925"><span class="lineNum">     925 </span>            :  *</a>
+<a name="926"><span class="lineNum">     926 </span>            :  * Important: Dynamic importers must wait for the exclusive fence of the struct</a>
+<a name="927"><span class="lineNum">     927 </span>            :  * dma_resv attached to the DMA-BUF first.</a>
+<a name="928"><span class="lineNum">     928 </span>            :  */</a>
+<a name="929"><span class="lineNum">     929 </span><span class="lineNoCov">          0 : struct sg_table *dma_buf_map_attachment(struct dma_buf_attachment *attach,</span></a>
+<a name="930"><span class="lineNum">     930 </span>            :                                         enum dma_data_direction direction)</a>
+<a name="931"><span class="lineNum">     931 </span>            : {</a>
+<a name="932"><span class="lineNum">     932 </span>            :         struct sg_table *sg_table;</a>
+<a name="933"><span class="lineNum">     933 </span>            :         int r;</a>
+<a name="934"><span class="lineNum">     934 </span>            : </a>
+<a name="935"><span class="lineNum">     935 </span>            :         might_sleep();</a>
+<a name="936"><span class="lineNum">     936 </span>            : </a>
+<a name="937"><span class="lineNum">     937 </span><span class="lineNoCov">          0 :         if (WARN_ON(!attach || !attach-&gt;dmabuf))</span></a>
+<a name="938"><span class="lineNum">     938 </span>            :                 return ERR_PTR(-EINVAL);</a>
+<a name="939"><span class="lineNum">     939 </span>            : </a>
+<a name="940"><span class="lineNum">     940 </span><span class="lineNoCov">          0 :         if (dma_buf_attachment_is_dynamic(attach))</span></a>
+<a name="941"><span class="lineNum">     941 </span>            :                 dma_resv_assert_held(attach-&gt;dmabuf-&gt;resv);</a>
+<a name="942"><span class="lineNum">     942 </span>            : </a>
+<a name="943"><span class="lineNum">     943 </span><span class="lineNoCov">          0 :         if (attach-&gt;sgt) {</span></a>
+<a name="944"><span class="lineNum">     944 </span>            :                 /*</a>
+<a name="945"><span class="lineNum">     945 </span>            :                  * Two mappings with different directions for the same</a>
+<a name="946"><span class="lineNum">     946 </span>            :                  * attachment are not allowed.</a>
+<a name="947"><span class="lineNum">     947 </span>            :                  */</a>
+<a name="948"><span class="lineNum">     948 </span><span class="lineNoCov">          0 :                 if (attach-&gt;dir != direction &amp;&amp;</span></a>
+<a name="949"><span class="lineNum">     949 </span>            :                     attach-&gt;dir != DMA_BIDIRECTIONAL)</a>
+<a name="950"><span class="lineNum">     950 </span>            :                         return ERR_PTR(-EBUSY);</a>
+<a name="951"><span class="lineNum">     951 </span>            : </a>
+<a name="952"><span class="lineNum">     952 </span><span class="lineNoCov">          0 :                 return attach-&gt;sgt;</span></a>
+<a name="953"><span class="lineNum">     953 </span>            :         }</a>
+<a name="954"><span class="lineNum">     954 </span>            : </a>
+<a name="955"><span class="lineNum">     955 </span><span class="lineNoCov">          0 :         if (dma_buf_is_dynamic(attach-&gt;dmabuf)) {</span></a>
+<a name="956"><span class="lineNum">     956 </span>            :                 dma_resv_assert_held(attach-&gt;dmabuf-&gt;resv);</a>
+<a name="957"><span class="lineNum">     957 </span>            :                 if (!IS_ENABLED(CONFIG_DMABUF_MOVE_NOTIFY)) {</a>
+<a name="958"><span class="lineNum">     958 </span><span class="lineNoCov">          0 :                         r = attach-&gt;dmabuf-&gt;ops-&gt;pin(attach);</span></a>
+<a name="959"><span class="lineNum">     959 </span><span class="lineNoCov">          0 :                         if (r)</span></a>
+<a name="960"><span class="lineNum">     960 </span><span class="lineNoCov">          0 :                                 return ERR_PTR(r);</span></a>
+<a name="961"><span class="lineNum">     961 </span>            :                 }</a>
+<a name="962"><span class="lineNum">     962 </span>            :         }</a>
+<a name="963"><span class="lineNum">     963 </span>            : </a>
+<a name="964"><span class="lineNum">     964 </span><span class="lineNoCov">          0 :         sg_table = __map_dma_buf(attach, direction);</span></a>
+<a name="965"><span class="lineNum">     965 </span><span class="lineNoCov">          0 :         if (!sg_table)</span></a>
+<a name="966"><span class="lineNum">     966 </span><span class="lineNoCov">          0 :                 sg_table = ERR_PTR(-ENOMEM);</span></a>
+<a name="967"><span class="lineNum">     967 </span>            : </a>
+<a name="968"><span class="lineNum">     968 </span><span class="lineNoCov">          0 :         if (IS_ERR(sg_table) &amp;&amp; dma_buf_is_dynamic(attach-&gt;dmabuf) &amp;&amp;</span></a>
+<a name="969"><span class="lineNum">     969 </span>            :              !IS_ENABLED(CONFIG_DMABUF_MOVE_NOTIFY))</a>
+<a name="970"><span class="lineNum">     970 </span><span class="lineNoCov">          0 :                 attach-&gt;dmabuf-&gt;ops-&gt;unpin(attach);</span></a>
+<a name="971"><span class="lineNum">     971 </span>            : </a>
+<a name="972"><span class="lineNum">     972 </span><span class="lineNoCov">          0 :         if (!IS_ERR(sg_table) &amp;&amp; attach-&gt;dmabuf-&gt;ops-&gt;cache_sgt_mapping) {</span></a>
+<a name="973"><span class="lineNum">     973 </span><span class="lineNoCov">          0 :                 attach-&gt;sgt = sg_table;</span></a>
+<a name="974"><span class="lineNum">     974 </span><span class="lineNoCov">          0 :                 attach-&gt;dir = direction;</span></a>
+<a name="975"><span class="lineNum">     975 </span>            :         }</a>
+<a name="976"><span class="lineNum">     976 </span>            : </a>
+<a name="977"><span class="lineNum">     977 </span>            : #ifdef CONFIG_DMA_API_DEBUG</a>
+<a name="978"><span class="lineNum">     978 </span>            :         if (!IS_ERR(sg_table)) {</a>
+<a name="979"><span class="lineNum">     979 </span>            :                 struct scatterlist *sg;</a>
+<a name="980"><span class="lineNum">     980 </span>            :                 u64 addr;</a>
+<a name="981"><span class="lineNum">     981 </span>            :                 int len;</a>
+<a name="982"><span class="lineNum">     982 </span>            :                 int i;</a>
+<a name="983"><span class="lineNum">     983 </span>            : </a>
+<a name="984"><span class="lineNum">     984 </span>            :                 for_each_sgtable_dma_sg(sg_table, sg, i) {</a>
+<a name="985"><span class="lineNum">     985 </span>            :                         addr = sg_dma_address(sg);</a>
+<a name="986"><span class="lineNum">     986 </span>            :                         len = sg_dma_len(sg);</a>
+<a name="987"><span class="lineNum">     987 </span>            :                         if (!PAGE_ALIGNED(addr) || !PAGE_ALIGNED(len)) {</a>
+<a name="988"><span class="lineNum">     988 </span>            :                                 pr_debug(&quot;%s: addr %llx or len %x is not page aligned!\n&quot;,</a>
+<a name="989"><span class="lineNum">     989 </span>            :                                          __func__, addr, len);</a>
+<a name="990"><span class="lineNum">     990 </span>            :                         }</a>
+<a name="991"><span class="lineNum">     991 </span>            :                 }</a>
+<a name="992"><span class="lineNum">     992 </span>            :         }</a>
+<a name="993"><span class="lineNum">     993 </span>            : #endif /* CONFIG_DMA_API_DEBUG */</a>
+<a name="994"><span class="lineNum">     994 </span>            :         return sg_table;</a>
+<a name="995"><span class="lineNum">     995 </span>            : }</a>
+<a name="996"><span class="lineNum">     996 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_map_attachment, DMA_BUF);</a>
+<a name="997"><span class="lineNum">     997 </span>            : </a>
+<a name="998"><span class="lineNum">     998 </span>            : /**</a>
+<a name="999"><span class="lineNum">     999 </span>            :  * dma_buf_unmap_attachment - unmaps and decreases usecount of the buffer;might</a>
+<a name="1000"><span class="lineNum">    1000 </span>            :  * deallocate the scatterlist associated. Is a wrapper for unmap_dma_buf() of</a>
+<a name="1001"><span class="lineNum">    1001 </span>            :  * dma_buf_ops.</a>
+<a name="1002"><span class="lineNum">    1002 </span>            :  * @attach:     [in]    attachment to unmap buffer from</a>
+<a name="1003"><span class="lineNum">    1003 </span>            :  * @sg_table:   [in]    scatterlist info of the buffer to unmap</a>
+<a name="1004"><span class="lineNum">    1004 </span>            :  * @direction:  [in]    direction of DMA transfer</a>
+<a name="1005"><span class="lineNum">    1005 </span>            :  *</a>
+<a name="1006"><span class="lineNum">    1006 </span>            :  * This unmaps a DMA mapping for @attached obtained by dma_buf_map_attachment().</a>
+<a name="1007"><span class="lineNum">    1007 </span>            :  */</a>
+<a name="1008"><span class="lineNum">    1008 </span><span class="lineNoCov">          0 : void dma_buf_unmap_attachment(struct dma_buf_attachment *attach,</span></a>
+<a name="1009"><span class="lineNum">    1009 </span>            :                                 struct sg_table *sg_table,</a>
+<a name="1010"><span class="lineNum">    1010 </span>            :                                 enum dma_data_direction direction)</a>
+<a name="1011"><span class="lineNum">    1011 </span>            : {</a>
+<a name="1012"><span class="lineNum">    1012 </span>            :         might_sleep();</a>
+<a name="1013"><span class="lineNum">    1013 </span>            : </a>
+<a name="1014"><span class="lineNum">    1014 </span><span class="lineNoCov">          0 :         if (WARN_ON(!attach || !attach-&gt;dmabuf || !sg_table))</span></a>
+<a name="1015"><span class="lineNum">    1015 </span>            :                 return;</a>
+<a name="1016"><span class="lineNum">    1016 </span>            : </a>
+<a name="1017"><span class="lineNum">    1017 </span><span class="lineNoCov">          0 :         if (dma_buf_attachment_is_dynamic(attach))</span></a>
+<a name="1018"><span class="lineNum">    1018 </span>            :                 dma_resv_assert_held(attach-&gt;dmabuf-&gt;resv);</a>
+<a name="1019"><span class="lineNum">    1019 </span>            : </a>
+<a name="1020"><span class="lineNum">    1020 </span><span class="lineNoCov">          0 :         if (attach-&gt;sgt == sg_table)</span></a>
+<a name="1021"><span class="lineNum">    1021 </span>            :                 return;</a>
+<a name="1022"><span class="lineNum">    1022 </span>            : </a>
+<a name="1023"><span class="lineNum">    1023 </span><span class="lineNoCov">          0 :         if (dma_buf_is_dynamic(attach-&gt;dmabuf))</span></a>
+<a name="1024"><span class="lineNum">    1024 </span>            :                 dma_resv_assert_held(attach-&gt;dmabuf-&gt;resv);</a>
+<a name="1025"><span class="lineNum">    1025 </span>            : </a>
+<a name="1026"><span class="lineNum">    1026 </span><span class="lineNoCov">          0 :         __unmap_dma_buf(attach, sg_table, direction);</span></a>
+<a name="1027"><span class="lineNum">    1027 </span>            : </a>
+<a name="1028"><span class="lineNum">    1028 </span><span class="lineNoCov">          0 :         if (dma_buf_is_dynamic(attach-&gt;dmabuf) &amp;&amp;</span></a>
+<a name="1029"><span class="lineNum">    1029 </span>            :             !IS_ENABLED(CONFIG_DMABUF_MOVE_NOTIFY))</a>
+<a name="1030"><span class="lineNum">    1030 </span><span class="lineNoCov">          0 :                 dma_buf_unpin(attach);</span></a>
+<a name="1031"><span class="lineNum">    1031 </span>            : }</a>
+<a name="1032"><span class="lineNum">    1032 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_unmap_attachment, DMA_BUF);</a>
+<a name="1033"><span class="lineNum">    1033 </span>            : </a>
+<a name="1034"><span class="lineNum">    1034 </span>            : /**</a>
+<a name="1035"><span class="lineNum">    1035 </span>            :  * dma_buf_move_notify - notify attachments that DMA-buf is moving</a>
+<a name="1036"><span class="lineNum">    1036 </span>            :  *</a>
+<a name="1037"><span class="lineNum">    1037 </span>            :  * @dmabuf:     [in]    buffer which is moving</a>
+<a name="1038"><span class="lineNum">    1038 </span>            :  *</a>
+<a name="1039"><span class="lineNum">    1039 </span>            :  * Informs all attachmenst that they need to destroy and recreated all their</a>
+<a name="1040"><span class="lineNum">    1040 </span>            :  * mappings.</a>
+<a name="1041"><span class="lineNum">    1041 </span>            :  */</a>
+<a name="1042"><span class="lineNum">    1042 </span><span class="lineNoCov">          0 : void dma_buf_move_notify(struct dma_buf *dmabuf)</span></a>
+<a name="1043"><span class="lineNum">    1043 </span>            : {</a>
+<a name="1044"><span class="lineNum">    1044 </span>            :         struct dma_buf_attachment *attach;</a>
+<a name="1045"><span class="lineNum">    1045 </span>            : </a>
+<a name="1046"><span class="lineNum">    1046 </span>            :         dma_resv_assert_held(dmabuf-&gt;resv);</a>
+<a name="1047"><span class="lineNum">    1047 </span>            : </a>
+<a name="1048"><span class="lineNum">    1048 </span><span class="lineNoCov">          0 :         list_for_each_entry(attach, &amp;dmabuf-&gt;attachments, node)</span></a>
+<a name="1049"><span class="lineNum">    1049 </span><span class="lineNoCov">          0 :                 if (attach-&gt;importer_ops)</span></a>
+<a name="1050"><span class="lineNum">    1050 </span><span class="lineNoCov">          0 :                         attach-&gt;importer_ops-&gt;move_notify(attach);</span></a>
+<a name="1051"><span class="lineNum">    1051 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1052"><span class="lineNum">    1052 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_move_notify, DMA_BUF);</a>
+<a name="1053"><span class="lineNum">    1053 </span>            : </a>
+<a name="1054"><span class="lineNum">    1054 </span>            : /**</a>
+<a name="1055"><span class="lineNum">    1055 </span>            :  * DOC: cpu access</a>
+<a name="1056"><span class="lineNum">    1056 </span>            :  *</a>
+<a name="1057"><span class="lineNum">    1057 </span>            :  * There are mutliple reasons for supporting CPU access to a dma buffer object:</a>
+<a name="1058"><span class="lineNum">    1058 </span>            :  *</a>
+<a name="1059"><span class="lineNum">    1059 </span>            :  * - Fallback operations in the kernel, for example when a device is connected</a>
+<a name="1060"><span class="lineNum">    1060 </span>            :  *   over USB and the kernel needs to shuffle the data around first before</a>
+<a name="1061"><span class="lineNum">    1061 </span>            :  *   sending it away. Cache coherency is handled by braketing any transactions</a>
+<a name="1062"><span class="lineNum">    1062 </span>            :  *   with calls to dma_buf_begin_cpu_access() and dma_buf_end_cpu_access()</a>
+<a name="1063"><span class="lineNum">    1063 </span>            :  *   access.</a>
+<a name="1064"><span class="lineNum">    1064 </span>            :  *</a>
+<a name="1065"><span class="lineNum">    1065 </span>            :  *   Since for most kernel internal dma-buf accesses need the entire buffer, a</a>
+<a name="1066"><span class="lineNum">    1066 </span>            :  *   vmap interface is introduced. Note that on very old 32-bit architectures</a>
+<a name="1067"><span class="lineNum">    1067 </span>            :  *   vmalloc space might be limited and result in vmap calls failing.</a>
+<a name="1068"><span class="lineNum">    1068 </span>            :  *</a>
+<a name="1069"><span class="lineNum">    1069 </span>            :  *   Interfaces::</a>
+<a name="1070"><span class="lineNum">    1070 </span>            :  *</a>
+<a name="1071"><span class="lineNum">    1071 </span>            :  *      void \*dma_buf_vmap(struct dma_buf \*dmabuf, struct iosys_map \*map)</a>
+<a name="1072"><span class="lineNum">    1072 </span>            :  *      void dma_buf_vunmap(struct dma_buf \*dmabuf, struct iosys_map \*map)</a>
+<a name="1073"><span class="lineNum">    1073 </span>            :  *</a>
+<a name="1074"><span class="lineNum">    1074 </span>            :  *   The vmap call can fail if there is no vmap support in the exporter, or if</a>
+<a name="1075"><span class="lineNum">    1075 </span>            :  *   it runs out of vmalloc space. Note that the dma-buf layer keeps a reference</a>
+<a name="1076"><span class="lineNum">    1076 </span>            :  *   count for all vmap access and calls down into the exporter's vmap function</a>
+<a name="1077"><span class="lineNum">    1077 </span>            :  *   only when no vmapping exists, and only unmaps it once. Protection against</a>
+<a name="1078"><span class="lineNum">    1078 </span>            :  *   concurrent vmap/vunmap calls is provided by taking the &amp;dma_buf.lock mutex.</a>
+<a name="1079"><span class="lineNum">    1079 </span>            :  *</a>
+<a name="1080"><span class="lineNum">    1080 </span>            :  * - For full compatibility on the importer side with existing userspace</a>
+<a name="1081"><span class="lineNum">    1081 </span>            :  *   interfaces, which might already support mmap'ing buffers. This is needed in</a>
+<a name="1082"><span class="lineNum">    1082 </span>            :  *   many processing pipelines (e.g. feeding a software rendered image into a</a>
+<a name="1083"><span class="lineNum">    1083 </span>            :  *   hardware pipeline, thumbnail creation, snapshots, ...). Also, Android's ION</a>
+<a name="1084"><span class="lineNum">    1084 </span>            :  *   framework already supported this and for DMA buffer file descriptors to</a>
+<a name="1085"><span class="lineNum">    1085 </span>            :  *   replace ION buffers mmap support was needed.</a>
+<a name="1086"><span class="lineNum">    1086 </span>            :  *</a>
+<a name="1087"><span class="lineNum">    1087 </span>            :  *   There is no special interfaces, userspace simply calls mmap on the dma-buf</a>
+<a name="1088"><span class="lineNum">    1088 </span>            :  *   fd. But like for CPU access there's a need to braket the actual access,</a>
+<a name="1089"><span class="lineNum">    1089 </span>            :  *   which is handled by the ioctl (DMA_BUF_IOCTL_SYNC). Note that</a>
+<a name="1090"><span class="lineNum">    1090 </span>            :  *   DMA_BUF_IOCTL_SYNC can fail with -EAGAIN or -EINTR, in which case it must</a>
+<a name="1091"><span class="lineNum">    1091 </span>            :  *   be restarted.</a>
+<a name="1092"><span class="lineNum">    1092 </span>            :  *</a>
+<a name="1093"><span class="lineNum">    1093 </span>            :  *   Some systems might need some sort of cache coherency management e.g. when</a>
+<a name="1094"><span class="lineNum">    1094 </span>            :  *   CPU and GPU domains are being accessed through dma-buf at the same time.</a>
+<a name="1095"><span class="lineNum">    1095 </span>            :  *   To circumvent this problem there are begin/end coherency markers, that</a>
+<a name="1096"><span class="lineNum">    1096 </span>            :  *   forward directly to existing dma-buf device drivers vfunc hooks. Userspace</a>
+<a name="1097"><span class="lineNum">    1097 </span>            :  *   can make use of those markers through the DMA_BUF_IOCTL_SYNC ioctl. The</a>
+<a name="1098"><span class="lineNum">    1098 </span>            :  *   sequence would be used like following:</a>
+<a name="1099"><span class="lineNum">    1099 </span>            :  *</a>
+<a name="1100"><span class="lineNum">    1100 </span>            :  *     - mmap dma-buf fd</a>
+<a name="1101"><span class="lineNum">    1101 </span>            :  *     - for each drawing/upload cycle in CPU 1. SYNC_START ioctl, 2. read/write</a>
+<a name="1102"><span class="lineNum">    1102 </span>            :  *       to mmap area 3. SYNC_END ioctl. This can be repeated as often as you</a>
+<a name="1103"><span class="lineNum">    1103 </span>            :  *       want (with the new data being consumed by say the GPU or the scanout</a>
+<a name="1104"><span class="lineNum">    1104 </span>            :  *       device)</a>
+<a name="1105"><span class="lineNum">    1105 </span>            :  *     - munmap once you don't need the buffer any more</a>
+<a name="1106"><span class="lineNum">    1106 </span>            :  *</a>
+<a name="1107"><span class="lineNum">    1107 </span>            :  *    For correctness and optimal performance, it is always required to use</a>
+<a name="1108"><span class="lineNum">    1108 </span>            :  *    SYNC_START and SYNC_END before and after, respectively, when accessing the</a>
+<a name="1109"><span class="lineNum">    1109 </span>            :  *    mapped address. Userspace cannot rely on coherent access, even when there</a>
+<a name="1110"><span class="lineNum">    1110 </span>            :  *    are systems where it just works without calling these ioctls.</a>
+<a name="1111"><span class="lineNum">    1111 </span>            :  *</a>
+<a name="1112"><span class="lineNum">    1112 </span>            :  * - And as a CPU fallback in userspace processing pipelines.</a>
+<a name="1113"><span class="lineNum">    1113 </span>            :  *</a>
+<a name="1114"><span class="lineNum">    1114 </span>            :  *   Similar to the motivation for kernel cpu access it is again important that</a>
+<a name="1115"><span class="lineNum">    1115 </span>            :  *   the userspace code of a given importing subsystem can use the same</a>
+<a name="1116"><span class="lineNum">    1116 </span>            :  *   interfaces with a imported dma-buf buffer object as with a native buffer</a>
+<a name="1117"><span class="lineNum">    1117 </span>            :  *   object. This is especially important for drm where the userspace part of</a>
+<a name="1118"><span class="lineNum">    1118 </span>            :  *   contemporary OpenGL, X, and other drivers is huge, and reworking them to</a>
+<a name="1119"><span class="lineNum">    1119 </span>            :  *   use a different way to mmap a buffer rather invasive.</a>
+<a name="1120"><span class="lineNum">    1120 </span>            :  *</a>
+<a name="1121"><span class="lineNum">    1121 </span>            :  *   The assumption in the current dma-buf interfaces is that redirecting the</a>
+<a name="1122"><span class="lineNum">    1122 </span>            :  *   initial mmap is all that's needed. A survey of some of the existing</a>
+<a name="1123"><span class="lineNum">    1123 </span>            :  *   subsystems shows that no driver seems to do any nefarious thing like</a>
+<a name="1124"><span class="lineNum">    1124 </span>            :  *   syncing up with outstanding asynchronous processing on the device or</a>
+<a name="1125"><span class="lineNum">    1125 </span>            :  *   allocating special resources at fault time. So hopefully this is good</a>
+<a name="1126"><span class="lineNum">    1126 </span>            :  *   enough, since adding interfaces to intercept pagefaults and allow pte</a>
+<a name="1127"><span class="lineNum">    1127 </span>            :  *   shootdowns would increase the complexity quite a bit.</a>
+<a name="1128"><span class="lineNum">    1128 </span>            :  *</a>
+<a name="1129"><span class="lineNum">    1129 </span>            :  *   Interface::</a>
+<a name="1130"><span class="lineNum">    1130 </span>            :  *</a>
+<a name="1131"><span class="lineNum">    1131 </span>            :  *      int dma_buf_mmap(struct dma_buf \*, struct vm_area_struct \*,</a>
+<a name="1132"><span class="lineNum">    1132 </span>            :  *                     unsigned long);</a>
+<a name="1133"><span class="lineNum">    1133 </span>            :  *</a>
+<a name="1134"><span class="lineNum">    1134 </span>            :  *   If the importing subsystem simply provides a special-purpose mmap call to</a>
+<a name="1135"><span class="lineNum">    1135 </span>            :  *   set up a mapping in userspace, calling do_mmap with &amp;dma_buf.file will</a>
+<a name="1136"><span class="lineNum">    1136 </span>            :  *   equally achieve that for a dma-buf object.</a>
+<a name="1137"><span class="lineNum">    1137 </span>            :  */</a>
+<a name="1138"><span class="lineNum">    1138 </span>            : </a>
+<a name="1139"><span class="lineNum">    1139 </span>            : static int __dma_buf_begin_cpu_access(struct dma_buf *dmabuf,</a>
+<a name="1140"><span class="lineNum">    1140 </span>            :                                       enum dma_data_direction direction)</a>
+<a name="1141"><span class="lineNum">    1141 </span>            : {</a>
+<a name="1142"><span class="lineNum">    1142 </span><span class="lineNoCov">          0 :         bool write = (direction == DMA_BIDIRECTIONAL ||</span></a>
+<a name="1143"><span class="lineNum">    1143 </span>            :                       direction == DMA_TO_DEVICE);</a>
+<a name="1144"><span class="lineNum">    1144 </span><span class="lineNoCov">          0 :         struct dma_resv *resv = dmabuf-&gt;resv;</span></a>
+<a name="1145"><span class="lineNum">    1145 </span>            :         long ret;</a>
+<a name="1146"><span class="lineNum">    1146 </span>            : </a>
+<a name="1147"><span class="lineNum">    1147 </span>            :         /* Wait on any implicit rendering fences */</a>
+<a name="1148"><span class="lineNum">    1148 </span><span class="lineNoCov">          0 :         ret = dma_resv_wait_timeout(resv, dma_resv_usage_rw(write),</span></a>
+<a name="1149"><span class="lineNum">    1149 </span>            :                                     true, MAX_SCHEDULE_TIMEOUT);</a>
+<a name="1150"><span class="lineNum">    1150 </span><span class="lineNoCov">          0 :         if (ret &lt; 0)</span></a>
+<a name="1151"><span class="lineNum">    1151 </span><span class="lineNoCov">          0 :                 return ret;</span></a>
+<a name="1152"><span class="lineNum">    1152 </span>            : </a>
+<a name="1153"><span class="lineNum">    1153 </span>            :         return 0;</a>
+<a name="1154"><span class="lineNum">    1154 </span>            : }</a>
+<a name="1155"><span class="lineNum">    1155 </span>            : </a>
+<a name="1156"><span class="lineNum">    1156 </span>            : /**</a>
+<a name="1157"><span class="lineNum">    1157 </span>            :  * dma_buf_begin_cpu_access - Must be called before accessing a dma_buf from the</a>
+<a name="1158"><span class="lineNum">    1158 </span>            :  * cpu in the kernel context. Calls begin_cpu_access to allow exporter-specific</a>
+<a name="1159"><span class="lineNum">    1159 </span>            :  * preparations. Coherency is only guaranteed in the specified range for the</a>
+<a name="1160"><span class="lineNum">    1160 </span>            :  * specified access direction.</a>
+<a name="1161"><span class="lineNum">    1161 </span>            :  * @dmabuf:     [in]    buffer to prepare cpu access for.</a>
+<a name="1162"><span class="lineNum">    1162 </span>            :  * @direction:  [in]    length of range for cpu access.</a>
+<a name="1163"><span class="lineNum">    1163 </span>            :  *</a>
+<a name="1164"><span class="lineNum">    1164 </span>            :  * After the cpu access is complete the caller should call</a>
+<a name="1165"><span class="lineNum">    1165 </span>            :  * dma_buf_end_cpu_access(). Only when cpu access is braketed by both calls is</a>
+<a name="1166"><span class="lineNum">    1166 </span>            :  * it guaranteed to be coherent with other DMA access.</a>
+<a name="1167"><span class="lineNum">    1167 </span>            :  *</a>
+<a name="1168"><span class="lineNum">    1168 </span>            :  * This function will also wait for any DMA transactions tracked through</a>
+<a name="1169"><span class="lineNum">    1169 </span>            :  * implicit synchronization in &amp;dma_buf.resv. For DMA transactions with explicit</a>
+<a name="1170"><span class="lineNum">    1170 </span>            :  * synchronization this function will only ensure cache coherency, callers must</a>
+<a name="1171"><span class="lineNum">    1171 </span>            :  * ensure synchronization with such DMA transactions on their own.</a>
+<a name="1172"><span class="lineNum">    1172 </span>            :  *</a>
+<a name="1173"><span class="lineNum">    1173 </span>            :  * Can return negative error values, returns 0 on success.</a>
+<a name="1174"><span class="lineNum">    1174 </span>            :  */</a>
+<a name="1175"><span class="lineNum">    1175 </span><span class="lineNoCov">          0 : int dma_buf_begin_cpu_access(struct dma_buf *dmabuf,</span></a>
+<a name="1176"><span class="lineNum">    1176 </span>            :                              enum dma_data_direction direction)</a>
+<a name="1177"><span class="lineNum">    1177 </span>            : {</a>
+<a name="1178"><span class="lineNum">    1178 </span><span class="lineNoCov">          0 :         int ret = 0;</span></a>
+<a name="1179"><span class="lineNum">    1179 </span>            : </a>
+<a name="1180"><span class="lineNum">    1180 </span><span class="lineNoCov">          0 :         if (WARN_ON(!dmabuf))</span></a>
+<a name="1181"><span class="lineNum">    1181 </span>            :                 return -EINVAL;</a>
+<a name="1182"><span class="lineNum">    1182 </span>            : </a>
+<a name="1183"><span class="lineNum">    1183 </span>            :         might_lock(&amp;dmabuf-&gt;resv-&gt;lock.base);</a>
+<a name="1184"><span class="lineNum">    1184 </span>            : </a>
+<a name="1185"><span class="lineNum">    1185 </span><span class="lineNoCov">          0 :         if (dmabuf-&gt;ops-&gt;begin_cpu_access)</span></a>
+<a name="1186"><span class="lineNum">    1186 </span><span class="lineNoCov">          0 :                 ret = dmabuf-&gt;ops-&gt;begin_cpu_access(dmabuf, direction);</span></a>
+<a name="1187"><span class="lineNum">    1187 </span>            : </a>
+<a name="1188"><span class="lineNum">    1188 </span>            :         /* Ensure that all fences are waited upon - but we first allow</a>
+<a name="1189"><span class="lineNum">    1189 </span>            :          * the native handler the chance to do so more efficiently if it</a>
+<a name="1190"><span class="lineNum">    1190 </span>            :          * chooses. A double invocation here will be reasonably cheap no-op.</a>
+<a name="1191"><span class="lineNum">    1191 </span>            :          */</a>
+<a name="1192"><span class="lineNum">    1192 </span><span class="lineNoCov">          0 :         if (ret == 0)</span></a>
+<a name="1193"><span class="lineNum">    1193 </span><span class="lineNoCov">          0 :                 ret = __dma_buf_begin_cpu_access(dmabuf, direction);</span></a>
+<a name="1194"><span class="lineNum">    1194 </span>            : </a>
+<a name="1195"><span class="lineNum">    1195 </span>            :         return ret;</a>
+<a name="1196"><span class="lineNum">    1196 </span>            : }</a>
+<a name="1197"><span class="lineNum">    1197 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_begin_cpu_access, DMA_BUF);</a>
+<a name="1198"><span class="lineNum">    1198 </span>            : </a>
+<a name="1199"><span class="lineNum">    1199 </span>            : /**</a>
+<a name="1200"><span class="lineNum">    1200 </span>            :  * dma_buf_end_cpu_access - Must be called after accessing a dma_buf from the</a>
+<a name="1201"><span class="lineNum">    1201 </span>            :  * cpu in the kernel context. Calls end_cpu_access to allow exporter-specific</a>
+<a name="1202"><span class="lineNum">    1202 </span>            :  * actions. Coherency is only guaranteed in the specified range for the</a>
+<a name="1203"><span class="lineNum">    1203 </span>            :  * specified access direction.</a>
+<a name="1204"><span class="lineNum">    1204 </span>            :  * @dmabuf:     [in]    buffer to complete cpu access for.</a>
+<a name="1205"><span class="lineNum">    1205 </span>            :  * @direction:  [in]    length of range for cpu access.</a>
+<a name="1206"><span class="lineNum">    1206 </span>            :  *</a>
+<a name="1207"><span class="lineNum">    1207 </span>            :  * This terminates CPU access started with dma_buf_begin_cpu_access().</a>
+<a name="1208"><span class="lineNum">    1208 </span>            :  *</a>
+<a name="1209"><span class="lineNum">    1209 </span>            :  * Can return negative error values, returns 0 on success.</a>
+<a name="1210"><span class="lineNum">    1210 </span>            :  */</a>
+<a name="1211"><span class="lineNum">    1211 </span><span class="lineNoCov">          0 : int dma_buf_end_cpu_access(struct dma_buf *dmabuf,</span></a>
+<a name="1212"><span class="lineNum">    1212 </span>            :                            enum dma_data_direction direction)</a>
+<a name="1213"><span class="lineNum">    1213 </span>            : {</a>
+<a name="1214"><span class="lineNum">    1214 </span><span class="lineNoCov">          0 :         int ret = 0;</span></a>
+<a name="1215"><span class="lineNum">    1215 </span>            : </a>
+<a name="1216"><span class="lineNum">    1216 </span><span class="lineNoCov">          0 :         WARN_ON(!dmabuf);</span></a>
+<a name="1217"><span class="lineNum">    1217 </span>            : </a>
+<a name="1218"><span class="lineNum">    1218 </span>            :         might_lock(&amp;dmabuf-&gt;resv-&gt;lock.base);</a>
+<a name="1219"><span class="lineNum">    1219 </span>            : </a>
+<a name="1220"><span class="lineNum">    1220 </span><span class="lineNoCov">          0 :         if (dmabuf-&gt;ops-&gt;end_cpu_access)</span></a>
+<a name="1221"><span class="lineNum">    1221 </span><span class="lineNoCov">          0 :                 ret = dmabuf-&gt;ops-&gt;end_cpu_access(dmabuf, direction);</span></a>
+<a name="1222"><span class="lineNum">    1222 </span>            : </a>
+<a name="1223"><span class="lineNum">    1223 </span><span class="lineNoCov">          0 :         return ret;</span></a>
+<a name="1224"><span class="lineNum">    1224 </span>            : }</a>
+<a name="1225"><span class="lineNum">    1225 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_end_cpu_access, DMA_BUF);</a>
+<a name="1226"><span class="lineNum">    1226 </span>            : </a>
+<a name="1227"><span class="lineNum">    1227 </span>            : </a>
+<a name="1228"><span class="lineNum">    1228 </span>            : /**</a>
+<a name="1229"><span class="lineNum">    1229 </span>            :  * dma_buf_mmap - Setup up a userspace mmap with the given vma</a>
+<a name="1230"><span class="lineNum">    1230 </span>            :  * @dmabuf:     [in]    buffer that should back the vma</a>
+<a name="1231"><span class="lineNum">    1231 </span>            :  * @vma:        [in]    vma for the mmap</a>
+<a name="1232"><span class="lineNum">    1232 </span>            :  * @pgoff:      [in]    offset in pages where this mmap should start within the</a>
+<a name="1233"><span class="lineNum">    1233 </span>            :  *                      dma-buf buffer.</a>
+<a name="1234"><span class="lineNum">    1234 </span>            :  *</a>
+<a name="1235"><span class="lineNum">    1235 </span>            :  * This function adjusts the passed in vma so that it points at the file of the</a>
+<a name="1236"><span class="lineNum">    1236 </span>            :  * dma_buf operation. It also adjusts the starting pgoff and does bounds</a>
+<a name="1237"><span class="lineNum">    1237 </span>            :  * checking on the size of the vma. Then it calls the exporters mmap function to</a>
+<a name="1238"><span class="lineNum">    1238 </span>            :  * set up the mapping.</a>
+<a name="1239"><span class="lineNum">    1239 </span>            :  *</a>
+<a name="1240"><span class="lineNum">    1240 </span>            :  * Can return negative error values, returns 0 on success.</a>
+<a name="1241"><span class="lineNum">    1241 </span>            :  */</a>
+<a name="1242"><span class="lineNum">    1242 </span><span class="lineNoCov">          0 : int dma_buf_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma,</span></a>
+<a name="1243"><span class="lineNum">    1243 </span>            :                  unsigned long pgoff)</a>
+<a name="1244"><span class="lineNum">    1244 </span>            : {</a>
+<a name="1245"><span class="lineNum">    1245 </span><span class="lineNoCov">          0 :         if (WARN_ON(!dmabuf || !vma))</span></a>
+<a name="1246"><span class="lineNum">    1246 </span>            :                 return -EINVAL;</a>
+<a name="1247"><span class="lineNum">    1247 </span>            : </a>
+<a name="1248"><span class="lineNum">    1248 </span>            :         /* check if buffer supports mmap */</a>
+<a name="1249"><span class="lineNum">    1249 </span><span class="lineNoCov">          0 :         if (!dmabuf-&gt;ops-&gt;mmap)</span></a>
+<a name="1250"><span class="lineNum">    1250 </span>            :                 return -EINVAL;</a>
+<a name="1251"><span class="lineNum">    1251 </span>            : </a>
+<a name="1252"><span class="lineNum">    1252 </span>            :         /* check for offset overflow */</a>
+<a name="1253"><span class="lineNum">    1253 </span><span class="lineNoCov">          0 :         if (pgoff + vma_pages(vma) &lt; pgoff)</span></a>
+<a name="1254"><span class="lineNum">    1254 </span>            :                 return -EOVERFLOW;</a>
+<a name="1255"><span class="lineNum">    1255 </span>            : </a>
+<a name="1256"><span class="lineNum">    1256 </span>            :         /* check for overflowing the buffer's size */</a>
+<a name="1257"><span class="lineNum">    1257 </span><span class="lineNoCov">          0 :         if (pgoff + vma_pages(vma) &gt;</span></a>
+<a name="1258"><span class="lineNum">    1258 </span><span class="lineNoCov">          0 :             dmabuf-&gt;size &gt;&gt; PAGE_SHIFT)</span></a>
+<a name="1259"><span class="lineNum">    1259 </span>            :                 return -EINVAL;</a>
+<a name="1260"><span class="lineNum">    1260 </span>            : </a>
+<a name="1261"><span class="lineNum">    1261 </span>            :         /* readjust the vma */</a>
+<a name="1262"><span class="lineNum">    1262 </span><span class="lineNoCov">          0 :         vma_set_file(vma, dmabuf-&gt;file);</span></a>
+<a name="1263"><span class="lineNum">    1263 </span><span class="lineNoCov">          0 :         vma-&gt;vm_pgoff = pgoff;</span></a>
+<a name="1264"><span class="lineNum">    1264 </span>            : </a>
+<a name="1265"><span class="lineNum">    1265 </span><span class="lineNoCov">          0 :         return dmabuf-&gt;ops-&gt;mmap(dmabuf, vma);</span></a>
+<a name="1266"><span class="lineNum">    1266 </span>            : }</a>
+<a name="1267"><span class="lineNum">    1267 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_mmap, DMA_BUF);</a>
+<a name="1268"><span class="lineNum">    1268 </span>            : </a>
+<a name="1269"><span class="lineNum">    1269 </span>            : /**</a>
+<a name="1270"><span class="lineNum">    1270 </span>            :  * dma_buf_vmap - Create virtual mapping for the buffer object into kernel</a>
+<a name="1271"><span class="lineNum">    1271 </span>            :  * address space. Same restrictions as for vmap and friends apply.</a>
+<a name="1272"><span class="lineNum">    1272 </span>            :  * @dmabuf:     [in]    buffer to vmap</a>
+<a name="1273"><span class="lineNum">    1273 </span>            :  * @map:        [out]   returns the vmap pointer</a>
+<a name="1274"><span class="lineNum">    1274 </span>            :  *</a>
+<a name="1275"><span class="lineNum">    1275 </span>            :  * This call may fail due to lack of virtual mapping address space.</a>
+<a name="1276"><span class="lineNum">    1276 </span>            :  * These calls are optional in drivers. The intended use for them</a>
+<a name="1277"><span class="lineNum">    1277 </span>            :  * is for mapping objects linear in kernel space for high use objects.</a>
+<a name="1278"><span class="lineNum">    1278 </span>            :  *</a>
+<a name="1279"><span class="lineNum">    1279 </span>            :  * To ensure coherency users must call dma_buf_begin_cpu_access() and</a>
+<a name="1280"><span class="lineNum">    1280 </span>            :  * dma_buf_end_cpu_access() around any cpu access performed through this</a>
+<a name="1281"><span class="lineNum">    1281 </span>            :  * mapping.</a>
+<a name="1282"><span class="lineNum">    1282 </span>            :  *</a>
+<a name="1283"><span class="lineNum">    1283 </span>            :  * Returns 0 on success, or a negative errno code otherwise.</a>
+<a name="1284"><span class="lineNum">    1284 </span>            :  */</a>
+<a name="1285"><span class="lineNum">    1285 </span><span class="lineNoCov">          0 : int dma_buf_vmap(struct dma_buf *dmabuf, struct iosys_map *map)</span></a>
+<a name="1286"><span class="lineNum">    1286 </span>            : {</a>
+<a name="1287"><span class="lineNum">    1287 </span>            :         struct iosys_map ptr;</a>
+<a name="1288"><span class="lineNum">    1288 </span><span class="lineNoCov">          0 :         int ret = 0;</span></a>
+<a name="1289"><span class="lineNum">    1289 </span>            : </a>
+<a name="1290"><span class="lineNum">    1290 </span><span class="lineNoCov">          0 :         iosys_map_clear(map);</span></a>
+<a name="1291"><span class="lineNum">    1291 </span>            : </a>
+<a name="1292"><span class="lineNum">    1292 </span><span class="lineNoCov">          0 :         if (WARN_ON(!dmabuf))</span></a>
+<a name="1293"><span class="lineNum">    1293 </span>            :                 return -EINVAL;</a>
+<a name="1294"><span class="lineNum">    1294 </span>            : </a>
+<a name="1295"><span class="lineNum">    1295 </span><span class="lineNoCov">          0 :         if (!dmabuf-&gt;ops-&gt;vmap)</span></a>
+<a name="1296"><span class="lineNum">    1296 </span>            :                 return -EINVAL;</a>
+<a name="1297"><span class="lineNum">    1297 </span>            : </a>
+<a name="1298"><span class="lineNum">    1298 </span><span class="lineNoCov">          0 :         mutex_lock(&amp;dmabuf-&gt;lock);</span></a>
+<a name="1299"><span class="lineNum">    1299 </span><span class="lineNoCov">          0 :         if (dmabuf-&gt;vmapping_counter) {</span></a>
+<a name="1300"><span class="lineNum">    1300 </span><span class="lineNoCov">          0 :                 dmabuf-&gt;vmapping_counter++;</span></a>
+<a name="1301"><span class="lineNum">    1301 </span><span class="lineNoCov">          0 :                 BUG_ON(iosys_map_is_null(&amp;dmabuf-&gt;vmap_ptr));</span></a>
+<a name="1302"><span class="lineNum">    1302 </span><span class="lineNoCov">          0 :                 *map = dmabuf-&gt;vmap_ptr;</span></a>
+<a name="1303"><span class="lineNum">    1303 </span><span class="lineNoCov">          0 :                 goto out_unlock;</span></a>
+<a name="1304"><span class="lineNum">    1304 </span>            :         }</a>
+<a name="1305"><span class="lineNum">    1305 </span>            : </a>
+<a name="1306"><span class="lineNum">    1306 </span><span class="lineNoCov">          0 :         BUG_ON(iosys_map_is_set(&amp;dmabuf-&gt;vmap_ptr));</span></a>
+<a name="1307"><span class="lineNum">    1307 </span>            : </a>
+<a name="1308"><span class="lineNum">    1308 </span><span class="lineNoCov">          0 :         ret = dmabuf-&gt;ops-&gt;vmap(dmabuf, &amp;ptr);</span></a>
+<a name="1309"><span class="lineNum">    1309 </span><span class="lineNoCov">          0 :         if (WARN_ON_ONCE(ret))</span></a>
+<a name="1310"><span class="lineNum">    1310 </span>            :                 goto out_unlock;</a>
+<a name="1311"><span class="lineNum">    1311 </span>            : </a>
+<a name="1312"><span class="lineNum">    1312 </span><span class="lineNoCov">          0 :         dmabuf-&gt;vmap_ptr = ptr;</span></a>
+<a name="1313"><span class="lineNum">    1313 </span><span class="lineNoCov">          0 :         dmabuf-&gt;vmapping_counter = 1;</span></a>
+<a name="1314"><span class="lineNum">    1314 </span>            : </a>
+<a name="1315"><span class="lineNum">    1315 </span><span class="lineNoCov">          0 :         *map = dmabuf-&gt;vmap_ptr;</span></a>
+<a name="1316"><span class="lineNum">    1316 </span>            : </a>
+<a name="1317"><span class="lineNum">    1317 </span>            : out_unlock:</a>
+<a name="1318"><span class="lineNum">    1318 </span><span class="lineNoCov">          0 :         mutex_unlock(&amp;dmabuf-&gt;lock);</span></a>
+<a name="1319"><span class="lineNum">    1319 </span><span class="lineNoCov">          0 :         return ret;</span></a>
+<a name="1320"><span class="lineNum">    1320 </span>            : }</a>
+<a name="1321"><span class="lineNum">    1321 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_vmap, DMA_BUF);</a>
+<a name="1322"><span class="lineNum">    1322 </span>            : </a>
+<a name="1323"><span class="lineNum">    1323 </span>            : /**</a>
+<a name="1324"><span class="lineNum">    1324 </span>            :  * dma_buf_vunmap - Unmap a vmap obtained by dma_buf_vmap.</a>
+<a name="1325"><span class="lineNum">    1325 </span>            :  * @dmabuf:     [in]    buffer to vunmap</a>
+<a name="1326"><span class="lineNum">    1326 </span>            :  * @map:        [in]    vmap pointer to vunmap</a>
+<a name="1327"><span class="lineNum">    1327 </span>            :  */</a>
+<a name="1328"><span class="lineNum">    1328 </span><span class="lineNoCov">          0 : void dma_buf_vunmap(struct dma_buf *dmabuf, struct iosys_map *map)</span></a>
+<a name="1329"><span class="lineNum">    1329 </span>            : {</a>
+<a name="1330"><span class="lineNum">    1330 </span><span class="lineNoCov">          0 :         if (WARN_ON(!dmabuf))</span></a>
+<a name="1331"><span class="lineNum">    1331 </span>            :                 return;</a>
+<a name="1332"><span class="lineNum">    1332 </span>            : </a>
+<a name="1333"><span class="lineNum">    1333 </span><span class="lineNoCov">          0 :         BUG_ON(iosys_map_is_null(&amp;dmabuf-&gt;vmap_ptr));</span></a>
+<a name="1334"><span class="lineNum">    1334 </span><span class="lineNoCov">          0 :         BUG_ON(dmabuf-&gt;vmapping_counter == 0);</span></a>
+<a name="1335"><span class="lineNum">    1335 </span><span class="lineNoCov">          0 :         BUG_ON(!iosys_map_is_equal(&amp;dmabuf-&gt;vmap_ptr, map));</span></a>
+<a name="1336"><span class="lineNum">    1336 </span>            : </a>
+<a name="1337"><span class="lineNum">    1337 </span><span class="lineNoCov">          0 :         mutex_lock(&amp;dmabuf-&gt;lock);</span></a>
+<a name="1338"><span class="lineNum">    1338 </span><span class="lineNoCov">          0 :         if (--dmabuf-&gt;vmapping_counter == 0) {</span></a>
+<a name="1339"><span class="lineNum">    1339 </span><span class="lineNoCov">          0 :                 if (dmabuf-&gt;ops-&gt;vunmap)</span></a>
+<a name="1340"><span class="lineNum">    1340 </span><span class="lineNoCov">          0 :                         dmabuf-&gt;ops-&gt;vunmap(dmabuf, map);</span></a>
+<a name="1341"><span class="lineNum">    1341 </span><span class="lineNoCov">          0 :                 iosys_map_clear(&amp;dmabuf-&gt;vmap_ptr);</span></a>
+<a name="1342"><span class="lineNum">    1342 </span>            :         }</a>
+<a name="1343"><span class="lineNum">    1343 </span><span class="lineNoCov">          0 :         mutex_unlock(&amp;dmabuf-&gt;lock);</span></a>
+<a name="1344"><span class="lineNum">    1344 </span>            : }</a>
+<a name="1345"><span class="lineNum">    1345 </span>            : EXPORT_SYMBOL_NS_GPL(dma_buf_vunmap, DMA_BUF);</a>
+<a name="1346"><span class="lineNum">    1346 </span>            : </a>
+<a name="1347"><span class="lineNum">    1347 </span>            : #ifdef CONFIG_DEBUG_FS</a>
+<a name="1348"><span class="lineNum">    1348 </span>            : static int dma_buf_debug_show(struct seq_file *s, void *unused)</a>
+<a name="1349"><span class="lineNum">    1349 </span>            : {</a>
+<a name="1350"><span class="lineNum">    1350 </span>            :         struct dma_buf *buf_obj;</a>
+<a name="1351"><span class="lineNum">    1351 </span>            :         struct dma_buf_attachment *attach_obj;</a>
+<a name="1352"><span class="lineNum">    1352 </span>            :         int count = 0, attach_count;</a>
+<a name="1353"><span class="lineNum">    1353 </span>            :         size_t size = 0;</a>
+<a name="1354"><span class="lineNum">    1354 </span>            :         int ret;</a>
+<a name="1355"><span class="lineNum">    1355 </span>            : </a>
+<a name="1356"><span class="lineNum">    1356 </span>            :         ret = mutex_lock_interruptible(&amp;db_list.lock);</a>
+<a name="1357"><span class="lineNum">    1357 </span>            : </a>
+<a name="1358"><span class="lineNum">    1358 </span>            :         if (ret)</a>
+<a name="1359"><span class="lineNum">    1359 </span>            :                 return ret;</a>
+<a name="1360"><span class="lineNum">    1360 </span>            : </a>
+<a name="1361"><span class="lineNum">    1361 </span>            :         seq_puts(s, &quot;\nDma-buf Objects:\n&quot;);</a>
+<a name="1362"><span class="lineNum">    1362 </span>            :         seq_printf(s, &quot;%-8s\t%-8s\t%-8s\t%-8s\texp_name\t%-8s\n&quot;,</a>
+<a name="1363"><span class="lineNum">    1363 </span>            :                    &quot;size&quot;, &quot;flags&quot;, &quot;mode&quot;, &quot;count&quot;, &quot;ino&quot;);</a>
+<a name="1364"><span class="lineNum">    1364 </span>            : </a>
+<a name="1365"><span class="lineNum">    1365 </span>            :         list_for_each_entry(buf_obj, &amp;db_list.head, list_node) {</a>
+<a name="1366"><span class="lineNum">    1366 </span>            : </a>
+<a name="1367"><span class="lineNum">    1367 </span>            :                 ret = dma_resv_lock_interruptible(buf_obj-&gt;resv, NULL);</a>
+<a name="1368"><span class="lineNum">    1368 </span>            :                 if (ret)</a>
+<a name="1369"><span class="lineNum">    1369 </span>            :                         goto error_unlock;</a>
+<a name="1370"><span class="lineNum">    1370 </span>            : </a>
+<a name="1371"><span class="lineNum">    1371 </span>            : </a>
+<a name="1372"><span class="lineNum">    1372 </span>            :                 spin_lock(&amp;buf_obj-&gt;name_lock);</a>
+<a name="1373"><span class="lineNum">    1373 </span>            :                 seq_printf(s, &quot;%08zu\t%08x\t%08x\t%08ld\t%s\t%08lu\t%s\n&quot;,</a>
+<a name="1374"><span class="lineNum">    1374 </span>            :                                 buf_obj-&gt;size,</a>
+<a name="1375"><span class="lineNum">    1375 </span>            :                                 buf_obj-&gt;file-&gt;f_flags, buf_obj-&gt;file-&gt;f_mode,</a>
+<a name="1376"><span class="lineNum">    1376 </span>            :                                 file_count(buf_obj-&gt;file),</a>
+<a name="1377"><span class="lineNum">    1377 </span>            :                                 buf_obj-&gt;exp_name,</a>
+<a name="1378"><span class="lineNum">    1378 </span>            :                                 file_inode(buf_obj-&gt;file)-&gt;i_ino,</a>
+<a name="1379"><span class="lineNum">    1379 </span>            :                                 buf_obj-&gt;name ?: &quot;&quot;);</a>
+<a name="1380"><span class="lineNum">    1380 </span>            :                 spin_unlock(&amp;buf_obj-&gt;name_lock);</a>
+<a name="1381"><span class="lineNum">    1381 </span>            : </a>
+<a name="1382"><span class="lineNum">    1382 </span>            :                 dma_resv_describe(buf_obj-&gt;resv, s);</a>
+<a name="1383"><span class="lineNum">    1383 </span>            : </a>
+<a name="1384"><span class="lineNum">    1384 </span>            :                 seq_puts(s, &quot;\tAttached Devices:\n&quot;);</a>
+<a name="1385"><span class="lineNum">    1385 </span>            :                 attach_count = 0;</a>
+<a name="1386"><span class="lineNum">    1386 </span>            : </a>
+<a name="1387"><span class="lineNum">    1387 </span>            :                 list_for_each_entry(attach_obj, &amp;buf_obj-&gt;attachments, node) {</a>
+<a name="1388"><span class="lineNum">    1388 </span>            :                         seq_printf(s, &quot;\t%s\n&quot;, dev_name(attach_obj-&gt;dev));</a>
+<a name="1389"><span class="lineNum">    1389 </span>            :                         attach_count++;</a>
+<a name="1390"><span class="lineNum">    1390 </span>            :                 }</a>
+<a name="1391"><span class="lineNum">    1391 </span>            :                 dma_resv_unlock(buf_obj-&gt;resv);</a>
+<a name="1392"><span class="lineNum">    1392 </span>            : </a>
+<a name="1393"><span class="lineNum">    1393 </span>            :                 seq_printf(s, &quot;Total %d devices attached\n\n&quot;,</a>
+<a name="1394"><span class="lineNum">    1394 </span>            :                                 attach_count);</a>
+<a name="1395"><span class="lineNum">    1395 </span>            : </a>
+<a name="1396"><span class="lineNum">    1396 </span>            :                 count++;</a>
+<a name="1397"><span class="lineNum">    1397 </span>            :                 size += buf_obj-&gt;size;</a>
+<a name="1398"><span class="lineNum">    1398 </span>            :         }</a>
+<a name="1399"><span class="lineNum">    1399 </span>            : </a>
+<a name="1400"><span class="lineNum">    1400 </span>            :         seq_printf(s, &quot;\nTotal %d objects, %zu bytes\n&quot;, count, size);</a>
+<a name="1401"><span class="lineNum">    1401 </span>            : </a>
+<a name="1402"><span class="lineNum">    1402 </span>            :         mutex_unlock(&amp;db_list.lock);</a>
+<a name="1403"><span class="lineNum">    1403 </span>            :         return 0;</a>
+<a name="1404"><span class="lineNum">    1404 </span>            : </a>
+<a name="1405"><span class="lineNum">    1405 </span>            : error_unlock:</a>
+<a name="1406"><span class="lineNum">    1406 </span>            :         mutex_unlock(&amp;db_list.lock);</a>
+<a name="1407"><span class="lineNum">    1407 </span>            :         return ret;</a>
+<a name="1408"><span class="lineNum">    1408 </span>            : }</a>
+<a name="1409"><span class="lineNum">    1409 </span>            : </a>
+<a name="1410"><span class="lineNum">    1410 </span>            : DEFINE_SHOW_ATTRIBUTE(dma_buf_debug);</a>
+<a name="1411"><span class="lineNum">    1411 </span>            : </a>
+<a name="1412"><span class="lineNum">    1412 </span>            : static struct dentry *dma_buf_debugfs_dir;</a>
+<a name="1413"><span class="lineNum">    1413 </span>            : </a>
+<a name="1414"><span class="lineNum">    1414 </span>            : static int dma_buf_init_debugfs(void)</a>
+<a name="1415"><span class="lineNum">    1415 </span>            : {</a>
+<a name="1416"><span class="lineNum">    1416 </span>            :         struct dentry *d;</a>
+<a name="1417"><span class="lineNum">    1417 </span>            :         int err = 0;</a>
+<a name="1418"><span class="lineNum">    1418 </span>            : </a>
+<a name="1419"><span class="lineNum">    1419 </span>            :         d = debugfs_create_dir(&quot;dma_buf&quot;, NULL);</a>
+<a name="1420"><span class="lineNum">    1420 </span>            :         if (IS_ERR(d))</a>
+<a name="1421"><span class="lineNum">    1421 </span>            :                 return PTR_ERR(d);</a>
+<a name="1422"><span class="lineNum">    1422 </span>            : </a>
+<a name="1423"><span class="lineNum">    1423 </span>            :         dma_buf_debugfs_dir = d;</a>
+<a name="1424"><span class="lineNum">    1424 </span>            : </a>
+<a name="1425"><span class="lineNum">    1425 </span>            :         d = debugfs_create_file(&quot;bufinfo&quot;, S_IRUGO, dma_buf_debugfs_dir,</a>
+<a name="1426"><span class="lineNum">    1426 </span>            :                                 NULL, &amp;dma_buf_debug_fops);</a>
+<a name="1427"><span class="lineNum">    1427 </span>            :         if (IS_ERR(d)) {</a>
+<a name="1428"><span class="lineNum">    1428 </span>            :                 pr_debug(&quot;dma_buf: debugfs: failed to create node bufinfo\n&quot;);</a>
+<a name="1429"><span class="lineNum">    1429 </span>            :                 debugfs_remove_recursive(dma_buf_debugfs_dir);</a>
+<a name="1430"><span class="lineNum">    1430 </span>            :                 dma_buf_debugfs_dir = NULL;</a>
+<a name="1431"><span class="lineNum">    1431 </span>            :                 err = PTR_ERR(d);</a>
+<a name="1432"><span class="lineNum">    1432 </span>            :         }</a>
+<a name="1433"><span class="lineNum">    1433 </span>            : </a>
+<a name="1434"><span class="lineNum">    1434 </span>            :         return err;</a>
+<a name="1435"><span class="lineNum">    1435 </span>            : }</a>
+<a name="1436"><span class="lineNum">    1436 </span>            : </a>
+<a name="1437"><span class="lineNum">    1437 </span>            : static void dma_buf_uninit_debugfs(void)</a>
+<a name="1438"><span class="lineNum">    1438 </span>            : {</a>
+<a name="1439"><span class="lineNum">    1439 </span>            :         debugfs_remove_recursive(dma_buf_debugfs_dir);</a>
+<a name="1440"><span class="lineNum">    1440 </span>            : }</a>
+<a name="1441"><span class="lineNum">    1441 </span>            : #else</a>
+<a name="1442"><span class="lineNum">    1442 </span>            : static inline int dma_buf_init_debugfs(void)</a>
+<a name="1443"><span class="lineNum">    1443 </span>            : {</a>
+<a name="1444"><span class="lineNum">    1444 </span>            :         return 0;</a>
+<a name="1445"><span class="lineNum">    1445 </span>            : }</a>
+<a name="1446"><span class="lineNum">    1446 </span>            : static inline void dma_buf_uninit_debugfs(void)</a>
+<a name="1447"><span class="lineNum">    1447 </span>            : {</a>
+<a name="1448"><span class="lineNum">    1448 </span>            : }</a>
+<a name="1449"><span class="lineNum">    1449 </span>            : #endif</a>
+<a name="1450"><span class="lineNum">    1450 </span>            : </a>
+<a name="1451"><span class="lineNum">    1451 </span><span class="lineCov">          2 : static int __init dma_buf_init(void)</span></a>
+<a name="1452"><span class="lineNum">    1452 </span>            : {</a>
+<a name="1453"><span class="lineNum">    1453 </span>            :         int ret;</a>
+<a name="1454"><span class="lineNum">    1454 </span>            : </a>
+<a name="1455"><span class="lineNum">    1455 </span><span class="lineCov">          2 :         ret = dma_buf_init_sysfs_statistics();</span></a>
+<a name="1456"><span class="lineNum">    1456 </span>            :         if (ret)</a>
+<a name="1457"><span class="lineNum">    1457 </span>            :                 return ret;</a>
+<a name="1458"><span class="lineNum">    1458 </span>            : </a>
+<a name="1459"><span class="lineNum">    1459 </span><span class="lineCov">          2 :         dma_buf_mnt = kern_mount(&amp;dma_buf_fs_type);</span></a>
+<a name="1460"><span class="lineNum">    1460 </span><span class="lineCov">          4 :         if (IS_ERR(dma_buf_mnt))</span></a>
+<a name="1461"><span class="lineNum">    1461 </span><span class="lineNoCov">          0 :                 return PTR_ERR(dma_buf_mnt);</span></a>
+<a name="1462"><span class="lineNum">    1462 </span>            : </a>
+<a name="1463"><span class="lineNum">    1463 </span><span class="lineCov">          2 :         mutex_init(&amp;db_list.lock);</span></a>
+<a name="1464"><span class="lineNum">    1464 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;db_list.head);</span></a>
+<a name="1465"><span class="lineNum">    1465 </span>            :         dma_buf_init_debugfs();</a>
+<a name="1466"><span class="lineNum">    1466 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="1467"><span class="lineNum">    1467 </span>            : }</a>
+<a name="1468"><span class="lineNum">    1468 </span>            : subsys_initcall(dma_buf_init);</a>
+<a name="1469"><span class="lineNum">    1469 </span>            : </a>
+<a name="1470"><span class="lineNum">    1470 </span><span class="lineNoCov">          0 : static void __exit dma_buf_deinit(void)</span></a>
+<a name="1471"><span class="lineNum">    1471 </span>            : {</a>
+<a name="1472"><span class="lineNum">    1472 </span>            :         dma_buf_uninit_debugfs();</a>
+<a name="1473"><span class="lineNum">    1473 </span><span class="lineNoCov">          0 :         kern_unmount(dma_buf_mnt);</span></a>
+<a name="1474"><span class="lineNum">    1474 </span>            :         dma_buf_uninit_sysfs_statistics();</a>
+<a name="1475"><span class="lineNum">    1475 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1476"><span class="lineNum">    1476 </span>            : __exitcall(dma_buf_deinit);</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

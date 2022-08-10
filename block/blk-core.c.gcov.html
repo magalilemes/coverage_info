@@ -1,0 +1,1385 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - block/blk-core.c</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">block</a> - blk-core.c<span style="font-size: 80%;"> (source / <a href="blk-core.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">374</td>
+            <td class="headerCovTableEntryLo">1.9 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">51</td>
+            <td class="headerCovTableEntryLo">2.0 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // SPDX-License-Identifier: GPL-2.0</a>
+<a name="2"><span class="lineNum">       2 </span>            : /*</a>
+<a name="3"><span class="lineNum">       3 </span>            :  * Copyright (C) 1991, 1992 Linus Torvalds</a>
+<a name="4"><span class="lineNum">       4 </span>            :  * Copyright (C) 1994,      Karl Keyte: Added support for disk statistics</a>
+<a name="5"><span class="lineNum">       5 </span>            :  * Elevator latency, (C) 2000  Andrea Arcangeli &lt;andrea@suse.de&gt; SuSE</a>
+<a name="6"><span class="lineNum">       6 </span>            :  * Queue request tables / lock, selectable elevator, Jens Axboe &lt;axboe@suse.de&gt;</a>
+<a name="7"><span class="lineNum">       7 </span>            :  * kernel-doc documentation started by NeilBrown &lt;neilb@cse.unsw.edu.au&gt;</a>
+<a name="8"><span class="lineNum">       8 </span>            :  *      -  July2000</a>
+<a name="9"><span class="lineNum">       9 </span>            :  * bio rewrite, highmem i/o, etc, Jens Axboe &lt;axboe@suse.de&gt; - may 2001</a>
+<a name="10"><span class="lineNum">      10 </span>            :  */</a>
+<a name="11"><span class="lineNum">      11 </span>            : </a>
+<a name="12"><span class="lineNum">      12 </span>            : /*</a>
+<a name="13"><span class="lineNum">      13 </span>            :  * This handles all read/write requests to block devices</a>
+<a name="14"><span class="lineNum">      14 </span>            :  */</a>
+<a name="15"><span class="lineNum">      15 </span>            : #include &lt;linux/kernel.h&gt;</a>
+<a name="16"><span class="lineNum">      16 </span>            : #include &lt;linux/module.h&gt;</a>
+<a name="17"><span class="lineNum">      17 </span>            : #include &lt;linux/bio.h&gt;</a>
+<a name="18"><span class="lineNum">      18 </span>            : #include &lt;linux/blkdev.h&gt;</a>
+<a name="19"><span class="lineNum">      19 </span>            : #include &lt;linux/blk-pm.h&gt;</a>
+<a name="20"><span class="lineNum">      20 </span>            : #include &lt;linux/blk-integrity.h&gt;</a>
+<a name="21"><span class="lineNum">      21 </span>            : #include &lt;linux/highmem.h&gt;</a>
+<a name="22"><span class="lineNum">      22 </span>            : #include &lt;linux/mm.h&gt;</a>
+<a name="23"><span class="lineNum">      23 </span>            : #include &lt;linux/pagemap.h&gt;</a>
+<a name="24"><span class="lineNum">      24 </span>            : #include &lt;linux/kernel_stat.h&gt;</a>
+<a name="25"><span class="lineNum">      25 </span>            : #include &lt;linux/string.h&gt;</a>
+<a name="26"><span class="lineNum">      26 </span>            : #include &lt;linux/init.h&gt;</a>
+<a name="27"><span class="lineNum">      27 </span>            : #include &lt;linux/completion.h&gt;</a>
+<a name="28"><span class="lineNum">      28 </span>            : #include &lt;linux/slab.h&gt;</a>
+<a name="29"><span class="lineNum">      29 </span>            : #include &lt;linux/swap.h&gt;</a>
+<a name="30"><span class="lineNum">      30 </span>            : #include &lt;linux/writeback.h&gt;</a>
+<a name="31"><span class="lineNum">      31 </span>            : #include &lt;linux/task_io_accounting_ops.h&gt;</a>
+<a name="32"><span class="lineNum">      32 </span>            : #include &lt;linux/fault-inject.h&gt;</a>
+<a name="33"><span class="lineNum">      33 </span>            : #include &lt;linux/list_sort.h&gt;</a>
+<a name="34"><span class="lineNum">      34 </span>            : #include &lt;linux/delay.h&gt;</a>
+<a name="35"><span class="lineNum">      35 </span>            : #include &lt;linux/ratelimit.h&gt;</a>
+<a name="36"><span class="lineNum">      36 </span>            : #include &lt;linux/pm_runtime.h&gt;</a>
+<a name="37"><span class="lineNum">      37 </span>            : #include &lt;linux/t10-pi.h&gt;</a>
+<a name="38"><span class="lineNum">      38 </span>            : #include &lt;linux/debugfs.h&gt;</a>
+<a name="39"><span class="lineNum">      39 </span>            : #include &lt;linux/bpf.h&gt;</a>
+<a name="40"><span class="lineNum">      40 </span>            : #include &lt;linux/psi.h&gt;</a>
+<a name="41"><span class="lineNum">      41 </span>            : #include &lt;linux/part_stat.h&gt;</a>
+<a name="42"><span class="lineNum">      42 </span>            : #include &lt;linux/sched/sysctl.h&gt;</a>
+<a name="43"><span class="lineNum">      43 </span>            : #include &lt;linux/blk-crypto.h&gt;</a>
+<a name="44"><span class="lineNum">      44 </span>            : </a>
+<a name="45"><span class="lineNum">      45 </span>            : #define CREATE_TRACE_POINTS</a>
+<a name="46"><span class="lineNum">      46 </span>            : #include &lt;trace/events/block.h&gt;</a>
+<a name="47"><span class="lineNum">      47 </span>            : </a>
+<a name="48"><span class="lineNum">      48 </span>            : #include &quot;blk.h&quot;</a>
+<a name="49"><span class="lineNum">      49 </span>            : #include &quot;blk-mq-sched.h&quot;</a>
+<a name="50"><span class="lineNum">      50 </span>            : #include &quot;blk-pm.h&quot;</a>
+<a name="51"><span class="lineNum">      51 </span>            : #include &quot;blk-cgroup.h&quot;</a>
+<a name="52"><span class="lineNum">      52 </span>            : #include &quot;blk-throttle.h&quot;</a>
+<a name="53"><span class="lineNum">      53 </span>            : </a>
+<a name="54"><span class="lineNum">      54 </span>            : struct dentry *blk_debugfs_root;</a>
+<a name="55"><span class="lineNum">      55 </span>            : </a>
+<a name="56"><span class="lineNum">      56 </span>            : EXPORT_TRACEPOINT_SYMBOL_GPL(block_bio_remap);</a>
+<a name="57"><span class="lineNum">      57 </span>            : EXPORT_TRACEPOINT_SYMBOL_GPL(block_rq_remap);</a>
+<a name="58"><span class="lineNum">      58 </span>            : EXPORT_TRACEPOINT_SYMBOL_GPL(block_bio_complete);</a>
+<a name="59"><span class="lineNum">      59 </span>            : EXPORT_TRACEPOINT_SYMBOL_GPL(block_split);</a>
+<a name="60"><span class="lineNum">      60 </span>            : EXPORT_TRACEPOINT_SYMBOL_GPL(block_unplug);</a>
+<a name="61"><span class="lineNum">      61 </span>            : EXPORT_TRACEPOINT_SYMBOL_GPL(block_rq_insert);</a>
+<a name="62"><span class="lineNum">      62 </span>            : </a>
+<a name="63"><span class="lineNum">      63 </span>            : DEFINE_IDA(blk_queue_ida);</a>
+<a name="64"><span class="lineNum">      64 </span>            : </a>
+<a name="65"><span class="lineNum">      65 </span>            : /*</a>
+<a name="66"><span class="lineNum">      66 </span>            :  * For queue allocation</a>
+<a name="67"><span class="lineNum">      67 </span>            :  */</a>
+<a name="68"><span class="lineNum">      68 </span>            : struct kmem_cache *blk_requestq_cachep;</a>
+<a name="69"><span class="lineNum">      69 </span>            : struct kmem_cache *blk_requestq_srcu_cachep;</a>
+<a name="70"><span class="lineNum">      70 </span>            : </a>
+<a name="71"><span class="lineNum">      71 </span>            : /*</a>
+<a name="72"><span class="lineNum">      72 </span>            :  * Controlling structure to kblockd</a>
+<a name="73"><span class="lineNum">      73 </span>            :  */</a>
+<a name="74"><span class="lineNum">      74 </span>            : static struct workqueue_struct *kblockd_workqueue;</a>
+<a name="75"><span class="lineNum">      75 </span>            : </a>
+<a name="76"><span class="lineNum">      76 </span>            : /**</a>
+<a name="77"><span class="lineNum">      77 </span>            :  * blk_queue_flag_set - atomically set a queue flag</a>
+<a name="78"><span class="lineNum">      78 </span>            :  * @flag: flag to be set</a>
+<a name="79"><span class="lineNum">      79 </span>            :  * @q: request queue</a>
+<a name="80"><span class="lineNum">      80 </span>            :  */</a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineNoCov">          0 : void blk_queue_flag_set(unsigned int flag, struct request_queue *q)</span></a>
+<a name="82"><span class="lineNum">      82 </span>            : {</a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 :         set_bit(flag, &amp;q-&gt;queue_flags);</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="85"><span class="lineNum">      85 </span>            : EXPORT_SYMBOL(blk_queue_flag_set);</a>
+<a name="86"><span class="lineNum">      86 </span>            : </a>
+<a name="87"><span class="lineNum">      87 </span>            : /**</a>
+<a name="88"><span class="lineNum">      88 </span>            :  * blk_queue_flag_clear - atomically clear a queue flag</a>
+<a name="89"><span class="lineNum">      89 </span>            :  * @flag: flag to be cleared</a>
+<a name="90"><span class="lineNum">      90 </span>            :  * @q: request queue</a>
+<a name="91"><span class="lineNum">      91 </span>            :  */</a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineNoCov">          0 : void blk_queue_flag_clear(unsigned int flag, struct request_queue *q)</span></a>
+<a name="93"><span class="lineNum">      93 </span>            : {</a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineNoCov">          0 :         clear_bit(flag, &amp;q-&gt;queue_flags);</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="96"><span class="lineNum">      96 </span>            : EXPORT_SYMBOL(blk_queue_flag_clear);</a>
+<a name="97"><span class="lineNum">      97 </span>            : </a>
+<a name="98"><span class="lineNum">      98 </span>            : /**</a>
+<a name="99"><span class="lineNum">      99 </span>            :  * blk_queue_flag_test_and_set - atomically test and set a queue flag</a>
+<a name="100"><span class="lineNum">     100 </span>            :  * @flag: flag to be set</a>
+<a name="101"><span class="lineNum">     101 </span>            :  * @q: request queue</a>
+<a name="102"><span class="lineNum">     102 </span>            :  *</a>
+<a name="103"><span class="lineNum">     103 </span>            :  * Returns the previous value of @flag - 0 if the flag was not set and 1 if</a>
+<a name="104"><span class="lineNum">     104 </span>            :  * the flag was already set.</a>
+<a name="105"><span class="lineNum">     105 </span>            :  */</a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 : bool blk_queue_flag_test_and_set(unsigned int flag, struct request_queue *q)</span></a>
+<a name="107"><span class="lineNum">     107 </span>            : {</a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 :         return test_and_set_bit(flag, &amp;q-&gt;queue_flags);</span></a>
+<a name="109"><span class="lineNum">     109 </span>            : }</a>
+<a name="110"><span class="lineNum">     110 </span>            : EXPORT_SYMBOL_GPL(blk_queue_flag_test_and_set);</a>
+<a name="111"><span class="lineNum">     111 </span>            : </a>
+<a name="112"><span class="lineNum">     112 </span>            : #define REQ_OP_NAME(name) [REQ_OP_##name] = #name</a>
+<a name="113"><span class="lineNum">     113 </span>            : static const char *const blk_op_name[] = {</a>
+<a name="114"><span class="lineNum">     114 </span>            :         REQ_OP_NAME(READ),</a>
+<a name="115"><span class="lineNum">     115 </span>            :         REQ_OP_NAME(WRITE),</a>
+<a name="116"><span class="lineNum">     116 </span>            :         REQ_OP_NAME(FLUSH),</a>
+<a name="117"><span class="lineNum">     117 </span>            :         REQ_OP_NAME(DISCARD),</a>
+<a name="118"><span class="lineNum">     118 </span>            :         REQ_OP_NAME(SECURE_ERASE),</a>
+<a name="119"><span class="lineNum">     119 </span>            :         REQ_OP_NAME(ZONE_RESET),</a>
+<a name="120"><span class="lineNum">     120 </span>            :         REQ_OP_NAME(ZONE_RESET_ALL),</a>
+<a name="121"><span class="lineNum">     121 </span>            :         REQ_OP_NAME(ZONE_OPEN),</a>
+<a name="122"><span class="lineNum">     122 </span>            :         REQ_OP_NAME(ZONE_CLOSE),</a>
+<a name="123"><span class="lineNum">     123 </span>            :         REQ_OP_NAME(ZONE_FINISH),</a>
+<a name="124"><span class="lineNum">     124 </span>            :         REQ_OP_NAME(ZONE_APPEND),</a>
+<a name="125"><span class="lineNum">     125 </span>            :         REQ_OP_NAME(WRITE_ZEROES),</a>
+<a name="126"><span class="lineNum">     126 </span>            :         REQ_OP_NAME(DRV_IN),</a>
+<a name="127"><span class="lineNum">     127 </span>            :         REQ_OP_NAME(DRV_OUT),</a>
+<a name="128"><span class="lineNum">     128 </span>            : };</a>
+<a name="129"><span class="lineNum">     129 </span>            : #undef REQ_OP_NAME</a>
+<a name="130"><span class="lineNum">     130 </span>            : </a>
+<a name="131"><span class="lineNum">     131 </span>            : /**</a>
+<a name="132"><span class="lineNum">     132 </span>            :  * blk_op_str - Return string XXX in the REQ_OP_XXX.</a>
+<a name="133"><span class="lineNum">     133 </span>            :  * @op: REQ_OP_XXX.</a>
+<a name="134"><span class="lineNum">     134 </span>            :  *</a>
+<a name="135"><span class="lineNum">     135 </span>            :  * Description: Centralize block layer function to convert REQ_OP_XXX into</a>
+<a name="136"><span class="lineNum">     136 </span>            :  * string format. Useful in the debugging and tracing bio or request. For</a>
+<a name="137"><span class="lineNum">     137 </span>            :  * invalid REQ_OP_XXX it returns string &quot;UNKNOWN&quot;.</a>
+<a name="138"><span class="lineNum">     138 </span>            :  */</a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineNoCov">          0 : inline const char *blk_op_str(unsigned int op)</span></a>
+<a name="140"><span class="lineNum">     140 </span>            : {</a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 :         const char *op_str = &quot;UNKNOWN&quot;;</span></a>
+<a name="142"><span class="lineNum">     142 </span>            : </a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineNoCov">          0 :         if (op &lt; ARRAY_SIZE(blk_op_name) &amp;&amp; blk_op_name[op])</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineNoCov">          0 :                 op_str = blk_op_name[op];</span></a>
+<a name="145"><span class="lineNum">     145 </span>            : </a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 :         return op_str;</span></a>
+<a name="147"><span class="lineNum">     147 </span>            : }</a>
+<a name="148"><span class="lineNum">     148 </span>            : EXPORT_SYMBOL_GPL(blk_op_str);</a>
+<a name="149"><span class="lineNum">     149 </span>            : </a>
+<a name="150"><span class="lineNum">     150 </span>            : static const struct {</a>
+<a name="151"><span class="lineNum">     151 </span>            :         int             errno;</a>
+<a name="152"><span class="lineNum">     152 </span>            :         const char      *name;</a>
+<a name="153"><span class="lineNum">     153 </span>            : } blk_errors[] = {</a>
+<a name="154"><span class="lineNum">     154 </span>            :         [BLK_STS_OK]            = { 0,          &quot;&quot; },</a>
+<a name="155"><span class="lineNum">     155 </span>            :         [BLK_STS_NOTSUPP]       = { -EOPNOTSUPP, &quot;operation not supported&quot; },</a>
+<a name="156"><span class="lineNum">     156 </span>            :         [BLK_STS_TIMEOUT]       = { -ETIMEDOUT, &quot;timeout&quot; },</a>
+<a name="157"><span class="lineNum">     157 </span>            :         [BLK_STS_NOSPC]         = { -ENOSPC,    &quot;critical space allocation&quot; },</a>
+<a name="158"><span class="lineNum">     158 </span>            :         [BLK_STS_TRANSPORT]     = { -ENOLINK,   &quot;recoverable transport&quot; },</a>
+<a name="159"><span class="lineNum">     159 </span>            :         [BLK_STS_TARGET]        = { -EREMOTEIO, &quot;critical target&quot; },</a>
+<a name="160"><span class="lineNum">     160 </span>            :         [BLK_STS_NEXUS]         = { -EBADE,     &quot;critical nexus&quot; },</a>
+<a name="161"><span class="lineNum">     161 </span>            :         [BLK_STS_MEDIUM]        = { -ENODATA,   &quot;critical medium&quot; },</a>
+<a name="162"><span class="lineNum">     162 </span>            :         [BLK_STS_PROTECTION]    = { -EILSEQ,    &quot;protection&quot; },</a>
+<a name="163"><span class="lineNum">     163 </span>            :         [BLK_STS_RESOURCE]      = { -ENOMEM,    &quot;kernel resource&quot; },</a>
+<a name="164"><span class="lineNum">     164 </span>            :         [BLK_STS_DEV_RESOURCE]  = { -EBUSY,     &quot;device resource&quot; },</a>
+<a name="165"><span class="lineNum">     165 </span>            :         [BLK_STS_AGAIN]         = { -EAGAIN,    &quot;nonblocking retry&quot; },</a>
+<a name="166"><span class="lineNum">     166 </span>            :         [BLK_STS_OFFLINE]       = { -ENODEV,    &quot;device offline&quot; },</a>
+<a name="167"><span class="lineNum">     167 </span>            : </a>
+<a name="168"><span class="lineNum">     168 </span>            :         /* device mapper special case, should not leak out: */</a>
+<a name="169"><span class="lineNum">     169 </span>            :         [BLK_STS_DM_REQUEUE]    = { -EREMCHG, &quot;dm internal retry&quot; },</a>
+<a name="170"><span class="lineNum">     170 </span>            : </a>
+<a name="171"><span class="lineNum">     171 </span>            :         /* zone device specific errors */</a>
+<a name="172"><span class="lineNum">     172 </span>            :         [BLK_STS_ZONE_OPEN_RESOURCE]    = { -ETOOMANYREFS, &quot;open zones exceeded&quot; },</a>
+<a name="173"><span class="lineNum">     173 </span>            :         [BLK_STS_ZONE_ACTIVE_RESOURCE]  = { -EOVERFLOW, &quot;active zones exceeded&quot; },</a>
+<a name="174"><span class="lineNum">     174 </span>            : </a>
+<a name="175"><span class="lineNum">     175 </span>            :         /* everything else not covered above: */</a>
+<a name="176"><span class="lineNum">     176 </span>            :         [BLK_STS_IOERR]         = { -EIO,       &quot;I/O&quot; },</a>
+<a name="177"><span class="lineNum">     177 </span>            : };</a>
+<a name="178"><span class="lineNum">     178 </span>            : </a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 : blk_status_t errno_to_blk_status(int errno)</span></a>
+<a name="180"><span class="lineNum">     180 </span>            : {</a>
+<a name="181"><span class="lineNum">     181 </span>            :         int i;</a>
+<a name="182"><span class="lineNum">     182 </span>            : </a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; ARRAY_SIZE(blk_errors); i++) {</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineNoCov">          0 :                 if (blk_errors[i].errno == errno)</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 :                         return (__force blk_status_t)i;</span></a>
+<a name="186"><span class="lineNum">     186 </span>            :         }</a>
+<a name="187"><span class="lineNum">     187 </span>            : </a>
+<a name="188"><span class="lineNum">     188 </span>            :         return BLK_STS_IOERR;</a>
+<a name="189"><span class="lineNum">     189 </span>            : }</a>
+<a name="190"><span class="lineNum">     190 </span>            : EXPORT_SYMBOL_GPL(errno_to_blk_status);</a>
+<a name="191"><span class="lineNum">     191 </span>            : </a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 : int blk_status_to_errno(blk_status_t status)</span></a>
+<a name="193"><span class="lineNum">     193 </span>            : {</a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 :         int idx = (__force int)status;</span></a>
+<a name="195"><span class="lineNum">     195 </span>            : </a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :         if (WARN_ON_ONCE(idx &gt;= ARRAY_SIZE(blk_errors)))</span></a>
+<a name="197"><span class="lineNum">     197 </span>            :                 return -EIO;</a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineNoCov">          0 :         return blk_errors[idx].errno;</span></a>
+<a name="199"><span class="lineNum">     199 </span>            : }</a>
+<a name="200"><span class="lineNum">     200 </span>            : EXPORT_SYMBOL_GPL(blk_status_to_errno);</a>
+<a name="201"><span class="lineNum">     201 </span>            : </a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 : const char *blk_status_to_str(blk_status_t status)</span></a>
+<a name="203"><span class="lineNum">     203 </span>            : {</a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineNoCov">          0 :         int idx = (__force int)status;</span></a>
+<a name="205"><span class="lineNum">     205 </span>            : </a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 :         if (WARN_ON_ONCE(idx &gt;= ARRAY_SIZE(blk_errors)))</span></a>
+<a name="207"><span class="lineNum">     207 </span>            :                 return &quot;&lt;null&gt;&quot;;</a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineNoCov">          0 :         return blk_errors[idx].name;</span></a>
+<a name="209"><span class="lineNum">     209 </span>            : }</a>
+<a name="210"><span class="lineNum">     210 </span>            : </a>
+<a name="211"><span class="lineNum">     211 </span>            : /**</a>
+<a name="212"><span class="lineNum">     212 </span>            :  * blk_sync_queue - cancel any pending callbacks on a queue</a>
+<a name="213"><span class="lineNum">     213 </span>            :  * @q: the queue</a>
+<a name="214"><span class="lineNum">     214 </span>            :  *</a>
+<a name="215"><span class="lineNum">     215 </span>            :  * Description:</a>
+<a name="216"><span class="lineNum">     216 </span>            :  *     The block layer may perform asynchronous callback activity</a>
+<a name="217"><span class="lineNum">     217 </span>            :  *     on a queue, such as calling the unplug function after a timeout.</a>
+<a name="218"><span class="lineNum">     218 </span>            :  *     A block device may call blk_sync_queue to ensure that any</a>
+<a name="219"><span class="lineNum">     219 </span>            :  *     such activity is cancelled, thus allowing it to release resources</a>
+<a name="220"><span class="lineNum">     220 </span>            :  *     that the callbacks might use. The caller must already have made sure</a>
+<a name="221"><span class="lineNum">     221 </span>            :  *     that its -&gt;submit_bio will not re-add plugging prior to calling</a>
+<a name="222"><span class="lineNum">     222 </span>            :  *     this function.</a>
+<a name="223"><span class="lineNum">     223 </span>            :  *</a>
+<a name="224"><span class="lineNum">     224 </span>            :  *     This function does not cancel any asynchronous activity arising</a>
+<a name="225"><span class="lineNum">     225 </span>            :  *     out of elevator or throttling code. That would require elevator_exit()</a>
+<a name="226"><span class="lineNum">     226 </span>            :  *     and blkcg_exit_queue() to be called with queue lock initialized.</a>
+<a name="227"><span class="lineNum">     227 </span>            :  *</a>
+<a name="228"><span class="lineNum">     228 </span>            :  */</a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineNoCov">          0 : void blk_sync_queue(struct request_queue *q)</span></a>
+<a name="230"><span class="lineNum">     230 </span>            : {</a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineNoCov">          0 :         del_timer_sync(&amp;q-&gt;timeout);</span></a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineNoCov">          0 :         cancel_work_sync(&amp;q-&gt;timeout_work);</span></a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="234"><span class="lineNum">     234 </span>            : EXPORT_SYMBOL(blk_sync_queue);</a>
+<a name="235"><span class="lineNum">     235 </span>            : </a>
+<a name="236"><span class="lineNum">     236 </span>            : /**</a>
+<a name="237"><span class="lineNum">     237 </span>            :  * blk_set_pm_only - increment pm_only counter</a>
+<a name="238"><span class="lineNum">     238 </span>            :  * @q: request queue pointer</a>
+<a name="239"><span class="lineNum">     239 </span>            :  */</a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 : void blk_set_pm_only(struct request_queue *q)</span></a>
+<a name="241"><span class="lineNum">     241 </span>            : {</a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineNoCov">          0 :         atomic_inc(&amp;q-&gt;pm_only);</span></a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="244"><span class="lineNum">     244 </span>            : EXPORT_SYMBOL_GPL(blk_set_pm_only);</a>
+<a name="245"><span class="lineNum">     245 </span>            : </a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 : void blk_clear_pm_only(struct request_queue *q)</span></a>
+<a name="247"><span class="lineNum">     247 </span>            : {</a>
+<a name="248"><span class="lineNum">     248 </span>            :         int pm_only;</a>
+<a name="249"><span class="lineNum">     249 </span>            : </a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 :         pm_only = atomic_dec_return(&amp;q-&gt;pm_only);</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 :         WARN_ON_ONCE(pm_only &lt; 0);</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 :         if (pm_only == 0)</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 :                 wake_up_all(&amp;q-&gt;mq_freeze_wq);</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="255"><span class="lineNum">     255 </span>            : EXPORT_SYMBOL_GPL(blk_clear_pm_only);</a>
+<a name="256"><span class="lineNum">     256 </span>            : </a>
+<a name="257"><span class="lineNum">     257 </span>            : /**</a>
+<a name="258"><span class="lineNum">     258 </span>            :  * blk_put_queue - decrement the request_queue refcount</a>
+<a name="259"><span class="lineNum">     259 </span>            :  * @q: the request_queue structure to decrement the refcount for</a>
+<a name="260"><span class="lineNum">     260 </span>            :  *</a>
+<a name="261"><span class="lineNum">     261 </span>            :  * Decrements the refcount of the request_queue kobject. When this reaches 0</a>
+<a name="262"><span class="lineNum">     262 </span>            :  * we'll have blk_release_queue() called.</a>
+<a name="263"><span class="lineNum">     263 </span>            :  *</a>
+<a name="264"><span class="lineNum">     264 </span>            :  * Context: Any context, but the last reference must not be dropped from</a>
+<a name="265"><span class="lineNum">     265 </span>            :  *          atomic context.</a>
+<a name="266"><span class="lineNum">     266 </span>            :  */</a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 : void blk_put_queue(struct request_queue *q)</span></a>
+<a name="268"><span class="lineNum">     268 </span>            : {</a>
+<a name="269"><span class="lineNum">     269 </span><span class="lineNoCov">          0 :         kobject_put(&amp;q-&gt;kobj);</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="271"><span class="lineNum">     271 </span>            : EXPORT_SYMBOL(blk_put_queue);</a>
+<a name="272"><span class="lineNum">     272 </span>            : </a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineNoCov">          0 : void blk_queue_start_drain(struct request_queue *q)</span></a>
+<a name="274"><span class="lineNum">     274 </span>            : {</a>
+<a name="275"><span class="lineNum">     275 </span>            :         /*</a>
+<a name="276"><span class="lineNum">     276 </span>            :          * When queue DYING flag is set, we need to block new req</a>
+<a name="277"><span class="lineNum">     277 </span>            :          * entering queue, so we call blk_freeze_queue_start() to</a>
+<a name="278"><span class="lineNum">     278 </span>            :          * prevent I/O from crossing blk_queue_enter().</a>
+<a name="279"><span class="lineNum">     279 </span>            :          */</a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineNoCov">          0 :         blk_freeze_queue_start(q);</span></a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineNoCov">          0 :         if (queue_is_mq(q))</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 :                 blk_mq_wake_waiters(q);</span></a>
+<a name="283"><span class="lineNum">     283 </span>            :         /* Make blk_queue_enter() reexamine the DYING flag. */</a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineNoCov">          0 :         wake_up_all(&amp;q-&gt;mq_freeze_wq);</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="286"><span class="lineNum">     286 </span>            : </a>
+<a name="287"><span class="lineNum">     287 </span>            : /**</a>
+<a name="288"><span class="lineNum">     288 </span>            :  * blk_cleanup_queue - shutdown a request queue</a>
+<a name="289"><span class="lineNum">     289 </span>            :  * @q: request queue to shutdown</a>
+<a name="290"><span class="lineNum">     290 </span>            :  *</a>
+<a name="291"><span class="lineNum">     291 </span>            :  * Mark @q DYING, drain all pending requests, mark @q DEAD, destroy and</a>
+<a name="292"><span class="lineNum">     292 </span>            :  * put it.  All future requests will be failed immediately with -ENODEV.</a>
+<a name="293"><span class="lineNum">     293 </span>            :  *</a>
+<a name="294"><span class="lineNum">     294 </span>            :  * Context: can sleep</a>
+<a name="295"><span class="lineNum">     295 </span>            :  */</a>
+<a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 : void blk_cleanup_queue(struct request_queue *q)</span></a>
+<a name="297"><span class="lineNum">     297 </span>            : {</a>
+<a name="298"><span class="lineNum">     298 </span>            :         /* cannot be called from atomic context */</a>
+<a name="299"><span class="lineNum">     299 </span>            :         might_sleep();</a>
+<a name="300"><span class="lineNum">     300 </span>            : </a>
+<a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 :         WARN_ON_ONCE(blk_queue_registered(q));</span></a>
+<a name="302"><span class="lineNum">     302 </span>            : </a>
+<a name="303"><span class="lineNum">     303 </span>            :         /* mark @q DYING, no new request or merges will be allowed afterwards */</a>
+<a name="304"><span class="lineNum">     304 </span><span class="lineNoCov">          0 :         blk_queue_flag_set(QUEUE_FLAG_DYING, q);</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineNoCov">          0 :         blk_queue_start_drain(q);</span></a>
+<a name="306"><span class="lineNum">     306 </span>            : </a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineNoCov">          0 :         blk_queue_flag_set(QUEUE_FLAG_NOMERGES, q);</span></a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineNoCov">          0 :         blk_queue_flag_set(QUEUE_FLAG_NOXMERGES, q);</span></a>
+<a name="309"><span class="lineNum">     309 </span>            : </a>
+<a name="310"><span class="lineNum">     310 </span>            :         /*</a>
+<a name="311"><span class="lineNum">     311 </span>            :          * Drain all requests queued before DYING marking. Set DEAD flag to</a>
+<a name="312"><span class="lineNum">     312 </span>            :          * prevent that blk_mq_run_hw_queues() accesses the hardware queues</a>
+<a name="313"><span class="lineNum">     313 </span>            :          * after draining finished.</a>
+<a name="314"><span class="lineNum">     314 </span>            :          */</a>
+<a name="315"><span class="lineNum">     315 </span><span class="lineNoCov">          0 :         blk_freeze_queue(q);</span></a>
+<a name="316"><span class="lineNum">     316 </span>            : </a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineNoCov">          0 :         blk_queue_flag_set(QUEUE_FLAG_DEAD, q);</span></a>
+<a name="318"><span class="lineNum">     318 </span>            : </a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineNoCov">          0 :         blk_sync_queue(q);</span></a>
+<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 :         if (queue_is_mq(q)) {</span></a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineNoCov">          0 :                 blk_mq_cancel_work_sync(q);</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 :                 blk_mq_exit_queue(q);</span></a>
+<a name="323"><span class="lineNum">     323 </span>            :         }</a>
+<a name="324"><span class="lineNum">     324 </span>            : </a>
+<a name="325"><span class="lineNum">     325 </span>            :         /*</a>
+<a name="326"><span class="lineNum">     326 </span>            :          * In theory, request pool of sched_tags belongs to request queue.</a>
+<a name="327"><span class="lineNum">     327 </span>            :          * However, the current implementation requires tag_set for freeing</a>
+<a name="328"><span class="lineNum">     328 </span>            :          * requests, so free the pool now.</a>
+<a name="329"><span class="lineNum">     329 </span>            :          *</a>
+<a name="330"><span class="lineNum">     330 </span>            :          * Queue has become frozen, there can't be any in-queue requests, so</a>
+<a name="331"><span class="lineNum">     331 </span>            :          * it is safe to free requests now.</a>
+<a name="332"><span class="lineNum">     332 </span>            :          */</a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 :         mutex_lock(&amp;q-&gt;sysfs_lock);</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineNoCov">          0 :         if (q-&gt;elevator)</span></a>
+<a name="335"><span class="lineNum">     335 </span><span class="lineNoCov">          0 :                 blk_mq_sched_free_rqs(q);</span></a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineNoCov">          0 :         mutex_unlock(&amp;q-&gt;sysfs_lock);</span></a>
+<a name="337"><span class="lineNum">     337 </span>            : </a>
+<a name="338"><span class="lineNum">     338 </span>            :         /* @q is and will stay empty, shutdown and put */</a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineNoCov">          0 :         blk_put_queue(q);</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="341"><span class="lineNum">     341 </span>            : EXPORT_SYMBOL(blk_cleanup_queue);</a>
+<a name="342"><span class="lineNum">     342 </span>            : </a>
+<a name="343"><span class="lineNum">     343 </span>            : /**</a>
+<a name="344"><span class="lineNum">     344 </span>            :  * blk_queue_enter() - try to increase q-&gt;q_usage_counter</a>
+<a name="345"><span class="lineNum">     345 </span>            :  * @q: request queue pointer</a>
+<a name="346"><span class="lineNum">     346 </span>            :  * @flags: BLK_MQ_REQ_NOWAIT and/or BLK_MQ_REQ_PM</a>
+<a name="347"><span class="lineNum">     347 </span>            :  */</a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineNoCov">          0 : int blk_queue_enter(struct request_queue *q, blk_mq_req_flags_t flags)</span></a>
+<a name="349"><span class="lineNum">     349 </span>            : {</a>
+<a name="350"><span class="lineNum">     350 </span><span class="lineNoCov">          0 :         const bool pm = flags &amp; BLK_MQ_REQ_PM;</span></a>
+<a name="351"><span class="lineNum">     351 </span>            : </a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 :         while (!blk_try_enter_queue(q, pm)) {</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineNoCov">          0 :                 if (flags &amp; BLK_MQ_REQ_NOWAIT)</span></a>
+<a name="354"><span class="lineNum">     354 </span>            :                         return -EBUSY;</a>
+<a name="355"><span class="lineNum">     355 </span>            : </a>
+<a name="356"><span class="lineNum">     356 </span>            :                 /*</a>
+<a name="357"><span class="lineNum">     357 </span>            :                  * read pair of barrier in blk_freeze_queue_start(), we need to</a>
+<a name="358"><span class="lineNum">     358 </span>            :                  * order reading __PERCPU_REF_DEAD flag of .q_usage_counter and</a>
+<a name="359"><span class="lineNum">     359 </span>            :                  * reading .mq_freeze_depth or queue dying flag, otherwise the</a>
+<a name="360"><span class="lineNum">     360 </span>            :                  * following wait may never return if the two reads are</a>
+<a name="361"><span class="lineNum">     361 </span>            :                  * reordered.</a>
+<a name="362"><span class="lineNum">     362 </span>            :                  */</a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineNoCov">          0 :                 smp_rmb();</span></a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineNoCov">          0 :                 wait_event(q-&gt;mq_freeze_wq,</span></a>
+<a name="365"><span class="lineNum">     365 </span>            :                            (!q-&gt;mq_freeze_depth &amp;&amp;</a>
+<a name="366"><span class="lineNum">     366 </span>            :                             blk_pm_resume_queue(pm, q)) ||</a>
+<a name="367"><span class="lineNum">     367 </span>            :                            blk_queue_dying(q));</a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineNoCov">          0 :                 if (blk_queue_dying(q))</span></a>
+<a name="369"><span class="lineNum">     369 </span>            :                         return -ENODEV;</a>
+<a name="370"><span class="lineNum">     370 </span>            :         }</a>
+<a name="371"><span class="lineNum">     371 </span>            : </a>
+<a name="372"><span class="lineNum">     372 </span>            :         return 0;</a>
+<a name="373"><span class="lineNum">     373 </span>            : }</a>
+<a name="374"><span class="lineNum">     374 </span>            : </a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineNoCov">          0 : int __bio_queue_enter(struct request_queue *q, struct bio *bio)</span></a>
+<a name="376"><span class="lineNum">     376 </span>            : {</a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineNoCov">          0 :         while (!blk_try_enter_queue(q, false)) {</span></a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineNoCov">          0 :                 struct gendisk *disk = bio-&gt;bi_bdev-&gt;bd_disk;</span></a>
+<a name="379"><span class="lineNum">     379 </span>            : </a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 :                 if (bio-&gt;bi_opf &amp; REQ_NOWAIT) {</span></a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineNoCov">          0 :                         if (test_bit(GD_DEAD, &amp;disk-&gt;state))</span></a>
+<a name="382"><span class="lineNum">     382 </span>            :                                 goto dead;</a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineNoCov">          0 :                         bio_wouldblock_error(bio);</span></a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineNoCov">          0 :                         return -EBUSY;</span></a>
+<a name="385"><span class="lineNum">     385 </span>            :                 }</a>
+<a name="386"><span class="lineNum">     386 </span>            : </a>
+<a name="387"><span class="lineNum">     387 </span>            :                 /*</a>
+<a name="388"><span class="lineNum">     388 </span>            :                  * read pair of barrier in blk_freeze_queue_start(), we need to</a>
+<a name="389"><span class="lineNum">     389 </span>            :                  * order reading __PERCPU_REF_DEAD flag of .q_usage_counter and</a>
+<a name="390"><span class="lineNum">     390 </span>            :                  * reading .mq_freeze_depth or queue dying flag, otherwise the</a>
+<a name="391"><span class="lineNum">     391 </span>            :                  * following wait may never return if the two reads are</a>
+<a name="392"><span class="lineNum">     392 </span>            :                  * reordered.</a>
+<a name="393"><span class="lineNum">     393 </span>            :                  */</a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineNoCov">          0 :                 smp_rmb();</span></a>
+<a name="395"><span class="lineNum">     395 </span><span class="lineNoCov">          0 :                 wait_event(q-&gt;mq_freeze_wq,</span></a>
+<a name="396"><span class="lineNum">     396 </span>            :                            (!q-&gt;mq_freeze_depth &amp;&amp;</a>
+<a name="397"><span class="lineNum">     397 </span>            :                             blk_pm_resume_queue(false, q)) ||</a>
+<a name="398"><span class="lineNum">     398 </span>            :                            test_bit(GD_DEAD, &amp;disk-&gt;state));</a>
+<a name="399"><span class="lineNum">     399 </span><span class="lineNoCov">          0 :                 if (test_bit(GD_DEAD, &amp;disk-&gt;state))</span></a>
+<a name="400"><span class="lineNum">     400 </span>            :                         goto dead;</a>
+<a name="401"><span class="lineNum">     401 </span>            :         }</a>
+<a name="402"><span class="lineNum">     402 </span>            : </a>
+<a name="403"><span class="lineNum">     403 </span>            :         return 0;</a>
+<a name="404"><span class="lineNum">     404 </span>            : dead:</a>
+<a name="405"><span class="lineNum">     405 </span><span class="lineNoCov">          0 :         bio_io_error(bio);</span></a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineNoCov">          0 :         return -ENODEV;</span></a>
+<a name="407"><span class="lineNum">     407 </span>            : }</a>
+<a name="408"><span class="lineNum">     408 </span>            : </a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineNoCov">          0 : void blk_queue_exit(struct request_queue *q)</span></a>
+<a name="410"><span class="lineNum">     410 </span>            : {</a>
+<a name="411"><span class="lineNum">     411 </span><span class="lineNoCov">          0 :         percpu_ref_put(&amp;q-&gt;q_usage_counter);</span></a>
+<a name="412"><span class="lineNum">     412 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="413"><span class="lineNum">     413 </span>            : </a>
+<a name="414"><span class="lineNum">     414 </span><span class="lineNoCov">          0 : static void blk_queue_usage_counter_release(struct percpu_ref *ref)</span></a>
+<a name="415"><span class="lineNum">     415 </span>            : {</a>
+<a name="416"><span class="lineNum">     416 </span><span class="lineNoCov">          0 :         struct request_queue *q =</span></a>
+<a name="417"><span class="lineNum">     417 </span><span class="lineNoCov">          0 :                 container_of(ref, struct request_queue, q_usage_counter);</span></a>
+<a name="418"><span class="lineNum">     418 </span>            : </a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineNoCov">          0 :         wake_up_all(&amp;q-&gt;mq_freeze_wq);</span></a>
+<a name="420"><span class="lineNum">     420 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="421"><span class="lineNum">     421 </span>            : </a>
+<a name="422"><span class="lineNum">     422 </span><span class="lineNoCov">          0 : static void blk_rq_timed_out_timer(struct timer_list *t)</span></a>
+<a name="423"><span class="lineNum">     423 </span>            : {</a>
+<a name="424"><span class="lineNum">     424 </span><span class="lineNoCov">          0 :         struct request_queue *q = from_timer(q, t, timeout);</span></a>
+<a name="425"><span class="lineNum">     425 </span>            : </a>
+<a name="426"><span class="lineNum">     426 </span><span class="lineNoCov">          0 :         kblockd_schedule_work(&amp;q-&gt;timeout_work);</span></a>
+<a name="427"><span class="lineNum">     427 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="428"><span class="lineNum">     428 </span>            : </a>
+<a name="429"><span class="lineNum">     429 </span><span class="lineNoCov">          0 : static void blk_timeout_work(struct work_struct *work)</span></a>
+<a name="430"><span class="lineNum">     430 </span>            : {</a>
+<a name="431"><span class="lineNum">     431 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="432"><span class="lineNum">     432 </span>            : </a>
+<a name="433"><span class="lineNum">     433 </span><span class="lineNoCov">          0 : struct request_queue *blk_alloc_queue(int node_id, bool alloc_srcu)</span></a>
+<a name="434"><span class="lineNum">     434 </span>            : {</a>
+<a name="435"><span class="lineNum">     435 </span>            :         struct request_queue *q;</a>
+<a name="436"><span class="lineNum">     436 </span>            :         int ret;</a>
+<a name="437"><span class="lineNum">     437 </span>            : </a>
+<a name="438"><span class="lineNum">     438 </span><span class="lineNoCov">          0 :         q = kmem_cache_alloc_node(blk_get_queue_kmem_cache(alloc_srcu),</span></a>
+<a name="439"><span class="lineNum">     439 </span>            :                         GFP_KERNEL | __GFP_ZERO, node_id);</a>
+<a name="440"><span class="lineNum">     440 </span><span class="lineNoCov">          0 :         if (!q)</span></a>
+<a name="441"><span class="lineNum">     441 </span>            :                 return NULL;</a>
+<a name="442"><span class="lineNum">     442 </span>            : </a>
+<a name="443"><span class="lineNum">     443 </span><span class="lineNoCov">          0 :         if (alloc_srcu) {</span></a>
+<a name="444"><span class="lineNum">     444 </span><span class="lineNoCov">          0 :                 blk_queue_flag_set(QUEUE_FLAG_HAS_SRCU, q);</span></a>
+<a name="445"><span class="lineNum">     445 </span><span class="lineNoCov">          0 :                 if (init_srcu_struct(q-&gt;srcu) != 0)</span></a>
+<a name="446"><span class="lineNum">     446 </span>            :                         goto fail_q;</a>
+<a name="447"><span class="lineNum">     447 </span>            :         }</a>
+<a name="448"><span class="lineNum">     448 </span>            : </a>
+<a name="449"><span class="lineNum">     449 </span><span class="lineNoCov">          0 :         q-&gt;last_merge = NULL;</span></a>
+<a name="450"><span class="lineNum">     450 </span>            : </a>
+<a name="451"><span class="lineNum">     451 </span><span class="lineNoCov">          0 :         q-&gt;id = ida_simple_get(&amp;blk_queue_ida, 0, 0, GFP_KERNEL);</span></a>
+<a name="452"><span class="lineNum">     452 </span><span class="lineNoCov">          0 :         if (q-&gt;id &lt; 0)</span></a>
+<a name="453"><span class="lineNum">     453 </span>            :                 goto fail_srcu;</a>
+<a name="454"><span class="lineNum">     454 </span>            : </a>
+<a name="455"><span class="lineNum">     455 </span><span class="lineNoCov">          0 :         ret = bioset_init(&amp;q-&gt;bio_split, BIO_POOL_SIZE, 0, 0);</span></a>
+<a name="456"><span class="lineNum">     456 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="457"><span class="lineNum">     457 </span>            :                 goto fail_id;</a>
+<a name="458"><span class="lineNum">     458 </span>            : </a>
+<a name="459"><span class="lineNum">     459 </span><span class="lineNoCov">          0 :         q-&gt;stats = blk_alloc_queue_stats();</span></a>
+<a name="460"><span class="lineNum">     460 </span><span class="lineNoCov">          0 :         if (!q-&gt;stats)</span></a>
+<a name="461"><span class="lineNum">     461 </span>            :                 goto fail_split;</a>
+<a name="462"><span class="lineNum">     462 </span>            : </a>
+<a name="463"><span class="lineNum">     463 </span><span class="lineNoCov">          0 :         q-&gt;node = node_id;</span></a>
+<a name="464"><span class="lineNum">     464 </span>            : </a>
+<a name="465"><span class="lineNum">     465 </span><span class="lineNoCov">          0 :         atomic_set(&amp;q-&gt;nr_active_requests_shared_tags, 0);</span></a>
+<a name="466"><span class="lineNum">     466 </span>            : </a>
+<a name="467"><span class="lineNum">     467 </span><span class="lineNoCov">          0 :         timer_setup(&amp;q-&gt;timeout, blk_rq_timed_out_timer, 0);</span></a>
+<a name="468"><span class="lineNum">     468 </span><span class="lineNoCov">          0 :         INIT_WORK(&amp;q-&gt;timeout_work, blk_timeout_work);</span></a>
+<a name="469"><span class="lineNum">     469 </span><span class="lineNoCov">          0 :         INIT_LIST_HEAD(&amp;q-&gt;icq_list);</span></a>
+<a name="470"><span class="lineNum">     470 </span>            : </a>
+<a name="471"><span class="lineNum">     471 </span><span class="lineNoCov">          0 :         kobject_init(&amp;q-&gt;kobj, &amp;blk_queue_ktype);</span></a>
+<a name="472"><span class="lineNum">     472 </span>            : </a>
+<a name="473"><span class="lineNum">     473 </span><span class="lineNoCov">          0 :         mutex_init(&amp;q-&gt;debugfs_mutex);</span></a>
+<a name="474"><span class="lineNum">     474 </span><span class="lineNoCov">          0 :         mutex_init(&amp;q-&gt;sysfs_lock);</span></a>
+<a name="475"><span class="lineNum">     475 </span><span class="lineNoCov">          0 :         mutex_init(&amp;q-&gt;sysfs_dir_lock);</span></a>
+<a name="476"><span class="lineNum">     476 </span><span class="lineNoCov">          0 :         spin_lock_init(&amp;q-&gt;queue_lock);</span></a>
+<a name="477"><span class="lineNum">     477 </span>            : </a>
+<a name="478"><span class="lineNum">     478 </span><span class="lineNoCov">          0 :         init_waitqueue_head(&amp;q-&gt;mq_freeze_wq);</span></a>
+<a name="479"><span class="lineNum">     479 </span><span class="lineNoCov">          0 :         mutex_init(&amp;q-&gt;mq_freeze_lock);</span></a>
+<a name="480"><span class="lineNum">     480 </span>            : </a>
+<a name="481"><span class="lineNum">     481 </span>            :         /*</a>
+<a name="482"><span class="lineNum">     482 </span>            :          * Init percpu_ref in atomic mode so that it's faster to shutdown.</a>
+<a name="483"><span class="lineNum">     483 </span>            :          * See blk_register_queue() for details.</a>
+<a name="484"><span class="lineNum">     484 </span>            :          */</a>
+<a name="485"><span class="lineNum">     485 </span><span class="lineNoCov">          0 :         if (percpu_ref_init(&amp;q-&gt;q_usage_counter,</span></a>
+<a name="486"><span class="lineNum">     486 </span>            :                                 blk_queue_usage_counter_release,</a>
+<a name="487"><span class="lineNum">     487 </span>            :                                 PERCPU_REF_INIT_ATOMIC, GFP_KERNEL))</a>
+<a name="488"><span class="lineNum">     488 </span>            :                 goto fail_stats;</a>
+<a name="489"><span class="lineNum">     489 </span>            : </a>
+<a name="490"><span class="lineNum">     490 </span><span class="lineNoCov">          0 :         blk_queue_dma_alignment(q, 511);</span></a>
+<a name="491"><span class="lineNum">     491 </span><span class="lineNoCov">          0 :         blk_set_default_limits(&amp;q-&gt;limits);</span></a>
+<a name="492"><span class="lineNum">     492 </span><span class="lineNoCov">          0 :         q-&gt;nr_requests = BLKDEV_DEFAULT_RQ;</span></a>
+<a name="493"><span class="lineNum">     493 </span>            : </a>
+<a name="494"><span class="lineNum">     494 </span><span class="lineNoCov">          0 :         return q;</span></a>
+<a name="495"><span class="lineNum">     495 </span>            : </a>
+<a name="496"><span class="lineNum">     496 </span>            : fail_stats:</a>
+<a name="497"><span class="lineNum">     497 </span><span class="lineNoCov">          0 :         blk_free_queue_stats(q-&gt;stats);</span></a>
+<a name="498"><span class="lineNum">     498 </span>            : fail_split:</a>
+<a name="499"><span class="lineNum">     499 </span><span class="lineNoCov">          0 :         bioset_exit(&amp;q-&gt;bio_split);</span></a>
+<a name="500"><span class="lineNum">     500 </span>            : fail_id:</a>
+<a name="501"><span class="lineNum">     501 </span><span class="lineNoCov">          0 :         ida_simple_remove(&amp;blk_queue_ida, q-&gt;id);</span></a>
+<a name="502"><span class="lineNum">     502 </span>            : fail_srcu:</a>
+<a name="503"><span class="lineNum">     503 </span><span class="lineNoCov">          0 :         if (alloc_srcu)</span></a>
+<a name="504"><span class="lineNum">     504 </span><span class="lineNoCov">          0 :                 cleanup_srcu_struct(q-&gt;srcu);</span></a>
+<a name="505"><span class="lineNum">     505 </span>            : fail_q:</a>
+<a name="506"><span class="lineNum">     506 </span><span class="lineNoCov">          0 :         kmem_cache_free(blk_get_queue_kmem_cache(alloc_srcu), q);</span></a>
+<a name="507"><span class="lineNum">     507 </span><span class="lineNoCov">          0 :         return NULL;</span></a>
+<a name="508"><span class="lineNum">     508 </span>            : }</a>
+<a name="509"><span class="lineNum">     509 </span>            : </a>
+<a name="510"><span class="lineNum">     510 </span>            : /**</a>
+<a name="511"><span class="lineNum">     511 </span>            :  * blk_get_queue - increment the request_queue refcount</a>
+<a name="512"><span class="lineNum">     512 </span>            :  * @q: the request_queue structure to increment the refcount for</a>
+<a name="513"><span class="lineNum">     513 </span>            :  *</a>
+<a name="514"><span class="lineNum">     514 </span>            :  * Increment the refcount of the request_queue kobject.</a>
+<a name="515"><span class="lineNum">     515 </span>            :  *</a>
+<a name="516"><span class="lineNum">     516 </span>            :  * Context: Any context.</a>
+<a name="517"><span class="lineNum">     517 </span>            :  */</a>
+<a name="518"><span class="lineNum">     518 </span><span class="lineNoCov">          0 : bool blk_get_queue(struct request_queue *q)</span></a>
+<a name="519"><span class="lineNum">     519 </span>            : {</a>
+<a name="520"><span class="lineNum">     520 </span><span class="lineNoCov">          0 :         if (likely(!blk_queue_dying(q))) {</span></a>
+<a name="521"><span class="lineNum">     521 </span><span class="lineNoCov">          0 :                 __blk_get_queue(q);</span></a>
+<a name="522"><span class="lineNum">     522 </span><span class="lineNoCov">          0 :                 return true;</span></a>
+<a name="523"><span class="lineNum">     523 </span>            :         }</a>
+<a name="524"><span class="lineNum">     524 </span>            : </a>
+<a name="525"><span class="lineNum">     525 </span>            :         return false;</a>
+<a name="526"><span class="lineNum">     526 </span>            : }</a>
+<a name="527"><span class="lineNum">     527 </span>            : EXPORT_SYMBOL(blk_get_queue);</a>
+<a name="528"><span class="lineNum">     528 </span>            : </a>
+<a name="529"><span class="lineNum">     529 </span>            : #ifdef CONFIG_FAIL_MAKE_REQUEST</a>
+<a name="530"><span class="lineNum">     530 </span>            : </a>
+<a name="531"><span class="lineNum">     531 </span>            : static DECLARE_FAULT_ATTR(fail_make_request);</a>
+<a name="532"><span class="lineNum">     532 </span>            : </a>
+<a name="533"><span class="lineNum">     533 </span>            : static int __init setup_fail_make_request(char *str)</a>
+<a name="534"><span class="lineNum">     534 </span>            : {</a>
+<a name="535"><span class="lineNum">     535 </span>            :         return setup_fault_attr(&amp;fail_make_request, str);</a>
+<a name="536"><span class="lineNum">     536 </span>            : }</a>
+<a name="537"><span class="lineNum">     537 </span>            : __setup(&quot;fail_make_request=&quot;, setup_fail_make_request);</a>
+<a name="538"><span class="lineNum">     538 </span>            : </a>
+<a name="539"><span class="lineNum">     539 </span>            : bool should_fail_request(struct block_device *part, unsigned int bytes)</a>
+<a name="540"><span class="lineNum">     540 </span>            : {</a>
+<a name="541"><span class="lineNum">     541 </span>            :         return part-&gt;bd_make_it_fail &amp;&amp; should_fail(&amp;fail_make_request, bytes);</a>
+<a name="542"><span class="lineNum">     542 </span>            : }</a>
+<a name="543"><span class="lineNum">     543 </span>            : </a>
+<a name="544"><span class="lineNum">     544 </span>            : static int __init fail_make_request_debugfs(void)</a>
+<a name="545"><span class="lineNum">     545 </span>            : {</a>
+<a name="546"><span class="lineNum">     546 </span>            :         struct dentry *dir = fault_create_debugfs_attr(&quot;fail_make_request&quot;,</a>
+<a name="547"><span class="lineNum">     547 </span>            :                                                 NULL, &amp;fail_make_request);</a>
+<a name="548"><span class="lineNum">     548 </span>            : </a>
+<a name="549"><span class="lineNum">     549 </span>            :         return PTR_ERR_OR_ZERO(dir);</a>
+<a name="550"><span class="lineNum">     550 </span>            : }</a>
+<a name="551"><span class="lineNum">     551 </span>            : </a>
+<a name="552"><span class="lineNum">     552 </span>            : late_initcall(fail_make_request_debugfs);</a>
+<a name="553"><span class="lineNum">     553 </span>            : #endif /* CONFIG_FAIL_MAKE_REQUEST */</a>
+<a name="554"><span class="lineNum">     554 </span>            : </a>
+<a name="555"><span class="lineNum">     555 </span><span class="lineNoCov">          0 : static inline bool bio_check_ro(struct bio *bio)</span></a>
+<a name="556"><span class="lineNum">     556 </span>            : {</a>
+<a name="557"><span class="lineNum">     557 </span><span class="lineNoCov">          0 :         if (op_is_write(bio_op(bio)) &amp;&amp; bdev_read_only(bio-&gt;bi_bdev)) {</span></a>
+<a name="558"><span class="lineNum">     558 </span><span class="lineNoCov">          0 :                 if (op_is_flush(bio-&gt;bi_opf) &amp;&amp; !bio_sectors(bio))</span></a>
+<a name="559"><span class="lineNum">     559 </span>            :                         return false;</a>
+<a name="560"><span class="lineNum">     560 </span><span class="lineNoCov">          0 :                 pr_warn(&quot;Trying to write to read-only block-device %pg\n&quot;,</span></a>
+<a name="561"><span class="lineNum">     561 </span>            :                         bio-&gt;bi_bdev);</a>
+<a name="562"><span class="lineNum">     562 </span>            :                 /* Older lvm-tools actually trigger this */</a>
+<a name="563"><span class="lineNum">     563 </span><span class="lineNoCov">          0 :                 return false;</span></a>
+<a name="564"><span class="lineNum">     564 </span>            :         }</a>
+<a name="565"><span class="lineNum">     565 </span>            : </a>
+<a name="566"><span class="lineNum">     566 </span>            :         return false;</a>
+<a name="567"><span class="lineNum">     567 </span>            : }</a>
+<a name="568"><span class="lineNum">     568 </span>            : </a>
+<a name="569"><span class="lineNum">     569 </span><span class="lineNoCov">          0 : static noinline int should_fail_bio(struct bio *bio)</span></a>
+<a name="570"><span class="lineNum">     570 </span>            : {</a>
+<a name="571"><span class="lineNum">     571 </span><span class="lineNoCov">          0 :         if (should_fail_request(bdev_whole(bio-&gt;bi_bdev), bio-&gt;bi_iter.bi_size))</span></a>
+<a name="572"><span class="lineNum">     572 </span>            :                 return -EIO;</a>
+<a name="573"><span class="lineNum">     573 </span>            :         return 0;</a>
+<a name="574"><span class="lineNum">     574 </span>            : }</a>
+<a name="575"><span class="lineNum">     575 </span>            : ALLOW_ERROR_INJECTION(should_fail_bio, ERRNO);</a>
+<a name="576"><span class="lineNum">     576 </span>            : </a>
+<a name="577"><span class="lineNum">     577 </span>            : /*</a>
+<a name="578"><span class="lineNum">     578 </span>            :  * Check whether this bio extends beyond the end of the device or partition.</a>
+<a name="579"><span class="lineNum">     579 </span>            :  * This may well happen - the kernel calls bread() without checking the size of</a>
+<a name="580"><span class="lineNum">     580 </span>            :  * the device, e.g., when mounting a file system.</a>
+<a name="581"><span class="lineNum">     581 </span>            :  */</a>
+<a name="582"><span class="lineNum">     582 </span><span class="lineNoCov">          0 : static inline int bio_check_eod(struct bio *bio)</span></a>
+<a name="583"><span class="lineNum">     583 </span>            : {</a>
+<a name="584"><span class="lineNum">     584 </span><span class="lineNoCov">          0 :         sector_t maxsector = bdev_nr_sectors(bio-&gt;bi_bdev);</span></a>
+<a name="585"><span class="lineNum">     585 </span><span class="lineNoCov">          0 :         unsigned int nr_sectors = bio_sectors(bio);</span></a>
+<a name="586"><span class="lineNum">     586 </span>            : </a>
+<a name="587"><span class="lineNum">     587 </span><span class="lineNoCov">          0 :         if (nr_sectors &amp;&amp; maxsector &amp;&amp;</span></a>
+<a name="588"><span class="lineNum">     588 </span><span class="lineNoCov">          0 :             (nr_sectors &gt; maxsector ||</span></a>
+<a name="589"><span class="lineNum">     589 </span><span class="lineNoCov">          0 :              bio-&gt;bi_iter.bi_sector &gt; maxsector - nr_sectors)) {</span></a>
+<a name="590"><span class="lineNum">     590 </span><span class="lineNoCov">          0 :                 pr_info_ratelimited(&quot;%s: attempt to access beyond end of device\n&quot;</span></a>
+<a name="591"><span class="lineNum">     591 </span>            :                                     &quot;%pg: rw=%d, want=%llu, limit=%llu\n&quot;,</a>
+<a name="592"><span class="lineNum">     592 </span>            :                                     current-&gt;comm,</a>
+<a name="593"><span class="lineNum">     593 </span>            :                                     bio-&gt;bi_bdev, bio-&gt;bi_opf,</a>
+<a name="594"><span class="lineNum">     594 </span>            :                                     bio_end_sector(bio), maxsector);</a>
+<a name="595"><span class="lineNum">     595 </span>            :                 return -EIO;</a>
+<a name="596"><span class="lineNum">     596 </span>            :         }</a>
+<a name="597"><span class="lineNum">     597 </span>            :         return 0;</a>
+<a name="598"><span class="lineNum">     598 </span>            : }</a>
+<a name="599"><span class="lineNum">     599 </span>            : </a>
+<a name="600"><span class="lineNum">     600 </span>            : /*</a>
+<a name="601"><span class="lineNum">     601 </span>            :  * Remap block n of partition p to block n+start(p) of the disk.</a>
+<a name="602"><span class="lineNum">     602 </span>            :  */</a>
+<a name="603"><span class="lineNum">     603 </span>            : static int blk_partition_remap(struct bio *bio)</a>
+<a name="604"><span class="lineNum">     604 </span>            : {</a>
+<a name="605"><span class="lineNum">     605 </span><span class="lineNoCov">          0 :         struct block_device *p = bio-&gt;bi_bdev;</span></a>
+<a name="606"><span class="lineNum">     606 </span>            : </a>
+<a name="607"><span class="lineNum">     607 </span><span class="lineNoCov">          0 :         if (unlikely(should_fail_request(p, bio-&gt;bi_iter.bi_size)))</span></a>
+<a name="608"><span class="lineNum">     608 </span>            :                 return -EIO;</a>
+<a name="609"><span class="lineNum">     609 </span><span class="lineNoCov">          0 :         if (bio_sectors(bio)) {</span></a>
+<a name="610"><span class="lineNum">     610 </span><span class="lineNoCov">          0 :                 bio-&gt;bi_iter.bi_sector += p-&gt;bd_start_sect;</span></a>
+<a name="611"><span class="lineNum">     611 </span><span class="lineNoCov">          0 :                 trace_block_bio_remap(bio, p-&gt;bd_dev,</span></a>
+<a name="612"><span class="lineNum">     612 </span>            :                                       bio-&gt;bi_iter.bi_sector -</a>
+<a name="613"><span class="lineNum">     613 </span><span class="lineNoCov">          0 :                                       p-&gt;bd_start_sect);</span></a>
+<a name="614"><span class="lineNum">     614 </span>            :         }</a>
+<a name="615"><span class="lineNum">     615 </span><span class="lineNoCov">          0 :         bio_set_flag(bio, BIO_REMAPPED);</span></a>
+<a name="616"><span class="lineNum">     616 </span>            :         return 0;</a>
+<a name="617"><span class="lineNum">     617 </span>            : }</a>
+<a name="618"><span class="lineNum">     618 </span>            : </a>
+<a name="619"><span class="lineNum">     619 </span>            : /*</a>
+<a name="620"><span class="lineNum">     620 </span>            :  * Check write append to a zoned block device.</a>
+<a name="621"><span class="lineNum">     621 </span>            :  */</a>
+<a name="622"><span class="lineNum">     622 </span>            : static inline blk_status_t blk_check_zone_append(struct request_queue *q,</a>
+<a name="623"><span class="lineNum">     623 </span>            :                                                  struct bio *bio)</a>
+<a name="624"><span class="lineNum">     624 </span>            : {</a>
+<a name="625"><span class="lineNum">     625 </span>            :         sector_t pos = bio-&gt;bi_iter.bi_sector;</a>
+<a name="626"><span class="lineNum">     626 </span>            :         int nr_sectors = bio_sectors(bio);</a>
+<a name="627"><span class="lineNum">     627 </span>            : </a>
+<a name="628"><span class="lineNum">     628 </span>            :         /* Only applicable to zoned block devices */</a>
+<a name="629"><span class="lineNum">     629 </span>            :         if (!blk_queue_is_zoned(q))</a>
+<a name="630"><span class="lineNum">     630 </span>            :                 return BLK_STS_NOTSUPP;</a>
+<a name="631"><span class="lineNum">     631 </span>            : </a>
+<a name="632"><span class="lineNum">     632 </span>            :         /* The bio sector must point to the start of a sequential zone */</a>
+<a name="633"><span class="lineNum">     633 </span>            :         if (pos &amp; (blk_queue_zone_sectors(q) - 1) ||</a>
+<a name="634"><span class="lineNum">     634 </span>            :             !blk_queue_zone_is_seq(q, pos))</a>
+<a name="635"><span class="lineNum">     635 </span>            :                 return BLK_STS_IOERR;</a>
+<a name="636"><span class="lineNum">     636 </span>            : </a>
+<a name="637"><span class="lineNum">     637 </span>            :         /*</a>
+<a name="638"><span class="lineNum">     638 </span>            :          * Not allowed to cross zone boundaries. Otherwise, the BIO will be</a>
+<a name="639"><span class="lineNum">     639 </span>            :          * split and could result in non-contiguous sectors being written in</a>
+<a name="640"><span class="lineNum">     640 </span>            :          * different zones.</a>
+<a name="641"><span class="lineNum">     641 </span>            :          */</a>
+<a name="642"><span class="lineNum">     642 </span>            :         if (nr_sectors &gt; q-&gt;limits.chunk_sectors)</a>
+<a name="643"><span class="lineNum">     643 </span>            :                 return BLK_STS_IOERR;</a>
+<a name="644"><span class="lineNum">     644 </span>            : </a>
+<a name="645"><span class="lineNum">     645 </span>            :         /* Make sure the BIO is small enough and will not get split */</a>
+<a name="646"><span class="lineNum">     646 </span>            :         if (nr_sectors &gt; q-&gt;limits.max_zone_append_sectors)</a>
+<a name="647"><span class="lineNum">     647 </span>            :                 return BLK_STS_IOERR;</a>
+<a name="648"><span class="lineNum">     648 </span>            : </a>
+<a name="649"><span class="lineNum">     649 </span>            :         bio-&gt;bi_opf |= REQ_NOMERGE;</a>
+<a name="650"><span class="lineNum">     650 </span>            : </a>
+<a name="651"><span class="lineNum">     651 </span>            :         return BLK_STS_OK;</a>
+<a name="652"><span class="lineNum">     652 </span>            : }</a>
+<a name="653"><span class="lineNum">     653 </span>            : </a>
+<a name="654"><span class="lineNum">     654 </span><span class="lineNoCov">          0 : static void __submit_bio(struct bio *bio)</span></a>
+<a name="655"><span class="lineNum">     655 </span>            : {</a>
+<a name="656"><span class="lineNum">     656 </span><span class="lineNoCov">          0 :         struct gendisk *disk = bio-&gt;bi_bdev-&gt;bd_disk;</span></a>
+<a name="657"><span class="lineNum">     657 </span>            : </a>
+<a name="658"><span class="lineNum">     658 </span><span class="lineNoCov">          0 :         if (unlikely(!blk_crypto_bio_prep(&amp;bio)))</span></a>
+<a name="659"><span class="lineNum">     659 </span>            :                 return;</a>
+<a name="660"><span class="lineNum">     660 </span>            : </a>
+<a name="661"><span class="lineNum">     661 </span><span class="lineNoCov">          0 :         if (!disk-&gt;fops-&gt;submit_bio) {</span></a>
+<a name="662"><span class="lineNum">     662 </span><span class="lineNoCov">          0 :                 blk_mq_submit_bio(bio);</span></a>
+<a name="663"><span class="lineNum">     663 </span><span class="lineNoCov">          0 :         } else if (likely(bio_queue_enter(bio) == 0)) {</span></a>
+<a name="664"><span class="lineNum">     664 </span><span class="lineNoCov">          0 :                 disk-&gt;fops-&gt;submit_bio(bio);</span></a>
+<a name="665"><span class="lineNum">     665 </span><span class="lineNoCov">          0 :                 blk_queue_exit(disk-&gt;queue);</span></a>
+<a name="666"><span class="lineNum">     666 </span>            :         }</a>
+<a name="667"><span class="lineNum">     667 </span>            : }</a>
+<a name="668"><span class="lineNum">     668 </span>            : </a>
+<a name="669"><span class="lineNum">     669 </span>            : /*</a>
+<a name="670"><span class="lineNum">     670 </span>            :  * The loop in this function may be a bit non-obvious, and so deserves some</a>
+<a name="671"><span class="lineNum">     671 </span>            :  * explanation:</a>
+<a name="672"><span class="lineNum">     672 </span>            :  *</a>
+<a name="673"><span class="lineNum">     673 </span>            :  *  - Before entering the loop, bio-&gt;bi_next is NULL (as all callers ensure</a>
+<a name="674"><span class="lineNum">     674 </span>            :  *    that), so we have a list with a single bio.</a>
+<a name="675"><span class="lineNum">     675 </span>            :  *  - We pretend that we have just taken it off a longer list, so we assign</a>
+<a name="676"><span class="lineNum">     676 </span>            :  *    bio_list to a pointer to the bio_list_on_stack, thus initialising the</a>
+<a name="677"><span class="lineNum">     677 </span>            :  *    bio_list of new bios to be added.  -&gt;submit_bio() may indeed add some more</a>
+<a name="678"><span class="lineNum">     678 </span>            :  *    bios through a recursive call to submit_bio_noacct.  If it did, we find a</a>
+<a name="679"><span class="lineNum">     679 </span>            :  *    non-NULL value in bio_list and re-enter the loop from the top.</a>
+<a name="680"><span class="lineNum">     680 </span>            :  *  - In this case we really did just take the bio of the top of the list (no</a>
+<a name="681"><span class="lineNum">     681 </span>            :  *    pretending) and so remove it from bio_list, and call into -&gt;submit_bio()</a>
+<a name="682"><span class="lineNum">     682 </span>            :  *    again.</a>
+<a name="683"><span class="lineNum">     683 </span>            :  *</a>
+<a name="684"><span class="lineNum">     684 </span>            :  * bio_list_on_stack[0] contains bios submitted by the current -&gt;submit_bio.</a>
+<a name="685"><span class="lineNum">     685 </span>            :  * bio_list_on_stack[1] contains bios that were submitted before the current</a>
+<a name="686"><span class="lineNum">     686 </span>            :  *      -&gt;submit_bio, but that haven't been processed yet.</a>
+<a name="687"><span class="lineNum">     687 </span>            :  */</a>
+<a name="688"><span class="lineNum">     688 </span><span class="lineNoCov">          0 : static void __submit_bio_noacct(struct bio *bio)</span></a>
+<a name="689"><span class="lineNum">     689 </span>            : {</a>
+<a name="690"><span class="lineNum">     690 </span>            :         struct bio_list bio_list_on_stack[2];</a>
+<a name="691"><span class="lineNum">     691 </span>            : </a>
+<a name="692"><span class="lineNum">     692 </span><span class="lineNoCov">          0 :         BUG_ON(bio-&gt;bi_next);</span></a>
+<a name="693"><span class="lineNum">     693 </span>            : </a>
+<a name="694"><span class="lineNum">     694 </span><span class="lineNoCov">          0 :         bio_list_init(&amp;bio_list_on_stack[0]);</span></a>
+<a name="695"><span class="lineNum">     695 </span><span class="lineNoCov">          0 :         current-&gt;bio_list = bio_list_on_stack;</span></a>
+<a name="696"><span class="lineNum">     696 </span>            : </a>
+<a name="697"><span class="lineNum">     697 </span>            :         do {</a>
+<a name="698"><span class="lineNum">     698 </span><span class="lineNoCov">          0 :                 struct request_queue *q = bdev_get_queue(bio-&gt;bi_bdev);</span></a>
+<a name="699"><span class="lineNum">     699 </span>            :                 struct bio_list lower, same;</a>
+<a name="700"><span class="lineNum">     700 </span>            : </a>
+<a name="701"><span class="lineNum">     701 </span>            :                 /*</a>
+<a name="702"><span class="lineNum">     702 </span>            :                  * Create a fresh bio_list for all subordinate requests.</a>
+<a name="703"><span class="lineNum">     703 </span>            :                  */</a>
+<a name="704"><span class="lineNum">     704 </span><span class="lineNoCov">          0 :                 bio_list_on_stack[1] = bio_list_on_stack[0];</span></a>
+<a name="705"><span class="lineNum">     705 </span><span class="lineNoCov">          0 :                 bio_list_init(&amp;bio_list_on_stack[0]);</span></a>
+<a name="706"><span class="lineNum">     706 </span>            : </a>
+<a name="707"><span class="lineNum">     707 </span><span class="lineNoCov">          0 :                 __submit_bio(bio);</span></a>
+<a name="708"><span class="lineNum">     708 </span>            : </a>
+<a name="709"><span class="lineNum">     709 </span>            :                 /*</a>
+<a name="710"><span class="lineNum">     710 </span>            :                  * Sort new bios into those for a lower level and those for the</a>
+<a name="711"><span class="lineNum">     711 </span>            :                  * same level.</a>
+<a name="712"><span class="lineNum">     712 </span>            :                  */</a>
+<a name="713"><span class="lineNum">     713 </span><span class="lineNoCov">          0 :                 bio_list_init(&amp;lower);</span></a>
+<a name="714"><span class="lineNum">     714 </span>            :                 bio_list_init(&amp;same);</a>
+<a name="715"><span class="lineNum">     715 </span><span class="lineNoCov">          0 :                 while ((bio = bio_list_pop(&amp;bio_list_on_stack[0])) != NULL)</span></a>
+<a name="716"><span class="lineNum">     716 </span><span class="lineNoCov">          0 :                         if (q == bdev_get_queue(bio-&gt;bi_bdev))</span></a>
+<a name="717"><span class="lineNum">     717 </span>            :                                 bio_list_add(&amp;same, bio);</a>
+<a name="718"><span class="lineNum">     718 </span>            :                         else</a>
+<a name="719"><span class="lineNum">     719 </span>            :                                 bio_list_add(&amp;lower, bio);</a>
+<a name="720"><span class="lineNum">     720 </span>            : </a>
+<a name="721"><span class="lineNum">     721 </span>            :                 /*</a>
+<a name="722"><span class="lineNum">     722 </span>            :                  * Now assemble so we handle the lowest level first.</a>
+<a name="723"><span class="lineNum">     723 </span>            :                  */</a>
+<a name="724"><span class="lineNum">     724 </span><span class="lineNoCov">          0 :                 bio_list_merge(&amp;bio_list_on_stack[0], &amp;lower);</span></a>
+<a name="725"><span class="lineNum">     725 </span><span class="lineNoCov">          0 :                 bio_list_merge(&amp;bio_list_on_stack[0], &amp;same);</span></a>
+<a name="726"><span class="lineNum">     726 </span><span class="lineNoCov">          0 :                 bio_list_merge(&amp;bio_list_on_stack[0], &amp;bio_list_on_stack[1]);</span></a>
+<a name="727"><span class="lineNum">     727 </span><span class="lineNoCov">          0 :         } while ((bio = bio_list_pop(&amp;bio_list_on_stack[0])));</span></a>
+<a name="728"><span class="lineNum">     728 </span>            : </a>
+<a name="729"><span class="lineNum">     729 </span><span class="lineNoCov">          0 :         current-&gt;bio_list = NULL;</span></a>
+<a name="730"><span class="lineNum">     730 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="731"><span class="lineNum">     731 </span>            : </a>
+<a name="732"><span class="lineNum">     732 </span><span class="lineNoCov">          0 : static void __submit_bio_noacct_mq(struct bio *bio)</span></a>
+<a name="733"><span class="lineNum">     733 </span>            : {</a>
+<a name="734"><span class="lineNum">     734 </span><span class="lineNoCov">          0 :         struct bio_list bio_list[2] = { };</span></a>
+<a name="735"><span class="lineNum">     735 </span>            : </a>
+<a name="736"><span class="lineNum">     736 </span><span class="lineNoCov">          0 :         current-&gt;bio_list = bio_list;</span></a>
+<a name="737"><span class="lineNum">     737 </span>            : </a>
+<a name="738"><span class="lineNum">     738 </span>            :         do {</a>
+<a name="739"><span class="lineNum">     739 </span><span class="lineNoCov">          0 :                 __submit_bio(bio);</span></a>
+<a name="740"><span class="lineNum">     740 </span><span class="lineNoCov">          0 :         } while ((bio = bio_list_pop(&amp;bio_list[0])));</span></a>
+<a name="741"><span class="lineNum">     741 </span>            : </a>
+<a name="742"><span class="lineNum">     742 </span><span class="lineNoCov">          0 :         current-&gt;bio_list = NULL;</span></a>
+<a name="743"><span class="lineNum">     743 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="744"><span class="lineNum">     744 </span>            : </a>
+<a name="745"><span class="lineNum">     745 </span><span class="lineNoCov">          0 : void submit_bio_noacct_nocheck(struct bio *bio)</span></a>
+<a name="746"><span class="lineNum">     746 </span>            : {</a>
+<a name="747"><span class="lineNum">     747 </span>            :         /*</a>
+<a name="748"><span class="lineNum">     748 </span>            :          * We only want one -&gt;submit_bio to be active at a time, else stack</a>
+<a name="749"><span class="lineNum">     749 </span>            :          * usage with stacked devices could be a problem.  Use current-&gt;bio_list</a>
+<a name="750"><span class="lineNum">     750 </span>            :          * to collect a list of requests submited by a -&gt;submit_bio method while</a>
+<a name="751"><span class="lineNum">     751 </span>            :          * it is active, and then process them after it returned.</a>
+<a name="752"><span class="lineNum">     752 </span>            :          */</a>
+<a name="753"><span class="lineNum">     753 </span><span class="lineNoCov">          0 :         if (current-&gt;bio_list)</span></a>
+<a name="754"><span class="lineNum">     754 </span><span class="lineNoCov">          0 :                 bio_list_add(&amp;current-&gt;bio_list[0], bio);</span></a>
+<a name="755"><span class="lineNum">     755 </span><span class="lineNoCov">          0 :         else if (!bio-&gt;bi_bdev-&gt;bd_disk-&gt;fops-&gt;submit_bio)</span></a>
+<a name="756"><span class="lineNum">     756 </span><span class="lineNoCov">          0 :                 __submit_bio_noacct_mq(bio);</span></a>
+<a name="757"><span class="lineNum">     757 </span>            :         else</a>
+<a name="758"><span class="lineNum">     758 </span><span class="lineNoCov">          0 :                 __submit_bio_noacct(bio);</span></a>
+<a name="759"><span class="lineNum">     759 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="760"><span class="lineNum">     760 </span>            : </a>
+<a name="761"><span class="lineNum">     761 </span>            : /**</a>
+<a name="762"><span class="lineNum">     762 </span>            :  * submit_bio_noacct - re-submit a bio to the block device layer for I/O</a>
+<a name="763"><span class="lineNum">     763 </span>            :  * @bio:  The bio describing the location in memory and on the device.</a>
+<a name="764"><span class="lineNum">     764 </span>            :  *</a>
+<a name="765"><span class="lineNum">     765 </span>            :  * This is a version of submit_bio() that shall only be used for I/O that is</a>
+<a name="766"><span class="lineNum">     766 </span>            :  * resubmitted to lower level drivers by stacking block drivers.  All file</a>
+<a name="767"><span class="lineNum">     767 </span>            :  * systems and other upper level users of the block layer should use</a>
+<a name="768"><span class="lineNum">     768 </span>            :  * submit_bio() instead.</a>
+<a name="769"><span class="lineNum">     769 </span>            :  */</a>
+<a name="770"><span class="lineNum">     770 </span><span class="lineNoCov">          0 : void submit_bio_noacct(struct bio *bio)</span></a>
+<a name="771"><span class="lineNum">     771 </span>            : {</a>
+<a name="772"><span class="lineNum">     772 </span><span class="lineNoCov">          0 :         struct block_device *bdev = bio-&gt;bi_bdev;</span></a>
+<a name="773"><span class="lineNum">     773 </span><span class="lineNoCov">          0 :         struct request_queue *q = bdev_get_queue(bdev);</span></a>
+<a name="774"><span class="lineNum">     774 </span><span class="lineNoCov">          0 :         blk_status_t status = BLK_STS_IOERR;</span></a>
+<a name="775"><span class="lineNum">     775 </span>            :         struct blk_plug *plug;</a>
+<a name="776"><span class="lineNum">     776 </span>            : </a>
+<a name="777"><span class="lineNum">     777 </span>            :         might_sleep();</a>
+<a name="778"><span class="lineNum">     778 </span>            : </a>
+<a name="779"><span class="lineNum">     779 </span><span class="lineNoCov">          0 :         plug = blk_mq_plug(q, bio);</span></a>
+<a name="780"><span class="lineNum">     780 </span><span class="lineNoCov">          0 :         if (plug &amp;&amp; plug-&gt;nowait)</span></a>
+<a name="781"><span class="lineNum">     781 </span><span class="lineNoCov">          0 :                 bio-&gt;bi_opf |= REQ_NOWAIT;</span></a>
+<a name="782"><span class="lineNum">     782 </span>            : </a>
+<a name="783"><span class="lineNum">     783 </span>            :         /*</a>
+<a name="784"><span class="lineNum">     784 </span>            :          * For a REQ_NOWAIT based request, return -EOPNOTSUPP</a>
+<a name="785"><span class="lineNum">     785 </span>            :          * if queue does not support NOWAIT.</a>
+<a name="786"><span class="lineNum">     786 </span>            :          */</a>
+<a name="787"><span class="lineNum">     787 </span><span class="lineNoCov">          0 :         if ((bio-&gt;bi_opf &amp; REQ_NOWAIT) &amp;&amp; !blk_queue_nowait(q))</span></a>
+<a name="788"><span class="lineNum">     788 </span>            :                 goto not_supported;</a>
+<a name="789"><span class="lineNum">     789 </span>            : </a>
+<a name="790"><span class="lineNum">     790 </span><span class="lineNoCov">          0 :         if (should_fail_bio(bio))</span></a>
+<a name="791"><span class="lineNum">     791 </span>            :                 goto end_io;</a>
+<a name="792"><span class="lineNum">     792 </span><span class="lineNoCov">          0 :         if (unlikely(bio_check_ro(bio)))</span></a>
+<a name="793"><span class="lineNum">     793 </span>            :                 goto end_io;</a>
+<a name="794"><span class="lineNum">     794 </span><span class="lineNoCov">          0 :         if (!bio_flagged(bio, BIO_REMAPPED)) {</span></a>
+<a name="795"><span class="lineNum">     795 </span><span class="lineNoCov">          0 :                 if (unlikely(bio_check_eod(bio)))</span></a>
+<a name="796"><span class="lineNum">     796 </span>            :                         goto end_io;</a>
+<a name="797"><span class="lineNum">     797 </span><span class="lineNoCov">          0 :                 if (bdev-&gt;bd_partno &amp;&amp; unlikely(blk_partition_remap(bio)))</span></a>
+<a name="798"><span class="lineNum">     798 </span>            :                         goto end_io;</a>
+<a name="799"><span class="lineNum">     799 </span>            :         }</a>
+<a name="800"><span class="lineNum">     800 </span>            : </a>
+<a name="801"><span class="lineNum">     801 </span>            :         /*</a>
+<a name="802"><span class="lineNum">     802 </span>            :          * Filter flush bio's early so that bio based drivers without flush</a>
+<a name="803"><span class="lineNum">     803 </span>            :          * support don't have to worry about them.</a>
+<a name="804"><span class="lineNum">     804 </span>            :          */</a>
+<a name="805"><span class="lineNum">     805 </span><span class="lineNoCov">          0 :         if (op_is_flush(bio-&gt;bi_opf) &amp;&amp;</span></a>
+<a name="806"><span class="lineNum">     806 </span><span class="lineNoCov">          0 :             !test_bit(QUEUE_FLAG_WC, &amp;q-&gt;queue_flags)) {</span></a>
+<a name="807"><span class="lineNum">     807 </span><span class="lineNoCov">          0 :                 bio-&gt;bi_opf &amp;= ~(REQ_PREFLUSH | REQ_FUA);</span></a>
+<a name="808"><span class="lineNum">     808 </span><span class="lineNoCov">          0 :                 if (!bio_sectors(bio)) {</span></a>
+<a name="809"><span class="lineNum">     809 </span>            :                         status = BLK_STS_OK;</a>
+<a name="810"><span class="lineNum">     810 </span>            :                         goto end_io;</a>
+<a name="811"><span class="lineNum">     811 </span>            :                 }</a>
+<a name="812"><span class="lineNum">     812 </span>            :         }</a>
+<a name="813"><span class="lineNum">     813 </span>            : </a>
+<a name="814"><span class="lineNum">     814 </span><span class="lineNoCov">          0 :         if (!test_bit(QUEUE_FLAG_POLL, &amp;q-&gt;queue_flags))</span></a>
+<a name="815"><span class="lineNum">     815 </span>            :                 bio_clear_polled(bio);</a>
+<a name="816"><span class="lineNum">     816 </span>            : </a>
+<a name="817"><span class="lineNum">     817 </span><span class="lineNoCov">          0 :         switch (bio_op(bio)) {</span></a>
+<a name="818"><span class="lineNum">     818 </span>            :         case REQ_OP_DISCARD:</a>
+<a name="819"><span class="lineNum">     819 </span><span class="lineNoCov">          0 :                 if (!blk_queue_discard(q))</span></a>
+<a name="820"><span class="lineNum">     820 </span>            :                         goto not_supported;</a>
+<a name="821"><span class="lineNum">     821 </span>            :                 break;</a>
+<a name="822"><span class="lineNum">     822 </span>            :         case REQ_OP_SECURE_ERASE:</a>
+<a name="823"><span class="lineNum">     823 </span><span class="lineNoCov">          0 :                 if (!blk_queue_secure_erase(q))</span></a>
+<a name="824"><span class="lineNum">     824 </span>            :                         goto not_supported;</a>
+<a name="825"><span class="lineNum">     825 </span>            :                 break;</a>
+<a name="826"><span class="lineNum">     826 </span>            :         case REQ_OP_ZONE_APPEND:</a>
+<a name="827"><span class="lineNum">     827 </span>            :                 status = blk_check_zone_append(q, bio);</a>
+<a name="828"><span class="lineNum">     828 </span>            :                 if (status != BLK_STS_OK)</a>
+<a name="829"><span class="lineNum">     829 </span>            :                         goto end_io;</a>
+<a name="830"><span class="lineNum">     830 </span>            :                 break;</a>
+<a name="831"><span class="lineNum">     831 </span>            :         case REQ_OP_ZONE_RESET:</a>
+<a name="832"><span class="lineNum">     832 </span>            :         case REQ_OP_ZONE_OPEN:</a>
+<a name="833"><span class="lineNum">     833 </span>            :         case REQ_OP_ZONE_CLOSE:</a>
+<a name="834"><span class="lineNum">     834 </span>            :         case REQ_OP_ZONE_FINISH:</a>
+<a name="835"><span class="lineNum">     835 </span>            :                 if (!blk_queue_is_zoned(q))</a>
+<a name="836"><span class="lineNum">     836 </span>            :                         goto not_supported;</a>
+<a name="837"><span class="lineNum">     837 </span>            :                 break;</a>
+<a name="838"><span class="lineNum">     838 </span>            :         case REQ_OP_ZONE_RESET_ALL:</a>
+<a name="839"><span class="lineNum">     839 </span>            :                 if (!blk_queue_is_zoned(q) || !blk_queue_zone_resetall(q))</a>
+<a name="840"><span class="lineNum">     840 </span>            :                         goto not_supported;</a>
+<a name="841"><span class="lineNum">     841 </span>            :                 break;</a>
+<a name="842"><span class="lineNum">     842 </span>            :         case REQ_OP_WRITE_ZEROES:</a>
+<a name="843"><span class="lineNum">     843 </span><span class="lineNoCov">          0 :                 if (!q-&gt;limits.max_write_zeroes_sectors)</span></a>
+<a name="844"><span class="lineNum">     844 </span>            :                         goto not_supported;</a>
+<a name="845"><span class="lineNum">     845 </span>            :                 break;</a>
+<a name="846"><span class="lineNum">     846 </span>            :         default:</a>
+<a name="847"><span class="lineNum">     847 </span>            :                 break;</a>
+<a name="848"><span class="lineNum">     848 </span>            :         }</a>
+<a name="849"><span class="lineNum">     849 </span>            : </a>
+<a name="850"><span class="lineNum">     850 </span><span class="lineNoCov">          0 :         if (blk_throtl_bio(bio))</span></a>
+<a name="851"><span class="lineNum">     851 </span>            :                 return;</a>
+<a name="852"><span class="lineNum">     852 </span>            : </a>
+<a name="853"><span class="lineNum">     853 </span><span class="lineNoCov">          0 :         blk_cgroup_bio_start(bio);</span></a>
+<a name="854"><span class="lineNum">     854 </span><span class="lineNoCov">          0 :         blkcg_bio_issue_init(bio);</span></a>
+<a name="855"><span class="lineNum">     855 </span>            : </a>
+<a name="856"><span class="lineNum">     856 </span><span class="lineNoCov">          0 :         if (!bio_flagged(bio, BIO_TRACE_COMPLETION)) {</span></a>
+<a name="857"><span class="lineNum">     857 </span><span class="lineNoCov">          0 :                 trace_block_bio_queue(bio);</span></a>
+<a name="858"><span class="lineNum">     858 </span>            :                 /* Now that enqueuing has been traced, we need to trace</a>
+<a name="859"><span class="lineNum">     859 </span>            :                  * completion as well.</a>
+<a name="860"><span class="lineNum">     860 </span>            :                  */</a>
+<a name="861"><span class="lineNum">     861 </span>            :                 bio_set_flag(bio, BIO_TRACE_COMPLETION);</a>
+<a name="862"><span class="lineNum">     862 </span>            :         }</a>
+<a name="863"><span class="lineNum">     863 </span><span class="lineNoCov">          0 :         submit_bio_noacct_nocheck(bio);</span></a>
+<a name="864"><span class="lineNum">     864 </span><span class="lineNoCov">          0 :         return;</span></a>
+<a name="865"><span class="lineNum">     865 </span>            : </a>
+<a name="866"><span class="lineNum">     866 </span>            : not_supported:</a>
+<a name="867"><span class="lineNum">     867 </span>            :         status = BLK_STS_NOTSUPP;</a>
+<a name="868"><span class="lineNum">     868 </span>            : end_io:</a>
+<a name="869"><span class="lineNum">     869 </span><span class="lineNoCov">          0 :         bio-&gt;bi_status = status;</span></a>
+<a name="870"><span class="lineNum">     870 </span><span class="lineNoCov">          0 :         bio_endio(bio);</span></a>
+<a name="871"><span class="lineNum">     871 </span>            : }</a>
+<a name="872"><span class="lineNum">     872 </span>            : EXPORT_SYMBOL(submit_bio_noacct);</a>
+<a name="873"><span class="lineNum">     873 </span>            : </a>
+<a name="874"><span class="lineNum">     874 </span>            : /**</a>
+<a name="875"><span class="lineNum">     875 </span>            :  * submit_bio - submit a bio to the block device layer for I/O</a>
+<a name="876"><span class="lineNum">     876 </span>            :  * @bio: The &amp;struct bio which describes the I/O</a>
+<a name="877"><span class="lineNum">     877 </span>            :  *</a>
+<a name="878"><span class="lineNum">     878 </span>            :  * submit_bio() is used to submit I/O requests to block devices.  It is passed a</a>
+<a name="879"><span class="lineNum">     879 </span>            :  * fully set up &amp;struct bio that describes the I/O that needs to be done.  The</a>
+<a name="880"><span class="lineNum">     880 </span>            :  * bio will be send to the device described by the bi_bdev field.</a>
+<a name="881"><span class="lineNum">     881 </span>            :  *</a>
+<a name="882"><span class="lineNum">     882 </span>            :  * The success/failure status of the request, along with notification of</a>
+<a name="883"><span class="lineNum">     883 </span>            :  * completion, is delivered asynchronously through the -&gt;bi_end_io() callback</a>
+<a name="884"><span class="lineNum">     884 </span>            :  * in @bio.  The bio must NOT be touched by thecaller until -&gt;bi_end_io() has</a>
+<a name="885"><span class="lineNum">     885 </span>            :  * been called.</a>
+<a name="886"><span class="lineNum">     886 </span>            :  */</a>
+<a name="887"><span class="lineNum">     887 </span><span class="lineNoCov">          0 : void submit_bio(struct bio *bio)</span></a>
+<a name="888"><span class="lineNum">     888 </span>            : {</a>
+<a name="889"><span class="lineNum">     889 </span><span class="lineNoCov">          0 :         if (blkcg_punt_bio_submit(bio))</span></a>
+<a name="890"><span class="lineNum">     890 </span>            :                 return;</a>
+<a name="891"><span class="lineNum">     891 </span>            : </a>
+<a name="892"><span class="lineNum">     892 </span>            :         /*</a>
+<a name="893"><span class="lineNum">     893 </span>            :          * If it's a regular read/write or a barrier with data attached,</a>
+<a name="894"><span class="lineNum">     894 </span>            :          * go through the normal accounting stuff before submission.</a>
+<a name="895"><span class="lineNum">     895 </span>            :          */</a>
+<a name="896"><span class="lineNum">     896 </span><span class="lineNoCov">          0 :         if (bio_has_data(bio)) {</span></a>
+<a name="897"><span class="lineNum">     897 </span><span class="lineNoCov">          0 :                 unsigned int count = bio_sectors(bio);</span></a>
+<a name="898"><span class="lineNum">     898 </span>            : </a>
+<a name="899"><span class="lineNum">     899 </span><span class="lineNoCov">          0 :                 if (op_is_write(bio_op(bio))) {</span></a>
+<a name="900"><span class="lineNum">     900 </span><span class="lineNoCov">          0 :                         count_vm_events(PGPGOUT, count);</span></a>
+<a name="901"><span class="lineNum">     901 </span>            :                 } else {</a>
+<a name="902"><span class="lineNum">     902 </span><span class="lineNoCov">          0 :                         task_io_account_read(bio-&gt;bi_iter.bi_size);</span></a>
+<a name="903"><span class="lineNum">     903 </span><span class="lineNoCov">          0 :                         count_vm_events(PGPGIN, count);</span></a>
+<a name="904"><span class="lineNum">     904 </span>            :                 }</a>
+<a name="905"><span class="lineNum">     905 </span>            :         }</a>
+<a name="906"><span class="lineNum">     906 </span>            : </a>
+<a name="907"><span class="lineNum">     907 </span>            :         /*</a>
+<a name="908"><span class="lineNum">     908 </span>            :          * If we're reading data that is part of the userspace workingset, count</a>
+<a name="909"><span class="lineNum">     909 </span>            :          * submission time as memory stall.  When the device is congested, or</a>
+<a name="910"><span class="lineNum">     910 </span>            :          * the submitting cgroup IO-throttled, submission can be a significant</a>
+<a name="911"><span class="lineNum">     911 </span>            :          * part of overall IO time.</a>
+<a name="912"><span class="lineNum">     912 </span>            :          */</a>
+<a name="913"><span class="lineNum">     913 </span><span class="lineNoCov">          0 :         if (unlikely(bio_op(bio) == REQ_OP_READ &amp;&amp;</span></a>
+<a name="914"><span class="lineNum">     914 </span>            :             bio_flagged(bio, BIO_WORKINGSET))) {</a>
+<a name="915"><span class="lineNum">     915 </span>            :                 unsigned long pflags;</a>
+<a name="916"><span class="lineNum">     916 </span>            : </a>
+<a name="917"><span class="lineNum">     917 </span><span class="lineNoCov">          0 :                 psi_memstall_enter(&amp;pflags);</span></a>
+<a name="918"><span class="lineNum">     918 </span><span class="lineNoCov">          0 :                 submit_bio_noacct(bio);</span></a>
+<a name="919"><span class="lineNum">     919 </span><span class="lineNoCov">          0 :                 psi_memstall_leave(&amp;pflags);</span></a>
+<a name="920"><span class="lineNum">     920 </span>            :                 return;</a>
+<a name="921"><span class="lineNum">     921 </span>            :         }</a>
+<a name="922"><span class="lineNum">     922 </span>            : </a>
+<a name="923"><span class="lineNum">     923 </span><span class="lineNoCov">          0 :         submit_bio_noacct(bio);</span></a>
+<a name="924"><span class="lineNum">     924 </span>            : }</a>
+<a name="925"><span class="lineNum">     925 </span>            : EXPORT_SYMBOL(submit_bio);</a>
+<a name="926"><span class="lineNum">     926 </span>            : </a>
+<a name="927"><span class="lineNum">     927 </span>            : /**</a>
+<a name="928"><span class="lineNum">     928 </span>            :  * bio_poll - poll for BIO completions</a>
+<a name="929"><span class="lineNum">     929 </span>            :  * @bio: bio to poll for</a>
+<a name="930"><span class="lineNum">     930 </span>            :  * @iob: batches of IO</a>
+<a name="931"><span class="lineNum">     931 </span>            :  * @flags: BLK_POLL_* flags that control the behavior</a>
+<a name="932"><span class="lineNum">     932 </span>            :  *</a>
+<a name="933"><span class="lineNum">     933 </span>            :  * Poll for completions on queue associated with the bio. Returns number of</a>
+<a name="934"><span class="lineNum">     934 </span>            :  * completed entries found.</a>
+<a name="935"><span class="lineNum">     935 </span>            :  *</a>
+<a name="936"><span class="lineNum">     936 </span>            :  * Note: the caller must either be the context that submitted @bio, or</a>
+<a name="937"><span class="lineNum">     937 </span>            :  * be in a RCU critical section to prevent freeing of @bio.</a>
+<a name="938"><span class="lineNum">     938 </span>            :  */</a>
+<a name="939"><span class="lineNum">     939 </span><span class="lineNoCov">          0 : int bio_poll(struct bio *bio, struct io_comp_batch *iob, unsigned int flags)</span></a>
+<a name="940"><span class="lineNum">     940 </span>            : {</a>
+<a name="941"><span class="lineNum">     941 </span><span class="lineNoCov">          0 :         struct request_queue *q = bdev_get_queue(bio-&gt;bi_bdev);</span></a>
+<a name="942"><span class="lineNum">     942 </span><span class="lineNoCov">          0 :         blk_qc_t cookie = READ_ONCE(bio-&gt;bi_cookie);</span></a>
+<a name="943"><span class="lineNum">     943 </span><span class="lineNoCov">          0 :         int ret = 0;</span></a>
+<a name="944"><span class="lineNum">     944 </span>            : </a>
+<a name="945"><span class="lineNum">     945 </span><span class="lineNoCov">          0 :         if (cookie == BLK_QC_T_NONE ||</span></a>
+<a name="946"><span class="lineNum">     946 </span><span class="lineNoCov">          0 :             !test_bit(QUEUE_FLAG_POLL, &amp;q-&gt;queue_flags))</span></a>
+<a name="947"><span class="lineNum">     947 </span>            :                 return 0;</a>
+<a name="948"><span class="lineNum">     948 </span>            : </a>
+<a name="949"><span class="lineNum">     949 </span><span class="lineNoCov">          0 :         blk_flush_plug(current-&gt;plug, false);</span></a>
+<a name="950"><span class="lineNum">     950 </span>            : </a>
+<a name="951"><span class="lineNum">     951 </span><span class="lineNoCov">          0 :         if (blk_queue_enter(q, BLK_MQ_REQ_NOWAIT))</span></a>
+<a name="952"><span class="lineNum">     952 </span>            :                 return 0;</a>
+<a name="953"><span class="lineNum">     953 </span><span class="lineNoCov">          0 :         if (queue_is_mq(q)) {</span></a>
+<a name="954"><span class="lineNum">     954 </span><span class="lineNoCov">          0 :                 ret = blk_mq_poll(q, cookie, iob, flags);</span></a>
+<a name="955"><span class="lineNum">     955 </span>            :         } else {</a>
+<a name="956"><span class="lineNum">     956 </span><span class="lineNoCov">          0 :                 struct gendisk *disk = q-&gt;disk;</span></a>
+<a name="957"><span class="lineNum">     957 </span>            : </a>
+<a name="958"><span class="lineNum">     958 </span><span class="lineNoCov">          0 :                 if (disk &amp;&amp; disk-&gt;fops-&gt;poll_bio)</span></a>
+<a name="959"><span class="lineNum">     959 </span><span class="lineNoCov">          0 :                         ret = disk-&gt;fops-&gt;poll_bio(bio, iob, flags);</span></a>
+<a name="960"><span class="lineNum">     960 </span>            :         }</a>
+<a name="961"><span class="lineNum">     961 </span><span class="lineNoCov">          0 :         blk_queue_exit(q);</span></a>
+<a name="962"><span class="lineNum">     962 </span><span class="lineNoCov">          0 :         return ret;</span></a>
+<a name="963"><span class="lineNum">     963 </span>            : }</a>
+<a name="964"><span class="lineNum">     964 </span>            : EXPORT_SYMBOL_GPL(bio_poll);</a>
+<a name="965"><span class="lineNum">     965 </span>            : </a>
+<a name="966"><span class="lineNum">     966 </span>            : /*</a>
+<a name="967"><span class="lineNum">     967 </span>            :  * Helper to implement file_operations.iopoll.  Requires the bio to be stored</a>
+<a name="968"><span class="lineNum">     968 </span>            :  * in iocb-&gt;private, and cleared before freeing the bio.</a>
+<a name="969"><span class="lineNum">     969 </span>            :  */</a>
+<a name="970"><span class="lineNum">     970 </span><span class="lineNoCov">          0 : int iocb_bio_iopoll(struct kiocb *kiocb, struct io_comp_batch *iob,</span></a>
+<a name="971"><span class="lineNum">     971 </span>            :                     unsigned int flags)</a>
+<a name="972"><span class="lineNum">     972 </span>            : {</a>
+<a name="973"><span class="lineNum">     973 </span>            :         struct bio *bio;</a>
+<a name="974"><span class="lineNum">     974 </span><span class="lineNoCov">          0 :         int ret = 0;</span></a>
+<a name="975"><span class="lineNum">     975 </span>            : </a>
+<a name="976"><span class="lineNum">     976 </span>            :         /*</a>
+<a name="977"><span class="lineNum">     977 </span>            :          * Note: the bio cache only uses SLAB_TYPESAFE_BY_RCU, so bio can</a>
+<a name="978"><span class="lineNum">     978 </span>            :          * point to a freshly allocated bio at this point.  If that happens</a>
+<a name="979"><span class="lineNum">     979 </span>            :          * we have a few cases to consider:</a>
+<a name="980"><span class="lineNum">     980 </span>            :          *</a>
+<a name="981"><span class="lineNum">     981 </span>            :          *  1) the bio is beeing initialized and bi_bdev is NULL.  We can just</a>
+<a name="982"><span class="lineNum">     982 </span>            :          *     simply nothing in this case</a>
+<a name="983"><span class="lineNum">     983 </span>            :          *  2) the bio points to a not poll enabled device.  bio_poll will catch</a>
+<a name="984"><span class="lineNum">     984 </span>            :          *     this and return 0</a>
+<a name="985"><span class="lineNum">     985 </span>            :          *  3) the bio points to a poll capable device, including but not</a>
+<a name="986"><span class="lineNum">     986 </span>            :          *     limited to the one that the original bio pointed to.  In this</a>
+<a name="987"><span class="lineNum">     987 </span>            :          *     case we will call into the actual poll method and poll for I/O,</a>
+<a name="988"><span class="lineNum">     988 </span>            :          *     even if we don't need to, but it won't cause harm either.</a>
+<a name="989"><span class="lineNum">     989 </span>            :          *</a>
+<a name="990"><span class="lineNum">     990 </span>            :          * For cases 2) and 3) above the RCU grace period ensures that bi_bdev</a>
+<a name="991"><span class="lineNum">     991 </span>            :          * is still allocated. Because partitions hold a reference to the whole</a>
+<a name="992"><span class="lineNum">     992 </span>            :          * device bdev and thus disk, the disk is also still valid.  Grabbing</a>
+<a name="993"><span class="lineNum">     993 </span>            :          * a reference to the queue in bio_poll() ensures the hctxs and requests</a>
+<a name="994"><span class="lineNum">     994 </span>            :          * are still valid as well.</a>
+<a name="995"><span class="lineNum">     995 </span>            :          */</a>
+<a name="996"><span class="lineNum">     996 </span>            :         rcu_read_lock();</a>
+<a name="997"><span class="lineNum">     997 </span><span class="lineNoCov">          0 :         bio = READ_ONCE(kiocb-&gt;private);</span></a>
+<a name="998"><span class="lineNum">     998 </span><span class="lineNoCov">          0 :         if (bio &amp;&amp; bio-&gt;bi_bdev)</span></a>
+<a name="999"><span class="lineNum">     999 </span><span class="lineNoCov">          0 :                 ret = bio_poll(bio, iob, flags);</span></a>
+<a name="1000"><span class="lineNum">    1000 </span>            :         rcu_read_unlock();</a>
+<a name="1001"><span class="lineNum">    1001 </span>            : </a>
+<a name="1002"><span class="lineNum">    1002 </span><span class="lineNoCov">          0 :         return ret;</span></a>
+<a name="1003"><span class="lineNum">    1003 </span>            : }</a>
+<a name="1004"><span class="lineNum">    1004 </span>            : EXPORT_SYMBOL_GPL(iocb_bio_iopoll);</a>
+<a name="1005"><span class="lineNum">    1005 </span>            : </a>
+<a name="1006"><span class="lineNum">    1006 </span><span class="lineNoCov">          0 : void update_io_ticks(struct block_device *part, unsigned long now, bool end)</span></a>
+<a name="1007"><span class="lineNum">    1007 </span>            : {</a>
+<a name="1008"><span class="lineNum">    1008 </span>            :         unsigned long stamp;</a>
+<a name="1009"><span class="lineNum">    1009 </span>            : again:</a>
+<a name="1010"><span class="lineNum">    1010 </span><span class="lineNoCov">          0 :         stamp = READ_ONCE(part-&gt;bd_stamp);</span></a>
+<a name="1011"><span class="lineNum">    1011 </span><span class="lineNoCov">          0 :         if (unlikely(time_after(now, stamp))) {</span></a>
+<a name="1012"><span class="lineNum">    1012 </span><span class="lineNoCov">          0 :                 if (likely(cmpxchg(&amp;part-&gt;bd_stamp, stamp, now) == stamp))</span></a>
+<a name="1013"><span class="lineNum">    1013 </span><span class="lineNoCov">          0 :                         __part_stat_add(part, io_ticks, end ? now - stamp : 1);</span></a>
+<a name="1014"><span class="lineNum">    1014 </span>            :         }</a>
+<a name="1015"><span class="lineNum">    1015 </span><span class="lineNoCov">          0 :         if (part-&gt;bd_partno) {</span></a>
+<a name="1016"><span class="lineNum">    1016 </span><span class="lineNoCov">          0 :                 part = bdev_whole(part);</span></a>
+<a name="1017"><span class="lineNum">    1017 </span><span class="lineNoCov">          0 :                 goto again;</span></a>
+<a name="1018"><span class="lineNum">    1018 </span>            :         }</a>
+<a name="1019"><span class="lineNum">    1019 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1020"><span class="lineNum">    1020 </span>            : </a>
+<a name="1021"><span class="lineNum">    1021 </span><span class="lineNoCov">          0 : static unsigned long __part_start_io_acct(struct block_device *part,</span></a>
+<a name="1022"><span class="lineNum">    1022 </span>            :                                           unsigned int sectors, unsigned int op,</a>
+<a name="1023"><span class="lineNum">    1023 </span>            :                                           unsigned long start_time)</a>
+<a name="1024"><span class="lineNum">    1024 </span>            : {</a>
+<a name="1025"><span class="lineNum">    1025 </span><span class="lineNoCov">          0 :         const int sgrp = op_stat_group(op);</span></a>
+<a name="1026"><span class="lineNum">    1026 </span>            : </a>
+<a name="1027"><span class="lineNum">    1027 </span><span class="lineNoCov">          0 :         part_stat_lock();</span></a>
+<a name="1028"><span class="lineNum">    1028 </span><span class="lineNoCov">          0 :         update_io_ticks(part, start_time, false);</span></a>
+<a name="1029"><span class="lineNum">    1029 </span><span class="lineNoCov">          0 :         part_stat_inc(part, ios[sgrp]);</span></a>
+<a name="1030"><span class="lineNum">    1030 </span><span class="lineNoCov">          0 :         part_stat_add(part, sectors[sgrp], sectors);</span></a>
+<a name="1031"><span class="lineNum">    1031 </span><span class="lineNoCov">          0 :         part_stat_local_inc(part, in_flight[op_is_write(op)]);</span></a>
+<a name="1032"><span class="lineNum">    1032 </span><span class="lineNoCov">          0 :         part_stat_unlock();</span></a>
+<a name="1033"><span class="lineNum">    1033 </span>            : </a>
+<a name="1034"><span class="lineNum">    1034 </span><span class="lineNoCov">          0 :         return start_time;</span></a>
+<a name="1035"><span class="lineNum">    1035 </span>            : }</a>
+<a name="1036"><span class="lineNum">    1036 </span>            : </a>
+<a name="1037"><span class="lineNum">    1037 </span>            : /**</a>
+<a name="1038"><span class="lineNum">    1038 </span>            :  * bio_start_io_acct_time - start I/O accounting for bio based drivers</a>
+<a name="1039"><span class="lineNum">    1039 </span>            :  * @bio:        bio to start account for</a>
+<a name="1040"><span class="lineNum">    1040 </span>            :  * @start_time: start time that should be passed back to bio_end_io_acct().</a>
+<a name="1041"><span class="lineNum">    1041 </span>            :  */</a>
+<a name="1042"><span class="lineNum">    1042 </span><span class="lineNoCov">          0 : void bio_start_io_acct_time(struct bio *bio, unsigned long start_time)</span></a>
+<a name="1043"><span class="lineNum">    1043 </span>            : {</a>
+<a name="1044"><span class="lineNum">    1044 </span><span class="lineNoCov">          0 :         __part_start_io_acct(bio-&gt;bi_bdev, bio_sectors(bio),</span></a>
+<a name="1045"><span class="lineNum">    1045 </span><span class="lineNoCov">          0 :                              bio_op(bio), start_time);</span></a>
+<a name="1046"><span class="lineNum">    1046 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1047"><span class="lineNum">    1047 </span>            : EXPORT_SYMBOL_GPL(bio_start_io_acct_time);</a>
+<a name="1048"><span class="lineNum">    1048 </span>            : </a>
+<a name="1049"><span class="lineNum">    1049 </span>            : /**</a>
+<a name="1050"><span class="lineNum">    1050 </span>            :  * bio_start_io_acct - start I/O accounting for bio based drivers</a>
+<a name="1051"><span class="lineNum">    1051 </span>            :  * @bio:        bio to start account for</a>
+<a name="1052"><span class="lineNum">    1052 </span>            :  *</a>
+<a name="1053"><span class="lineNum">    1053 </span>            :  * Returns the start time that should be passed back to bio_end_io_acct().</a>
+<a name="1054"><span class="lineNum">    1054 </span>            :  */</a>
+<a name="1055"><span class="lineNum">    1055 </span><span class="lineNoCov">          0 : unsigned long bio_start_io_acct(struct bio *bio)</span></a>
+<a name="1056"><span class="lineNum">    1056 </span>            : {</a>
+<a name="1057"><span class="lineNum">    1057 </span><span class="lineNoCov">          0 :         return __part_start_io_acct(bio-&gt;bi_bdev, bio_sectors(bio),</span></a>
+<a name="1058"><span class="lineNum">    1058 </span><span class="lineNoCov">          0 :                                     bio_op(bio), jiffies);</span></a>
+<a name="1059"><span class="lineNum">    1059 </span>            : }</a>
+<a name="1060"><span class="lineNum">    1060 </span>            : EXPORT_SYMBOL_GPL(bio_start_io_acct);</a>
+<a name="1061"><span class="lineNum">    1061 </span>            : </a>
+<a name="1062"><span class="lineNum">    1062 </span><span class="lineNoCov">          0 : unsigned long disk_start_io_acct(struct gendisk *disk, unsigned int sectors,</span></a>
+<a name="1063"><span class="lineNum">    1063 </span>            :                                  unsigned int op)</a>
+<a name="1064"><span class="lineNum">    1064 </span>            : {</a>
+<a name="1065"><span class="lineNum">    1065 </span><span class="lineNoCov">          0 :         return __part_start_io_acct(disk-&gt;part0, sectors, op, jiffies);</span></a>
+<a name="1066"><span class="lineNum">    1066 </span>            : }</a>
+<a name="1067"><span class="lineNum">    1067 </span>            : EXPORT_SYMBOL(disk_start_io_acct);</a>
+<a name="1068"><span class="lineNum">    1068 </span>            : </a>
+<a name="1069"><span class="lineNum">    1069 </span><span class="lineNoCov">          0 : static void __part_end_io_acct(struct block_device *part, unsigned int op,</span></a>
+<a name="1070"><span class="lineNum">    1070 </span>            :                                unsigned long start_time)</a>
+<a name="1071"><span class="lineNum">    1071 </span>            : {</a>
+<a name="1072"><span class="lineNum">    1072 </span><span class="lineNoCov">          0 :         const int sgrp = op_stat_group(op);</span></a>
+<a name="1073"><span class="lineNum">    1073 </span><span class="lineNoCov">          0 :         unsigned long now = READ_ONCE(jiffies);</span></a>
+<a name="1074"><span class="lineNum">    1074 </span><span class="lineNoCov">          0 :         unsigned long duration = now - start_time;</span></a>
+<a name="1075"><span class="lineNum">    1075 </span>            : </a>
+<a name="1076"><span class="lineNum">    1076 </span><span class="lineNoCov">          0 :         part_stat_lock();</span></a>
+<a name="1077"><span class="lineNum">    1077 </span><span class="lineNoCov">          0 :         update_io_ticks(part, now, true);</span></a>
+<a name="1078"><span class="lineNum">    1078 </span><span class="lineNoCov">          0 :         part_stat_add(part, nsecs[sgrp], jiffies_to_nsecs(duration));</span></a>
+<a name="1079"><span class="lineNum">    1079 </span><span class="lineNoCov">          0 :         part_stat_local_dec(part, in_flight[op_is_write(op)]);</span></a>
+<a name="1080"><span class="lineNum">    1080 </span><span class="lineNoCov">          0 :         part_stat_unlock();</span></a>
+<a name="1081"><span class="lineNum">    1081 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1082"><span class="lineNum">    1082 </span>            : </a>
+<a name="1083"><span class="lineNum">    1083 </span><span class="lineNoCov">          0 : void bio_end_io_acct_remapped(struct bio *bio, unsigned long start_time,</span></a>
+<a name="1084"><span class="lineNum">    1084 </span>            :                 struct block_device *orig_bdev)</a>
+<a name="1085"><span class="lineNum">    1085 </span>            : {</a>
+<a name="1086"><span class="lineNum">    1086 </span><span class="lineNoCov">          0 :         __part_end_io_acct(orig_bdev, bio_op(bio), start_time);</span></a>
+<a name="1087"><span class="lineNum">    1087 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1088"><span class="lineNum">    1088 </span>            : EXPORT_SYMBOL_GPL(bio_end_io_acct_remapped);</a>
+<a name="1089"><span class="lineNum">    1089 </span>            : </a>
+<a name="1090"><span class="lineNum">    1090 </span><span class="lineNoCov">          0 : void disk_end_io_acct(struct gendisk *disk, unsigned int op,</span></a>
+<a name="1091"><span class="lineNum">    1091 </span>            :                       unsigned long start_time)</a>
+<a name="1092"><span class="lineNum">    1092 </span>            : {</a>
+<a name="1093"><span class="lineNum">    1093 </span><span class="lineNoCov">          0 :         __part_end_io_acct(disk-&gt;part0, op, start_time);</span></a>
+<a name="1094"><span class="lineNum">    1094 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1095"><span class="lineNum">    1095 </span>            : EXPORT_SYMBOL(disk_end_io_acct);</a>
+<a name="1096"><span class="lineNum">    1096 </span>            : </a>
+<a name="1097"><span class="lineNum">    1097 </span>            : /**</a>
+<a name="1098"><span class="lineNum">    1098 </span>            :  * blk_lld_busy - Check if underlying low-level drivers of a device are busy</a>
+<a name="1099"><span class="lineNum">    1099 </span>            :  * @q : the queue of the device being checked</a>
+<a name="1100"><span class="lineNum">    1100 </span>            :  *</a>
+<a name="1101"><span class="lineNum">    1101 </span>            :  * Description:</a>
+<a name="1102"><span class="lineNum">    1102 </span>            :  *    Check if underlying low-level drivers of a device are busy.</a>
+<a name="1103"><span class="lineNum">    1103 </span>            :  *    If the drivers want to export their busy state, they must set own</a>
+<a name="1104"><span class="lineNum">    1104 </span>            :  *    exporting function using blk_queue_lld_busy() first.</a>
+<a name="1105"><span class="lineNum">    1105 </span>            :  *</a>
+<a name="1106"><span class="lineNum">    1106 </span>            :  *    Basically, this function is used only by request stacking drivers</a>
+<a name="1107"><span class="lineNum">    1107 </span>            :  *    to stop dispatching requests to underlying devices when underlying</a>
+<a name="1108"><span class="lineNum">    1108 </span>            :  *    devices are busy.  This behavior helps more I/O merging on the queue</a>
+<a name="1109"><span class="lineNum">    1109 </span>            :  *    of the request stacking driver and prevents I/O throughput regression</a>
+<a name="1110"><span class="lineNum">    1110 </span>            :  *    on burst I/O load.</a>
+<a name="1111"><span class="lineNum">    1111 </span>            :  *</a>
+<a name="1112"><span class="lineNum">    1112 </span>            :  * Return:</a>
+<a name="1113"><span class="lineNum">    1113 </span>            :  *    0 - Not busy (The request stacking driver should dispatch request)</a>
+<a name="1114"><span class="lineNum">    1114 </span>            :  *    1 - Busy (The request stacking driver should stop dispatching request)</a>
+<a name="1115"><span class="lineNum">    1115 </span>            :  */</a>
+<a name="1116"><span class="lineNum">    1116 </span><span class="lineNoCov">          0 : int blk_lld_busy(struct request_queue *q)</span></a>
+<a name="1117"><span class="lineNum">    1117 </span>            : {</a>
+<a name="1118"><span class="lineNum">    1118 </span><span class="lineNoCov">          0 :         if (queue_is_mq(q) &amp;&amp; q-&gt;mq_ops-&gt;busy)</span></a>
+<a name="1119"><span class="lineNum">    1119 </span><span class="lineNoCov">          0 :                 return q-&gt;mq_ops-&gt;busy(q);</span></a>
+<a name="1120"><span class="lineNum">    1120 </span>            : </a>
+<a name="1121"><span class="lineNum">    1121 </span>            :         return 0;</a>
+<a name="1122"><span class="lineNum">    1122 </span>            : }</a>
+<a name="1123"><span class="lineNum">    1123 </span>            : EXPORT_SYMBOL_GPL(blk_lld_busy);</a>
+<a name="1124"><span class="lineNum">    1124 </span>            : </a>
+<a name="1125"><span class="lineNum">    1125 </span><span class="lineNoCov">          0 : int kblockd_schedule_work(struct work_struct *work)</span></a>
+<a name="1126"><span class="lineNum">    1126 </span>            : {</a>
+<a name="1127"><span class="lineNum">    1127 </span><span class="lineNoCov">          0 :         return queue_work(kblockd_workqueue, work);</span></a>
+<a name="1128"><span class="lineNum">    1128 </span>            : }</a>
+<a name="1129"><span class="lineNum">    1129 </span>            : EXPORT_SYMBOL(kblockd_schedule_work);</a>
+<a name="1130"><span class="lineNum">    1130 </span>            : </a>
+<a name="1131"><span class="lineNum">    1131 </span><span class="lineNoCov">          0 : int kblockd_mod_delayed_work_on(int cpu, struct delayed_work *dwork,</span></a>
+<a name="1132"><span class="lineNum">    1132 </span>            :                                 unsigned long delay)</a>
+<a name="1133"><span class="lineNum">    1133 </span>            : {</a>
+<a name="1134"><span class="lineNum">    1134 </span><span class="lineNoCov">          0 :         return mod_delayed_work_on(cpu, kblockd_workqueue, dwork, delay);</span></a>
+<a name="1135"><span class="lineNum">    1135 </span>            : }</a>
+<a name="1136"><span class="lineNum">    1136 </span>            : EXPORT_SYMBOL(kblockd_mod_delayed_work_on);</a>
+<a name="1137"><span class="lineNum">    1137 </span>            : </a>
+<a name="1138"><span class="lineNum">    1138 </span><span class="lineNoCov">          0 : void blk_start_plug_nr_ios(struct blk_plug *plug, unsigned short nr_ios)</span></a>
+<a name="1139"><span class="lineNum">    1139 </span>            : {</a>
+<a name="1140"><span class="lineNum">    1140 </span><span class="lineNoCov">          0 :         struct task_struct *tsk = current;</span></a>
+<a name="1141"><span class="lineNum">    1141 </span>            : </a>
+<a name="1142"><span class="lineNum">    1142 </span>            :         /*</a>
+<a name="1143"><span class="lineNum">    1143 </span>            :          * If this is a nested plug, don't actually assign it.</a>
+<a name="1144"><span class="lineNum">    1144 </span>            :          */</a>
+<a name="1145"><span class="lineNum">    1145 </span><span class="lineNoCov">          0 :         if (tsk-&gt;plug)</span></a>
+<a name="1146"><span class="lineNum">    1146 </span>            :                 return;</a>
+<a name="1147"><span class="lineNum">    1147 </span>            : </a>
+<a name="1148"><span class="lineNum">    1148 </span><span class="lineNoCov">          0 :         plug-&gt;mq_list = NULL;</span></a>
+<a name="1149"><span class="lineNum">    1149 </span><span class="lineNoCov">          0 :         plug-&gt;cached_rq = NULL;</span></a>
+<a name="1150"><span class="lineNum">    1150 </span><span class="lineNoCov">          0 :         plug-&gt;nr_ios = min_t(unsigned short, nr_ios, BLK_MAX_REQUEST_COUNT);</span></a>
+<a name="1151"><span class="lineNum">    1151 </span><span class="lineNoCov">          0 :         plug-&gt;rq_count = 0;</span></a>
+<a name="1152"><span class="lineNum">    1152 </span><span class="lineNoCov">          0 :         plug-&gt;multiple_queues = false;</span></a>
+<a name="1153"><span class="lineNum">    1153 </span><span class="lineNoCov">          0 :         plug-&gt;has_elevator = false;</span></a>
+<a name="1154"><span class="lineNum">    1154 </span><span class="lineNoCov">          0 :         plug-&gt;nowait = false;</span></a>
+<a name="1155"><span class="lineNum">    1155 </span><span class="lineNoCov">          0 :         INIT_LIST_HEAD(&amp;plug-&gt;cb_list);</span></a>
+<a name="1156"><span class="lineNum">    1156 </span>            : </a>
+<a name="1157"><span class="lineNum">    1157 </span>            :         /*</a>
+<a name="1158"><span class="lineNum">    1158 </span>            :          * Store ordering should not be needed here, since a potential</a>
+<a name="1159"><span class="lineNum">    1159 </span>            :          * preempt will imply a full memory barrier</a>
+<a name="1160"><span class="lineNum">    1160 </span>            :          */</a>
+<a name="1161"><span class="lineNum">    1161 </span><span class="lineNoCov">          0 :         tsk-&gt;plug = plug;</span></a>
+<a name="1162"><span class="lineNum">    1162 </span>            : }</a>
+<a name="1163"><span class="lineNum">    1163 </span>            : </a>
+<a name="1164"><span class="lineNum">    1164 </span>            : /**</a>
+<a name="1165"><span class="lineNum">    1165 </span>            :  * blk_start_plug - initialize blk_plug and track it inside the task_struct</a>
+<a name="1166"><span class="lineNum">    1166 </span>            :  * @plug:       The &amp;struct blk_plug that needs to be initialized</a>
+<a name="1167"><span class="lineNum">    1167 </span>            :  *</a>
+<a name="1168"><span class="lineNum">    1168 </span>            :  * Description:</a>
+<a name="1169"><span class="lineNum">    1169 </span>            :  *   blk_start_plug() indicates to the block layer an intent by the caller</a>
+<a name="1170"><span class="lineNum">    1170 </span>            :  *   to submit multiple I/O requests in a batch.  The block layer may use</a>
+<a name="1171"><span class="lineNum">    1171 </span>            :  *   this hint to defer submitting I/Os from the caller until blk_finish_plug()</a>
+<a name="1172"><span class="lineNum">    1172 </span>            :  *   is called.  However, the block layer may choose to submit requests</a>
+<a name="1173"><span class="lineNum">    1173 </span>            :  *   before a call to blk_finish_plug() if the number of queued I/Os</a>
+<a name="1174"><span class="lineNum">    1174 </span>            :  *   exceeds %BLK_MAX_REQUEST_COUNT, or if the size of the I/O is larger than</a>
+<a name="1175"><span class="lineNum">    1175 </span>            :  *   %BLK_PLUG_FLUSH_SIZE.  The queued I/Os may also be submitted early if</a>
+<a name="1176"><span class="lineNum">    1176 </span>            :  *   the task schedules (see below).</a>
+<a name="1177"><span class="lineNum">    1177 </span>            :  *</a>
+<a name="1178"><span class="lineNum">    1178 </span>            :  *   Tracking blk_plug inside the task_struct will help with auto-flushing the</a>
+<a name="1179"><span class="lineNum">    1179 </span>            :  *   pending I/O should the task end up blocking between blk_start_plug() and</a>
+<a name="1180"><span class="lineNum">    1180 </span>            :  *   blk_finish_plug(). This is important from a performance perspective, but</a>
+<a name="1181"><span class="lineNum">    1181 </span>            :  *   also ensures that we don't deadlock. For instance, if the task is blocking</a>
+<a name="1182"><span class="lineNum">    1182 </span>            :  *   for a memory allocation, memory reclaim could end up wanting to free a</a>
+<a name="1183"><span class="lineNum">    1183 </span>            :  *   page belonging to that request that is currently residing in our private</a>
+<a name="1184"><span class="lineNum">    1184 </span>            :  *   plug. By flushing the pending I/O when the process goes to sleep, we avoid</a>
+<a name="1185"><span class="lineNum">    1185 </span>            :  *   this kind of deadlock.</a>
+<a name="1186"><span class="lineNum">    1186 </span>            :  */</a>
+<a name="1187"><span class="lineNum">    1187 </span><span class="lineNoCov">          0 : void blk_start_plug(struct blk_plug *plug)</span></a>
+<a name="1188"><span class="lineNum">    1188 </span>            : {</a>
+<a name="1189"><span class="lineNum">    1189 </span><span class="lineNoCov">          0 :         blk_start_plug_nr_ios(plug, 1);</span></a>
+<a name="1190"><span class="lineNum">    1190 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1191"><span class="lineNum">    1191 </span>            : EXPORT_SYMBOL(blk_start_plug);</a>
+<a name="1192"><span class="lineNum">    1192 </span>            : </a>
+<a name="1193"><span class="lineNum">    1193 </span><span class="lineNoCov">          0 : static void flush_plug_callbacks(struct blk_plug *plug, bool from_schedule)</span></a>
+<a name="1194"><span class="lineNum">    1194 </span>            : {</a>
+<a name="1195"><span class="lineNum">    1195 </span><span class="lineNoCov">          0 :         LIST_HEAD(callbacks);</span></a>
+<a name="1196"><span class="lineNum">    1196 </span>            : </a>
+<a name="1197"><span class="lineNum">    1197 </span><span class="lineNoCov">          0 :         while (!list_empty(&amp;plug-&gt;cb_list)) {</span></a>
+<a name="1198"><span class="lineNum">    1198 </span><span class="lineNoCov">          0 :                 list_splice_init(&amp;plug-&gt;cb_list, &amp;callbacks);</span></a>
+<a name="1199"><span class="lineNum">    1199 </span>            : </a>
+<a name="1200"><span class="lineNum">    1200 </span><span class="lineNoCov">          0 :                 while (!list_empty(&amp;callbacks)) {</span></a>
+<a name="1201"><span class="lineNum">    1201 </span><span class="lineNoCov">          0 :                         struct blk_plug_cb *cb = list_first_entry(&amp;callbacks,</span></a>
+<a name="1202"><span class="lineNum">    1202 </span>            :                                                           struct blk_plug_cb,</a>
+<a name="1203"><span class="lineNum">    1203 </span>            :                                                           list);</a>
+<a name="1204"><span class="lineNum">    1204 </span><span class="lineNoCov">          0 :                         list_del(&amp;cb-&gt;list);</span></a>
+<a name="1205"><span class="lineNum">    1205 </span><span class="lineNoCov">          0 :                         cb-&gt;callback(cb, from_schedule);</span></a>
+<a name="1206"><span class="lineNum">    1206 </span>            :                 }</a>
+<a name="1207"><span class="lineNum">    1207 </span>            :         }</a>
+<a name="1208"><span class="lineNum">    1208 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1209"><span class="lineNum">    1209 </span>            : </a>
+<a name="1210"><span class="lineNum">    1210 </span><span class="lineNoCov">          0 : struct blk_plug_cb *blk_check_plugged(blk_plug_cb_fn unplug, void *data,</span></a>
+<a name="1211"><span class="lineNum">    1211 </span>            :                                       int size)</a>
+<a name="1212"><span class="lineNum">    1212 </span>            : {</a>
+<a name="1213"><span class="lineNum">    1213 </span><span class="lineNoCov">          0 :         struct blk_plug *plug = current-&gt;plug;</span></a>
+<a name="1214"><span class="lineNum">    1214 </span>            :         struct blk_plug_cb *cb;</a>
+<a name="1215"><span class="lineNum">    1215 </span>            : </a>
+<a name="1216"><span class="lineNum">    1216 </span><span class="lineNoCov">          0 :         if (!plug)</span></a>
+<a name="1217"><span class="lineNum">    1217 </span>            :                 return NULL;</a>
+<a name="1218"><span class="lineNum">    1218 </span>            : </a>
+<a name="1219"><span class="lineNum">    1219 </span><span class="lineNoCov">          0 :         list_for_each_entry(cb, &amp;plug-&gt;cb_list, list)</span></a>
+<a name="1220"><span class="lineNum">    1220 </span><span class="lineNoCov">          0 :                 if (cb-&gt;callback == unplug &amp;&amp; cb-&gt;data == data)</span></a>
+<a name="1221"><span class="lineNum">    1221 </span>            :                         return cb;</a>
+<a name="1222"><span class="lineNum">    1222 </span>            : </a>
+<a name="1223"><span class="lineNum">    1223 </span>            :         /* Not currently on the callback list */</a>
+<a name="1224"><span class="lineNum">    1224 </span><span class="lineNoCov">          0 :         BUG_ON(size &lt; sizeof(*cb));</span></a>
+<a name="1225"><span class="lineNum">    1225 </span><span class="lineNoCov">          0 :         cb = kzalloc(size, GFP_ATOMIC);</span></a>
+<a name="1226"><span class="lineNum">    1226 </span><span class="lineNoCov">          0 :         if (cb) {</span></a>
+<a name="1227"><span class="lineNum">    1227 </span><span class="lineNoCov">          0 :                 cb-&gt;data = data;</span></a>
+<a name="1228"><span class="lineNum">    1228 </span><span class="lineNoCov">          0 :                 cb-&gt;callback = unplug;</span></a>
+<a name="1229"><span class="lineNum">    1229 </span><span class="lineNoCov">          0 :                 list_add(&amp;cb-&gt;list, &amp;plug-&gt;cb_list);</span></a>
+<a name="1230"><span class="lineNum">    1230 </span>            :         }</a>
+<a name="1231"><span class="lineNum">    1231 </span>            :         return cb;</a>
+<a name="1232"><span class="lineNum">    1232 </span>            : }</a>
+<a name="1233"><span class="lineNum">    1233 </span>            : EXPORT_SYMBOL(blk_check_plugged);</a>
+<a name="1234"><span class="lineNum">    1234 </span>            : </a>
+<a name="1235"><span class="lineNum">    1235 </span><span class="lineNoCov">          0 : void __blk_flush_plug(struct blk_plug *plug, bool from_schedule)</span></a>
+<a name="1236"><span class="lineNum">    1236 </span>            : {</a>
+<a name="1237"><span class="lineNum">    1237 </span><span class="lineNoCov">          0 :         if (!list_empty(&amp;plug-&gt;cb_list))</span></a>
+<a name="1238"><span class="lineNum">    1238 </span><span class="lineNoCov">          0 :                 flush_plug_callbacks(plug, from_schedule);</span></a>
+<a name="1239"><span class="lineNum">    1239 </span><span class="lineNoCov">          0 :         if (!rq_list_empty(plug-&gt;mq_list))</span></a>
+<a name="1240"><span class="lineNum">    1240 </span><span class="lineNoCov">          0 :                 blk_mq_flush_plug_list(plug, from_schedule);</span></a>
+<a name="1241"><span class="lineNum">    1241 </span>            :         /*</a>
+<a name="1242"><span class="lineNum">    1242 </span>            :          * Unconditionally flush out cached requests, even if the unplug</a>
+<a name="1243"><span class="lineNum">    1243 </span>            :          * event came from schedule. Since we know hold references to the</a>
+<a name="1244"><span class="lineNum">    1244 </span>            :          * queue for cached requests, we don't want a blocked task holding</a>
+<a name="1245"><span class="lineNum">    1245 </span>            :          * up a queue freeze/quiesce event.</a>
+<a name="1246"><span class="lineNum">    1246 </span>            :          */</a>
+<a name="1247"><span class="lineNum">    1247 </span><span class="lineNoCov">          0 :         if (unlikely(!rq_list_empty(plug-&gt;cached_rq)))</span></a>
+<a name="1248"><span class="lineNum">    1248 </span><span class="lineNoCov">          0 :                 blk_mq_free_plug_rqs(plug);</span></a>
+<a name="1249"><span class="lineNum">    1249 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1250"><span class="lineNum">    1250 </span>            : </a>
+<a name="1251"><span class="lineNum">    1251 </span>            : /**</a>
+<a name="1252"><span class="lineNum">    1252 </span>            :  * blk_finish_plug - mark the end of a batch of submitted I/O</a>
+<a name="1253"><span class="lineNum">    1253 </span>            :  * @plug:       The &amp;struct blk_plug passed to blk_start_plug()</a>
+<a name="1254"><span class="lineNum">    1254 </span>            :  *</a>
+<a name="1255"><span class="lineNum">    1255 </span>            :  * Description:</a>
+<a name="1256"><span class="lineNum">    1256 </span>            :  * Indicate that a batch of I/O submissions is complete.  This function</a>
+<a name="1257"><span class="lineNum">    1257 </span>            :  * must be paired with an initial call to blk_start_plug().  The intent</a>
+<a name="1258"><span class="lineNum">    1258 </span>            :  * is to allow the block layer to optimize I/O submission.  See the</a>
+<a name="1259"><span class="lineNum">    1259 </span>            :  * documentation for blk_start_plug() for more information.</a>
+<a name="1260"><span class="lineNum">    1260 </span>            :  */</a>
+<a name="1261"><span class="lineNum">    1261 </span><span class="lineNoCov">          0 : void blk_finish_plug(struct blk_plug *plug)</span></a>
+<a name="1262"><span class="lineNum">    1262 </span>            : {</a>
+<a name="1263"><span class="lineNum">    1263 </span><span class="lineNoCov">          0 :         if (plug == current-&gt;plug) {</span></a>
+<a name="1264"><span class="lineNum">    1264 </span><span class="lineNoCov">          0 :                 __blk_flush_plug(plug, false);</span></a>
+<a name="1265"><span class="lineNum">    1265 </span><span class="lineNoCov">          0 :                 current-&gt;plug = NULL;</span></a>
+<a name="1266"><span class="lineNum">    1266 </span>            :         }</a>
+<a name="1267"><span class="lineNum">    1267 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1268"><span class="lineNum">    1268 </span>            : EXPORT_SYMBOL(blk_finish_plug);</a>
+<a name="1269"><span class="lineNum">    1269 </span>            : </a>
+<a name="1270"><span class="lineNum">    1270 </span><span class="lineNoCov">          0 : void blk_io_schedule(void)</span></a>
+<a name="1271"><span class="lineNum">    1271 </span>            : {</a>
+<a name="1272"><span class="lineNum">    1272 </span>            :         /* Prevent hang_check timer from firing at us during very long I/O */</a>
+<a name="1273"><span class="lineNum">    1273 </span><span class="lineNoCov">          0 :         unsigned long timeout = sysctl_hung_task_timeout_secs * HZ / 2;</span></a>
+<a name="1274"><span class="lineNum">    1274 </span>            : </a>
+<a name="1275"><span class="lineNum">    1275 </span>            :         if (timeout)</a>
+<a name="1276"><span class="lineNum">    1276 </span>            :                 io_schedule_timeout(timeout);</a>
+<a name="1277"><span class="lineNum">    1277 </span>            :         else</a>
+<a name="1278"><span class="lineNum">    1278 </span><span class="lineNoCov">          0 :                 io_schedule();</span></a>
+<a name="1279"><span class="lineNum">    1279 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1280"><span class="lineNum">    1280 </span>            : EXPORT_SYMBOL_GPL(blk_io_schedule);</a>
+<a name="1281"><span class="lineNum">    1281 </span>            : </a>
+<a name="1282"><span class="lineNum">    1282 </span><span class="lineCov">          2 : int __init blk_dev_init(void)</span></a>
+<a name="1283"><span class="lineNum">    1283 </span>            : {</a>
+<a name="1284"><span class="lineNum">    1284 </span>            :         BUILD_BUG_ON(REQ_OP_LAST &gt;= (1 &lt;&lt; REQ_OP_BITS));</a>
+<a name="1285"><span class="lineNum">    1285 </span>            :         BUILD_BUG_ON(REQ_OP_BITS + REQ_FLAG_BITS &gt; 8 *</a>
+<a name="1286"><span class="lineNum">    1286 </span>            :                         sizeof_field(struct request, cmd_flags));</a>
+<a name="1287"><span class="lineNum">    1287 </span>            :         BUILD_BUG_ON(REQ_OP_BITS + REQ_FLAG_BITS &gt; 8 *</a>
+<a name="1288"><span class="lineNum">    1288 </span>            :                         sizeof_field(struct bio, bi_opf));</a>
+<a name="1289"><span class="lineNum">    1289 </span>            :         BUILD_BUG_ON(ALIGN(offsetof(struct request_queue, srcu),</a>
+<a name="1290"><span class="lineNum">    1290 </span>            :                            __alignof__(struct request_queue)) !=</a>
+<a name="1291"><span class="lineNum">    1291 </span>            :                      sizeof(struct request_queue));</a>
+<a name="1292"><span class="lineNum">    1292 </span>            : </a>
+<a name="1293"><span class="lineNum">    1293 </span>            :         /* used for unplugging and affects IO latency/throughput - HIGHPRI */</a>
+<a name="1294"><span class="lineNum">    1294 </span><span class="lineCov">          2 :         kblockd_workqueue = alloc_workqueue(&quot;kblockd&quot;,</span></a>
+<a name="1295"><span class="lineNum">    1295 </span>            :                                             WQ_MEM_RECLAIM | WQ_HIGHPRI, 0);</a>
+<a name="1296"><span class="lineNum">    1296 </span><span class="lineCov">          2 :         if (!kblockd_workqueue)</span></a>
+<a name="1297"><span class="lineNum">    1297 </span><span class="lineNoCov">          0 :                 panic(&quot;Failed to create kblockd\n&quot;);</span></a>
+<a name="1298"><span class="lineNum">    1298 </span>            : </a>
+<a name="1299"><span class="lineNum">    1299 </span><span class="lineCov">          2 :         blk_requestq_cachep = kmem_cache_create(&quot;request_queue&quot;,</span></a>
+<a name="1300"><span class="lineNum">    1300 </span>            :                         sizeof(struct request_queue), 0, SLAB_PANIC, NULL);</a>
+<a name="1301"><span class="lineNum">    1301 </span>            : </a>
+<a name="1302"><span class="lineNum">    1302 </span><span class="lineCov">          2 :         blk_requestq_srcu_cachep = kmem_cache_create(&quot;request_queue_srcu&quot;,</span></a>
+<a name="1303"><span class="lineNum">    1303 </span>            :                         sizeof(struct request_queue) +</a>
+<a name="1304"><span class="lineNum">    1304 </span>            :                         sizeof(struct srcu_struct), 0, SLAB_PANIC, NULL);</a>
+<a name="1305"><span class="lineNum">    1305 </span>            : </a>
+<a name="1306"><span class="lineNum">    1306 </span><span class="lineCov">          4 :         blk_debugfs_root = debugfs_create_dir(&quot;block&quot;, NULL);</span></a>
+<a name="1307"><span class="lineNum">    1307 </span>            : </a>
+<a name="1308"><span class="lineNum">    1308 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="1309"><span class="lineNum">    1309 </span>            : }</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

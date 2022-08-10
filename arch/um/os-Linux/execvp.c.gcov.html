@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - arch/um/os-Linux/execvp.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">arch/um/os-Linux</a> - execvp.c<span style="font-size: 80%;"> (source / <a href="execvp.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">27</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Copyright (C) 2006 by Paolo Giarrusso - modified from glibc' execvp.c.</a>
+<a name="2"><span class="lineNum">       2 </span>            :    Original copyright notice follows:</a>
+<a name="3"><span class="lineNum">       3 </span>            : </a>
+<a name="4"><span class="lineNum">       4 </span>            :    Copyright (C) 1991,92,1995-99,2002,2004 Free Software Foundation, Inc.</a>
+<a name="5"><span class="lineNum">       5 </span>            :    This file is part of the GNU C Library.</a>
+<a name="6"><span class="lineNum">       6 </span>            : </a>
+<a name="7"><span class="lineNum">       7 </span>            :    The GNU C Library is free software; you can redistribute it and/or</a>
+<a name="8"><span class="lineNum">       8 </span>            :    modify it under the terms of the GNU Lesser General Public</a>
+<a name="9"><span class="lineNum">       9 </span>            :    License as published by the Free Software Foundation; either</a>
+<a name="10"><span class="lineNum">      10 </span>            :    version 2.1 of the License, or (at your option) any later version.</a>
+<a name="11"><span class="lineNum">      11 </span>            : </a>
+<a name="12"><span class="lineNum">      12 </span>            :    The GNU C Library is distributed in the hope that it will be useful,</a>
+<a name="13"><span class="lineNum">      13 </span>            :    but WITHOUT ANY WARRANTY; without even the implied warranty of</a>
+<a name="14"><span class="lineNum">      14 </span>            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</a>
+<a name="15"><span class="lineNum">      15 </span>            :    Lesser General Public License for more details.</a>
+<a name="16"><span class="lineNum">      16 </span>            : </a>
+<a name="17"><span class="lineNum">      17 </span>            :    You should have received a copy of the GNU Lesser General Public</a>
+<a name="18"><span class="lineNum">      18 </span>            :    License along with the GNU C Library; if not, write to the Free</a>
+<a name="19"><span class="lineNum">      19 </span>            :    Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA</a>
+<a name="20"><span class="lineNum">      20 </span>            :    02111-1307 USA.  */</a>
+<a name="21"><span class="lineNum">      21 </span>            : #include &lt;unistd.h&gt;</a>
+<a name="22"><span class="lineNum">      22 </span>            : </a>
+<a name="23"><span class="lineNum">      23 </span>            : #include &lt;stdbool.h&gt;</a>
+<a name="24"><span class="lineNum">      24 </span>            : #include &lt;stdlib.h&gt;</a>
+<a name="25"><span class="lineNum">      25 </span>            : #include &lt;string.h&gt;</a>
+<a name="26"><span class="lineNum">      26 </span>            : #include &lt;errno.h&gt;</a>
+<a name="27"><span class="lineNum">      27 </span>            : #include &lt;limits.h&gt;</a>
+<a name="28"><span class="lineNum">      28 </span>            : </a>
+<a name="29"><span class="lineNum">      29 </span>            : #ifndef TEST</a>
+<a name="30"><span class="lineNum">      30 </span>            : #include &lt;um_malloc.h&gt;</a>
+<a name="31"><span class="lineNum">      31 </span>            : #else</a>
+<a name="32"><span class="lineNum">      32 </span>            : #include &lt;stdio.h&gt;</a>
+<a name="33"><span class="lineNum">      33 </span>            : #define um_kmalloc malloc</a>
+<a name="34"><span class="lineNum">      34 </span>            : #endif</a>
+<a name="35"><span class="lineNum">      35 </span>            : #include &lt;os.h&gt;</a>
+<a name="36"><span class="lineNum">      36 </span>            : </a>
+<a name="37"><span class="lineNum">      37 </span>            : /* Execute FILE, searching in the `PATH' environment variable if it contains</a>
+<a name="38"><span class="lineNum">      38 </span>            :    no slashes, with arguments ARGV and environment from `environ'.  */</a>
+<a name="39"><span class="lineNum">      39 </span><span class="lineNoCov">          0 : int execvp_noalloc(char *buf, const char *file, char *const argv[])</span></a>
+<a name="40"><span class="lineNum">      40 </span>            : {</a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineNoCov">          0 :         if (*file == '\0') {</span></a>
+<a name="42"><span class="lineNum">      42 </span>            :                 return -ENOENT;</a>
+<a name="43"><span class="lineNum">      43 </span>            :         }</a>
+<a name="44"><span class="lineNum">      44 </span>            : </a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 :         if (strchr (file, '/') != NULL) {</span></a>
+<a name="46"><span class="lineNum">      46 </span>            :                 /* Don't search when it contains a slash.  */</a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineNoCov">          0 :                 execv(file, argv);</span></a>
+<a name="48"><span class="lineNum">      48 </span>            :         } else {</a>
+<a name="49"><span class="lineNum">      49 </span>            :                 int got_eacces;</a>
+<a name="50"><span class="lineNum">      50 </span>            :                 size_t len, pathlen;</a>
+<a name="51"><span class="lineNum">      51 </span>            :                 char *name, *p;</a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineNoCov">          0 :                 char *path = getenv(&quot;PATH&quot;);</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineNoCov">          0 :                 if (path == NULL)</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineNoCov">          0 :                         path = &quot;:/bin:/usr/bin&quot;;</span></a>
+<a name="55"><span class="lineNum">      55 </span>            : </a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 :                 len = strlen(file) + 1;</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 :                 pathlen = strlen(path);</span></a>
+<a name="58"><span class="lineNum">      58 </span>            :                 /* Copy the file name at the top.  */</a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :                 name = memcpy(buf + pathlen + 1, file, len);</span></a>
+<a name="60"><span class="lineNum">      60 </span>            :                 /* And add the slash.  */</a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 :                 *--name = '/';</span></a>
+<a name="62"><span class="lineNum">      62 </span>            : </a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :                 got_eacces = 0;</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 :                 p = path;</span></a>
+<a name="65"><span class="lineNum">      65 </span>            :                 do {</a>
+<a name="66"><span class="lineNum">      66 </span>            :                         char *startp;</a>
+<a name="67"><span class="lineNum">      67 </span>            : </a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :                         path = p;</span></a>
+<a name="69"><span class="lineNum">      69 </span>            :                         //Let's avoid this GNU extension.</a>
+<a name="70"><span class="lineNum">      70 </span>            :                         //p = strchrnul (path, ':');</a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :                         p = strchr(path, ':');</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :                         if (!p)</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 :                                 p = strchr(path, '\0');</span></a>
+<a name="74"><span class="lineNum">      74 </span>            : </a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 :                         if (p == path)</span></a>
+<a name="76"><span class="lineNum">      76 </span>            :                                 /* Two adjacent colons, or a colon at the beginning or the end</a>
+<a name="77"><span class="lineNum">      77 </span>            :                                    of `PATH' means to search the current directory.  */</a>
+<a name="78"><span class="lineNum">      78 </span>            :                                 startp = name + 1;</a>
+<a name="79"><span class="lineNum">      79 </span>            :                         else</a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :                                 startp = memcpy(name - (p - path), path, p - path);</span></a>
+<a name="81"><span class="lineNum">      81 </span>            : </a>
+<a name="82"><span class="lineNum">      82 </span>            :                         /* Try to execute this name.  If it works, execv will not return.  */</a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 :                         execv(startp, argv);</span></a>
+<a name="84"><span class="lineNum">      84 </span>            : </a>
+<a name="85"><span class="lineNum">      85 </span>            :                         /*</a>
+<a name="86"><span class="lineNum">      86 </span>            :                         if (errno == ENOEXEC) {</a>
+<a name="87"><span class="lineNum">      87 </span>            :                         }</a>
+<a name="88"><span class="lineNum">      88 </span>            :                         */</a>
+<a name="89"><span class="lineNum">      89 </span>            : </a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 :                         switch (errno) {</span></a>
+<a name="91"><span class="lineNum">      91 </span>            :                                 case EACCES:</a>
+<a name="92"><span class="lineNum">      92 </span>            :                                         /* Record the we got a `Permission denied' error.  If we end</a>
+<a name="93"><span class="lineNum">      93 </span>            :                                            up finding no executable we can use, we want to diagnose</a>
+<a name="94"><span class="lineNum">      94 </span>            :                                            that we did find one but were denied access.  */</a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 :                                         got_eacces = 1;</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 :                                         break;</span></a>
+<a name="97"><span class="lineNum">      97 </span>            :                                 case ENOENT:</a>
+<a name="98"><span class="lineNum">      98 </span>            :                                 case ESTALE:</a>
+<a name="99"><span class="lineNum">      99 </span>            :                                 case ENOTDIR:</a>
+<a name="100"><span class="lineNum">     100 </span>            :                                         /* Those errors indicate the file is missing or not executable</a>
+<a name="101"><span class="lineNum">     101 </span>            :                                            by us, in which case we want to just try the next path</a>
+<a name="102"><span class="lineNum">     102 </span>            :                                            directory.  */</a>
+<a name="103"><span class="lineNum">     103 </span>            :                                 case ENODEV:</a>
+<a name="104"><span class="lineNum">     104 </span>            :                                 case ETIMEDOUT:</a>
+<a name="105"><span class="lineNum">     105 </span>            :                                         /* Some strange filesystems like AFS return even</a>
+<a name="106"><span class="lineNum">     106 </span>            :                                            stranger error numbers.  They cannot reasonably mean</a>
+<a name="107"><span class="lineNum">     107 </span>            :                                            anything else so ignore those, too.  */</a>
+<a name="108"><span class="lineNum">     108 </span>            :                                 case ENOEXEC:</a>
+<a name="109"><span class="lineNum">     109 </span>            :                                         /* We won't go searching for the shell</a>
+<a name="110"><span class="lineNum">     110 </span>            :                                          * if it is not executable - the Linux</a>
+<a name="111"><span class="lineNum">     111 </span>            :                                          * kernel already handles this enough,</a>
+<a name="112"><span class="lineNum">     112 </span>            :                                          * for us. */</a>
+<a name="113"><span class="lineNum">     113 </span>            :                                         break;</a>
+<a name="114"><span class="lineNum">     114 </span>            : </a>
+<a name="115"><span class="lineNum">     115 </span>            :                                 default:</a>
+<a name="116"><span class="lineNum">     116 </span>            :                                         /* Some other error means we found an executable file, but</a>
+<a name="117"><span class="lineNum">     117 </span>            :                                            something went wrong executing it; return the error to our</a>
+<a name="118"><span class="lineNum">     118 </span>            :                                            caller.  */</a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 :                                         return -errno;</span></a>
+<a name="120"><span class="lineNum">     120 </span>            :                         }</a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 :                 } while (*p++ != '\0');</span></a>
+<a name="122"><span class="lineNum">     122 </span>            : </a>
+<a name="123"><span class="lineNum">     123 </span>            :                 /* We tried every element and none of them worked.  */</a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :                 if (got_eacces)</span></a>
+<a name="125"><span class="lineNum">     125 </span>            :                         /* At least one failure was due to permissions, so report that</a>
+<a name="126"><span class="lineNum">     126 </span>            :                            error.  */</a>
+<a name="127"><span class="lineNum">     127 </span>            :                         return -EACCES;</a>
+<a name="128"><span class="lineNum">     128 </span>            :         }</a>
+<a name="129"><span class="lineNum">     129 </span>            : </a>
+<a name="130"><span class="lineNum">     130 </span>            :         /* Return the error from the last attempt (probably ENOENT).  */</a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineNoCov">          0 :         return -errno;</span></a>
+<a name="132"><span class="lineNum">     132 </span>            : }</a>
+<a name="133"><span class="lineNum">     133 </span>            : #ifdef TEST</a>
+<a name="134"><span class="lineNum">     134 </span>            : int main(int argc, char**argv)</a>
+<a name="135"><span class="lineNum">     135 </span>            : {</a>
+<a name="136"><span class="lineNum">     136 </span>            :         char buf[PATH_MAX];</a>
+<a name="137"><span class="lineNum">     137 </span>            :         int ret;</a>
+<a name="138"><span class="lineNum">     138 </span>            :         argc--;</a>
+<a name="139"><span class="lineNum">     139 </span>            :         if (!argc) {</a>
+<a name="140"><span class="lineNum">     140 </span>            :                 os_warn(&quot;Not enough arguments\n&quot;);</a>
+<a name="141"><span class="lineNum">     141 </span>            :                 return 1;</a>
+<a name="142"><span class="lineNum">     142 </span>            :         }</a>
+<a name="143"><span class="lineNum">     143 </span>            :         argv++;</a>
+<a name="144"><span class="lineNum">     144 </span>            :         if (ret = execvp_noalloc(buf, argv[0], argv)) {</a>
+<a name="145"><span class="lineNum">     145 </span>            :                 errno = -ret;</a>
+<a name="146"><span class="lineNum">     146 </span>            :                 perror(&quot;execvp_noalloc&quot;);</a>
+<a name="147"><span class="lineNum">     147 </span>            :         }</a>
+<a name="148"><span class="lineNum">     148 </span>            :         return 0;</a>
+<a name="149"><span class="lineNum">     149 </span>            : }</a>
+<a name="150"><span class="lineNum">     150 </span>            : #endif</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

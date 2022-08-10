@@ -1,0 +1,545 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - drivers/gpu/drm/amd/pm/powerplay/inc/hardwaremanager.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../index.html">top level</a> - <a href="index.html">drivers/gpu/drm/amd/pm/powerplay/inc</a> - hardwaremanager.h<span style="font-size: 80%;"> (source / <a href="hardwaremanager.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<a name="2"><span class="lineNum">       2 </span>            :  * Copyright 2015 Advanced Micro Devices, Inc.</a>
+<a name="3"><span class="lineNum">       3 </span>            :  *</a>
+<a name="4"><span class="lineNum">       4 </span>            :  * Permission is hereby granted, free of charge, to any person obtaining a</a>
+<a name="5"><span class="lineNum">       5 </span>            :  * copy of this software and associated documentation files (the &quot;Software&quot;),</a>
+<a name="6"><span class="lineNum">       6 </span>            :  * to deal in the Software without restriction, including without limitation</a>
+<a name="7"><span class="lineNum">       7 </span>            :  * the rights to use, copy, modify, merge, publish, distribute, sublicense,</a>
+<a name="8"><span class="lineNum">       8 </span>            :  * and/or sell copies of the Software, and to permit persons to whom the</a>
+<a name="9"><span class="lineNum">       9 </span>            :  * Software is furnished to do so, subject to the following conditions:</a>
+<a name="10"><span class="lineNum">      10 </span>            :  *</a>
+<a name="11"><span class="lineNum">      11 </span>            :  * The above copyright notice and this permission notice shall be included in</a>
+<a name="12"><span class="lineNum">      12 </span>            :  * all copies or substantial portions of the Software.</a>
+<a name="13"><span class="lineNum">      13 </span>            :  *</a>
+<a name="14"><span class="lineNum">      14 </span>            :  * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</a>
+<a name="15"><span class="lineNum">      15 </span>            :  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</a>
+<a name="16"><span class="lineNum">      16 </span>            :  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL</a>
+<a name="17"><span class="lineNum">      17 </span>            :  * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR</a>
+<a name="18"><span class="lineNum">      18 </span>            :  * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,</a>
+<a name="19"><span class="lineNum">      19 </span>            :  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR</a>
+<a name="20"><span class="lineNum">      20 </span>            :  * OTHER DEALINGS IN THE SOFTWARE.</a>
+<a name="21"><span class="lineNum">      21 </span>            :  *</a>
+<a name="22"><span class="lineNum">      22 </span>            :  */</a>
+<a name="23"><span class="lineNum">      23 </span>            : #ifndef _HARDWARE_MANAGER_H_</a>
+<a name="24"><span class="lineNum">      24 </span>            : #define _HARDWARE_MANAGER_H_</a>
+<a name="25"><span class="lineNum">      25 </span>            : </a>
+<a name="26"><span class="lineNum">      26 </span>            : </a>
+<a name="27"><span class="lineNum">      27 </span>            : </a>
+<a name="28"><span class="lineNum">      28 </span>            : struct pp_hwmgr;</a>
+<a name="29"><span class="lineNum">      29 </span>            : struct pp_hw_power_state;</a>
+<a name="30"><span class="lineNum">      30 </span>            : struct pp_power_state;</a>
+<a name="31"><span class="lineNum">      31 </span>            : enum amd_dpm_forced_level;</a>
+<a name="32"><span class="lineNum">      32 </span>            : struct PP_TemperatureRange;</a>
+<a name="33"><span class="lineNum">      33 </span>            : </a>
+<a name="34"><span class="lineNum">      34 </span>            : </a>
+<a name="35"><span class="lineNum">      35 </span>            : struct phm_fan_speed_info {</a>
+<a name="36"><span class="lineNum">      36 </span>            :         uint32_t min_percent;</a>
+<a name="37"><span class="lineNum">      37 </span>            :         uint32_t max_percent;</a>
+<a name="38"><span class="lineNum">      38 </span>            :         uint32_t min_rpm;</a>
+<a name="39"><span class="lineNum">      39 </span>            :         uint32_t max_rpm;</a>
+<a name="40"><span class="lineNum">      40 </span>            :         bool supports_percent_read;</a>
+<a name="41"><span class="lineNum">      41 </span>            :         bool supports_percent_write;</a>
+<a name="42"><span class="lineNum">      42 </span>            :         bool supports_rpm_read;</a>
+<a name="43"><span class="lineNum">      43 </span>            :         bool supports_rpm_write;</a>
+<a name="44"><span class="lineNum">      44 </span>            : };</a>
+<a name="45"><span class="lineNum">      45 </span>            : </a>
+<a name="46"><span class="lineNum">      46 </span>            : /* Automatic Power State Throttling */</a>
+<a name="47"><span class="lineNum">      47 </span>            : enum PHM_AutoThrottleSource</a>
+<a name="48"><span class="lineNum">      48 </span>            : {</a>
+<a name="49"><span class="lineNum">      49 </span>            :     PHM_AutoThrottleSource_Thermal,</a>
+<a name="50"><span class="lineNum">      50 </span>            :     PHM_AutoThrottleSource_External</a>
+<a name="51"><span class="lineNum">      51 </span>            : };</a>
+<a name="52"><span class="lineNum">      52 </span>            : </a>
+<a name="53"><span class="lineNum">      53 </span>            : typedef enum PHM_AutoThrottleSource PHM_AutoThrottleSource;</a>
+<a name="54"><span class="lineNum">      54 </span>            : </a>
+<a name="55"><span class="lineNum">      55 </span>            : enum phm_platform_caps {</a>
+<a name="56"><span class="lineNum">      56 </span>            :         PHM_PlatformCaps_AtomBiosPpV1 = 0,</a>
+<a name="57"><span class="lineNum">      57 </span>            :         PHM_PlatformCaps_PowerPlaySupport,</a>
+<a name="58"><span class="lineNum">      58 </span>            :         PHM_PlatformCaps_ACOverdriveSupport,</a>
+<a name="59"><span class="lineNum">      59 </span>            :         PHM_PlatformCaps_BacklightSupport,</a>
+<a name="60"><span class="lineNum">      60 </span>            :         PHM_PlatformCaps_ThermalController,</a>
+<a name="61"><span class="lineNum">      61 </span>            :         PHM_PlatformCaps_BiosPowerSourceControl,</a>
+<a name="62"><span class="lineNum">      62 </span>            :         PHM_PlatformCaps_DisableVoltageTransition,</a>
+<a name="63"><span class="lineNum">      63 </span>            :         PHM_PlatformCaps_DisableEngineTransition,</a>
+<a name="64"><span class="lineNum">      64 </span>            :         PHM_PlatformCaps_DisableMemoryTransition,</a>
+<a name="65"><span class="lineNum">      65 </span>            :         PHM_PlatformCaps_DynamicPowerManagement,</a>
+<a name="66"><span class="lineNum">      66 </span>            :         PHM_PlatformCaps_EnableASPML0s,</a>
+<a name="67"><span class="lineNum">      67 </span>            :         PHM_PlatformCaps_EnableASPML1,</a>
+<a name="68"><span class="lineNum">      68 </span>            :         PHM_PlatformCaps_OD5inACSupport,</a>
+<a name="69"><span class="lineNum">      69 </span>            :         PHM_PlatformCaps_OD5inDCSupport,</a>
+<a name="70"><span class="lineNum">      70 </span>            :         PHM_PlatformCaps_SoftStateOD5,</a>
+<a name="71"><span class="lineNum">      71 </span>            :         PHM_PlatformCaps_NoOD5Support,</a>
+<a name="72"><span class="lineNum">      72 </span>            :         PHM_PlatformCaps_ContinuousHardwarePerformanceRange,</a>
+<a name="73"><span class="lineNum">      73 </span>            :         PHM_PlatformCaps_ActivityReporting,</a>
+<a name="74"><span class="lineNum">      74 </span>            :         PHM_PlatformCaps_EnableBackbias,</a>
+<a name="75"><span class="lineNum">      75 </span>            :         PHM_PlatformCaps_OverdriveDisabledByPowerBudget,</a>
+<a name="76"><span class="lineNum">      76 </span>            :         PHM_PlatformCaps_ShowPowerBudgetWarning,</a>
+<a name="77"><span class="lineNum">      77 </span>            :         PHM_PlatformCaps_PowerBudgetWaiverAvailable,</a>
+<a name="78"><span class="lineNum">      78 </span>            :         PHM_PlatformCaps_GFXClockGatingSupport,</a>
+<a name="79"><span class="lineNum">      79 </span>            :         PHM_PlatformCaps_MMClockGatingSupport,</a>
+<a name="80"><span class="lineNum">      80 </span>            :         PHM_PlatformCaps_AutomaticDCTransition,</a>
+<a name="81"><span class="lineNum">      81 </span>            :         PHM_PlatformCaps_GeminiPrimary,</a>
+<a name="82"><span class="lineNum">      82 </span>            :         PHM_PlatformCaps_MemorySpreadSpectrumSupport,</a>
+<a name="83"><span class="lineNum">      83 </span>            :         PHM_PlatformCaps_EngineSpreadSpectrumSupport,</a>
+<a name="84"><span class="lineNum">      84 </span>            :         PHM_PlatformCaps_StepVddc,</a>
+<a name="85"><span class="lineNum">      85 </span>            :         PHM_PlatformCaps_DynamicPCIEGen2Support,</a>
+<a name="86"><span class="lineNum">      86 </span>            :         PHM_PlatformCaps_SMC,</a>
+<a name="87"><span class="lineNum">      87 </span>            :         PHM_PlatformCaps_FaultyInternalThermalReading,          /* Internal thermal controller reports faulty temperature value when DAC2 is active */</a>
+<a name="88"><span class="lineNum">      88 </span>            :         PHM_PlatformCaps_EnableVoltageControl,                  /* indicates voltage can be controlled */</a>
+<a name="89"><span class="lineNum">      89 </span>            :         PHM_PlatformCaps_EnableSideportControl,                 /* indicates Sideport can be controlled */</a>
+<a name="90"><span class="lineNum">      90 </span>            :         PHM_PlatformCaps_VideoPlaybackEEUNotification,          /* indicates EEU notification of video start/stop is required */</a>
+<a name="91"><span class="lineNum">      91 </span>            :         PHM_PlatformCaps_TurnOffPll_ASPML1,                     /* PCIE Turn Off PLL in ASPM L1 */</a>
+<a name="92"><span class="lineNum">      92 </span>            :         PHM_PlatformCaps_EnableHTLinkControl,                   /* indicates HT Link can be controlled by ACPI or CLMC overridden/automated mode. */</a>
+<a name="93"><span class="lineNum">      93 </span>            :         PHM_PlatformCaps_PerformanceStateOnly,                  /* indicates only performance power state to be used on current system. */</a>
+<a name="94"><span class="lineNum">      94 </span>            :         PHM_PlatformCaps_ExclusiveModeAlwaysHigh,               /* In Exclusive (3D) mode always stay in High state. */</a>
+<a name="95"><span class="lineNum">      95 </span>            :         PHM_PlatformCaps_DisableMGClockGating,                  /* to disable Medium Grain Clock Gating or not */</a>
+<a name="96"><span class="lineNum">      96 </span>            :         PHM_PlatformCaps_DisableMGCGTSSM,                       /* TO disable Medium Grain Clock Gating Shader Complex control */</a>
+<a name="97"><span class="lineNum">      97 </span>            :         PHM_PlatformCaps_UVDAlwaysHigh,                         /* In UVD mode always stay in High state */</a>
+<a name="98"><span class="lineNum">      98 </span>            :         PHM_PlatformCaps_DisablePowerGating,                    /* to disable power gating */</a>
+<a name="99"><span class="lineNum">      99 </span>            :         PHM_PlatformCaps_CustomThermalPolicy,                   /* indicates only performance power state to be used on current system. */</a>
+<a name="100"><span class="lineNum">     100 </span>            :         PHM_PlatformCaps_StayInBootState,                       /* Stay in Boot State, do not do clock/voltage or PCIe Lane and Gen switching (RV7xx and up). */</a>
+<a name="101"><span class="lineNum">     101 </span>            :         PHM_PlatformCaps_SMCAllowSeparateSWThermalState,        /* SMC use separate SW thermal state, instead of the default SMC thermal policy. */</a>
+<a name="102"><span class="lineNum">     102 </span>            :         PHM_PlatformCaps_MultiUVDStateSupport,                  /* Powerplay state table supports multi UVD states. */</a>
+<a name="103"><span class="lineNum">     103 </span>            :         PHM_PlatformCaps_EnableSCLKDeepSleepForUVD,             /* With HW ECOs, we don't need to disable SCLK Deep Sleep for UVD state. */</a>
+<a name="104"><span class="lineNum">     104 </span>            :         PHM_PlatformCaps_EnableMCUHTLinkControl,                /* Enable HT link control by MCU */</a>
+<a name="105"><span class="lineNum">     105 </span>            :         PHM_PlatformCaps_ABM,                                   /* ABM support.*/</a>
+<a name="106"><span class="lineNum">     106 </span>            :         PHM_PlatformCaps_KongThermalPolicy,                     /* A thermal policy specific for Kong */</a>
+<a name="107"><span class="lineNum">     107 </span>            :         PHM_PlatformCaps_SwitchVDDNB,                           /* if the users want to switch VDDNB */</a>
+<a name="108"><span class="lineNum">     108 </span>            :         PHM_PlatformCaps_ULPS,                                  /* support ULPS mode either through ACPI state or ULPS state */</a>
+<a name="109"><span class="lineNum">     109 </span>            :         PHM_PlatformCaps_NativeULPS,                            /* hardware capable of ULPS state (other than through the ACPI state) */</a>
+<a name="110"><span class="lineNum">     110 </span>            :         PHM_PlatformCaps_EnableMVDDControl,                     /* indicates that memory voltage can be controlled */</a>
+<a name="111"><span class="lineNum">     111 </span>            :         PHM_PlatformCaps_ControlVDDCI,                          /* Control VDDCI separately from VDDC. */</a>
+<a name="112"><span class="lineNum">     112 </span>            :         PHM_PlatformCaps_DisableDCODT,                          /* indicates if DC ODT apply or not */</a>
+<a name="113"><span class="lineNum">     113 </span>            :         PHM_PlatformCaps_DynamicACTiming,                       /* if the SMC dynamically re-programs MC SEQ register values */</a>
+<a name="114"><span class="lineNum">     114 </span>            :         PHM_PlatformCaps_EnableThermalIntByGPIO,                /* enable throttle control through GPIO */</a>
+<a name="115"><span class="lineNum">     115 </span>            :         PHM_PlatformCaps_BootStateOnAlert,                      /* Go to boot state on alerts, e.g. on an AC-&gt;DC transition. */</a>
+<a name="116"><span class="lineNum">     116 </span>            :         PHM_PlatformCaps_DontWaitForVBlankOnAlert,              /* Do NOT wait for VBLANK during an alert (e.g. AC-&gt;DC transition). */</a>
+<a name="117"><span class="lineNum">     117 </span>            :         PHM_PlatformCaps_Force3DClockSupport,                   /* indicates if the platform supports force 3D clock. */</a>
+<a name="118"><span class="lineNum">     118 </span>            :         PHM_PlatformCaps_MicrocodeFanControl,                   /* Fan is controlled by the SMC microcode. */</a>
+<a name="119"><span class="lineNum">     119 </span>            :         PHM_PlatformCaps_AdjustUVDPriorityForSP,</a>
+<a name="120"><span class="lineNum">     120 </span>            :         PHM_PlatformCaps_DisableLightSleep,                     /* Light sleep for evergreen family. */</a>
+<a name="121"><span class="lineNum">     121 </span>            :         PHM_PlatformCaps_DisableMCLS,                           /* MC Light sleep */</a>
+<a name="122"><span class="lineNum">     122 </span>            :         PHM_PlatformCaps_RegulatorHot,                          /* Enable throttling on 'regulator hot' events. */</a>
+<a name="123"><span class="lineNum">     123 </span>            :         PHM_PlatformCaps_BACO,                                  /* Support Bus Alive Chip Off mode */</a>
+<a name="124"><span class="lineNum">     124 </span>            :         PHM_PlatformCaps_DisableDPM,                            /* Disable DPM, supported from Llano */</a>
+<a name="125"><span class="lineNum">     125 </span>            :         PHM_PlatformCaps_DynamicM3Arbiter,                      /* support dynamically change m3 arbitor parameters */</a>
+<a name="126"><span class="lineNum">     126 </span>            :         PHM_PlatformCaps_SclkDeepSleep,                         /* support sclk deep sleep */</a>
+<a name="127"><span class="lineNum">     127 </span>            :         PHM_PlatformCaps_DynamicPatchPowerState,                /* this ASIC supports to patch power state dynamically */</a>
+<a name="128"><span class="lineNum">     128 </span>            :         PHM_PlatformCaps_ThermalAutoThrottling,                 /* enabling auto thermal throttling, */</a>
+<a name="129"><span class="lineNum">     129 </span>            :         PHM_PlatformCaps_SumoThermalPolicy,                     /* A thermal policy specific for Sumo */</a>
+<a name="130"><span class="lineNum">     130 </span>            :         PHM_PlatformCaps_PCIEPerformanceRequest,                /* support to change RC voltage */</a>
+<a name="131"><span class="lineNum">     131 </span>            :         PHM_PlatformCaps_BLControlledByGPU,                     /* support varibright */</a>
+<a name="132"><span class="lineNum">     132 </span>            :         PHM_PlatformCaps_PowerContainment,                      /* support DPM2 power containment (AKA TDP clamping) */</a>
+<a name="133"><span class="lineNum">     133 </span>            :         PHM_PlatformCaps_SQRamping,                             /* support DPM2 SQ power throttle */</a>
+<a name="134"><span class="lineNum">     134 </span>            :         PHM_PlatformCaps_CAC,                                   /* support Capacitance * Activity power estimation */</a>
+<a name="135"><span class="lineNum">     135 </span>            :         PHM_PlatformCaps_NIChipsets,                            /* Northern Island and beyond chipsets */</a>
+<a name="136"><span class="lineNum">     136 </span>            :         PHM_PlatformCaps_TrinityChipsets,                       /* Trinity chipset */</a>
+<a name="137"><span class="lineNum">     137 </span>            :         PHM_PlatformCaps_EvergreenChipsets,                     /* Evergreen family chipset */</a>
+<a name="138"><span class="lineNum">     138 </span>            :         PHM_PlatformCaps_PowerControl,                          /* Cayman and beyond chipsets */</a>
+<a name="139"><span class="lineNum">     139 </span>            :         PHM_PlatformCaps_DisableLSClockGating,                  /* to disable Light Sleep control for HDP memories */</a>
+<a name="140"><span class="lineNum">     140 </span>            :         PHM_PlatformCaps_BoostState,                            /* this ASIC supports boost state */</a>
+<a name="141"><span class="lineNum">     141 </span>            :         PHM_PlatformCaps_UserMaxClockForMultiDisplays,          /* indicates if max memory clock is used for all status when multiple displays are connected */</a>
+<a name="142"><span class="lineNum">     142 </span>            :         PHM_PlatformCaps_RegWriteDelay,                         /* indicates if back to back reg write delay is required */</a>
+<a name="143"><span class="lineNum">     143 </span>            :         PHM_PlatformCaps_NonABMSupportInPPLib,                  /* ABM is not supported in PPLIB, (moved from PPLIB to DAL) */</a>
+<a name="144"><span class="lineNum">     144 </span>            :         PHM_PlatformCaps_GFXDynamicMGPowerGating,               /* Enable Dynamic MG PowerGating on Trinity */</a>
+<a name="145"><span class="lineNum">     145 </span>            :         PHM_PlatformCaps_DisableSMUUVDHandshake,                /* Disable SMU UVD Handshake */</a>
+<a name="146"><span class="lineNum">     146 </span>            :         PHM_PlatformCaps_DTE,                                   /* Support Digital Temperature Estimation */</a>
+<a name="147"><span class="lineNum">     147 </span>            :         PHM_PlatformCaps_W5100Specifc_SmuSkipMsgDTE,            /* This is for the feature requested by David B., and Tonny W.*/</a>
+<a name="148"><span class="lineNum">     148 </span>            :         PHM_PlatformCaps_UVDPowerGating,                        /* enable UVD power gating, supported from Llano */</a>
+<a name="149"><span class="lineNum">     149 </span>            :         PHM_PlatformCaps_UVDDynamicPowerGating,                 /* enable UVD Dynamic power gating, supported from UVD5 */</a>
+<a name="150"><span class="lineNum">     150 </span>            :         PHM_PlatformCaps_VCEPowerGating,                        /* Enable VCE power gating, supported for TN and later ASICs */</a>
+<a name="151"><span class="lineNum">     151 </span>            :         PHM_PlatformCaps_SamuPowerGating,                       /* Enable SAMU power gating, supported for KV and later ASICs */</a>
+<a name="152"><span class="lineNum">     152 </span>            :         PHM_PlatformCaps_UVDDPM,                                /* UVD clock DPM */</a>
+<a name="153"><span class="lineNum">     153 </span>            :         PHM_PlatformCaps_VCEDPM,                                /* VCE clock DPM */</a>
+<a name="154"><span class="lineNum">     154 </span>            :         PHM_PlatformCaps_SamuDPM,                               /* SAMU clock DPM */</a>
+<a name="155"><span class="lineNum">     155 </span>            :         PHM_PlatformCaps_AcpDPM,                                /* ACP clock DPM */</a>
+<a name="156"><span class="lineNum">     156 </span>            :         PHM_PlatformCaps_SclkDeepSleepAboveLow,                 /* Enable SCLK Deep Sleep on all DPM states */</a>
+<a name="157"><span class="lineNum">     157 </span>            :         PHM_PlatformCaps_DynamicUVDState,                       /* Dynamic UVD State */</a>
+<a name="158"><span class="lineNum">     158 </span>            :         PHM_PlatformCaps_WantSAMClkWithDummyBackEnd,            /* Set SAM Clk With Dummy Back End */</a>
+<a name="159"><span class="lineNum">     159 </span>            :         PHM_PlatformCaps_WantUVDClkWithDummyBackEnd,            /* Set UVD Clk With Dummy Back End */</a>
+<a name="160"><span class="lineNum">     160 </span>            :         PHM_PlatformCaps_WantVCEClkWithDummyBackEnd,            /* Set VCE Clk With Dummy Back End */</a>
+<a name="161"><span class="lineNum">     161 </span>            :         PHM_PlatformCaps_WantACPClkWithDummyBackEnd,            /* Set SAM Clk With Dummy Back End */</a>
+<a name="162"><span class="lineNum">     162 </span>            :         PHM_PlatformCaps_OD6inACSupport,                        /* indicates that the ASIC/back end supports OD6 */</a>
+<a name="163"><span class="lineNum">     163 </span>            :         PHM_PlatformCaps_OD6inDCSupport,                        /* indicates that the ASIC/back end supports OD6 in DC */</a>
+<a name="164"><span class="lineNum">     164 </span>            :         PHM_PlatformCaps_EnablePlatformPowerManagement,         /* indicates that Platform Power Management feature is supported */</a>
+<a name="165"><span class="lineNum">     165 </span>            :         PHM_PlatformCaps_SurpriseRemoval,                       /* indicates that surprise removal feature is requested */</a>
+<a name="166"><span class="lineNum">     166 </span>            :         PHM_PlatformCaps_NewCACVoltage,                         /* indicates new CAC voltage table support */</a>
+<a name="167"><span class="lineNum">     167 </span>            :         PHM_PlatformCaps_DiDtSupport,                           /* for dI/dT feature */</a>
+<a name="168"><span class="lineNum">     168 </span>            :         PHM_PlatformCaps_DBRamping,                             /* for dI/dT feature */</a>
+<a name="169"><span class="lineNum">     169 </span>            :         PHM_PlatformCaps_TDRamping,                             /* for dI/dT feature */</a>
+<a name="170"><span class="lineNum">     170 </span>            :         PHM_PlatformCaps_TCPRamping,                            /* for dI/dT feature */</a>
+<a name="171"><span class="lineNum">     171 </span>            :         PHM_PlatformCaps_DBRRamping,                            /* for dI/dT feature */</a>
+<a name="172"><span class="lineNum">     172 </span>            :         PHM_PlatformCaps_DiDtEDCEnable,                         /* for dI/dT feature */</a>
+<a name="173"><span class="lineNum">     173 </span>            :         PHM_PlatformCaps_GCEDC,                                 /* for dI/dT feature */</a>
+<a name="174"><span class="lineNum">     174 </span>            :         PHM_PlatformCaps_PSM,                                   /* for dI/dT feature */</a>
+<a name="175"><span class="lineNum">     175 </span>            :         PHM_PlatformCaps_EnableSMU7ThermalManagement,           /* SMC will manage thermal events */</a>
+<a name="176"><span class="lineNum">     176 </span>            :         PHM_PlatformCaps_FPS,                                   /* FPS support */</a>
+<a name="177"><span class="lineNum">     177 </span>            :         PHM_PlatformCaps_ACP,                                   /* ACP support */</a>
+<a name="178"><span class="lineNum">     178 </span>            :         PHM_PlatformCaps_SclkThrottleLowNotification,           /* SCLK Throttle Low Notification */</a>
+<a name="179"><span class="lineNum">     179 </span>            :         PHM_PlatformCaps_XDMAEnabled,                           /* XDMA engine is enabled */</a>
+<a name="180"><span class="lineNum">     180 </span>            :         PHM_PlatformCaps_UseDummyBackEnd,                       /* use dummy back end */</a>
+<a name="181"><span class="lineNum">     181 </span>            :         PHM_PlatformCaps_EnableDFSBypass,                       /* Enable DFS bypass */</a>
+<a name="182"><span class="lineNum">     182 </span>            :         PHM_PlatformCaps_VddNBDirectRequest,</a>
+<a name="183"><span class="lineNum">     183 </span>            :         PHM_PlatformCaps_PauseMMSessions,</a>
+<a name="184"><span class="lineNum">     184 </span>            :         PHM_PlatformCaps_UnTabledHardwareInterface,             /* Tableless/direct call hardware interface for CI and newer ASICs */</a>
+<a name="185"><span class="lineNum">     185 </span>            :         PHM_PlatformCaps_SMU7,                                  /* indicates that vpuRecoveryBegin without SMU shutdown */</a>
+<a name="186"><span class="lineNum">     186 </span>            :         PHM_PlatformCaps_RevertGPIO5Polarity,                   /* indicates revert GPIO5 plarity table support */</a>
+<a name="187"><span class="lineNum">     187 </span>            :         PHM_PlatformCaps_Thermal2GPIO17,                        /* indicates thermal2GPIO17 table support */</a>
+<a name="188"><span class="lineNum">     188 </span>            :         PHM_PlatformCaps_ThermalOutGPIO,                        /* indicates ThermalOutGPIO support, pin number is assigned by VBIOS */</a>
+<a name="189"><span class="lineNum">     189 </span>            :         PHM_PlatformCaps_DisableMclkSwitchingForFrameLock,      /* Disable memory clock switch during Framelock */</a>
+<a name="190"><span class="lineNum">     190 </span>            :         PHM_PlatformCaps_ForceMclkHigh,                         /* Disable memory clock switching by forcing memory clock high */</a>
+<a name="191"><span class="lineNum">     191 </span>            :         PHM_PlatformCaps_VRHotGPIOConfigurable,                 /* indicates VR_HOT GPIO configurable */</a>
+<a name="192"><span class="lineNum">     192 </span>            :         PHM_PlatformCaps_TempInversion,                         /* enable Temp Inversion feature */</a>
+<a name="193"><span class="lineNum">     193 </span>            :         PHM_PlatformCaps_IOIC3,</a>
+<a name="194"><span class="lineNum">     194 </span>            :         PHM_PlatformCaps_ConnectedStandby,</a>
+<a name="195"><span class="lineNum">     195 </span>            :         PHM_PlatformCaps_EVV,</a>
+<a name="196"><span class="lineNum">     196 </span>            :         PHM_PlatformCaps_EnableLongIdleBACOSupport,</a>
+<a name="197"><span class="lineNum">     197 </span>            :         PHM_PlatformCaps_CombinePCCWithThermalSignal,</a>
+<a name="198"><span class="lineNum">     198 </span>            :         PHM_PlatformCaps_DisableUsingActualTemperatureForPowerCalc,</a>
+<a name="199"><span class="lineNum">     199 </span>            :         PHM_PlatformCaps_StablePState,</a>
+<a name="200"><span class="lineNum">     200 </span>            :         PHM_PlatformCaps_OD6PlusinACSupport,</a>
+<a name="201"><span class="lineNum">     201 </span>            :         PHM_PlatformCaps_OD6PlusinDCSupport,</a>
+<a name="202"><span class="lineNum">     202 </span>            :         PHM_PlatformCaps_ODThermalLimitUnlock,</a>
+<a name="203"><span class="lineNum">     203 </span>            :         PHM_PlatformCaps_ReducePowerLimit,</a>
+<a name="204"><span class="lineNum">     204 </span>            :         PHM_PlatformCaps_ODFuzzyFanControlSupport,</a>
+<a name="205"><span class="lineNum">     205 </span>            :         PHM_PlatformCaps_GeminiRegulatorFanControlSupport,</a>
+<a name="206"><span class="lineNum">     206 </span>            :         PHM_PlatformCaps_ControlVDDGFX,</a>
+<a name="207"><span class="lineNum">     207 </span>            :         PHM_PlatformCaps_BBBSupported,</a>
+<a name="208"><span class="lineNum">     208 </span>            :         PHM_PlatformCaps_DisableVoltageIsland,</a>
+<a name="209"><span class="lineNum">     209 </span>            :         PHM_PlatformCaps_FanSpeedInTableIsRPM,</a>
+<a name="210"><span class="lineNum">     210 </span>            :         PHM_PlatformCaps_GFXClockGatingManagedInCAIL,</a>
+<a name="211"><span class="lineNum">     211 </span>            :         PHM_PlatformCaps_IcelandULPSSWWorkAround,</a>
+<a name="212"><span class="lineNum">     212 </span>            :         PHM_PlatformCaps_FPSEnhancement,</a>
+<a name="213"><span class="lineNum">     213 </span>            :         PHM_PlatformCaps_LoadPostProductionFirmware,</a>
+<a name="214"><span class="lineNum">     214 </span>            :         PHM_PlatformCaps_VpuRecoveryInProgress,</a>
+<a name="215"><span class="lineNum">     215 </span>            :         PHM_PlatformCaps_Falcon_QuickTransition,</a>
+<a name="216"><span class="lineNum">     216 </span>            :         PHM_PlatformCaps_AVFS,</a>
+<a name="217"><span class="lineNum">     217 </span>            :         PHM_PlatformCaps_ClockStretcher,</a>
+<a name="218"><span class="lineNum">     218 </span>            :         PHM_PlatformCaps_TablelessHardwareInterface,</a>
+<a name="219"><span class="lineNum">     219 </span>            :         PHM_PlatformCaps_EnableDriverEVV,</a>
+<a name="220"><span class="lineNum">     220 </span>            :         PHM_PlatformCaps_SPLLShutdownSupport,</a>
+<a name="221"><span class="lineNum">     221 </span>            :         PHM_PlatformCaps_VirtualBatteryState,</a>
+<a name="222"><span class="lineNum">     222 </span>            :         PHM_PlatformCaps_IgnoreForceHighClockRequestsInAPUs,</a>
+<a name="223"><span class="lineNum">     223 </span>            :         PHM_PlatformCaps_DisableMclkSwitchForVR,</a>
+<a name="224"><span class="lineNum">     224 </span>            :         PHM_PlatformCaps_SMU8,</a>
+<a name="225"><span class="lineNum">     225 </span>            :         PHM_PlatformCaps_VRHotPolarityHigh,</a>
+<a name="226"><span class="lineNum">     226 </span>            :         PHM_PlatformCaps_IPS_UlpsExclusive,</a>
+<a name="227"><span class="lineNum">     227 </span>            :         PHM_PlatformCaps_SMCtoPPLIBAcdcGpioScheme,</a>
+<a name="228"><span class="lineNum">     228 </span>            :         PHM_PlatformCaps_GeminiAsymmetricPower,</a>
+<a name="229"><span class="lineNum">     229 </span>            :         PHM_PlatformCaps_OCLPowerOptimization,</a>
+<a name="230"><span class="lineNum">     230 </span>            :         PHM_PlatformCaps_MaxPCIEBandWidth,</a>
+<a name="231"><span class="lineNum">     231 </span>            :         PHM_PlatformCaps_PerfPerWattOptimizationSupport,</a>
+<a name="232"><span class="lineNum">     232 </span>            :         PHM_PlatformCaps_UVDClientMCTuning,</a>
+<a name="233"><span class="lineNum">     233 </span>            :         PHM_PlatformCaps_ODNinACSupport,</a>
+<a name="234"><span class="lineNum">     234 </span>            :         PHM_PlatformCaps_ODNinDCSupport,</a>
+<a name="235"><span class="lineNum">     235 </span>            :         PHM_PlatformCaps_OD8inACSupport,</a>
+<a name="236"><span class="lineNum">     236 </span>            :         PHM_PlatformCaps_OD8inDCSupport,</a>
+<a name="237"><span class="lineNum">     237 </span>            :         PHM_PlatformCaps_UMDPState,</a>
+<a name="238"><span class="lineNum">     238 </span>            :         PHM_PlatformCaps_AutoWattmanSupport,</a>
+<a name="239"><span class="lineNum">     239 </span>            :         PHM_PlatformCaps_AutoWattmanEnable_CCCState,</a>
+<a name="240"><span class="lineNum">     240 </span>            :         PHM_PlatformCaps_FreeSyncActive,</a>
+<a name="241"><span class="lineNum">     241 </span>            :         PHM_PlatformCaps_EnableShadowPstate,</a>
+<a name="242"><span class="lineNum">     242 </span>            :         PHM_PlatformCaps_customThermalManagement,</a>
+<a name="243"><span class="lineNum">     243 </span>            :         PHM_PlatformCaps_staticFanControl,</a>
+<a name="244"><span class="lineNum">     244 </span>            :         PHM_PlatformCaps_Virtual_System,</a>
+<a name="245"><span class="lineNum">     245 </span>            :         PHM_PlatformCaps_LowestUclkReservedForUlv,</a>
+<a name="246"><span class="lineNum">     246 </span>            :         PHM_PlatformCaps_EnableBoostState,</a>
+<a name="247"><span class="lineNum">     247 </span>            :         PHM_PlatformCaps_AVFSSupport,</a>
+<a name="248"><span class="lineNum">     248 </span>            :         PHM_PlatformCaps_ThermalPolicyDelay,</a>
+<a name="249"><span class="lineNum">     249 </span>            :         PHM_PlatformCaps_CustomFanControlSupport,</a>
+<a name="250"><span class="lineNum">     250 </span>            :         PHM_PlatformCaps_BAMACO,</a>
+<a name="251"><span class="lineNum">     251 </span>            :         PHM_PlatformCaps_Max</a>
+<a name="252"><span class="lineNum">     252 </span>            : };</a>
+<a name="253"><span class="lineNum">     253 </span>            : </a>
+<a name="254"><span class="lineNum">     254 </span>            : #define PHM_MAX_NUM_CAPS_BITS_PER_FIELD (sizeof(uint32_t)*8)</a>
+<a name="255"><span class="lineNum">     255 </span>            : </a>
+<a name="256"><span class="lineNum">     256 </span>            : /* Number of uint32_t entries used by CAPS table */</a>
+<a name="257"><span class="lineNum">     257 </span>            : #define PHM_MAX_NUM_CAPS_ULONG_ENTRIES \</a>
+<a name="258"><span class="lineNum">     258 </span>            :         ((PHM_PlatformCaps_Max + ((PHM_MAX_NUM_CAPS_BITS_PER_FIELD) - 1)) / (PHM_MAX_NUM_CAPS_BITS_PER_FIELD))</a>
+<a name="259"><span class="lineNum">     259 </span>            : </a>
+<a name="260"><span class="lineNum">     260 </span>            : struct pp_hw_descriptor {</a>
+<a name="261"><span class="lineNum">     261 </span>            :         uint32_t hw_caps[PHM_MAX_NUM_CAPS_ULONG_ENTRIES];</a>
+<a name="262"><span class="lineNum">     262 </span>            : };</a>
+<a name="263"><span class="lineNum">     263 </span>            : </a>
+<a name="264"><span class="lineNum">     264 </span>            : enum PHM_PerformanceLevelDesignation {</a>
+<a name="265"><span class="lineNum">     265 </span>            :         PHM_PerformanceLevelDesignation_Activity,</a>
+<a name="266"><span class="lineNum">     266 </span>            :         PHM_PerformanceLevelDesignation_PowerContainment</a>
+<a name="267"><span class="lineNum">     267 </span>            : };</a>
+<a name="268"><span class="lineNum">     268 </span>            : </a>
+<a name="269"><span class="lineNum">     269 </span>            : typedef enum PHM_PerformanceLevelDesignation PHM_PerformanceLevelDesignation;</a>
+<a name="270"><span class="lineNum">     270 </span>            : </a>
+<a name="271"><span class="lineNum">     271 </span>            : struct PHM_PerformanceLevel {</a>
+<a name="272"><span class="lineNum">     272 </span>            :     uint32_t    coreClock;</a>
+<a name="273"><span class="lineNum">     273 </span>            :     uint32_t    memory_clock;</a>
+<a name="274"><span class="lineNum">     274 </span>            :     uint32_t  vddc;</a>
+<a name="275"><span class="lineNum">     275 </span>            :     uint32_t  vddci;</a>
+<a name="276"><span class="lineNum">     276 </span>            :     uint32_t    nonLocalMemoryFreq;</a>
+<a name="277"><span class="lineNum">     277 </span>            :     uint32_t nonLocalMemoryWidth;</a>
+<a name="278"><span class="lineNum">     278 </span>            : };</a>
+<a name="279"><span class="lineNum">     279 </span>            : </a>
+<a name="280"><span class="lineNum">     280 </span>            : typedef struct PHM_PerformanceLevel PHM_PerformanceLevel;</a>
+<a name="281"><span class="lineNum">     281 </span>            : </a>
+<a name="282"><span class="lineNum">     282 </span>            : /* Function for setting a platform cap */</a>
+<a name="283"><span class="lineNum">     283 </span>            : static inline void phm_cap_set(uint32_t *caps,</a>
+<a name="284"><span class="lineNum">     284 </span>            :                         enum phm_platform_caps c)</a>
+<a name="285"><span class="lineNum">     285 </span>            : {</a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineNoCov">          0 :         caps[c / PHM_MAX_NUM_CAPS_BITS_PER_FIELD] |= (1UL &lt;&lt;</span></a>
+<a name="287"><span class="lineNum">     287 </span>            :                              (c &amp; (PHM_MAX_NUM_CAPS_BITS_PER_FIELD - 1)));</a>
+<a name="288"><span class="lineNum">     288 </span>            : }</a>
+<a name="289"><span class="lineNum">     289 </span>            : </a>
+<a name="290"><span class="lineNum">     290 </span>            : static inline void phm_cap_unset(uint32_t *caps,</a>
+<a name="291"><span class="lineNum">     291 </span>            :                         enum phm_platform_caps c)</a>
+<a name="292"><span class="lineNum">     292 </span>            : {</a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 :         caps[c / PHM_MAX_NUM_CAPS_BITS_PER_FIELD] &amp;= ~(1UL &lt;&lt; (c &amp; (PHM_MAX_NUM_CAPS_BITS_PER_FIELD - 1)));</span></a>
+<a name="294"><span class="lineNum">     294 </span>            : }</a>
+<a name="295"><span class="lineNum">     295 </span>            : </a>
+<a name="296"><span class="lineNum">     296 </span>            : static inline bool phm_cap_enabled(const uint32_t *caps, enum phm_platform_caps c)</a>
+<a name="297"><span class="lineNum">     297 </span>            : {</a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineNoCov">          0 :         return (0 != (caps[c / PHM_MAX_NUM_CAPS_BITS_PER_FIELD] &amp;</span></a>
+<a name="299"><span class="lineNum">     299 </span>            :                   (1UL &lt;&lt; (c &amp; (PHM_MAX_NUM_CAPS_BITS_PER_FIELD - 1)))));</a>
+<a name="300"><span class="lineNum">     300 </span>            : }</a>
+<a name="301"><span class="lineNum">     301 </span>            : </a>
+<a name="302"><span class="lineNum">     302 </span>            : #define PP_CAP(c) phm_cap_enabled(hwmgr-&gt;platform_descriptor.platformCaps, (c))</a>
+<a name="303"><span class="lineNum">     303 </span>            : </a>
+<a name="304"><span class="lineNum">     304 </span>            : #define PP_PCIEGenInvalid  0xffff</a>
+<a name="305"><span class="lineNum">     305 </span>            : enum PP_PCIEGen {</a>
+<a name="306"><span class="lineNum">     306 </span>            :     PP_PCIEGen1 = 0,                /* PCIE 1.0 - Transfer rate of 2.5 GT/s */</a>
+<a name="307"><span class="lineNum">     307 </span>            :     PP_PCIEGen2,                    /*PCIE 2.0 - Transfer rate of 5.0 GT/s */</a>
+<a name="308"><span class="lineNum">     308 </span>            :     PP_PCIEGen3                     /*PCIE 3.0 - Transfer rate of 8.0 GT/s */</a>
+<a name="309"><span class="lineNum">     309 </span>            : };</a>
+<a name="310"><span class="lineNum">     310 </span>            : </a>
+<a name="311"><span class="lineNum">     311 </span>            : typedef enum PP_PCIEGen PP_PCIEGen;</a>
+<a name="312"><span class="lineNum">     312 </span>            : </a>
+<a name="313"><span class="lineNum">     313 </span>            : #define PP_Min_PCIEGen     PP_PCIEGen1</a>
+<a name="314"><span class="lineNum">     314 </span>            : #define PP_Max_PCIEGen     PP_PCIEGen3</a>
+<a name="315"><span class="lineNum">     315 </span>            : #define PP_Min_PCIELane    1</a>
+<a name="316"><span class="lineNum">     316 </span>            : #define PP_Max_PCIELane    16</a>
+<a name="317"><span class="lineNum">     317 </span>            : </a>
+<a name="318"><span class="lineNum">     318 </span>            : enum phm_clock_Type {</a>
+<a name="319"><span class="lineNum">     319 </span>            :         PHM_DispClock = 1,</a>
+<a name="320"><span class="lineNum">     320 </span>            :         PHM_SClock,</a>
+<a name="321"><span class="lineNum">     321 </span>            :         PHM_MemClock</a>
+<a name="322"><span class="lineNum">     322 </span>            : };</a>
+<a name="323"><span class="lineNum">     323 </span>            : </a>
+<a name="324"><span class="lineNum">     324 </span>            : #define MAX_NUM_CLOCKS 16</a>
+<a name="325"><span class="lineNum">     325 </span>            : </a>
+<a name="326"><span class="lineNum">     326 </span>            : struct PP_Clocks {</a>
+<a name="327"><span class="lineNum">     327 </span>            :         uint32_t engineClock;</a>
+<a name="328"><span class="lineNum">     328 </span>            :         uint32_t memoryClock;</a>
+<a name="329"><span class="lineNum">     329 </span>            :         uint32_t BusBandwidth;</a>
+<a name="330"><span class="lineNum">     330 </span>            :         uint32_t engineClockInSR;</a>
+<a name="331"><span class="lineNum">     331 </span>            :         uint32_t dcefClock;</a>
+<a name="332"><span class="lineNum">     332 </span>            :         uint32_t dcefClockInSR;</a>
+<a name="333"><span class="lineNum">     333 </span>            : };</a>
+<a name="334"><span class="lineNum">     334 </span>            : </a>
+<a name="335"><span class="lineNum">     335 </span>            : struct pp_clock_info {</a>
+<a name="336"><span class="lineNum">     336 </span>            :         uint32_t min_mem_clk;</a>
+<a name="337"><span class="lineNum">     337 </span>            :         uint32_t max_mem_clk;</a>
+<a name="338"><span class="lineNum">     338 </span>            :         uint32_t min_eng_clk;</a>
+<a name="339"><span class="lineNum">     339 </span>            :         uint32_t max_eng_clk;</a>
+<a name="340"><span class="lineNum">     340 </span>            :         uint32_t min_bus_bandwidth;</a>
+<a name="341"><span class="lineNum">     341 </span>            :         uint32_t max_bus_bandwidth;</a>
+<a name="342"><span class="lineNum">     342 </span>            : };</a>
+<a name="343"><span class="lineNum">     343 </span>            : </a>
+<a name="344"><span class="lineNum">     344 </span>            : struct phm_platform_descriptor {</a>
+<a name="345"><span class="lineNum">     345 </span>            :         uint32_t platformCaps[PHM_MAX_NUM_CAPS_ULONG_ENTRIES];</a>
+<a name="346"><span class="lineNum">     346 </span>            :         uint32_t vbiosInterruptId;</a>
+<a name="347"><span class="lineNum">     347 </span>            :         struct PP_Clocks overdriveLimit;</a>
+<a name="348"><span class="lineNum">     348 </span>            :         struct PP_Clocks clockStep;</a>
+<a name="349"><span class="lineNum">     349 </span>            :         uint32_t hardwareActivityPerformanceLevels;</a>
+<a name="350"><span class="lineNum">     350 </span>            :         uint32_t minimumClocksReductionPercentage;</a>
+<a name="351"><span class="lineNum">     351 </span>            :         uint32_t minOverdriveVDDC;</a>
+<a name="352"><span class="lineNum">     352 </span>            :         uint32_t maxOverdriveVDDC;</a>
+<a name="353"><span class="lineNum">     353 </span>            :         uint32_t overdriveVDDCStep;</a>
+<a name="354"><span class="lineNum">     354 </span>            :         uint32_t hardwarePerformanceLevels;</a>
+<a name="355"><span class="lineNum">     355 </span>            :         uint16_t powerBudget;</a>
+<a name="356"><span class="lineNum">     356 </span>            :         uint32_t TDPLimit;</a>
+<a name="357"><span class="lineNum">     357 </span>            :         uint32_t nearTDPLimit;</a>
+<a name="358"><span class="lineNum">     358 </span>            :         uint32_t nearTDPLimitAdjusted;</a>
+<a name="359"><span class="lineNum">     359 </span>            :         uint32_t SQRampingThreshold;</a>
+<a name="360"><span class="lineNum">     360 </span>            :         uint32_t CACLeakage;</a>
+<a name="361"><span class="lineNum">     361 </span>            :         uint16_t TDPODLimit;</a>
+<a name="362"><span class="lineNum">     362 </span>            :         uint32_t TDPAdjustment;</a>
+<a name="363"><span class="lineNum">     363 </span>            :         bool TDPAdjustmentPolarity;</a>
+<a name="364"><span class="lineNum">     364 </span>            :         uint16_t LoadLineSlope;</a>
+<a name="365"><span class="lineNum">     365 </span>            :         uint32_t  VidMinLimit;</a>
+<a name="366"><span class="lineNum">     366 </span>            :         uint32_t  VidMaxLimit;</a>
+<a name="367"><span class="lineNum">     367 </span>            :         uint32_t  VidStep;</a>
+<a name="368"><span class="lineNum">     368 </span>            :         uint32_t  VidAdjustment;</a>
+<a name="369"><span class="lineNum">     369 </span>            :         bool VidAdjustmentPolarity;</a>
+<a name="370"><span class="lineNum">     370 </span>            : };</a>
+<a name="371"><span class="lineNum">     371 </span>            : </a>
+<a name="372"><span class="lineNum">     372 </span>            : struct phm_clocks {</a>
+<a name="373"><span class="lineNum">     373 </span>            :         uint32_t num_of_entries;</a>
+<a name="374"><span class="lineNum">     374 </span>            :         uint32_t clock[MAX_NUM_CLOCKS];</a>
+<a name="375"><span class="lineNum">     375 </span>            : };</a>
+<a name="376"><span class="lineNum">     376 </span>            : </a>
+<a name="377"><span class="lineNum">     377 </span>            : #define DPMTABLE_OD_UPDATE_SCLK     0x00000001</a>
+<a name="378"><span class="lineNum">     378 </span>            : #define DPMTABLE_OD_UPDATE_MCLK     0x00000002</a>
+<a name="379"><span class="lineNum">     379 </span>            : #define DPMTABLE_UPDATE_SCLK        0x00000004</a>
+<a name="380"><span class="lineNum">     380 </span>            : #define DPMTABLE_UPDATE_MCLK        0x00000008</a>
+<a name="381"><span class="lineNum">     381 </span>            : #define DPMTABLE_OD_UPDATE_VDDC     0x00000010</a>
+<a name="382"><span class="lineNum">     382 </span>            : #define DPMTABLE_UPDATE_SOCCLK      0x00000020</a>
+<a name="383"><span class="lineNum">     383 </span>            : </a>
+<a name="384"><span class="lineNum">     384 </span>            : struct phm_odn_performance_level {</a>
+<a name="385"><span class="lineNum">     385 </span>            :         uint32_t clock;</a>
+<a name="386"><span class="lineNum">     386 </span>            :         uint32_t vddc;</a>
+<a name="387"><span class="lineNum">     387 </span>            :         bool enabled;</a>
+<a name="388"><span class="lineNum">     388 </span>            : };</a>
+<a name="389"><span class="lineNum">     389 </span>            : </a>
+<a name="390"><span class="lineNum">     390 </span>            : struct phm_odn_clock_levels {</a>
+<a name="391"><span class="lineNum">     391 </span>            :         uint32_t size;</a>
+<a name="392"><span class="lineNum">     392 </span>            :         uint32_t options;</a>
+<a name="393"><span class="lineNum">     393 </span>            :         uint32_t flags;</a>
+<a name="394"><span class="lineNum">     394 </span>            :         uint32_t num_of_pl;</a>
+<a name="395"><span class="lineNum">     395 </span>            :         /* variable-sized array, specify by num_of_pl. */</a>
+<a name="396"><span class="lineNum">     396 </span>            :         struct phm_odn_performance_level entries[8];</a>
+<a name="397"><span class="lineNum">     397 </span>            : };</a>
+<a name="398"><span class="lineNum">     398 </span>            : </a>
+<a name="399"><span class="lineNum">     399 </span>            : extern int phm_disable_clock_power_gatings(struct pp_hwmgr *hwmgr);</a>
+<a name="400"><span class="lineNum">     400 </span>            : extern int phm_powerdown_uvd(struct pp_hwmgr *hwmgr);</a>
+<a name="401"><span class="lineNum">     401 </span>            : extern int phm_setup_asic(struct pp_hwmgr *hwmgr);</a>
+<a name="402"><span class="lineNum">     402 </span>            : extern int phm_enable_dynamic_state_management(struct pp_hwmgr *hwmgr);</a>
+<a name="403"><span class="lineNum">     403 </span>            : extern int phm_disable_dynamic_state_management(struct pp_hwmgr *hwmgr);</a>
+<a name="404"><span class="lineNum">     404 </span>            : extern bool phm_is_hw_access_blocked(struct pp_hwmgr *hwmgr);</a>
+<a name="405"><span class="lineNum">     405 </span>            : extern int phm_block_hw_access(struct pp_hwmgr *hwmgr, bool block);</a>
+<a name="406"><span class="lineNum">     406 </span>            : extern int phm_set_power_state(struct pp_hwmgr *hwmgr,</a>
+<a name="407"><span class="lineNum">     407 </span>            :                     const struct pp_hw_power_state *pcurrent_state,</a>
+<a name="408"><span class="lineNum">     408 </span>            :                  const struct pp_hw_power_state *pnew_power_state);</a>
+<a name="409"><span class="lineNum">     409 </span>            : </a>
+<a name="410"><span class="lineNum">     410 </span>            : extern int phm_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,</a>
+<a name="411"><span class="lineNum">     411 </span>            :                                    struct pp_power_state *adjusted_ps,</a>
+<a name="412"><span class="lineNum">     412 </span>            :                              const struct pp_power_state *current_ps);</a>
+<a name="413"><span class="lineNum">     413 </span>            : </a>
+<a name="414"><span class="lineNum">     414 </span>            : extern int phm_apply_clock_adjust_rules(struct pp_hwmgr *hwmgr);</a>
+<a name="415"><span class="lineNum">     415 </span>            : </a>
+<a name="416"><span class="lineNum">     416 </span>            : extern int phm_force_dpm_levels(struct pp_hwmgr *hwmgr, enum amd_dpm_forced_level level);</a>
+<a name="417"><span class="lineNum">     417 </span>            : extern int phm_pre_display_configuration_changed(struct pp_hwmgr *hwmgr);</a>
+<a name="418"><span class="lineNum">     418 </span>            : extern int phm_display_configuration_changed(struct pp_hwmgr *hwmgr);</a>
+<a name="419"><span class="lineNum">     419 </span>            : extern int phm_notify_smc_display_config_after_ps_adjustment(struct pp_hwmgr *hwmgr);</a>
+<a name="420"><span class="lineNum">     420 </span>            : extern int phm_register_irq_handlers(struct pp_hwmgr *hwmgr);</a>
+<a name="421"><span class="lineNum">     421 </span>            : extern int phm_start_thermal_controller(struct pp_hwmgr *hwmgr);</a>
+<a name="422"><span class="lineNum">     422 </span>            : extern int phm_stop_thermal_controller(struct pp_hwmgr *hwmgr);</a>
+<a name="423"><span class="lineNum">     423 </span>            : extern bool phm_check_smc_update_required_for_display_configuration(struct pp_hwmgr *hwmgr);</a>
+<a name="424"><span class="lineNum">     424 </span>            : </a>
+<a name="425"><span class="lineNum">     425 </span>            : extern int phm_check_states_equal(struct pp_hwmgr *hwmgr,</a>
+<a name="426"><span class="lineNum">     426 </span>            :                                  const struct pp_hw_power_state *pstate1,</a>
+<a name="427"><span class="lineNum">     427 </span>            :                                  const struct pp_hw_power_state *pstate2,</a>
+<a name="428"><span class="lineNum">     428 </span>            :                                  bool *equal);</a>
+<a name="429"><span class="lineNum">     429 </span>            : </a>
+<a name="430"><span class="lineNum">     430 </span>            : extern int phm_store_dal_configuration_data(struct pp_hwmgr *hwmgr,</a>
+<a name="431"><span class="lineNum">     431 </span>            :                 const struct amd_pp_display_configuration *display_config);</a>
+<a name="432"><span class="lineNum">     432 </span>            : </a>
+<a name="433"><span class="lineNum">     433 </span>            : extern int phm_get_dal_power_level(struct pp_hwmgr *hwmgr,</a>
+<a name="434"><span class="lineNum">     434 </span>            :                 struct amd_pp_simple_clock_info *info);</a>
+<a name="435"><span class="lineNum">     435 </span>            : </a>
+<a name="436"><span class="lineNum">     436 </span>            : extern int phm_set_cpu_power_state(struct pp_hwmgr *hwmgr);</a>
+<a name="437"><span class="lineNum">     437 </span>            : </a>
+<a name="438"><span class="lineNum">     438 </span>            : extern int phm_power_down_asic(struct pp_hwmgr *hwmgr);</a>
+<a name="439"><span class="lineNum">     439 </span>            : </a>
+<a name="440"><span class="lineNum">     440 </span>            : extern int phm_get_performance_level(struct pp_hwmgr *hwmgr, const struct pp_hw_power_state *state,</a>
+<a name="441"><span class="lineNum">     441 </span>            :                                 PHM_PerformanceLevelDesignation designation, uint32_t index,</a>
+<a name="442"><span class="lineNum">     442 </span>            :                                 PHM_PerformanceLevel *level);</a>
+<a name="443"><span class="lineNum">     443 </span>            : </a>
+<a name="444"><span class="lineNum">     444 </span>            : extern int phm_get_clock_info(struct pp_hwmgr *hwmgr, const struct pp_hw_power_state *state,</a>
+<a name="445"><span class="lineNum">     445 </span>            :                         struct pp_clock_info *pclock_info,</a>
+<a name="446"><span class="lineNum">     446 </span>            :                         PHM_PerformanceLevelDesignation designation);</a>
+<a name="447"><span class="lineNum">     447 </span>            : </a>
+<a name="448"><span class="lineNum">     448 </span>            : extern int phm_get_current_shallow_sleep_clocks(struct pp_hwmgr *hwmgr, const struct pp_hw_power_state *state, struct pp_clock_info *clock_info);</a>
+<a name="449"><span class="lineNum">     449 </span>            : </a>
+<a name="450"><span class="lineNum">     450 </span>            : extern int phm_get_clock_by_type(struct pp_hwmgr *hwmgr, enum amd_pp_clock_type type, struct amd_pp_clocks *clocks);</a>
+<a name="451"><span class="lineNum">     451 </span>            : </a>
+<a name="452"><span class="lineNum">     452 </span>            : extern int phm_get_clock_by_type_with_latency(struct pp_hwmgr *hwmgr,</a>
+<a name="453"><span class="lineNum">     453 </span>            :                 enum amd_pp_clock_type type,</a>
+<a name="454"><span class="lineNum">     454 </span>            :                 struct pp_clock_levels_with_latency *clocks);</a>
+<a name="455"><span class="lineNum">     455 </span>            : extern int phm_get_clock_by_type_with_voltage(struct pp_hwmgr *hwmgr,</a>
+<a name="456"><span class="lineNum">     456 </span>            :                 enum amd_pp_clock_type type,</a>
+<a name="457"><span class="lineNum">     457 </span>            :                 struct pp_clock_levels_with_voltage *clocks);</a>
+<a name="458"><span class="lineNum">     458 </span>            : extern int phm_set_watermarks_for_clocks_ranges(struct pp_hwmgr *hwmgr,</a>
+<a name="459"><span class="lineNum">     459 </span>            :                                                 void *clock_ranges);</a>
+<a name="460"><span class="lineNum">     460 </span>            : extern int phm_display_clock_voltage_request(struct pp_hwmgr *hwmgr,</a>
+<a name="461"><span class="lineNum">     461 </span>            :                 struct pp_display_clock_request *clock);</a>
+<a name="462"><span class="lineNum">     462 </span>            : </a>
+<a name="463"><span class="lineNum">     463 </span>            : extern int phm_get_max_high_clocks(struct pp_hwmgr *hwmgr, struct amd_pp_simple_clock_info *clocks);</a>
+<a name="464"><span class="lineNum">     464 </span>            : extern int phm_disable_smc_firmware_ctf(struct pp_hwmgr *hwmgr);</a>
+<a name="465"><span class="lineNum">     465 </span>            : </a>
+<a name="466"><span class="lineNum">     466 </span>            : extern int phm_set_active_display_count(struct pp_hwmgr *hwmgr, uint32_t count);</a>
+<a name="467"><span class="lineNum">     467 </span>            : </a>
+<a name="468"><span class="lineNum">     468 </span>            : #endif /* _HARDWARE_MANAGER_H_ */</a>
+<a name="469"><span class="lineNum">     469 </span>            : </a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

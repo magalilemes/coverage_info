@@ -1,0 +1,649 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - include/linux/suspend.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">include/linux</a> - suspend.h<span style="font-size: 80%;"> (source / <a href="suspend.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* SPDX-License-Identifier: GPL-2.0 */</a>
+<a name="2"><span class="lineNum">       2 </span>            : #ifndef _LINUX_SUSPEND_H</a>
+<a name="3"><span class="lineNum">       3 </span>            : #define _LINUX_SUSPEND_H</a>
+<a name="4"><span class="lineNum">       4 </span>            : </a>
+<a name="5"><span class="lineNum">       5 </span>            : #include &lt;linux/swap.h&gt;</a>
+<a name="6"><span class="lineNum">       6 </span>            : #include &lt;linux/notifier.h&gt;</a>
+<a name="7"><span class="lineNum">       7 </span>            : #include &lt;linux/init.h&gt;</a>
+<a name="8"><span class="lineNum">       8 </span>            : #include &lt;linux/pm.h&gt;</a>
+<a name="9"><span class="lineNum">       9 </span>            : #include &lt;linux/mm.h&gt;</a>
+<a name="10"><span class="lineNum">      10 </span>            : #include &lt;linux/freezer.h&gt;</a>
+<a name="11"><span class="lineNum">      11 </span>            : #include &lt;asm/errno.h&gt;</a>
+<a name="12"><span class="lineNum">      12 </span>            : </a>
+<a name="13"><span class="lineNum">      13 </span>            : #ifdef CONFIG_VT</a>
+<a name="14"><span class="lineNum">      14 </span>            : extern void pm_set_vt_switch(int);</a>
+<a name="15"><span class="lineNum">      15 </span>            : #else</a>
+<a name="16"><span class="lineNum">      16 </span>            : static inline void pm_set_vt_switch(int do_switch)</a>
+<a name="17"><span class="lineNum">      17 </span>            : {</a>
+<a name="18"><span class="lineNum">      18 </span>            : }</a>
+<a name="19"><span class="lineNum">      19 </span>            : #endif</a>
+<a name="20"><span class="lineNum">      20 </span>            : </a>
+<a name="21"><span class="lineNum">      21 </span>            : #ifdef CONFIG_VT_CONSOLE_SLEEP</a>
+<a name="22"><span class="lineNum">      22 </span>            : extern void pm_prepare_console(void);</a>
+<a name="23"><span class="lineNum">      23 </span>            : extern void pm_restore_console(void);</a>
+<a name="24"><span class="lineNum">      24 </span>            : #else</a>
+<a name="25"><span class="lineNum">      25 </span>            : static inline void pm_prepare_console(void)</a>
+<a name="26"><span class="lineNum">      26 </span>            : {</a>
+<a name="27"><span class="lineNum">      27 </span>            : }</a>
+<a name="28"><span class="lineNum">      28 </span>            : </a>
+<a name="29"><span class="lineNum">      29 </span>            : static inline void pm_restore_console(void)</a>
+<a name="30"><span class="lineNum">      30 </span>            : {</a>
+<a name="31"><span class="lineNum">      31 </span>            : }</a>
+<a name="32"><span class="lineNum">      32 </span>            : #endif</a>
+<a name="33"><span class="lineNum">      33 </span>            : </a>
+<a name="34"><span class="lineNum">      34 </span>            : typedef int __bitwise suspend_state_t;</a>
+<a name="35"><span class="lineNum">      35 </span>            : </a>
+<a name="36"><span class="lineNum">      36 </span>            : #define PM_SUSPEND_ON           ((__force suspend_state_t) 0)</a>
+<a name="37"><span class="lineNum">      37 </span>            : #define PM_SUSPEND_TO_IDLE      ((__force suspend_state_t) 1)</a>
+<a name="38"><span class="lineNum">      38 </span>            : #define PM_SUSPEND_STANDBY      ((__force suspend_state_t) 2)</a>
+<a name="39"><span class="lineNum">      39 </span>            : #define PM_SUSPEND_MEM          ((__force suspend_state_t) 3)</a>
+<a name="40"><span class="lineNum">      40 </span>            : #define PM_SUSPEND_MIN          PM_SUSPEND_TO_IDLE</a>
+<a name="41"><span class="lineNum">      41 </span>            : #define PM_SUSPEND_MAX          ((__force suspend_state_t) 4)</a>
+<a name="42"><span class="lineNum">      42 </span>            : </a>
+<a name="43"><span class="lineNum">      43 </span>            : enum suspend_stat_step {</a>
+<a name="44"><span class="lineNum">      44 </span>            :         SUSPEND_FREEZE = 1,</a>
+<a name="45"><span class="lineNum">      45 </span>            :         SUSPEND_PREPARE,</a>
+<a name="46"><span class="lineNum">      46 </span>            :         SUSPEND_SUSPEND,</a>
+<a name="47"><span class="lineNum">      47 </span>            :         SUSPEND_SUSPEND_LATE,</a>
+<a name="48"><span class="lineNum">      48 </span>            :         SUSPEND_SUSPEND_NOIRQ,</a>
+<a name="49"><span class="lineNum">      49 </span>            :         SUSPEND_RESUME_NOIRQ,</a>
+<a name="50"><span class="lineNum">      50 </span>            :         SUSPEND_RESUME_EARLY,</a>
+<a name="51"><span class="lineNum">      51 </span>            :         SUSPEND_RESUME</a>
+<a name="52"><span class="lineNum">      52 </span>            : };</a>
+<a name="53"><span class="lineNum">      53 </span>            : </a>
+<a name="54"><span class="lineNum">      54 </span>            : struct suspend_stats {</a>
+<a name="55"><span class="lineNum">      55 </span>            :         int     success;</a>
+<a name="56"><span class="lineNum">      56 </span>            :         int     fail;</a>
+<a name="57"><span class="lineNum">      57 </span>            :         int     failed_freeze;</a>
+<a name="58"><span class="lineNum">      58 </span>            :         int     failed_prepare;</a>
+<a name="59"><span class="lineNum">      59 </span>            :         int     failed_suspend;</a>
+<a name="60"><span class="lineNum">      60 </span>            :         int     failed_suspend_late;</a>
+<a name="61"><span class="lineNum">      61 </span>            :         int     failed_suspend_noirq;</a>
+<a name="62"><span class="lineNum">      62 </span>            :         int     failed_resume;</a>
+<a name="63"><span class="lineNum">      63 </span>            :         int     failed_resume_early;</a>
+<a name="64"><span class="lineNum">      64 </span>            :         int     failed_resume_noirq;</a>
+<a name="65"><span class="lineNum">      65 </span>            : #define REC_FAILED_NUM  2</a>
+<a name="66"><span class="lineNum">      66 </span>            :         int     last_failed_dev;</a>
+<a name="67"><span class="lineNum">      67 </span>            :         char    failed_devs[REC_FAILED_NUM][40];</a>
+<a name="68"><span class="lineNum">      68 </span>            :         int     last_failed_errno;</a>
+<a name="69"><span class="lineNum">      69 </span>            :         int     errno[REC_FAILED_NUM];</a>
+<a name="70"><span class="lineNum">      70 </span>            :         int     last_failed_step;</a>
+<a name="71"><span class="lineNum">      71 </span>            :         enum suspend_stat_step  failed_steps[REC_FAILED_NUM];</a>
+<a name="72"><span class="lineNum">      72 </span>            : };</a>
+<a name="73"><span class="lineNum">      73 </span>            : </a>
+<a name="74"><span class="lineNum">      74 </span>            : extern struct suspend_stats suspend_stats;</a>
+<a name="75"><span class="lineNum">      75 </span>            : </a>
+<a name="76"><span class="lineNum">      76 </span>            : static inline void dpm_save_failed_dev(const char *name)</a>
+<a name="77"><span class="lineNum">      77 </span>            : {</a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :         strlcpy(suspend_stats.failed_devs[suspend_stats.last_failed_dev],</span></a>
+<a name="79"><span class="lineNum">      79 </span>            :                 name,</a>
+<a name="80"><span class="lineNum">      80 </span>            :                 sizeof(suspend_stats.failed_devs[0]));</a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineNoCov">          0 :         suspend_stats.last_failed_dev++;</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineNoCov">          0 :         suspend_stats.last_failed_dev %= REC_FAILED_NUM;</span></a>
+<a name="83"><span class="lineNum">      83 </span>            : }</a>
+<a name="84"><span class="lineNum">      84 </span>            : </a>
+<a name="85"><span class="lineNum">      85 </span>            : static inline void dpm_save_failed_errno(int err)</a>
+<a name="86"><span class="lineNum">      86 </span>            : {</a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 :         suspend_stats.errno[suspend_stats.last_failed_errno] = err;</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 :         suspend_stats.last_failed_errno++;</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineNoCov">          0 :         suspend_stats.last_failed_errno %= REC_FAILED_NUM;</span></a>
+<a name="90"><span class="lineNum">      90 </span>            : }</a>
+<a name="91"><span class="lineNum">      91 </span>            : </a>
+<a name="92"><span class="lineNum">      92 </span>            : static inline void dpm_save_failed_step(enum suspend_stat_step step)</a>
+<a name="93"><span class="lineNum">      93 </span>            : {</a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineNoCov">          0 :         suspend_stats.failed_steps[suspend_stats.last_failed_step] = step;</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 :         suspend_stats.last_failed_step++;</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 :         suspend_stats.last_failed_step %= REC_FAILED_NUM;</span></a>
+<a name="97"><span class="lineNum">      97 </span>            : }</a>
+<a name="98"><span class="lineNum">      98 </span>            : </a>
+<a name="99"><span class="lineNum">      99 </span>            : /**</a>
+<a name="100"><span class="lineNum">     100 </span>            :  * struct platform_suspend_ops - Callbacks for managing platform dependent</a>
+<a name="101"><span class="lineNum">     101 </span>            :  *      system sleep states.</a>
+<a name="102"><span class="lineNum">     102 </span>            :  *</a>
+<a name="103"><span class="lineNum">     103 </span>            :  * @valid: Callback to determine if given system sleep state is supported by</a>
+<a name="104"><span class="lineNum">     104 </span>            :  *      the platform.</a>
+<a name="105"><span class="lineNum">     105 </span>            :  *      Valid (ie. supported) states are advertised in /sys/power/state.  Note</a>
+<a name="106"><span class="lineNum">     106 </span>            :  *      that it still may be impossible to enter given system sleep state if the</a>
+<a name="107"><span class="lineNum">     107 </span>            :  *      conditions aren't right.</a>
+<a name="108"><span class="lineNum">     108 </span>            :  *      There is the %suspend_valid_only_mem function available that can be</a>
+<a name="109"><span class="lineNum">     109 </span>            :  *      assigned to this if the platform only supports mem sleep.</a>
+<a name="110"><span class="lineNum">     110 </span>            :  *</a>
+<a name="111"><span class="lineNum">     111 </span>            :  * @begin: Initialise a transition to given system sleep state.</a>
+<a name="112"><span class="lineNum">     112 </span>            :  *      @begin() is executed right prior to suspending devices.  The information</a>
+<a name="113"><span class="lineNum">     113 </span>            :  *      conveyed to the platform code by @begin() should be disregarded by it as</a>
+<a name="114"><span class="lineNum">     114 </span>            :  *      soon as @end() is executed.  If @begin() fails (ie. returns nonzero),</a>
+<a name="115"><span class="lineNum">     115 </span>            :  *      @prepare(), @enter() and @finish() will not be called by the PM core.</a>
+<a name="116"><span class="lineNum">     116 </span>            :  *      This callback is optional.  However, if it is implemented, the argument</a>
+<a name="117"><span class="lineNum">     117 </span>            :  *      passed to @enter() is redundant and should be ignored.</a>
+<a name="118"><span class="lineNum">     118 </span>            :  *</a>
+<a name="119"><span class="lineNum">     119 </span>            :  * @prepare: Prepare the platform for entering the system sleep state indicated</a>
+<a name="120"><span class="lineNum">     120 </span>            :  *      by @begin().</a>
+<a name="121"><span class="lineNum">     121 </span>            :  *      @prepare() is called right after devices have been suspended (ie. the</a>
+<a name="122"><span class="lineNum">     122 </span>            :  *      appropriate .suspend() method has been executed for each device) and</a>
+<a name="123"><span class="lineNum">     123 </span>            :  *      before device drivers' late suspend callbacks are executed.  It returns</a>
+<a name="124"><span class="lineNum">     124 </span>            :  *      0 on success or a negative error code otherwise, in which case the</a>
+<a name="125"><span class="lineNum">     125 </span>            :  *      system cannot enter the desired sleep state (@prepare_late(), @enter(),</a>
+<a name="126"><span class="lineNum">     126 </span>            :  *      and @wake() will not be called in that case).</a>
+<a name="127"><span class="lineNum">     127 </span>            :  *</a>
+<a name="128"><span class="lineNum">     128 </span>            :  * @prepare_late: Finish preparing the platform for entering the system sleep</a>
+<a name="129"><span class="lineNum">     129 </span>            :  *      state indicated by @begin().</a>
+<a name="130"><span class="lineNum">     130 </span>            :  *      @prepare_late is called before disabling nonboot CPUs and after</a>
+<a name="131"><span class="lineNum">     131 </span>            :  *      device drivers' late suspend callbacks have been executed.  It returns</a>
+<a name="132"><span class="lineNum">     132 </span>            :  *      0 on success or a negative error code otherwise, in which case the</a>
+<a name="133"><span class="lineNum">     133 </span>            :  *      system cannot enter the desired sleep state (@enter() will not be</a>
+<a name="134"><span class="lineNum">     134 </span>            :  *      executed).</a>
+<a name="135"><span class="lineNum">     135 </span>            :  *</a>
+<a name="136"><span class="lineNum">     136 </span>            :  * @enter: Enter the system sleep state indicated by @begin() or represented by</a>
+<a name="137"><span class="lineNum">     137 </span>            :  *      the argument if @begin() is not implemented.</a>
+<a name="138"><span class="lineNum">     138 </span>            :  *      This callback is mandatory.  It returns 0 on success or a negative</a>
+<a name="139"><span class="lineNum">     139 </span>            :  *      error code otherwise, in which case the system cannot enter the desired</a>
+<a name="140"><span class="lineNum">     140 </span>            :  *      sleep state.</a>
+<a name="141"><span class="lineNum">     141 </span>            :  *</a>
+<a name="142"><span class="lineNum">     142 </span>            :  * @wake: Called when the system has just left a sleep state, right after</a>
+<a name="143"><span class="lineNum">     143 </span>            :  *      the nonboot CPUs have been enabled and before device drivers' early</a>
+<a name="144"><span class="lineNum">     144 </span>            :  *      resume callbacks are executed.</a>
+<a name="145"><span class="lineNum">     145 </span>            :  *      This callback is optional, but should be implemented by the platforms</a>
+<a name="146"><span class="lineNum">     146 </span>            :  *      that implement @prepare_late().  If implemented, it is always called</a>
+<a name="147"><span class="lineNum">     147 </span>            :  *      after @prepare_late and @enter(), even if one of them fails.</a>
+<a name="148"><span class="lineNum">     148 </span>            :  *</a>
+<a name="149"><span class="lineNum">     149 </span>            :  * @finish: Finish wake-up of the platform.</a>
+<a name="150"><span class="lineNum">     150 </span>            :  *      @finish is called right prior to calling device drivers' regular suspend</a>
+<a name="151"><span class="lineNum">     151 </span>            :  *      callbacks.</a>
+<a name="152"><span class="lineNum">     152 </span>            :  *      This callback is optional, but should be implemented by the platforms</a>
+<a name="153"><span class="lineNum">     153 </span>            :  *      that implement @prepare().  If implemented, it is always called after</a>
+<a name="154"><span class="lineNum">     154 </span>            :  *      @enter() and @wake(), even if any of them fails.  It is executed after</a>
+<a name="155"><span class="lineNum">     155 </span>            :  *      a failing @prepare.</a>
+<a name="156"><span class="lineNum">     156 </span>            :  *</a>
+<a name="157"><span class="lineNum">     157 </span>            :  * @suspend_again: Returns whether the system should suspend again (true) or</a>
+<a name="158"><span class="lineNum">     158 </span>            :  *      not (false). If the platform wants to poll sensors or execute some</a>
+<a name="159"><span class="lineNum">     159 </span>            :  *      code during suspended without invoking userspace and most of devices,</a>
+<a name="160"><span class="lineNum">     160 </span>            :  *      suspend_again callback is the place assuming that periodic-wakeup or</a>
+<a name="161"><span class="lineNum">     161 </span>            :  *      alarm-wakeup is already setup. This allows to execute some codes while</a>
+<a name="162"><span class="lineNum">     162 </span>            :  *      being kept suspended in the view of userland and devices.</a>
+<a name="163"><span class="lineNum">     163 </span>            :  *</a>
+<a name="164"><span class="lineNum">     164 </span>            :  * @end: Called by the PM core right after resuming devices, to indicate to</a>
+<a name="165"><span class="lineNum">     165 </span>            :  *      the platform that the system has returned to the working state or</a>
+<a name="166"><span class="lineNum">     166 </span>            :  *      the transition to the sleep state has been aborted.</a>
+<a name="167"><span class="lineNum">     167 </span>            :  *      This callback is optional, but should be implemented by the platforms</a>
+<a name="168"><span class="lineNum">     168 </span>            :  *      that implement @begin().  Accordingly, platforms implementing @begin()</a>
+<a name="169"><span class="lineNum">     169 </span>            :  *      should also provide a @end() which cleans up transitions aborted before</a>
+<a name="170"><span class="lineNum">     170 </span>            :  *      @enter().</a>
+<a name="171"><span class="lineNum">     171 </span>            :  *</a>
+<a name="172"><span class="lineNum">     172 </span>            :  * @recover: Recover the platform from a suspend failure.</a>
+<a name="173"><span class="lineNum">     173 </span>            :  *      Called by the PM core if the suspending of devices fails.</a>
+<a name="174"><span class="lineNum">     174 </span>            :  *      This callback is optional and should only be implemented by platforms</a>
+<a name="175"><span class="lineNum">     175 </span>            :  *      which require special recovery actions in that situation.</a>
+<a name="176"><span class="lineNum">     176 </span>            :  */</a>
+<a name="177"><span class="lineNum">     177 </span>            : struct platform_suspend_ops {</a>
+<a name="178"><span class="lineNum">     178 </span>            :         int (*valid)(suspend_state_t state);</a>
+<a name="179"><span class="lineNum">     179 </span>            :         int (*begin)(suspend_state_t state);</a>
+<a name="180"><span class="lineNum">     180 </span>            :         int (*prepare)(void);</a>
+<a name="181"><span class="lineNum">     181 </span>            :         int (*prepare_late)(void);</a>
+<a name="182"><span class="lineNum">     182 </span>            :         int (*enter)(suspend_state_t state);</a>
+<a name="183"><span class="lineNum">     183 </span>            :         void (*wake)(void);</a>
+<a name="184"><span class="lineNum">     184 </span>            :         void (*finish)(void);</a>
+<a name="185"><span class="lineNum">     185 </span>            :         bool (*suspend_again)(void);</a>
+<a name="186"><span class="lineNum">     186 </span>            :         void (*end)(void);</a>
+<a name="187"><span class="lineNum">     187 </span>            :         void (*recover)(void);</a>
+<a name="188"><span class="lineNum">     188 </span>            : };</a>
+<a name="189"><span class="lineNum">     189 </span>            : </a>
+<a name="190"><span class="lineNum">     190 </span>            : struct platform_s2idle_ops {</a>
+<a name="191"><span class="lineNum">     191 </span>            :         int (*begin)(void);</a>
+<a name="192"><span class="lineNum">     192 </span>            :         int (*prepare)(void);</a>
+<a name="193"><span class="lineNum">     193 </span>            :         int (*prepare_late)(void);</a>
+<a name="194"><span class="lineNum">     194 </span>            :         bool (*wake)(void);</a>
+<a name="195"><span class="lineNum">     195 </span>            :         void (*restore_early)(void);</a>
+<a name="196"><span class="lineNum">     196 </span>            :         void (*restore)(void);</a>
+<a name="197"><span class="lineNum">     197 </span>            :         void (*end)(void);</a>
+<a name="198"><span class="lineNum">     198 </span>            : };</a>
+<a name="199"><span class="lineNum">     199 </span>            : </a>
+<a name="200"><span class="lineNum">     200 </span>            : #ifdef CONFIG_SUSPEND</a>
+<a name="201"><span class="lineNum">     201 </span>            : extern suspend_state_t mem_sleep_current;</a>
+<a name="202"><span class="lineNum">     202 </span>            : extern suspend_state_t mem_sleep_default;</a>
+<a name="203"><span class="lineNum">     203 </span>            : </a>
+<a name="204"><span class="lineNum">     204 </span>            : /**</a>
+<a name="205"><span class="lineNum">     205 </span>            :  * suspend_set_ops - set platform dependent suspend operations</a>
+<a name="206"><span class="lineNum">     206 </span>            :  * @ops: The new suspend operations to set.</a>
+<a name="207"><span class="lineNum">     207 </span>            :  */</a>
+<a name="208"><span class="lineNum">     208 </span>            : extern void suspend_set_ops(const struct platform_suspend_ops *ops);</a>
+<a name="209"><span class="lineNum">     209 </span>            : extern int suspend_valid_only_mem(suspend_state_t state);</a>
+<a name="210"><span class="lineNum">     210 </span>            : </a>
+<a name="211"><span class="lineNum">     211 </span>            : extern unsigned int pm_suspend_global_flags;</a>
+<a name="212"><span class="lineNum">     212 </span>            : </a>
+<a name="213"><span class="lineNum">     213 </span>            : #define PM_SUSPEND_FLAG_FW_SUSPEND      BIT(0)</a>
+<a name="214"><span class="lineNum">     214 </span>            : #define PM_SUSPEND_FLAG_FW_RESUME       BIT(1)</a>
+<a name="215"><span class="lineNum">     215 </span>            : #define PM_SUSPEND_FLAG_NO_PLATFORM     BIT(2)</a>
+<a name="216"><span class="lineNum">     216 </span>            : </a>
+<a name="217"><span class="lineNum">     217 </span>            : static inline void pm_suspend_clear_flags(void)</a>
+<a name="218"><span class="lineNum">     218 </span>            : {</a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineNoCov">          0 :         pm_suspend_global_flags = 0;</span></a>
+<a name="220"><span class="lineNum">     220 </span>            : }</a>
+<a name="221"><span class="lineNum">     221 </span>            : </a>
+<a name="222"><span class="lineNum">     222 </span>            : static inline void pm_set_suspend_via_firmware(void)</a>
+<a name="223"><span class="lineNum">     223 </span>            : {</a>
+<a name="224"><span class="lineNum">     224 </span>            :         pm_suspend_global_flags |= PM_SUSPEND_FLAG_FW_SUSPEND;</a>
+<a name="225"><span class="lineNum">     225 </span>            : }</a>
+<a name="226"><span class="lineNum">     226 </span>            : </a>
+<a name="227"><span class="lineNum">     227 </span>            : static inline void pm_set_resume_via_firmware(void)</a>
+<a name="228"><span class="lineNum">     228 </span>            : {</a>
+<a name="229"><span class="lineNum">     229 </span>            :         pm_suspend_global_flags |= PM_SUSPEND_FLAG_FW_RESUME;</a>
+<a name="230"><span class="lineNum">     230 </span>            : }</a>
+<a name="231"><span class="lineNum">     231 </span>            : </a>
+<a name="232"><span class="lineNum">     232 </span>            : static inline void pm_set_suspend_no_platform(void)</a>
+<a name="233"><span class="lineNum">     233 </span>            : {</a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineNoCov">          0 :         pm_suspend_global_flags |= PM_SUSPEND_FLAG_NO_PLATFORM;</span></a>
+<a name="235"><span class="lineNum">     235 </span>            : }</a>
+<a name="236"><span class="lineNum">     236 </span>            : </a>
+<a name="237"><span class="lineNum">     237 </span>            : /**</a>
+<a name="238"><span class="lineNum">     238 </span>            :  * pm_suspend_via_firmware - Check if platform firmware will suspend the system.</a>
+<a name="239"><span class="lineNum">     239 </span>            :  *</a>
+<a name="240"><span class="lineNum">     240 </span>            :  * To be called during system-wide power management transitions to sleep states</a>
+<a name="241"><span class="lineNum">     241 </span>            :  * or during the subsequent system-wide transitions back to the working state.</a>
+<a name="242"><span class="lineNum">     242 </span>            :  *</a>
+<a name="243"><span class="lineNum">     243 </span>            :  * Return 'true' if the platform firmware is going to be invoked at the end of</a>
+<a name="244"><span class="lineNum">     244 </span>            :  * the system-wide power management transition (to a sleep state) in progress in</a>
+<a name="245"><span class="lineNum">     245 </span>            :  * order to complete it, or if the platform firmware has been invoked in order</a>
+<a name="246"><span class="lineNum">     246 </span>            :  * to complete the last (or preceding) transition of the system to a sleep</a>
+<a name="247"><span class="lineNum">     247 </span>            :  * state.</a>
+<a name="248"><span class="lineNum">     248 </span>            :  *</a>
+<a name="249"><span class="lineNum">     249 </span>            :  * This matters if the caller needs or wants to carry out some special actions</a>
+<a name="250"><span class="lineNum">     250 </span>            :  * depending on whether or not control will be passed to the platform firmware</a>
+<a name="251"><span class="lineNum">     251 </span>            :  * subsequently (for example, the device may need to be reset before letting the</a>
+<a name="252"><span class="lineNum">     252 </span>            :  * platform firmware manipulate it, which is not necessary when the platform</a>
+<a name="253"><span class="lineNum">     253 </span>            :  * firmware is not going to be invoked) or when such special actions may have</a>
+<a name="254"><span class="lineNum">     254 </span>            :  * been carried out during the preceding transition of the system to a sleep</a>
+<a name="255"><span class="lineNum">     255 </span>            :  * state (as they may need to be taken into account).</a>
+<a name="256"><span class="lineNum">     256 </span>            :  */</a>
+<a name="257"><span class="lineNum">     257 </span>            : static inline bool pm_suspend_via_firmware(void)</a>
+<a name="258"><span class="lineNum">     258 </span>            : {</a>
+<a name="259"><span class="lineNum">     259 </span>            :         return !!(pm_suspend_global_flags &amp; PM_SUSPEND_FLAG_FW_SUSPEND);</a>
+<a name="260"><span class="lineNum">     260 </span>            : }</a>
+<a name="261"><span class="lineNum">     261 </span>            : </a>
+<a name="262"><span class="lineNum">     262 </span>            : /**</a>
+<a name="263"><span class="lineNum">     263 </span>            :  * pm_resume_via_firmware - Check if platform firmware has woken up the system.</a>
+<a name="264"><span class="lineNum">     264 </span>            :  *</a>
+<a name="265"><span class="lineNum">     265 </span>            :  * To be called during system-wide power management transitions from sleep</a>
+<a name="266"><span class="lineNum">     266 </span>            :  * states.</a>
+<a name="267"><span class="lineNum">     267 </span>            :  *</a>
+<a name="268"><span class="lineNum">     268 </span>            :  * Return 'true' if the platform firmware has passed control to the kernel at</a>
+<a name="269"><span class="lineNum">     269 </span>            :  * the beginning of the system-wide power management transition in progress, so</a>
+<a name="270"><span class="lineNum">     270 </span>            :  * the event that woke up the system from sleep has been handled by the platform</a>
+<a name="271"><span class="lineNum">     271 </span>            :  * firmware.</a>
+<a name="272"><span class="lineNum">     272 </span>            :  */</a>
+<a name="273"><span class="lineNum">     273 </span>            : static inline bool pm_resume_via_firmware(void)</a>
+<a name="274"><span class="lineNum">     274 </span>            : {</a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineNoCov">          0 :         return !!(pm_suspend_global_flags &amp; PM_SUSPEND_FLAG_FW_RESUME);</span></a>
+<a name="276"><span class="lineNum">     276 </span>            : }</a>
+<a name="277"><span class="lineNum">     277 </span>            : </a>
+<a name="278"><span class="lineNum">     278 </span>            : /**</a>
+<a name="279"><span class="lineNum">     279 </span>            :  * pm_suspend_no_platform - Check if platform may change device power states.</a>
+<a name="280"><span class="lineNum">     280 </span>            :  *</a>
+<a name="281"><span class="lineNum">     281 </span>            :  * To be called during system-wide power management transitions to sleep states</a>
+<a name="282"><span class="lineNum">     282 </span>            :  * or during the subsequent system-wide transitions back to the working state.</a>
+<a name="283"><span class="lineNum">     283 </span>            :  *</a>
+<a name="284"><span class="lineNum">     284 </span>            :  * Return 'true' if the power states of devices remain under full control of the</a>
+<a name="285"><span class="lineNum">     285 </span>            :  * kernel throughout the system-wide suspend and resume cycle in progress (that</a>
+<a name="286"><span class="lineNum">     286 </span>            :  * is, if a device is put into a certain power state during suspend, it can be</a>
+<a name="287"><span class="lineNum">     287 </span>            :  * expected to remain in that state during resume).</a>
+<a name="288"><span class="lineNum">     288 </span>            :  */</a>
+<a name="289"><span class="lineNum">     289 </span>            : static inline bool pm_suspend_no_platform(void)</a>
+<a name="290"><span class="lineNum">     290 </span>            : {</a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 :         return !!(pm_suspend_global_flags &amp; PM_SUSPEND_FLAG_NO_PLATFORM);</span></a>
+<a name="292"><span class="lineNum">     292 </span>            : }</a>
+<a name="293"><span class="lineNum">     293 </span>            : </a>
+<a name="294"><span class="lineNum">     294 </span>            : /* Suspend-to-idle state machnine. */</a>
+<a name="295"><span class="lineNum">     295 </span>            : enum s2idle_states {</a>
+<a name="296"><span class="lineNum">     296 </span>            :         S2IDLE_STATE_NONE,      /* Not suspended/suspending. */</a>
+<a name="297"><span class="lineNum">     297 </span>            :         S2IDLE_STATE_ENTER,     /* Enter suspend-to-idle. */</a>
+<a name="298"><span class="lineNum">     298 </span>            :         S2IDLE_STATE_WAKE,      /* Wake up from suspend-to-idle. */</a>
+<a name="299"><span class="lineNum">     299 </span>            : };</a>
+<a name="300"><span class="lineNum">     300 </span>            : </a>
+<a name="301"><span class="lineNum">     301 </span>            : extern enum s2idle_states __read_mostly s2idle_state;</a>
+<a name="302"><span class="lineNum">     302 </span>            : </a>
+<a name="303"><span class="lineNum">     303 </span>            : static inline bool idle_should_enter_s2idle(void)</a>
+<a name="304"><span class="lineNum">     304 </span>            : {</a>
+<a name="305"><span class="lineNum">     305 </span>            :         return unlikely(s2idle_state == S2IDLE_STATE_ENTER);</a>
+<a name="306"><span class="lineNum">     306 </span>            : }</a>
+<a name="307"><span class="lineNum">     307 </span>            : </a>
+<a name="308"><span class="lineNum">     308 </span>            : extern bool pm_suspend_default_s2idle(void);</a>
+<a name="309"><span class="lineNum">     309 </span>            : extern void __init pm_states_init(void);</a>
+<a name="310"><span class="lineNum">     310 </span>            : extern void s2idle_set_ops(const struct platform_s2idle_ops *ops);</a>
+<a name="311"><span class="lineNum">     311 </span>            : extern void s2idle_wake(void);</a>
+<a name="312"><span class="lineNum">     312 </span>            : </a>
+<a name="313"><span class="lineNum">     313 </span>            : /**</a>
+<a name="314"><span class="lineNum">     314 </span>            :  * arch_suspend_disable_irqs - disable IRQs for suspend</a>
+<a name="315"><span class="lineNum">     315 </span>            :  *</a>
+<a name="316"><span class="lineNum">     316 </span>            :  * Disables IRQs (in the default case). This is a weak symbol in the common</a>
+<a name="317"><span class="lineNum">     317 </span>            :  * code and thus allows architectures to override it if more needs to be</a>
+<a name="318"><span class="lineNum">     318 </span>            :  * done. Not called for suspend to disk.</a>
+<a name="319"><span class="lineNum">     319 </span>            :  */</a>
+<a name="320"><span class="lineNum">     320 </span>            : extern void arch_suspend_disable_irqs(void);</a>
+<a name="321"><span class="lineNum">     321 </span>            : </a>
+<a name="322"><span class="lineNum">     322 </span>            : /**</a>
+<a name="323"><span class="lineNum">     323 </span>            :  * arch_suspend_enable_irqs - enable IRQs after suspend</a>
+<a name="324"><span class="lineNum">     324 </span>            :  *</a>
+<a name="325"><span class="lineNum">     325 </span>            :  * Enables IRQs (in the default case). This is a weak symbol in the common</a>
+<a name="326"><span class="lineNum">     326 </span>            :  * code and thus allows architectures to override it if more needs to be</a>
+<a name="327"><span class="lineNum">     327 </span>            :  * done. Not called for suspend to disk.</a>
+<a name="328"><span class="lineNum">     328 </span>            :  */</a>
+<a name="329"><span class="lineNum">     329 </span>            : extern void arch_suspend_enable_irqs(void);</a>
+<a name="330"><span class="lineNum">     330 </span>            : </a>
+<a name="331"><span class="lineNum">     331 </span>            : extern int pm_suspend(suspend_state_t state);</a>
+<a name="332"><span class="lineNum">     332 </span>            : extern bool sync_on_suspend_enabled;</a>
+<a name="333"><span class="lineNum">     333 </span>            : #else /* !CONFIG_SUSPEND */</a>
+<a name="334"><span class="lineNum">     334 </span>            : #define suspend_valid_only_mem  NULL</a>
+<a name="335"><span class="lineNum">     335 </span>            : </a>
+<a name="336"><span class="lineNum">     336 </span>            : static inline void pm_suspend_clear_flags(void) {}</a>
+<a name="337"><span class="lineNum">     337 </span>            : static inline void pm_set_suspend_via_firmware(void) {}</a>
+<a name="338"><span class="lineNum">     338 </span>            : static inline void pm_set_resume_via_firmware(void) {}</a>
+<a name="339"><span class="lineNum">     339 </span>            : static inline bool pm_suspend_via_firmware(void) { return false; }</a>
+<a name="340"><span class="lineNum">     340 </span>            : static inline bool pm_resume_via_firmware(void) { return false; }</a>
+<a name="341"><span class="lineNum">     341 </span>            : static inline bool pm_suspend_no_platform(void) { return false; }</a>
+<a name="342"><span class="lineNum">     342 </span>            : static inline bool pm_suspend_default_s2idle(void) { return false; }</a>
+<a name="343"><span class="lineNum">     343 </span>            : </a>
+<a name="344"><span class="lineNum">     344 </span>            : static inline void suspend_set_ops(const struct platform_suspend_ops *ops) {}</a>
+<a name="345"><span class="lineNum">     345 </span>            : static inline int pm_suspend(suspend_state_t state) { return -ENOSYS; }</a>
+<a name="346"><span class="lineNum">     346 </span>            : static inline bool sync_on_suspend_enabled(void) { return true; }</a>
+<a name="347"><span class="lineNum">     347 </span>            : static inline bool idle_should_enter_s2idle(void) { return false; }</a>
+<a name="348"><span class="lineNum">     348 </span>            : static inline void __init pm_states_init(void) {}</a>
+<a name="349"><span class="lineNum">     349 </span>            : static inline void s2idle_set_ops(const struct platform_s2idle_ops *ops) {}</a>
+<a name="350"><span class="lineNum">     350 </span>            : static inline void s2idle_wake(void) {}</a>
+<a name="351"><span class="lineNum">     351 </span>            : #endif /* !CONFIG_SUSPEND */</a>
+<a name="352"><span class="lineNum">     352 </span>            : </a>
+<a name="353"><span class="lineNum">     353 </span>            : /* struct pbe is used for creating lists of pages that should be restored</a>
+<a name="354"><span class="lineNum">     354 </span>            :  * atomically during the resume from disk, because the page frames they have</a>
+<a name="355"><span class="lineNum">     355 </span>            :  * occupied before the suspend are in use.</a>
+<a name="356"><span class="lineNum">     356 </span>            :  */</a>
+<a name="357"><span class="lineNum">     357 </span>            : struct pbe {</a>
+<a name="358"><span class="lineNum">     358 </span>            :         void *address;          /* address of the copy */</a>
+<a name="359"><span class="lineNum">     359 </span>            :         void *orig_address;     /* original address of a page */</a>
+<a name="360"><span class="lineNum">     360 </span>            :         struct pbe *next;</a>
+<a name="361"><span class="lineNum">     361 </span>            : };</a>
+<a name="362"><span class="lineNum">     362 </span>            : </a>
+<a name="363"><span class="lineNum">     363 </span>            : /* mm/page_alloc.c */</a>
+<a name="364"><span class="lineNum">     364 </span>            : extern void mark_free_pages(struct zone *zone);</a>
+<a name="365"><span class="lineNum">     365 </span>            : </a>
+<a name="366"><span class="lineNum">     366 </span>            : /**</a>
+<a name="367"><span class="lineNum">     367 </span>            :  * struct platform_hibernation_ops - hibernation platform support</a>
+<a name="368"><span class="lineNum">     368 </span>            :  *</a>
+<a name="369"><span class="lineNum">     369 </span>            :  * The methods in this structure allow a platform to carry out special</a>
+<a name="370"><span class="lineNum">     370 </span>            :  * operations required by it during a hibernation transition.</a>
+<a name="371"><span class="lineNum">     371 </span>            :  *</a>
+<a name="372"><span class="lineNum">     372 </span>            :  * All the methods below, except for @recover(), must be implemented.</a>
+<a name="373"><span class="lineNum">     373 </span>            :  *</a>
+<a name="374"><span class="lineNum">     374 </span>            :  * @begin: Tell the platform driver that we're starting hibernation.</a>
+<a name="375"><span class="lineNum">     375 </span>            :  *      Called right after shrinking memory and before freezing devices.</a>
+<a name="376"><span class="lineNum">     376 </span>            :  *</a>
+<a name="377"><span class="lineNum">     377 </span>            :  * @end: Called by the PM core right after resuming devices, to indicate to</a>
+<a name="378"><span class="lineNum">     378 </span>            :  *      the platform that the system has returned to the working state.</a>
+<a name="379"><span class="lineNum">     379 </span>            :  *</a>
+<a name="380"><span class="lineNum">     380 </span>            :  * @pre_snapshot: Prepare the platform for creating the hibernation image.</a>
+<a name="381"><span class="lineNum">     381 </span>            :  *      Called right after devices have been frozen and before the nonboot</a>
+<a name="382"><span class="lineNum">     382 </span>            :  *      CPUs are disabled (runs with IRQs on).</a>
+<a name="383"><span class="lineNum">     383 </span>            :  *</a>
+<a name="384"><span class="lineNum">     384 </span>            :  * @finish: Restore the previous state of the platform after the hibernation</a>
+<a name="385"><span class="lineNum">     385 </span>            :  *      image has been created *or* put the platform into the normal operation</a>
+<a name="386"><span class="lineNum">     386 </span>            :  *      mode after the hibernation (the same method is executed in both cases).</a>
+<a name="387"><span class="lineNum">     387 </span>            :  *      Called right after the nonboot CPUs have been enabled and before</a>
+<a name="388"><span class="lineNum">     388 </span>            :  *      thawing devices (runs with IRQs on).</a>
+<a name="389"><span class="lineNum">     389 </span>            :  *</a>
+<a name="390"><span class="lineNum">     390 </span>            :  * @prepare: Prepare the platform for entering the low power state.</a>
+<a name="391"><span class="lineNum">     391 </span>            :  *      Called right after the hibernation image has been saved and before</a>
+<a name="392"><span class="lineNum">     392 </span>            :  *      devices are prepared for entering the low power state.</a>
+<a name="393"><span class="lineNum">     393 </span>            :  *</a>
+<a name="394"><span class="lineNum">     394 </span>            :  * @enter: Put the system into the low power state after the hibernation image</a>
+<a name="395"><span class="lineNum">     395 </span>            :  *      has been saved to disk.</a>
+<a name="396"><span class="lineNum">     396 </span>            :  *      Called after the nonboot CPUs have been disabled and all of the low</a>
+<a name="397"><span class="lineNum">     397 </span>            :  *      level devices have been shut down (runs with IRQs off).</a>
+<a name="398"><span class="lineNum">     398 </span>            :  *</a>
+<a name="399"><span class="lineNum">     399 </span>            :  * @leave: Perform the first stage of the cleanup after the system sleep state</a>
+<a name="400"><span class="lineNum">     400 </span>            :  *      indicated by @set_target() has been left.</a>
+<a name="401"><span class="lineNum">     401 </span>            :  *      Called right after the control has been passed from the boot kernel to</a>
+<a name="402"><span class="lineNum">     402 </span>            :  *      the image kernel, before the nonboot CPUs are enabled and before devices</a>
+<a name="403"><span class="lineNum">     403 </span>            :  *      are resumed.  Executed with interrupts disabled.</a>
+<a name="404"><span class="lineNum">     404 </span>            :  *</a>
+<a name="405"><span class="lineNum">     405 </span>            :  * @pre_restore: Prepare system for the restoration from a hibernation image.</a>
+<a name="406"><span class="lineNum">     406 </span>            :  *      Called right after devices have been frozen and before the nonboot</a>
+<a name="407"><span class="lineNum">     407 </span>            :  *      CPUs are disabled (runs with IRQs on).</a>
+<a name="408"><span class="lineNum">     408 </span>            :  *</a>
+<a name="409"><span class="lineNum">     409 </span>            :  * @restore_cleanup: Clean up after a failing image restoration.</a>
+<a name="410"><span class="lineNum">     410 </span>            :  *      Called right after the nonboot CPUs have been enabled and before</a>
+<a name="411"><span class="lineNum">     411 </span>            :  *      thawing devices (runs with IRQs on).</a>
+<a name="412"><span class="lineNum">     412 </span>            :  *</a>
+<a name="413"><span class="lineNum">     413 </span>            :  * @recover: Recover the platform from a failure to suspend devices.</a>
+<a name="414"><span class="lineNum">     414 </span>            :  *      Called by the PM core if the suspending of devices during hibernation</a>
+<a name="415"><span class="lineNum">     415 </span>            :  *      fails.  This callback is optional and should only be implemented by</a>
+<a name="416"><span class="lineNum">     416 </span>            :  *      platforms which require special recovery actions in that situation.</a>
+<a name="417"><span class="lineNum">     417 </span>            :  */</a>
+<a name="418"><span class="lineNum">     418 </span>            : struct platform_hibernation_ops {</a>
+<a name="419"><span class="lineNum">     419 </span>            :         int (*begin)(pm_message_t stage);</a>
+<a name="420"><span class="lineNum">     420 </span>            :         void (*end)(void);</a>
+<a name="421"><span class="lineNum">     421 </span>            :         int (*pre_snapshot)(void);</a>
+<a name="422"><span class="lineNum">     422 </span>            :         void (*finish)(void);</a>
+<a name="423"><span class="lineNum">     423 </span>            :         int (*prepare)(void);</a>
+<a name="424"><span class="lineNum">     424 </span>            :         int (*enter)(void);</a>
+<a name="425"><span class="lineNum">     425 </span>            :         void (*leave)(void);</a>
+<a name="426"><span class="lineNum">     426 </span>            :         int (*pre_restore)(void);</a>
+<a name="427"><span class="lineNum">     427 </span>            :         void (*restore_cleanup)(void);</a>
+<a name="428"><span class="lineNum">     428 </span>            :         void (*recover)(void);</a>
+<a name="429"><span class="lineNum">     429 </span>            : };</a>
+<a name="430"><span class="lineNum">     430 </span>            : </a>
+<a name="431"><span class="lineNum">     431 </span>            : #ifdef CONFIG_HIBERNATION</a>
+<a name="432"><span class="lineNum">     432 </span>            : /* kernel/power/snapshot.c */</a>
+<a name="433"><span class="lineNum">     433 </span>            : extern void register_nosave_region(unsigned long b, unsigned long e);</a>
+<a name="434"><span class="lineNum">     434 </span>            : extern int swsusp_page_is_forbidden(struct page *);</a>
+<a name="435"><span class="lineNum">     435 </span>            : extern void swsusp_set_page_free(struct page *);</a>
+<a name="436"><span class="lineNum">     436 </span>            : extern void swsusp_unset_page_free(struct page *);</a>
+<a name="437"><span class="lineNum">     437 </span>            : extern unsigned long get_safe_page(gfp_t gfp_mask);</a>
+<a name="438"><span class="lineNum">     438 </span>            : extern asmlinkage int swsusp_arch_suspend(void);</a>
+<a name="439"><span class="lineNum">     439 </span>            : extern asmlinkage int swsusp_arch_resume(void);</a>
+<a name="440"><span class="lineNum">     440 </span>            : </a>
+<a name="441"><span class="lineNum">     441 </span>            : extern u32 swsusp_hardware_signature;</a>
+<a name="442"><span class="lineNum">     442 </span>            : extern void hibernation_set_ops(const struct platform_hibernation_ops *ops);</a>
+<a name="443"><span class="lineNum">     443 </span>            : extern int hibernate(void);</a>
+<a name="444"><span class="lineNum">     444 </span>            : extern bool system_entering_hibernation(void);</a>
+<a name="445"><span class="lineNum">     445 </span>            : extern bool hibernation_available(void);</a>
+<a name="446"><span class="lineNum">     446 </span>            : asmlinkage int swsusp_save(void);</a>
+<a name="447"><span class="lineNum">     447 </span>            : extern struct pbe *restore_pblist;</a>
+<a name="448"><span class="lineNum">     448 </span>            : int pfn_is_nosave(unsigned long pfn);</a>
+<a name="449"><span class="lineNum">     449 </span>            : </a>
+<a name="450"><span class="lineNum">     450 </span>            : int hibernate_quiet_exec(int (*func)(void *data), void *data);</a>
+<a name="451"><span class="lineNum">     451 </span>            : #else /* CONFIG_HIBERNATION */</a>
+<a name="452"><span class="lineNum">     452 </span>            : static inline void register_nosave_region(unsigned long b, unsigned long e) {}</a>
+<a name="453"><span class="lineNum">     453 </span>            : static inline int swsusp_page_is_forbidden(struct page *p) { return 0; }</a>
+<a name="454"><span class="lineNum">     454 </span>            : static inline void swsusp_set_page_free(struct page *p) {}</a>
+<a name="455"><span class="lineNum">     455 </span>            : static inline void swsusp_unset_page_free(struct page *p) {}</a>
+<a name="456"><span class="lineNum">     456 </span>            : </a>
+<a name="457"><span class="lineNum">     457 </span>            : static inline void hibernation_set_ops(const struct platform_hibernation_ops *ops) {}</a>
+<a name="458"><span class="lineNum">     458 </span>            : static inline int hibernate(void) { return -ENOSYS; }</a>
+<a name="459"><span class="lineNum">     459 </span>            : static inline bool system_entering_hibernation(void) { return false; }</a>
+<a name="460"><span class="lineNum">     460 </span>            : static inline bool hibernation_available(void) { return false; }</a>
+<a name="461"><span class="lineNum">     461 </span>            : </a>
+<a name="462"><span class="lineNum">     462 </span>            : static inline int hibernate_quiet_exec(int (*func)(void *data), void *data) {</a>
+<a name="463"><span class="lineNum">     463 </span>            :         return -ENOTSUPP;</a>
+<a name="464"><span class="lineNum">     464 </span>            : }</a>
+<a name="465"><span class="lineNum">     465 </span>            : #endif /* CONFIG_HIBERNATION */</a>
+<a name="466"><span class="lineNum">     466 </span>            : </a>
+<a name="467"><span class="lineNum">     467 </span>            : #ifdef CONFIG_HIBERNATION_SNAPSHOT_DEV</a>
+<a name="468"><span class="lineNum">     468 </span>            : int is_hibernate_resume_dev(dev_t dev);</a>
+<a name="469"><span class="lineNum">     469 </span>            : #else</a>
+<a name="470"><span class="lineNum">     470 </span>            : static inline int is_hibernate_resume_dev(dev_t dev) { return 0; }</a>
+<a name="471"><span class="lineNum">     471 </span>            : #endif</a>
+<a name="472"><span class="lineNum">     472 </span>            : </a>
+<a name="473"><span class="lineNum">     473 </span>            : /* Hibernation and suspend events */</a>
+<a name="474"><span class="lineNum">     474 </span>            : #define PM_HIBERNATION_PREPARE  0x0001 /* Going to hibernate */</a>
+<a name="475"><span class="lineNum">     475 </span>            : #define PM_POST_HIBERNATION     0x0002 /* Hibernation finished */</a>
+<a name="476"><span class="lineNum">     476 </span>            : #define PM_SUSPEND_PREPARE      0x0003 /* Going to suspend the system */</a>
+<a name="477"><span class="lineNum">     477 </span>            : #define PM_POST_SUSPEND         0x0004 /* Suspend finished */</a>
+<a name="478"><span class="lineNum">     478 </span>            : #define PM_RESTORE_PREPARE      0x0005 /* Going to restore a saved image */</a>
+<a name="479"><span class="lineNum">     479 </span>            : #define PM_POST_RESTORE         0x0006 /* Restore failed */</a>
+<a name="480"><span class="lineNum">     480 </span>            : </a>
+<a name="481"><span class="lineNum">     481 </span>            : extern struct mutex system_transition_mutex;</a>
+<a name="482"><span class="lineNum">     482 </span>            : </a>
+<a name="483"><span class="lineNum">     483 </span>            : #ifdef CONFIG_PM_SLEEP</a>
+<a name="484"><span class="lineNum">     484 </span>            : void save_processor_state(void);</a>
+<a name="485"><span class="lineNum">     485 </span>            : void restore_processor_state(void);</a>
+<a name="486"><span class="lineNum">     486 </span>            : </a>
+<a name="487"><span class="lineNum">     487 </span>            : /* kernel/power/main.c */</a>
+<a name="488"><span class="lineNum">     488 </span>            : extern int register_pm_notifier(struct notifier_block *nb);</a>
+<a name="489"><span class="lineNum">     489 </span>            : extern int unregister_pm_notifier(struct notifier_block *nb);</a>
+<a name="490"><span class="lineNum">     490 </span>            : extern void ksys_sync_helper(void);</a>
+<a name="491"><span class="lineNum">     491 </span>            : </a>
+<a name="492"><span class="lineNum">     492 </span>            : #define pm_notifier(fn, pri) {                          \</a>
+<a name="493"><span class="lineNum">     493 </span>            :         static struct notifier_block fn##_nb =                  \</a>
+<a name="494"><span class="lineNum">     494 </span>            :                 { .notifier_call = fn, .priority = pri };       \</a>
+<a name="495"><span class="lineNum">     495 </span>            :         register_pm_notifier(&amp;fn##_nb);                     \</a>
+<a name="496"><span class="lineNum">     496 </span>            : }</a>
+<a name="497"><span class="lineNum">     497 </span>            : </a>
+<a name="498"><span class="lineNum">     498 </span>            : /* drivers/base/power/wakeup.c */</a>
+<a name="499"><span class="lineNum">     499 </span>            : extern bool events_check_enabled;</a>
+<a name="500"><span class="lineNum">     500 </span>            : extern suspend_state_t pm_suspend_target_state;</a>
+<a name="501"><span class="lineNum">     501 </span>            : </a>
+<a name="502"><span class="lineNum">     502 </span>            : extern bool pm_wakeup_pending(void);</a>
+<a name="503"><span class="lineNum">     503 </span>            : extern void pm_system_wakeup(void);</a>
+<a name="504"><span class="lineNum">     504 </span>            : extern void pm_system_cancel_wakeup(void);</a>
+<a name="505"><span class="lineNum">     505 </span>            : extern void pm_wakeup_clear(unsigned int irq_number);</a>
+<a name="506"><span class="lineNum">     506 </span>            : extern void pm_system_irq_wakeup(unsigned int irq_number);</a>
+<a name="507"><span class="lineNum">     507 </span>            : extern unsigned int pm_wakeup_irq(void);</a>
+<a name="508"><span class="lineNum">     508 </span>            : extern bool pm_get_wakeup_count(unsigned int *count, bool block);</a>
+<a name="509"><span class="lineNum">     509 </span>            : extern bool pm_save_wakeup_count(unsigned int count);</a>
+<a name="510"><span class="lineNum">     510 </span>            : extern void pm_wakep_autosleep_enabled(bool set);</a>
+<a name="511"><span class="lineNum">     511 </span>            : extern void pm_print_active_wakeup_sources(void);</a>
+<a name="512"><span class="lineNum">     512 </span>            : </a>
+<a name="513"><span class="lineNum">     513 </span>            : extern void lock_system_sleep(void);</a>
+<a name="514"><span class="lineNum">     514 </span>            : extern void unlock_system_sleep(void);</a>
+<a name="515"><span class="lineNum">     515 </span>            : </a>
+<a name="516"><span class="lineNum">     516 </span>            : #else /* !CONFIG_PM_SLEEP */</a>
+<a name="517"><span class="lineNum">     517 </span>            : </a>
+<a name="518"><span class="lineNum">     518 </span>            : static inline int register_pm_notifier(struct notifier_block *nb)</a>
+<a name="519"><span class="lineNum">     519 </span>            : {</a>
+<a name="520"><span class="lineNum">     520 </span>            :         return 0;</a>
+<a name="521"><span class="lineNum">     521 </span>            : }</a>
+<a name="522"><span class="lineNum">     522 </span>            : </a>
+<a name="523"><span class="lineNum">     523 </span>            : static inline int unregister_pm_notifier(struct notifier_block *nb)</a>
+<a name="524"><span class="lineNum">     524 </span>            : {</a>
+<a name="525"><span class="lineNum">     525 </span>            :         return 0;</a>
+<a name="526"><span class="lineNum">     526 </span>            : }</a>
+<a name="527"><span class="lineNum">     527 </span>            : </a>
+<a name="528"><span class="lineNum">     528 </span>            : static inline void ksys_sync_helper(void) {}</a>
+<a name="529"><span class="lineNum">     529 </span>            : </a>
+<a name="530"><span class="lineNum">     530 </span>            : #define pm_notifier(fn, pri)    do { (void)(fn); } while (0)</a>
+<a name="531"><span class="lineNum">     531 </span>            : </a>
+<a name="532"><span class="lineNum">     532 </span>            : static inline bool pm_wakeup_pending(void) { return false; }</a>
+<a name="533"><span class="lineNum">     533 </span>            : static inline void pm_system_wakeup(void) {}</a>
+<a name="534"><span class="lineNum">     534 </span>            : static inline void pm_wakeup_clear(bool reset) {}</a>
+<a name="535"><span class="lineNum">     535 </span>            : static inline void pm_system_irq_wakeup(unsigned int irq_number) {}</a>
+<a name="536"><span class="lineNum">     536 </span>            : </a>
+<a name="537"><span class="lineNum">     537 </span>            : static inline void lock_system_sleep(void) {}</a>
+<a name="538"><span class="lineNum">     538 </span>            : static inline void unlock_system_sleep(void) {}</a>
+<a name="539"><span class="lineNum">     539 </span>            : </a>
+<a name="540"><span class="lineNum">     540 </span>            : #endif /* !CONFIG_PM_SLEEP */</a>
+<a name="541"><span class="lineNum">     541 </span>            : </a>
+<a name="542"><span class="lineNum">     542 </span>            : #ifdef CONFIG_PM_SLEEP_DEBUG</a>
+<a name="543"><span class="lineNum">     543 </span>            : extern bool pm_print_times_enabled;</a>
+<a name="544"><span class="lineNum">     544 </span>            : extern bool pm_debug_messages_on;</a>
+<a name="545"><span class="lineNum">     545 </span>            : extern __printf(2, 3) void __pm_pr_dbg(bool defer, const char *fmt, ...);</a>
+<a name="546"><span class="lineNum">     546 </span>            : #else</a>
+<a name="547"><span class="lineNum">     547 </span>            : #define pm_print_times_enabled  (false)</a>
+<a name="548"><span class="lineNum">     548 </span>            : #define pm_debug_messages_on    (false)</a>
+<a name="549"><span class="lineNum">     549 </span>            : </a>
+<a name="550"><span class="lineNum">     550 </span>            : #include &lt;linux/printk.h&gt;</a>
+<a name="551"><span class="lineNum">     551 </span>            : </a>
+<a name="552"><span class="lineNum">     552 </span>            : #define __pm_pr_dbg(defer, fmt, ...) \</a>
+<a name="553"><span class="lineNum">     553 </span>            :         no_printk(KERN_DEBUG fmt, ##__VA_ARGS__)</a>
+<a name="554"><span class="lineNum">     554 </span>            : #endif</a>
+<a name="555"><span class="lineNum">     555 </span>            : </a>
+<a name="556"><span class="lineNum">     556 </span>            : #define pm_pr_dbg(fmt, ...) \</a>
+<a name="557"><span class="lineNum">     557 </span>            :         __pm_pr_dbg(false, fmt, ##__VA_ARGS__)</a>
+<a name="558"><span class="lineNum">     558 </span>            : </a>
+<a name="559"><span class="lineNum">     559 </span>            : #define pm_deferred_pr_dbg(fmt, ...) \</a>
+<a name="560"><span class="lineNum">     560 </span>            :         __pm_pr_dbg(true, fmt, ##__VA_ARGS__)</a>
+<a name="561"><span class="lineNum">     561 </span>            : </a>
+<a name="562"><span class="lineNum">     562 </span>            : #ifdef CONFIG_PM_AUTOSLEEP</a>
+<a name="563"><span class="lineNum">     563 </span>            : </a>
+<a name="564"><span class="lineNum">     564 </span>            : /* kernel/power/autosleep.c */</a>
+<a name="565"><span class="lineNum">     565 </span>            : void queue_up_suspend_work(void);</a>
+<a name="566"><span class="lineNum">     566 </span>            : </a>
+<a name="567"><span class="lineNum">     567 </span>            : #else /* !CONFIG_PM_AUTOSLEEP */</a>
+<a name="568"><span class="lineNum">     568 </span>            : </a>
+<a name="569"><span class="lineNum">     569 </span>            : static inline void queue_up_suspend_work(void) {}</a>
+<a name="570"><span class="lineNum">     570 </span>            : </a>
+<a name="571"><span class="lineNum">     571 </span>            : #endif /* !CONFIG_PM_AUTOSLEEP */</a>
+<a name="572"><span class="lineNum">     572 </span>            : </a>
+<a name="573"><span class="lineNum">     573 </span>            : #endif /* _LINUX_SUSPEND_H */</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

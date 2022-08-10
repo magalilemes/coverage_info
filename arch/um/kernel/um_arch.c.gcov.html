@@ -1,0 +1,595 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - arch/um/kernel/um_arch.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">arch/um/kernel</a> - um_arch.c<span style="font-size: 80%;"> (source / <a href="um_arch.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">94</td>
+            <td class="headerCovTableEntry">186</td>
+            <td class="headerCovTableEntryLo">50.5 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntry">31</td>
+            <td class="headerCovTableEntryLo">38.7 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // SPDX-License-Identifier: GPL-2.0</a>
+<a name="2"><span class="lineNum">       2 </span>            : /*</a>
+<a name="3"><span class="lineNum">       3 </span>            :  * Copyright (C) 2000 - 2007 Jeff Dike (jdike@{addtoit,linux.intel}.com)</a>
+<a name="4"><span class="lineNum">       4 </span>            :  */</a>
+<a name="5"><span class="lineNum">       5 </span>            : </a>
+<a name="6"><span class="lineNum">       6 </span>            : #include &lt;linux/delay.h&gt;</a>
+<a name="7"><span class="lineNum">       7 </span>            : #include &lt;linux/init.h&gt;</a>
+<a name="8"><span class="lineNum">       8 </span>            : #include &lt;linux/mm.h&gt;</a>
+<a name="9"><span class="lineNum">       9 </span>            : #include &lt;linux/ctype.h&gt;</a>
+<a name="10"><span class="lineNum">      10 </span>            : #include &lt;linux/module.h&gt;</a>
+<a name="11"><span class="lineNum">      11 </span>            : #include &lt;linux/panic_notifier.h&gt;</a>
+<a name="12"><span class="lineNum">      12 </span>            : #include &lt;linux/seq_file.h&gt;</a>
+<a name="13"><span class="lineNum">      13 </span>            : #include &lt;linux/string.h&gt;</a>
+<a name="14"><span class="lineNum">      14 </span>            : #include &lt;linux/utsname.h&gt;</a>
+<a name="15"><span class="lineNum">      15 </span>            : #include &lt;linux/sched.h&gt;</a>
+<a name="16"><span class="lineNum">      16 </span>            : #include &lt;linux/sched/task.h&gt;</a>
+<a name="17"><span class="lineNum">      17 </span>            : #include &lt;linux/kmsg_dump.h&gt;</a>
+<a name="18"><span class="lineNum">      18 </span>            : #include &lt;linux/suspend.h&gt;</a>
+<a name="19"><span class="lineNum">      19 </span>            : </a>
+<a name="20"><span class="lineNum">      20 </span>            : #include &lt;asm/processor.h&gt;</a>
+<a name="21"><span class="lineNum">      21 </span>            : #include &lt;asm/cpufeature.h&gt;</a>
+<a name="22"><span class="lineNum">      22 </span>            : #include &lt;asm/sections.h&gt;</a>
+<a name="23"><span class="lineNum">      23 </span>            : #include &lt;asm/setup.h&gt;</a>
+<a name="24"><span class="lineNum">      24 </span>            : #include &lt;as-layout.h&gt;</a>
+<a name="25"><span class="lineNum">      25 </span>            : #include &lt;arch.h&gt;</a>
+<a name="26"><span class="lineNum">      26 </span>            : #include &lt;init.h&gt;</a>
+<a name="27"><span class="lineNum">      27 </span>            : #include &lt;kern.h&gt;</a>
+<a name="28"><span class="lineNum">      28 </span>            : #include &lt;kern_util.h&gt;</a>
+<a name="29"><span class="lineNum">      29 </span>            : #include &lt;mem_user.h&gt;</a>
+<a name="30"><span class="lineNum">      30 </span>            : #include &lt;os.h&gt;</a>
+<a name="31"><span class="lineNum">      31 </span>            : </a>
+<a name="32"><span class="lineNum">      32 </span>            : #include &quot;um_arch.h&quot;</a>
+<a name="33"><span class="lineNum">      33 </span>            : </a>
+<a name="34"><span class="lineNum">      34 </span>            : #define DEFAULT_COMMAND_LINE_ROOT &quot;root=98:0&quot;</a>
+<a name="35"><span class="lineNum">      35 </span>            : #define DEFAULT_COMMAND_LINE_CONSOLE &quot;console=tty&quot;</a>
+<a name="36"><span class="lineNum">      36 </span>            : </a>
+<a name="37"><span class="lineNum">      37 </span>            : /* Changed in add_arg and setup_arch, which run before SMP is started */</a>
+<a name="38"><span class="lineNum">      38 </span>            : static char __initdata command_line[COMMAND_LINE_SIZE] = { 0 };</a>
+<a name="39"><span class="lineNum">      39 </span>            : </a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">         40 : static void __init add_arg(char *arg)</span></a>
+<a name="41"><span class="lineNum">      41 </span>            : {</a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">         40 :         if (strlen(command_line) + strlen(arg) + 1 &gt; COMMAND_LINE_SIZE) {</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineNoCov">          0 :                 os_warn(&quot;add_arg: Too many command line arguments!\n&quot;);</span></a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineNoCov">          0 :                 exit(1);</span></a>
+<a name="45"><span class="lineNum">      45 </span>            :         }</a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">         40 :         if (strlen(command_line) &gt; 0)</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">         30 :                 strcat(command_line, &quot; &quot;);</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">         40 :         strcat(command_line, arg);</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">         40 : }</span></a>
+<a name="50"><span class="lineNum">      50 </span>            : </a>
+<a name="51"><span class="lineNum">      51 </span>            : /*</a>
+<a name="52"><span class="lineNum">      52 </span>            :  * These fields are initialized at boot time and not changed.</a>
+<a name="53"><span class="lineNum">      53 </span>            :  * XXX This structure is used only in the non-SMP case.  Maybe this</a>
+<a name="54"><span class="lineNum">      54 </span>            :  * should be moved to smp.c.</a>
+<a name="55"><span class="lineNum">      55 </span>            :  */</a>
+<a name="56"><span class="lineNum">      56 </span>            : struct cpuinfo_um boot_cpu_data = {</a>
+<a name="57"><span class="lineNum">      57 </span>            :         .loops_per_jiffy        = 0,</a>
+<a name="58"><span class="lineNum">      58 </span>            :         .ipi_pipe               = { -1, -1 },</a>
+<a name="59"><span class="lineNum">      59 </span>            :         .cache_alignment        = L1_CACHE_BYTES,</a>
+<a name="60"><span class="lineNum">      60 </span>            :         .x86_capability         = { 0 }</a>
+<a name="61"><span class="lineNum">      61 </span>            : };</a>
+<a name="62"><span class="lineNum">      62 </span>            : </a>
+<a name="63"><span class="lineNum">      63 </span>            : EXPORT_SYMBOL(boot_cpu_data);</a>
+<a name="64"><span class="lineNum">      64 </span>            : </a>
+<a name="65"><span class="lineNum">      65 </span>            : union thread_union cpu0_irqstack</a>
+<a name="66"><span class="lineNum">      66 </span>            :         __section(&quot;.data..init_irqstack&quot;) =</a>
+<a name="67"><span class="lineNum">      67 </span>            :                 { .thread_info = INIT_THREAD_INFO(init_task) };</a>
+<a name="68"><span class="lineNum">      68 </span>            : </a>
+<a name="69"><span class="lineNum">      69 </span>            : /* Changed in setup_arch, which is called in early boot */</a>
+<a name="70"><span class="lineNum">      70 </span>            : static char host_info[(__NEW_UTS_LEN + 1) * 5];</a>
+<a name="71"><span class="lineNum">      71 </span>            : </a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 : static int show_cpuinfo(struct seq_file *m, void *v)</span></a>
+<a name="73"><span class="lineNum">      73 </span>            : {</a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 :         int i = 0;</span></a>
+<a name="75"><span class="lineNum">      75 </span>            : </a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :         seq_printf(m, &quot;processor\t: %d\n&quot;, i);</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :         seq_printf(m, &quot;vendor_id\t: User Mode Linux\n&quot;);</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :         seq_printf(m, &quot;model name\t: UML\n&quot;);</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineNoCov">          0 :         seq_printf(m, &quot;mode\t\t: skas\n&quot;);</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :         seq_printf(m, &quot;host\t\t: %s\n&quot;, host_info);</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineNoCov">          0 :         seq_printf(m, &quot;fpu\t\t: %s\n&quot;, cpu_has(&amp;boot_cpu_data, X86_FEATURE_FPU) ? &quot;yes&quot; : &quot;no&quot;);</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineNoCov">          0 :         seq_printf(m, &quot;flags\t\t:&quot;);</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; 32*NCAPINTS; i++)</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 :                 if (cpu_has(&amp;boot_cpu_data, i) &amp;&amp; (x86_cap_flags[i] != NULL))</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :                         seq_printf(m, &quot; %s&quot;, x86_cap_flags[i]);</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineNoCov">          0 :         seq_printf(m, &quot;\n&quot;);</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 :         seq_printf(m, &quot;cache_alignment\t: %d\n&quot;, boot_cpu_data.cache_alignment);</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 :         seq_printf(m, &quot;bogomips\t: %lu.%02lu\n&quot;,</span></a>
+<a name="89"><span class="lineNum">      89 </span>            :                    loops_per_jiffy/(500000/HZ),</a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 :                    (loops_per_jiffy/(5000/HZ)) % 100);</span></a>
+<a name="91"><span class="lineNum">      91 </span>            : </a>
+<a name="92"><span class="lineNum">      92 </span>            : </a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="94"><span class="lineNum">      94 </span>            : }</a>
+<a name="95"><span class="lineNum">      95 </span>            : </a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 : static void *c_start(struct seq_file *m, loff_t *pos)</span></a>
+<a name="97"><span class="lineNum">      97 </span>            : {</a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineNoCov">          0 :         return *pos &lt; NR_CPUS ? cpu_data + *pos : NULL;</span></a>
+<a name="99"><span class="lineNum">      99 </span>            : }</a>
+<a name="100"><span class="lineNum">     100 </span>            : </a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineNoCov">          0 : static void *c_next(struct seq_file *m, void *v, loff_t *pos)</span></a>
+<a name="102"><span class="lineNum">     102 </span>            : {</a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineNoCov">          0 :         ++*pos;</span></a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineNoCov">          0 :         return c_start(m, pos);</span></a>
+<a name="105"><span class="lineNum">     105 </span>            : }</a>
+<a name="106"><span class="lineNum">     106 </span>            : </a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 : static void c_stop(struct seq_file *m, void *v)</span></a>
+<a name="108"><span class="lineNum">     108 </span>            : {</a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="110"><span class="lineNum">     110 </span>            : </a>
+<a name="111"><span class="lineNum">     111 </span>            : const struct seq_operations cpuinfo_op = {</a>
+<a name="112"><span class="lineNum">     112 </span>            :         .start  = c_start,</a>
+<a name="113"><span class="lineNum">     113 </span>            :         .next   = c_next,</a>
+<a name="114"><span class="lineNum">     114 </span>            :         .stop   = c_stop,</a>
+<a name="115"><span class="lineNum">     115 </span>            :         .show   = show_cpuinfo,</a>
+<a name="116"><span class="lineNum">     116 </span>            : };</a>
+<a name="117"><span class="lineNum">     117 </span>            : </a>
+<a name="118"><span class="lineNum">     118 </span>            : /* Set in linux_main */</a>
+<a name="119"><span class="lineNum">     119 </span>            : unsigned long uml_physmem;</a>
+<a name="120"><span class="lineNum">     120 </span>            : EXPORT_SYMBOL(uml_physmem);</a>
+<a name="121"><span class="lineNum">     121 </span>            : </a>
+<a name="122"><span class="lineNum">     122 </span>            : unsigned long uml_reserved; /* Also modified in mem_init */</a>
+<a name="123"><span class="lineNum">     123 </span>            : unsigned long start_vm;</a>
+<a name="124"><span class="lineNum">     124 </span>            : unsigned long end_vm;</a>
+<a name="125"><span class="lineNum">     125 </span>            : </a>
+<a name="126"><span class="lineNum">     126 </span>            : /* Set in uml_ncpus_setup */</a>
+<a name="127"><span class="lineNum">     127 </span>            : int ncpus = 1;</a>
+<a name="128"><span class="lineNum">     128 </span>            : </a>
+<a name="129"><span class="lineNum">     129 </span>            : /* Set in early boot */</a>
+<a name="130"><span class="lineNum">     130 </span>            : static int have_root __initdata;</a>
+<a name="131"><span class="lineNum">     131 </span>            : static int have_console __initdata;</a>
+<a name="132"><span class="lineNum">     132 </span>            : </a>
+<a name="133"><span class="lineNum">     133 </span>            : /* Set in uml_mem_setup and modified in linux_main */</a>
+<a name="134"><span class="lineNum">     134 </span>            : long long physmem_size = 32 * 1024 * 1024;</a>
+<a name="135"><span class="lineNum">     135 </span>            : EXPORT_SYMBOL(physmem_size);</a>
+<a name="136"><span class="lineNum">     136 </span>            : </a>
+<a name="137"><span class="lineNum">     137 </span>            : static const char *usage_string =</a>
+<a name="138"><span class="lineNum">     138 </span>            : &quot;User Mode Linux v%s\n&quot;</a>
+<a name="139"><span class="lineNum">     139 </span>            : &quot;  available at http://user-mode-linux.sourceforge.net/\n\n&quot;;</a>
+<a name="140"><span class="lineNum">     140 </span>            : </a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 : static int __init uml_version_setup(char *line, int *add)</span></a>
+<a name="142"><span class="lineNum">     142 </span>            : {</a>
+<a name="143"><span class="lineNum">     143 </span>            :         /* Explicitly use printf() to show version in stdout */</a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineNoCov">          0 :         printf(&quot;%s\n&quot;, init_utsname()-&gt;release);</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineNoCov">          0 :         exit(0);</span></a>
+<a name="146"><span class="lineNum">     146 </span>            : </a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="148"><span class="lineNum">     148 </span>            : }</a>
+<a name="149"><span class="lineNum">     149 </span>            : </a>
+<a name="150"><span class="lineNum">     150 </span>            : __uml_setup(&quot;--version&quot;, uml_version_setup,</a>
+<a name="151"><span class="lineNum">     151 </span>            : &quot;--version\n&quot;</a>
+<a name="152"><span class="lineNum">     152 </span>            : &quot;    Prints the version number of the kernel.\n\n&quot;</a>
+<a name="153"><span class="lineNum">     153 </span>            : );</a>
+<a name="154"><span class="lineNum">     154 </span>            : </a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineNoCov">          0 : static int __init uml_root_setup(char *line, int *add)</span></a>
+<a name="156"><span class="lineNum">     156 </span>            : {</a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :         have_root = 1;</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="159"><span class="lineNum">     159 </span>            : }</a>
+<a name="160"><span class="lineNum">     160 </span>            : </a>
+<a name="161"><span class="lineNum">     161 </span>            : __uml_setup(&quot;root=&quot;, uml_root_setup,</a>
+<a name="162"><span class="lineNum">     162 </span>            : &quot;root=&lt;file containing the root fs&gt;\n&quot;</a>
+<a name="163"><span class="lineNum">     163 </span>            : &quot;    This is actually used by the generic kernel in exactly the same\n&quot;</a>
+<a name="164"><span class="lineNum">     164 </span>            : &quot;    way as in any other kernel. If you configure a number of block\n&quot;</a>
+<a name="165"><span class="lineNum">     165 </span>            : &quot;    devices and want to boot off something other than ubd0, you \n&quot;</a>
+<a name="166"><span class="lineNum">     166 </span>            : &quot;    would use something like:\n&quot;</a>
+<a name="167"><span class="lineNum">     167 </span>            : &quot;        root=/dev/ubd5\n\n&quot;</a>
+<a name="168"><span class="lineNum">     168 </span>            : );</a>
+<a name="169"><span class="lineNum">     169 </span>            : </a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 : static int __init no_skas_debug_setup(char *line, int *add)</span></a>
+<a name="171"><span class="lineNum">     171 </span>            : {</a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineNoCov">          0 :         os_warn(&quot;'debug' is not necessary to gdb UML in skas mode - run\n&quot;);</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineNoCov">          0 :         os_warn(&quot;'gdb linux'\n&quot;);</span></a>
+<a name="174"><span class="lineNum">     174 </span>            : </a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="176"><span class="lineNum">     176 </span>            : }</a>
+<a name="177"><span class="lineNum">     177 </span>            : </a>
+<a name="178"><span class="lineNum">     178 </span>            : __uml_setup(&quot;debug&quot;, no_skas_debug_setup,</a>
+<a name="179"><span class="lineNum">     179 </span>            : &quot;debug\n&quot;</a>
+<a name="180"><span class="lineNum">     180 </span>            : &quot;    this flag is not needed to run gdb on UML in skas mode\n\n&quot;</a>
+<a name="181"><span class="lineNum">     181 </span>            : );</a>
+<a name="182"><span class="lineNum">     182 </span>            : </a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">         10 : static int __init uml_console_setup(char *line, int *add)</span></a>
+<a name="184"><span class="lineNum">     184 </span>            : {</a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineCov">         10 :         have_console = 1;</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">         10 :         return 0;</span></a>
+<a name="187"><span class="lineNum">     187 </span>            : }</a>
+<a name="188"><span class="lineNum">     188 </span>            : </a>
+<a name="189"><span class="lineNum">     189 </span>            : __uml_setup(&quot;console=&quot;, uml_console_setup,</a>
+<a name="190"><span class="lineNum">     190 </span>            : &quot;console=&lt;preferred console&gt;\n&quot;</a>
+<a name="191"><span class="lineNum">     191 </span>            : &quot;    Specify the preferred console output driver\n\n&quot;</a>
+<a name="192"><span class="lineNum">     192 </span>            : );</a>
+<a name="193"><span class="lineNum">     193 </span>            : </a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 : static int __init Usage(char *line, int *add)</span></a>
+<a name="195"><span class="lineNum">     195 </span>            : {</a>
+<a name="196"><span class="lineNum">     196 </span>            :         const char **p;</a>
+<a name="197"><span class="lineNum">     197 </span>            : </a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineNoCov">          0 :         printf(usage_string, init_utsname()-&gt;release);</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :         p = &amp;__uml_help_start;</span></a>
+<a name="200"><span class="lineNum">     200 </span>            :         /* Explicitly use printf() to show help in stdout */</a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 :         while (p &lt; &amp;__uml_help_end) {</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 :                 printf(&quot;%s&quot;, *p);</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 :                 p++;</span></a>
+<a name="204"><span class="lineNum">     204 </span>            :         }</a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 :         exit(0);</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="207"><span class="lineNum">     207 </span>            : }</a>
+<a name="208"><span class="lineNum">     208 </span>            : </a>
+<a name="209"><span class="lineNum">     209 </span>            : __uml_setup(&quot;--help&quot;, Usage,</a>
+<a name="210"><span class="lineNum">     210 </span>            : &quot;--help\n&quot;</a>
+<a name="211"><span class="lineNum">     211 </span>            : &quot;    Prints this message.\n\n&quot;</a>
+<a name="212"><span class="lineNum">     212 </span>            : );</a>
+<a name="213"><span class="lineNum">     213 </span>            : </a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">         30 : static void __init uml_checksetup(char *line, int *add)</span></a>
+<a name="215"><span class="lineNum">     215 </span>            : {</a>
+<a name="216"><span class="lineNum">     216 </span>            :         struct uml_param *p;</a>
+<a name="217"><span class="lineNum">     217 </span>            : </a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineCov">         30 :         p = &amp;__uml_setup_start;</span></a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineCov">        420 :         while (p &lt; &amp;__uml_setup_end) {</span></a>
+<a name="220"><span class="lineNum">     220 </span>            :                 size_t n;</a>
+<a name="221"><span class="lineNum">     221 </span>            : </a>
+<a name="222"><span class="lineNum">     222 </span><span class="lineCov">        360 :                 n = strlen(p-&gt;str);</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineCov">        360 :                 if (!strncmp(line, p-&gt;str, n) &amp;&amp; p-&gt;setup_func(line + n, add))</span></a>
+<a name="224"><span class="lineNum">     224 </span>            :                         return;</a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">        360 :                 p++;</span></a>
+<a name="226"><span class="lineNum">     226 </span>            :         }</a>
+<a name="227"><span class="lineNum">     227 </span>            : }</a>
+<a name="228"><span class="lineNum">     228 </span>            : </a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineCov">          2 : static void __init uml_postsetup(void)</span></a>
+<a name="230"><span class="lineNum">     230 </span>            : {</a>
+<a name="231"><span class="lineNum">     231 </span>            :         initcall_t *p;</a>
+<a name="232"><span class="lineNum">     232 </span>            : </a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineCov">          2 :         p = &amp;__uml_postsetup_start;</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">          6 :         while (p &lt; &amp;__uml_postsetup_end) {</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineCov">          2 :                 (*p)();</span></a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineCov">          2 :                 p++;</span></a>
+<a name="237"><span class="lineNum">     237 </span>            :         }</a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">          2 :         return;</span></a>
+<a name="239"><span class="lineNum">     239 </span>            : }</a>
+<a name="240"><span class="lineNum">     240 </span>            : </a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineNoCov">          0 : static int panic_exit(struct notifier_block *self, unsigned long unused1,</span></a>
+<a name="242"><span class="lineNum">     242 </span>            :                       void *unused2)</a>
+<a name="243"><span class="lineNum">     243 </span>            : {</a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineNoCov">          0 :         kmsg_dump(KMSG_DUMP_PANIC);</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineNoCov">          0 :         bust_spinlocks(1);</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 :         bust_spinlocks(0);</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 :         uml_exitcode = 1;</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 :         os_dump_core();</span></a>
+<a name="249"><span class="lineNum">     249 </span>            :         return 0;</a>
+<a name="250"><span class="lineNum">     250 </span>            : }</a>
+<a name="251"><span class="lineNum">     251 </span>            : </a>
+<a name="252"><span class="lineNum">     252 </span>            : static struct notifier_block panic_exit_notifier = {</a>
+<a name="253"><span class="lineNum">     253 </span>            :         .notifier_call          = panic_exit,</a>
+<a name="254"><span class="lineNum">     254 </span>            :         .next                   = NULL,</a>
+<a name="255"><span class="lineNum">     255 </span>            :         .priority               = 0</a>
+<a name="256"><span class="lineNum">     256 </span>            : };</a>
+<a name="257"><span class="lineNum">     257 </span>            : </a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineCov">          2 : void uml_finishsetup(void)</span></a>
+<a name="259"><span class="lineNum">     259 </span>            : {</a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineCov">          2 :         atomic_notifier_chain_register(&amp;panic_notifier_list,</span></a>
+<a name="261"><span class="lineNum">     261 </span>            :                                        &amp;panic_exit_notifier);</a>
+<a name="262"><span class="lineNum">     262 </span>            : </a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineCov">          2 :         uml_postsetup();</span></a>
+<a name="264"><span class="lineNum">     264 </span>            : </a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">          2 :         new_thread_handler();</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="267"><span class="lineNum">     267 </span>            : </a>
+<a name="268"><span class="lineNum">     268 </span>            : /* Set during early boot */</a>
+<a name="269"><span class="lineNum">     269 </span>            : unsigned long stub_start;</a>
+<a name="270"><span class="lineNum">     270 </span>            : unsigned long task_size;</a>
+<a name="271"><span class="lineNum">     271 </span>            : EXPORT_SYMBOL(task_size);</a>
+<a name="272"><span class="lineNum">     272 </span>            : </a>
+<a name="273"><span class="lineNum">     273 </span>            : unsigned long host_task_size;</a>
+<a name="274"><span class="lineNum">     274 </span>            : </a>
+<a name="275"><span class="lineNum">     275 </span>            : unsigned long brk_start;</a>
+<a name="276"><span class="lineNum">     276 </span>            : unsigned long end_iomem;</a>
+<a name="277"><span class="lineNum">     277 </span>            : EXPORT_SYMBOL(end_iomem);</a>
+<a name="278"><span class="lineNum">     278 </span>            : </a>
+<a name="279"><span class="lineNum">     279 </span>            : #define MIN_VMALLOC (32 * 1024 * 1024)</a>
+<a name="280"><span class="lineNum">     280 </span>            : </a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          4 : static void parse_host_cpu_flags(char *line)</span></a>
+<a name="282"><span class="lineNum">     282 </span>            : {</a>
+<a name="283"><span class="lineNum">     283 </span>            :         int i;</a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineCov">       2564 :         for (i = 0; i &lt; 32*NCAPINTS; i++) {</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">       2560 :                 if ((x86_cap_flags[i] != NULL) &amp;&amp; strstr(line, x86_cap_flags[i]))</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">        234 :                         set_cpu_cap(&amp;boot_cpu_data, i);</span></a>
+<a name="287"><span class="lineNum">     287 </span>            :         }</a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          4 : }</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 : static void parse_cache_line(char *line)</span></a>
+<a name="290"><span class="lineNum">     290 </span>            : {</a>
+<a name="291"><span class="lineNum">     291 </span>            :         long res;</a>
+<a name="292"><span class="lineNum">     292 </span><span class="lineNoCov">          0 :         char *to_parse = strstr(line, &quot;:&quot;);</span></a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 :         if (to_parse) {</span></a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineNoCov">          0 :                 to_parse++;</span></a>
+<a name="295"><span class="lineNum">     295 </span><span class="lineNoCov">          0 :                 while (*to_parse != 0 &amp;&amp; isspace(*to_parse)) {</span></a>
+<a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 :                         to_parse++;</span></a>
+<a name="297"><span class="lineNum">     297 </span>            :                 }</a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineNoCov">          0 :                 if (kstrtoul(to_parse, 10, &amp;res) == 0 &amp;&amp; is_power_of_2(res))</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineNoCov">          0 :                         boot_cpu_data.cache_alignment = res;</span></a>
+<a name="300"><span class="lineNum">     300 </span>            :                 else</a>
+<a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 :                         boot_cpu_data.cache_alignment = L1_CACHE_BYTES;</span></a>
+<a name="302"><span class="lineNum">     302 </span>            :         }</a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="304"><span class="lineNum">     304 </span>            : </a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">         10 : int __init linux_main(int argc, char **argv)</span></a>
+<a name="306"><span class="lineNum">     306 </span>            : {</a>
+<a name="307"><span class="lineNum">     307 </span>            :         unsigned long avail, diff;</a>
+<a name="308"><span class="lineNum">     308 </span>            :         unsigned long virtmem_size, max_physmem;</a>
+<a name="309"><span class="lineNum">     309 </span>            :         unsigned long stack;</a>
+<a name="310"><span class="lineNum">     310 </span>            :         unsigned int i;</a>
+<a name="311"><span class="lineNum">     311 </span>            :         int add;</a>
+<a name="312"><span class="lineNum">     312 </span>            : </a>
+<a name="313"><span class="lineNum">     313 </span><span class="lineCov">         40 :         for (i = 1; i &lt; argc; i++) {</span></a>
+<a name="314"><span class="lineNum">     314 </span><span class="lineCov">         30 :                 if ((i == 1) &amp;&amp; (argv[i][0] == ' '))</span></a>
+<a name="315"><span class="lineNum">     315 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineCov">         30 :                 add = 1;</span></a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineCov">         30 :                 uml_checksetup(argv[i], &amp;add);</span></a>
+<a name="318"><span class="lineNum">     318 </span><span class="lineCov">         30 :                 if (add)</span></a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineCov">         30 :                         add_arg(argv[i]);</span></a>
+<a name="320"><span class="lineNum">     320 </span>            :         }</a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineCov">         10 :         if (have_root == 0)</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineCov">         10 :                 add_arg(DEFAULT_COMMAND_LINE_ROOT);</span></a>
+<a name="323"><span class="lineNum">     323 </span>            : </a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineCov">         10 :         if (have_console == 0)</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineNoCov">          0 :                 add_arg(DEFAULT_COMMAND_LINE_CONSOLE);</span></a>
+<a name="326"><span class="lineNum">     326 </span>            : </a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineCov">         10 :         host_task_size = os_get_top_address();</span></a>
+<a name="328"><span class="lineNum">     328 </span>            :         /* reserve two pages for the stubs */</a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineCov">         10 :         host_task_size -= 2 * PAGE_SIZE;</span></a>
+<a name="330"><span class="lineNum">     330 </span><span class="lineCov">         10 :         stub_start = host_task_size;</span></a>
+<a name="331"><span class="lineNum">     331 </span>            : </a>
+<a name="332"><span class="lineNum">     332 </span>            :         /*</a>
+<a name="333"><span class="lineNum">     333 </span>            :          * TASK_SIZE needs to be PGDIR_SIZE aligned or else exit_mmap craps</a>
+<a name="334"><span class="lineNum">     334 </span>            :          * out</a>
+<a name="335"><span class="lineNum">     335 </span>            :          */</a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineCov">         10 :         task_size = host_task_size &amp; PGDIR_MASK;</span></a>
+<a name="337"><span class="lineNum">     337 </span>            : </a>
+<a name="338"><span class="lineNum">     338 </span>            :         /* OS sanity checks that need to happen before the kernel runs */</a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineCov">         10 :         os_early_checks();</span></a>
+<a name="340"><span class="lineNum">     340 </span>            : </a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineCov">          2 :         get_host_cpu_features(parse_host_cpu_flags, parse_cache_line);</span></a>
+<a name="342"><span class="lineNum">     342 </span>            : </a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineCov">          2 :         brk_start = (unsigned long) sbrk(0);</span></a>
+<a name="344"><span class="lineNum">     344 </span>            : </a>
+<a name="345"><span class="lineNum">     345 </span>            :         /*</a>
+<a name="346"><span class="lineNum">     346 </span>            :          * Increase physical memory size for exec-shield users</a>
+<a name="347"><span class="lineNum">     347 </span>            :          * so they actually get what they asked for. This should</a>
+<a name="348"><span class="lineNum">     348 </span>            :          * add zero for non-exec shield users</a>
+<a name="349"><span class="lineNum">     349 </span>            :          */</a>
+<a name="350"><span class="lineNum">     350 </span>            : </a>
+<a name="351"><span class="lineNum">     351 </span><span class="lineCov">          2 :         diff = UML_ROUND_UP(brk_start) - UML_ROUND_UP(&amp;_end);</span></a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineCov">          2 :         if (diff &gt; 1024 * 1024) {</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineCov">          2 :                 os_info(&quot;Adding %ld bytes to physical memory to account for &quot;</span></a>
+<a name="354"><span class="lineNum">     354 </span>            :                         &quot;exec-shield gap\n&quot;, diff);</a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineCov">          2 :                 physmem_size += UML_ROUND_UP(brk_start) - UML_ROUND_UP(&amp;_end);</span></a>
+<a name="356"><span class="lineNum">     356 </span>            :         }</a>
+<a name="357"><span class="lineNum">     357 </span>            : </a>
+<a name="358"><span class="lineNum">     358 </span><span class="lineCov">          2 :         uml_physmem = (unsigned long) __binary_start &amp; PAGE_MASK;</span></a>
+<a name="359"><span class="lineNum">     359 </span>            : </a>
+<a name="360"><span class="lineNum">     360 </span>            :         /* Reserve up to 4M after the current brk */</a>
+<a name="361"><span class="lineNum">     361 </span><span class="lineCov">          2 :         uml_reserved = ROUND_4M(brk_start) + (1 &lt;&lt; 22);</span></a>
+<a name="362"><span class="lineNum">     362 </span>            : </a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineCov">          2 :         setup_machinename(init_utsname()-&gt;machine);</span></a>
+<a name="364"><span class="lineNum">     364 </span>            : </a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineCov">          2 :         highmem = 0;</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineCov">          2 :         iomem_size = (iomem_size + PAGE_SIZE - 1) &amp; PAGE_MASK;</span></a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineCov">          2 :         max_physmem = TASK_SIZE - uml_physmem - iomem_size - MIN_VMALLOC;</span></a>
+<a name="368"><span class="lineNum">     368 </span>            : </a>
+<a name="369"><span class="lineNum">     369 </span>            :         /*</a>
+<a name="370"><span class="lineNum">     370 </span>            :          * Zones have to begin on a 1 &lt;&lt; MAX_ORDER page boundary,</a>
+<a name="371"><span class="lineNum">     371 </span>            :          * so this makes sure that's true for highmem</a>
+<a name="372"><span class="lineNum">     372 </span>            :          */</a>
+<a name="373"><span class="lineNum">     373 </span><span class="lineCov">          2 :         max_physmem &amp;= ~((1 &lt;&lt; (PAGE_SHIFT + MAX_ORDER)) - 1);</span></a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineCov">          2 :         if (physmem_size + iomem_size &gt; max_physmem) {</span></a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineNoCov">          0 :                 highmem = physmem_size + iomem_size - max_physmem;</span></a>
+<a name="376"><span class="lineNum">     376 </span><span class="lineNoCov">          0 :                 physmem_size -= highmem;</span></a>
+<a name="377"><span class="lineNum">     377 </span>            :         }</a>
+<a name="378"><span class="lineNum">     378 </span>            : </a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineCov">          2 :         high_physmem = uml_physmem + physmem_size;</span></a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineCov">          2 :         end_iomem = high_physmem + iomem_size;</span></a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineCov">          2 :         high_memory = (void *) end_iomem;</span></a>
+<a name="382"><span class="lineNum">     382 </span>            : </a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineCov">          2 :         start_vm = VMALLOC_START;</span></a>
+<a name="384"><span class="lineNum">     384 </span>            : </a>
+<a name="385"><span class="lineNum">     385 </span><span class="lineCov">          2 :         virtmem_size = physmem_size;</span></a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineCov">          2 :         stack = (unsigned long) argv;</span></a>
+<a name="387"><span class="lineNum">     387 </span><span class="lineCov">          2 :         stack &amp;= ~(1024 * 1024 - 1);</span></a>
+<a name="388"><span class="lineNum">     388 </span><span class="lineCov">          2 :         avail = stack - start_vm;</span></a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineCov">          2 :         if (physmem_size &gt; avail)</span></a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineNoCov">          0 :                 virtmem_size = avail;</span></a>
+<a name="391"><span class="lineNum">     391 </span><span class="lineCov">          2 :         end_vm = start_vm + virtmem_size;</span></a>
+<a name="392"><span class="lineNum">     392 </span>            : </a>
+<a name="393"><span class="lineNum">     393 </span><span class="lineCov">          2 :         if (virtmem_size &lt; physmem_size)</span></a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineNoCov">          0 :                 os_info(&quot;Kernel virtual memory size shrunk to %lu bytes\n&quot;,</span></a>
+<a name="395"><span class="lineNum">     395 </span>            :                         virtmem_size);</a>
+<a name="396"><span class="lineNum">     396 </span>            : </a>
+<a name="397"><span class="lineNum">     397 </span><span class="lineCov">          2 :         os_flush_stdout();</span></a>
+<a name="398"><span class="lineNum">     398 </span>            : </a>
+<a name="399"><span class="lineNum">     399 </span><span class="lineCov">          2 :         return start_uml();</span></a>
+<a name="400"><span class="lineNum">     400 </span>            : }</a>
+<a name="401"><span class="lineNum">     401 </span>            : </a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineCov">          2 : int __init __weak read_initrd(void)</span></a>
+<a name="403"><span class="lineNum">     403 </span>            : {</a>
+<a name="404"><span class="lineNum">     404 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="405"><span class="lineNum">     405 </span>            : }</a>
+<a name="406"><span class="lineNum">     406 </span>            : </a>
+<a name="407"><span class="lineNum">     407 </span><span class="lineCov">          2 : void __init setup_arch(char **cmdline_p)</span></a>
+<a name="408"><span class="lineNum">     408 </span>            : {</a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineCov">          2 :         stack_protections((unsigned long) &amp;init_thread_info);</span></a>
+<a name="410"><span class="lineNum">     410 </span><span class="lineCov">          2 :         setup_physmem(uml_physmem, uml_reserved, physmem_size, highmem);</span></a>
+<a name="411"><span class="lineNum">     411 </span><span class="lineCov">          2 :         mem_total_pages(physmem_size, iomem_size, highmem);</span></a>
+<a name="412"><span class="lineNum">     412 </span>            :         uml_dtb_init();</a>
+<a name="413"><span class="lineNum">     413 </span><span class="lineCov">          2 :         read_initrd();</span></a>
+<a name="414"><span class="lineNum">     414 </span>            : </a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineCov">          2 :         paging_init();</span></a>
+<a name="416"><span class="lineNum">     416 </span><span class="lineCov">          2 :         strlcpy(boot_command_line, command_line, COMMAND_LINE_SIZE);</span></a>
+<a name="417"><span class="lineNum">     417 </span><span class="lineCov">          2 :         *cmdline_p = command_line;</span></a>
+<a name="418"><span class="lineNum">     418 </span><span class="lineCov">          2 :         setup_hostinfo(host_info, sizeof host_info);</span></a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineCov">          2 : }</span></a>
+<a name="420"><span class="lineNum">     420 </span>            : </a>
+<a name="421"><span class="lineNum">     421 </span><span class="lineCov">          2 : void __init check_bugs(void)</span></a>
+<a name="422"><span class="lineNum">     422 </span>            : {</a>
+<a name="423"><span class="lineNum">     423 </span><span class="lineCov">          2 :         arch_check_bugs();</span></a>
+<a name="424"><span class="lineNum">     424 </span><span class="lineCov">          2 :         os_check_bugs();</span></a>
+<a name="425"><span class="lineNum">     425 </span><span class="lineCov">          2 : }</span></a>
+<a name="426"><span class="lineNum">     426 </span>            : </a>
+<a name="427"><span class="lineNum">     427 </span><span class="lineNoCov">          0 : void apply_ibt_endbr(s32 *start, s32 *end)</span></a>
+<a name="428"><span class="lineNum">     428 </span>            : {</a>
+<a name="429"><span class="lineNum">     429 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="430"><span class="lineNum">     430 </span>            : </a>
+<a name="431"><span class="lineNum">     431 </span><span class="lineNoCov">          0 : void apply_retpolines(s32 *start, s32 *end)</span></a>
+<a name="432"><span class="lineNum">     432 </span>            : {</a>
+<a name="433"><span class="lineNum">     433 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="434"><span class="lineNum">     434 </span>            : </a>
+<a name="435"><span class="lineNum">     435 </span><span class="lineNoCov">          0 : void apply_alternatives(struct alt_instr *start, struct alt_instr *end)</span></a>
+<a name="436"><span class="lineNum">     436 </span>            : {</a>
+<a name="437"><span class="lineNum">     437 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="438"><span class="lineNum">     438 </span>            : </a>
+<a name="439"><span class="lineNum">     439 </span><span class="lineNoCov">          0 : void *text_poke(void *addr, const void *opcode, size_t len)</span></a>
+<a name="440"><span class="lineNum">     440 </span>            : {</a>
+<a name="441"><span class="lineNum">     441 </span>            :         /*</a>
+<a name="442"><span class="lineNum">     442 </span>            :          * In UML, the only reference to this function is in</a>
+<a name="443"><span class="lineNum">     443 </span>            :          * apply_relocate_add(), which shouldn't ever actually call this</a>
+<a name="444"><span class="lineNum">     444 </span>            :          * because UML doesn't have live patching.</a>
+<a name="445"><span class="lineNum">     445 </span>            :          */</a>
+<a name="446"><span class="lineNum">     446 </span><span class="lineNoCov">          0 :         WARN_ON(1);</span></a>
+<a name="447"><span class="lineNum">     447 </span>            : </a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineNoCov">          0 :         return memcpy(addr, opcode, len);</span></a>
+<a name="449"><span class="lineNum">     449 </span>            : }</a>
+<a name="450"><span class="lineNum">     450 </span>            : </a>
+<a name="451"><span class="lineNum">     451 </span><span class="lineNoCov">          0 : void text_poke_sync(void)</span></a>
+<a name="452"><span class="lineNum">     452 </span>            : {</a>
+<a name="453"><span class="lineNum">     453 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="454"><span class="lineNum">     454 </span>            : </a>
+<a name="455"><span class="lineNum">     455 </span><span class="lineNoCov">          0 : void uml_pm_wake(void)</span></a>
+<a name="456"><span class="lineNum">     456 </span>            : {</a>
+<a name="457"><span class="lineNum">     457 </span><span class="lineNoCov">          0 :         pm_system_wakeup();</span></a>
+<a name="458"><span class="lineNum">     458 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="459"><span class="lineNum">     459 </span>            : </a>
+<a name="460"><span class="lineNum">     460 </span>            : #ifdef CONFIG_PM_SLEEP</a>
+<a name="461"><span class="lineNum">     461 </span><span class="lineCov">          4 : static int um_suspend_valid(suspend_state_t state)</span></a>
+<a name="462"><span class="lineNum">     462 </span>            : {</a>
+<a name="463"><span class="lineNum">     463 </span><span class="lineCov">          4 :         return state == PM_SUSPEND_MEM;</span></a>
+<a name="464"><span class="lineNum">     464 </span>            : }</a>
+<a name="465"><span class="lineNum">     465 </span>            : </a>
+<a name="466"><span class="lineNum">     466 </span><span class="lineNoCov">          0 : static int um_suspend_prepare(void)</span></a>
+<a name="467"><span class="lineNum">     467 </span>            : {</a>
+<a name="468"><span class="lineNum">     468 </span><span class="lineNoCov">          0 :         um_irqs_suspend();</span></a>
+<a name="469"><span class="lineNum">     469 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="470"><span class="lineNum">     470 </span>            : }</a>
+<a name="471"><span class="lineNum">     471 </span>            : </a>
+<a name="472"><span class="lineNum">     472 </span><span class="lineNoCov">          0 : static int um_suspend_enter(suspend_state_t state)</span></a>
+<a name="473"><span class="lineNum">     473 </span>            : {</a>
+<a name="474"><span class="lineNum">     474 </span><span class="lineNoCov">          0 :         if (WARN_ON(state != PM_SUSPEND_MEM))</span></a>
+<a name="475"><span class="lineNum">     475 </span>            :                 return -EINVAL;</a>
+<a name="476"><span class="lineNum">     476 </span>            : </a>
+<a name="477"><span class="lineNum">     477 </span>            :         /*</a>
+<a name="478"><span class="lineNum">     478 </span>            :          * This is identical to the idle sleep, but we've just</a>
+<a name="479"><span class="lineNum">     479 </span>            :          * (during suspend) turned off all interrupt sources</a>
+<a name="480"><span class="lineNum">     480 </span>            :          * except for the ones we want, so now we can only wake</a>
+<a name="481"><span class="lineNum">     481 </span>            :          * up on something we actually want to wake up on. All</a>
+<a name="482"><span class="lineNum">     482 </span>            :          * timing has also been suspended.</a>
+<a name="483"><span class="lineNum">     483 </span>            :          */</a>
+<a name="484"><span class="lineNum">     484 </span><span class="lineNoCov">          0 :         um_idle_sleep();</span></a>
+<a name="485"><span class="lineNum">     485 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="486"><span class="lineNum">     486 </span>            : }</a>
+<a name="487"><span class="lineNum">     487 </span>            : </a>
+<a name="488"><span class="lineNum">     488 </span><span class="lineNoCov">          0 : static void um_suspend_finish(void)</span></a>
+<a name="489"><span class="lineNum">     489 </span>            : {</a>
+<a name="490"><span class="lineNum">     490 </span><span class="lineNoCov">          0 :         um_irqs_resume();</span></a>
+<a name="491"><span class="lineNum">     491 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="492"><span class="lineNum">     492 </span>            : </a>
+<a name="493"><span class="lineNum">     493 </span>            : const struct platform_suspend_ops um_suspend_ops = {</a>
+<a name="494"><span class="lineNum">     494 </span>            :         .valid = um_suspend_valid,</a>
+<a name="495"><span class="lineNum">     495 </span>            :         .prepare = um_suspend_prepare,</a>
+<a name="496"><span class="lineNum">     496 </span>            :         .enter = um_suspend_enter,</a>
+<a name="497"><span class="lineNum">     497 </span>            :         .finish = um_suspend_finish,</a>
+<a name="498"><span class="lineNum">     498 </span>            : };</a>
+<a name="499"><span class="lineNum">     499 </span>            : </a>
+<a name="500"><span class="lineNum">     500 </span><span class="lineCov">          2 : static int init_pm_wake_signal(void)</span></a>
+<a name="501"><span class="lineNum">     501 </span>            : {</a>
+<a name="502"><span class="lineNum">     502 </span>            :         /*</a>
+<a name="503"><span class="lineNum">     503 </span>            :          * In external time-travel mode we can't use signals to wake up</a>
+<a name="504"><span class="lineNum">     504 </span>            :          * since that would mess with the scheduling. We'll have to do</a>
+<a name="505"><span class="lineNum">     505 </span>            :          * some additional work to support wakeup on virtio devices or</a>
+<a name="506"><span class="lineNum">     506 </span>            :          * similar, perhaps implementing a fake RTC controller that can</a>
+<a name="507"><span class="lineNum">     507 </span>            :          * trigger wakeup (and request the appropriate scheduling from</a>
+<a name="508"><span class="lineNum">     508 </span>            :          * the external scheduler when going to suspend.)</a>
+<a name="509"><span class="lineNum">     509 </span>            :          */</a>
+<a name="510"><span class="lineNum">     510 </span>            :         if (time_travel_mode != TT_MODE_EXTERNAL)</a>
+<a name="511"><span class="lineNum">     511 </span><span class="lineCov">          2 :                 register_pm_wake_signal();</span></a>
+<a name="512"><span class="lineNum">     512 </span>            : </a>
+<a name="513"><span class="lineNum">     513 </span><span class="lineCov">          2 :         suspend_set_ops(&amp;um_suspend_ops);</span></a>
+<a name="514"><span class="lineNum">     514 </span>            : </a>
+<a name="515"><span class="lineNum">     515 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="516"><span class="lineNum">     516 </span>            : }</a>
+<a name="517"><span class="lineNum">     517 </span>            : </a>
+<a name="518"><span class="lineNum">     518 </span>            : late_initcall(init_pm_wake_signal);</a>
+<a name="519"><span class="lineNum">     519 </span>            : #endif</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

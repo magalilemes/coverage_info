@@ -1,0 +1,567 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - drivers/input/serio/libps2.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">drivers/input/serio</a> - libps2.c<span style="font-size: 80%;"> (source / <a href="libps2.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">164</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // SPDX-License-Identifier: GPL-2.0-only</a>
+<a name="2"><span class="lineNum">       2 </span>            : /*</a>
+<a name="3"><span class="lineNum">       3 </span>            :  * PS/2 driver library</a>
+<a name="4"><span class="lineNum">       4 </span>            :  *</a>
+<a name="5"><span class="lineNum">       5 </span>            :  * Copyright (c) 1999-2002 Vojtech Pavlik</a>
+<a name="6"><span class="lineNum">       6 </span>            :  * Copyright (c) 2004 Dmitry Torokhov</a>
+<a name="7"><span class="lineNum">       7 </span>            :  */</a>
+<a name="8"><span class="lineNum">       8 </span>            : </a>
+<a name="9"><span class="lineNum">       9 </span>            : </a>
+<a name="10"><span class="lineNum">      10 </span>            : #include &lt;linux/delay.h&gt;</a>
+<a name="11"><span class="lineNum">      11 </span>            : #include &lt;linux/module.h&gt;</a>
+<a name="12"><span class="lineNum">      12 </span>            : #include &lt;linux/sched.h&gt;</a>
+<a name="13"><span class="lineNum">      13 </span>            : #include &lt;linux/interrupt.h&gt;</a>
+<a name="14"><span class="lineNum">      14 </span>            : #include &lt;linux/input.h&gt;</a>
+<a name="15"><span class="lineNum">      15 </span>            : #include &lt;linux/serio.h&gt;</a>
+<a name="16"><span class="lineNum">      16 </span>            : #include &lt;linux/i8042.h&gt;</a>
+<a name="17"><span class="lineNum">      17 </span>            : #include &lt;linux/libps2.h&gt;</a>
+<a name="18"><span class="lineNum">      18 </span>            : </a>
+<a name="19"><span class="lineNum">      19 </span>            : #define DRIVER_DESC     &quot;PS/2 driver library&quot;</a>
+<a name="20"><span class="lineNum">      20 </span>            : </a>
+<a name="21"><span class="lineNum">      21 </span>            : MODULE_AUTHOR(&quot;Dmitry Torokhov &lt;dtor@mail.ru&gt;&quot;);</a>
+<a name="22"><span class="lineNum">      22 </span>            : MODULE_DESCRIPTION(&quot;PS/2 driver library&quot;);</a>
+<a name="23"><span class="lineNum">      23 </span>            : MODULE_LICENSE(&quot;GPL&quot;);</a>
+<a name="24"><span class="lineNum">      24 </span>            : </a>
+<a name="25"><span class="lineNum">      25 </span><span class="lineNoCov">          0 : static int ps2_do_sendbyte(struct ps2dev *ps2dev, u8 byte,</span></a>
+<a name="26"><span class="lineNum">      26 </span>            :                            unsigned int timeout, unsigned int max_attempts)</a>
+<a name="27"><span class="lineNum">      27 </span>            :         __releases(&amp;ps2dev-&gt;serio-&gt;lock) __acquires(&amp;ps2dev-&gt;serio-&gt;lock)</a>
+<a name="28"><span class="lineNum">      28 </span>            : {</a>
+<a name="29"><span class="lineNum">      29 </span><span class="lineNoCov">          0 :         int attempt = 0;</span></a>
+<a name="30"><span class="lineNum">      30 </span>            :         int error;</a>
+<a name="31"><span class="lineNum">      31 </span>            : </a>
+<a name="32"><span class="lineNum">      32 </span>            :         lockdep_assert_held(&amp;ps2dev-&gt;serio-&gt;lock);</a>
+<a name="33"><span class="lineNum">      33 </span>            : </a>
+<a name="34"><span class="lineNum">      34 </span>            :         do {</a>
+<a name="35"><span class="lineNum">      35 </span><span class="lineNoCov">          0 :                 ps2dev-&gt;nak = 1;</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineNoCov">          0 :                 ps2dev-&gt;flags |= PS2_FLAG_ACK;</span></a>
+<a name="37"><span class="lineNum">      37 </span>            : </a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineNoCov">          0 :                 serio_continue_rx(ps2dev-&gt;serio);</span></a>
+<a name="39"><span class="lineNum">      39 </span>            : </a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineNoCov">          0 :                 error = serio_write(ps2dev-&gt;serio, byte);</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineNoCov">          0 :                 if (error)</span></a>
+<a name="42"><span class="lineNum">      42 </span>            :                         dev_dbg(&amp;ps2dev-&gt;serio-&gt;dev,</a>
+<a name="43"><span class="lineNum">      43 </span>            :                                 &quot;failed to write %#02x: %d\n&quot;, byte, error);</a>
+<a name="44"><span class="lineNum">      44 </span>            :                 else</a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 :                         wait_event_timeout(ps2dev-&gt;wait,</span></a>
+<a name="46"><span class="lineNum">      46 </span>            :                                            !(ps2dev-&gt;flags &amp; PS2_FLAG_ACK),</a>
+<a name="47"><span class="lineNum">      47 </span>            :                                            msecs_to_jiffies(timeout));</a>
+<a name="48"><span class="lineNum">      48 </span>            : </a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineNoCov">          0 :                 serio_pause_rx(ps2dev-&gt;serio);</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :         } while (ps2dev-&gt;nak == PS2_RET_NAK &amp;&amp; ++attempt &lt; max_attempts);</span></a>
+<a name="51"><span class="lineNum">      51 </span>            : </a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineNoCov">          0 :         ps2dev-&gt;flags &amp;= ~PS2_FLAG_ACK;</span></a>
+<a name="53"><span class="lineNum">      53 </span>            : </a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineNoCov">          0 :         if (!error) {</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineNoCov">          0 :                 switch (ps2dev-&gt;nak) {</span></a>
+<a name="56"><span class="lineNum">      56 </span>            :                 case 0:</a>
+<a name="57"><span class="lineNum">      57 </span>            :                         break;</a>
+<a name="58"><span class="lineNum">      58 </span>            :                 case PS2_RET_NAK:</a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :                         error = -EAGAIN;</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :                         break;</span></a>
+<a name="61"><span class="lineNum">      61 </span>            :                 case PS2_RET_ERR:</a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 :                         error = -EPROTO;</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :                         break;</span></a>
+<a name="64"><span class="lineNum">      64 </span>            :                 default:</a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :                         error = -EIO;</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 :                         break;</span></a>
+<a name="67"><span class="lineNum">      67 </span>            :                 }</a>
+<a name="68"><span class="lineNum">      68 </span>            :         }</a>
+<a name="69"><span class="lineNum">      69 </span>            : </a>
+<a name="70"><span class="lineNum">      70 </span>            :         if (error || attempt &gt; 1)</a>
+<a name="71"><span class="lineNum">      71 </span>            :                 dev_dbg(&amp;ps2dev-&gt;serio-&gt;dev,</a>
+<a name="72"><span class="lineNum">      72 </span>            :                         &quot;%02x - %d (%x), attempt %d\n&quot;,</a>
+<a name="73"><span class="lineNum">      73 </span>            :                         byte, error, ps2dev-&gt;nak, attempt);</a>
+<a name="74"><span class="lineNum">      74 </span>            : </a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 :         return error;</span></a>
+<a name="76"><span class="lineNum">      76 </span>            : }</a>
+<a name="77"><span class="lineNum">      77 </span>            : </a>
+<a name="78"><span class="lineNum">      78 </span>            : /*</a>
+<a name="79"><span class="lineNum">      79 </span>            :  * ps2_sendbyte() sends a byte to the device and waits for acknowledge.</a>
+<a name="80"><span class="lineNum">      80 </span>            :  * It doesn't handle retransmission, the caller is expected to handle</a>
+<a name="81"><span class="lineNum">      81 </span>            :  * it when needed.</a>
+<a name="82"><span class="lineNum">      82 </span>            :  *</a>
+<a name="83"><span class="lineNum">      83 </span>            :  * ps2_sendbyte() can only be called from a process context.</a>
+<a name="84"><span class="lineNum">      84 </span>            :  */</a>
+<a name="85"><span class="lineNum">      85 </span>            : </a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineNoCov">          0 : int ps2_sendbyte(struct ps2dev *ps2dev, u8 byte, unsigned int timeout)</span></a>
+<a name="87"><span class="lineNum">      87 </span>            : {</a>
+<a name="88"><span class="lineNum">      88 </span>            :         int retval;</a>
+<a name="89"><span class="lineNum">      89 </span>            : </a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 :         serio_pause_rx(ps2dev-&gt;serio);</span></a>
+<a name="91"><span class="lineNum">      91 </span>            : </a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineNoCov">          0 :         retval = ps2_do_sendbyte(ps2dev, byte, timeout, 1);</span></a>
+<a name="93"><span class="lineNum">      93 </span>            :         dev_dbg(&amp;ps2dev-&gt;serio-&gt;dev, &quot;%02x - %x\n&quot;, byte, ps2dev-&gt;nak);</a>
+<a name="94"><span class="lineNum">      94 </span>            : </a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 :         serio_continue_rx(ps2dev-&gt;serio);</span></a>
+<a name="96"><span class="lineNum">      96 </span>            : </a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 :         return retval;</span></a>
+<a name="98"><span class="lineNum">      98 </span>            : }</a>
+<a name="99"><span class="lineNum">      99 </span>            : EXPORT_SYMBOL(ps2_sendbyte);</a>
+<a name="100"><span class="lineNum">     100 </span>            : </a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineNoCov">          0 : void ps2_begin_command(struct ps2dev *ps2dev)</span></a>
+<a name="102"><span class="lineNum">     102 </span>            : {</a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineNoCov">          0 :         struct mutex *m = ps2dev-&gt;serio-&gt;ps2_cmd_mutex ?: &amp;ps2dev-&gt;cmd_mutex;</span></a>
+<a name="104"><span class="lineNum">     104 </span>            : </a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 :         mutex_lock(m);</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="107"><span class="lineNum">     107 </span>            : EXPORT_SYMBOL(ps2_begin_command);</a>
+<a name="108"><span class="lineNum">     108 </span>            : </a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 : void ps2_end_command(struct ps2dev *ps2dev)</span></a>
+<a name="110"><span class="lineNum">     110 </span>            : {</a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 :         struct mutex *m = ps2dev-&gt;serio-&gt;ps2_cmd_mutex ?: &amp;ps2dev-&gt;cmd_mutex;</span></a>
+<a name="112"><span class="lineNum">     112 </span>            : </a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineNoCov">          0 :         mutex_unlock(m);</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="115"><span class="lineNum">     115 </span>            : EXPORT_SYMBOL(ps2_end_command);</a>
+<a name="116"><span class="lineNum">     116 </span>            : </a>
+<a name="117"><span class="lineNum">     117 </span>            : /*</a>
+<a name="118"><span class="lineNum">     118 </span>            :  * ps2_drain() waits for device to transmit requested number of bytes</a>
+<a name="119"><span class="lineNum">     119 </span>            :  * and discards them.</a>
+<a name="120"><span class="lineNum">     120 </span>            :  */</a>
+<a name="121"><span class="lineNum">     121 </span>            : </a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 : void ps2_drain(struct ps2dev *ps2dev, size_t maxbytes, unsigned int timeout)</span></a>
+<a name="123"><span class="lineNum">     123 </span>            : {</a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :         if (maxbytes &gt; sizeof(ps2dev-&gt;cmdbuf)) {</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineNoCov">          0 :                 WARN_ON(1);</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineNoCov">          0 :                 maxbytes = sizeof(ps2dev-&gt;cmdbuf);</span></a>
+<a name="127"><span class="lineNum">     127 </span>            :         }</a>
+<a name="128"><span class="lineNum">     128 </span>            : </a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 :         ps2_begin_command(ps2dev);</span></a>
+<a name="130"><span class="lineNum">     130 </span>            : </a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineNoCov">          0 :         serio_pause_rx(ps2dev-&gt;serio);</span></a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineNoCov">          0 :         ps2dev-&gt;flags = PS2_FLAG_CMD;</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineNoCov">          0 :         ps2dev-&gt;cmdcnt = maxbytes;</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineNoCov">          0 :         serio_continue_rx(ps2dev-&gt;serio);</span></a>
+<a name="135"><span class="lineNum">     135 </span>            : </a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineNoCov">          0 :         wait_event_timeout(ps2dev-&gt;wait,</span></a>
+<a name="137"><span class="lineNum">     137 </span>            :                            !(ps2dev-&gt;flags &amp; PS2_FLAG_CMD),</a>
+<a name="138"><span class="lineNum">     138 </span>            :                            msecs_to_jiffies(timeout));</a>
+<a name="139"><span class="lineNum">     139 </span>            : </a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineNoCov">          0 :         ps2_end_command(ps2dev);</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="142"><span class="lineNum">     142 </span>            : EXPORT_SYMBOL(ps2_drain);</a>
+<a name="143"><span class="lineNum">     143 </span>            : </a>
+<a name="144"><span class="lineNum">     144 </span>            : /*</a>
+<a name="145"><span class="lineNum">     145 </span>            :  * ps2_is_keyboard_id() checks received ID byte against the list of</a>
+<a name="146"><span class="lineNum">     146 </span>            :  * known keyboard IDs.</a>
+<a name="147"><span class="lineNum">     147 </span>            :  */</a>
+<a name="148"><span class="lineNum">     148 </span>            : </a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 : bool ps2_is_keyboard_id(u8 id_byte)</span></a>
+<a name="150"><span class="lineNum">     150 </span>            : {</a>
+<a name="151"><span class="lineNum">     151 </span>            :         static const u8 keyboard_ids[] = {</a>
+<a name="152"><span class="lineNum">     152 </span>            :                 0xab,   /* Regular keyboards            */</a>
+<a name="153"><span class="lineNum">     153 </span>            :                 0xac,   /* NCD Sun keyboard             */</a>
+<a name="154"><span class="lineNum">     154 </span>            :                 0x2b,   /* Trust keyboard, translated   */</a>
+<a name="155"><span class="lineNum">     155 </span>            :                 0x5d,   /* Trust keyboard               */</a>
+<a name="156"><span class="lineNum">     156 </span>            :                 0x60,   /* NMB SGI keyboard, translated */</a>
+<a name="157"><span class="lineNum">     157 </span>            :                 0x47,   /* NMB SGI keyboard             */</a>
+<a name="158"><span class="lineNum">     158 </span>            :         };</a>
+<a name="159"><span class="lineNum">     159 </span>            : </a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineNoCov">          0 :         return memchr(keyboard_ids, id_byte, sizeof(keyboard_ids)) != NULL;</span></a>
+<a name="161"><span class="lineNum">     161 </span>            : }</a>
+<a name="162"><span class="lineNum">     162 </span>            : EXPORT_SYMBOL(ps2_is_keyboard_id);</a>
+<a name="163"><span class="lineNum">     163 </span>            : </a>
+<a name="164"><span class="lineNum">     164 </span>            : /*</a>
+<a name="165"><span class="lineNum">     165 </span>            :  * ps2_adjust_timeout() is called after receiving 1st byte of command</a>
+<a name="166"><span class="lineNum">     166 </span>            :  * response and tries to reduce remaining timeout to speed up command</a>
+<a name="167"><span class="lineNum">     167 </span>            :  * completion.</a>
+<a name="168"><span class="lineNum">     168 </span>            :  */</a>
+<a name="169"><span class="lineNum">     169 </span>            : </a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 : static int ps2_adjust_timeout(struct ps2dev *ps2dev,</span></a>
+<a name="171"><span class="lineNum">     171 </span>            :                               unsigned int command, unsigned int timeout)</a>
+<a name="172"><span class="lineNum">     172 </span>            : {</a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineNoCov">          0 :         switch (command) {</span></a>
+<a name="174"><span class="lineNum">     174 </span>            :         case PS2_CMD_RESET_BAT:</a>
+<a name="175"><span class="lineNum">     175 </span>            :                 /*</a>
+<a name="176"><span class="lineNum">     176 </span>            :                  * Device has sent the first response byte after</a>
+<a name="177"><span class="lineNum">     177 </span>            :                  * reset command, reset is thus done, so we can</a>
+<a name="178"><span class="lineNum">     178 </span>            :                  * shorten the timeout.</a>
+<a name="179"><span class="lineNum">     179 </span>            :                  * The next byte will come soon (keyboard) or not</a>
+<a name="180"><span class="lineNum">     180 </span>            :                  * at all (mouse).</a>
+<a name="181"><span class="lineNum">     181 </span>            :                  */</a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineNoCov">          0 :                 if (timeout &gt; msecs_to_jiffies(100))</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineNoCov">          0 :                         timeout = msecs_to_jiffies(100);</span></a>
+<a name="184"><span class="lineNum">     184 </span>            :                 break;</a>
+<a name="185"><span class="lineNum">     185 </span>            : </a>
+<a name="186"><span class="lineNum">     186 </span>            :         case PS2_CMD_GETID:</a>
+<a name="187"><span class="lineNum">     187 </span>            :                 /*</a>
+<a name="188"><span class="lineNum">     188 </span>            :                  * Microsoft Natural Elite keyboard responds to</a>
+<a name="189"><span class="lineNum">     189 </span>            :                  * the GET ID command as it were a mouse, with</a>
+<a name="190"><span class="lineNum">     190 </span>            :                  * a single byte. Fail the command so atkbd will</a>
+<a name="191"><span class="lineNum">     191 </span>            :                  * use alternative probe to detect it.</a>
+<a name="192"><span class="lineNum">     192 </span>            :                  */</a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :                 if (ps2dev-&gt;cmdbuf[1] == 0xaa) {</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 :                         serio_pause_rx(ps2dev-&gt;serio);</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineNoCov">          0 :                         ps2dev-&gt;flags = 0;</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :                         serio_continue_rx(ps2dev-&gt;serio);</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineNoCov">          0 :                         timeout = 0;</span></a>
+<a name="198"><span class="lineNum">     198 </span>            :                 }</a>
+<a name="199"><span class="lineNum">     199 </span>            : </a>
+<a name="200"><span class="lineNum">     200 </span>            :                 /*</a>
+<a name="201"><span class="lineNum">     201 </span>            :                  * If device behind the port is not a keyboard there</a>
+<a name="202"><span class="lineNum">     202 </span>            :                  * won't be 2nd byte of ID response.</a>
+<a name="203"><span class="lineNum">     203 </span>            :                  */</a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineNoCov">          0 :                 if (!ps2_is_keyboard_id(ps2dev-&gt;cmdbuf[1])) {</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 :                         serio_pause_rx(ps2dev-&gt;serio);</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 :                         ps2dev-&gt;flags = ps2dev-&gt;cmdcnt = 0;</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 :                         serio_continue_rx(ps2dev-&gt;serio);</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineNoCov">          0 :                         timeout = 0;</span></a>
+<a name="209"><span class="lineNum">     209 </span>            :                 }</a>
+<a name="210"><span class="lineNum">     210 </span>            :                 break;</a>
+<a name="211"><span class="lineNum">     211 </span>            : </a>
+<a name="212"><span class="lineNum">     212 </span>            :         default:</a>
+<a name="213"><span class="lineNum">     213 </span>            :                 break;</a>
+<a name="214"><span class="lineNum">     214 </span>            :         }</a>
+<a name="215"><span class="lineNum">     215 </span>            : </a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineNoCov">          0 :         return timeout;</span></a>
+<a name="217"><span class="lineNum">     217 </span>            : }</a>
+<a name="218"><span class="lineNum">     218 </span>            : </a>
+<a name="219"><span class="lineNum">     219 </span>            : /*</a>
+<a name="220"><span class="lineNum">     220 </span>            :  * ps2_command() sends a command and its parameters to the mouse,</a>
+<a name="221"><span class="lineNum">     221 </span>            :  * then waits for the response and puts it in the param array.</a>
+<a name="222"><span class="lineNum">     222 </span>            :  *</a>
+<a name="223"><span class="lineNum">     223 </span>            :  * ps2_command() can only be called from a process context</a>
+<a name="224"><span class="lineNum">     224 </span>            :  */</a>
+<a name="225"><span class="lineNum">     225 </span>            : </a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineNoCov">          0 : int __ps2_command(struct ps2dev *ps2dev, u8 *param, unsigned int command)</span></a>
+<a name="227"><span class="lineNum">     227 </span>            : {</a>
+<a name="228"><span class="lineNum">     228 </span>            :         unsigned int timeout;</a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineNoCov">          0 :         unsigned int send = (command &gt;&gt; 12) &amp; 0xf;</span></a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineNoCov">          0 :         unsigned int receive = (command &gt;&gt; 8) &amp; 0xf;</span></a>
+<a name="231"><span class="lineNum">     231 </span>            :         int rc;</a>
+<a name="232"><span class="lineNum">     232 </span>            :         int i;</a>
+<a name="233"><span class="lineNum">     233 </span>            :         u8 send_param[16];</a>
+<a name="234"><span class="lineNum">     234 </span>            : </a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineNoCov">          0 :         if (receive &gt; sizeof(ps2dev-&gt;cmdbuf)) {</span></a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineNoCov">          0 :                 WARN_ON(1);</span></a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineNoCov">          0 :                 return -EINVAL;</span></a>
+<a name="238"><span class="lineNum">     238 </span>            :         }</a>
+<a name="239"><span class="lineNum">     239 </span>            : </a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 :         if (send &amp;&amp; !param) {</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineNoCov">          0 :                 WARN_ON(1);</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineNoCov">          0 :                 return -EINVAL;</span></a>
+<a name="243"><span class="lineNum">     243 </span>            :         }</a>
+<a name="244"><span class="lineNum">     244 </span>            : </a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineNoCov">          0 :         memcpy(send_param, param, send);</span></a>
+<a name="246"><span class="lineNum">     246 </span>            : </a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 :         serio_pause_rx(ps2dev-&gt;serio);</span></a>
+<a name="248"><span class="lineNum">     248 </span>            : </a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineNoCov">          0 :         ps2dev-&gt;flags = command == PS2_CMD_GETID ? PS2_FLAG_WAITID : 0;</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 :         ps2dev-&gt;cmdcnt = receive;</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 :         if (receive &amp;&amp; param)</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; receive; i++)</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 :                         ps2dev-&gt;cmdbuf[(receive - 1) - i] = param[i];</span></a>
+<a name="254"><span class="lineNum">     254 </span>            : </a>
+<a name="255"><span class="lineNum">     255 </span>            :         /* Signal that we are sending the command byte */</a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineNoCov">          0 :         ps2dev-&gt;flags |= PS2_FLAG_ACK_CMD;</span></a>
+<a name="257"><span class="lineNum">     257 </span>            : </a>
+<a name="258"><span class="lineNum">     258 </span>            :         /*</a>
+<a name="259"><span class="lineNum">     259 </span>            :          * Some devices (Synaptics) peform the reset before</a>
+<a name="260"><span class="lineNum">     260 </span>            :          * ACKing the reset command, and so it can take a long</a>
+<a name="261"><span class="lineNum">     261 </span>            :          * time before the ACK arrives.</a>
+<a name="262"><span class="lineNum">     262 </span>            :          */</a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineNoCov">          0 :         timeout = command == PS2_CMD_RESET_BAT ? 1000 : 200;</span></a>
+<a name="264"><span class="lineNum">     264 </span>            : </a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineNoCov">          0 :         rc = ps2_do_sendbyte(ps2dev, command &amp; 0xff, timeout, 2);</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineNoCov">          0 :         if (rc)</span></a>
+<a name="267"><span class="lineNum">     267 </span>            :                 goto out_reset_flags;</a>
+<a name="268"><span class="lineNum">     268 </span>            : </a>
+<a name="269"><span class="lineNum">     269 </span>            :         /* Now we are sending command parameters, if any */</a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineNoCov">          0 :         ps2dev-&gt;flags &amp;= ~PS2_FLAG_ACK_CMD;</span></a>
+<a name="271"><span class="lineNum">     271 </span>            : </a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; send; i++) {</span></a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineNoCov">          0 :                 rc = ps2_do_sendbyte(ps2dev, param[i], 200, 2);</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineNoCov">          0 :                 if (rc)</span></a>
+<a name="275"><span class="lineNum">     275 </span>            :                         goto out_reset_flags;</a>
+<a name="276"><span class="lineNum">     276 </span>            :         }</a>
+<a name="277"><span class="lineNum">     277 </span>            : </a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineNoCov">          0 :         serio_continue_rx(ps2dev-&gt;serio);</span></a>
+<a name="279"><span class="lineNum">     279 </span>            : </a>
+<a name="280"><span class="lineNum">     280 </span>            :         /*</a>
+<a name="281"><span class="lineNum">     281 </span>            :          * The reset command takes a long time to execute.</a>
+<a name="282"><span class="lineNum">     282 </span>            :          */</a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 :         timeout = msecs_to_jiffies(command == PS2_CMD_RESET_BAT ? 4000 : 500);</span></a>
+<a name="284"><span class="lineNum">     284 </span>            : </a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 :         timeout = wait_event_timeout(ps2dev-&gt;wait,</span></a>
+<a name="286"><span class="lineNum">     286 </span>            :                                      !(ps2dev-&gt;flags &amp; PS2_FLAG_CMD1), timeout);</a>
+<a name="287"><span class="lineNum">     287 </span>            : </a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 :         if (ps2dev-&gt;cmdcnt &amp;&amp; !(ps2dev-&gt;flags &amp; PS2_FLAG_CMD1)) {</span></a>
+<a name="289"><span class="lineNum">     289 </span>            : </a>
+<a name="290"><span class="lineNum">     290 </span><span class="lineNoCov">          0 :                 timeout = ps2_adjust_timeout(ps2dev, command, timeout);</span></a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 :                 wait_event_timeout(ps2dev-&gt;wait,</span></a>
+<a name="292"><span class="lineNum">     292 </span>            :                                    !(ps2dev-&gt;flags &amp; PS2_FLAG_CMD), timeout);</a>
+<a name="293"><span class="lineNum">     293 </span>            :         }</a>
+<a name="294"><span class="lineNum">     294 </span>            : </a>
+<a name="295"><span class="lineNum">     295 </span><span class="lineNoCov">          0 :         serio_pause_rx(ps2dev-&gt;serio);</span></a>
+<a name="296"><span class="lineNum">     296 </span>            : </a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineNoCov">          0 :         if (param)</span></a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; receive; i++)</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineNoCov">          0 :                         param[i] = ps2dev-&gt;cmdbuf[(receive - 1) - i];</span></a>
+<a name="300"><span class="lineNum">     300 </span>            : </a>
+<a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 :         if (ps2dev-&gt;cmdcnt &amp;&amp;</span></a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineNoCov">          0 :             (command != PS2_CMD_RESET_BAT || ps2dev-&gt;cmdcnt != 1)) {</span></a>
+<a name="303"><span class="lineNum">     303 </span>            :                 rc = -EPROTO;</a>
+<a name="304"><span class="lineNum">     304 </span>            :                 goto out_reset_flags;</a>
+<a name="305"><span class="lineNum">     305 </span>            :         }</a>
+<a name="306"><span class="lineNum">     306 </span>            : </a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineNoCov">          0 :         rc = 0;</span></a>
+<a name="308"><span class="lineNum">     308 </span>            : </a>
+<a name="309"><span class="lineNum">     309 </span>            :  out_reset_flags:</a>
+<a name="310"><span class="lineNum">     310 </span><span class="lineNoCov">          0 :         ps2dev-&gt;flags = 0;</span></a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineNoCov">          0 :         serio_continue_rx(ps2dev-&gt;serio);</span></a>
+<a name="312"><span class="lineNum">     312 </span>            : </a>
+<a name="313"><span class="lineNum">     313 </span>            :         dev_dbg(&amp;ps2dev-&gt;serio-&gt;dev,</a>
+<a name="314"><span class="lineNum">     314 </span>            :                 &quot;%02x [%*ph] - %x/%08lx [%*ph]\n&quot;,</a>
+<a name="315"><span class="lineNum">     315 </span>            :                 command &amp; 0xff, send, send_param,</a>
+<a name="316"><span class="lineNum">     316 </span>            :                 ps2dev-&gt;nak, ps2dev-&gt;flags,</a>
+<a name="317"><span class="lineNum">     317 </span>            :                 receive, param ?: send_param);</a>
+<a name="318"><span class="lineNum">     318 </span>            : </a>
+<a name="319"><span class="lineNum">     319 </span>            :         /*</a>
+<a name="320"><span class="lineNum">     320 </span>            :          * ps_command() handles resends itself, so do not leak -EAGAIN</a>
+<a name="321"><span class="lineNum">     321 </span>            :          * to the callers.</a>
+<a name="322"><span class="lineNum">     322 </span>            :          */</a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineNoCov">          0 :         return rc != -EAGAIN ? rc : -EPROTO;</span></a>
+<a name="324"><span class="lineNum">     324 </span>            : }</a>
+<a name="325"><span class="lineNum">     325 </span>            : EXPORT_SYMBOL(__ps2_command);</a>
+<a name="326"><span class="lineNum">     326 </span>            : </a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineNoCov">          0 : int ps2_command(struct ps2dev *ps2dev, u8 *param, unsigned int command)</span></a>
+<a name="328"><span class="lineNum">     328 </span>            : {</a>
+<a name="329"><span class="lineNum">     329 </span>            :         int rc;</a>
+<a name="330"><span class="lineNum">     330 </span>            : </a>
+<a name="331"><span class="lineNum">     331 </span><span class="lineNoCov">          0 :         ps2_begin_command(ps2dev);</span></a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 :         rc = __ps2_command(ps2dev, param, command);</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 :         ps2_end_command(ps2dev);</span></a>
+<a name="334"><span class="lineNum">     334 </span>            : </a>
+<a name="335"><span class="lineNum">     335 </span><span class="lineNoCov">          0 :         return rc;</span></a>
+<a name="336"><span class="lineNum">     336 </span>            : }</a>
+<a name="337"><span class="lineNum">     337 </span>            : EXPORT_SYMBOL(ps2_command);</a>
+<a name="338"><span class="lineNum">     338 </span>            : </a>
+<a name="339"><span class="lineNum">     339 </span>            : /*</a>
+<a name="340"><span class="lineNum">     340 </span>            :  * ps2_sliced_command() sends an extended PS/2 command to the mouse</a>
+<a name="341"><span class="lineNum">     341 </span>            :  * using sliced syntax, understood by advanced devices, such as Logitech</a>
+<a name="342"><span class="lineNum">     342 </span>            :  * or Synaptics touchpads. The command is encoded as:</a>
+<a name="343"><span class="lineNum">     343 </span>            :  * 0xE6 0xE8 rr 0xE8 ss 0xE8 tt 0xE8 uu where (rr*64)+(ss*16)+(tt*4)+uu</a>
+<a name="344"><span class="lineNum">     344 </span>            :  * is the command.</a>
+<a name="345"><span class="lineNum">     345 </span>            :  */</a>
+<a name="346"><span class="lineNum">     346 </span>            : </a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineNoCov">          0 : int ps2_sliced_command(struct ps2dev *ps2dev, u8 command)</span></a>
+<a name="348"><span class="lineNum">     348 </span>            : {</a>
+<a name="349"><span class="lineNum">     349 </span>            :         int i;</a>
+<a name="350"><span class="lineNum">     350 </span>            :         int retval;</a>
+<a name="351"><span class="lineNum">     351 </span>            : </a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 :         ps2_begin_command(ps2dev);</span></a>
+<a name="353"><span class="lineNum">     353 </span>            : </a>
+<a name="354"><span class="lineNum">     354 </span><span class="lineNoCov">          0 :         retval = __ps2_command(ps2dev, NULL, PS2_CMD_SETSCALE11);</span></a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineNoCov">          0 :         if (retval)</span></a>
+<a name="356"><span class="lineNum">     356 </span>            :                 goto out;</a>
+<a name="357"><span class="lineNum">     357 </span>            : </a>
+<a name="358"><span class="lineNum">     358 </span><span class="lineNoCov">          0 :         for (i = 6; i &gt;= 0; i -= 2) {</span></a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineNoCov">          0 :                 u8 d = (command &gt;&gt; i) &amp; 3;</span></a>
+<a name="360"><span class="lineNum">     360 </span><span class="lineNoCov">          0 :                 retval = __ps2_command(ps2dev, &amp;d, PS2_CMD_SETRES);</span></a>
+<a name="361"><span class="lineNum">     361 </span><span class="lineNoCov">          0 :                 if (retval)</span></a>
+<a name="362"><span class="lineNum">     362 </span>            :                         break;</a>
+<a name="363"><span class="lineNum">     363 </span>            :         }</a>
+<a name="364"><span class="lineNum">     364 </span>            : </a>
+<a name="365"><span class="lineNum">     365 </span>            : out:</a>
+<a name="366"><span class="lineNum">     366 </span>            :         dev_dbg(&amp;ps2dev-&gt;serio-&gt;dev, &quot;%02x - %d\n&quot;, command, retval);</a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineNoCov">          0 :         ps2_end_command(ps2dev);</span></a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineNoCov">          0 :         return retval;</span></a>
+<a name="369"><span class="lineNum">     369 </span>            : }</a>
+<a name="370"><span class="lineNum">     370 </span>            : EXPORT_SYMBOL(ps2_sliced_command);</a>
+<a name="371"><span class="lineNum">     371 </span>            : </a>
+<a name="372"><span class="lineNum">     372 </span>            : /*</a>
+<a name="373"><span class="lineNum">     373 </span>            :  * ps2_init() initializes ps2dev structure</a>
+<a name="374"><span class="lineNum">     374 </span>            :  */</a>
+<a name="375"><span class="lineNum">     375 </span>            : </a>
+<a name="376"><span class="lineNum">     376 </span><span class="lineNoCov">          0 : void ps2_init(struct ps2dev *ps2dev, struct serio *serio)</span></a>
+<a name="377"><span class="lineNum">     377 </span>            : {</a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineNoCov">          0 :         mutex_init(&amp;ps2dev-&gt;cmd_mutex);</span></a>
+<a name="379"><span class="lineNum">     379 </span>            :         lockdep_set_subclass(&amp;ps2dev-&gt;cmd_mutex, serio-&gt;depth);</a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 :         init_waitqueue_head(&amp;ps2dev-&gt;wait);</span></a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineNoCov">          0 :         ps2dev-&gt;serio = serio;</span></a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="383"><span class="lineNum">     383 </span>            : EXPORT_SYMBOL(ps2_init);</a>
+<a name="384"><span class="lineNum">     384 </span>            : </a>
+<a name="385"><span class="lineNum">     385 </span>            : /*</a>
+<a name="386"><span class="lineNum">     386 </span>            :  * ps2_handle_ack() is supposed to be used in interrupt handler</a>
+<a name="387"><span class="lineNum">     387 </span>            :  * to properly process ACK/NAK of a command from a PS/2 device.</a>
+<a name="388"><span class="lineNum">     388 </span>            :  */</a>
+<a name="389"><span class="lineNum">     389 </span>            : </a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineNoCov">          0 : bool ps2_handle_ack(struct ps2dev *ps2dev, u8 data)</span></a>
+<a name="391"><span class="lineNum">     391 </span>            : {</a>
+<a name="392"><span class="lineNum">     392 </span><span class="lineNoCov">          0 :         switch (data) {</span></a>
+<a name="393"><span class="lineNum">     393 </span>            :         case PS2_RET_ACK:</a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineNoCov">          0 :                 ps2dev-&gt;nak = 0;</span></a>
+<a name="395"><span class="lineNum">     395 </span><span class="lineNoCov">          0 :                 break;</span></a>
+<a name="396"><span class="lineNum">     396 </span>            : </a>
+<a name="397"><span class="lineNum">     397 </span>            :         case PS2_RET_NAK:</a>
+<a name="398"><span class="lineNum">     398 </span><span class="lineNoCov">          0 :                 ps2dev-&gt;flags |= PS2_FLAG_NAK;</span></a>
+<a name="399"><span class="lineNum">     399 </span><span class="lineNoCov">          0 :                 ps2dev-&gt;nak = PS2_RET_NAK;</span></a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineNoCov">          0 :                 break;</span></a>
+<a name="401"><span class="lineNum">     401 </span>            : </a>
+<a name="402"><span class="lineNum">     402 </span>            :         case PS2_RET_ERR:</a>
+<a name="403"><span class="lineNum">     403 </span><span class="lineNoCov">          0 :                 if (ps2dev-&gt;flags &amp; PS2_FLAG_NAK) {</span></a>
+<a name="404"><span class="lineNum">     404 </span><span class="lineNoCov">          0 :                         ps2dev-&gt;flags &amp;= ~PS2_FLAG_NAK;</span></a>
+<a name="405"><span class="lineNum">     405 </span><span class="lineNoCov">          0 :                         ps2dev-&gt;nak = PS2_RET_ERR;</span></a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineNoCov">          0 :                         break;</span></a>
+<a name="407"><span class="lineNum">     407 </span>            :                 }</a>
+<a name="408"><span class="lineNum">     408 </span>            :                 fallthrough;</a>
+<a name="409"><span class="lineNum">     409 </span>            : </a>
+<a name="410"><span class="lineNum">     410 </span>            :         /*</a>
+<a name="411"><span class="lineNum">     411 </span>            :          * Workaround for mice which don't ACK the Get ID command.</a>
+<a name="412"><span class="lineNum">     412 </span>            :          * These are valid mouse IDs that we recognize.</a>
+<a name="413"><span class="lineNum">     413 </span>            :          */</a>
+<a name="414"><span class="lineNum">     414 </span>            :         case 0x00:</a>
+<a name="415"><span class="lineNum">     415 </span>            :         case 0x03:</a>
+<a name="416"><span class="lineNum">     416 </span>            :         case 0x04:</a>
+<a name="417"><span class="lineNum">     417 </span><span class="lineNoCov">          0 :                 if (ps2dev-&gt;flags &amp; PS2_FLAG_WAITID) {</span></a>
+<a name="418"><span class="lineNum">     418 </span><span class="lineNoCov">          0 :                         ps2dev-&gt;nak = 0;</span></a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineNoCov">          0 :                         break;</span></a>
+<a name="420"><span class="lineNum">     420 </span>            :                 }</a>
+<a name="421"><span class="lineNum">     421 </span>            :                 fallthrough;</a>
+<a name="422"><span class="lineNum">     422 </span>            :         default:</a>
+<a name="423"><span class="lineNum">     423 </span>            :                 /*</a>
+<a name="424"><span class="lineNum">     424 </span>            :                  * Do not signal errors if we get unexpected reply while</a>
+<a name="425"><span class="lineNum">     425 </span>            :                  * waiting for an ACK to the initial (first) command byte:</a>
+<a name="426"><span class="lineNum">     426 </span>            :                  * the device might not be quiesced yet and continue</a>
+<a name="427"><span class="lineNum">     427 </span>            :                  * delivering data.</a>
+<a name="428"><span class="lineNum">     428 </span>            :                  * Note that we reset PS2_FLAG_WAITID flag, so the workaround</a>
+<a name="429"><span class="lineNum">     429 </span>            :                  * for mice not acknowledging the Get ID command only triggers</a>
+<a name="430"><span class="lineNum">     430 </span>            :                  * on the 1st byte; if device spews data we really want to see</a>
+<a name="431"><span class="lineNum">     431 </span>            :                  * a real ACK from it.</a>
+<a name="432"><span class="lineNum">     432 </span>            :                  */</a>
+<a name="433"><span class="lineNum">     433 </span>            :                 dev_dbg(&amp;ps2dev-&gt;serio-&gt;dev, &quot;unexpected %#02x\n&quot;, data);</a>
+<a name="434"><span class="lineNum">     434 </span><span class="lineNoCov">          0 :                 ps2dev-&gt;flags &amp;= ~PS2_FLAG_WAITID;</span></a>
+<a name="435"><span class="lineNum">     435 </span><span class="lineNoCov">          0 :                 return ps2dev-&gt;flags &amp; PS2_FLAG_ACK_CMD;</span></a>
+<a name="436"><span class="lineNum">     436 </span>            :         }</a>
+<a name="437"><span class="lineNum">     437 </span>            : </a>
+<a name="438"><span class="lineNum">     438 </span><span class="lineNoCov">          0 :         if (!ps2dev-&gt;nak) {</span></a>
+<a name="439"><span class="lineNum">     439 </span><span class="lineNoCov">          0 :                 ps2dev-&gt;flags &amp;= ~PS2_FLAG_NAK;</span></a>
+<a name="440"><span class="lineNum">     440 </span><span class="lineNoCov">          0 :                 if (ps2dev-&gt;cmdcnt)</span></a>
+<a name="441"><span class="lineNum">     441 </span><span class="lineNoCov">          0 :                         ps2dev-&gt;flags |= PS2_FLAG_CMD | PS2_FLAG_CMD1;</span></a>
+<a name="442"><span class="lineNum">     442 </span>            :         }</a>
+<a name="443"><span class="lineNum">     443 </span>            : </a>
+<a name="444"><span class="lineNum">     444 </span><span class="lineNoCov">          0 :         ps2dev-&gt;flags &amp;= ~PS2_FLAG_ACK;</span></a>
+<a name="445"><span class="lineNum">     445 </span><span class="lineNoCov">          0 :         wake_up(&amp;ps2dev-&gt;wait);</span></a>
+<a name="446"><span class="lineNum">     446 </span>            : </a>
+<a name="447"><span class="lineNum">     447 </span><span class="lineNoCov">          0 :         if (data != PS2_RET_ACK)</span></a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineNoCov">          0 :                 ps2_handle_response(ps2dev, data);</span></a>
+<a name="449"><span class="lineNum">     449 </span>            : </a>
+<a name="450"><span class="lineNum">     450 </span>            :         return true;</a>
+<a name="451"><span class="lineNum">     451 </span>            : }</a>
+<a name="452"><span class="lineNum">     452 </span>            : EXPORT_SYMBOL(ps2_handle_ack);</a>
+<a name="453"><span class="lineNum">     453 </span>            : </a>
+<a name="454"><span class="lineNum">     454 </span>            : /*</a>
+<a name="455"><span class="lineNum">     455 </span>            :  * ps2_handle_response() is supposed to be used in interrupt handler</a>
+<a name="456"><span class="lineNum">     456 </span>            :  * to properly store device's response to a command and notify process</a>
+<a name="457"><span class="lineNum">     457 </span>            :  * waiting for completion of the command.</a>
+<a name="458"><span class="lineNum">     458 </span>            :  */</a>
+<a name="459"><span class="lineNum">     459 </span>            : </a>
+<a name="460"><span class="lineNum">     460 </span><span class="lineNoCov">          0 : bool ps2_handle_response(struct ps2dev *ps2dev, u8 data)</span></a>
+<a name="461"><span class="lineNum">     461 </span>            : {</a>
+<a name="462"><span class="lineNum">     462 </span><span class="lineNoCov">          0 :         if (ps2dev-&gt;cmdcnt)</span></a>
+<a name="463"><span class="lineNum">     463 </span><span class="lineNoCov">          0 :                 ps2dev-&gt;cmdbuf[--ps2dev-&gt;cmdcnt] = data;</span></a>
+<a name="464"><span class="lineNum">     464 </span>            : </a>
+<a name="465"><span class="lineNum">     465 </span><span class="lineNoCov">          0 :         if (ps2dev-&gt;flags &amp; PS2_FLAG_CMD1) {</span></a>
+<a name="466"><span class="lineNum">     466 </span><span class="lineNoCov">          0 :                 ps2dev-&gt;flags &amp;= ~PS2_FLAG_CMD1;</span></a>
+<a name="467"><span class="lineNum">     467 </span><span class="lineNoCov">          0 :                 if (ps2dev-&gt;cmdcnt)</span></a>
+<a name="468"><span class="lineNum">     468 </span><span class="lineNoCov">          0 :                         wake_up(&amp;ps2dev-&gt;wait);</span></a>
+<a name="469"><span class="lineNum">     469 </span>            :         }</a>
+<a name="470"><span class="lineNum">     470 </span>            : </a>
+<a name="471"><span class="lineNum">     471 </span><span class="lineNoCov">          0 :         if (!ps2dev-&gt;cmdcnt) {</span></a>
+<a name="472"><span class="lineNum">     472 </span><span class="lineNoCov">          0 :                 ps2dev-&gt;flags &amp;= ~PS2_FLAG_CMD;</span></a>
+<a name="473"><span class="lineNum">     473 </span><span class="lineNoCov">          0 :                 wake_up(&amp;ps2dev-&gt;wait);</span></a>
+<a name="474"><span class="lineNum">     474 </span>            :         }</a>
+<a name="475"><span class="lineNum">     475 </span>            : </a>
+<a name="476"><span class="lineNum">     476 </span><span class="lineNoCov">          0 :         return true;</span></a>
+<a name="477"><span class="lineNum">     477 </span>            : }</a>
+<a name="478"><span class="lineNum">     478 </span>            : EXPORT_SYMBOL(ps2_handle_response);</a>
+<a name="479"><span class="lineNum">     479 </span>            : </a>
+<a name="480"><span class="lineNum">     480 </span><span class="lineNoCov">          0 : void ps2_cmd_aborted(struct ps2dev *ps2dev)</span></a>
+<a name="481"><span class="lineNum">     481 </span>            : {</a>
+<a name="482"><span class="lineNum">     482 </span><span class="lineNoCov">          0 :         if (ps2dev-&gt;flags &amp; PS2_FLAG_ACK)</span></a>
+<a name="483"><span class="lineNum">     483 </span><span class="lineNoCov">          0 :                 ps2dev-&gt;nak = 1;</span></a>
+<a name="484"><span class="lineNum">     484 </span>            : </a>
+<a name="485"><span class="lineNum">     485 </span><span class="lineNoCov">          0 :         if (ps2dev-&gt;flags &amp; (PS2_FLAG_ACK | PS2_FLAG_CMD))</span></a>
+<a name="486"><span class="lineNum">     486 </span><span class="lineNoCov">          0 :                 wake_up(&amp;ps2dev-&gt;wait);</span></a>
+<a name="487"><span class="lineNum">     487 </span>            : </a>
+<a name="488"><span class="lineNum">     488 </span>            :         /* reset all flags except last nack */</a>
+<a name="489"><span class="lineNum">     489 </span><span class="lineNoCov">          0 :         ps2dev-&gt;flags &amp;= PS2_FLAG_NAK;</span></a>
+<a name="490"><span class="lineNum">     490 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="491"><span class="lineNum">     491 </span>            : EXPORT_SYMBOL(ps2_cmd_aborted);</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

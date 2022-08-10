@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hpo_dp_link_encoder.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../../../index.html">top level</a> - <a href="index.html">drivers/gpu/drm/amd/display/dc/dcn32</a> - dcn32_hpo_dp_link_encoder.c<span style="font-size: 80%;"> (source / <a href="dcn32_hpo_dp_link_encoder.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<a name="2"><span class="lineNum">       2 </span>            :  * Copyright 2019 Advanced Micro Devices, Inc.</a>
+<a name="3"><span class="lineNum">       3 </span>            :  *</a>
+<a name="4"><span class="lineNum">       4 </span>            :  * Permission is hereby granted, free of charge, to any person obtaining a</a>
+<a name="5"><span class="lineNum">       5 </span>            :  * copy of this software and associated documentation files (the &quot;Software&quot;),</a>
+<a name="6"><span class="lineNum">       6 </span>            :  * to deal in the Software without restriction, including without limitation</a>
+<a name="7"><span class="lineNum">       7 </span>            :  * the rights to use, copy, modify, merge, publish, distribute, sublicense,</a>
+<a name="8"><span class="lineNum">       8 </span>            :  *  and/or sell copies of the Software, and to permit persons to whom the</a>
+<a name="9"><span class="lineNum">       9 </span>            :  * Software is furnished to do so, subject to the following conditions:</a>
+<a name="10"><span class="lineNum">      10 </span>            :  *</a>
+<a name="11"><span class="lineNum">      11 </span>            :  * The above copyright notice and this permission notice shall be included in</a>
+<a name="12"><span class="lineNum">      12 </span>            :  * all copies or substantial portions of the Software.</a>
+<a name="13"><span class="lineNum">      13 </span>            :  *</a>
+<a name="14"><span class="lineNum">      14 </span>            :  * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</a>
+<a name="15"><span class="lineNum">      15 </span>            :  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</a>
+<a name="16"><span class="lineNum">      16 </span>            :  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL</a>
+<a name="17"><span class="lineNum">      17 </span>            :  * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR</a>
+<a name="18"><span class="lineNum">      18 </span>            :  * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,</a>
+<a name="19"><span class="lineNum">      19 </span>            :  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR</a>
+<a name="20"><span class="lineNum">      20 </span>            :  * OTHER DEALINGS IN THE SOFTWARE.</a>
+<a name="21"><span class="lineNum">      21 </span>            :  *</a>
+<a name="22"><span class="lineNum">      22 </span>            :  * Authors: AMD</a>
+<a name="23"><span class="lineNum">      23 </span>            :  *</a>
+<a name="24"><span class="lineNum">      24 </span>            :  */</a>
+<a name="25"><span class="lineNum">      25 </span>            : #include &quot;dc_bios_types.h&quot;</a>
+<a name="26"><span class="lineNum">      26 </span>            : #include &quot;dcn31/dcn31_hpo_dp_link_encoder.h&quot;</a>
+<a name="27"><span class="lineNum">      27 </span>            : #include &quot;dcn32_hpo_dp_link_encoder.h&quot;</a>
+<a name="28"><span class="lineNum">      28 </span>            : #include &quot;reg_helper.h&quot;</a>
+<a name="29"><span class="lineNum">      29 </span>            : #include &quot;dc_link.h&quot;</a>
+<a name="30"><span class="lineNum">      30 </span>            : #include &quot;stream_encoder.h&quot;</a>
+<a name="31"><span class="lineNum">      31 </span>            : </a>
+<a name="32"><span class="lineNum">      32 </span>            : #define DC_LOGGER \</a>
+<a name="33"><span class="lineNum">      33 </span>            :                 enc3-&gt;base.ctx-&gt;logger</a>
+<a name="34"><span class="lineNum">      34 </span>            : </a>
+<a name="35"><span class="lineNum">      35 </span>            : #define REG(reg)\</a>
+<a name="36"><span class="lineNum">      36 </span>            :         (enc3-&gt;regs-&gt;reg)</a>
+<a name="37"><span class="lineNum">      37 </span>            : </a>
+<a name="38"><span class="lineNum">      38 </span>            : #undef FN</a>
+<a name="39"><span class="lineNum">      39 </span>            : #define FN(reg_name, field_name) \</a>
+<a name="40"><span class="lineNum">      40 </span>            :         enc3-&gt;hpo_le_shift-&gt;field_name, enc3-&gt;hpo_le_mask-&gt;field_name</a>
+<a name="41"><span class="lineNum">      41 </span>            : </a>
+<a name="42"><span class="lineNum">      42 </span>            : #define CTX \</a>
+<a name="43"><span class="lineNum">      43 </span>            :         enc3-&gt;base.ctx</a>
+<a name="44"><span class="lineNum">      44 </span>            : </a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 : static bool dcn32_hpo_dp_link_enc_is_in_alt_mode(</span></a>
+<a name="46"><span class="lineNum">      46 </span>            :                 struct hpo_dp_link_encoder *enc)</a>
+<a name="47"><span class="lineNum">      47 </span>            : {</a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineNoCov">          0 :         struct dcn31_hpo_dp_link_encoder *enc3 = DCN3_1_HPO_DP_LINK_ENC_FROM_HPO_LINK_ENC(enc);</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineNoCov">          0 :         uint32_t dp_alt_mode_disable = 0;</span></a>
+<a name="50"><span class="lineNum">      50 </span>            : </a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineNoCov">          0 :         ASSERT((enc-&gt;transmitter &gt;= TRANSMITTER_UNIPHY_A) &amp;&amp; (enc-&gt;transmitter &lt;= TRANSMITTER_UNIPHY_E));</span></a>
+<a name="52"><span class="lineNum">      52 </span>            : </a>
+<a name="53"><span class="lineNum">      53 </span>            :         /* if value == 1 alt mode is disabled, otherwise it is enabled */</a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineNoCov">          0 :         REG_GET(RDPCSTX_PHY_CNTL6[enc-&gt;transmitter], RDPCS_PHY_DPALT_DISABLE, &amp;dp_alt_mode_disable);</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineNoCov">          0 :         return (dp_alt_mode_disable == 0);</span></a>
+<a name="56"><span class="lineNum">      56 </span>            : }</a>
+<a name="57"><span class="lineNum">      57 </span>            : </a>
+<a name="58"><span class="lineNum">      58 </span>            : </a>
+<a name="59"><span class="lineNum">      59 </span>            : </a>
+<a name="60"><span class="lineNum">      60 </span>            : static struct hpo_dp_link_encoder_funcs dcn32_hpo_dp_link_encoder_funcs = {</a>
+<a name="61"><span class="lineNum">      61 </span>            :         .enable_link_phy = dcn31_hpo_dp_link_enc_enable_dp_output,</a>
+<a name="62"><span class="lineNum">      62 </span>            :         .disable_link_phy = dcn31_hpo_dp_link_enc_disable_output,</a>
+<a name="63"><span class="lineNum">      63 </span>            :         .link_enable = dcn31_hpo_dp_link_enc_enable,</a>
+<a name="64"><span class="lineNum">      64 </span>            :         .link_disable = dcn31_hpo_dp_link_enc_disable,</a>
+<a name="65"><span class="lineNum">      65 </span>            :         .set_link_test_pattern = dcn31_hpo_dp_link_enc_set_link_test_pattern,</a>
+<a name="66"><span class="lineNum">      66 </span>            :         .update_stream_allocation_table = dcn31_hpo_dp_link_enc_update_stream_allocation_table,</a>
+<a name="67"><span class="lineNum">      67 </span>            :         .set_throttled_vcp_size = dcn31_hpo_dp_link_enc_set_throttled_vcp_size,</a>
+<a name="68"><span class="lineNum">      68 </span>            :         .is_in_alt_mode = dcn32_hpo_dp_link_enc_is_in_alt_mode,</a>
+<a name="69"><span class="lineNum">      69 </span>            :         .read_state = dcn31_hpo_dp_link_enc_read_state,</a>
+<a name="70"><span class="lineNum">      70 </span>            :         .set_ffe = dcn31_hpo_dp_link_enc_set_ffe,</a>
+<a name="71"><span class="lineNum">      71 </span>            : };</a>
+<a name="72"><span class="lineNum">      72 </span>            : </a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 : void hpo_dp_link_encoder32_construct(struct dcn31_hpo_dp_link_encoder *enc31,</span></a>
+<a name="74"><span class="lineNum">      74 </span>            :                 struct dc_context *ctx,</a>
+<a name="75"><span class="lineNum">      75 </span>            :                 uint32_t inst,</a>
+<a name="76"><span class="lineNum">      76 </span>            :                 const struct dcn31_hpo_dp_link_encoder_registers *hpo_le_regs,</a>
+<a name="77"><span class="lineNum">      77 </span>            :                 const struct dcn31_hpo_dp_link_encoder_shift *hpo_le_shift,</a>
+<a name="78"><span class="lineNum">      78 </span>            :                 const struct dcn31_hpo_dp_link_encoder_mask *hpo_le_mask)</a>
+<a name="79"><span class="lineNum">      79 </span>            : {</a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :         enc31-&gt;base.ctx = ctx;</span></a>
+<a name="81"><span class="lineNum">      81 </span>            : </a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineNoCov">          0 :         enc31-&gt;base.inst = inst;</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 :         enc31-&gt;base.funcs = &amp;dcn32_hpo_dp_link_encoder_funcs;</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 :         enc31-&gt;base.hpd_source = HPD_SOURCEID_UNKNOWN;</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :         enc31-&gt;base.transmitter = TRANSMITTER_UNKNOWN;</span></a>
+<a name="86"><span class="lineNum">      86 </span>            : </a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 :         enc31-&gt;regs = hpo_le_regs;</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 :         enc31-&gt;hpo_le_shift = hpo_le_shift;</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineNoCov">          0 :         enc31-&gt;hpo_le_mask = hpo_le_mask;</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 : }</span></a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

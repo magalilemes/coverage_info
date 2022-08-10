@@ -1,0 +1,457 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - drivers/gpu/drm/amd/amdgpu/imu_v11_0.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../index.html">top level</a> - <a href="index.html">drivers/gpu/drm/amd/amdgpu</a> - imu_v11_0.c<span style="font-size: 80%;"> (source / <a href="imu_v11_0.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">102</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<a name="2"><span class="lineNum">       2 </span>            :  * Copyright 2021 Advanced Micro Devices, Inc.</a>
+<a name="3"><span class="lineNum">       3 </span>            :  *</a>
+<a name="4"><span class="lineNum">       4 </span>            :  * Permission is hereby granted, free of charge, to any person obtaining a</a>
+<a name="5"><span class="lineNum">       5 </span>            :  * copy of this software and associated documentation files (the &quot;Software&quot;),</a>
+<a name="6"><span class="lineNum">       6 </span>            :  * to deal in the Software without restriction, including without limitation</a>
+<a name="7"><span class="lineNum">       7 </span>            :  * the rights to use, copy, modify, merge, publish, distribute, sublicense,</a>
+<a name="8"><span class="lineNum">       8 </span>            :  * and/or sell copies of the Software, and to permit persons to whom the</a>
+<a name="9"><span class="lineNum">       9 </span>            :  * Software is furnished to do so, subject to the following conditions:</a>
+<a name="10"><span class="lineNum">      10 </span>            :  *</a>
+<a name="11"><span class="lineNum">      11 </span>            :  * The above copyright notice and this permission notice shall be included in</a>
+<a name="12"><span class="lineNum">      12 </span>            :  * all copies or substantial portions of the Software.</a>
+<a name="13"><span class="lineNum">      13 </span>            :  *</a>
+<a name="14"><span class="lineNum">      14 </span>            :  * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</a>
+<a name="15"><span class="lineNum">      15 </span>            :  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</a>
+<a name="16"><span class="lineNum">      16 </span>            :  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL</a>
+<a name="17"><span class="lineNum">      17 </span>            :  * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR</a>
+<a name="18"><span class="lineNum">      18 </span>            :  * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,</a>
+<a name="19"><span class="lineNum">      19 </span>            :  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR</a>
+<a name="20"><span class="lineNum">      20 </span>            :  * OTHER DEALINGS IN THE SOFTWARE.</a>
+<a name="21"><span class="lineNum">      21 </span>            :  *</a>
+<a name="22"><span class="lineNum">      22 </span>            :  */</a>
+<a name="23"><span class="lineNum">      23 </span>            : </a>
+<a name="24"><span class="lineNum">      24 </span>            : #include &lt;linux/firmware.h&gt;</a>
+<a name="25"><span class="lineNum">      25 </span>            : #include &quot;amdgpu.h&quot;</a>
+<a name="26"><span class="lineNum">      26 </span>            : #include &quot;amdgpu_imu.h&quot;</a>
+<a name="27"><span class="lineNum">      27 </span>            : #include &quot;amdgpu_dpm.h&quot;</a>
+<a name="28"><span class="lineNum">      28 </span>            : </a>
+<a name="29"><span class="lineNum">      29 </span>            : #include &quot;gc/gc_11_0_0_offset.h&quot;</a>
+<a name="30"><span class="lineNum">      30 </span>            : #include &quot;gc/gc_11_0_0_sh_mask.h&quot;</a>
+<a name="31"><span class="lineNum">      31 </span>            : </a>
+<a name="32"><span class="lineNum">      32 </span>            : MODULE_FIRMWARE(&quot;amdgpu/gc_11_0_0_imu.bin&quot;);</a>
+<a name="33"><span class="lineNum">      33 </span>            : MODULE_FIRMWARE(&quot;amdgpu/gc_11_0_1_imu.bin&quot;);</a>
+<a name="34"><span class="lineNum">      34 </span>            : MODULE_FIRMWARE(&quot;amdgpu/gc_11_0_2_imu.bin&quot;);</a>
+<a name="35"><span class="lineNum">      35 </span>            : </a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineNoCov">          0 : static int imu_v11_0_init_microcode(struct amdgpu_device *adev)</span></a>
+<a name="37"><span class="lineNum">      37 </span>            : {</a>
+<a name="38"><span class="lineNum">      38 </span>            :         char fw_name[40];</a>
+<a name="39"><span class="lineNum">      39 </span>            :         char ucode_prefix[30];</a>
+<a name="40"><span class="lineNum">      40 </span>            :         int err;</a>
+<a name="41"><span class="lineNum">      41 </span>            :         const struct imu_firmware_header_v1_0 *imu_hdr;</a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineNoCov">          0 :         struct amdgpu_firmware_info *info = NULL;</span></a>
+<a name="43"><span class="lineNum">      43 </span>            : </a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineNoCov">          0 :         DRM_DEBUG(&quot;\n&quot;);</span></a>
+<a name="45"><span class="lineNum">      45 </span>            : </a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineNoCov">          0 :         amdgpu_ucode_ip_version_decode(adev, GC_HWIP, ucode_prefix, sizeof(ucode_prefix));</span></a>
+<a name="47"><span class="lineNum">      47 </span>            : </a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineNoCov">          0 :         snprintf(fw_name, sizeof(fw_name), &quot;amdgpu/%s_imu.bin&quot;, ucode_prefix);</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineNoCov">          0 :         err = request_firmware(&amp;adev-&gt;gfx.imu_fw, fw_name, adev-&gt;dev);</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :         if (err)</span></a>
+<a name="51"><span class="lineNum">      51 </span>            :                 goto out;</a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineNoCov">          0 :         err = amdgpu_ucode_validate(adev-&gt;gfx.imu_fw);</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineNoCov">          0 :         if (err)</span></a>
+<a name="54"><span class="lineNum">      54 </span>            :                 goto out;</a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineNoCov">          0 :         imu_hdr = (const struct imu_firmware_header_v1_0 *)adev-&gt;gfx.imu_fw-&gt;data;</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 :         adev-&gt;gfx.imu_fw_version = le32_to_cpu(imu_hdr-&gt;header.ucode_version);</span></a>
+<a name="57"><span class="lineNum">      57 </span>            :         //adev-&gt;gfx.imu_feature_version = le32_to_cpu(imu_hdr-&gt;ucode_feature_version);</a>
+<a name="58"><span class="lineNum">      58 </span>            :         </a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :         if (adev-&gt;firmware.load_type == AMDGPU_FW_LOAD_PSP) {</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :                 info = &amp;adev-&gt;firmware.ucode[AMDGPU_UCODE_ID_IMU_I];</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 :                 info-&gt;ucode_id = AMDGPU_UCODE_ID_IMU_I;</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 :                 info-&gt;fw = adev-&gt;gfx.imu_fw;</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :                 adev-&gt;firmware.fw_size +=</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 :                         ALIGN(le32_to_cpu(imu_hdr-&gt;imu_iram_ucode_size_bytes), PAGE_SIZE);</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :                 info = &amp;adev-&gt;firmware.ucode[AMDGPU_UCODE_ID_IMU_D];</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 :                 info-&gt;ucode_id = AMDGPU_UCODE_ID_IMU_D;</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineNoCov">          0 :                 info-&gt;fw = adev-&gt;gfx.imu_fw;</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :                 adev-&gt;firmware.fw_size +=</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :                         ALIGN(le32_to_cpu(imu_hdr-&gt;imu_dram_ucode_size_bytes), PAGE_SIZE);</span></a>
+<a name="70"><span class="lineNum">      70 </span>            :         }</a>
+<a name="71"><span class="lineNum">      71 </span>            : </a>
+<a name="72"><span class="lineNum">      72 </span>            : out:</a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 :         if (err) {</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev,</span></a>
+<a name="75"><span class="lineNum">      75 </span>            :                         &quot;gfx11: Failed to load firmware \&quot;%s\&quot;\n&quot;,</a>
+<a name="76"><span class="lineNum">      76 </span>            :                         fw_name);</a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :                 release_firmware(adev-&gt;gfx.imu_fw);</span></a>
+<a name="78"><span class="lineNum">      78 </span>            :         }</a>
+<a name="79"><span class="lineNum">      79 </span>            : </a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :         return err;</span></a>
+<a name="81"><span class="lineNum">      81 </span>            : }</a>
+<a name="82"><span class="lineNum">      82 </span>            : </a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 : static int imu_v11_0_load_microcode(struct amdgpu_device *adev)</span></a>
+<a name="84"><span class="lineNum">      84 </span>            : {</a>
+<a name="85"><span class="lineNum">      85 </span>            :         const struct imu_firmware_header_v1_0 *hdr;</a>
+<a name="86"><span class="lineNum">      86 </span>            :         const __le32 *fw_data;</a>
+<a name="87"><span class="lineNum">      87 </span>            :         unsigned i, fw_size;</a>
+<a name="88"><span class="lineNum">      88 </span>            : </a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineNoCov">          0 :         if (!adev-&gt;gfx.imu_fw)</span></a>
+<a name="90"><span class="lineNum">      90 </span>            :                 return -EINVAL;</a>
+<a name="91"><span class="lineNum">      91 </span>            : </a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineNoCov">          0 :         hdr = (const struct imu_firmware_header_v1_0 *)adev-&gt;gfx.imu_fw-&gt;data;</span></a>
+<a name="93"><span class="lineNum">      93 </span>            :         //amdgpu_ucode_print_rlc_hdr(&amp;hdr-&gt;header);</a>
+<a name="94"><span class="lineNum">      94 </span>            : </a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 :         fw_data = (const __le32 *)(adev-&gt;gfx.imu_fw-&gt;data +</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 :                         le32_to_cpu(hdr-&gt;header.ucode_array_offset_bytes));</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 :         fw_size = le32_to_cpu(hdr-&gt;imu_iram_ucode_size_bytes) / 4;</span></a>
+<a name="98"><span class="lineNum">      98 </span>            : </a>
+<a name="99"><span class="lineNum">      99 </span><span class="lineNoCov">          0 :         WREG32_SOC15(GC, 0, regGFX_IMU_I_RAM_ADDR, 0);</span></a>
+<a name="100"><span class="lineNum">     100 </span>            : </a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; fw_size; i++)</span></a>
+<a name="102"><span class="lineNum">     102 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(GC, 0, regGFX_IMU_I_RAM_DATA, le32_to_cpup(fw_data++));</span></a>
+<a name="103"><span class="lineNum">     103 </span>            : </a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineNoCov">          0 :         WREG32_SOC15(GC, 0, regGFX_IMU_I_RAM_ADDR, adev-&gt;gfx.imu_fw_version);</span></a>
+<a name="105"><span class="lineNum">     105 </span>            : </a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 :         fw_data = (const __le32 *)(adev-&gt;gfx.imu_fw-&gt;data +</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 :                         le32_to_cpu(hdr-&gt;header.ucode_array_offset_bytes) +</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 :                         le32_to_cpu(hdr-&gt;imu_iram_ucode_size_bytes));</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 :         fw_size = le32_to_cpu(hdr-&gt;imu_dram_ucode_size_bytes) / 4;</span></a>
+<a name="110"><span class="lineNum">     110 </span>            : </a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 :         WREG32_SOC15(GC, 0, regGFX_IMU_D_RAM_ADDR, 0);</span></a>
+<a name="112"><span class="lineNum">     112 </span>            : </a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; fw_size; i++)</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(GC, 0, regGFX_IMU_D_RAM_DATA, le32_to_cpup(fw_data++));</span></a>
+<a name="115"><span class="lineNum">     115 </span>            : </a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 :         WREG32_SOC15(GC, 0, regGFX_IMU_D_RAM_ADDR, adev-&gt;gfx.imu_fw_version);</span></a>
+<a name="117"><span class="lineNum">     117 </span>            : </a>
+<a name="118"><span class="lineNum">     118 </span>            :         return 0;</a>
+<a name="119"><span class="lineNum">     119 </span>            : }</a>
+<a name="120"><span class="lineNum">     120 </span>            : </a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 : static int imu_v11_0_wait_for_reset_status(struct amdgpu_device *adev)</span></a>
+<a name="122"><span class="lineNum">     122 </span>            : {</a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :         int i, imu_reg_val = 0;</span></a>
+<a name="124"><span class="lineNum">     124 </span>            : </a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;usec_timeout; i++) {</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineNoCov">          0 :                 imu_reg_val = RREG32_SOC15(GC, 0, regGFX_IMU_GFX_RESET_CTRL);</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineNoCov">          0 :                 if ((imu_reg_val &amp; 0x1f) == 0x1f)</span></a>
+<a name="128"><span class="lineNum">     128 </span>            :                         break;</a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 :                 udelay(1);</span></a>
+<a name="130"><span class="lineNum">     130 </span>            :         }</a>
+<a name="131"><span class="lineNum">     131 </span>            : </a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineNoCov">          0 :         if (i &gt;= adev-&gt;usec_timeout) {</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev, &quot;init imu: IMU start timeout\n&quot;);</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineNoCov">          0 :                 return -ETIMEDOUT;</span></a>
+<a name="135"><span class="lineNum">     135 </span>            :         }</a>
+<a name="136"><span class="lineNum">     136 </span>            : </a>
+<a name="137"><span class="lineNum">     137 </span>            :         return 0;</a>
+<a name="138"><span class="lineNum">     138 </span>            : }</a>
+<a name="139"><span class="lineNum">     139 </span>            : </a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineNoCov">          0 : static void imu_v11_0_setup(struct amdgpu_device *adev)</span></a>
+<a name="141"><span class="lineNum">     141 </span>            : {</a>
+<a name="142"><span class="lineNum">     142 </span>            :         int imu_reg_val;</a>
+<a name="143"><span class="lineNum">     143 </span>            : </a>
+<a name="144"><span class="lineNum">     144 </span>            :         //enable IMU debug mode</a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineNoCov">          0 :         WREG32_SOC15(GC, 0, regGFX_IMU_C2PMSG_ACCESS_CTRL0, 0xffffff);</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 :         WREG32_SOC15(GC, 0, regGFX_IMU_C2PMSG_ACCESS_CTRL1, 0xffff);</span></a>
+<a name="147"><span class="lineNum">     147 </span>            : </a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineNoCov">          0 :         if (adev-&gt;gfx.imu.mode == DEBUG_MODE) {</span></a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 :                 imu_reg_val = RREG32_SOC15(GC, 0, regGFX_IMU_C2PMSG_16);</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 :                 imu_reg_val |= 0x1;</span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(GC, 0, regGFX_IMU_C2PMSG_16, imu_reg_val);</span></a>
+<a name="152"><span class="lineNum">     152 </span>            :         }</a>
+<a name="153"><span class="lineNum">     153 </span>            : </a>
+<a name="154"><span class="lineNum">     154 </span>            :         //disble imu Rtavfs, SmsRepair, DfllBTC, and ClkB</a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineNoCov">          0 :         imu_reg_val = RREG32_SOC15(GC, 0, regGFX_IMU_SCRATCH_10);</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 :         imu_reg_val |= 0x10007;</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :         WREG32_SOC15(GC, 0, regGFX_IMU_SCRATCH_10, imu_reg_val);</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="159"><span class="lineNum">     159 </span>            : </a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineNoCov">          0 : static int imu_v11_0_start(struct amdgpu_device *adev)</span></a>
+<a name="161"><span class="lineNum">     161 </span>            : {</a>
+<a name="162"><span class="lineNum">     162 </span>            :         int imu_reg_val;</a>
+<a name="163"><span class="lineNum">     163 </span>            : </a>
+<a name="164"><span class="lineNum">     164 </span>            :         //Start IMU by set GFX_IMU_CORE_CTRL.CRESET = 0</a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineNoCov">          0 :         imu_reg_val = RREG32_SOC15(GC, 0, regGFX_IMU_CORE_CTRL);</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 :         imu_reg_val &amp;= 0xfffffffe;</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 :         WREG32_SOC15(GC, 0, regGFX_IMU_CORE_CTRL, imu_reg_val);</span></a>
+<a name="168"><span class="lineNum">     168 </span>            : </a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineNoCov">          0 :         if (adev-&gt;flags &amp; AMD_IS_APU)</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 :                 amdgpu_dpm_set_gfx_power_up_by_imu(adev);</span></a>
+<a name="171"><span class="lineNum">     171 </span>            : </a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineNoCov">          0 :         return imu_v11_0_wait_for_reset_status(adev);</span></a>
+<a name="173"><span class="lineNum">     173 </span>            : }</a>
+<a name="174"><span class="lineNum">     174 </span>            : </a>
+<a name="175"><span class="lineNum">     175 </span>            : static const struct imu_rlc_ram_golden imu_rlc_ram_golden_11[] =</a>
+<a name="176"><span class="lineNum">     176 </span>            : {</a>
+<a name="177"><span class="lineNum">     177 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_IO_RD_COMBINE_FLUSH, 0x00055555, 0xe0000000),</a>
+<a name="178"><span class="lineNum">     178 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_IO_WR_COMBINE_FLUSH, 0x00055555, 0xe0000000),</a>
+<a name="179"><span class="lineNum">     179 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_DRAM_COMBINE_FLUSH, 0x00555555, 0xe0000000),</a>
+<a name="180"><span class="lineNum">     180 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_MISC2, 0x00001ffe, 0xe0000000),</a>
+<a name="181"><span class="lineNum">     181 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_SDP_CREDITS , 0x003f3fff, 0xe0000000),</a>
+<a name="182"><span class="lineNum">     182 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_SDP_TAG_RESERVE1, 0x00000000, 0xe0000000),</a>
+<a name="183"><span class="lineNum">     183 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_SDP_VCC_RESERVE0, 0x00041000, 0xe0000000),</a>
+<a name="184"><span class="lineNum">     184 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_SDP_VCC_RESERVE1, 0x00000000, 0xe0000000),</a>
+<a name="185"><span class="lineNum">     185 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_SDP_VCD_RESERVE0, 0x00040000, 0xe0000000),</a>
+<a name="186"><span class="lineNum">     186 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_SDP_VCD_RESERVE1, 0x00000000, 0xe0000000),</a>
+<a name="187"><span class="lineNum">     187 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_MISC, 0x00000017, 0xe0000000),</a>
+<a name="188"><span class="lineNum">     188 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_SDP_ENABLE, 0x00000001, 0xe0000000),</a>
+<a name="189"><span class="lineNum">     189 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_CREDITS , 0x003f3fbf, 0xe0000000),</a>
+<a name="190"><span class="lineNum">     190 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_TAG_RESERVE0, 0x10201000, 0xe0000000),</a>
+<a name="191"><span class="lineNum">     191 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_TAG_RESERVE1, 0x00000080, 0xe0000000),</a>
+<a name="192"><span class="lineNum">     192 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_VCC_RESERVE0, 0x1d041040, 0xe0000000),</a>
+<a name="193"><span class="lineNum">     193 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_VCC_RESERVE1, 0x80000000, 0xe0000000),</a>
+<a name="194"><span class="lineNum">     194 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_IO_PRIORITY, 0x88888888, 0xe0000000),</a>
+<a name="195"><span class="lineNum">     195 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_MAM_CTRL, 0x0000d800, 0xe0000000),</a>
+<a name="196"><span class="lineNum">     196 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_ARB_FINAL, 0x000003f7, 0xe0000000),</a>
+<a name="197"><span class="lineNum">     197 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_ENABLE, 0x00000001, 0xe0000000),</a>
+<a name="198"><span class="lineNum">     198 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_PROTECTION_FAULT_CNTL2, 0x00020000, 0xe0000000),</a>
+<a name="199"><span class="lineNum">     199 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_APT_CNTL, 0x0000000c, 0xe0000000),</a>
+<a name="200"><span class="lineNum">     200 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_CACHEABLE_DRAM_ADDRESS_END, 0x000fffff, 0xe0000000),</a>
+<a name="201"><span class="lineNum">     201 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_MISC, 0x0c48bff0, 0xe0000000),</a>
+<a name="202"><span class="lineNum">     202 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regCC_GC_SA_UNIT_DISABLE, 0x00fffc01, 0xe0000000),</a>
+<a name="203"><span class="lineNum">     203 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regCC_GC_PRIM_CONFIG, 0x000fffe1, 0xe0000000),</a>
+<a name="204"><span class="lineNum">     204 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regCC_RB_BACKEND_DISABLE, 0x0fffff01, 0xe0000000),</a>
+<a name="205"><span class="lineNum">     205 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regCC_GC_SHADER_ARRAY_CONFIG, 0xfffe0001, 0xe0000000),</a>
+<a name="206"><span class="lineNum">     206 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_MX_L1_TLB_CNTL, 0x00000500, 0xe0000000),</a>
+<a name="207"><span class="lineNum">     207 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_SYSTEM_APERTURE_LOW_ADDR, 0x00000001, 0xe0000000),</a>
+<a name="208"><span class="lineNum">     208 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_SYSTEM_APERTURE_HIGH_ADDR, 0x00000000, 0xe0000000),</a>
+<a name="209"><span class="lineNum">     209 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_LOCAL_FB_ADDRESS_START, 0x00000000, 0xe0000000),</a>
+<a name="210"><span class="lineNum">     210 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_LOCAL_FB_ADDRESS_END, 0x000fffff, 0xe0000000),</a>
+<a name="211"><span class="lineNum">     211 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_CONTEXT0_CNTL, 0x00000000, 0xe0000000),</a>
+<a name="212"><span class="lineNum">     212 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_CONTEXT1_CNTL, 0x00000000, 0xe0000000),</a>
+<a name="213"><span class="lineNum">     213 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_NB_TOP_OF_DRAM_SLOT1, 0xff800000, 0xe0000000),</a>
+<a name="214"><span class="lineNum">     214 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_NB_LOWER_TOP_OF_DRAM2, 0x00000001, 0xe0000000),</a>
+<a name="215"><span class="lineNum">     215 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_NB_UPPER_TOP_OF_DRAM2, 0x00000fff, 0xe0000000),</a>
+<a name="216"><span class="lineNum">     216 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_PROTECTION_FAULT_CNTL, 0x00001ffc, 0xe0000000),</a>
+<a name="217"><span class="lineNum">     217 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_MX_L1_TLB_CNTL, 0x00000501, 0xe0000000),</a>
+<a name="218"><span class="lineNum">     218 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_CNTL, 0x00080603, 0xe0000000),</a>
+<a name="219"><span class="lineNum">     219 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_CNTL2, 0x00000003, 0xe0000000),</a>
+<a name="220"><span class="lineNum">     220 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_CNTL3, 0x00100003, 0xe0000000),</a>
+<a name="221"><span class="lineNum">     221 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_CNTL5, 0x00003fe0, 0xe0000000),</a>
+<a name="222"><span class="lineNum">     222 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_CONTEXT0_CNTL, 0x00000001, 0xe0000000),</a>
+<a name="223"><span class="lineNum">     223 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_CONTEXT0_PER_PFVF_PTE_CACHE_FRAGMENT_SIZES, 0x00000c00, 0xe0000000),</a>
+<a name="224"><span class="lineNum">     224 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_CONTEXT1_CNTL, 0x00000001, 0xe0000000),</a>
+<a name="225"><span class="lineNum">     225 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_CONTEXT1_PER_PFVF_PTE_CACHE_FRAGMENT_SIZES, 0x00000c00, 0xe0000000),</a>
+<a name="226"><span class="lineNum">     226 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGB_ADDR_CONFIG, 0x00000545, 0xe0000000),</a>
+<a name="227"><span class="lineNum">     227 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGL2_PIPE_STEER_0, 0x13455431, 0xe0000000),</a>
+<a name="228"><span class="lineNum">     228 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGL2_PIPE_STEER_1, 0x13455431, 0xe0000000),</a>
+<a name="229"><span class="lineNum">     229 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGL2_PIPE_STEER_2, 0x76027602, 0xe0000000),</a>
+<a name="230"><span class="lineNum">     230 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGL2_PIPE_STEER_3, 0x76207620, 0xe0000000),</a>
+<a name="231"><span class="lineNum">     231 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGB_ADDR_CONFIG, 0x00000345, 0xe0000000),</a>
+<a name="232"><span class="lineNum">     232 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCUTCL2_HARVEST_BYPASS_GROUPS, 0x0000003e, 0xe0000000),</a>
+<a name="233"><span class="lineNum">     233 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_FB_LOCATION_BASE, 0x00006000, 0xe0000000),</a>
+<a name="234"><span class="lineNum">     234 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_FB_LOCATION_TOP, 0x000061ff, 0xe0000000),</a>
+<a name="235"><span class="lineNum">     235 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_APT_CNTL, 0x0000000c, 0xe0000000),</a>
+<a name="236"><span class="lineNum">     236 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_AGP_BASE, 0x00000000, 0xe0000000),</a>
+<a name="237"><span class="lineNum">     237 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_AGP_BOT, 0x00000002, 0xe0000000),</a>
+<a name="238"><span class="lineNum">     238 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_AGP_TOP, 0x00000000, 0xe0000000),</a>
+<a name="239"><span class="lineNum">     239 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_PROTECTION_FAULT_CNTL2, 0x00020000, 0xe0000000),</a>
+<a name="240"><span class="lineNum">     240 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regSDMA0_UCODE_SELFLOAD_CONTROL, 0x00000210, 0), </a>
+<a name="241"><span class="lineNum">     241 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regSDMA1_UCODE_SELFLOAD_CONTROL, 0x00000210, 0), </a>
+<a name="242"><span class="lineNum">     242 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regCPC_PSP_DEBUG, CPC_PSP_DEBUG__GPA_OVERRIDE_MASK, 0), </a>
+<a name="243"><span class="lineNum">     243 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regCPG_PSP_DEBUG, CPG_PSP_DEBUG__GPA_OVERRIDE_MASK, 0)</a>
+<a name="244"><span class="lineNum">     244 </span>            : };</a>
+<a name="245"><span class="lineNum">     245 </span>            : </a>
+<a name="246"><span class="lineNum">     246 </span>            : static const struct imu_rlc_ram_golden imu_rlc_ram_golden_11_0_2[] =</a>
+<a name="247"><span class="lineNum">     247 </span>            : {</a>
+<a name="248"><span class="lineNum">     248 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_MISC, 0x0c48bff0, 0xe0000000),</a>
+<a name="249"><span class="lineNum">     249 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_CREDITS, 0x003f3fbf, 0xe0000000),</a>
+<a name="250"><span class="lineNum">     250 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_TAG_RESERVE0, 0x10200800, 0xe0000000),</a>
+<a name="251"><span class="lineNum">     251 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_TAG_RESERVE1, 0x00000088, 0xe0000000),</a>
+<a name="252"><span class="lineNum">     252 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_VCC_RESERVE0, 0x1d041040, 0xe0000000),</a>
+<a name="253"><span class="lineNum">     253 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_VCC_RESERVE1, 0x80000000, 0xe0000000),</a>
+<a name="254"><span class="lineNum">     254 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_IO_PRIORITY, 0x88888888, 0xe0000000),</a>
+<a name="255"><span class="lineNum">     255 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_MAM_CTRL, 0x0000d800, 0xe0000000),</a>
+<a name="256"><span class="lineNum">     256 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_ARB_FINAL, 0x000007ef, 0xe0000000),</a>
+<a name="257"><span class="lineNum">     257 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_DRAM_PAGE_BURST, 0x20080200, 0xe0000000),</a>
+<a name="258"><span class="lineNum">     258 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCEA_SDP_ENABLE, 0x00000001, 0xe0000000),</a>
+<a name="259"><span class="lineNum">     259 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_APT_CNTL, 0x0000000c, 0xe0000000),</a>
+<a name="260"><span class="lineNum">     260 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_CACHEABLE_DRAM_ADDRESS_END, 0x000fffff, 0xe0000000),</a>
+<a name="261"><span class="lineNum">     261 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_IO_RD_COMBINE_FLUSH, 0x00055555, 0xe0000000),</a>
+<a name="262"><span class="lineNum">     262 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_IO_WR_COMBINE_FLUSH, 0x00055555, 0xe0000000),</a>
+<a name="263"><span class="lineNum">     263 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_DRAM_COMBINE_FLUSH, 0x00555555, 0xe0000000),</a>
+<a name="264"><span class="lineNum">     264 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_MISC2, 0x00001ffe, 0xe0000000),</a>
+<a name="265"><span class="lineNum">     265 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_SDP_CREDITS, 0x003f3fff, 0xe0000000),</a>
+<a name="266"><span class="lineNum">     266 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_SDP_TAG_RESERVE1, 0x00000000, 0xe0000000),</a>
+<a name="267"><span class="lineNum">     267 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_SDP_VCC_RESERVE0, 0x00041000, 0xe0000000),</a>
+<a name="268"><span class="lineNum">     268 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_SDP_VCC_RESERVE1, 0x00000000, 0xe0000000),</a>
+<a name="269"><span class="lineNum">     269 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_SDP_VCD_RESERVE0, 0x00040000, 0xe0000000),</a>
+<a name="270"><span class="lineNum">     270 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_SDP_VCD_RESERVE1, 0x00000000, 0xe0000000),</a>
+<a name="271"><span class="lineNum">     271 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_MISC, 0x00000017, 0xe0000000),</a>
+<a name="272"><span class="lineNum">     272 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGUS_SDP_ENABLE, 0x00000001, 0xe0000000),</a>
+<a name="273"><span class="lineNum">     273 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regCC_GC_SA_UNIT_DISABLE, 0x00fffc01, 0xe0000000),</a>
+<a name="274"><span class="lineNum">     274 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regCC_GC_PRIM_CONFIG, 0x000fffe1, 0xe0000000),</a>
+<a name="275"><span class="lineNum">     275 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regCC_RB_BACKEND_DISABLE, 0x00000f01, 0xe0000000),</a>
+<a name="276"><span class="lineNum">     276 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regCC_GC_SHADER_ARRAY_CONFIG, 0xfffe0001, 0xe0000000),</a>
+<a name="277"><span class="lineNum">     277 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGL1_PIPE_STEER, 0x000000e4, 0xe0000000),</a>
+<a name="278"><span class="lineNum">     278 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regCH_PIPE_STEER, 0x000000e4, 0xe0000000),</a>
+<a name="279"><span class="lineNum">     279 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGL2_PIPE_STEER_0, 0x01231023, 0xe0000000),</a>
+<a name="280"><span class="lineNum">     280 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGB_ADDR_CONFIG, 0x00000243, 0xe0000000),</a>
+<a name="281"><span class="lineNum">     281 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCUTCL2_HARVEST_BYPASS_GROUPS, 0x00000002, 0xe0000000),</a>
+<a name="282"><span class="lineNum">     282 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_MX_L1_TLB_CNTL, 0x00000500, 0xe0000000),</a>
+<a name="283"><span class="lineNum">     283 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_SYSTEM_APERTURE_LOW_ADDR, 0x00000001, 0xe0000000),</a>
+<a name="284"><span class="lineNum">     284 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_SYSTEM_APERTURE_HIGH_ADDR, 0x00000000, 0xe0000000),</a>
+<a name="285"><span class="lineNum">     285 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_LOCAL_FB_ADDRESS_START, 0x00000000, 0xe0000000),</a>
+<a name="286"><span class="lineNum">     286 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_LOCAL_FB_ADDRESS_END, 0x000001ff, 0xe0000000),</a>
+<a name="287"><span class="lineNum">     287 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_FB_LOCATION_BASE, 0x00006000, 0xe0000000),</a>
+<a name="288"><span class="lineNum">     288 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_FB_LOCATION_TOP, 0x000061ff, 0xe0000000),</a>
+<a name="289"><span class="lineNum">     289 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_CONTEXT0_CNTL, 0x00000000, 0xe0000000),</a>
+<a name="290"><span class="lineNum">     290 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_CONTEXT1_CNTL, 0x00000000, 0xe0000000),</a>
+<a name="291"><span class="lineNum">     291 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_APT_CNTL, 0x0000000c, 0xe0000000),</a>
+<a name="292"><span class="lineNum">     292 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_NB_TOP_OF_DRAM_SLOT1, 0xff800000, 0xe0000000),</a>
+<a name="293"><span class="lineNum">     293 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_NB_LOWER_TOP_OF_DRAM2, 0x00000001, 0xe0000000),</a>
+<a name="294"><span class="lineNum">     294 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_NB_UPPER_TOP_OF_DRAM2, 0x00000fff, 0xe0000000),</a>
+<a name="295"><span class="lineNum">     295 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_AGP_BASE, 0x00000000, 0xe0000000),</a>
+<a name="296"><span class="lineNum">     296 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_AGP_BOT, 0x00000002, 0xe0000000),</a>
+<a name="297"><span class="lineNum">     297 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_AGP_TOP, 0x00000000, 0xe0000000),</a>
+<a name="298"><span class="lineNum">     298 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_PROTECTION_FAULT_CNTL, 0x00001ffc, 0xe0000000),</a>
+<a name="299"><span class="lineNum">     299 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_PROTECTION_FAULT_CNTL2, 0x00002825, 0xe0000000),</a>
+<a name="300"><span class="lineNum">     300 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCMC_VM_MX_L1_TLB_CNTL, 0x00000501, 0xe0000000),</a>
+<a name="301"><span class="lineNum">     301 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_CNTL, 0x00080603, 0xe0000000),</a>
+<a name="302"><span class="lineNum">     302 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_CNTL2, 0x00000003, 0xe0000000),</a>
+<a name="303"><span class="lineNum">     303 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_CNTL3, 0x00100003, 0xe0000000),</a>
+<a name="304"><span class="lineNum">     304 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_CNTL5, 0x00003fe0, 0xe0000000),</a>
+<a name="305"><span class="lineNum">     305 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_CONTEXT0_CNTL, 0x00000001, 0xe0000000),</a>
+<a name="306"><span class="lineNum">     306 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_CONTEXT0_PER_PFVF_PTE_CACHE_FRAGMENT_SIZES, 0x00000c00, 0xe0000000),</a>
+<a name="307"><span class="lineNum">     307 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_CONTEXT1_CNTL, 0x00000001, 0xe0000000),</a>
+<a name="308"><span class="lineNum">     308 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regGCVM_L2_CONTEXT1_PER_PFVF_PTE_CACHE_FRAGMENT_SIZES, 0x00000c00, 0xe0000000),</a>
+<a name="309"><span class="lineNum">     309 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regSDMA0_UCODE_SELFLOAD_CONTROL, 0x00000210, 0),</a>
+<a name="310"><span class="lineNum">     310 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regSDMA1_UCODE_SELFLOAD_CONTROL, 0x00000210, 0),</a>
+<a name="311"><span class="lineNum">     311 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regCPC_PSP_DEBUG, CPC_PSP_DEBUG__GPA_OVERRIDE_MASK, 0),</a>
+<a name="312"><span class="lineNum">     312 </span>            :         IMU_RLC_RAM_GOLDEN_VALUE(GC, 0, regCPG_PSP_DEBUG, CPG_PSP_DEBUG__GPA_OVERRIDE_MASK, 0)</a>
+<a name="313"><span class="lineNum">     313 </span>            : };</a>
+<a name="314"><span class="lineNum">     314 </span>            : </a>
+<a name="315"><span class="lineNum">     315 </span><span class="lineNoCov">          0 : static void program_imu_rlc_ram(struct amdgpu_device *adev,</span></a>
+<a name="316"><span class="lineNum">     316 </span>            :                                 const struct imu_rlc_ram_golden *regs,</a>
+<a name="317"><span class="lineNum">     317 </span>            :                                 const u32 array_size)</a>
+<a name="318"><span class="lineNum">     318 </span>            : {</a>
+<a name="319"><span class="lineNum">     319 </span>            :         const struct imu_rlc_ram_golden *entry;</a>
+<a name="320"><span class="lineNum">     320 </span>            :         u32 reg, data;</a>
+<a name="321"><span class="lineNum">     321 </span>            :         int i;</a>
+<a name="322"><span class="lineNum">     322 </span>            : </a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; array_size; ++i) {</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineNoCov">          0 :                 entry = &amp;regs[i];</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineNoCov">          0 :                 reg =  adev-&gt;reg_offset[entry-&gt;hwip][entry-&gt;instance][entry-&gt;segment] + entry-&gt;reg;</span></a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 :                 reg |= entry-&gt;addr_mask;</span></a>
+<a name="327"><span class="lineNum">     327 </span>            : </a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineNoCov">          0 :                 data = entry-&gt;data;</span></a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 :                 if (entry-&gt;reg == regGCMC_VM_AGP_BASE)</span></a>
+<a name="330"><span class="lineNum">     330 </span>            :                         data = 0x00ffffff;</a>
+<a name="331"><span class="lineNum">     331 </span><span class="lineNoCov">          0 :                 else if (entry-&gt;reg == regGCMC_VM_AGP_TOP)</span></a>
+<a name="332"><span class="lineNum">     332 </span>            :                         data = 0x0;</a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 :                 else if (entry-&gt;reg == regGCMC_VM_FB_LOCATION_BASE)</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineNoCov">          0 :                         data = adev-&gt;gmc.vram_start &gt;&gt; 24;</span></a>
+<a name="335"><span class="lineNum">     335 </span><span class="lineNoCov">          0 :                 else if (entry-&gt;reg == regGCMC_VM_FB_LOCATION_TOP)</span></a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineNoCov">          0 :                         data = adev-&gt;gmc.vram_end &gt;&gt; 24;</span></a>
+<a name="337"><span class="lineNum">     337 </span>            : </a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(GC, 0, regGFX_IMU_RLC_RAM_ADDR_HIGH, 0);</span></a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(GC, 0, regGFX_IMU_RLC_RAM_ADDR_LOW, reg);</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(GC, 0, regGFX_IMU_RLC_RAM_DATA, data);</span></a>
+<a name="341"><span class="lineNum">     341 </span>            :         }</a>
+<a name="342"><span class="lineNum">     342 </span>            :         //Indicate the latest entry</a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineNoCov">          0 :         WREG32_SOC15(GC, 0, regGFX_IMU_RLC_RAM_ADDR_HIGH, 0);</span></a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineNoCov">          0 :         WREG32_SOC15(GC, 0, regGFX_IMU_RLC_RAM_ADDR_LOW, 0);</span></a>
+<a name="345"><span class="lineNum">     345 </span><span class="lineNoCov">          0 :         WREG32_SOC15(GC, 0, regGFX_IMU_RLC_RAM_DATA, 0);</span></a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="347"><span class="lineNum">     347 </span>            : </a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineNoCov">          0 : static void imu_v11_0_program_rlc_ram(struct amdgpu_device *adev)</span></a>
+<a name="349"><span class="lineNum">     349 </span>            : {</a>
+<a name="350"><span class="lineNum">     350 </span>            :         u32 reg_data;</a>
+<a name="351"><span class="lineNum">     351 </span>            : </a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 :         WREG32_SOC15(GC, 0, regGFX_IMU_RLC_RAM_INDEX, 0x2);</span></a>
+<a name="353"><span class="lineNum">     353 </span>            : </a>
+<a name="354"><span class="lineNum">     354 </span><span class="lineNoCov">          0 :         switch (adev-&gt;ip_versions[GC_HWIP][0]) {</span></a>
+<a name="355"><span class="lineNum">     355 </span>            :         case IP_VERSION(11, 0, 0):</a>
+<a name="356"><span class="lineNum">     356 </span><span class="lineNoCov">          0 :                 program_imu_rlc_ram(adev, imu_rlc_ram_golden_11,</span></a>
+<a name="357"><span class="lineNum">     357 </span>            :                                 (const u32)ARRAY_SIZE(imu_rlc_ram_golden_11));</a>
+<a name="358"><span class="lineNum">     358 </span><span class="lineNoCov">          0 :                 break;</span></a>
+<a name="359"><span class="lineNum">     359 </span>            :         case IP_VERSION(11, 0, 2):</a>
+<a name="360"><span class="lineNum">     360 </span><span class="lineNoCov">          0 :                 program_imu_rlc_ram(adev, imu_rlc_ram_golden_11_0_2,</span></a>
+<a name="361"><span class="lineNum">     361 </span>            :                                 (const u32)ARRAY_SIZE(imu_rlc_ram_golden_11_0_2));</a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineNoCov">          0 :                 break;</span></a>
+<a name="363"><span class="lineNum">     363 </span>            :         default:</a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineNoCov">          0 :                 BUG();</span></a>
+<a name="365"><span class="lineNum">     365 </span>            :                 break;</a>
+<a name="366"><span class="lineNum">     366 </span>            :         }</a>
+<a name="367"><span class="lineNum">     367 </span>            : </a>
+<a name="368"><span class="lineNum">     368 </span>            :         //Indicate the contents of the RAM are valid</a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineNoCov">          0 :         reg_data = RREG32_SOC15(GC, 0, regGFX_IMU_RLC_RAM_INDEX);</span></a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 :         reg_data |= GFX_IMU_RLC_RAM_INDEX__RAM_VALID_MASK;</span></a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineNoCov">          0 :         WREG32_SOC15(GC, 0, regGFX_IMU_RLC_RAM_INDEX, reg_data);</span></a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="373"><span class="lineNum">     373 </span>            : </a>
+<a name="374"><span class="lineNum">     374 </span>            : const struct amdgpu_imu_funcs gfx_v11_0_imu_funcs = {</a>
+<a name="375"><span class="lineNum">     375 </span>            :         .init_microcode = imu_v11_0_init_microcode,</a>
+<a name="376"><span class="lineNum">     376 </span>            :         .load_microcode = imu_v11_0_load_microcode,</a>
+<a name="377"><span class="lineNum">     377 </span>            :         .setup_imu = imu_v11_0_setup,</a>
+<a name="378"><span class="lineNum">     378 </span>            :         .start_imu = imu_v11_0_start,</a>
+<a name="379"><span class="lineNum">     379 </span>            :         .program_rlc_ram = imu_v11_0_program_rlc_ram,</a>
+<a name="380"><span class="lineNum">     380 </span>            :         .wait_for_reset_status = imu_v11_0_wait_for_reset_status,</a>
+<a name="381"><span class="lineNum">     381 </span>            : };</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

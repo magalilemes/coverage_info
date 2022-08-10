@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - include/linux/rcutiny.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">include/linux</a> - rcutiny.h<span style="font-size: 80%;"> (source / <a href="rcutiny.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntryLo">22.2 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* SPDX-License-Identifier: GPL-2.0+ */</a>
+<a name="2"><span class="lineNum">       2 </span>            : /*</a>
+<a name="3"><span class="lineNum">       3 </span>            :  * Read-Copy Update mechanism for mutual exclusion, the Bloatwatch edition.</a>
+<a name="4"><span class="lineNum">       4 </span>            :  *</a>
+<a name="5"><span class="lineNum">       5 </span>            :  * Copyright IBM Corporation, 2008</a>
+<a name="6"><span class="lineNum">       6 </span>            :  *</a>
+<a name="7"><span class="lineNum">       7 </span>            :  * Author: Paul E. McKenney &lt;paulmck@linux.ibm.com&gt;</a>
+<a name="8"><span class="lineNum">       8 </span>            :  *</a>
+<a name="9"><span class="lineNum">       9 </span>            :  * For detailed explanation of Read-Copy Update mechanism see -</a>
+<a name="10"><span class="lineNum">      10 </span>            :  *              Documentation/RCU</a>
+<a name="11"><span class="lineNum">      11 </span>            :  */</a>
+<a name="12"><span class="lineNum">      12 </span>            : #ifndef __LINUX_TINY_H</a>
+<a name="13"><span class="lineNum">      13 </span>            : #define __LINUX_TINY_H</a>
+<a name="14"><span class="lineNum">      14 </span>            : </a>
+<a name="15"><span class="lineNum">      15 </span>            : #include &lt;asm/param.h&gt; /* for HZ */</a>
+<a name="16"><span class="lineNum">      16 </span>            : </a>
+<a name="17"><span class="lineNum">      17 </span>            : unsigned long get_state_synchronize_rcu(void);</a>
+<a name="18"><span class="lineNum">      18 </span>            : unsigned long start_poll_synchronize_rcu(void);</a>
+<a name="19"><span class="lineNum">      19 </span>            : bool poll_state_synchronize_rcu(unsigned long oldstate);</a>
+<a name="20"><span class="lineNum">      20 </span>            : </a>
+<a name="21"><span class="lineNum">      21 </span>            : static inline void cond_synchronize_rcu(unsigned long oldstate)</a>
+<a name="22"><span class="lineNum">      22 </span>            : {</a>
+<a name="23"><span class="lineNum">      23 </span>            :         might_sleep();</a>
+<a name="24"><span class="lineNum">      24 </span>            : }</a>
+<a name="25"><span class="lineNum">      25 </span>            : </a>
+<a name="26"><span class="lineNum">      26 </span>            : extern void rcu_barrier(void);</a>
+<a name="27"><span class="lineNum">      27 </span>            : </a>
+<a name="28"><span class="lineNum">      28 </span>            : static inline void synchronize_rcu_expedited(void)</a>
+<a name="29"><span class="lineNum">      29 </span>            : {</a>
+<a name="30"><span class="lineNum">      30 </span><span class="lineNoCov">          0 :         synchronize_rcu();</span></a>
+<a name="31"><span class="lineNum">      31 </span>            : }</a>
+<a name="32"><span class="lineNum">      32 </span>            : </a>
+<a name="33"><span class="lineNum">      33 </span>            : /*</a>
+<a name="34"><span class="lineNum">      34 </span>            :  * Add one more declaration of kvfree() here. It is</a>
+<a name="35"><span class="lineNum">      35 </span>            :  * not so straight forward to just include &lt;linux/mm.h&gt;</a>
+<a name="36"><span class="lineNum">      36 </span>            :  * where it is defined due to getting many compile</a>
+<a name="37"><span class="lineNum">      37 </span>            :  * errors caused by that include.</a>
+<a name="38"><span class="lineNum">      38 </span>            :  */</a>
+<a name="39"><span class="lineNum">      39 </span>            : extern void kvfree(const void *addr);</a>
+<a name="40"><span class="lineNum">      40 </span>            : </a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineNoCov">          0 : static inline void kvfree_call_rcu(struct rcu_head *head, rcu_callback_t func)</span></a>
+<a name="42"><span class="lineNum">      42 </span>            : {</a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineNoCov">          0 :         if (head) {</span></a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineNoCov">          0 :                 call_rcu(head, func);</span></a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 :                 return;</span></a>
+<a name="46"><span class="lineNum">      46 </span>            :         }</a>
+<a name="47"><span class="lineNum">      47 </span>            : </a>
+<a name="48"><span class="lineNum">      48 </span>            :         // kvfree_rcu(one_arg) call.</a>
+<a name="49"><span class="lineNum">      49 </span>            :         might_sleep();</a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :         synchronize_rcu();</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineNoCov">          0 :         kvfree((void *) func);</span></a>
+<a name="52"><span class="lineNum">      52 </span>            : }</a>
+<a name="53"><span class="lineNum">      53 </span>            : </a>
+<a name="54"><span class="lineNum">      54 </span>            : void rcu_qs(void);</a>
+<a name="55"><span class="lineNum">      55 </span>            : </a>
+<a name="56"><span class="lineNum">      56 </span>            : static inline void rcu_softirq_qs(void)</a>
+<a name="57"><span class="lineNum">      57 </span>            : {</a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        254 :         rcu_qs();</span></a>
+<a name="59"><span class="lineNum">      59 </span>            : }</a>
+<a name="60"><span class="lineNum">      60 </span>            : </a>
+<a name="61"><span class="lineNum">      61 </span>            : #define rcu_note_context_switch(preempt) \</a>
+<a name="62"><span class="lineNum">      62 </span>            :         do { \</a>
+<a name="63"><span class="lineNum">      63 </span>            :                 rcu_qs(); \</a>
+<a name="64"><span class="lineNum">      64 </span>            :                 rcu_tasks_qs(current, (preempt)); \</a>
+<a name="65"><span class="lineNum">      65 </span>            :         } while (0)</a>
+<a name="66"><span class="lineNum">      66 </span>            : </a>
+<a name="67"><span class="lineNum">      67 </span>            : static inline int rcu_needs_cpu(void)</a>
+<a name="68"><span class="lineNum">      68 </span>            : {</a>
+<a name="69"><span class="lineNum">      69 </span>            :         return 0;</a>
+<a name="70"><span class="lineNum">      70 </span>            : }</a>
+<a name="71"><span class="lineNum">      71 </span>            : </a>
+<a name="72"><span class="lineNum">      72 </span>            : /*</a>
+<a name="73"><span class="lineNum">      73 </span>            :  * Take advantage of the fact that there is only one CPU, which</a>
+<a name="74"><span class="lineNum">      74 </span>            :  * allows us to ignore virtualization-based context switches.</a>
+<a name="75"><span class="lineNum">      75 </span>            :  */</a>
+<a name="76"><span class="lineNum">      76 </span>            : static inline void rcu_virt_note_context_switch(int cpu) { }</a>
+<a name="77"><span class="lineNum">      77 </span>            : static inline void rcu_cpu_stall_reset(void) { }</a>
+<a name="78"><span class="lineNum">      78 </span>            : static inline int rcu_jiffies_till_stall_check(void) { return 21 * HZ; }</a>
+<a name="79"><span class="lineNum">      79 </span>            : static inline void rcu_idle_enter(void) { }</a>
+<a name="80"><span class="lineNum">      80 </span>            : static inline void rcu_idle_exit(void) { }</a>
+<a name="81"><span class="lineNum">      81 </span>            : static inline void rcu_irq_enter(void) { }</a>
+<a name="82"><span class="lineNum">      82 </span>            : static inline void rcu_irq_exit_irqson(void) { }</a>
+<a name="83"><span class="lineNum">      83 </span>            : static inline void rcu_irq_enter_irqson(void) { }</a>
+<a name="84"><span class="lineNum">      84 </span>            : static inline void rcu_irq_exit(void) { }</a>
+<a name="85"><span class="lineNum">      85 </span>            : static inline void rcu_irq_exit_check_preempt(void) { }</a>
+<a name="86"><span class="lineNum">      86 </span>            : #define rcu_is_idle_cpu(cpu) \</a>
+<a name="87"><span class="lineNum">      87 </span>            :         (is_idle_task(current) &amp;&amp; !in_nmi() &amp;&amp; !in_hardirq() &amp;&amp; !in_serving_softirq())</a>
+<a name="88"><span class="lineNum">      88 </span>            : static inline void exit_rcu(void) { }</a>
+<a name="89"><span class="lineNum">      89 </span>            : static inline bool rcu_preempt_need_deferred_qs(struct task_struct *t)</a>
+<a name="90"><span class="lineNum">      90 </span>            : {</a>
+<a name="91"><span class="lineNum">      91 </span>            :         return false;</a>
+<a name="92"><span class="lineNum">      92 </span>            : }</a>
+<a name="93"><span class="lineNum">      93 </span>            : static inline void rcu_preempt_deferred_qs(struct task_struct *t) { }</a>
+<a name="94"><span class="lineNum">      94 </span>            : #ifdef CONFIG_SRCU</a>
+<a name="95"><span class="lineNum">      95 </span>            : void rcu_scheduler_starting(void);</a>
+<a name="96"><span class="lineNum">      96 </span>            : #else /* #ifndef CONFIG_SRCU */</a>
+<a name="97"><span class="lineNum">      97 </span>            : static inline void rcu_scheduler_starting(void) { }</a>
+<a name="98"><span class="lineNum">      98 </span>            : #endif /* #else #ifndef CONFIG_SRCU */</a>
+<a name="99"><span class="lineNum">      99 </span>            : static inline void rcu_end_inkernel_boot(void) { }</a>
+<a name="100"><span class="lineNum">     100 </span>            : static inline bool rcu_inkernel_boot_has_ended(void) { return true; }</a>
+<a name="101"><span class="lineNum">     101 </span>            : static inline bool rcu_is_watching(void) { return true; }</a>
+<a name="102"><span class="lineNum">     102 </span>            : static inline void rcu_momentary_dyntick_idle(void) { }</a>
+<a name="103"><span class="lineNum">     103 </span>            : static inline void kfree_rcu_scheduler_running(void) { }</a>
+<a name="104"><span class="lineNum">     104 </span>            : static inline bool rcu_gp_might_be_stalled(void) { return false; }</a>
+<a name="105"><span class="lineNum">     105 </span>            : </a>
+<a name="106"><span class="lineNum">     106 </span>            : /* Avoid RCU read-side critical sections leaking across. */</a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">       1414 : static inline void rcu_all_qs(void) { barrier(); }</span></a>
+<a name="108"><span class="lineNum">     108 </span>            : </a>
+<a name="109"><span class="lineNum">     109 </span>            : /* RCUtree hotplug events */</a>
+<a name="110"><span class="lineNum">     110 </span>            : #define rcutree_prepare_cpu      NULL</a>
+<a name="111"><span class="lineNum">     111 </span>            : #define rcutree_online_cpu       NULL</a>
+<a name="112"><span class="lineNum">     112 </span>            : #define rcutree_offline_cpu      NULL</a>
+<a name="113"><span class="lineNum">     113 </span>            : #define rcutree_dead_cpu         NULL</a>
+<a name="114"><span class="lineNum">     114 </span>            : #define rcutree_dying_cpu        NULL</a>
+<a name="115"><span class="lineNum">     115 </span>            : static inline void rcu_cpu_starting(unsigned int cpu) { }</a>
+<a name="116"><span class="lineNum">     116 </span>            : </a>
+<a name="117"><span class="lineNum">     117 </span>            : #endif /* __LINUX_RCUTINY_H */</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

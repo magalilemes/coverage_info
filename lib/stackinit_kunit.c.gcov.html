@@ -1,0 +1,537 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - lib/stackinit_kunit.c</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">lib</a> - stackinit_kunit.c<span style="font-size: 80%;"> (source / <a href="stackinit_kunit.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">38</td>
+            <td class="headerCovTableEntry">39</td>
+            <td class="headerCovTableEntryHi">97.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">139</td>
+            <td class="headerCovTableEntry">139</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // SPDX-License-Identifier: GPL-2.0-or-later</a>
+<a name="2"><span class="lineNum">       2 </span>            : /*</a>
+<a name="3"><span class="lineNum">       3 </span>            :  * Test cases for compiler-based stack variable zeroing via</a>
+<a name="4"><span class="lineNum">       4 </span>            :  * -ftrivial-auto-var-init={zero,pattern} or CONFIG_GCC_PLUGIN_STRUCTLEAK*.</a>
+<a name="5"><span class="lineNum">       5 </span>            :  * For example, see:</a>
+<a name="6"><span class="lineNum">       6 </span>            :  * https://www.kernel.org/doc/html/latest/dev-tools/kunit/kunit-tool.html#configuring-building-and-running-tests</a>
+<a name="7"><span class="lineNum">       7 </span>            :  *      ./tools/testing/kunit/kunit.py run stackinit [--raw_output] \</a>
+<a name="8"><span class="lineNum">       8 </span>            :  *              --make_option LLVM=1 \</a>
+<a name="9"><span class="lineNum">       9 </span>            :  *              --kconfig_add CONFIG_INIT_STACK_ALL_ZERO=y</a>
+<a name="10"><span class="lineNum">      10 </span>            :  *</a>
+<a name="11"><span class="lineNum">      11 </span>            :  */</a>
+<a name="12"><span class="lineNum">      12 </span>            : #define pr_fmt(fmt) KBUILD_MODNAME &quot;: &quot; fmt</a>
+<a name="13"><span class="lineNum">      13 </span>            : </a>
+<a name="14"><span class="lineNum">      14 </span>            : #include &lt;kunit/test.h&gt;</a>
+<a name="15"><span class="lineNum">      15 </span>            : #include &lt;linux/init.h&gt;</a>
+<a name="16"><span class="lineNum">      16 </span>            : #include &lt;linux/kernel.h&gt;</a>
+<a name="17"><span class="lineNum">      17 </span>            : #include &lt;linux/module.h&gt;</a>
+<a name="18"><span class="lineNum">      18 </span>            : #include &lt;linux/string.h&gt;</a>
+<a name="19"><span class="lineNum">      19 </span>            : </a>
+<a name="20"><span class="lineNum">      20 </span>            : /* Exfiltration buffer. */</a>
+<a name="21"><span class="lineNum">      21 </span>            : #define MAX_VAR_SIZE    128</a>
+<a name="22"><span class="lineNum">      22 </span>            : static u8 check_buf[MAX_VAR_SIZE];</a>
+<a name="23"><span class="lineNum">      23 </span>            : </a>
+<a name="24"><span class="lineNum">      24 </span>            : /* Character array to trigger stack protector in all functions. */</a>
+<a name="25"><span class="lineNum">      25 </span>            : #define VAR_BUFFER       32</a>
+<a name="26"><span class="lineNum">      26 </span>            : </a>
+<a name="27"><span class="lineNum">      27 </span>            : /* Volatile mask to convince compiler to copy memory with 0xff. */</a>
+<a name="28"><span class="lineNum">      28 </span>            : static volatile u8 forced_mask = 0xff;</a>
+<a name="29"><span class="lineNum">      29 </span>            : </a>
+<a name="30"><span class="lineNum">      30 </span>            : /* Location and size tracking to validate fill and test are colocated. */</a>
+<a name="31"><span class="lineNum">      31 </span>            : static void *fill_start, *target_start;</a>
+<a name="32"><span class="lineNum">      32 </span>            : static size_t fill_size, target_size;</a>
+<a name="33"><span class="lineNum">      33 </span>            : </a>
+<a name="34"><span class="lineNum">      34 </span>            : static bool range_contains(char *haystack_start, size_t haystack_size,</a>
+<a name="35"><span class="lineNum">      35 </span>            :                            char *needle_start, size_t needle_size)</a>
+<a name="36"><span class="lineNum">      36 </span>            : {</a>
+<a name="37"><span class="lineNum">      37 </span><span class="lineCov">        130 :         if (needle_start &gt;= haystack_start &amp;&amp;</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">         65 :             needle_start + needle_size &lt;= haystack_start + haystack_size)</span></a>
+<a name="39"><span class="lineNum">      39 </span>            :                 return true;</a>
+<a name="40"><span class="lineNum">      40 </span>            :         return false;</a>
+<a name="41"><span class="lineNum">      41 </span>            : }</a>
+<a name="42"><span class="lineNum">      42 </span>            : </a>
+<a name="43"><span class="lineNum">      43 </span>            : /* Whether the test is expected to fail. */</a>
+<a name="44"><span class="lineNum">      44 </span>            : #define WANT_SUCCESS                            0</a>
+<a name="45"><span class="lineNum">      45 </span>            : #define XFAIL                                   1</a>
+<a name="46"><span class="lineNum">      46 </span>            : </a>
+<a name="47"><span class="lineNum">      47 </span>            : #define DO_NOTHING_TYPE_SCALAR(var_type)        var_type</a>
+<a name="48"><span class="lineNum">      48 </span>            : #define DO_NOTHING_TYPE_STRING(var_type)        void</a>
+<a name="49"><span class="lineNum">      49 </span>            : #define DO_NOTHING_TYPE_STRUCT(var_type)        void</a>
+<a name="50"><span class="lineNum">      50 </span>            : </a>
+<a name="51"><span class="lineNum">      51 </span>            : #define DO_NOTHING_RETURN_SCALAR(ptr)           *(ptr)</a>
+<a name="52"><span class="lineNum">      52 </span>            : #define DO_NOTHING_RETURN_STRING(ptr)           /**/</a>
+<a name="53"><span class="lineNum">      53 </span>            : #define DO_NOTHING_RETURN_STRUCT(ptr)           /**/</a>
+<a name="54"><span class="lineNum">      54 </span>            : </a>
+<a name="55"><span class="lineNum">      55 </span>            : #define DO_NOTHING_CALL_SCALAR(var, name)                       \</a>
+<a name="56"><span class="lineNum">      56 </span>            :                 (var) = do_nothing_ ## name(&amp;(var))</a>
+<a name="57"><span class="lineNum">      57 </span>            : #define DO_NOTHING_CALL_STRING(var, name)                       \</a>
+<a name="58"><span class="lineNum">      58 </span>            :                 do_nothing_ ## name(var)</a>
+<a name="59"><span class="lineNum">      59 </span>            : #define DO_NOTHING_CALL_STRUCT(var, name)                       \</a>
+<a name="60"><span class="lineNum">      60 </span>            :                 do_nothing_ ## name(&amp;(var))</a>
+<a name="61"><span class="lineNum">      61 </span>            : </a>
+<a name="62"><span class="lineNum">      62 </span>            : #define FETCH_ARG_SCALAR(var)           &amp;var</a>
+<a name="63"><span class="lineNum">      63 </span>            : #define FETCH_ARG_STRING(var)           var</a>
+<a name="64"><span class="lineNum">      64 </span>            : #define FETCH_ARG_STRUCT(var)           &amp;var</a>
+<a name="65"><span class="lineNum">      65 </span>            : </a>
+<a name="66"><span class="lineNum">      66 </span>            : #define FILL_SIZE_STRING                16</a>
+<a name="67"><span class="lineNum">      67 </span>            : </a>
+<a name="68"><span class="lineNum">      68 </span>            : #define INIT_CLONE_SCALAR               /**/</a>
+<a name="69"><span class="lineNum">      69 </span>            : #define INIT_CLONE_STRING               [FILL_SIZE_STRING]</a>
+<a name="70"><span class="lineNum">      70 </span>            : #define INIT_CLONE_STRUCT               /**/</a>
+<a name="71"><span class="lineNum">      71 </span>            : </a>
+<a name="72"><span class="lineNum">      72 </span>            : #define ZERO_CLONE_SCALAR(zero)         memset(&amp;(zero), 0x00, sizeof(zero))</a>
+<a name="73"><span class="lineNum">      73 </span>            : #define ZERO_CLONE_STRING(zero)         memset(&amp;(zero), 0x00, sizeof(zero))</a>
+<a name="74"><span class="lineNum">      74 </span>            : /*</a>
+<a name="75"><span class="lineNum">      75 </span>            :  * For the struct, intentionally poison padding to see if it gets</a>
+<a name="76"><span class="lineNum">      76 </span>            :  * copied out in direct assignments.</a>
+<a name="77"><span class="lineNum">      77 </span>            :  * */</a>
+<a name="78"><span class="lineNum">      78 </span>            : #define ZERO_CLONE_STRUCT(zero)                         \</a>
+<a name="79"><span class="lineNum">      79 </span>            :         do {                                            \</a>
+<a name="80"><span class="lineNum">      80 </span>            :                 memset(&amp;(zero), 0xFF, sizeof(zero));        \</a>
+<a name="81"><span class="lineNum">      81 </span>            :                 zero.one = 0;                           \</a>
+<a name="82"><span class="lineNum">      82 </span>            :                 zero.two = 0;                           \</a>
+<a name="83"><span class="lineNum">      83 </span>            :                 zero.three = 0;                         \</a>
+<a name="84"><span class="lineNum">      84 </span>            :                 zero.four = 0;                          \</a>
+<a name="85"><span class="lineNum">      85 </span>            :         } while (0)</a>
+<a name="86"><span class="lineNum">      86 </span>            : </a>
+<a name="87"><span class="lineNum">      87 </span>            : #define INIT_SCALAR_none(var_type)      /**/</a>
+<a name="88"><span class="lineNum">      88 </span>            : #define INIT_SCALAR_zero(var_type)      = 0</a>
+<a name="89"><span class="lineNum">      89 </span>            : </a>
+<a name="90"><span class="lineNum">      90 </span>            : #define INIT_STRING_none(var_type)      [FILL_SIZE_STRING] /**/</a>
+<a name="91"><span class="lineNum">      91 </span>            : #define INIT_STRING_zero(var_type)      [FILL_SIZE_STRING] = { }</a>
+<a name="92"><span class="lineNum">      92 </span>            : </a>
+<a name="93"><span class="lineNum">      93 </span>            : #define INIT_STRUCT_none(var_type)      /**/</a>
+<a name="94"><span class="lineNum">      94 </span>            : #define INIT_STRUCT_zero(var_type)      = { }</a>
+<a name="95"><span class="lineNum">      95 </span>            : </a>
+<a name="96"><span class="lineNum">      96 </span>            : </a>
+<a name="97"><span class="lineNum">      97 </span>            : #define __static_partial                { .two = 0, }</a>
+<a name="98"><span class="lineNum">      98 </span>            : #define __static_all                    { .one = 0,                     \</a>
+<a name="99"><span class="lineNum">      99 </span>            :                                           .two = 0,                     \</a>
+<a name="100"><span class="lineNum">     100 </span>            :                                           .three = 0,                   \</a>
+<a name="101"><span class="lineNum">     101 </span>            :                                           .four = 0,                    \</a>
+<a name="102"><span class="lineNum">     102 </span>            :                                         }</a>
+<a name="103"><span class="lineNum">     103 </span>            : #define __dynamic_partial               { .two = arg-&gt;two, }</a>
+<a name="104"><span class="lineNum">     104 </span>            : #define __dynamic_all                   { .one = arg-&gt;one,           \</a>
+<a name="105"><span class="lineNum">     105 </span>            :                                           .two = arg-&gt;two,           \</a>
+<a name="106"><span class="lineNum">     106 </span>            :                                           .three = arg-&gt;three,               \</a>
+<a name="107"><span class="lineNum">     107 </span>            :                                           .four = arg-&gt;four,         \</a>
+<a name="108"><span class="lineNum">     108 </span>            :                                         }</a>
+<a name="109"><span class="lineNum">     109 </span>            : #define __runtime_partial               var.two = 0</a>
+<a name="110"><span class="lineNum">     110 </span>            : #define __runtime_all                   var.one = 0;                    \</a>
+<a name="111"><span class="lineNum">     111 </span>            :                                         var.two = 0;                    \</a>
+<a name="112"><span class="lineNum">     112 </span>            :                                         var.three = 0;                  \</a>
+<a name="113"><span class="lineNum">     113 </span>            :                                         var.four = 0</a>
+<a name="114"><span class="lineNum">     114 </span>            : </a>
+<a name="115"><span class="lineNum">     115 </span>            : #define INIT_STRUCT_static_partial(var_type)                            \</a>
+<a name="116"><span class="lineNum">     116 </span>            :                                         = __static_partial</a>
+<a name="117"><span class="lineNum">     117 </span>            : #define INIT_STRUCT_static_all(var_type)                                \</a>
+<a name="118"><span class="lineNum">     118 </span>            :                                         = __static_all</a>
+<a name="119"><span class="lineNum">     119 </span>            : #define INIT_STRUCT_dynamic_partial(var_type)                           \</a>
+<a name="120"><span class="lineNum">     120 </span>            :                                         = __dynamic_partial</a>
+<a name="121"><span class="lineNum">     121 </span>            : #define INIT_STRUCT_dynamic_all(var_type)                               \</a>
+<a name="122"><span class="lineNum">     122 </span>            :                                         = __dynamic_all</a>
+<a name="123"><span class="lineNum">     123 </span>            : #define INIT_STRUCT_runtime_partial(var_type)                           \</a>
+<a name="124"><span class="lineNum">     124 </span>            :                                         ; __runtime_partial</a>
+<a name="125"><span class="lineNum">     125 </span>            : #define INIT_STRUCT_runtime_all(var_type)                               \</a>
+<a name="126"><span class="lineNum">     126 </span>            :                                         ; __runtime_all</a>
+<a name="127"><span class="lineNum">     127 </span>            : </a>
+<a name="128"><span class="lineNum">     128 </span>            : #define INIT_STRUCT_assigned_static_partial(var_type)                   \</a>
+<a name="129"><span class="lineNum">     129 </span>            :                                         ; var = (var_type)__static_partial</a>
+<a name="130"><span class="lineNum">     130 </span>            : #define INIT_STRUCT_assigned_static_all(var_type)                       \</a>
+<a name="131"><span class="lineNum">     131 </span>            :                                         ; var = (var_type)__static_all</a>
+<a name="132"><span class="lineNum">     132 </span>            : #define INIT_STRUCT_assigned_dynamic_partial(var_type)                  \</a>
+<a name="133"><span class="lineNum">     133 </span>            :                                         ; var = (var_type)__dynamic_partial</a>
+<a name="134"><span class="lineNum">     134 </span>            : #define INIT_STRUCT_assigned_dynamic_all(var_type)                      \</a>
+<a name="135"><span class="lineNum">     135 </span>            :                                         ; var = (var_type)__dynamic_all</a>
+<a name="136"><span class="lineNum">     136 </span>            : </a>
+<a name="137"><span class="lineNum">     137 </span>            : #define INIT_STRUCT_assigned_copy(var_type)                             \</a>
+<a name="138"><span class="lineNum">     138 </span>            :                                         ; var = *(arg)</a>
+<a name="139"><span class="lineNum">     139 </span>            : </a>
+<a name="140"><span class="lineNum">     140 </span>            : /*</a>
+<a name="141"><span class="lineNum">     141 </span>            :  * @name: unique string name for the test</a>
+<a name="142"><span class="lineNum">     142 </span>            :  * @var_type: type to be tested for zeroing initialization</a>
+<a name="143"><span class="lineNum">     143 </span>            :  * @which: is this a SCALAR, STRING, or STRUCT type?</a>
+<a name="144"><span class="lineNum">     144 </span>            :  * @init_level: what kind of initialization is performed</a>
+<a name="145"><span class="lineNum">     145 </span>            :  * @xfail: is this test expected to fail?</a>
+<a name="146"><span class="lineNum">     146 </span>            :  */</a>
+<a name="147"><span class="lineNum">     147 </span>            : #define DEFINE_TEST_DRIVER(name, var_type, which, xfail)        \</a>
+<a name="148"><span class="lineNum">     148 </span>            : /* Returns 0 on success, 1 on failure. */                       \</a>
+<a name="149"><span class="lineNum">     149 </span>            : static noinline void test_ ## name (struct kunit *test)         \</a>
+<a name="150"><span class="lineNum">     150 </span>            : {                                                               \</a>
+<a name="151"><span class="lineNum">     151 </span>            :         var_type zero INIT_CLONE_ ## which;                     \</a>
+<a name="152"><span class="lineNum">     152 </span>            :         int ignored;                                            \</a>
+<a name="153"><span class="lineNum">     153 </span>            :         u8 sum = 0, i;                                          \</a>
+<a name="154"><span class="lineNum">     154 </span>            :                                                                 \</a>
+<a name="155"><span class="lineNum">     155 </span>            :         /* Notice when a new test is larger than expected. */   \</a>
+<a name="156"><span class="lineNum">     156 </span>            :         BUILD_BUG_ON(sizeof(zero) &gt; MAX_VAR_SIZE);           \</a>
+<a name="157"><span class="lineNum">     157 </span>            :                                                                 \</a>
+<a name="158"><span class="lineNum">     158 </span>            :         /* Fill clone type with zero for per-field init. */     \</a>
+<a name="159"><span class="lineNum">     159 </span>            :         ZERO_CLONE_ ## which(zero);                             \</a>
+<a name="160"><span class="lineNum">     160 </span>            :         /* Clear entire check buffer for 0xFF overlap test. */  \</a>
+<a name="161"><span class="lineNum">     161 </span>            :         memset(check_buf, 0x00, sizeof(check_buf));             \</a>
+<a name="162"><span class="lineNum">     162 </span>            :         /* Fill stack with 0xFF. */                             \</a>
+<a name="163"><span class="lineNum">     163 </span>            :         ignored = leaf_ ##name((unsigned long)&amp;ignored, 1,  \</a>
+<a name="164"><span class="lineNum">     164 </span>            :                                 FETCH_ARG_ ## which(zero));     \</a>
+<a name="165"><span class="lineNum">     165 </span>            :         /* Verify all bytes overwritten with 0xFF. */           \</a>
+<a name="166"><span class="lineNum">     166 </span>            :         for (sum = 0, i = 0; i &lt; target_size; i++)           \</a>
+<a name="167"><span class="lineNum">     167 </span>            :                 sum += (check_buf[i] != 0xFF);                  \</a>
+<a name="168"><span class="lineNum">     168 </span>            :         KUNIT_ASSERT_EQ_MSG(test, sum, 0,                       \</a>
+<a name="169"><span class="lineNum">     169 </span>            :                             &quot;leaf fill was not 0xFF!?\n&quot;);    \</a>
+<a name="170"><span class="lineNum">     170 </span>            :         /* Clear entire check buffer for later bit tests. */    \</a>
+<a name="171"><span class="lineNum">     171 </span>            :         memset(check_buf, 0x00, sizeof(check_buf));             \</a>
+<a name="172"><span class="lineNum">     172 </span>            :         /* Extract stack-defined variable contents. */          \</a>
+<a name="173"><span class="lineNum">     173 </span>            :         ignored = leaf_ ##name((unsigned long)&amp;ignored, 0,  \</a>
+<a name="174"><span class="lineNum">     174 </span>            :                                 FETCH_ARG_ ## which(zero));     \</a>
+<a name="175"><span class="lineNum">     175 </span>            :                                                                 \</a>
+<a name="176"><span class="lineNum">     176 </span>            :         /* Validate that compiler lined up fill and target. */  \</a>
+<a name="177"><span class="lineNum">     177 </span>            :         KUNIT_ASSERT_TRUE_MSG(test,                             \</a>
+<a name="178"><span class="lineNum">     178 </span>            :                 range_contains(fill_start, fill_size,           \</a>
+<a name="179"><span class="lineNum">     179 </span>            :                             target_start, target_size),         \</a>
+<a name="180"><span class="lineNum">     180 </span>            :                 &quot;stack fill missed target!? &quot;                 \</a>
+<a name="181"><span class="lineNum">     181 </span>            :                 &quot;(fill %zu wide, target offset by %d)\n&quot;,     \</a>
+<a name="182"><span class="lineNum">     182 </span>            :                 fill_size,                                      \</a>
+<a name="183"><span class="lineNum">     183 </span>            :                 (int)((ssize_t)(uintptr_t)fill_start -          \</a>
+<a name="184"><span class="lineNum">     184 </span>            :                       (ssize_t)(uintptr_t)target_start));       \</a>
+<a name="185"><span class="lineNum">     185 </span>            :                                                                 \</a>
+<a name="186"><span class="lineNum">     186 </span>            :         /* Look for any bytes still 0xFF in check region. */    \</a>
+<a name="187"><span class="lineNum">     187 </span>            :         for (sum = 0, i = 0; i &lt; target_size; i++)           \</a>
+<a name="188"><span class="lineNum">     188 </span>            :                 sum += (check_buf[i] == 0xFF);                  \</a>
+<a name="189"><span class="lineNum">     189 </span>            :                                                                 \</a>
+<a name="190"><span class="lineNum">     190 </span>            :         if (sum != 0 &amp;&amp; xfail)                                  \</a>
+<a name="191"><span class="lineNum">     191 </span>            :                 kunit_skip(test,                                \</a>
+<a name="192"><span class="lineNum">     192 </span>            :                            &quot;XFAIL uninit bytes: %d\n&quot;,                \</a>
+<a name="193"><span class="lineNum">     193 </span>            :                            sum);                                \</a>
+<a name="194"><span class="lineNum">     194 </span>            :         KUNIT_ASSERT_EQ_MSG(test, sum, 0,                       \</a>
+<a name="195"><span class="lineNum">     195 </span>            :                 &quot;uninit bytes: %d\n&quot;, sum);                   \</a>
+<a name="196"><span class="lineNum">     196 </span>            : }</a>
+<a name="197"><span class="lineNum">     197 </span>            : #define DEFINE_TEST(name, var_type, which, init_level, xfail)   \</a>
+<a name="198"><span class="lineNum">     198 </span>            : /* no-op to force compiler into ignoring &quot;uninitialized&quot; vars */\</a>
+<a name="199"><span class="lineNum">     199 </span>            : static noinline DO_NOTHING_TYPE_ ## which(var_type)             \</a>
+<a name="200"><span class="lineNum">     200 </span>            : do_nothing_ ## name(var_type *ptr)                              \</a>
+<a name="201"><span class="lineNum">     201 </span>            : {                                                               \</a>
+<a name="202"><span class="lineNum">     202 </span>            :         /* Will always be true, but compiler doesn't know. */   \</a>
+<a name="203"><span class="lineNum">     203 </span>            :         if ((unsigned long)ptr &gt; 0x2)                                \</a>
+<a name="204"><span class="lineNum">     204 </span>            :                 return DO_NOTHING_RETURN_ ## which(ptr);        \</a>
+<a name="205"><span class="lineNum">     205 </span>            :         else                                                    \</a>
+<a name="206"><span class="lineNum">     206 </span>            :                 return DO_NOTHING_RETURN_ ## which(ptr + 1);    \</a>
+<a name="207"><span class="lineNum">     207 </span>            : }                                                               \</a>
+<a name="208"><span class="lineNum">     208 </span>            : static noinline int leaf_ ## name(unsigned long sp, bool fill,  \</a>
+<a name="209"><span class="lineNum">     209 </span>            :                                   var_type *arg)                \</a>
+<a name="210"><span class="lineNum">     210 </span>            : {                                                               \</a>
+<a name="211"><span class="lineNum">     211 </span>            :         char buf[VAR_BUFFER];                                   \</a>
+<a name="212"><span class="lineNum">     212 </span>            :         var_type var                                            \</a>
+<a name="213"><span class="lineNum">     213 </span>            :                 INIT_ ## which ## _ ## init_level(var_type);    \</a>
+<a name="214"><span class="lineNum">     214 </span>            :                                                                 \</a>
+<a name="215"><span class="lineNum">     215 </span>            :         target_start = &amp;var;                                        \</a>
+<a name="216"><span class="lineNum">     216 </span>            :         target_size = sizeof(var);                              \</a>
+<a name="217"><span class="lineNum">     217 </span>            :         /*                                                      \</a>
+<a name="218"><span class="lineNum">     218 </span>            :          * Keep this buffer around to make sure we've got a     \</a>
+<a name="219"><span class="lineNum">     219 </span>            :          * stack frame of SOME kind...                          \</a>
+<a name="220"><span class="lineNum">     220 </span>            :          */                                                     \</a>
+<a name="221"><span class="lineNum">     221 </span>            :         memset(buf, (char)(sp &amp; 0xff), sizeof(buf));                \</a>
+<a name="222"><span class="lineNum">     222 </span>            :         /* Fill variable with 0xFF. */                          \</a>
+<a name="223"><span class="lineNum">     223 </span>            :         if (fill) {                                             \</a>
+<a name="224"><span class="lineNum">     224 </span>            :                 fill_start = &amp;var;                          \</a>
+<a name="225"><span class="lineNum">     225 </span>            :                 fill_size = sizeof(var);                        \</a>
+<a name="226"><span class="lineNum">     226 </span>            :                 memset(fill_start,                              \</a>
+<a name="227"><span class="lineNum">     227 </span>            :                        (char)((sp &amp; 0xff) | forced_mask),   \</a>
+<a name="228"><span class="lineNum">     228 </span>            :                        fill_size);                              \</a>
+<a name="229"><span class="lineNum">     229 </span>            :         }                                                       \</a>
+<a name="230"><span class="lineNum">     230 </span>            :                                                                 \</a>
+<a name="231"><span class="lineNum">     231 </span>            :         /* Silence &quot;never initialized&quot; warnings. */           \</a>
+<a name="232"><span class="lineNum">     232 </span>            :         DO_NOTHING_CALL_ ## which(var, name);                   \</a>
+<a name="233"><span class="lineNum">     233 </span>            :                                                                 \</a>
+<a name="234"><span class="lineNum">     234 </span>            :         /* Exfiltrate &quot;var&quot;. */                                       \</a>
+<a name="235"><span class="lineNum">     235 </span>            :         memcpy(check_buf, target_start, target_size);           \</a>
+<a name="236"><span class="lineNum">     236 </span>            :                                                                 \</a>
+<a name="237"><span class="lineNum">     237 </span>            :         return (int)buf[0] | (int)buf[sizeof(buf) - 1];         \</a>
+<a name="238"><span class="lineNum">     238 </span>            : }                                                               \</a>
+<a name="239"><span class="lineNum">     239 </span>            : DEFINE_TEST_DRIVER(name, var_type, which, xfail)</a>
+<a name="240"><span class="lineNum">     240 </span>            : </a>
+<a name="241"><span class="lineNum">     241 </span>            : /* Structure with no padding. */</a>
+<a name="242"><span class="lineNum">     242 </span>            : struct test_packed {</a>
+<a name="243"><span class="lineNum">     243 </span>            :         unsigned long one;</a>
+<a name="244"><span class="lineNum">     244 </span>            :         unsigned long two;</a>
+<a name="245"><span class="lineNum">     245 </span>            :         unsigned long three;</a>
+<a name="246"><span class="lineNum">     246 </span>            :         unsigned long four;</a>
+<a name="247"><span class="lineNum">     247 </span>            : };</a>
+<a name="248"><span class="lineNum">     248 </span>            : </a>
+<a name="249"><span class="lineNum">     249 </span>            : /* Simple structure with padding likely to be covered by compiler. */</a>
+<a name="250"><span class="lineNum">     250 </span>            : struct test_small_hole {</a>
+<a name="251"><span class="lineNum">     251 </span>            :         size_t one;</a>
+<a name="252"><span class="lineNum">     252 </span>            :         char two;</a>
+<a name="253"><span class="lineNum">     253 </span>            :         /* 3 byte padding hole here. */</a>
+<a name="254"><span class="lineNum">     254 </span>            :         int three;</a>
+<a name="255"><span class="lineNum">     255 </span>            :         unsigned long four;</a>
+<a name="256"><span class="lineNum">     256 </span>            : };</a>
+<a name="257"><span class="lineNum">     257 </span>            : </a>
+<a name="258"><span class="lineNum">     258 </span>            : /* Trigger unhandled padding in a structure. */</a>
+<a name="259"><span class="lineNum">     259 </span>            : struct test_big_hole {</a>
+<a name="260"><span class="lineNum">     260 </span>            :         u8 one;</a>
+<a name="261"><span class="lineNum">     261 </span>            :         u8 two;</a>
+<a name="262"><span class="lineNum">     262 </span>            :         u8 three;</a>
+<a name="263"><span class="lineNum">     263 </span>            :         /* 61 byte padding hole here. */</a>
+<a name="264"><span class="lineNum">     264 </span>            :         u8 four __aligned(64);</a>
+<a name="265"><span class="lineNum">     265 </span>            : } __aligned(64);</a>
+<a name="266"><span class="lineNum">     266 </span>            : </a>
+<a name="267"><span class="lineNum">     267 </span>            : struct test_trailing_hole {</a>
+<a name="268"><span class="lineNum">     268 </span>            :         char *one;</a>
+<a name="269"><span class="lineNum">     269 </span>            :         char *two;</a>
+<a name="270"><span class="lineNum">     270 </span>            :         char *three;</a>
+<a name="271"><span class="lineNum">     271 </span>            :         char four;</a>
+<a name="272"><span class="lineNum">     272 </span>            :         /* &quot;sizeof(unsigned long) - 1&quot; byte padding hole here. */</a>
+<a name="273"><span class="lineNum">     273 </span>            : };</a>
+<a name="274"><span class="lineNum">     274 </span>            : </a>
+<a name="275"><span class="lineNum">     275 </span>            : /* Test if STRUCTLEAK is clearing structs with __user fields. */</a>
+<a name="276"><span class="lineNum">     276 </span>            : struct test_user {</a>
+<a name="277"><span class="lineNum">     277 </span>            :         u8 one;</a>
+<a name="278"><span class="lineNum">     278 </span>            :         unsigned long two;</a>
+<a name="279"><span class="lineNum">     279 </span>            :         char __user *three;</a>
+<a name="280"><span class="lineNum">     280 </span>            :         unsigned long four;</a>
+<a name="281"><span class="lineNum">     281 </span>            : };</a>
+<a name="282"><span class="lineNum">     282 </span>            : </a>
+<a name="283"><span class="lineNum">     283 </span>            : #define ALWAYS_PASS     WANT_SUCCESS</a>
+<a name="284"><span class="lineNum">     284 </span>            : #define ALWAYS_FAIL     XFAIL</a>
+<a name="285"><span class="lineNum">     285 </span>            : </a>
+<a name="286"><span class="lineNum">     286 </span>            : #ifdef CONFIG_INIT_STACK_NONE</a>
+<a name="287"><span class="lineNum">     287 </span>            : # define USER_PASS      XFAIL</a>
+<a name="288"><span class="lineNum">     288 </span>            : # define BYREF_PASS     XFAIL</a>
+<a name="289"><span class="lineNum">     289 </span>            : # define STRONG_PASS    XFAIL</a>
+<a name="290"><span class="lineNum">     290 </span>            : #elif defined(CONFIG_GCC_PLUGIN_STRUCTLEAK_USER)</a>
+<a name="291"><span class="lineNum">     291 </span>            : # define USER_PASS      WANT_SUCCESS</a>
+<a name="292"><span class="lineNum">     292 </span>            : # define BYREF_PASS     XFAIL</a>
+<a name="293"><span class="lineNum">     293 </span>            : # define STRONG_PASS    XFAIL</a>
+<a name="294"><span class="lineNum">     294 </span>            : #elif defined(CONFIG_GCC_PLUGIN_STRUCTLEAK_BYREF)</a>
+<a name="295"><span class="lineNum">     295 </span>            : # define USER_PASS      WANT_SUCCESS</a>
+<a name="296"><span class="lineNum">     296 </span>            : # define BYREF_PASS     WANT_SUCCESS</a>
+<a name="297"><span class="lineNum">     297 </span>            : # define STRONG_PASS    XFAIL</a>
+<a name="298"><span class="lineNum">     298 </span>            : #else</a>
+<a name="299"><span class="lineNum">     299 </span>            : # define USER_PASS      WANT_SUCCESS</a>
+<a name="300"><span class="lineNum">     300 </span>            : # define BYREF_PASS     WANT_SUCCESS</a>
+<a name="301"><span class="lineNum">     301 </span>            : # define STRONG_PASS    WANT_SUCCESS</a>
+<a name="302"><span class="lineNum">     302 </span>            : #endif</a>
+<a name="303"><span class="lineNum">     303 </span>            : </a>
+<a name="304"><span class="lineNum">     304 </span>            : #define DEFINE_SCALAR_TEST(name, init, xfail)                   \</a>
+<a name="305"><span class="lineNum">     305 </span>            :                 DEFINE_TEST(name ## _ ## init, name, SCALAR,    \</a>
+<a name="306"><span class="lineNum">     306 </span>            :                             init, xfail)</a>
+<a name="307"><span class="lineNum">     307 </span>            : </a>
+<a name="308"><span class="lineNum">     308 </span>            : #define DEFINE_SCALAR_TESTS(init, xfail)                        \</a>
+<a name="309"><span class="lineNum">     309 </span>            :                 DEFINE_SCALAR_TEST(u8, init, xfail);            \</a>
+<a name="310"><span class="lineNum">     310 </span>            :                 DEFINE_SCALAR_TEST(u16, init, xfail);           \</a>
+<a name="311"><span class="lineNum">     311 </span>            :                 DEFINE_SCALAR_TEST(u32, init, xfail);           \</a>
+<a name="312"><span class="lineNum">     312 </span>            :                 DEFINE_SCALAR_TEST(u64, init, xfail);           \</a>
+<a name="313"><span class="lineNum">     313 </span>            :                 DEFINE_TEST(char_array_ ## init, unsigned char, \</a>
+<a name="314"><span class="lineNum">     314 </span>            :                             STRING, init, xfail)</a>
+<a name="315"><span class="lineNum">     315 </span>            : </a>
+<a name="316"><span class="lineNum">     316 </span>            : #define DEFINE_STRUCT_TEST(name, init, xfail)                   \</a>
+<a name="317"><span class="lineNum">     317 </span>            :                 DEFINE_TEST(name ## _ ## init,                  \</a>
+<a name="318"><span class="lineNum">     318 </span>            :                             struct test_ ## name, STRUCT, init, \</a>
+<a name="319"><span class="lineNum">     319 </span>            :                             xfail)</a>
+<a name="320"><span class="lineNum">     320 </span>            : </a>
+<a name="321"><span class="lineNum">     321 </span>            : #define DEFINE_STRUCT_TESTS(init, xfail)                        \</a>
+<a name="322"><span class="lineNum">     322 </span>            :                 DEFINE_STRUCT_TEST(small_hole, init, xfail);    \</a>
+<a name="323"><span class="lineNum">     323 </span>            :                 DEFINE_STRUCT_TEST(big_hole, init, xfail);      \</a>
+<a name="324"><span class="lineNum">     324 </span>            :                 DEFINE_STRUCT_TEST(trailing_hole, init, xfail); \</a>
+<a name="325"><span class="lineNum">     325 </span>            :                 DEFINE_STRUCT_TEST(packed, init, xfail)</a>
+<a name="326"><span class="lineNum">     326 </span>            : </a>
+<a name="327"><span class="lineNum">     327 </span>            : #define DEFINE_STRUCT_INITIALIZER_TESTS(base, xfail)            \</a>
+<a name="328"><span class="lineNum">     328 </span>            :                 DEFINE_STRUCT_TESTS(base ## _ ## partial,       \</a>
+<a name="329"><span class="lineNum">     329 </span>            :                                     xfail);                     \</a>
+<a name="330"><span class="lineNum">     330 </span>            :                 DEFINE_STRUCT_TESTS(base ## _ ## all, xfail)</a>
+<a name="331"><span class="lineNum">     331 </span>            : </a>
+<a name="332"><span class="lineNum">     332 </span>            : /* These should be fully initialized all the time! */</a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineCov">         28 : DEFINE_SCALAR_TESTS(zero, ALWAYS_PASS);</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineCov">         16 : DEFINE_STRUCT_TESTS(zero, ALWAYS_PASS);</span></a>
+<a name="335"><span class="lineNum">     335 </span>            : /* Struct initializers: padding may be left uninitialized. */</a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineCov">         32 : DEFINE_STRUCT_INITIALIZER_TESTS(static, STRONG_PASS);</span></a>
+<a name="337"><span class="lineNum">     337 </span><span class="lineCov">         32 : DEFINE_STRUCT_INITIALIZER_TESTS(dynamic, STRONG_PASS);</span></a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineCov">         32 : DEFINE_STRUCT_INITIALIZER_TESTS(runtime, STRONG_PASS);</span></a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineCov">         32 : DEFINE_STRUCT_INITIALIZER_TESTS(assigned_static, STRONG_PASS);</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineCov">         32 : DEFINE_STRUCT_INITIALIZER_TESTS(assigned_dynamic, STRONG_PASS);</span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineCov">         16 : DEFINE_STRUCT_TESTS(assigned_copy, ALWAYS_FAIL);</span></a>
+<a name="342"><span class="lineNum">     342 </span>            : /* No initialization without compiler instrumentation. */</a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineCov">         28 : DEFINE_SCALAR_TESTS(none, STRONG_PASS);</span></a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineCov">         16 : DEFINE_STRUCT_TESTS(none, BYREF_PASS);</span></a>
+<a name="345"><span class="lineNum">     345 </span>            : /* Initialization of members with __user attribute. */</a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineCov">          4 : DEFINE_TEST(user, struct test_user, STRUCT, none, USER_PASS);</span></a>
+<a name="347"><span class="lineNum">     347 </span>            : </a>
+<a name="348"><span class="lineNum">     348 </span>            : /*</a>
+<a name="349"><span class="lineNum">     349 </span>            :  * Check two uses through a variable declaration outside either path,</a>
+<a name="350"><span class="lineNum">     350 </span>            :  * which was noticed as a special case in porting earlier stack init</a>
+<a name="351"><span class="lineNum">     351 </span>            :  * compiler logic.</a>
+<a name="352"><span class="lineNum">     352 </span>            :  */</a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineCov">          4 : static int noinline __leaf_switch_none(int path, bool fill)</span></a>
+<a name="354"><span class="lineNum">     354 </span>            : {</a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineCov">          4 :         switch (path) {</span></a>
+<a name="356"><span class="lineNum">     356 </span>            :                 /*</a>
+<a name="357"><span class="lineNum">     357 </span>            :                  * This is intentionally unreachable. To silence the</a>
+<a name="358"><span class="lineNum">     358 </span>            :                  * warning, build with -Wno-switch-unreachable</a>
+<a name="359"><span class="lineNum">     359 </span>            :                  */</a>
+<a name="360"><span class="lineNum">     360 </span>            :                 uint64_t var[10];</a>
+<a name="361"><span class="lineNum">     361 </span>            : </a>
+<a name="362"><span class="lineNum">     362 </span>            :         case 1:</a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineCov">          2 :                 target_start = &amp;var;</span></a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineCov">          2 :                 target_size = sizeof(var);</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineCov">          2 :                 if (fill) {</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineCov">          1 :                         fill_start = &amp;var;</span></a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineCov">          1 :                         fill_size = sizeof(var);</span></a>
+<a name="368"><span class="lineNum">     368 </span>            : </a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineCov">          1 :                         memset(fill_start, forced_mask | 0x55, fill_size);</span></a>
+<a name="370"><span class="lineNum">     370 </span>            :                 }</a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineCov">          2 :                 memcpy(check_buf, target_start, target_size);</span></a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineCov">          2 :                 break;</span></a>
+<a name="373"><span class="lineNum">     373 </span>            :         case 2:</a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineCov">          2 :                 target_start = &amp;var;</span></a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineCov">          2 :                 target_size = sizeof(var);</span></a>
+<a name="376"><span class="lineNum">     376 </span><span class="lineCov">          2 :                 if (fill) {</span></a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineCov">          1 :                         fill_start = &amp;var;</span></a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineCov">          1 :                         fill_size = sizeof(var);</span></a>
+<a name="379"><span class="lineNum">     379 </span>            : </a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineCov">          1 :                         memset(fill_start, forced_mask | 0xaa, fill_size);</span></a>
+<a name="381"><span class="lineNum">     381 </span>            :                 }</a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineCov">          2 :                 memcpy(check_buf, target_start, target_size);</span></a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineCov">          2 :                 break;</span></a>
+<a name="384"><span class="lineNum">     384 </span>            :         default:</a>
+<a name="385"><span class="lineNum">     385 </span>            :                 var[1] = 5;</a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineNoCov">          0 :                 return var[1] &amp; forced_mask;</span></a>
+<a name="387"><span class="lineNum">     387 </span>            :         }</a>
+<a name="388"><span class="lineNum">     388 </span><span class="lineCov">          4 :         return 0;</span></a>
+<a name="389"><span class="lineNum">     389 </span>            : }</a>
+<a name="390"><span class="lineNum">     390 </span>            : </a>
+<a name="391"><span class="lineNum">     391 </span><span class="lineCov">          2 : static noinline int leaf_switch_1_none(unsigned long sp, bool fill,</span></a>
+<a name="392"><span class="lineNum">     392 </span>            :                                               uint64_t *arg)</a>
+<a name="393"><span class="lineNum">     393 </span>            : {</a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineCov">          2 :         return __leaf_switch_none(1, fill);</span></a>
+<a name="395"><span class="lineNum">     395 </span>            : }</a>
+<a name="396"><span class="lineNum">     396 </span>            : </a>
+<a name="397"><span class="lineNum">     397 </span><span class="lineCov">          2 : static noinline int leaf_switch_2_none(unsigned long sp, bool fill,</span></a>
+<a name="398"><span class="lineNum">     398 </span>            :                                               uint64_t *arg)</a>
+<a name="399"><span class="lineNum">     399 </span>            : {</a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineCov">          2 :         return __leaf_switch_none(2, fill);</span></a>
+<a name="401"><span class="lineNum">     401 </span>            : }</a>
+<a name="402"><span class="lineNum">     402 </span>            : </a>
+<a name="403"><span class="lineNum">     403 </span>            : /*</a>
+<a name="404"><span class="lineNum">     404 </span>            :  * These are expected to fail for most configurations because neither</a>
+<a name="405"><span class="lineNum">     405 </span>            :  * GCC nor Clang have a way to perform initialization of variables in</a>
+<a name="406"><span class="lineNum">     406 </span>            :  * non-code areas (i.e. in a switch statement before the first &quot;case&quot;).</a>
+<a name="407"><span class="lineNum">     407 </span>            :  * https://bugs.llvm.org/show_bug.cgi?id=44916</a>
+<a name="408"><span class="lineNum">     408 </span>            :  */</a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineCov">          2 : DEFINE_TEST_DRIVER(switch_1_none, uint64_t, SCALAR, ALWAYS_FAIL);</span></a>
+<a name="410"><span class="lineNum">     410 </span><span class="lineCov">          2 : DEFINE_TEST_DRIVER(switch_2_none, uint64_t, SCALAR, ALWAYS_FAIL);</span></a>
+<a name="411"><span class="lineNum">     411 </span>            : </a>
+<a name="412"><span class="lineNum">     412 </span>            : #define KUNIT_test_scalars(init)                        \</a>
+<a name="413"><span class="lineNum">     413 </span>            :                 KUNIT_CASE(test_u8_ ## init),           \</a>
+<a name="414"><span class="lineNum">     414 </span>            :                 KUNIT_CASE(test_u16_ ## init),          \</a>
+<a name="415"><span class="lineNum">     415 </span>            :                 KUNIT_CASE(test_u32_ ## init),          \</a>
+<a name="416"><span class="lineNum">     416 </span>            :                 KUNIT_CASE(test_u64_ ## init),          \</a>
+<a name="417"><span class="lineNum">     417 </span>            :                 KUNIT_CASE(test_char_array_ ## init)</a>
+<a name="418"><span class="lineNum">     418 </span>            : </a>
+<a name="419"><span class="lineNum">     419 </span>            : #define KUNIT_test_structs(init)                        \</a>
+<a name="420"><span class="lineNum">     420 </span>            :                 KUNIT_CASE(test_small_hole_ ## init),   \</a>
+<a name="421"><span class="lineNum">     421 </span>            :                 KUNIT_CASE(test_big_hole_ ## init),     \</a>
+<a name="422"><span class="lineNum">     422 </span>            :                 KUNIT_CASE(test_trailing_hole_ ## init),\</a>
+<a name="423"><span class="lineNum">     423 </span>            :                 KUNIT_CASE(test_packed_ ## init)        \</a>
+<a name="424"><span class="lineNum">     424 </span>            : </a>
+<a name="425"><span class="lineNum">     425 </span>            : static struct kunit_case stackinit_test_cases[] = {</a>
+<a name="426"><span class="lineNum">     426 </span>            :         /* These are explicitly initialized and should always pass. */</a>
+<a name="427"><span class="lineNum">     427 </span>            :         KUNIT_test_scalars(zero),</a>
+<a name="428"><span class="lineNum">     428 </span>            :         KUNIT_test_structs(zero),</a>
+<a name="429"><span class="lineNum">     429 </span>            :         /* Padding here appears to be accidentally always initialized? */</a>
+<a name="430"><span class="lineNum">     430 </span>            :         KUNIT_test_structs(dynamic_partial),</a>
+<a name="431"><span class="lineNum">     431 </span>            :         KUNIT_test_structs(assigned_dynamic_partial),</a>
+<a name="432"><span class="lineNum">     432 </span>            :         /* Padding initialization depends on compiler behaviors. */</a>
+<a name="433"><span class="lineNum">     433 </span>            :         KUNIT_test_structs(static_partial),</a>
+<a name="434"><span class="lineNum">     434 </span>            :         KUNIT_test_structs(static_all),</a>
+<a name="435"><span class="lineNum">     435 </span>            :         KUNIT_test_structs(dynamic_all),</a>
+<a name="436"><span class="lineNum">     436 </span>            :         KUNIT_test_structs(runtime_partial),</a>
+<a name="437"><span class="lineNum">     437 </span>            :         KUNIT_test_structs(runtime_all),</a>
+<a name="438"><span class="lineNum">     438 </span>            :         KUNIT_test_structs(assigned_static_partial),</a>
+<a name="439"><span class="lineNum">     439 </span>            :         KUNIT_test_structs(assigned_static_all),</a>
+<a name="440"><span class="lineNum">     440 </span>            :         KUNIT_test_structs(assigned_dynamic_all),</a>
+<a name="441"><span class="lineNum">     441 </span>            :         /* Everything fails this since it effectively performs a memcpy(). */</a>
+<a name="442"><span class="lineNum">     442 </span>            :         KUNIT_test_structs(assigned_copy),</a>
+<a name="443"><span class="lineNum">     443 </span>            :         /* STRUCTLEAK_BYREF_ALL should cover everything from here down. */</a>
+<a name="444"><span class="lineNum">     444 </span>            :         KUNIT_test_scalars(none),</a>
+<a name="445"><span class="lineNum">     445 </span>            :         KUNIT_CASE(test_switch_1_none),</a>
+<a name="446"><span class="lineNum">     446 </span>            :         KUNIT_CASE(test_switch_2_none),</a>
+<a name="447"><span class="lineNum">     447 </span>            :         /* STRUCTLEAK_BYREF should cover from here down. */</a>
+<a name="448"><span class="lineNum">     448 </span>            :         KUNIT_test_structs(none),</a>
+<a name="449"><span class="lineNum">     449 </span>            :         /* STRUCTLEAK will only cover this. */</a>
+<a name="450"><span class="lineNum">     450 </span>            :         KUNIT_CASE(test_user),</a>
+<a name="451"><span class="lineNum">     451 </span>            :         {}</a>
+<a name="452"><span class="lineNum">     452 </span>            : };</a>
+<a name="453"><span class="lineNum">     453 </span>            : </a>
+<a name="454"><span class="lineNum">     454 </span>            : static struct kunit_suite stackinit_test_suite = {</a>
+<a name="455"><span class="lineNum">     455 </span>            :         .name = &quot;stackinit&quot;,</a>
+<a name="456"><span class="lineNum">     456 </span>            :         .test_cases = stackinit_test_cases,</a>
+<a name="457"><span class="lineNum">     457 </span>            : };</a>
+<a name="458"><span class="lineNum">     458 </span>            : </a>
+<a name="459"><span class="lineNum">     459 </span>            : kunit_test_suites(&amp;stackinit_test_suite);</a>
+<a name="460"><span class="lineNum">     460 </span>            : </a>
+<a name="461"><span class="lineNum">     461 </span>            : MODULE_LICENSE(&quot;GPL&quot;);</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.14</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
