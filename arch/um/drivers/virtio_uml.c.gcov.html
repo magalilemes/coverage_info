@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -1408,15 +1408,15 @@
 <a name="1346"><span class="lineNum">    1346 </span>            : );</a>
 <a name="1347"><span class="lineNum">    1347 </span>            : </a>
 <a name="1348"><span class="lineNum">    1348 </span>            : </a>
-<a name="1349"><span class="lineNum">    1349 </span><span class="lineCov">          2 : static void vu_unregister_cmdline_devices(void)</span></a>
+<a name="1349"><span class="lineNum">    1349 </span><span class="lineCov">          1 : static void vu_unregister_cmdline_devices(void)</span></a>
 <a name="1350"><span class="lineNum">    1350 </span>            : {</a>
-<a name="1351"><span class="lineNum">    1351 </span><span class="lineCov">          2 :         if (vu_cmdline_parent_registered) {</span></a>
+<a name="1351"><span class="lineNum">    1351 </span><span class="lineCov">          1 :         if (vu_cmdline_parent_registered) {</span></a>
 <a name="1352"><span class="lineNum">    1352 </span><span class="lineNoCov">          0 :                 device_for_each_child(&amp;vu_cmdline_parent, NULL,</span></a>
 <a name="1353"><span class="lineNum">    1353 </span>            :                                       vu_unregister_cmdline_device);</a>
 <a name="1354"><span class="lineNum">    1354 </span><span class="lineNoCov">          0 :                 device_unregister(&amp;vu_cmdline_parent);</span></a>
 <a name="1355"><span class="lineNum">    1355 </span><span class="lineNoCov">          0 :                 vu_cmdline_parent_registered = false;</span></a>
 <a name="1356"><span class="lineNum">    1356 </span>            :         }</a>
-<a name="1357"><span class="lineNum">    1357 </span><span class="lineCov">          2 : }</span></a>
+<a name="1357"><span class="lineNum">    1357 </span><span class="lineCov">          1 : }</span></a>
 <a name="1358"><span class="lineNum">    1358 </span>            : </a>
 <a name="1359"><span class="lineNum">    1359 </span>            : /* Platform driver */</a>
 <a name="1360"><span class="lineNum">    1360 </span>            : </a>
@@ -1483,16 +1483,16 @@
 <a name="1421"><span class="lineNum">    1421 </span>            :         .resume = virtio_uml_resume,</a>
 <a name="1422"><span class="lineNum">    1422 </span>            : };</a>
 <a name="1423"><span class="lineNum">    1423 </span>            : </a>
-<a name="1424"><span class="lineNum">    1424 </span><span class="lineCov">          2 : static int __init virtio_uml_init(void)</span></a>
+<a name="1424"><span class="lineNum">    1424 </span><span class="lineCov">          1 : static int __init virtio_uml_init(void)</span></a>
 <a name="1425"><span class="lineNum">    1425 </span>            : {</a>
-<a name="1426"><span class="lineNum">    1426 </span><span class="lineCov">          2 :         return platform_driver_register(&amp;virtio_uml_driver);</span></a>
+<a name="1426"><span class="lineNum">    1426 </span><span class="lineCov">          1 :         return platform_driver_register(&amp;virtio_uml_driver);</span></a>
 <a name="1427"><span class="lineNum">    1427 </span>            : }</a>
 <a name="1428"><span class="lineNum">    1428 </span>            : </a>
-<a name="1429"><span class="lineNum">    1429 </span><span class="lineCov">          2 : static void __exit virtio_uml_exit(void)</span></a>
+<a name="1429"><span class="lineNum">    1429 </span><span class="lineCov">          1 : static void __exit virtio_uml_exit(void)</span></a>
 <a name="1430"><span class="lineNum">    1430 </span>            : {</a>
-<a name="1431"><span class="lineNum">    1431 </span><span class="lineCov">          2 :         platform_driver_unregister(&amp;virtio_uml_driver);</span></a>
-<a name="1432"><span class="lineNum">    1432 </span><span class="lineCov">          2 :         vu_unregister_cmdline_devices();</span></a>
-<a name="1433"><span class="lineNum">    1433 </span><span class="lineCov">          2 : }</span></a>
+<a name="1431"><span class="lineNum">    1431 </span><span class="lineCov">          1 :         platform_driver_unregister(&amp;virtio_uml_driver);</span></a>
+<a name="1432"><span class="lineNum">    1432 </span><span class="lineCov">          1 :         vu_unregister_cmdline_devices();</span></a>
+<a name="1433"><span class="lineNum">    1433 </span><span class="lineCov">          1 : }</span></a>
 <a name="1434"><span class="lineNum">    1434 </span>            : </a>
 <a name="1435"><span class="lineNum">    1435 </span>            : module_init(virtio_uml_init);</a>
 <a name="1436"><span class="lineNum">    1436 </span>            : module_exit(virtio_uml_exit);</a>

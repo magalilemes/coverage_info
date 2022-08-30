@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">19</td>
@@ -416,7 +416,7 @@
 <a name="354"><span class="lineNum">     354 </span>            :  */</a>
 <a name="355"><span class="lineNum">     355 </span>            : static struct prb_desc *to_desc(struct prb_desc_ring *desc_ring, u64 n)</a>
 <a name="356"><span class="lineNum">     356 </span>            : {</a>
-<a name="357"><span class="lineNum">     357 </span><span class="lineCov">       7108 :         return &amp;desc_ring-&gt;descs[DESC_INDEX(desc_ring, n)];</span></a>
+<a name="357"><span class="lineNum">     357 </span><span class="lineCov">       4074 :         return &amp;desc_ring-&gt;descs[DESC_INDEX(desc_ring, n)];</span></a>
 <a name="358"><span class="lineNum">     358 </span>            : }</a>
 <a name="359"><span class="lineNum">     359 </span>            : </a>
 <a name="360"><span class="lineNum">     360 </span>            : /*</a>
@@ -425,13 +425,13 @@
 <a name="363"><span class="lineNum">     363 </span>            :  */</a>
 <a name="364"><span class="lineNum">     364 </span>            : static struct printk_info *to_info(struct prb_desc_ring *desc_ring, u64 n)</a>
 <a name="365"><span class="lineNum">     365 </span>            : {</a>
-<a name="366"><span class="lineNum">     366 </span><span class="lineCov">       5668 :         return &amp;desc_ring-&gt;infos[DESC_INDEX(desc_ring, n)];</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineCov">       3234 :         return &amp;desc_ring-&gt;infos[DESC_INDEX(desc_ring, n)];</span></a>
 <a name="367"><span class="lineNum">     367 </span>            : }</a>
 <a name="368"><span class="lineNum">     368 </span>            : </a>
 <a name="369"><span class="lineNum">     369 </span>            : static struct prb_data_block *to_block(struct prb_data_ring *data_ring,</a>
 <a name="370"><span class="lineNum">     370 </span>            :                                        unsigned long begin_lpos)</a>
 <a name="371"><span class="lineNum">     371 </span>            : {</a>
-<a name="372"><span class="lineNum">     372 </span><span class="lineCov">       1226 :         return (void *)&amp;data_ring-&gt;data[DATA_INDEX(data_ring, begin_lpos)];</span></a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineCov">        693 :         return (void *)&amp;data_ring-&gt;data[DATA_INDEX(data_ring, begin_lpos)];</span></a>
 <a name="373"><span class="lineNum">     373 </span>            : }</a>
 <a name="374"><span class="lineNum">     374 </span>            : </a>
 <a name="375"><span class="lineNum">     375 </span>            : /*</a>
@@ -440,10 +440,10 @@
 <a name="378"><span class="lineNum">     378 </span>            :  */</a>
 <a name="379"><span class="lineNum">     379 </span>            : static unsigned int to_blk_size(unsigned int size)</a>
 <a name="380"><span class="lineNum">     380 </span>            : {</a>
-<a name="381"><span class="lineNum">     381 </span><span class="lineCov">       1012 :         struct prb_data_block *db = NULL;</span></a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineCov">        586 :         struct prb_data_block *db = NULL;</span></a>
 <a name="382"><span class="lineNum">     382 </span>            : </a>
-<a name="383"><span class="lineNum">     383 </span><span class="lineCov">       1012 :         size += sizeof(*db);</span></a>
-<a name="384"><span class="lineNum">     384 </span><span class="lineCov">       1012 :         size = ALIGN(size, sizeof(db-&gt;id));</span></a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineCov">        586 :         size += sizeof(*db);</span></a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineCov">        586 :         size = ALIGN(size, sizeof(db-&gt;id));</span></a>
 <a name="385"><span class="lineNum">     385 </span>            :         return size;</a>
 <a name="386"><span class="lineNum">     386 </span>            : }</a>
 <a name="387"><span class="lineNum">     387 </span>            : </a>
@@ -455,9 +455,9 @@
 <a name="393"><span class="lineNum">     393 </span>            :  */</a>
 <a name="394"><span class="lineNum">     394 </span>            : static bool data_check_size(struct prb_data_ring *data_ring, unsigned int size)</a>
 <a name="395"><span class="lineNum">     395 </span>            : {</a>
-<a name="396"><span class="lineNum">     396 </span><span class="lineCov">        506 :         struct prb_data_block *db = NULL;</span></a>
+<a name="396"><span class="lineNum">     396 </span><span class="lineCov">        293 :         struct prb_data_block *db = NULL;</span></a>
 <a name="397"><span class="lineNum">     397 </span>            : </a>
-<a name="398"><span class="lineNum">     398 </span><span class="lineCov">        506 :         if (size == 0)</span></a>
+<a name="398"><span class="lineNum">     398 </span><span class="lineCov">        293 :         if (size == 0)</span></a>
 <a name="399"><span class="lineNum">     399 </span>            :                 return true;</a>
 <a name="400"><span class="lineNum">     400 </span>            : </a>
 <a name="401"><span class="lineNum">     401 </span>            :         /*</a>
@@ -465,8 +465,8 @@
 <a name="403"><span class="lineNum">     403 </span>            :          * array. The largest possible data block must still leave room for</a>
 <a name="404"><span class="lineNum">     404 </span>            :          * at least the ID of the next block.</a>
 <a name="405"><span class="lineNum">     405 </span>            :          */</a>
-<a name="406"><span class="lineNum">     406 </span><span class="lineCov">        506 :         size = to_blk_size(size);</span></a>
-<a name="407"><span class="lineNum">     407 </span><span class="lineCov">        506 :         if (size &gt; DATA_SIZE(data_ring) - sizeof(db-&gt;id))</span></a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineCov">        293 :         size = to_blk_size(size);</span></a>
+<a name="407"><span class="lineNum">     407 </span><span class="lineCov">        293 :         if (size &gt; DATA_SIZE(data_ring) - sizeof(db-&gt;id))</span></a>
 <a name="408"><span class="lineNum">     408 </span>            :                 return false;</a>
 <a name="409"><span class="lineNum">     409 </span>            : </a>
 <a name="410"><span class="lineNum">     410 </span>            :         return true;</a>
@@ -476,10 +476,10 @@
 <a name="414"><span class="lineNum">     414 </span>            : static enum desc_state get_desc_state(unsigned long id,</a>
 <a name="415"><span class="lineNum">     415 </span>            :                                       unsigned long state_val)</a>
 <a name="416"><span class="lineNum">     416 </span>            : {</a>
-<a name="417"><span class="lineNum">     417 </span><span class="lineCov">       6424 :         if (id != DESC_ID(state_val))</span></a>
+<a name="417"><span class="lineNum">     417 </span><span class="lineCov">       3694 :         if (id != DESC_ID(state_val))</span></a>
 <a name="418"><span class="lineNum">     418 </span>            :                 return desc_miss;</a>
 <a name="419"><span class="lineNum">     419 </span>            : </a>
-<a name="420"><span class="lineNum">     420 </span><span class="lineCov">       5936 :         return DESC_STATE(state_val);</span></a>
+<a name="420"><span class="lineNum">     420 </span><span class="lineCov">       3452 :         return DESC_STATE(state_val);</span></a>
 <a name="421"><span class="lineNum">     421 </span>            : }</a>
 <a name="422"><span class="lineNum">     422 </span>            : </a>
 <a name="423"><span class="lineNum">     423 </span>            : /*</a>
@@ -491,20 +491,20 @@
 <a name="429"><span class="lineNum">     429 </span>            :  * non-state_var data, they are only valid if the descriptor is in a</a>
 <a name="430"><span class="lineNum">     430 </span>            :  * consistent state.</a>
 <a name="431"><span class="lineNum">     431 </span>            :  */</a>
-<a name="432"><span class="lineNum">     432 </span><span class="lineCov">       3456 : static enum desc_state desc_read(struct prb_desc_ring *desc_ring,</span></a>
+<a name="432"><span class="lineNum">     432 </span><span class="lineCov">       1968 : static enum desc_state desc_read(struct prb_desc_ring *desc_ring,</span></a>
 <a name="433"><span class="lineNum">     433 </span>            :                                  unsigned long id, struct prb_desc *desc_out,</a>
 <a name="434"><span class="lineNum">     434 </span>            :                                  u64 *seq_out, u32 *caller_id_out)</a>
 <a name="435"><span class="lineNum">     435 </span>            : {</a>
-<a name="436"><span class="lineNum">     436 </span><span class="lineCov">       6912 :         struct printk_info *info = to_info(desc_ring, id);</span></a>
-<a name="437"><span class="lineNum">     437 </span><span class="lineCov">       6912 :         struct prb_desc *desc = to_desc(desc_ring, id);</span></a>
-<a name="438"><span class="lineNum">     438 </span><span class="lineCov">       3456 :         atomic_long_t *state_var = &amp;desc-&gt;state_var;</span></a>
+<a name="436"><span class="lineNum">     436 </span><span class="lineCov">       3936 :         struct printk_info *info = to_info(desc_ring, id);</span></a>
+<a name="437"><span class="lineNum">     437 </span><span class="lineCov">       3936 :         struct prb_desc *desc = to_desc(desc_ring, id);</span></a>
+<a name="438"><span class="lineNum">     438 </span><span class="lineCov">       1968 :         atomic_long_t *state_var = &amp;desc-&gt;state_var;</span></a>
 <a name="439"><span class="lineNum">     439 </span>            :         enum desc_state d_state;</a>
 <a name="440"><span class="lineNum">     440 </span>            :         unsigned long state_val;</a>
 <a name="441"><span class="lineNum">     441 </span>            : </a>
 <a name="442"><span class="lineNum">     442 </span>            :         /* Check the descriptor state. */</a>
-<a name="443"><span class="lineNum">     443 </span><span class="lineCov">       3456 :         state_val = atomic_long_read(state_var); /* LMM(desc_read:A) */</span></a>
-<a name="444"><span class="lineNum">     444 </span><span class="lineCov">       3456 :         d_state = get_desc_state(id, state_val);</span></a>
-<a name="445"><span class="lineNum">     445 </span><span class="lineCov">       3456 :         if (d_state == desc_miss || d_state == desc_reserved) {</span></a>
+<a name="443"><span class="lineNum">     443 </span><span class="lineCov">       1968 :         state_val = atomic_long_read(state_var); /* LMM(desc_read:A) */</span></a>
+<a name="444"><span class="lineNum">     444 </span><span class="lineCov">       1968 :         d_state = get_desc_state(id, state_val);</span></a>
+<a name="445"><span class="lineNum">     445 </span><span class="lineCov">       1968 :         if (d_state == desc_miss || d_state == desc_reserved) {</span></a>
 <a name="446"><span class="lineNum">     446 </span>            :                 /*</a>
 <a name="447"><span class="lineNum">     447 </span>            :                  * The descriptor is in an inconsistent state. Set at least</a>
 <a name="448"><span class="lineNum">     448 </span>            :                  * @state_var so that the caller can see the details of</a>
@@ -529,21 +529,21 @@
 <a name="467"><span class="lineNum">     467 </span>            :          *    matching</a>
 <a name="468"><span class="lineNum">     468 </span>            :          * RMB from desc_read:A to desc_read:C</a>
 <a name="469"><span class="lineNum">     469 </span>            :          */</a>
-<a name="470"><span class="lineNum">     470 </span><span class="lineCov">       2968 :         smp_rmb(); /* LMM(desc_read:B) */</span></a>
+<a name="470"><span class="lineNum">     470 </span><span class="lineCov">       1726 :         smp_rmb(); /* LMM(desc_read:B) */</span></a>
 <a name="471"><span class="lineNum">     471 </span>            : </a>
 <a name="472"><span class="lineNum">     472 </span>            :         /*</a>
 <a name="473"><span class="lineNum">     473 </span>            :          * Copy the descriptor data. The data is not valid until the</a>
 <a name="474"><span class="lineNum">     474 </span>            :          * state has been re-checked. A memcpy() for all of @desc</a>
 <a name="475"><span class="lineNum">     475 </span>            :          * cannot be used because of the atomic_t @state_var field.</a>
 <a name="476"><span class="lineNum">     476 </span>            :          */</a>
-<a name="477"><span class="lineNum">     477 </span><span class="lineCov">       2968 :         if (desc_out) {</span></a>
-<a name="478"><span class="lineNum">     478 </span><span class="lineCov">       2968 :                 memcpy(&amp;desc_out-&gt;text_blk_lpos, &amp;desc-&gt;text_blk_lpos,</span></a>
+<a name="477"><span class="lineNum">     477 </span><span class="lineCov">       1726 :         if (desc_out) {</span></a>
+<a name="478"><span class="lineNum">     478 </span><span class="lineCov">       1726 :                 memcpy(&amp;desc_out-&gt;text_blk_lpos, &amp;desc-&gt;text_blk_lpos,</span></a>
 <a name="479"><span class="lineNum">     479 </span>            :                        sizeof(desc_out-&gt;text_blk_lpos)); /* LMM(desc_read:C) */</a>
 <a name="480"><span class="lineNum">     480 </span>            :         }</a>
-<a name="481"><span class="lineNum">     481 </span><span class="lineCov">       2968 :         if (seq_out)</span></a>
-<a name="482"><span class="lineNum">     482 </span><span class="lineCov">       2924 :                 *seq_out = info-&gt;seq; /* also part of desc_read:C */</span></a>
-<a name="483"><span class="lineNum">     483 </span><span class="lineCov">       2968 :         if (caller_id_out)</span></a>
-<a name="484"><span class="lineNum">     484 </span><span class="lineCov">         44 :                 *caller_id_out = info-&gt;caller_id; /* also part of desc_read:C */</span></a>
+<a name="481"><span class="lineNum">     481 </span><span class="lineCov">       1726 :         if (seq_out)</span></a>
+<a name="482"><span class="lineNum">     482 </span><span class="lineCov">       1704 :                 *seq_out = info-&gt;seq; /* also part of desc_read:C */</span></a>
+<a name="483"><span class="lineNum">     483 </span><span class="lineCov">       1726 :         if (caller_id_out)</span></a>
+<a name="484"><span class="lineNum">     484 </span><span class="lineCov">         22 :                 *caller_id_out = info-&gt;caller_id; /* also part of desc_read:C */</span></a>
 <a name="485"><span class="lineNum">     485 </span>            : </a>
 <a name="486"><span class="lineNum">     486 </span>            :         /*</a>
 <a name="487"><span class="lineNum">     487 </span>            :          * 1. Guarantee the descriptor content is loaded before re-checking</a>
@@ -583,18 +583,18 @@
 <a name="521"><span class="lineNum">     521 </span>            :          *          full memory barrier) must have previously seen</a>
 <a name="522"><span class="lineNum">     522 </span>            :          *          desc_make_reusable:A.</a>
 <a name="523"><span class="lineNum">     523 </span>            :          */</a>
-<a name="524"><span class="lineNum">     524 </span><span class="lineCov">       2968 :         smp_rmb(); /* LMM(desc_read:D) */</span></a>
+<a name="524"><span class="lineNum">     524 </span><span class="lineCov">       1726 :         smp_rmb(); /* LMM(desc_read:D) */</span></a>
 <a name="525"><span class="lineNum">     525 </span>            : </a>
 <a name="526"><span class="lineNum">     526 </span>            :         /*</a>
 <a name="527"><span class="lineNum">     527 </span>            :          * The data has been copied. Return the current descriptor state,</a>
 <a name="528"><span class="lineNum">     528 </span>            :          * which may have changed since the load above.</a>
 <a name="529"><span class="lineNum">     529 </span>            :          */</a>
-<a name="530"><span class="lineNum">     530 </span><span class="lineCov">       2968 :         state_val = atomic_long_read(state_var); /* LMM(desc_read:E) */</span></a>
+<a name="530"><span class="lineNum">     530 </span><span class="lineCov">       1726 :         state_val = atomic_long_read(state_var); /* LMM(desc_read:E) */</span></a>
 <a name="531"><span class="lineNum">     531 </span>            :         d_state = get_desc_state(id, state_val);</a>
 <a name="532"><span class="lineNum">     532 </span>            : out:</a>
-<a name="533"><span class="lineNum">     533 </span><span class="lineCov">       3456 :         if (desc_out)</span></a>
-<a name="534"><span class="lineNum">     534 </span><span class="lineCov">       3456 :                 atomic_long_set(&amp;desc_out-&gt;state_var, state_val);</span></a>
-<a name="535"><span class="lineNum">     535 </span><span class="lineCov">       3456 :         return d_state;</span></a>
+<a name="533"><span class="lineNum">     533 </span><span class="lineCov">       1968 :         if (desc_out)</span></a>
+<a name="534"><span class="lineNum">     534 </span><span class="lineCov">       1968 :                 atomic_long_set(&amp;desc_out-&gt;state_var, state_val);</span></a>
+<a name="535"><span class="lineNum">     535 </span><span class="lineCov">       1968 :         return d_state;</span></a>
 <a name="536"><span class="lineNum">     536 </span>            : }</a>
 <a name="537"><span class="lineNum">     537 </span>            : </a>
 <a name="538"><span class="lineNum">     538 </span>            : /*</a>
@@ -691,15 +691,15 @@
 <a name="629"><span class="lineNum">     629 </span>            :  * descriptors into the reusable state if the tail is pushed beyond</a>
 <a name="630"><span class="lineNum">     630 </span>            :  * their associated data block.</a>
 <a name="631"><span class="lineNum">     631 </span>            :  */</a>
-<a name="632"><span class="lineNum">     632 </span><span class="lineCov">        496 : static bool data_push_tail(struct printk_ringbuffer *rb, unsigned long lpos)</span></a>
+<a name="632"><span class="lineNum">     632 </span><span class="lineCov">        288 : static bool data_push_tail(struct printk_ringbuffer *rb, unsigned long lpos)</span></a>
 <a name="633"><span class="lineNum">     633 </span>            : {</a>
-<a name="634"><span class="lineNum">     634 </span><span class="lineCov">        496 :         struct prb_data_ring *data_ring = &amp;rb-&gt;text_data_ring;</span></a>
+<a name="634"><span class="lineNum">     634 </span><span class="lineCov">        288 :         struct prb_data_ring *data_ring = &amp;rb-&gt;text_data_ring;</span></a>
 <a name="635"><span class="lineNum">     635 </span>            :         unsigned long tail_lpos_new;</a>
 <a name="636"><span class="lineNum">     636 </span>            :         unsigned long tail_lpos;</a>
 <a name="637"><span class="lineNum">     637 </span>            :         unsigned long next_lpos;</a>
 <a name="638"><span class="lineNum">     638 </span>            : </a>
 <a name="639"><span class="lineNum">     639 </span>            :         /* If @lpos is from a data-less block, there is nothing to do. */</a>
-<a name="640"><span class="lineNum">     640 </span><span class="lineCov">        496 :         if (LPOS_DATALESS(lpos))</span></a>
+<a name="640"><span class="lineNum">     640 </span><span class="lineCov">        288 :         if (LPOS_DATALESS(lpos))</span></a>
 <a name="641"><span class="lineNum">     641 </span>            :                 return true;</a>
 <a name="642"><span class="lineNum">     642 </span>            : </a>
 <a name="643"><span class="lineNum">     643 </span>            :         /*</a>
@@ -720,7 +720,7 @@
 <a name="658"><span class="lineNum">     658 </span>            :          *    thus</a>
 <a name="659"><span class="lineNum">     659 </span>            :          * READFROM from desc_make_reusable:A to this CPU</a>
 <a name="660"><span class="lineNum">     660 </span>            :          */</a>
-<a name="661"><span class="lineNum">     661 </span><span class="lineCov">        992 :         tail_lpos = atomic_long_read(&amp;data_ring-&gt;tail_lpos); /* LMM(data_push_tail:A) */</span></a>
+<a name="661"><span class="lineNum">     661 </span><span class="lineCov">        576 :         tail_lpos = atomic_long_read(&amp;data_ring-&gt;tail_lpos); /* LMM(data_push_tail:A) */</span></a>
 <a name="662"><span class="lineNum">     662 </span>            : </a>
 <a name="663"><span class="lineNum">     663 </span>            :         /*</a>
 <a name="664"><span class="lineNum">     664 </span>            :          * Loop until the tail lpos is at or beyond @lpos. This condition</a>
@@ -729,7 +729,7 @@
 <a name="667"><span class="lineNum">     667 </span>            :          * sees the new tail lpos, any descriptor states that transitioned to</a>
 <a name="668"><span class="lineNum">     668 </span>            :          * the reusable state must already be visible.</a>
 <a name="669"><span class="lineNum">     669 </span>            :          */</a>
-<a name="670"><span class="lineNum">     670 </span><span class="lineCov">        992 :         while ((lpos - tail_lpos) - 1 &lt; DATA_SIZE(data_ring)) {</span></a>
+<a name="670"><span class="lineNum">     670 </span><span class="lineCov">        576 :         while ((lpos - tail_lpos) - 1 &lt; DATA_SIZE(data_ring)) {</span></a>
 <a name="671"><span class="lineNum">     671 </span>            :                 /*</a>
 <a name="672"><span class="lineNum">     672 </span>            :                  * Make all descriptors reusable that are associated with</a>
 <a name="673"><span class="lineNum">     673 </span>            :                  * data blocks before @lpos.</a>
@@ -934,20 +934,20 @@
 <a name="872"><span class="lineNum">     872 </span>            : }</a>
 <a name="873"><span class="lineNum">     873 </span>            : </a>
 <a name="874"><span class="lineNum">     874 </span>            : /* Reserve a new descriptor, invalidating the oldest if necessary. */</a>
-<a name="875"><span class="lineNum">     875 </span><span class="lineCov">        468 : static bool desc_reserve(struct printk_ringbuffer *rb, unsigned long *id_out)</span></a>
+<a name="875"><span class="lineNum">     875 </span><span class="lineCov">        274 : static bool desc_reserve(struct printk_ringbuffer *rb, unsigned long *id_out)</span></a>
 <a name="876"><span class="lineNum">     876 </span>            : {</a>
-<a name="877"><span class="lineNum">     877 </span><span class="lineCov">        468 :         struct prb_desc_ring *desc_ring = &amp;rb-&gt;desc_ring;</span></a>
+<a name="877"><span class="lineNum">     877 </span><span class="lineCov">        274 :         struct prb_desc_ring *desc_ring = &amp;rb-&gt;desc_ring;</span></a>
 <a name="878"><span class="lineNum">     878 </span>            :         unsigned long prev_state_val;</a>
 <a name="879"><span class="lineNum">     879 </span>            :         unsigned long id_prev_wrap;</a>
 <a name="880"><span class="lineNum">     880 </span>            :         struct prb_desc *desc;</a>
 <a name="881"><span class="lineNum">     881 </span>            :         unsigned long head_id;</a>
 <a name="882"><span class="lineNum">     882 </span>            :         unsigned long id;</a>
 <a name="883"><span class="lineNum">     883 </span>            : </a>
-<a name="884"><span class="lineNum">     884 </span><span class="lineCov">        936 :         head_id = atomic_long_read(&amp;desc_ring-&gt;head_id); /* LMM(desc_reserve:A) */</span></a>
+<a name="884"><span class="lineNum">     884 </span><span class="lineCov">        548 :         head_id = atomic_long_read(&amp;desc_ring-&gt;head_id); /* LMM(desc_reserve:A) */</span></a>
 <a name="885"><span class="lineNum">     885 </span>            : </a>
 <a name="886"><span class="lineNum">     886 </span>            :         do {</a>
-<a name="887"><span class="lineNum">     887 </span><span class="lineCov">        468 :                 id = DESC_ID(head_id + 1);</span></a>
-<a name="888"><span class="lineNum">     888 </span><span class="lineCov">        468 :                 id_prev_wrap = DESC_ID_PREV_WRAP(desc_ring, id);</span></a>
+<a name="887"><span class="lineNum">     887 </span><span class="lineCov">        274 :                 id = DESC_ID(head_id + 1);</span></a>
+<a name="888"><span class="lineNum">     888 </span><span class="lineCov">        274 :                 id_prev_wrap = DESC_ID_PREV_WRAP(desc_ring, id);</span></a>
 <a name="889"><span class="lineNum">     889 </span>            : </a>
 <a name="890"><span class="lineNum">     890 </span>            :                 /*</a>
 <a name="891"><span class="lineNum">     891 </span>            :                  * Guarantee the head ID is read before reading the tail ID.</a>
@@ -971,9 +971,9 @@
 <a name="909"><span class="lineNum">     909 </span>            :                  *       the full memory barrier) must have previously seen</a>
 <a name="910"><span class="lineNum">     910 </span>            :                  *       desc_push_tail:B.</a>
 <a name="911"><span class="lineNum">     911 </span>            :                  */</a>
-<a name="912"><span class="lineNum">     912 </span><span class="lineCov">        468 :                 smp_rmb(); /* LMM(desc_reserve:B) */</span></a>
+<a name="912"><span class="lineNum">     912 </span><span class="lineCov">        274 :                 smp_rmb(); /* LMM(desc_reserve:B) */</span></a>
 <a name="913"><span class="lineNum">     913 </span>            : </a>
-<a name="914"><span class="lineNum">     914 </span><span class="lineCov">        936 :                 if (id_prev_wrap == atomic_long_read(&amp;desc_ring-&gt;tail_id</span></a>
+<a name="914"><span class="lineNum">     914 </span><span class="lineCov">        548 :                 if (id_prev_wrap == atomic_long_read(&amp;desc_ring-&gt;tail_id</span></a>
 <a name="915"><span class="lineNum">     915 </span>            :                                                     )) { /* LMM(desc_reserve:C) */</a>
 <a name="916"><span class="lineNum">     916 </span>            :                         /*</a>
 <a name="917"><span class="lineNum">     917 </span>            :                          * Make space for the new descriptor by</a>
@@ -1024,17 +1024,17 @@
 <a name="962"><span class="lineNum">     962 </span>            :                  *    finalize the previous descriptor. This pairs with</a>
 <a name="963"><span class="lineNum">     963 </span>            :                  *    _prb_commit:B.</a>
 <a name="964"><span class="lineNum">     964 </span>            :                  */</a>
-<a name="965"><span class="lineNum">     965 </span><span class="lineCov">        936 :         } while (!atomic_long_try_cmpxchg(&amp;desc_ring-&gt;head_id, &amp;head_id,</span></a>
-<a name="966"><span class="lineNum">     966 </span><span class="lineCov">        468 :                                           id)); /* LMM(desc_reserve:D) */</span></a>
+<a name="965"><span class="lineNum">     965 </span><span class="lineCov">        548 :         } while (!atomic_long_try_cmpxchg(&amp;desc_ring-&gt;head_id, &amp;head_id,</span></a>
+<a name="966"><span class="lineNum">     966 </span><span class="lineCov">        274 :                                           id)); /* LMM(desc_reserve:D) */</span></a>
 <a name="967"><span class="lineNum">     967 </span>            : </a>
-<a name="968"><span class="lineNum">     968 </span><span class="lineCov">        936 :         desc = to_desc(desc_ring, id);</span></a>
+<a name="968"><span class="lineNum">     968 </span><span class="lineCov">        548 :         desc = to_desc(desc_ring, id);</span></a>
 <a name="969"><span class="lineNum">     969 </span>            : </a>
 <a name="970"><span class="lineNum">     970 </span>            :         /*</a>
 <a name="971"><span class="lineNum">     971 </span>            :          * If the descriptor has been recycled, verify the old state val.</a>
 <a name="972"><span class="lineNum">     972 </span>            :          * See &quot;ABA Issues&quot; about why this verification is performed.</a>
 <a name="973"><span class="lineNum">     973 </span>            :          */</a>
-<a name="974"><span class="lineNum">     974 </span><span class="lineCov">        936 :         prev_state_val = atomic_long_read(&amp;desc-&gt;state_var); /* LMM(desc_reserve:E) */</span></a>
-<a name="975"><span class="lineNum">     975 </span><span class="lineCov">        468 :         if (prev_state_val &amp;&amp;</span></a>
+<a name="974"><span class="lineNum">     974 </span><span class="lineCov">        548 :         prev_state_val = atomic_long_read(&amp;desc-&gt;state_var); /* LMM(desc_reserve:E) */</span></a>
+<a name="975"><span class="lineNum">     975 </span><span class="lineCov">        274 :         if (prev_state_val &amp;&amp;</span></a>
 <a name="976"><span class="lineNum">     976 </span><span class="lineNoCov">          0 :             get_desc_state(id_prev_wrap, prev_state_val) != desc_reusable) {</span></a>
 <a name="977"><span class="lineNum">     977 </span><span class="lineNoCov">          0 :                 WARN_ON_ONCE(1);</span></a>
 <a name="978"><span class="lineNum">     978 </span>            :                 return false;</a>
@@ -1048,7 +1048,7 @@
 <a name="986"><span class="lineNum">     986 </span>            :          * any other changes. A write memory barrier is sufficient for this.</a>
 <a name="987"><span class="lineNum">     987 </span>            :          * This pairs with desc_read:D.</a>
 <a name="988"><span class="lineNum">     988 </span>            :          */</a>
-<a name="989"><span class="lineNum">     989 </span><span class="lineCov">        936 :         if (!atomic_long_try_cmpxchg(&amp;desc-&gt;state_var, &amp;prev_state_val,</span></a>
+<a name="989"><span class="lineNum">     989 </span><span class="lineCov">        548 :         if (!atomic_long_try_cmpxchg(&amp;desc-&gt;state_var, &amp;prev_state_val,</span></a>
 <a name="990"><span class="lineNum">     990 </span>            :                         DESC_SV(id, desc_reserved))) { /* LMM(desc_reserve:F) */</a>
 <a name="991"><span class="lineNum">     991 </span><span class="lineNoCov">          0 :                 WARN_ON_ONCE(1);</span></a>
 <a name="992"><span class="lineNum">     992 </span>            :                 return false;</a>
@@ -1056,8 +1056,8 @@
 <a name="994"><span class="lineNum">     994 </span>            : </a>
 <a name="995"><span class="lineNum">     995 </span>            :         /* Now data in @desc can be modified: LMM(desc_reserve:G) */</a>
 <a name="996"><span class="lineNum">     996 </span>            : </a>
-<a name="997"><span class="lineNum">     997 </span><span class="lineCov">        468 :         *id_out = id;</span></a>
-<a name="998"><span class="lineNum">     998 </span><span class="lineCov">        468 :         return true;</span></a>
+<a name="997"><span class="lineNum">     997 </span><span class="lineCov">        274 :         *id_out = id;</span></a>
+<a name="998"><span class="lineNum">     998 </span><span class="lineCov">        274 :         return true;</span></a>
 <a name="999"><span class="lineNum">     999 </span>            : }</a>
 <a name="1000"><span class="lineNum">    1000 </span>            : </a>
 <a name="1001"><span class="lineNum">    1001 </span>            : /* Determine the end of a data block. */</a>
@@ -1067,11 +1067,11 @@
 <a name="1005"><span class="lineNum">    1005 </span>            :         unsigned long begin_lpos;</a>
 <a name="1006"><span class="lineNum">    1006 </span>            :         unsigned long next_lpos;</a>
 <a name="1007"><span class="lineNum">    1007 </span>            : </a>
-<a name="1008"><span class="lineNum">    1008 </span><span class="lineCov">        506 :         begin_lpos = lpos;</span></a>
-<a name="1009"><span class="lineNum">    1009 </span><span class="lineCov">        506 :         next_lpos = lpos + size;</span></a>
+<a name="1008"><span class="lineNum">    1008 </span><span class="lineCov">        293 :         begin_lpos = lpos;</span></a>
+<a name="1009"><span class="lineNum">    1009 </span><span class="lineCov">        293 :         next_lpos = lpos + size;</span></a>
 <a name="1010"><span class="lineNum">    1010 </span>            : </a>
 <a name="1011"><span class="lineNum">    1011 </span>            :         /* First check if the data block does not wrap. */</a>
-<a name="1012"><span class="lineNum">    1012 </span><span class="lineCov">        506 :         if (DATA_WRAPS(data_ring, begin_lpos) == DATA_WRAPS(data_ring, next_lpos))</span></a>
+<a name="1012"><span class="lineNum">    1012 </span><span class="lineCov">        293 :         if (DATA_WRAPS(data_ring, begin_lpos) == DATA_WRAPS(data_ring, next_lpos))</span></a>
 <a name="1013"><span class="lineNum">    1013 </span>            :                 return next_lpos;</a>
 <a name="1014"><span class="lineNum">    1014 </span>            : </a>
 <a name="1015"><span class="lineNum">    1015 </span>            :         /* Wrapping data blocks store their data at the beginning. */</a>
@@ -1083,29 +1083,29 @@
 <a name="1021"><span class="lineNum">    1021 </span>            :  * if necessary. This function also associates the data block with</a>
 <a name="1022"><span class="lineNum">    1022 </span>            :  * a specified descriptor.</a>
 <a name="1023"><span class="lineNum">    1023 </span>            :  */</a>
-<a name="1024"><span class="lineNum">    1024 </span><span class="lineCov">        468 : static char *data_alloc(struct printk_ringbuffer *rb, unsigned int size,</span></a>
+<a name="1024"><span class="lineNum">    1024 </span><span class="lineCov">        274 : static char *data_alloc(struct printk_ringbuffer *rb, unsigned int size,</span></a>
 <a name="1025"><span class="lineNum">    1025 </span>            :                         struct prb_data_blk_lpos *blk_lpos, unsigned long id)</a>
 <a name="1026"><span class="lineNum">    1026 </span>            : {</a>
-<a name="1027"><span class="lineNum">    1027 </span><span class="lineCov">        468 :         struct prb_data_ring *data_ring = &amp;rb-&gt;text_data_ring;</span></a>
+<a name="1027"><span class="lineNum">    1027 </span><span class="lineCov">        274 :         struct prb_data_ring *data_ring = &amp;rb-&gt;text_data_ring;</span></a>
 <a name="1028"><span class="lineNum">    1028 </span>            :         struct prb_data_block *blk;</a>
 <a name="1029"><span class="lineNum">    1029 </span>            :         unsigned long begin_lpos;</a>
 <a name="1030"><span class="lineNum">    1030 </span>            :         unsigned long next_lpos;</a>
 <a name="1031"><span class="lineNum">    1031 </span>            : </a>
-<a name="1032"><span class="lineNum">    1032 </span><span class="lineCov">        468 :         if (size == 0) {</span></a>
+<a name="1032"><span class="lineNum">    1032 </span><span class="lineCov">        274 :         if (size == 0) {</span></a>
 <a name="1033"><span class="lineNum">    1033 </span>            :                 /* Specify a data-less block. */</a>
 <a name="1034"><span class="lineNum">    1034 </span><span class="lineNoCov">          0 :                 blk_lpos-&gt;begin = NO_LPOS;</span></a>
 <a name="1035"><span class="lineNum">    1035 </span><span class="lineNoCov">          0 :                 blk_lpos-&gt;next = NO_LPOS;</span></a>
 <a name="1036"><span class="lineNum">    1036 </span><span class="lineNoCov">          0 :                 return NULL;</span></a>
 <a name="1037"><span class="lineNum">    1037 </span>            :         }</a>
 <a name="1038"><span class="lineNum">    1038 </span>            : </a>
-<a name="1039"><span class="lineNum">    1039 </span><span class="lineCov">        468 :         size = to_blk_size(size);</span></a>
+<a name="1039"><span class="lineNum">    1039 </span><span class="lineCov">        274 :         size = to_blk_size(size);</span></a>
 <a name="1040"><span class="lineNum">    1040 </span>            : </a>
-<a name="1041"><span class="lineNum">    1041 </span><span class="lineCov">        936 :         begin_lpos = atomic_long_read(&amp;data_ring-&gt;head_lpos);</span></a>
+<a name="1041"><span class="lineNum">    1041 </span><span class="lineCov">        548 :         begin_lpos = atomic_long_read(&amp;data_ring-&gt;head_lpos);</span></a>
 <a name="1042"><span class="lineNum">    1042 </span>            : </a>
 <a name="1043"><span class="lineNum">    1043 </span>            :         do {</a>
-<a name="1044"><span class="lineNum">    1044 </span><span class="lineCov">        936 :                 next_lpos = get_next_lpos(data_ring, begin_lpos, size);</span></a>
+<a name="1044"><span class="lineNum">    1044 </span><span class="lineCov">        548 :                 next_lpos = get_next_lpos(data_ring, begin_lpos, size);</span></a>
 <a name="1045"><span class="lineNum">    1045 </span>            : </a>
-<a name="1046"><span class="lineNum">    1046 </span><span class="lineCov">        468 :                 if (!data_push_tail(rb, next_lpos - DATA_SIZE(data_ring))) {</span></a>
+<a name="1046"><span class="lineNum">    1046 </span><span class="lineCov">        274 :                 if (!data_push_tail(rb, next_lpos - DATA_SIZE(data_ring))) {</span></a>
 <a name="1047"><span class="lineNum">    1047 </span>            :                         /* Failed to allocate, specify a data-less block. */</a>
 <a name="1048"><span class="lineNum">    1048 </span><span class="lineNoCov">          0 :                         blk_lpos-&gt;begin = FAILED_LPOS;</span></a>
 <a name="1049"><span class="lineNum">    1049 </span><span class="lineNoCov">          0 :                         blk_lpos-&gt;next = FAILED_LPOS;</span></a>
@@ -1129,13 +1129,13 @@
 <a name="1067"><span class="lineNum">    1067 </span>            :                  *    since other CPUs may have updated the tail lpos. This</a>
 <a name="1068"><span class="lineNum">    1068 </span>            :                  *    pairs with data_push_tail:B.</a>
 <a name="1069"><span class="lineNum">    1069 </span>            :                  */</a>
-<a name="1070"><span class="lineNum">    1070 </span><span class="lineCov">        936 :         } while (!atomic_long_try_cmpxchg(&amp;data_ring-&gt;head_lpos, &amp;begin_lpos,</span></a>
-<a name="1071"><span class="lineNum">    1071 </span><span class="lineCov">        468 :                                           next_lpos)); /* LMM(data_alloc:A) */</span></a>
+<a name="1070"><span class="lineNum">    1070 </span><span class="lineCov">        548 :         } while (!atomic_long_try_cmpxchg(&amp;data_ring-&gt;head_lpos, &amp;begin_lpos,</span></a>
+<a name="1071"><span class="lineNum">    1071 </span><span class="lineCov">        274 :                                           next_lpos)); /* LMM(data_alloc:A) */</span></a>
 <a name="1072"><span class="lineNum">    1072 </span>            : </a>
-<a name="1073"><span class="lineNum">    1073 </span><span class="lineCov">        936 :         blk = to_block(data_ring, begin_lpos);</span></a>
-<a name="1074"><span class="lineNum">    1074 </span><span class="lineCov">        468 :         blk-&gt;id = id; /* LMM(data_alloc:B) */</span></a>
+<a name="1073"><span class="lineNum">    1073 </span><span class="lineCov">        548 :         blk = to_block(data_ring, begin_lpos);</span></a>
+<a name="1074"><span class="lineNum">    1074 </span><span class="lineCov">        274 :         blk-&gt;id = id; /* LMM(data_alloc:B) */</span></a>
 <a name="1075"><span class="lineNum">    1075 </span>            : </a>
-<a name="1076"><span class="lineNum">    1076 </span><span class="lineCov">        468 :         if (DATA_WRAPS(data_ring, begin_lpos) != DATA_WRAPS(data_ring, next_lpos)) {</span></a>
+<a name="1076"><span class="lineNum">    1076 </span><span class="lineCov">        274 :         if (DATA_WRAPS(data_ring, begin_lpos) != DATA_WRAPS(data_ring, next_lpos)) {</span></a>
 <a name="1077"><span class="lineNum">    1077 </span>            :                 /* Wrapping data blocks store their data at the beginning. */</a>
 <a name="1078"><span class="lineNum">    1078 </span><span class="lineNoCov">          0 :                 blk = to_block(data_ring, 0);</span></a>
 <a name="1079"><span class="lineNum">    1079 </span>            : </a>
@@ -1146,10 +1146,10 @@
 <a name="1084"><span class="lineNum">    1084 </span><span class="lineNoCov">          0 :                 blk-&gt;id = id;</span></a>
 <a name="1085"><span class="lineNum">    1085 </span>            :         }</a>
 <a name="1086"><span class="lineNum">    1086 </span>            : </a>
-<a name="1087"><span class="lineNum">    1087 </span><span class="lineCov">        468 :         blk_lpos-&gt;begin = begin_lpos;</span></a>
-<a name="1088"><span class="lineNum">    1088 </span><span class="lineCov">        468 :         blk_lpos-&gt;next = next_lpos;</span></a>
+<a name="1087"><span class="lineNum">    1087 </span><span class="lineCov">        274 :         blk_lpos-&gt;begin = begin_lpos;</span></a>
+<a name="1088"><span class="lineNum">    1088 </span><span class="lineCov">        274 :         blk_lpos-&gt;next = next_lpos;</span></a>
 <a name="1089"><span class="lineNum">    1089 </span>            : </a>
-<a name="1090"><span class="lineNum">    1090 </span><span class="lineCov">        468 :         return &amp;blk-&gt;data[0];</span></a>
+<a name="1090"><span class="lineNum">    1090 </span><span class="lineCov">        274 :         return &amp;blk-&gt;data[0];</span></a>
 <a name="1091"><span class="lineNum">    1091 </span>            : }</a>
 <a name="1092"><span class="lineNum">    1092 </span>            : </a>
 <a name="1093"><span class="lineNum">    1093 </span>            : /*</a>
@@ -1164,48 +1164,48 @@
 <a name="1102"><span class="lineNum">    1102 </span>            :  * Return a pointer to the beginning of the entire data buffer or NULL on</a>
 <a name="1103"><span class="lineNum">    1103 </span>            :  * failure.</a>
 <a name="1104"><span class="lineNum">    1104 </span>            :  */</a>
-<a name="1105"><span class="lineNum">    1105 </span><span class="lineCov">         38 : static char *data_realloc(struct printk_ringbuffer *rb, unsigned int size,</span></a>
+<a name="1105"><span class="lineNum">    1105 </span><span class="lineCov">         19 : static char *data_realloc(struct printk_ringbuffer *rb, unsigned int size,</span></a>
 <a name="1106"><span class="lineNum">    1106 </span>            :                           struct prb_data_blk_lpos *blk_lpos, unsigned long id)</a>
 <a name="1107"><span class="lineNum">    1107 </span>            : {</a>
-<a name="1108"><span class="lineNum">    1108 </span><span class="lineCov">         38 :         struct prb_data_ring *data_ring = &amp;rb-&gt;text_data_ring;</span></a>
+<a name="1108"><span class="lineNum">    1108 </span><span class="lineCov">         19 :         struct prb_data_ring *data_ring = &amp;rb-&gt;text_data_ring;</span></a>
 <a name="1109"><span class="lineNum">    1109 </span>            :         struct prb_data_block *blk;</a>
 <a name="1110"><span class="lineNum">    1110 </span>            :         unsigned long head_lpos;</a>
 <a name="1111"><span class="lineNum">    1111 </span>            :         unsigned long next_lpos;</a>
 <a name="1112"><span class="lineNum">    1112 </span>            :         bool wrapped;</a>
 <a name="1113"><span class="lineNum">    1113 </span>            : </a>
 <a name="1114"><span class="lineNum">    1114 </span>            :         /* Reallocation only works if @blk_lpos is the newest data block. */</a>
-<a name="1115"><span class="lineNum">    1115 </span><span class="lineCov">         76 :         head_lpos = atomic_long_read(&amp;data_ring-&gt;head_lpos);</span></a>
-<a name="1116"><span class="lineNum">    1116 </span><span class="lineCov">         38 :         if (head_lpos != blk_lpos-&gt;next)</span></a>
+<a name="1115"><span class="lineNum">    1115 </span><span class="lineCov">         38 :         head_lpos = atomic_long_read(&amp;data_ring-&gt;head_lpos);</span></a>
+<a name="1116"><span class="lineNum">    1116 </span><span class="lineCov">         19 :         if (head_lpos != blk_lpos-&gt;next)</span></a>
 <a name="1117"><span class="lineNum">    1117 </span>            :                 return NULL;</a>
 <a name="1118"><span class="lineNum">    1118 </span>            : </a>
 <a name="1119"><span class="lineNum">    1119 </span>            :         /* Keep track if @blk_lpos was a wrapping data block. */</a>
-<a name="1120"><span class="lineNum">    1120 </span><span class="lineCov">         38 :         wrapped = (DATA_WRAPS(data_ring, blk_lpos-&gt;begin) != DATA_WRAPS(data_ring, blk_lpos-&gt;next));</span></a>
+<a name="1120"><span class="lineNum">    1120 </span><span class="lineCov">         19 :         wrapped = (DATA_WRAPS(data_ring, blk_lpos-&gt;begin) != DATA_WRAPS(data_ring, blk_lpos-&gt;next));</span></a>
 <a name="1121"><span class="lineNum">    1121 </span>            : </a>
-<a name="1122"><span class="lineNum">    1122 </span><span class="lineCov">         38 :         size = to_blk_size(size);</span></a>
+<a name="1122"><span class="lineNum">    1122 </span><span class="lineCov">         19 :         size = to_blk_size(size);</span></a>
 <a name="1123"><span class="lineNum">    1123 </span>            : </a>
-<a name="1124"><span class="lineNum">    1124 </span><span class="lineCov">         76 :         next_lpos = get_next_lpos(data_ring, blk_lpos-&gt;begin, size);</span></a>
+<a name="1124"><span class="lineNum">    1124 </span><span class="lineCov">         38 :         next_lpos = get_next_lpos(data_ring, blk_lpos-&gt;begin, size);</span></a>
 <a name="1125"><span class="lineNum">    1125 </span>            : </a>
 <a name="1126"><span class="lineNum">    1126 </span>            :         /* If the data block does not increase, there is nothing to do. */</a>
-<a name="1127"><span class="lineNum">    1127 </span><span class="lineCov">         38 :         if (head_lpos - next_lpos &lt; DATA_SIZE(data_ring)) {</span></a>
-<a name="1128"><span class="lineNum">    1128 </span><span class="lineCov">         10 :                 if (wrapped)</span></a>
+<a name="1127"><span class="lineNum">    1127 </span><span class="lineCov">         19 :         if (head_lpos - next_lpos &lt; DATA_SIZE(data_ring)) {</span></a>
+<a name="1128"><span class="lineNum">    1128 </span><span class="lineCov">          5 :                 if (wrapped)</span></a>
 <a name="1129"><span class="lineNum">    1129 </span><span class="lineNoCov">          0 :                         blk = to_block(data_ring, 0);</span></a>
 <a name="1130"><span class="lineNum">    1130 </span>            :                 else</a>
-<a name="1131"><span class="lineNum">    1131 </span><span class="lineCov">         20 :                         blk = to_block(data_ring, blk_lpos-&gt;begin);</span></a>
-<a name="1132"><span class="lineNum">    1132 </span><span class="lineCov">         10 :                 return &amp;blk-&gt;data[0];</span></a>
+<a name="1131"><span class="lineNum">    1131 </span><span class="lineCov">         10 :                         blk = to_block(data_ring, blk_lpos-&gt;begin);</span></a>
+<a name="1132"><span class="lineNum">    1132 </span><span class="lineCov">          5 :                 return &amp;blk-&gt;data[0];</span></a>
 <a name="1133"><span class="lineNum">    1133 </span>            :         }</a>
 <a name="1134"><span class="lineNum">    1134 </span>            : </a>
-<a name="1135"><span class="lineNum">    1135 </span><span class="lineCov">         28 :         if (!data_push_tail(rb, next_lpos - DATA_SIZE(data_ring)))</span></a>
+<a name="1135"><span class="lineNum">    1135 </span><span class="lineCov">         14 :         if (!data_push_tail(rb, next_lpos - DATA_SIZE(data_ring)))</span></a>
 <a name="1136"><span class="lineNum">    1136 </span>            :                 return NULL;</a>
 <a name="1137"><span class="lineNum">    1137 </span>            : </a>
 <a name="1138"><span class="lineNum">    1138 </span>            :         /* The memory barrier involvement is the same as data_alloc:A. */</a>
-<a name="1139"><span class="lineNum">    1139 </span><span class="lineCov">         56 :         if (!atomic_long_try_cmpxchg(&amp;data_ring-&gt;head_lpos, &amp;head_lpos,</span></a>
+<a name="1139"><span class="lineNum">    1139 </span><span class="lineCov">         28 :         if (!atomic_long_try_cmpxchg(&amp;data_ring-&gt;head_lpos, &amp;head_lpos,</span></a>
 <a name="1140"><span class="lineNum">    1140 </span>            :                                      next_lpos)) { /* LMM(data_realloc:A) */</a>
 <a name="1141"><span class="lineNum">    1141 </span>            :                 return NULL;</a>
 <a name="1142"><span class="lineNum">    1142 </span>            :         }</a>
 <a name="1143"><span class="lineNum">    1143 </span>            : </a>
-<a name="1144"><span class="lineNum">    1144 </span><span class="lineCov">         56 :         blk = to_block(data_ring, blk_lpos-&gt;begin);</span></a>
+<a name="1144"><span class="lineNum">    1144 </span><span class="lineCov">         28 :         blk = to_block(data_ring, blk_lpos-&gt;begin);</span></a>
 <a name="1145"><span class="lineNum">    1145 </span>            : </a>
-<a name="1146"><span class="lineNum">    1146 </span><span class="lineCov">         28 :         if (DATA_WRAPS(data_ring, blk_lpos-&gt;begin) != DATA_WRAPS(data_ring, next_lpos)) {</span></a>
+<a name="1146"><span class="lineNum">    1146 </span><span class="lineCov">         14 :         if (DATA_WRAPS(data_ring, blk_lpos-&gt;begin) != DATA_WRAPS(data_ring, next_lpos)) {</span></a>
 <a name="1147"><span class="lineNum">    1147 </span><span class="lineNoCov">          0 :                 struct prb_data_block *old_blk = blk;</span></a>
 <a name="1148"><span class="lineNum">    1148 </span>            : </a>
 <a name="1149"><span class="lineNum">    1149 </span>            :                 /* Wrapping data blocks store their data at the beginning. */</a>
@@ -1228,23 +1228,23 @@
 <a name="1166"><span class="lineNum">    1166 </span>            :                 }</a>
 <a name="1167"><span class="lineNum">    1167 </span>            :         }</a>
 <a name="1168"><span class="lineNum">    1168 </span>            : </a>
-<a name="1169"><span class="lineNum">    1169 </span><span class="lineCov">         28 :         blk_lpos-&gt;next = next_lpos;</span></a>
+<a name="1169"><span class="lineNum">    1169 </span><span class="lineCov">         14 :         blk_lpos-&gt;next = next_lpos;</span></a>
 <a name="1170"><span class="lineNum">    1170 </span>            : </a>
-<a name="1171"><span class="lineNum">    1171 </span><span class="lineCov">         28 :         return &amp;blk-&gt;data[0];</span></a>
+<a name="1171"><span class="lineNum">    1171 </span><span class="lineCov">         14 :         return &amp;blk-&gt;data[0];</span></a>
 <a name="1172"><span class="lineNum">    1172 </span>            : }</a>
 <a name="1173"><span class="lineNum">    1173 </span>            : </a>
 <a name="1174"><span class="lineNum">    1174 </span>            : /* Return the number of bytes used by a data block. */</a>
-<a name="1175"><span class="lineNum">    1175 </span><span class="lineCov">        506 : static unsigned int space_used(struct prb_data_ring *data_ring,</span></a>
+<a name="1175"><span class="lineNum">    1175 </span><span class="lineCov">        293 : static unsigned int space_used(struct prb_data_ring *data_ring,</span></a>
 <a name="1176"><span class="lineNum">    1176 </span>            :                                struct prb_data_blk_lpos *blk_lpos)</a>
 <a name="1177"><span class="lineNum">    1177 </span>            : {</a>
 <a name="1178"><span class="lineNum">    1178 </span>            :         /* Data-less blocks take no space. */</a>
-<a name="1179"><span class="lineNum">    1179 </span><span class="lineCov">        506 :         if (BLK_DATALESS(blk_lpos))</span></a>
+<a name="1179"><span class="lineNum">    1179 </span><span class="lineCov">        293 :         if (BLK_DATALESS(blk_lpos))</span></a>
 <a name="1180"><span class="lineNum">    1180 </span>            :                 return 0;</a>
 <a name="1181"><span class="lineNum">    1181 </span>            : </a>
-<a name="1182"><span class="lineNum">    1182 </span><span class="lineCov">        506 :         if (DATA_WRAPS(data_ring, blk_lpos-&gt;begin) == DATA_WRAPS(data_ring, blk_lpos-&gt;next)) {</span></a>
+<a name="1182"><span class="lineNum">    1182 </span><span class="lineCov">        293 :         if (DATA_WRAPS(data_ring, blk_lpos-&gt;begin) == DATA_WRAPS(data_ring, blk_lpos-&gt;next)) {</span></a>
 <a name="1183"><span class="lineNum">    1183 </span>            :                 /* Data block does not wrap. */</a>
-<a name="1184"><span class="lineNum">    1184 </span><span class="lineCov">       1012 :                 return (DATA_INDEX(data_ring, blk_lpos-&gt;next) -</span></a>
-<a name="1185"><span class="lineNum">    1185 </span><span class="lineCov">        506 :                         DATA_INDEX(data_ring, blk_lpos-&gt;begin));</span></a>
+<a name="1184"><span class="lineNum">    1184 </span><span class="lineCov">        586 :                 return (DATA_INDEX(data_ring, blk_lpos-&gt;next) -</span></a>
+<a name="1185"><span class="lineNum">    1185 </span><span class="lineCov">        293 :                         DATA_INDEX(data_ring, blk_lpos-&gt;begin));</span></a>
 <a name="1186"><span class="lineNum">    1186 </span>            :         }</a>
 <a name="1187"><span class="lineNum">    1187 </span>            : </a>
 <a name="1188"><span class="lineNum">    1188 </span>            :         /*</a>
@@ -1264,14 +1264,14 @@
 <a name="1202"><span class="lineNum">    1202 </span>            :  * values to possibly detect bugs in the writer code. A WARN_ON_ONCE() is</a>
 <a name="1203"><span class="lineNum">    1203 </span>            :  * triggered if an internal error is detected.</a>
 <a name="1204"><span class="lineNum">    1204 </span>            :  */</a>
-<a name="1205"><span class="lineNum">    1205 </span><span class="lineCov">        720 : static const char *get_data(struct prb_data_ring *data_ring,</span></a>
+<a name="1205"><span class="lineNum">    1205 </span><span class="lineCov">        400 : static const char *get_data(struct prb_data_ring *data_ring,</span></a>
 <a name="1206"><span class="lineNum">    1206 </span>            :                             struct prb_data_blk_lpos *blk_lpos,</a>
 <a name="1207"><span class="lineNum">    1207 </span>            :                             unsigned int *data_size)</a>
 <a name="1208"><span class="lineNum">    1208 </span>            : {</a>
 <a name="1209"><span class="lineNum">    1209 </span>            :         struct prb_data_block *db;</a>
 <a name="1210"><span class="lineNum">    1210 </span>            : </a>
 <a name="1211"><span class="lineNum">    1211 </span>            :         /* Data-less data block description. */</a>
-<a name="1212"><span class="lineNum">    1212 </span><span class="lineCov">        720 :         if (BLK_DATALESS(blk_lpos)) {</span></a>
+<a name="1212"><span class="lineNum">    1212 </span><span class="lineCov">        400 :         if (BLK_DATALESS(blk_lpos)) {</span></a>
 <a name="1213"><span class="lineNum">    1213 </span><span class="lineNoCov">          0 :                 if (blk_lpos-&gt;begin == NO_LPOS &amp;&amp; blk_lpos-&gt;next == NO_LPOS) {</span></a>
 <a name="1214"><span class="lineNum">    1214 </span><span class="lineNoCov">          0 :                         *data_size = 0;</span></a>
 <a name="1215"><span class="lineNum">    1215 </span><span class="lineNoCov">          0 :                         return &quot;&quot;;</span></a>
@@ -1280,10 +1280,10 @@
 <a name="1218"><span class="lineNum">    1218 </span>            :         }</a>
 <a name="1219"><span class="lineNum">    1219 </span>            : </a>
 <a name="1220"><span class="lineNum">    1220 </span>            :         /* Regular data block: @begin less than @next and in same wrap. */</a>
-<a name="1221"><span class="lineNum">    1221 </span><span class="lineCov">        720 :         if (DATA_WRAPS(data_ring, blk_lpos-&gt;begin) == DATA_WRAPS(data_ring, blk_lpos-&gt;next) &amp;&amp;</span></a>
+<a name="1221"><span class="lineNum">    1221 </span><span class="lineCov">        400 :         if (DATA_WRAPS(data_ring, blk_lpos-&gt;begin) == DATA_WRAPS(data_ring, blk_lpos-&gt;next) &amp;&amp;</span></a>
 <a name="1222"><span class="lineNum">    1222 </span>            :             blk_lpos-&gt;begin &lt; blk_lpos-&gt;next) {</a>
-<a name="1223"><span class="lineNum">    1223 </span><span class="lineCov">       1440 :                 db = to_block(data_ring, blk_lpos-&gt;begin);</span></a>
-<a name="1224"><span class="lineNum">    1224 </span><span class="lineCov">        720 :                 *data_size = blk_lpos-&gt;next - blk_lpos-&gt;begin;</span></a>
+<a name="1223"><span class="lineNum">    1223 </span><span class="lineCov">        800 :                 db = to_block(data_ring, blk_lpos-&gt;begin);</span></a>
+<a name="1224"><span class="lineNum">    1224 </span><span class="lineCov">        400 :                 *data_size = blk_lpos-&gt;next - blk_lpos-&gt;begin;</span></a>
 <a name="1225"><span class="lineNum">    1225 </span>            : </a>
 <a name="1226"><span class="lineNum">    1226 </span>            :         /* Wrapping data block: @begin is one wrap behind @next. */</a>
 <a name="1227"><span class="lineNum">    1227 </span><span class="lineNoCov">          0 :         } else if (DATA_WRAPS(data_ring, blk_lpos-&gt;begin + DATA_SIZE(data_ring)) ==</span></a>
@@ -1298,19 +1298,19 @@
 <a name="1236"><span class="lineNum">    1236 </span>            :         }</a>
 <a name="1237"><span class="lineNum">    1237 </span>            : </a>
 <a name="1238"><span class="lineNum">    1238 </span>            :         /* A valid data block will always be aligned to the ID size. */</a>
-<a name="1239"><span class="lineNum">    1239 </span><span class="lineCov">       1440 :         if (WARN_ON_ONCE(blk_lpos-&gt;begin != ALIGN(blk_lpos-&gt;begin, sizeof(db-&gt;id))) ||</span></a>
-<a name="1240"><span class="lineNum">    1240 </span><span class="lineCov">        720 :             WARN_ON_ONCE(blk_lpos-&gt;next != ALIGN(blk_lpos-&gt;next, sizeof(db-&gt;id)))) {</span></a>
+<a name="1239"><span class="lineNum">    1239 </span><span class="lineCov">        800 :         if (WARN_ON_ONCE(blk_lpos-&gt;begin != ALIGN(blk_lpos-&gt;begin, sizeof(db-&gt;id))) ||</span></a>
+<a name="1240"><span class="lineNum">    1240 </span><span class="lineCov">        400 :             WARN_ON_ONCE(blk_lpos-&gt;next != ALIGN(blk_lpos-&gt;next, sizeof(db-&gt;id)))) {</span></a>
 <a name="1241"><span class="lineNum">    1241 </span>            :                 return NULL;</a>
 <a name="1242"><span class="lineNum">    1242 </span>            :         }</a>
 <a name="1243"><span class="lineNum">    1243 </span>            : </a>
 <a name="1244"><span class="lineNum">    1244 </span>            :         /* A valid data block will always have at least an ID. */</a>
-<a name="1245"><span class="lineNum">    1245 </span><span class="lineCov">        720 :         if (WARN_ON_ONCE(*data_size &lt; sizeof(db-&gt;id)))</span></a>
+<a name="1245"><span class="lineNum">    1245 </span><span class="lineCov">        400 :         if (WARN_ON_ONCE(*data_size &lt; sizeof(db-&gt;id)))</span></a>
 <a name="1246"><span class="lineNum">    1246 </span>            :                 return NULL;</a>
 <a name="1247"><span class="lineNum">    1247 </span>            : </a>
 <a name="1248"><span class="lineNum">    1248 </span>            :         /* Subtract block ID space from size to reflect data size. */</a>
-<a name="1249"><span class="lineNum">    1249 </span><span class="lineCov">        720 :         *data_size -= sizeof(db-&gt;id);</span></a>
+<a name="1249"><span class="lineNum">    1249 </span><span class="lineCov">        400 :         *data_size -= sizeof(db-&gt;id);</span></a>
 <a name="1250"><span class="lineNum">    1250 </span>            : </a>
-<a name="1251"><span class="lineNum">    1251 </span><span class="lineCov">        720 :         return &amp;db-&gt;data[0];</span></a>
+<a name="1251"><span class="lineNum">    1251 </span><span class="lineCov">        400 :         return &amp;db-&gt;data[0];</span></a>
 <a name="1252"><span class="lineNum">    1252 </span>            : }</a>
 <a name="1253"><span class="lineNum">    1253 </span>            : </a>
 <a name="1254"><span class="lineNum">    1254 </span>            : /*</a>
@@ -1318,7 +1318,7 @@
 <a name="1256"><span class="lineNum">    1256 </span>            :  * so that the record can be modified by a writer again. This is only possible</a>
 <a name="1257"><span class="lineNum">    1257 </span>            :  * if the descriptor is not yet finalized and the provided @caller_id matches.</a>
 <a name="1258"><span class="lineNum">    1258 </span>            :  */</a>
-<a name="1259"><span class="lineNum">    1259 </span><span class="lineCov">         44 : static struct prb_desc *desc_reopen_last(struct prb_desc_ring *desc_ring,</span></a>
+<a name="1259"><span class="lineNum">    1259 </span><span class="lineCov">         22 : static struct prb_desc *desc_reopen_last(struct prb_desc_ring *desc_ring,</span></a>
 <a name="1260"><span class="lineNum">    1260 </span>            :                                          u32 caller_id, unsigned long *id_out)</a>
 <a name="1261"><span class="lineNum">    1261 </span>            : {</a>
 <a name="1262"><span class="lineNum">    1262 </span>            :         unsigned long prev_state_val;</a>
@@ -1328,19 +1328,19 @@
 <a name="1266"><span class="lineNum">    1266 </span>            :         unsigned long id;</a>
 <a name="1267"><span class="lineNum">    1267 </span>            :         u32 cid;</a>
 <a name="1268"><span class="lineNum">    1268 </span>            : </a>
-<a name="1269"><span class="lineNum">    1269 </span><span class="lineCov">         88 :         id = atomic_long_read(&amp;desc_ring-&gt;head_id);</span></a>
+<a name="1269"><span class="lineNum">    1269 </span><span class="lineCov">         44 :         id = atomic_long_read(&amp;desc_ring-&gt;head_id);</span></a>
 <a name="1270"><span class="lineNum">    1270 </span>            : </a>
 <a name="1271"><span class="lineNum">    1271 </span>            :         /*</a>
 <a name="1272"><span class="lineNum">    1272 </span>            :          * To reduce unnecessarily reopening, first check if the descriptor</a>
 <a name="1273"><span class="lineNum">    1273 </span>            :          * state and caller ID are correct.</a>
 <a name="1274"><span class="lineNum">    1274 </span>            :          */</a>
-<a name="1275"><span class="lineNum">    1275 </span><span class="lineCov">         44 :         d_state = desc_read(desc_ring, id, &amp;desc, NULL, &amp;cid);</span></a>
-<a name="1276"><span class="lineNum">    1276 </span><span class="lineCov">         44 :         if (d_state != desc_committed || cid != caller_id)</span></a>
+<a name="1275"><span class="lineNum">    1275 </span><span class="lineCov">         22 :         d_state = desc_read(desc_ring, id, &amp;desc, NULL, &amp;cid);</span></a>
+<a name="1276"><span class="lineNum">    1276 </span><span class="lineCov">         22 :         if (d_state != desc_committed || cid != caller_id)</span></a>
 <a name="1277"><span class="lineNum">    1277 </span>            :                 return NULL;</a>
 <a name="1278"><span class="lineNum">    1278 </span>            : </a>
-<a name="1279"><span class="lineNum">    1279 </span><span class="lineCov">         76 :         d = to_desc(desc_ring, id);</span></a>
+<a name="1279"><span class="lineNum">    1279 </span><span class="lineCov">         38 :         d = to_desc(desc_ring, id);</span></a>
 <a name="1280"><span class="lineNum">    1280 </span>            : </a>
-<a name="1281"><span class="lineNum">    1281 </span><span class="lineCov">         38 :         prev_state_val = DESC_SV(id, desc_committed);</span></a>
+<a name="1281"><span class="lineNum">    1281 </span><span class="lineCov">         19 :         prev_state_val = DESC_SV(id, desc_committed);</span></a>
 <a name="1282"><span class="lineNum">    1282 </span>            : </a>
 <a name="1283"><span class="lineNum">    1283 </span>            :         /*</a>
 <a name="1284"><span class="lineNum">    1284 </span>            :          * Guarantee the reserved state is stored before reading any</a>
@@ -1358,13 +1358,13 @@
 <a name="1296"><span class="lineNum">    1296 </span>            :          *    matching</a>
 <a name="1297"><span class="lineNum">    1297 </span>            :          * MB If desc_reopen_last:A to prb_reserve_in_last:A</a>
 <a name="1298"><span class="lineNum">    1298 </span>            :          */</a>
-<a name="1299"><span class="lineNum">    1299 </span><span class="lineCov">         76 :         if (!atomic_long_try_cmpxchg(&amp;d-&gt;state_var, &amp;prev_state_val,</span></a>
+<a name="1299"><span class="lineNum">    1299 </span><span class="lineCov">         38 :         if (!atomic_long_try_cmpxchg(&amp;d-&gt;state_var, &amp;prev_state_val,</span></a>
 <a name="1300"><span class="lineNum">    1300 </span>            :                         DESC_SV(id, desc_reserved))) { /* LMM(desc_reopen_last:A) */</a>
 <a name="1301"><span class="lineNum">    1301 </span>            :                 return NULL;</a>
 <a name="1302"><span class="lineNum">    1302 </span>            :         }</a>
 <a name="1303"><span class="lineNum">    1303 </span>            : </a>
-<a name="1304"><span class="lineNum">    1304 </span><span class="lineCov">         38 :         *id_out = id;</span></a>
-<a name="1305"><span class="lineNum">    1305 </span><span class="lineCov">         38 :         return d;</span></a>
+<a name="1304"><span class="lineNum">    1304 </span><span class="lineCov">         19 :         *id_out = id;</span></a>
+<a name="1305"><span class="lineNum">    1305 </span><span class="lineCov">         19 :         return d;</span></a>
 <a name="1306"><span class="lineNum">    1306 </span>            : }</a>
 <a name="1307"><span class="lineNum">    1307 </span>            : </a>
 <a name="1308"><span class="lineNum">    1308 </span>            : /**</a>
@@ -1409,44 +1409,44 @@
 <a name="1347"><span class="lineNum">    1347 </span>            :  *            where concatenation begins and writers should update</a>
 <a name="1348"><span class="lineNum">    1348 </span>            :  *            @r-&gt;info-&gt;text_len after concatenating.</a>
 <a name="1349"><span class="lineNum">    1349 </span>            :  */</a>
-<a name="1350"><span class="lineNum">    1350 </span><span class="lineCov">         44 : bool prb_reserve_in_last(struct prb_reserved_entry *e, struct printk_ringbuffer *rb,</span></a>
+<a name="1350"><span class="lineNum">    1350 </span><span class="lineCov">         22 : bool prb_reserve_in_last(struct prb_reserved_entry *e, struct printk_ringbuffer *rb,</span></a>
 <a name="1351"><span class="lineNum">    1351 </span>            :                          struct printk_record *r, u32 caller_id, unsigned int max_size)</a>
 <a name="1352"><span class="lineNum">    1352 </span>            : {</a>
-<a name="1353"><span class="lineNum">    1353 </span><span class="lineCov">         44 :         struct prb_desc_ring *desc_ring = &amp;rb-&gt;desc_ring;</span></a>
+<a name="1353"><span class="lineNum">    1353 </span><span class="lineCov">         22 :         struct prb_desc_ring *desc_ring = &amp;rb-&gt;desc_ring;</span></a>
 <a name="1354"><span class="lineNum">    1354 </span>            :         struct printk_info *info;</a>
 <a name="1355"><span class="lineNum">    1355 </span>            :         unsigned int data_size;</a>
 <a name="1356"><span class="lineNum">    1356 </span>            :         struct prb_desc *d;</a>
 <a name="1357"><span class="lineNum">    1357 </span>            :         unsigned long id;</a>
 <a name="1358"><span class="lineNum">    1358 </span>            : </a>
-<a name="1359"><span class="lineNum">    1359 </span><span class="lineCov">         44 :         local_irq_save(e-&gt;irqflags);</span></a>
+<a name="1359"><span class="lineNum">    1359 </span><span class="lineCov">         22 :         local_irq_save(e-&gt;irqflags);</span></a>
 <a name="1360"><span class="lineNum">    1360 </span>            : </a>
 <a name="1361"><span class="lineNum">    1361 </span>            :         /* Transition the newest descriptor back to the reserved state. */</a>
-<a name="1362"><span class="lineNum">    1362 </span><span class="lineCov">         44 :         d = desc_reopen_last(desc_ring, caller_id, &amp;id);</span></a>
-<a name="1363"><span class="lineNum">    1363 </span><span class="lineCov">         44 :         if (!d) {</span></a>
-<a name="1364"><span class="lineNum">    1364 </span><span class="lineCov">          6 :                 local_irq_restore(e-&gt;irqflags);</span></a>
+<a name="1362"><span class="lineNum">    1362 </span><span class="lineCov">         22 :         d = desc_reopen_last(desc_ring, caller_id, &amp;id);</span></a>
+<a name="1363"><span class="lineNum">    1363 </span><span class="lineCov">         22 :         if (!d) {</span></a>
+<a name="1364"><span class="lineNum">    1364 </span><span class="lineCov">          3 :                 local_irq_restore(e-&gt;irqflags);</span></a>
 <a name="1365"><span class="lineNum">    1365 </span>            :                 goto fail_reopen;</a>
 <a name="1366"><span class="lineNum">    1366 </span>            :         }</a>
 <a name="1367"><span class="lineNum">    1367 </span>            : </a>
 <a name="1368"><span class="lineNum">    1368 </span>            :         /* Now the writer has exclusive access: LMM(prb_reserve_in_last:A) */</a>
 <a name="1369"><span class="lineNum">    1369 </span>            : </a>
-<a name="1370"><span class="lineNum">    1370 </span><span class="lineCov">         76 :         info = to_info(desc_ring, id);</span></a>
+<a name="1370"><span class="lineNum">    1370 </span><span class="lineCov">         38 :         info = to_info(desc_ring, id);</span></a>
 <a name="1371"><span class="lineNum">    1371 </span>            : </a>
 <a name="1372"><span class="lineNum">    1372 </span>            :         /*</a>
 <a name="1373"><span class="lineNum">    1373 </span>            :          * Set the @e fields here so that prb_commit() can be used if</a>
 <a name="1374"><span class="lineNum">    1374 </span>            :          * anything fails from now on.</a>
 <a name="1375"><span class="lineNum">    1375 </span>            :          */</a>
-<a name="1376"><span class="lineNum">    1376 </span><span class="lineCov">         38 :         e-&gt;rb = rb;</span></a>
-<a name="1377"><span class="lineNum">    1377 </span><span class="lineCov">         38 :         e-&gt;id = id;</span></a>
+<a name="1376"><span class="lineNum">    1376 </span><span class="lineCov">         19 :         e-&gt;rb = rb;</span></a>
+<a name="1377"><span class="lineNum">    1377 </span><span class="lineCov">         19 :         e-&gt;id = id;</span></a>
 <a name="1378"><span class="lineNum">    1378 </span>            : </a>
 <a name="1379"><span class="lineNum">    1379 </span>            :         /*</a>
 <a name="1380"><span class="lineNum">    1380 </span>            :          * desc_reopen_last() checked the caller_id, but there was no</a>
 <a name="1381"><span class="lineNum">    1381 </span>            :          * exclusive access at that point. The descriptor may have</a>
 <a name="1382"><span class="lineNum">    1382 </span>            :          * changed since then.</a>
 <a name="1383"><span class="lineNum">    1383 </span>            :          */</a>
-<a name="1384"><span class="lineNum">    1384 </span><span class="lineCov">         38 :         if (caller_id != info-&gt;caller_id)</span></a>
+<a name="1384"><span class="lineNum">    1384 </span><span class="lineCov">         19 :         if (caller_id != info-&gt;caller_id)</span></a>
 <a name="1385"><span class="lineNum">    1385 </span>            :                 goto fail;</a>
 <a name="1386"><span class="lineNum">    1386 </span>            : </a>
-<a name="1387"><span class="lineNum">    1387 </span><span class="lineCov">         38 :         if (BLK_DATALESS(&amp;d-&gt;text_blk_lpos)) {</span></a>
+<a name="1387"><span class="lineNum">    1387 </span><span class="lineCov">         19 :         if (BLK_DATALESS(&amp;d-&gt;text_blk_lpos)) {</span></a>
 <a name="1388"><span class="lineNum">    1388 </span><span class="lineNoCov">          0 :                 if (WARN_ON_ONCE(info-&gt;text_len != 0)) {</span></a>
 <a name="1389"><span class="lineNum">    1389 </span><span class="lineNoCov">          0 :                         pr_warn_once(&quot;wrong text_len value (%hu, expecting 0)\n&quot;,</span></a>
 <a name="1390"><span class="lineNum">    1390 </span>            :                                      info-&gt;text_len);</a>
@@ -1462,7 +1462,7 @@
 <a name="1400"><span class="lineNum">    1400 </span><span class="lineNoCov">          0 :                 r-&gt;text_buf = data_alloc(rb, r-&gt;text_buf_size,</span></a>
 <a name="1401"><span class="lineNum">    1401 </span>            :                                          &amp;d-&gt;text_blk_lpos, id);</a>
 <a name="1402"><span class="lineNum">    1402 </span>            :         } else {</a>
-<a name="1403"><span class="lineNum">    1403 </span><span class="lineCov">         38 :                 if (!get_data(&amp;rb-&gt;text_data_ring, &amp;d-&gt;text_blk_lpos, &amp;data_size))</span></a>
+<a name="1403"><span class="lineNum">    1403 </span><span class="lineCov">         19 :                 if (!get_data(&amp;rb-&gt;text_data_ring, &amp;d-&gt;text_blk_lpos, &amp;data_size))</span></a>
 <a name="1404"><span class="lineNum">    1404 </span>            :                         goto fail;</a>
 <a name="1405"><span class="lineNum">    1405 </span>            : </a>
 <a name="1406"><span class="lineNum">    1406 </span>            :                 /*</a>
@@ -1470,37 +1470,37 @@
 <a name="1408"><span class="lineNum">    1408 </span>            :                  * the meta data (@text_len) is not sane, use the full data</a>
 <a name="1409"><span class="lineNum">    1409 </span>            :                  * block size.</a>
 <a name="1410"><span class="lineNum">    1410 </span>            :                  */</a>
-<a name="1411"><span class="lineNum">    1411 </span><span class="lineCov">         38 :                 if (WARN_ON_ONCE(info-&gt;text_len &gt; data_size)) {</span></a>
+<a name="1411"><span class="lineNum">    1411 </span><span class="lineCov">         19 :                 if (WARN_ON_ONCE(info-&gt;text_len &gt; data_size)) {</span></a>
 <a name="1412"><span class="lineNum">    1412 </span><span class="lineNoCov">          0 :                         pr_warn_once(&quot;wrong text_len value (%hu, expecting &lt;=%u)\n&quot;,</span></a>
 <a name="1413"><span class="lineNum">    1413 </span>            :                                      info-&gt;text_len, data_size);</a>
 <a name="1414"><span class="lineNum">    1414 </span><span class="lineNoCov">          0 :                         info-&gt;text_len = data_size;</span></a>
 <a name="1415"><span class="lineNum">    1415 </span>            :                 }</a>
-<a name="1416"><span class="lineNum">    1416 </span><span class="lineCov">         38 :                 r-&gt;text_buf_size += info-&gt;text_len;</span></a>
+<a name="1416"><span class="lineNum">    1416 </span><span class="lineCov">         19 :                 r-&gt;text_buf_size += info-&gt;text_len;</span></a>
 <a name="1417"><span class="lineNum">    1417 </span>            : </a>
-<a name="1418"><span class="lineNum">    1418 </span><span class="lineCov">         76 :                 if (!data_check_size(&amp;rb-&gt;text_data_ring, r-&gt;text_buf_size))</span></a>
+<a name="1418"><span class="lineNum">    1418 </span><span class="lineCov">         38 :                 if (!data_check_size(&amp;rb-&gt;text_data_ring, r-&gt;text_buf_size))</span></a>
 <a name="1419"><span class="lineNum">    1419 </span>            :                         goto fail;</a>
 <a name="1420"><span class="lineNum">    1420 </span>            : </a>
-<a name="1421"><span class="lineNum">    1421 </span><span class="lineCov">         38 :                 if (r-&gt;text_buf_size &gt; max_size)</span></a>
+<a name="1421"><span class="lineNum">    1421 </span><span class="lineCov">         19 :                 if (r-&gt;text_buf_size &gt; max_size)</span></a>
 <a name="1422"><span class="lineNum">    1422 </span>            :                         goto fail;</a>
 <a name="1423"><span class="lineNum">    1423 </span>            : </a>
-<a name="1424"><span class="lineNum">    1424 </span><span class="lineCov">         38 :                 r-&gt;text_buf = data_realloc(rb, r-&gt;text_buf_size,</span></a>
+<a name="1424"><span class="lineNum">    1424 </span><span class="lineCov">         19 :                 r-&gt;text_buf = data_realloc(rb, r-&gt;text_buf_size,</span></a>
 <a name="1425"><span class="lineNum">    1425 </span>            :                                            &amp;d-&gt;text_blk_lpos, id);</a>
 <a name="1426"><span class="lineNum">    1426 </span>            :         }</a>
-<a name="1427"><span class="lineNum">    1427 </span><span class="lineCov">         38 :         if (r-&gt;text_buf_size &amp;&amp; !r-&gt;text_buf)</span></a>
+<a name="1427"><span class="lineNum">    1427 </span><span class="lineCov">         19 :         if (r-&gt;text_buf_size &amp;&amp; !r-&gt;text_buf)</span></a>
 <a name="1428"><span class="lineNum">    1428 </span>            :                 goto fail;</a>
 <a name="1429"><span class="lineNum">    1429 </span>            : </a>
-<a name="1430"><span class="lineNum">    1430 </span><span class="lineCov">         38 :         r-&gt;info = info;</span></a>
+<a name="1430"><span class="lineNum">    1430 </span><span class="lineCov">         19 :         r-&gt;info = info;</span></a>
 <a name="1431"><span class="lineNum">    1431 </span>            : </a>
-<a name="1432"><span class="lineNum">    1432 </span><span class="lineCov">         38 :         e-&gt;text_space = space_used(&amp;rb-&gt;text_data_ring, &amp;d-&gt;text_blk_lpos);</span></a>
+<a name="1432"><span class="lineNum">    1432 </span><span class="lineCov">         19 :         e-&gt;text_space = space_used(&amp;rb-&gt;text_data_ring, &amp;d-&gt;text_blk_lpos);</span></a>
 <a name="1433"><span class="lineNum">    1433 </span>            : </a>
-<a name="1434"><span class="lineNum">    1434 </span><span class="lineCov">         38 :         return true;</span></a>
+<a name="1434"><span class="lineNum">    1434 </span><span class="lineCov">         19 :         return true;</span></a>
 <a name="1435"><span class="lineNum">    1435 </span>            : fail:</a>
 <a name="1436"><span class="lineNum">    1436 </span><span class="lineNoCov">          0 :         prb_commit(e);</span></a>
 <a name="1437"><span class="lineNum">    1437 </span>            :         /* prb_commit() re-enabled interrupts. */</a>
 <a name="1438"><span class="lineNum">    1438 </span>            : fail_reopen:</a>
 <a name="1439"><span class="lineNum">    1439 </span>            :         /* Make it clear to the caller that the re-reserve failed. */</a>
-<a name="1440"><span class="lineNum">    1440 </span><span class="lineCov">          6 :         memset(r, 0, sizeof(*r));</span></a>
-<a name="1441"><span class="lineNum">    1441 </span><span class="lineCov">          6 :         return false;</span></a>
+<a name="1440"><span class="lineNum">    1440 </span><span class="lineCov">          3 :         memset(r, 0, sizeof(*r));</span></a>
+<a name="1441"><span class="lineNum">    1441 </span><span class="lineCov">          3 :         return false;</span></a>
 <a name="1442"><span class="lineNum">    1442 </span>            : }</a>
 <a name="1443"><span class="lineNum">    1443 </span>            : </a>
 <a name="1444"><span class="lineNum">    1444 </span>            : /*</a>
@@ -1509,14 +1509,14 @@
 <a name="1447"><span class="lineNum">    1447 </span>            :  */</a>
 <a name="1448"><span class="lineNum">    1448 </span>            : static void desc_make_final(struct prb_desc_ring *desc_ring, unsigned long id)</a>
 <a name="1449"><span class="lineNum">    1449 </span>            : {</a>
-<a name="1450"><span class="lineNum">    1450 </span><span class="lineCov">        466 :         unsigned long prev_state_val = DESC_SV(id, desc_committed);</span></a>
-<a name="1451"><span class="lineNum">    1451 </span><span class="lineCov">        932 :         struct prb_desc *d = to_desc(desc_ring, id);</span></a>
+<a name="1450"><span class="lineNum">    1450 </span><span class="lineCov">        273 :         unsigned long prev_state_val = DESC_SV(id, desc_committed);</span></a>
+<a name="1451"><span class="lineNum">    1451 </span><span class="lineCov">        546 :         struct prb_desc *d = to_desc(desc_ring, id);</span></a>
 <a name="1452"><span class="lineNum">    1452 </span>            : </a>
-<a name="1453"><span class="lineNum">    1453 </span><span class="lineCov">        932 :         atomic_long_cmpxchg_relaxed(&amp;d-&gt;state_var, prev_state_val,</span></a>
-<a name="1454"><span class="lineNum">    1454 </span><span class="lineCov">        466 :                         DESC_SV(id, desc_finalized)); /* LMM(desc_make_final:A) */</span></a>
+<a name="1453"><span class="lineNum">    1453 </span><span class="lineCov">        546 :         atomic_long_cmpxchg_relaxed(&amp;d-&gt;state_var, prev_state_val,</span></a>
+<a name="1454"><span class="lineNum">    1454 </span><span class="lineCov">        273 :                         DESC_SV(id, desc_finalized)); /* LMM(desc_make_final:A) */</span></a>
 <a name="1455"><span class="lineNum">    1455 </span>            : </a>
 <a name="1456"><span class="lineNum">    1456 </span>            :         /* Best effort to remember the last finalized @id. */</a>
-<a name="1457"><span class="lineNum">    1457 </span><span class="lineCov">        932 :         atomic_long_set(&amp;desc_ring-&gt;last_finalized_id, id);</span></a>
+<a name="1457"><span class="lineNum">    1457 </span><span class="lineCov">        546 :         atomic_long_set(&amp;desc_ring-&gt;last_finalized_id, id);</span></a>
 <a name="1458"><span class="lineNum">    1458 </span>            : }</a>
 <a name="1459"><span class="lineNum">    1459 </span>            : </a>
 <a name="1460"><span class="lineNum">    1460 </span>            : /**</a>
@@ -1544,16 +1544,16 @@
 <a name="1482"><span class="lineNum">    1482 </span>            :  *            order for data to be readable and/or extended. Its value</a>
 <a name="1483"><span class="lineNum">    1483 </span>            :  *            is initialized to 0.</a>
 <a name="1484"><span class="lineNum">    1484 </span>            :  */</a>
-<a name="1485"><span class="lineNum">    1485 </span><span class="lineCov">        468 : bool prb_reserve(struct prb_reserved_entry *e, struct printk_ringbuffer *rb,</span></a>
+<a name="1485"><span class="lineNum">    1485 </span><span class="lineCov">        274 : bool prb_reserve(struct prb_reserved_entry *e, struct printk_ringbuffer *rb,</span></a>
 <a name="1486"><span class="lineNum">    1486 </span>            :                  struct printk_record *r)</a>
 <a name="1487"><span class="lineNum">    1487 </span>            : {</a>
-<a name="1488"><span class="lineNum">    1488 </span><span class="lineCov">        468 :         struct prb_desc_ring *desc_ring = &amp;rb-&gt;desc_ring;</span></a>
+<a name="1488"><span class="lineNum">    1488 </span><span class="lineCov">        274 :         struct prb_desc_ring *desc_ring = &amp;rb-&gt;desc_ring;</span></a>
 <a name="1489"><span class="lineNum">    1489 </span>            :         struct printk_info *info;</a>
 <a name="1490"><span class="lineNum">    1490 </span>            :         struct prb_desc *d;</a>
 <a name="1491"><span class="lineNum">    1491 </span>            :         unsigned long id;</a>
 <a name="1492"><span class="lineNum">    1492 </span>            :         u64 seq;</a>
 <a name="1493"><span class="lineNum">    1493 </span>            : </a>
-<a name="1494"><span class="lineNum">    1494 </span><span class="lineCov">        936 :         if (!data_check_size(&amp;rb-&gt;text_data_ring, r-&gt;text_buf_size))</span></a>
+<a name="1494"><span class="lineNum">    1494 </span><span class="lineCov">        548 :         if (!data_check_size(&amp;rb-&gt;text_data_ring, r-&gt;text_buf_size))</span></a>
 <a name="1495"><span class="lineNum">    1495 </span>            :                 goto fail;</a>
 <a name="1496"><span class="lineNum">    1496 </span>            : </a>
 <a name="1497"><span class="lineNum">    1497 </span>            :         /*</a>
@@ -1562,32 +1562,32 @@
 <a name="1500"><span class="lineNum">    1500 </span>            :          * interrupts during the reserve/commit window in order to minimize</a>
 <a name="1501"><span class="lineNum">    1501 </span>            :          * the likelihood of this happening.</a>
 <a name="1502"><span class="lineNum">    1502 </span>            :          */</a>
-<a name="1503"><span class="lineNum">    1503 </span><span class="lineCov">        468 :         local_irq_save(e-&gt;irqflags);</span></a>
+<a name="1503"><span class="lineNum">    1503 </span><span class="lineCov">        274 :         local_irq_save(e-&gt;irqflags);</span></a>
 <a name="1504"><span class="lineNum">    1504 </span>            : </a>
-<a name="1505"><span class="lineNum">    1505 </span><span class="lineCov">        468 :         if (!desc_reserve(rb, &amp;id)) {</span></a>
+<a name="1505"><span class="lineNum">    1505 </span><span class="lineCov">        274 :         if (!desc_reserve(rb, &amp;id)) {</span></a>
 <a name="1506"><span class="lineNum">    1506 </span>            :                 /* Descriptor reservation failures are tracked. */</a>
 <a name="1507"><span class="lineNum">    1507 </span><span class="lineNoCov">          0 :                 atomic_long_inc(&amp;rb-&gt;fail);</span></a>
 <a name="1508"><span class="lineNum">    1508 </span><span class="lineNoCov">          0 :                 local_irq_restore(e-&gt;irqflags);</span></a>
 <a name="1509"><span class="lineNum">    1509 </span>            :                 goto fail;</a>
 <a name="1510"><span class="lineNum">    1510 </span>            :         }</a>
 <a name="1511"><span class="lineNum">    1511 </span>            : </a>
-<a name="1512"><span class="lineNum">    1512 </span><span class="lineCov">        936 :         d = to_desc(desc_ring, id);</span></a>
-<a name="1513"><span class="lineNum">    1513 </span><span class="lineCov">        936 :         info = to_info(desc_ring, id);</span></a>
+<a name="1512"><span class="lineNum">    1512 </span><span class="lineCov">        548 :         d = to_desc(desc_ring, id);</span></a>
+<a name="1513"><span class="lineNum">    1513 </span><span class="lineCov">        548 :         info = to_info(desc_ring, id);</span></a>
 <a name="1514"><span class="lineNum">    1514 </span>            : </a>
 <a name="1515"><span class="lineNum">    1515 </span>            :         /*</a>
 <a name="1516"><span class="lineNum">    1516 </span>            :          * All @info fields (except @seq) are cleared and must be filled in</a>
 <a name="1517"><span class="lineNum">    1517 </span>            :          * by the writer. Save @seq before clearing because it is used to</a>
 <a name="1518"><span class="lineNum">    1518 </span>            :          * determine the new sequence number.</a>
 <a name="1519"><span class="lineNum">    1519 </span>            :          */</a>
-<a name="1520"><span class="lineNum">    1520 </span><span class="lineCov">        468 :         seq = info-&gt;seq;</span></a>
-<a name="1521"><span class="lineNum">    1521 </span><span class="lineCov">        468 :         memset(info, 0, sizeof(*info));</span></a>
+<a name="1520"><span class="lineNum">    1520 </span><span class="lineCov">        274 :         seq = info-&gt;seq;</span></a>
+<a name="1521"><span class="lineNum">    1521 </span><span class="lineCov">        274 :         memset(info, 0, sizeof(*info));</span></a>
 <a name="1522"><span class="lineNum">    1522 </span>            : </a>
 <a name="1523"><span class="lineNum">    1523 </span>            :         /*</a>
 <a name="1524"><span class="lineNum">    1524 </span>            :          * Set the @e fields here so that prb_commit() can be used if</a>
 <a name="1525"><span class="lineNum">    1525 </span>            :          * text data allocation fails.</a>
 <a name="1526"><span class="lineNum">    1526 </span>            :          */</a>
-<a name="1527"><span class="lineNum">    1527 </span><span class="lineCov">        468 :         e-&gt;rb = rb;</span></a>
-<a name="1528"><span class="lineNum">    1528 </span><span class="lineCov">        468 :         e-&gt;id = id;</span></a>
+<a name="1527"><span class="lineNum">    1527 </span><span class="lineCov">        274 :         e-&gt;rb = rb;</span></a>
+<a name="1528"><span class="lineNum">    1528 </span><span class="lineCov">        274 :         e-&gt;id = id;</span></a>
 <a name="1529"><span class="lineNum">    1529 </span>            : </a>
 <a name="1530"><span class="lineNum">    1530 </span>            :         /*</a>
 <a name="1531"><span class="lineNum">    1531 </span>            :          * Initialize the sequence number if it has &quot;never been set&quot;.</a>
@@ -1600,10 +1600,10 @@
 <a name="1538"><span class="lineNum">    1538 </span>            :          * See the &quot;Bootstrap&quot; comment block in printk_ringbuffer.h for</a>
 <a name="1539"><span class="lineNum">    1539 </span>            :          * details about how the initializer bootstraps the descriptors.</a>
 <a name="1540"><span class="lineNum">    1540 </span>            :          */</a>
-<a name="1541"><span class="lineNum">    1541 </span><span class="lineCov">        468 :         if (seq == 0 &amp;&amp; DESC_INDEX(desc_ring, id) != 0)</span></a>
-<a name="1542"><span class="lineNum">    1542 </span><span class="lineCov">        466 :                 info-&gt;seq = DESC_INDEX(desc_ring, id);</span></a>
+<a name="1541"><span class="lineNum">    1541 </span><span class="lineCov">        274 :         if (seq == 0 &amp;&amp; DESC_INDEX(desc_ring, id) != 0)</span></a>
+<a name="1542"><span class="lineNum">    1542 </span><span class="lineCov">        273 :                 info-&gt;seq = DESC_INDEX(desc_ring, id);</span></a>
 <a name="1543"><span class="lineNum">    1543 </span>            :         else</a>
-<a name="1544"><span class="lineNum">    1544 </span><span class="lineCov">          2 :                 info-&gt;seq = seq + DESCS_COUNT(desc_ring);</span></a>
+<a name="1544"><span class="lineNum">    1544 </span><span class="lineCov">          1 :                 info-&gt;seq = seq + DESCS_COUNT(desc_ring);</span></a>
 <a name="1545"><span class="lineNum">    1545 </span>            : </a>
 <a name="1546"><span class="lineNum">    1546 </span>            :         /*</a>
 <a name="1547"><span class="lineNum">    1547 </span>            :          * New data is about to be reserved. Once that happens, previous</a>
@@ -1611,23 +1611,23 @@
 <a name="1549"><span class="lineNum">    1549 </span>            :          * previous descriptor now so that it can be made available to</a>
 <a name="1550"><span class="lineNum">    1550 </span>            :          * readers. (For seq==0 there is no previous descriptor.)</a>
 <a name="1551"><span class="lineNum">    1551 </span>            :          */</a>
-<a name="1552"><span class="lineNum">    1552 </span><span class="lineCov">        468 :         if (info-&gt;seq &gt; 0)</span></a>
-<a name="1553"><span class="lineNum">    1553 </span><span class="lineCov">        466 :                 desc_make_final(desc_ring, DESC_ID(id - 1));</span></a>
+<a name="1552"><span class="lineNum">    1552 </span><span class="lineCov">        274 :         if (info-&gt;seq &gt; 0)</span></a>
+<a name="1553"><span class="lineNum">    1553 </span><span class="lineCov">        273 :                 desc_make_final(desc_ring, DESC_ID(id - 1));</span></a>
 <a name="1554"><span class="lineNum">    1554 </span>            : </a>
-<a name="1555"><span class="lineNum">    1555 </span><span class="lineCov">        468 :         r-&gt;text_buf = data_alloc(rb, r-&gt;text_buf_size, &amp;d-&gt;text_blk_lpos, id);</span></a>
+<a name="1555"><span class="lineNum">    1555 </span><span class="lineCov">        274 :         r-&gt;text_buf = data_alloc(rb, r-&gt;text_buf_size, &amp;d-&gt;text_blk_lpos, id);</span></a>
 <a name="1556"><span class="lineNum">    1556 </span>            :         /* If text data allocation fails, a data-less record is committed. */</a>
-<a name="1557"><span class="lineNum">    1557 </span><span class="lineCov">        468 :         if (r-&gt;text_buf_size &amp;&amp; !r-&gt;text_buf) {</span></a>
+<a name="1557"><span class="lineNum">    1557 </span><span class="lineCov">        274 :         if (r-&gt;text_buf_size &amp;&amp; !r-&gt;text_buf) {</span></a>
 <a name="1558"><span class="lineNum">    1558 </span><span class="lineNoCov">          0 :                 prb_commit(e);</span></a>
 <a name="1559"><span class="lineNum">    1559 </span>            :                 /* prb_commit() re-enabled interrupts. */</a>
 <a name="1560"><span class="lineNum">    1560 </span><span class="lineNoCov">          0 :                 goto fail;</span></a>
 <a name="1561"><span class="lineNum">    1561 </span>            :         }</a>
 <a name="1562"><span class="lineNum">    1562 </span>            : </a>
-<a name="1563"><span class="lineNum">    1563 </span><span class="lineCov">        468 :         r-&gt;info = info;</span></a>
+<a name="1563"><span class="lineNum">    1563 </span><span class="lineCov">        274 :         r-&gt;info = info;</span></a>
 <a name="1564"><span class="lineNum">    1564 </span>            : </a>
 <a name="1565"><span class="lineNum">    1565 </span>            :         /* Record full text space used by record. */</a>
-<a name="1566"><span class="lineNum">    1566 </span><span class="lineCov">        468 :         e-&gt;text_space = space_used(&amp;rb-&gt;text_data_ring, &amp;d-&gt;text_blk_lpos);</span></a>
+<a name="1566"><span class="lineNum">    1566 </span><span class="lineCov">        274 :         e-&gt;text_space = space_used(&amp;rb-&gt;text_data_ring, &amp;d-&gt;text_blk_lpos);</span></a>
 <a name="1567"><span class="lineNum">    1567 </span>            : </a>
-<a name="1568"><span class="lineNum">    1568 </span><span class="lineCov">        468 :         return true;</span></a>
+<a name="1568"><span class="lineNum">    1568 </span><span class="lineCov">        274 :         return true;</span></a>
 <a name="1569"><span class="lineNum">    1569 </span>            : fail:</a>
 <a name="1570"><span class="lineNum">    1570 </span>            :         /* Make it clear to the caller that the reserve failed. */</a>
 <a name="1571"><span class="lineNum">    1571 </span><span class="lineNoCov">          0 :         memset(r, 0, sizeof(*r));</span></a>
@@ -1635,11 +1635,11 @@
 <a name="1573"><span class="lineNum">    1573 </span>            : }</a>
 <a name="1574"><span class="lineNum">    1574 </span>            : </a>
 <a name="1575"><span class="lineNum">    1575 </span>            : /* Commit the data (possibly finalizing it) and restore interrupts. */</a>
-<a name="1576"><span class="lineNum">    1576 </span><span class="lineCov">        506 : static void _prb_commit(struct prb_reserved_entry *e, unsigned long state_val)</span></a>
+<a name="1576"><span class="lineNum">    1576 </span><span class="lineCov">        293 : static void _prb_commit(struct prb_reserved_entry *e, unsigned long state_val)</span></a>
 <a name="1577"><span class="lineNum">    1577 </span>            : {</a>
-<a name="1578"><span class="lineNum">    1578 </span><span class="lineCov">        506 :         struct prb_desc_ring *desc_ring = &amp;e-&gt;rb-&gt;desc_ring;</span></a>
-<a name="1579"><span class="lineNum">    1579 </span><span class="lineCov">       1012 :         struct prb_desc *d = to_desc(desc_ring, e-&gt;id);</span></a>
-<a name="1580"><span class="lineNum">    1580 </span><span class="lineCov">        506 :         unsigned long prev_state_val = DESC_SV(e-&gt;id, desc_reserved);</span></a>
+<a name="1578"><span class="lineNum">    1578 </span><span class="lineCov">        293 :         struct prb_desc_ring *desc_ring = &amp;e-&gt;rb-&gt;desc_ring;</span></a>
+<a name="1579"><span class="lineNum">    1579 </span><span class="lineCov">        586 :         struct prb_desc *d = to_desc(desc_ring, e-&gt;id);</span></a>
+<a name="1580"><span class="lineNum">    1580 </span><span class="lineCov">        293 :         unsigned long prev_state_val = DESC_SV(e-&gt;id, desc_reserved);</span></a>
 <a name="1581"><span class="lineNum">    1581 </span>            : </a>
 <a name="1582"><span class="lineNum">    1582 </span>            :         /* Now the writer has finished all writing: LMM(_prb_commit:A) */</a>
 <a name="1583"><span class="lineNum">    1583 </span>            : </a>
@@ -1666,14 +1666,14 @@
 <a name="1604"><span class="lineNum">    1604 </span>            :          *       matching</a>
 <a name="1605"><span class="lineNum">    1605 </span>            :          *    MB desc_reserve:D to desc_make_final:A</a>
 <a name="1606"><span class="lineNum">    1606 </span>            :          */</a>
-<a name="1607"><span class="lineNum">    1607 </span><span class="lineCov">       1012 :         if (!atomic_long_try_cmpxchg(&amp;d-&gt;state_var, &amp;prev_state_val,</span></a>
-<a name="1608"><span class="lineNum">    1608 </span><span class="lineCov">        506 :                         DESC_SV(e-&gt;id, state_val))) { /* LMM(_prb_commit:B) */</span></a>
+<a name="1607"><span class="lineNum">    1607 </span><span class="lineCov">        586 :         if (!atomic_long_try_cmpxchg(&amp;d-&gt;state_var, &amp;prev_state_val,</span></a>
+<a name="1608"><span class="lineNum">    1608 </span><span class="lineCov">        293 :                         DESC_SV(e-&gt;id, state_val))) { /* LMM(_prb_commit:B) */</span></a>
 <a name="1609"><span class="lineNum">    1609 </span><span class="lineNoCov">          0 :                 WARN_ON_ONCE(1);</span></a>
 <a name="1610"><span class="lineNum">    1610 </span>            :         }</a>
 <a name="1611"><span class="lineNum">    1611 </span>            : </a>
 <a name="1612"><span class="lineNum">    1612 </span>            :         /* Restore interrupts, the reserve/commit window is finished. */</a>
-<a name="1613"><span class="lineNum">    1613 </span><span class="lineCov">       1012 :         local_irq_restore(e-&gt;irqflags);</span></a>
-<a name="1614"><span class="lineNum">    1614 </span><span class="lineCov">        506 : }</span></a>
+<a name="1613"><span class="lineNum">    1613 </span><span class="lineCov">        586 :         local_irq_restore(e-&gt;irqflags);</span></a>
+<a name="1614"><span class="lineNum">    1614 </span><span class="lineCov">        293 : }</span></a>
 <a name="1615"><span class="lineNum">    1615 </span>            : </a>
 <a name="1616"><span class="lineNum">    1616 </span>            : /**</a>
 <a name="1617"><span class="lineNum">    1617 </span>            :  * prb_commit() - Commit (previously reserved) data to the ringbuffer.</a>
@@ -1691,22 +1691,22 @@
 <a name="1629"><span class="lineNum">    1629 </span>            :  *</a>
 <a name="1630"><span class="lineNum">    1630 </span>            :  * Context: Any context. Enables local interrupts.</a>
 <a name="1631"><span class="lineNum">    1631 </span>            :  */</a>
-<a name="1632"><span class="lineNum">    1632 </span><span class="lineCov">        268 : void prb_commit(struct prb_reserved_entry *e)</span></a>
+<a name="1632"><span class="lineNum">    1632 </span><span class="lineCov">        174 : void prb_commit(struct prb_reserved_entry *e)</span></a>
 <a name="1633"><span class="lineNum">    1633 </span>            : {</a>
-<a name="1634"><span class="lineNum">    1634 </span><span class="lineCov">        268 :         struct prb_desc_ring *desc_ring = &amp;e-&gt;rb-&gt;desc_ring;</span></a>
+<a name="1634"><span class="lineNum">    1634 </span><span class="lineCov">        174 :         struct prb_desc_ring *desc_ring = &amp;e-&gt;rb-&gt;desc_ring;</span></a>
 <a name="1635"><span class="lineNum">    1635 </span>            :         unsigned long head_id;</a>
 <a name="1636"><span class="lineNum">    1636 </span>            : </a>
-<a name="1637"><span class="lineNum">    1637 </span><span class="lineCov">        268 :         _prb_commit(e, desc_committed);</span></a>
+<a name="1637"><span class="lineNum">    1637 </span><span class="lineCov">        174 :         _prb_commit(e, desc_committed);</span></a>
 <a name="1638"><span class="lineNum">    1638 </span>            : </a>
 <a name="1639"><span class="lineNum">    1639 </span>            :         /*</a>
 <a name="1640"><span class="lineNum">    1640 </span>            :          * If this descriptor is no longer the head (i.e. a new record has</a>
 <a name="1641"><span class="lineNum">    1641 </span>            :          * been allocated), extending the data for this record is no longer</a>
 <a name="1642"><span class="lineNum">    1642 </span>            :          * allowed and therefore it must be finalized.</a>
 <a name="1643"><span class="lineNum">    1643 </span>            :          */</a>
-<a name="1644"><span class="lineNum">    1644 </span><span class="lineCov">        536 :         head_id = atomic_long_read(&amp;desc_ring-&gt;head_id); /* LMM(prb_commit:A) */</span></a>
-<a name="1645"><span class="lineNum">    1645 </span><span class="lineCov">        268 :         if (head_id != e-&gt;id)</span></a>
+<a name="1644"><span class="lineNum">    1644 </span><span class="lineCov">        348 :         head_id = atomic_long_read(&amp;desc_ring-&gt;head_id); /* LMM(prb_commit:A) */</span></a>
+<a name="1645"><span class="lineNum">    1645 </span><span class="lineCov">        174 :         if (head_id != e-&gt;id)</span></a>
 <a name="1646"><span class="lineNum">    1646 </span><span class="lineNoCov">          0 :                 desc_make_final(desc_ring, e-&gt;id);</span></a>
-<a name="1647"><span class="lineNum">    1647 </span><span class="lineCov">        268 : }</span></a>
+<a name="1647"><span class="lineNum">    1647 </span><span class="lineCov">        174 : }</span></a>
 <a name="1648"><span class="lineNum">    1648 </span>            : </a>
 <a name="1649"><span class="lineNum">    1649 </span>            : /**</a>
 <a name="1650"><span class="lineNum">    1650 </span>            :  * prb_final_commit() - Commit and finalize (previously reserved) data to</a>
@@ -1723,15 +1723,15 @@
 <a name="1661"><span class="lineNum">    1661 </span>            :  *</a>
 <a name="1662"><span class="lineNum">    1662 </span>            :  * Context: Any context. Enables local interrupts.</a>
 <a name="1663"><span class="lineNum">    1663 </span>            :  */</a>
-<a name="1664"><span class="lineNum">    1664 </span><span class="lineCov">        238 : void prb_final_commit(struct prb_reserved_entry *e)</span></a>
+<a name="1664"><span class="lineNum">    1664 </span><span class="lineCov">        119 : void prb_final_commit(struct prb_reserved_entry *e)</span></a>
 <a name="1665"><span class="lineNum">    1665 </span>            : {</a>
-<a name="1666"><span class="lineNum">    1666 </span><span class="lineCov">        238 :         struct prb_desc_ring *desc_ring = &amp;e-&gt;rb-&gt;desc_ring;</span></a>
+<a name="1666"><span class="lineNum">    1666 </span><span class="lineCov">        119 :         struct prb_desc_ring *desc_ring = &amp;e-&gt;rb-&gt;desc_ring;</span></a>
 <a name="1667"><span class="lineNum">    1667 </span>            : </a>
-<a name="1668"><span class="lineNum">    1668 </span><span class="lineCov">        238 :         _prb_commit(e, desc_finalized);</span></a>
+<a name="1668"><span class="lineNum">    1668 </span><span class="lineCov">        119 :         _prb_commit(e, desc_finalized);</span></a>
 <a name="1669"><span class="lineNum">    1669 </span>            : </a>
 <a name="1670"><span class="lineNum">    1670 </span>            :         /* Best effort to remember the last finalized @id. */</a>
-<a name="1671"><span class="lineNum">    1671 </span><span class="lineCov">        476 :         atomic_long_set(&amp;desc_ring-&gt;last_finalized_id, e-&gt;id);</span></a>
-<a name="1672"><span class="lineNum">    1672 </span><span class="lineCov">        238 : }</span></a>
+<a name="1671"><span class="lineNum">    1671 </span><span class="lineCov">        238 :         atomic_long_set(&amp;desc_ring-&gt;last_finalized_id, e-&gt;id);</span></a>
+<a name="1672"><span class="lineNum">    1672 </span><span class="lineCov">        119 : }</span></a>
 <a name="1673"><span class="lineNum">    1673 </span>            : </a>
 <a name="1674"><span class="lineNum">    1674 </span>            : /*</a>
 <a name="1675"><span class="lineNum">    1675 </span>            :  * Count the number of lines in provided text. All text has at least 1 line</a>
@@ -1764,7 +1764,7 @@
 <a name="1702"><span class="lineNum">    1702 </span>            :  * size to possibly detect bugs in the writer code. A WARN_ON_ONCE() is</a>
 <a name="1703"><span class="lineNum">    1703 </span>            :  * triggered if an internal error is detected.</a>
 <a name="1704"><span class="lineNum">    1704 </span>            :  */</a>
-<a name="1705"><span class="lineNum">    1705 </span><span class="lineCov">        682 : static bool copy_data(struct prb_data_ring *data_ring,</span></a>
+<a name="1705"><span class="lineNum">    1705 </span><span class="lineCov">        381 : static bool copy_data(struct prb_data_ring *data_ring,</span></a>
 <a name="1706"><span class="lineNum">    1706 </span>            :                       struct prb_data_blk_lpos *blk_lpos, u16 len, char *buf,</a>
 <a name="1707"><span class="lineNum">    1707 </span>            :                       unsigned int buf_size, unsigned int *line_count)</a>
 <a name="1708"><span class="lineNum">    1708 </span>            : {</a>
@@ -1772,11 +1772,11 @@
 <a name="1710"><span class="lineNum">    1710 </span>            :         const char *data;</a>
 <a name="1711"><span class="lineNum">    1711 </span>            : </a>
 <a name="1712"><span class="lineNum">    1712 </span>            :         /* Caller might not want any data. */</a>
-<a name="1713"><span class="lineNum">    1713 </span><span class="lineCov">        682 :         if ((!buf || !buf_size) &amp;&amp; !line_count)</span></a>
+<a name="1713"><span class="lineNum">    1713 </span><span class="lineCov">        381 :         if ((!buf || !buf_size) &amp;&amp; !line_count)</span></a>
 <a name="1714"><span class="lineNum">    1714 </span>            :                 return true;</a>
 <a name="1715"><span class="lineNum">    1715 </span>            : </a>
-<a name="1716"><span class="lineNum">    1716 </span><span class="lineCov">        682 :         data = get_data(data_ring, blk_lpos, &amp;data_size);</span></a>
-<a name="1717"><span class="lineNum">    1717 </span><span class="lineCov">        682 :         if (!data)</span></a>
+<a name="1716"><span class="lineNum">    1716 </span><span class="lineCov">        381 :         data = get_data(data_ring, blk_lpos, &amp;data_size);</span></a>
+<a name="1717"><span class="lineNum">    1717 </span><span class="lineCov">        381 :         if (!data)</span></a>
 <a name="1718"><span class="lineNum">    1718 </span>            :                 return false;</a>
 <a name="1719"><span class="lineNum">    1719 </span>            : </a>
 <a name="1720"><span class="lineNum">    1720 </span>            :         /*</a>
@@ -1786,21 +1786,21 @@
 <a name="1724"><span class="lineNum">    1724 </span>            :          * Note that invalid @len values can occur because the caller loads</a>
 <a name="1725"><span class="lineNum">    1725 </span>            :          * the value during an allowed data race.</a>
 <a name="1726"><span class="lineNum">    1726 </span>            :          */</a>
-<a name="1727"><span class="lineNum">    1727 </span><span class="lineCov">        682 :         if (data_size &lt; (unsigned int)len)</span></a>
+<a name="1727"><span class="lineNum">    1727 </span><span class="lineCov">        381 :         if (data_size &lt; (unsigned int)len)</span></a>
 <a name="1728"><span class="lineNum">    1728 </span>            :                 return false;</a>
 <a name="1729"><span class="lineNum">    1729 </span>            : </a>
 <a name="1730"><span class="lineNum">    1730 </span>            :         /* Caller interested in the line count? */</a>
-<a name="1731"><span class="lineNum">    1731 </span><span class="lineCov">        682 :         if (line_count)</span></a>
+<a name="1731"><span class="lineNum">    1731 </span><span class="lineCov">        381 :         if (line_count)</span></a>
 <a name="1732"><span class="lineNum">    1732 </span><span class="lineNoCov">          0 :                 *line_count = count_lines(data, len);</span></a>
 <a name="1733"><span class="lineNum">    1733 </span>            : </a>
 <a name="1734"><span class="lineNum">    1734 </span>            :         /* Caller interested in the data content? */</a>
-<a name="1735"><span class="lineNum">    1735 </span><span class="lineCov">        682 :         if (!buf || !buf_size)</span></a>
+<a name="1735"><span class="lineNum">    1735 </span><span class="lineCov">        381 :         if (!buf || !buf_size)</span></a>
 <a name="1736"><span class="lineNum">    1736 </span>            :                 return true;</a>
 <a name="1737"><span class="lineNum">    1737 </span>            : </a>
-<a name="1738"><span class="lineNum">    1738 </span><span class="lineCov">        682 :         data_size = min_t(u16, buf_size, len);</span></a>
+<a name="1738"><span class="lineNum">    1738 </span><span class="lineCov">        381 :         data_size = min_t(u16, buf_size, len);</span></a>
 <a name="1739"><span class="lineNum">    1739 </span>            : </a>
-<a name="1740"><span class="lineNum">    1740 </span><span class="lineCov">        682 :         memcpy(&amp;buf[0], data, data_size); /* LMM(copy_data:A) */</span></a>
-<a name="1741"><span class="lineNum">    1741 </span><span class="lineCov">        682 :         return true;</span></a>
+<a name="1740"><span class="lineNum">    1740 </span><span class="lineCov">        381 :         memcpy(&amp;buf[0], data, data_size); /* LMM(copy_data:A) */</span></a>
+<a name="1741"><span class="lineNum">    1741 </span><span class="lineCov">        381 :         return true;</span></a>
 <a name="1742"><span class="lineNum">    1742 </span>            : }</a>
 <a name="1743"><span class="lineNum">    1743 </span>            : </a>
 <a name="1744"><span class="lineNum">    1744 </span>            : /*</a>
@@ -1814,25 +1814,25 @@
 <a name="1752"><span class="lineNum">    1752 </span>            :  *          is not available. This is a valid record, so readers should</a>
 <a name="1753"><span class="lineNum">    1753 </span>            :  *          continue with the next record.</a>
 <a name="1754"><span class="lineNum">    1754 </span>            :  */</a>
-<a name="1755"><span class="lineNum">    1755 </span><span class="lineCov">       2388 : static int desc_read_finalized_seq(struct prb_desc_ring *desc_ring,</span></a>
+<a name="1755"><span class="lineNum">    1755 </span><span class="lineCov">       1354 : static int desc_read_finalized_seq(struct prb_desc_ring *desc_ring,</span></a>
 <a name="1756"><span class="lineNum">    1756 </span>            :                                    unsigned long id, u64 seq,</a>
 <a name="1757"><span class="lineNum">    1757 </span>            :                                    struct prb_desc *desc_out)</a>
 <a name="1758"><span class="lineNum">    1758 </span>            : {</a>
-<a name="1759"><span class="lineNum">    1759 </span><span class="lineCov">       2388 :         struct prb_data_blk_lpos *blk_lpos = &amp;desc_out-&gt;text_blk_lpos;</span></a>
+<a name="1759"><span class="lineNum">    1759 </span><span class="lineCov">       1354 :         struct prb_data_blk_lpos *blk_lpos = &amp;desc_out-&gt;text_blk_lpos;</span></a>
 <a name="1760"><span class="lineNum">    1760 </span>            :         enum desc_state d_state;</a>
 <a name="1761"><span class="lineNum">    1761 </span>            :         u64 s;</a>
 <a name="1762"><span class="lineNum">    1762 </span>            : </a>
-<a name="1763"><span class="lineNum">    1763 </span><span class="lineCov">       2388 :         d_state = desc_read(desc_ring, id, desc_out, &amp;s, NULL);</span></a>
+<a name="1763"><span class="lineNum">    1763 </span><span class="lineCov">       1354 :         d_state = desc_read(desc_ring, id, desc_out, &amp;s, NULL);</span></a>
 <a name="1764"><span class="lineNum">    1764 </span>            : </a>
 <a name="1765"><span class="lineNum">    1765 </span>            :         /*</a>
 <a name="1766"><span class="lineNum">    1766 </span>            :          * An unexpected @id (desc_miss) or @seq mismatch means the record</a>
 <a name="1767"><span class="lineNum">    1767 </span>            :          * does not exist. A descriptor in the reserved or committed state</a>
 <a name="1768"><span class="lineNum">    1768 </span>            :          * means the record does not yet exist for the reader.</a>
 <a name="1769"><span class="lineNum">    1769 </span>            :          */</a>
-<a name="1770"><span class="lineNum">    1770 </span><span class="lineCov">       2388 :         if (d_state == desc_miss ||</span></a>
-<a name="1771"><span class="lineNum">    1771 </span><span class="lineCov">       1900 :             d_state == desc_reserved ||</span></a>
-<a name="1772"><span class="lineNum">    1772 </span><span class="lineCov">       1364 :             d_state == desc_committed ||</span></a>
-<a name="1773"><span class="lineNum">    1773 </span><span class="lineCov">       1364 :             s != seq) {</span></a>
+<a name="1770"><span class="lineNum">    1770 </span><span class="lineCov">       1354 :         if (d_state == desc_miss ||</span></a>
+<a name="1771"><span class="lineNum">    1771 </span><span class="lineCov">       1112 :             d_state == desc_reserved ||</span></a>
+<a name="1772"><span class="lineNum">    1772 </span><span class="lineCov">        762 :             d_state == desc_committed ||</span></a>
+<a name="1773"><span class="lineNum">    1773 </span><span class="lineCov">        762 :             s != seq) {</span></a>
 <a name="1774"><span class="lineNum">    1774 </span>            :                 return -EINVAL;</a>
 <a name="1775"><span class="lineNum">    1775 </span>            :         }</a>
 <a name="1776"><span class="lineNum">    1776 </span>            : </a>
@@ -1841,12 +1841,12 @@
 <a name="1779"><span class="lineNum">    1779 </span>            :          * available; report it as existing but with lost data. Or the record</a>
 <a name="1780"><span class="lineNum">    1780 </span>            :          * may actually be a record with lost data.</a>
 <a name="1781"><span class="lineNum">    1781 </span>            :          */</a>
-<a name="1782"><span class="lineNum">    1782 </span><span class="lineCov">       2728 :         if (d_state == desc_reusable ||</span></a>
-<a name="1783"><span class="lineNum">    1783 </span><span class="lineCov">       1364 :             (blk_lpos-&gt;begin == FAILED_LPOS &amp;&amp; blk_lpos-&gt;next == FAILED_LPOS)) {</span></a>
+<a name="1782"><span class="lineNum">    1782 </span><span class="lineCov">       1524 :         if (d_state == desc_reusable ||</span></a>
+<a name="1783"><span class="lineNum">    1783 </span><span class="lineCov">        762 :             (blk_lpos-&gt;begin == FAILED_LPOS &amp;&amp; blk_lpos-&gt;next == FAILED_LPOS)) {</span></a>
 <a name="1784"><span class="lineNum">    1784 </span>            :                 return -ENOENT;</a>
 <a name="1785"><span class="lineNum">    1785 </span>            :         }</a>
 <a name="1786"><span class="lineNum">    1786 </span>            : </a>
-<a name="1787"><span class="lineNum">    1787 </span><span class="lineCov">       1364 :         return 0;</span></a>
+<a name="1787"><span class="lineNum">    1787 </span><span class="lineCov">        762 :         return 0;</span></a>
 <a name="1788"><span class="lineNum">    1788 </span>            : }</a>
 <a name="1789"><span class="lineNum">    1789 </span>            : </a>
 <a name="1790"><span class="lineNum">    1790 </span>            : /*</a>
@@ -1855,63 +1855,63 @@
 <a name="1793"><span class="lineNum">    1793 </span>            :  *</a>
 <a name="1794"><span class="lineNum">    1794 </span>            :  * See desc_read_finalized_seq() for error return values.</a>
 <a name="1795"><span class="lineNum">    1795 </span>            :  */</a>
-<a name="1796"><span class="lineNum">    1796 </span><span class="lineCov">       1706 : static int prb_read(struct printk_ringbuffer *rb, u64 seq,</span></a>
+<a name="1796"><span class="lineNum">    1796 </span><span class="lineCov">        973 : static int prb_read(struct printk_ringbuffer *rb, u64 seq,</span></a>
 <a name="1797"><span class="lineNum">    1797 </span>            :                     struct printk_record *r, unsigned int *line_count)</a>
 <a name="1798"><span class="lineNum">    1798 </span>            : {</a>
-<a name="1799"><span class="lineNum">    1799 </span><span class="lineCov">       1706 :         struct prb_desc_ring *desc_ring = &amp;rb-&gt;desc_ring;</span></a>
-<a name="1800"><span class="lineNum">    1800 </span><span class="lineCov">       3412 :         struct printk_info *info = to_info(desc_ring, seq);</span></a>
-<a name="1801"><span class="lineNum">    1801 </span><span class="lineCov">       3412 :         struct prb_desc *rdesc = to_desc(desc_ring, seq);</span></a>
-<a name="1802"><span class="lineNum">    1802 </span><span class="lineCov">       1706 :         atomic_long_t *state_var = &amp;rdesc-&gt;state_var;</span></a>
+<a name="1799"><span class="lineNum">    1799 </span><span class="lineCov">        973 :         struct prb_desc_ring *desc_ring = &amp;rb-&gt;desc_ring;</span></a>
+<a name="1800"><span class="lineNum">    1800 </span><span class="lineCov">       1946 :         struct printk_info *info = to_info(desc_ring, seq);</span></a>
+<a name="1801"><span class="lineNum">    1801 </span><span class="lineCov">       1946 :         struct prb_desc *rdesc = to_desc(desc_ring, seq);</span></a>
+<a name="1802"><span class="lineNum">    1802 </span><span class="lineCov">        973 :         atomic_long_t *state_var = &amp;rdesc-&gt;state_var;</span></a>
 <a name="1803"><span class="lineNum">    1803 </span>            :         struct prb_desc desc;</a>
 <a name="1804"><span class="lineNum">    1804 </span>            :         unsigned long id;</a>
 <a name="1805"><span class="lineNum">    1805 </span>            :         int err;</a>
 <a name="1806"><span class="lineNum">    1806 </span>            : </a>
 <a name="1807"><span class="lineNum">    1807 </span>            :         /* Extract the ID, used to specify the descriptor to read. */</a>
-<a name="1808"><span class="lineNum">    1808 </span><span class="lineCov">       1706 :         id = DESC_ID(atomic_long_read(state_var));</span></a>
+<a name="1808"><span class="lineNum">    1808 </span><span class="lineCov">        973 :         id = DESC_ID(atomic_long_read(state_var));</span></a>
 <a name="1809"><span class="lineNum">    1809 </span>            : </a>
 <a name="1810"><span class="lineNum">    1810 </span>            :         /* Get a local copy of the correct descriptor (if available). */</a>
-<a name="1811"><span class="lineNum">    1811 </span><span class="lineCov">       1706 :         err = desc_read_finalized_seq(desc_ring, id, seq, &amp;desc);</span></a>
+<a name="1811"><span class="lineNum">    1811 </span><span class="lineCov">        973 :         err = desc_read_finalized_seq(desc_ring, id, seq, &amp;desc);</span></a>
 <a name="1812"><span class="lineNum">    1812 </span>            : </a>
 <a name="1813"><span class="lineNum">    1813 </span>            :         /*</a>
 <a name="1814"><span class="lineNum">    1814 </span>            :          * If @r is NULL, the caller is only interested in the availability</a>
 <a name="1815"><span class="lineNum">    1815 </span>            :          * of the record.</a>
 <a name="1816"><span class="lineNum">    1816 </span>            :          */</a>
-<a name="1817"><span class="lineNum">    1817 </span><span class="lineCov">       1706 :         if (err || !r)</span></a>
+<a name="1817"><span class="lineNum">    1817 </span><span class="lineCov">        973 :         if (err || !r)</span></a>
 <a name="1818"><span class="lineNum">    1818 </span>            :                 return err;</a>
 <a name="1819"><span class="lineNum">    1819 </span>            : </a>
 <a name="1820"><span class="lineNum">    1820 </span>            :         /* If requested, copy meta data. */</a>
-<a name="1821"><span class="lineNum">    1821 </span><span class="lineCov">        682 :         if (r-&gt;info)</span></a>
-<a name="1822"><span class="lineNum">    1822 </span><span class="lineCov">        682 :                 memcpy(r-&gt;info, info, sizeof(*(r-&gt;info)));</span></a>
+<a name="1821"><span class="lineNum">    1821 </span><span class="lineCov">        381 :         if (r-&gt;info)</span></a>
+<a name="1822"><span class="lineNum">    1822 </span><span class="lineCov">        381 :                 memcpy(r-&gt;info, info, sizeof(*(r-&gt;info)));</span></a>
 <a name="1823"><span class="lineNum">    1823 </span>            : </a>
 <a name="1824"><span class="lineNum">    1824 </span>            :         /* Copy text data. If it fails, this is a data-less record. */</a>
-<a name="1825"><span class="lineNum">    1825 </span><span class="lineCov">        682 :         if (!copy_data(&amp;rb-&gt;text_data_ring, &amp;desc.text_blk_lpos, info-&gt;text_len,</span></a>
+<a name="1825"><span class="lineNum">    1825 </span><span class="lineCov">        381 :         if (!copy_data(&amp;rb-&gt;text_data_ring, &amp;desc.text_blk_lpos, info-&gt;text_len,</span></a>
 <a name="1826"><span class="lineNum">    1826 </span>            :                        r-&gt;text_buf, r-&gt;text_buf_size, line_count)) {</a>
 <a name="1827"><span class="lineNum">    1827 </span>            :                 return -ENOENT;</a>
 <a name="1828"><span class="lineNum">    1828 </span>            :         }</a>
 <a name="1829"><span class="lineNum">    1829 </span>            : </a>
 <a name="1830"><span class="lineNum">    1830 </span>            :         /* Ensure the record is still finalized and has the same @seq. */</a>
-<a name="1831"><span class="lineNum">    1831 </span><span class="lineCov">        682 :         return desc_read_finalized_seq(desc_ring, id, seq, &amp;desc);</span></a>
+<a name="1831"><span class="lineNum">    1831 </span><span class="lineCov">        381 :         return desc_read_finalized_seq(desc_ring, id, seq, &amp;desc);</span></a>
 <a name="1832"><span class="lineNum">    1832 </span>            : }</a>
 <a name="1833"><span class="lineNum">    1833 </span>            : </a>
 <a name="1834"><span class="lineNum">    1834 </span>            : /* Get the sequence number of the tail descriptor. */</a>
-<a name="1835"><span class="lineNum">    1835 </span><span class="lineCov">       1024 : static u64 prb_first_seq(struct printk_ringbuffer *rb)</span></a>
+<a name="1835"><span class="lineNum">    1835 </span><span class="lineCov">        592 : static u64 prb_first_seq(struct printk_ringbuffer *rb)</span></a>
 <a name="1836"><span class="lineNum">    1836 </span>            : {</a>
-<a name="1837"><span class="lineNum">    1837 </span><span class="lineCov">       1024 :         struct prb_desc_ring *desc_ring = &amp;rb-&gt;desc_ring;</span></a>
+<a name="1837"><span class="lineNum">    1837 </span><span class="lineCov">        592 :         struct prb_desc_ring *desc_ring = &amp;rb-&gt;desc_ring;</span></a>
 <a name="1838"><span class="lineNum">    1838 </span>            :         enum desc_state d_state;</a>
 <a name="1839"><span class="lineNum">    1839 </span>            :         struct prb_desc desc;</a>
 <a name="1840"><span class="lineNum">    1840 </span>            :         unsigned long id;</a>
 <a name="1841"><span class="lineNum">    1841 </span>            :         u64 seq;</a>
 <a name="1842"><span class="lineNum">    1842 </span>            : </a>
 <a name="1843"><span class="lineNum">    1843 </span>            :         for (;;) {</a>
-<a name="1844"><span class="lineNum">    1844 </span><span class="lineCov">       2048 :                 id = atomic_long_read(&amp;rb-&gt;desc_ring.tail_id); /* LMM(prb_first_seq:A) */</span></a>
+<a name="1844"><span class="lineNum">    1844 </span><span class="lineCov">       1184 :                 id = atomic_long_read(&amp;rb-&gt;desc_ring.tail_id); /* LMM(prb_first_seq:A) */</span></a>
 <a name="1845"><span class="lineNum">    1845 </span>            : </a>
-<a name="1846"><span class="lineNum">    1846 </span><span class="lineCov">       1024 :                 d_state = desc_read(desc_ring, id, &amp;desc, &amp;seq, NULL); /* LMM(prb_first_seq:B) */</span></a>
+<a name="1846"><span class="lineNum">    1846 </span><span class="lineCov">        592 :                 d_state = desc_read(desc_ring, id, &amp;desc, &amp;seq, NULL); /* LMM(prb_first_seq:B) */</span></a>
 <a name="1847"><span class="lineNum">    1847 </span>            : </a>
 <a name="1848"><span class="lineNum">    1848 </span>            :                 /*</a>
 <a name="1849"><span class="lineNum">    1849 </span>            :                  * This loop will not be infinite because the tail is</a>
 <a name="1850"><span class="lineNum">    1850 </span>            :                  * _always_ in the finalized or reusable state.</a>
 <a name="1851"><span class="lineNum">    1851 </span>            :                  */</a>
-<a name="1852"><span class="lineNum">    1852 </span><span class="lineCov">       1024 :                 if (d_state == desc_finalized || d_state == desc_reusable)</span></a>
+<a name="1852"><span class="lineNum">    1852 </span><span class="lineCov">        592 :                 if (d_state == desc_finalized || d_state == desc_reusable)</span></a>
 <a name="1853"><span class="lineNum">    1853 </span>            :                         break;</a>
 <a name="1854"><span class="lineNum">    1854 </span>            : </a>
 <a name="1855"><span class="lineNum">    1855 </span>            :                 /*</a>
@@ -1934,7 +1934,7 @@
 <a name="1872"><span class="lineNum">    1872 </span><span class="lineNoCov">          0 :                 smp_rmb(); /* LMM(prb_first_seq:C) */</span></a>
 <a name="1873"><span class="lineNum">    1873 </span>            :         }</a>
 <a name="1874"><span class="lineNum">    1874 </span>            : </a>
-<a name="1875"><span class="lineNum">    1875 </span><span class="lineCov">       1024 :         return seq;</span></a>
+<a name="1875"><span class="lineNum">    1875 </span><span class="lineCov">        592 :         return seq;</span></a>
 <a name="1876"><span class="lineNum">    1876 </span>            : }</a>
 <a name="1877"><span class="lineNum">    1877 </span>            : </a>
 <a name="1878"><span class="lineNum">    1878 </span>            : /*</a>
@@ -1944,23 +1944,23 @@
 <a name="1882"><span class="lineNum">    1882 </span>            :  * See the description of prb_read_valid() and prb_read_valid_info()</a>
 <a name="1883"><span class="lineNum">    1883 </span>            :  * for details.</a>
 <a name="1884"><span class="lineNum">    1884 </span>            :  */</a>
-<a name="1885"><span class="lineNum">    1885 </span><span class="lineCov">       1706 : static bool _prb_read_valid(struct printk_ringbuffer *rb, u64 *seq,</span></a>
+<a name="1885"><span class="lineNum">    1885 </span><span class="lineCov">        973 : static bool _prb_read_valid(struct printk_ringbuffer *rb, u64 *seq,</span></a>
 <a name="1886"><span class="lineNum">    1886 </span>            :                             struct printk_record *r, unsigned int *line_count)</a>
 <a name="1887"><span class="lineNum">    1887 </span>            : {</a>
 <a name="1888"><span class="lineNum">    1888 </span>            :         u64 tail_seq;</a>
 <a name="1889"><span class="lineNum">    1889 </span>            :         int err;</a>
 <a name="1890"><span class="lineNum">    1890 </span>            : </a>
-<a name="1891"><span class="lineNum">    1891 </span><span class="lineCov">       3412 :         while ((err = prb_read(rb, *seq, r, line_count))) {</span></a>
-<a name="1892"><span class="lineNum">    1892 </span><span class="lineCov">       1024 :                 tail_seq = prb_first_seq(rb);</span></a>
+<a name="1891"><span class="lineNum">    1891 </span><span class="lineCov">       1946 :         while ((err = prb_read(rb, *seq, r, line_count))) {</span></a>
+<a name="1892"><span class="lineNum">    1892 </span><span class="lineCov">        592 :                 tail_seq = prb_first_seq(rb);</span></a>
 <a name="1893"><span class="lineNum">    1893 </span>            : </a>
-<a name="1894"><span class="lineNum">    1894 </span><span class="lineCov">       1024 :                 if (*seq &lt; tail_seq) {</span></a>
+<a name="1894"><span class="lineNum">    1894 </span><span class="lineCov">        592 :                 if (*seq &lt; tail_seq) {</span></a>
 <a name="1895"><span class="lineNum">    1895 </span>            :                         /*</a>
 <a name="1896"><span class="lineNum">    1896 </span>            :                          * Behind the tail. Catch up and try again. This</a>
 <a name="1897"><span class="lineNum">    1897 </span>            :                          * can happen for -ENOENT and -EINVAL cases.</a>
 <a name="1898"><span class="lineNum">    1898 </span>            :                          */</a>
 <a name="1899"><span class="lineNum">    1899 </span><span class="lineNoCov">          0 :                         *seq = tail_seq;</span></a>
 <a name="1900"><span class="lineNum">    1900 </span>            : </a>
-<a name="1901"><span class="lineNum">    1901 </span><span class="lineCov">       1024 :                 } else if (err == -ENOENT) {</span></a>
+<a name="1901"><span class="lineNum">    1901 </span><span class="lineCov">        592 :                 } else if (err == -ENOENT) {</span></a>
 <a name="1902"><span class="lineNum">    1902 </span>            :                         /* Record exists, but no data available. Skip. */</a>
 <a name="1903"><span class="lineNum">    1903 </span><span class="lineNoCov">          0 :                         (*seq)++;</span></a>
 <a name="1904"><span class="lineNum">    1904 </span>            : </a>
@@ -1996,10 +1996,10 @@
 <a name="1934"><span class="lineNum">    1934 </span>            :  *</a>
 <a name="1935"><span class="lineNum">    1935 </span>            :  * Failure means @seq refers to a not yet written record.</a>
 <a name="1936"><span class="lineNum">    1936 </span>            :  */</a>
-<a name="1937"><span class="lineNum">    1937 </span><span class="lineCov">       1706 : bool prb_read_valid(struct printk_ringbuffer *rb, u64 seq,</span></a>
+<a name="1937"><span class="lineNum">    1937 </span><span class="lineCov">        973 : bool prb_read_valid(struct printk_ringbuffer *rb, u64 seq,</span></a>
 <a name="1938"><span class="lineNum">    1938 </span>            :                     struct printk_record *r)</a>
 <a name="1939"><span class="lineNum">    1939 </span>            : {</a>
-<a name="1940"><span class="lineNum">    1940 </span><span class="lineCov">       1706 :         return _prb_read_valid(rb, &amp;seq, r, NULL);</span></a>
+<a name="1940"><span class="lineNum">    1940 </span><span class="lineCov">        973 :         return _prb_read_valid(rb, &amp;seq, r, NULL);</span></a>
 <a name="1941"><span class="lineNum">    1941 </span>            : }</a>
 <a name="1942"><span class="lineNum">    1942 </span>            : </a>
 <a name="1943"><span class="lineNum">    1943 </span>            : /**</a>

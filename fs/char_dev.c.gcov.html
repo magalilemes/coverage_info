@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -105,7 +105,7 @@
 <a name="43"><span class="lineNum">      43 </span>            : /* index in the above */</a>
 <a name="44"><span class="lineNum">      44 </span>            : static inline int major_to_index(unsigned major)</a>
 <a name="45"><span class="lineNum">      45 </span>            : {</a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">         24 :         return major % CHRDEV_MAJOR_HASH_SIZE;</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">         12 :         return major % CHRDEV_MAJOR_HASH_SIZE;</span></a>
 <a name="47"><span class="lineNum">      47 </span>            : }</a>
 <a name="48"><span class="lineNum">      48 </span>            : </a>
 <a name="49"><span class="lineNum">      49 </span>            : #ifdef CONFIG_PROC_FS</a>
@@ -156,32 +156,32 @@
 <a name="94"><span class="lineNum">      94 </span>            :  *</a>
 <a name="95"><span class="lineNum">      95 </span>            :  */</a>
 <a name="96"><span class="lineNum">      96 </span>            : static struct char_device_struct *</a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineCov">         24 : __register_chrdev_region(unsigned int major, unsigned int baseminor,</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">         12 : __register_chrdev_region(unsigned int major, unsigned int baseminor,</span></a>
 <a name="98"><span class="lineNum">      98 </span>            :                            int minorct, const char *name)</a>
 <a name="99"><span class="lineNum">      99 </span>            : {</a>
-<a name="100"><span class="lineNum">     100 </span><span class="lineCov">         24 :         struct char_device_struct *cd, *curr, *prev = NULL;</span></a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineCov">         12 :         struct char_device_struct *cd, *curr, *prev = NULL;</span></a>
 <a name="101"><span class="lineNum">     101 </span>            :         int ret;</a>
 <a name="102"><span class="lineNum">     102 </span>            :         int i;</a>
 <a name="103"><span class="lineNum">     103 </span>            : </a>
-<a name="104"><span class="lineNum">     104 </span><span class="lineCov">         24 :         if (major &gt;= CHRDEV_MAJOR_MAX) {</span></a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineCov">         12 :         if (major &gt;= CHRDEV_MAJOR_MAX) {</span></a>
 <a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 :                 pr_err(&quot;CHRDEV \&quot;%s\&quot; major requested (%u) is greater than the maximum (%u)\n&quot;,</span></a>
 <a name="106"><span class="lineNum">     106 </span>            :                        name, major, CHRDEV_MAJOR_MAX-1);</a>
 <a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 :                 return ERR_PTR(-EINVAL);</span></a>
 <a name="108"><span class="lineNum">     108 </span>            :         }</a>
 <a name="109"><span class="lineNum">     109 </span>            : </a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineCov">         24 :         if (minorct &gt; MINORMASK + 1 - baseminor) {</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">         12 :         if (minorct &gt; MINORMASK + 1 - baseminor) {</span></a>
 <a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 :                 pr_err(&quot;CHRDEV \&quot;%s\&quot; minor range requested (%u-%u) is out of range of maximum range (%u-%u) for a single major\n&quot;,</span></a>
 <a name="112"><span class="lineNum">     112 </span>            :                         name, baseminor, baseminor + minorct - 1, 0, MINORMASK);</a>
 <a name="113"><span class="lineNum">     113 </span><span class="lineNoCov">          0 :                 return ERR_PTR(-EINVAL);</span></a>
 <a name="114"><span class="lineNum">     114 </span>            :         }</a>
 <a name="115"><span class="lineNum">     115 </span>            : </a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">         24 :         cd = kzalloc(sizeof(struct char_device_struct), GFP_KERNEL);</span></a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineCov">         24 :         if (cd == NULL)</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">         12 :         cd = kzalloc(sizeof(struct char_device_struct), GFP_KERNEL);</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">         12 :         if (cd == NULL)</span></a>
 <a name="118"><span class="lineNum">     118 </span>            :                 return ERR_PTR(-ENOMEM);</a>
 <a name="119"><span class="lineNum">     119 </span>            : </a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">         24 :         mutex_lock(&amp;chrdevs_lock);</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">         12 :         mutex_lock(&amp;chrdevs_lock);</span></a>
 <a name="121"><span class="lineNum">     121 </span>            : </a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">         24 :         if (major == 0) {</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">         12 :         if (major == 0) {</span></a>
 <a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :                 ret = find_dynamic_major();</span></a>
 <a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :                 if (ret &lt; 0) {</span></a>
 <a name="125"><span class="lineNum">     125 </span><span class="lineNoCov">          0 :                         pr_err(&quot;CHRDEV \&quot;%s\&quot; dynamic allocation region is full\n&quot;,</span></a>
@@ -191,17 +191,17 @@
 <a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 :                 major = ret;</span></a>
 <a name="130"><span class="lineNum">     130 </span>            :         }</a>
 <a name="131"><span class="lineNum">     131 </span>            : </a>
-<a name="132"><span class="lineNum">     132 </span><span class="lineCov">         24 :         ret = -EBUSY;</span></a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">         24 :         i = major_to_index(major);</span></a>
-<a name="134"><span class="lineNum">     134 </span><span class="lineCov">         30 :         for (curr = chrdevs[i]; curr; prev = curr, curr = curr-&gt;next) {</span></a>
-<a name="135"><span class="lineNum">     135 </span><span class="lineCov">          6 :                 if (curr-&gt;major &lt; major)</span></a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineCov">         12 :         ret = -EBUSY;</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">         12 :         i = major_to_index(major);</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineCov">         15 :         for (curr = chrdevs[i]; curr; prev = curr, curr = curr-&gt;next) {</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineCov">          3 :                 if (curr-&gt;major &lt; major)</span></a>
 <a name="136"><span class="lineNum">     136 </span><span class="lineNoCov">          0 :                         continue;</span></a>
 <a name="137"><span class="lineNum">     137 </span>            : </a>
-<a name="138"><span class="lineNum">     138 </span><span class="lineCov">          6 :                 if (curr-&gt;major &gt; major)</span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">          3 :                 if (curr-&gt;major &gt; major)</span></a>
 <a name="139"><span class="lineNum">     139 </span>            :                         break;</a>
 <a name="140"><span class="lineNum">     140 </span>            : </a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineCov">          6 :                 if (curr-&gt;baseminor + curr-&gt;minorct &lt;= baseminor)</span></a>
-<a name="142"><span class="lineNum">     142 </span><span class="lineCov">          6 :                         continue;</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">          3 :                 if (curr-&gt;baseminor + curr-&gt;minorct &lt;= baseminor)</span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineCov">          3 :                         continue;</span></a>
 <a name="143"><span class="lineNum">     143 </span>            : </a>
 <a name="144"><span class="lineNum">     144 </span><span class="lineNoCov">          0 :                 if (curr-&gt;baseminor &gt;= baseminor + minorct)</span></a>
 <a name="145"><span class="lineNum">     145 </span>            :                         break;</a>
@@ -209,21 +209,21 @@
 <a name="147"><span class="lineNum">     147 </span>            :                 goto out;</a>
 <a name="148"><span class="lineNum">     148 </span>            :         }</a>
 <a name="149"><span class="lineNum">     149 </span>            : </a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">         24 :         cd-&gt;major = major;</span></a>
-<a name="151"><span class="lineNum">     151 </span><span class="lineCov">         24 :         cd-&gt;baseminor = baseminor;</span></a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineCov">         24 :         cd-&gt;minorct = minorct;</span></a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineCov">         24 :         strlcpy(cd-&gt;name, name, sizeof(cd-&gt;name));</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">         12 :         cd-&gt;major = major;</span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineCov">         12 :         cd-&gt;baseminor = baseminor;</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">         12 :         cd-&gt;minorct = minorct;</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">         12 :         strlcpy(cd-&gt;name, name, sizeof(cd-&gt;name));</span></a>
 <a name="154"><span class="lineNum">     154 </span>            : </a>
-<a name="155"><span class="lineNum">     155 </span><span class="lineCov">         24 :         if (!prev) {</span></a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">         20 :                 cd-&gt;next = curr;</span></a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">         20 :                 chrdevs[i] = cd;</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineCov">         12 :         if (!prev) {</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">         10 :                 cd-&gt;next = curr;</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">         10 :                 chrdevs[i] = cd;</span></a>
 <a name="158"><span class="lineNum">     158 </span>            :         } else {</a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">          4 :                 cd-&gt;next = prev-&gt;next;</span></a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          4 :                 prev-&gt;next = cd;</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">          2 :                 cd-&gt;next = prev-&gt;next;</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          2 :                 prev-&gt;next = cd;</span></a>
 <a name="161"><span class="lineNum">     161 </span>            :         }</a>
 <a name="162"><span class="lineNum">     162 </span>            : </a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">         24 :         mutex_unlock(&amp;chrdevs_lock);</span></a>
-<a name="164"><span class="lineNum">     164 </span><span class="lineCov">         24 :         return cd;</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">         12 :         mutex_unlock(&amp;chrdevs_lock);</span></a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineCov">         12 :         return cd;</span></a>
 <a name="165"><span class="lineNum">     165 </span>            : out:</a>
 <a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 :         mutex_unlock(&amp;chrdevs_lock);</span></a>
 <a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 :         kfree(cd);</span></a>
@@ -259,19 +259,19 @@
 <a name="197"><span class="lineNum">     197 </span>            :  *</a>
 <a name="198"><span class="lineNum">     198 </span>            :  * Return value is zero on success, a negative error code on failure.</a>
 <a name="199"><span class="lineNum">     199 </span>            :  */</a>
-<a name="200"><span class="lineNum">     200 </span><span class="lineCov">         18 : int register_chrdev_region(dev_t from, unsigned count, const char *name)</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineCov">          9 : int register_chrdev_region(dev_t from, unsigned count, const char *name)</span></a>
 <a name="201"><span class="lineNum">     201 </span>            : {</a>
 <a name="202"><span class="lineNum">     202 </span>            :         struct char_device_struct *cd;</a>
-<a name="203"><span class="lineNum">     203 </span><span class="lineCov">         18 :         dev_t to = from + count;</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineCov">          9 :         dev_t to = from + count;</span></a>
 <a name="204"><span class="lineNum">     204 </span>            :         dev_t n, next;</a>
 <a name="205"><span class="lineNum">     205 </span>            : </a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineCov">         54 :         for (n = from; n &lt; to; n = next) {</span></a>
-<a name="207"><span class="lineNum">     207 </span><span class="lineCov">         18 :                 next = MKDEV(MAJOR(n)+1, 0);</span></a>
-<a name="208"><span class="lineNum">     208 </span><span class="lineCov">         18 :                 if (next &gt; to)</span></a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineCov">         14 :                         next = to;</span></a>
-<a name="210"><span class="lineNum">     210 </span><span class="lineCov">         18 :                 cd = __register_chrdev_region(MAJOR(n), MINOR(n),</span></a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineCov">         18 :                                next - n, name);</span></a>
-<a name="212"><span class="lineNum">     212 </span><span class="lineCov">         18 :                 if (IS_ERR(cd))</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">         27 :         for (n = from; n &lt; to; n = next) {</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">          9 :                 next = MKDEV(MAJOR(n)+1, 0);</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineCov">          9 :                 if (next &gt; to)</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineCov">          7 :                         next = to;</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineCov">          9 :                 cd = __register_chrdev_region(MAJOR(n), MINOR(n),</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineCov">          9 :                                next - n, name);</span></a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineCov">          9 :                 if (IS_ERR(cd))</span></a>
 <a name="213"><span class="lineNum">     213 </span>            :                         goto fail;</a>
 <a name="214"><span class="lineNum">     214 </span>            :         }</a>
 <a name="215"><span class="lineNum">     215 </span>            :         return 0;</a>
@@ -327,33 +327,33 @@
 <a name="265"><span class="lineNum">     265 </span>            :  * your module name has only one type of devices it's ok to use e.g. the name</a>
 <a name="266"><span class="lineNum">     266 </span>            :  * of the module here.</a>
 <a name="267"><span class="lineNum">     267 </span>            :  */</a>
-<a name="268"><span class="lineNum">     268 </span><span class="lineCov">          6 : int __register_chrdev(unsigned int major, unsigned int baseminor,</span></a>
+<a name="268"><span class="lineNum">     268 </span><span class="lineCov">          3 : int __register_chrdev(unsigned int major, unsigned int baseminor,</span></a>
 <a name="269"><span class="lineNum">     269 </span>            :                       unsigned int count, const char *name,</a>
 <a name="270"><span class="lineNum">     270 </span>            :                       const struct file_operations *fops)</a>
 <a name="271"><span class="lineNum">     271 </span>            : {</a>
 <a name="272"><span class="lineNum">     272 </span>            :         struct char_device_struct *cd;</a>
 <a name="273"><span class="lineNum">     273 </span>            :         struct cdev *cdev;</a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineCov">          6 :         int err = -ENOMEM;</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineCov">          3 :         int err = -ENOMEM;</span></a>
 <a name="275"><span class="lineNum">     275 </span>            : </a>
-<a name="276"><span class="lineNum">     276 </span><span class="lineCov">          6 :         cd = __register_chrdev_region(major, baseminor, count, name);</span></a>
-<a name="277"><span class="lineNum">     277 </span><span class="lineCov">          6 :         if (IS_ERR(cd))</span></a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineCov">          3 :         cd = __register_chrdev_region(major, baseminor, count, name);</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineCov">          3 :         if (IS_ERR(cd))</span></a>
 <a name="278"><span class="lineNum">     278 </span><span class="lineNoCov">          0 :                 return PTR_ERR(cd);</span></a>
 <a name="279"><span class="lineNum">     279 </span>            : </a>
-<a name="280"><span class="lineNum">     280 </span><span class="lineCov">          6 :         cdev = cdev_alloc();</span></a>
-<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          6 :         if (!cdev)</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineCov">          3 :         cdev = cdev_alloc();</span></a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          3 :         if (!cdev)</span></a>
 <a name="282"><span class="lineNum">     282 </span>            :                 goto out2;</a>
 <a name="283"><span class="lineNum">     283 </span>            : </a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          6 :         cdev-&gt;owner = fops-&gt;owner;</span></a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineCov">          6 :         cdev-&gt;ops = fops;</span></a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          6 :         kobject_set_name(&amp;cdev-&gt;kobj, &quot;%s&quot;, name);</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          3 :         cdev-&gt;owner = fops-&gt;owner;</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">          3 :         cdev-&gt;ops = fops;</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          3 :         kobject_set_name(&amp;cdev-&gt;kobj, &quot;%s&quot;, name);</span></a>
 <a name="287"><span class="lineNum">     287 </span>            : </a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          6 :         err = cdev_add(cdev, MKDEV(cd-&gt;major, baseminor), count);</span></a>
-<a name="289"><span class="lineNum">     289 </span><span class="lineCov">          6 :         if (err)</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          3 :         err = cdev_add(cdev, MKDEV(cd-&gt;major, baseminor), count);</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineCov">          3 :         if (err)</span></a>
 <a name="290"><span class="lineNum">     290 </span>            :                 goto out;</a>
 <a name="291"><span class="lineNum">     291 </span>            : </a>
-<a name="292"><span class="lineNum">     292 </span><span class="lineCov">          6 :         cd-&gt;cdev = cdev;</span></a>
+<a name="292"><span class="lineNum">     292 </span><span class="lineCov">          3 :         cd-&gt;cdev = cdev;</span></a>
 <a name="293"><span class="lineNum">     293 </span>            : </a>
-<a name="294"><span class="lineNum">     294 </span><span class="lineCov">          6 :         return major ? 0 : cd-&gt;major;</span></a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineCov">          3 :         return major ? 0 : cd-&gt;major;</span></a>
 <a name="295"><span class="lineNum">     295 </span>            : out:</a>
 <a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 :         kobject_put(&amp;cdev-&gt;kobj);</span></a>
 <a name="297"><span class="lineNum">     297 </span>            : out2:</a>
@@ -538,24 +538,24 @@
 <a name="476"><span class="lineNum">     476 </span>            :  * cdev_add() adds the device represented by @p to the system, making it</a>
 <a name="477"><span class="lineNum">     477 </span>            :  * live immediately.  A negative error code is returned on failure.</a>
 <a name="478"><span class="lineNum">     478 </span>            :  */</a>
-<a name="479"><span class="lineNum">     479 </span><span class="lineCov">         22 : int cdev_add(struct cdev *p, dev_t dev, unsigned count)</span></a>
+<a name="479"><span class="lineNum">     479 </span><span class="lineCov">         11 : int cdev_add(struct cdev *p, dev_t dev, unsigned count)</span></a>
 <a name="480"><span class="lineNum">     480 </span>            : {</a>
 <a name="481"><span class="lineNum">     481 </span>            :         int error;</a>
 <a name="482"><span class="lineNum">     482 </span>            : </a>
-<a name="483"><span class="lineNum">     483 </span><span class="lineCov">         22 :         p-&gt;dev = dev;</span></a>
-<a name="484"><span class="lineNum">     484 </span><span class="lineCov">         22 :         p-&gt;count = count;</span></a>
+<a name="483"><span class="lineNum">     483 </span><span class="lineCov">         11 :         p-&gt;dev = dev;</span></a>
+<a name="484"><span class="lineNum">     484 </span><span class="lineCov">         11 :         p-&gt;count = count;</span></a>
 <a name="485"><span class="lineNum">     485 </span>            : </a>
-<a name="486"><span class="lineNum">     486 </span><span class="lineCov">         22 :         if (WARN_ON(dev == WHITEOUT_DEV))</span></a>
+<a name="486"><span class="lineNum">     486 </span><span class="lineCov">         11 :         if (WARN_ON(dev == WHITEOUT_DEV))</span></a>
 <a name="487"><span class="lineNum">     487 </span>            :                 return -EBUSY;</a>
 <a name="488"><span class="lineNum">     488 </span>            : </a>
-<a name="489"><span class="lineNum">     489 </span><span class="lineCov">         22 :         error = kobj_map(cdev_map, dev, count, NULL,</span></a>
+<a name="489"><span class="lineNum">     489 </span><span class="lineCov">         11 :         error = kobj_map(cdev_map, dev, count, NULL,</span></a>
 <a name="490"><span class="lineNum">     490 </span>            :                          exact_match, exact_lock, p);</a>
-<a name="491"><span class="lineNum">     491 </span><span class="lineCov">         22 :         if (error)</span></a>
+<a name="491"><span class="lineNum">     491 </span><span class="lineCov">         11 :         if (error)</span></a>
 <a name="492"><span class="lineNum">     492 </span>            :                 return error;</a>
 <a name="493"><span class="lineNum">     493 </span>            : </a>
-<a name="494"><span class="lineNum">     494 </span><span class="lineCov">         22 :         kobject_get(p-&gt;kobj.parent);</span></a>
+<a name="494"><span class="lineNum">     494 </span><span class="lineCov">         11 :         kobject_get(p-&gt;kobj.parent);</span></a>
 <a name="495"><span class="lineNum">     495 </span>            : </a>
-<a name="496"><span class="lineNum">     496 </span><span class="lineCov">         22 :         return 0;</span></a>
+<a name="496"><span class="lineNum">     496 </span><span class="lineCov">         11 :         return 0;</span></a>
 <a name="497"><span class="lineNum">     497 </span>            : }</a>
 <a name="498"><span class="lineNum">     498 </span>            : </a>
 <a name="499"><span class="lineNum">     499 </span>            : /**</a>
@@ -692,14 +692,14 @@
 <a name="630"><span class="lineNum">     630 </span>            :  *</a>
 <a name="631"><span class="lineNum">     631 </span>            :  * Allocates and returns a cdev structure, or NULL on failure.</a>
 <a name="632"><span class="lineNum">     632 </span>            :  */</a>
-<a name="633"><span class="lineNum">     633 </span><span class="lineCov">         16 : struct cdev *cdev_alloc(void)</span></a>
+<a name="633"><span class="lineNum">     633 </span><span class="lineCov">          8 : struct cdev *cdev_alloc(void)</span></a>
 <a name="634"><span class="lineNum">     634 </span>            : {</a>
-<a name="635"><span class="lineNum">     635 </span><span class="lineCov">         16 :         struct cdev *p = kzalloc(sizeof(struct cdev), GFP_KERNEL);</span></a>
-<a name="636"><span class="lineNum">     636 </span><span class="lineCov">         16 :         if (p) {</span></a>
-<a name="637"><span class="lineNum">     637 </span><span class="lineCov">         32 :                 INIT_LIST_HEAD(&amp;p-&gt;list);</span></a>
-<a name="638"><span class="lineNum">     638 </span><span class="lineCov">         16 :                 kobject_init(&amp;p-&gt;kobj, &amp;ktype_cdev_dynamic);</span></a>
+<a name="635"><span class="lineNum">     635 </span><span class="lineCov">          8 :         struct cdev *p = kzalloc(sizeof(struct cdev), GFP_KERNEL);</span></a>
+<a name="636"><span class="lineNum">     636 </span><span class="lineCov">          8 :         if (p) {</span></a>
+<a name="637"><span class="lineNum">     637 </span><span class="lineCov">         16 :                 INIT_LIST_HEAD(&amp;p-&gt;list);</span></a>
+<a name="638"><span class="lineNum">     638 </span><span class="lineCov">          8 :                 kobject_init(&amp;p-&gt;kobj, &amp;ktype_cdev_dynamic);</span></a>
 <a name="639"><span class="lineNum">     639 </span>            :         }</a>
-<a name="640"><span class="lineNum">     640 </span><span class="lineCov">         16 :         return p;</span></a>
+<a name="640"><span class="lineNum">     640 </span><span class="lineCov">          8 :         return p;</span></a>
 <a name="641"><span class="lineNum">     641 </span>            : }</a>
 <a name="642"><span class="lineNum">     642 </span>            : </a>
 <a name="643"><span class="lineNum">     643 </span>            : /**</a>
@@ -710,13 +710,13 @@
 <a name="648"><span class="lineNum">     648 </span>            :  * Initializes @cdev, remembering @fops, making it ready to add to the</a>
 <a name="649"><span class="lineNum">     649 </span>            :  * system with cdev_add().</a>
 <a name="650"><span class="lineNum">     650 </span>            :  */</a>
-<a name="651"><span class="lineNum">     651 </span><span class="lineCov">          6 : void cdev_init(struct cdev *cdev, const struct file_operations *fops)</span></a>
+<a name="651"><span class="lineNum">     651 </span><span class="lineCov">          3 : void cdev_init(struct cdev *cdev, const struct file_operations *fops)</span></a>
 <a name="652"><span class="lineNum">     652 </span>            : {</a>
-<a name="653"><span class="lineNum">     653 </span><span class="lineCov">          6 :         memset(cdev, 0, sizeof *cdev);</span></a>
-<a name="654"><span class="lineNum">     654 </span><span class="lineCov">         12 :         INIT_LIST_HEAD(&amp;cdev-&gt;list);</span></a>
-<a name="655"><span class="lineNum">     655 </span><span class="lineCov">          6 :         kobject_init(&amp;cdev-&gt;kobj, &amp;ktype_cdev_default);</span></a>
-<a name="656"><span class="lineNum">     656 </span><span class="lineCov">          6 :         cdev-&gt;ops = fops;</span></a>
-<a name="657"><span class="lineNum">     657 </span><span class="lineCov">          6 : }</span></a>
+<a name="653"><span class="lineNum">     653 </span><span class="lineCov">          3 :         memset(cdev, 0, sizeof *cdev);</span></a>
+<a name="654"><span class="lineNum">     654 </span><span class="lineCov">          6 :         INIT_LIST_HEAD(&amp;cdev-&gt;list);</span></a>
+<a name="655"><span class="lineNum">     655 </span><span class="lineCov">          3 :         kobject_init(&amp;cdev-&gt;kobj, &amp;ktype_cdev_default);</span></a>
+<a name="656"><span class="lineNum">     656 </span><span class="lineCov">          3 :         cdev-&gt;ops = fops;</span></a>
+<a name="657"><span class="lineNum">     657 </span><span class="lineCov">          3 : }</span></a>
 <a name="658"><span class="lineNum">     658 </span>            : </a>
 <a name="659"><span class="lineNum">     659 </span><span class="lineNoCov">          0 : static struct kobject *base_probe(dev_t dev, int *part, void *data)</span></a>
 <a name="660"><span class="lineNum">     660 </span>            : {</a>
@@ -726,10 +726,10 @@
 <a name="664"><span class="lineNum">     664 </span><span class="lineNoCov">          0 :         return NULL;</span></a>
 <a name="665"><span class="lineNum">     665 </span>            : }</a>
 <a name="666"><span class="lineNum">     666 </span>            : </a>
-<a name="667"><span class="lineNum">     667 </span><span class="lineCov">          2 : void __init chrdev_init(void)</span></a>
+<a name="667"><span class="lineNum">     667 </span><span class="lineCov">          1 : void __init chrdev_init(void)</span></a>
 <a name="668"><span class="lineNum">     668 </span>            : {</a>
-<a name="669"><span class="lineNum">     669 </span><span class="lineCov">          2 :         cdev_map = kobj_map_init(base_probe, &amp;chrdevs_lock);</span></a>
-<a name="670"><span class="lineNum">     670 </span><span class="lineCov">          2 : }</span></a>
+<a name="669"><span class="lineNum">     669 </span><span class="lineCov">          1 :         cdev_map = kobj_map_init(base_probe, &amp;chrdevs_lock);</span></a>
+<a name="670"><span class="lineNum">     670 </span><span class="lineCov">          1 : }</span></a>
 <a name="671"><span class="lineNum">     671 </span>            : </a>
 <a name="672"><span class="lineNum">     672 </span>            : </a>
 <a name="673"><span class="lineNum">     673 </span>            : /* Let modules do char dev stuff */</a>

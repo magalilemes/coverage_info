@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -949,18 +949,18 @@
 <a name="887"><span class="lineNum">     887 </span>            :         .attrs = swap_attrs,</a>
 <a name="888"><span class="lineNum">     888 </span>            : };</a>
 <a name="889"><span class="lineNum">     889 </span>            : </a>
-<a name="890"><span class="lineNum">     890 </span><span class="lineCov">          2 : static int __init swap_init_sysfs(void)</span></a>
+<a name="890"><span class="lineNum">     890 </span><span class="lineCov">          1 : static int __init swap_init_sysfs(void)</span></a>
 <a name="891"><span class="lineNum">     891 </span>            : {</a>
 <a name="892"><span class="lineNum">     892 </span>            :         int err;</a>
 <a name="893"><span class="lineNum">     893 </span>            :         struct kobject *swap_kobj;</a>
 <a name="894"><span class="lineNum">     894 </span>            : </a>
-<a name="895"><span class="lineNum">     895 </span><span class="lineCov">          2 :         swap_kobj = kobject_create_and_add(&quot;swap&quot;, mm_kobj);</span></a>
-<a name="896"><span class="lineNum">     896 </span><span class="lineCov">          2 :         if (!swap_kobj) {</span></a>
+<a name="895"><span class="lineNum">     895 </span><span class="lineCov">          1 :         swap_kobj = kobject_create_and_add(&quot;swap&quot;, mm_kobj);</span></a>
+<a name="896"><span class="lineNum">     896 </span><span class="lineCov">          1 :         if (!swap_kobj) {</span></a>
 <a name="897"><span class="lineNum">     897 </span><span class="lineNoCov">          0 :                 pr_err(&quot;failed to create swap kobject\n&quot;);</span></a>
 <a name="898"><span class="lineNum">     898 </span><span class="lineNoCov">          0 :                 return -ENOMEM;</span></a>
 <a name="899"><span class="lineNum">     899 </span>            :         }</a>
-<a name="900"><span class="lineNum">     900 </span><span class="lineCov">          2 :         err = sysfs_create_group(swap_kobj, &amp;swap_attr_group);</span></a>
-<a name="901"><span class="lineNum">     901 </span><span class="lineCov">          2 :         if (err) {</span></a>
+<a name="900"><span class="lineNum">     900 </span><span class="lineCov">          1 :         err = sysfs_create_group(swap_kobj, &amp;swap_attr_group);</span></a>
+<a name="901"><span class="lineNum">     901 </span><span class="lineCov">          1 :         if (err) {</span></a>
 <a name="902"><span class="lineNum">     902 </span><span class="lineNoCov">          0 :                 pr_err(&quot;failed to register swap group\n&quot;);</span></a>
 <a name="903"><span class="lineNum">     903 </span>            :                 goto delete_obj;</a>
 <a name="904"><span class="lineNum">     904 </span>            :         }</a>

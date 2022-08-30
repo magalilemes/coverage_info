@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -343,52 +343,51 @@
 <a name="281"><span class="lineNum">     281 </span>            :                 .lock_doublebuffer_enable = optc3_lock_doublebuffer_enable,</a>
 <a name="282"><span class="lineNum">     282 </span>            :                 .lock_doublebuffer_disable = optc3_lock_doublebuffer_disable,</a>
 <a name="283"><span class="lineNum">     283 </span>            :                 .enable_optc_clock = optc1_enable_optc_clock,</a>
-<a name="284"><span class="lineNum">     284 </span>            :                 .set_vrr_m_const = optc3_set_vrr_m_const,</a>
-<a name="285"><span class="lineNum">     285 </span>            :                 .set_drr = optc32_set_drr,</a>
-<a name="286"><span class="lineNum">     286 </span>            :                 .get_last_used_drr_vtotal = optc2_get_last_used_drr_vtotal,</a>
-<a name="287"><span class="lineNum">     287 </span>            :                 .set_vtotal_min_max = optc3_set_vtotal_min_max,</a>
-<a name="288"><span class="lineNum">     288 </span>            :                 .set_static_screen_control = optc1_set_static_screen_control,</a>
-<a name="289"><span class="lineNum">     289 </span>            :                 .program_stereo = optc1_program_stereo,</a>
-<a name="290"><span class="lineNum">     290 </span>            :                 .is_stereo_left_eye = optc1_is_stereo_left_eye,</a>
-<a name="291"><span class="lineNum">     291 </span>            :                 .tg_init = optc3_tg_init,</a>
-<a name="292"><span class="lineNum">     292 </span>            :                 .is_tg_enabled = optc1_is_tg_enabled,</a>
-<a name="293"><span class="lineNum">     293 </span>            :                 .is_optc_underflow_occurred = optc1_is_optc_underflow_occurred,</a>
-<a name="294"><span class="lineNum">     294 </span>            :                 .clear_optc_underflow = optc1_clear_optc_underflow,</a>
-<a name="295"><span class="lineNum">     295 </span>            :                 .setup_global_swap_lock = NULL,</a>
-<a name="296"><span class="lineNum">     296 </span>            :                 .get_crc = optc1_get_crc,</a>
-<a name="297"><span class="lineNum">     297 </span>            :                 .configure_crc = optc1_configure_crc,</a>
-<a name="298"><span class="lineNum">     298 </span>            :                 .set_dsc_config = optc3_set_dsc_config,</a>
-<a name="299"><span class="lineNum">     299 </span>            :                 .get_dsc_status = optc2_get_dsc_status,</a>
-<a name="300"><span class="lineNum">     300 </span>            :                 .set_dwb_source = NULL,</a>
-<a name="301"><span class="lineNum">     301 </span>            :                 .set_odm_bypass = optc32_set_odm_bypass,</a>
-<a name="302"><span class="lineNum">     302 </span>            :                 .set_odm_combine = optc32_set_odm_combine,</a>
-<a name="303"><span class="lineNum">     303 </span>            :                 .set_h_timing_div_manual_mode = optc32_set_h_timing_div_manual_mode,</a>
-<a name="304"><span class="lineNum">     304 </span>            :                 .get_optc_source = optc2_get_optc_source,</a>
-<a name="305"><span class="lineNum">     305 </span>            :                 .set_out_mux = optc3_set_out_mux,</a>
-<a name="306"><span class="lineNum">     306 </span>            :                 .set_drr_trigger_window = optc3_set_drr_trigger_window,</a>
-<a name="307"><span class="lineNum">     307 </span>            :                 .set_vtotal_change_limit = optc3_set_vtotal_change_limit,</a>
-<a name="308"><span class="lineNum">     308 </span>            :                 .set_gsl = optc2_set_gsl,</a>
-<a name="309"><span class="lineNum">     309 </span>            :                 .set_gsl_source_select = optc2_set_gsl_source_select,</a>
-<a name="310"><span class="lineNum">     310 </span>            :                 .set_vtg_params = optc1_set_vtg_params,</a>
-<a name="311"><span class="lineNum">     311 </span>            :                 .program_manual_trigger = optc2_program_manual_trigger,</a>
-<a name="312"><span class="lineNum">     312 </span>            :                 .setup_manual_trigger = optc2_setup_manual_trigger,</a>
-<a name="313"><span class="lineNum">     313 </span>            :                 .get_hw_timing = optc1_get_hw_timing,</a>
-<a name="314"><span class="lineNum">     314 </span>            : };</a>
-<a name="315"><span class="lineNum">     315 </span>            : </a>
-<a name="316"><span class="lineNum">     316 </span><span class="lineNoCov">          0 : void dcn32_timing_generator_init(struct optc *optc1)</span></a>
-<a name="317"><span class="lineNum">     317 </span>            : {</a>
-<a name="318"><span class="lineNum">     318 </span><span class="lineNoCov">          0 :         optc1-&gt;base.funcs = &amp;dcn32_tg_funcs;</span></a>
-<a name="319"><span class="lineNum">     319 </span>            : </a>
-<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 :         optc1-&gt;max_h_total = optc1-&gt;tg_mask-&gt;OTG_H_TOTAL + 1;</span></a>
-<a name="321"><span class="lineNum">     321 </span><span class="lineNoCov">          0 :         optc1-&gt;max_v_total = optc1-&gt;tg_mask-&gt;OTG_V_TOTAL + 1;</span></a>
-<a name="322"><span class="lineNum">     322 </span>            : </a>
-<a name="323"><span class="lineNum">     323 </span><span class="lineNoCov">          0 :         optc1-&gt;min_h_blank = 32;</span></a>
-<a name="324"><span class="lineNum">     324 </span><span class="lineNoCov">          0 :         optc1-&gt;min_v_blank = 3;</span></a>
-<a name="325"><span class="lineNum">     325 </span><span class="lineNoCov">          0 :         optc1-&gt;min_v_blank_interlace = 5;</span></a>
-<a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 :         optc1-&gt;min_h_sync_width = 4;</span></a>
-<a name="327"><span class="lineNum">     327 </span><span class="lineNoCov">          0 :         optc1-&gt;min_v_sync_width = 1;</span></a>
-<a name="328"><span class="lineNum">     328 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="329"><span class="lineNum">     329 </span>            : </a>
+<a name="284"><span class="lineNum">     284 </span>            :                 .set_drr = optc32_set_drr,</a>
+<a name="285"><span class="lineNum">     285 </span>            :                 .get_last_used_drr_vtotal = optc2_get_last_used_drr_vtotal,</a>
+<a name="286"><span class="lineNum">     286 </span>            :                 .set_vtotal_min_max = optc3_set_vtotal_min_max,</a>
+<a name="287"><span class="lineNum">     287 </span>            :                 .set_static_screen_control = optc1_set_static_screen_control,</a>
+<a name="288"><span class="lineNum">     288 </span>            :                 .program_stereo = optc1_program_stereo,</a>
+<a name="289"><span class="lineNum">     289 </span>            :                 .is_stereo_left_eye = optc1_is_stereo_left_eye,</a>
+<a name="290"><span class="lineNum">     290 </span>            :                 .tg_init = optc3_tg_init,</a>
+<a name="291"><span class="lineNum">     291 </span>            :                 .is_tg_enabled = optc1_is_tg_enabled,</a>
+<a name="292"><span class="lineNum">     292 </span>            :                 .is_optc_underflow_occurred = optc1_is_optc_underflow_occurred,</a>
+<a name="293"><span class="lineNum">     293 </span>            :                 .clear_optc_underflow = optc1_clear_optc_underflow,</a>
+<a name="294"><span class="lineNum">     294 </span>            :                 .setup_global_swap_lock = NULL,</a>
+<a name="295"><span class="lineNum">     295 </span>            :                 .get_crc = optc1_get_crc,</a>
+<a name="296"><span class="lineNum">     296 </span>            :                 .configure_crc = optc1_configure_crc,</a>
+<a name="297"><span class="lineNum">     297 </span>            :                 .set_dsc_config = optc3_set_dsc_config,</a>
+<a name="298"><span class="lineNum">     298 </span>            :                 .get_dsc_status = optc2_get_dsc_status,</a>
+<a name="299"><span class="lineNum">     299 </span>            :                 .set_dwb_source = NULL,</a>
+<a name="300"><span class="lineNum">     300 </span>            :                 .set_odm_bypass = optc32_set_odm_bypass,</a>
+<a name="301"><span class="lineNum">     301 </span>            :                 .set_odm_combine = optc32_set_odm_combine,</a>
+<a name="302"><span class="lineNum">     302 </span>            :                 .set_h_timing_div_manual_mode = optc32_set_h_timing_div_manual_mode,</a>
+<a name="303"><span class="lineNum">     303 </span>            :                 .get_optc_source = optc2_get_optc_source,</a>
+<a name="304"><span class="lineNum">     304 </span>            :                 .set_out_mux = optc3_set_out_mux,</a>
+<a name="305"><span class="lineNum">     305 </span>            :                 .set_drr_trigger_window = optc3_set_drr_trigger_window,</a>
+<a name="306"><span class="lineNum">     306 </span>            :                 .set_vtotal_change_limit = optc3_set_vtotal_change_limit,</a>
+<a name="307"><span class="lineNum">     307 </span>            :                 .set_gsl = optc2_set_gsl,</a>
+<a name="308"><span class="lineNum">     308 </span>            :                 .set_gsl_source_select = optc2_set_gsl_source_select,</a>
+<a name="309"><span class="lineNum">     309 </span>            :                 .set_vtg_params = optc1_set_vtg_params,</a>
+<a name="310"><span class="lineNum">     310 </span>            :                 .program_manual_trigger = optc2_program_manual_trigger,</a>
+<a name="311"><span class="lineNum">     311 </span>            :                 .setup_manual_trigger = optc2_setup_manual_trigger,</a>
+<a name="312"><span class="lineNum">     312 </span>            :                 .get_hw_timing = optc1_get_hw_timing,</a>
+<a name="313"><span class="lineNum">     313 </span>            : };</a>
+<a name="314"><span class="lineNum">     314 </span>            : </a>
+<a name="315"><span class="lineNum">     315 </span><span class="lineNoCov">          0 : void dcn32_timing_generator_init(struct optc *optc1)</span></a>
+<a name="316"><span class="lineNum">     316 </span>            : {</a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineNoCov">          0 :         optc1-&gt;base.funcs = &amp;dcn32_tg_funcs;</span></a>
+<a name="318"><span class="lineNum">     318 </span>            : </a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineNoCov">          0 :         optc1-&gt;max_h_total = optc1-&gt;tg_mask-&gt;OTG_H_TOTAL + 1;</span></a>
+<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 :         optc1-&gt;max_v_total = optc1-&gt;tg_mask-&gt;OTG_V_TOTAL + 1;</span></a>
+<a name="321"><span class="lineNum">     321 </span>            : </a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 :         optc1-&gt;min_h_blank = 32;</span></a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineNoCov">          0 :         optc1-&gt;min_v_blank = 3;</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineNoCov">          0 :         optc1-&gt;min_v_blank_interlace = 5;</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineNoCov">          0 :         optc1-&gt;min_h_sync_width = 4;</span></a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 :         optc1-&gt;min_v_sync_width = 1;</span></a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="328"><span class="lineNum">     328 </span>            : </a>
 </pre>
       </td>
     </tr>

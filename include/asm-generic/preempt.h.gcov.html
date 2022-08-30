@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -70,12 +70,12 @@
 <a name="8"><span class="lineNum">       8 </span>            : </a>
 <a name="9"><span class="lineNum">       9 </span>            : static __always_inline int preempt_count(void)</a>
 <a name="10"><span class="lineNum">      10 </span>            : {</a>
-<a name="11"><span class="lineNum">      11 </span><span class="lineCov">      13634 :         return READ_ONCE(current_thread_info()-&gt;preempt_count);</span></a>
+<a name="11"><span class="lineNum">      11 </span><span class="lineCov">       8873 :         return READ_ONCE(current_thread_info()-&gt;preempt_count);</span></a>
 <a name="12"><span class="lineNum">      12 </span>            : }</a>
 <a name="13"><span class="lineNum">      13 </span>            : </a>
 <a name="14"><span class="lineNum">      14 </span>            : static __always_inline volatile int *preempt_count_ptr(void)</a>
 <a name="15"><span class="lineNum">      15 </span>            : {</a>
-<a name="16"><span class="lineNum">      16 </span><span class="lineCov">       2156 :         return &amp;current_thread_info()-&gt;preempt_count;</span></a>
+<a name="16"><span class="lineNum">      16 </span><span class="lineCov">       1572 :         return &amp;current_thread_info()-&gt;preempt_count;</span></a>
 <a name="17"><span class="lineNum">      17 </span>            : }</a>
 <a name="18"><span class="lineNum">      18 </span>            : </a>
 <a name="19"><span class="lineNum">      19 </span>            : static __always_inline void preempt_count_set(int pc)</a>
@@ -113,12 +113,12 @@
 <a name="51"><span class="lineNum">      51 </span>            : </a>
 <a name="52"><span class="lineNum">      52 </span>            : static __always_inline void __preempt_count_add(int val)</a>
 <a name="53"><span class="lineNum">      53 </span>            : {</a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        767 :         *preempt_count_ptr() += val;</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        558 :         *preempt_count_ptr() += val;</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : }</a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
 <a name="57"><span class="lineNum">      57 </span>            : static __always_inline void __preempt_count_sub(int val)</a>
 <a name="58"><span class="lineNum">      58 </span>            : {</a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">       1389 :         *preempt_count_ptr() -= val;</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">       1014 :         *preempt_count_ptr() -= val;</span></a>
 <a name="60"><span class="lineNum">      60 </span>            : }</a>
 <a name="61"><span class="lineNum">      61 </span>            : </a>
 <a name="62"><span class="lineNum">      62 </span>            : static __always_inline bool __preempt_count_dec_and_test(void)</a>
@@ -136,7 +136,7 @@
 <a name="74"><span class="lineNum">      74 </span>            :  */</a>
 <a name="75"><span class="lineNum">      75 </span>            : static __always_inline bool should_resched(int preempt_offset)</a>
 <a name="76"><span class="lineNum">      76 </span>            : {</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">       3216 :         return unlikely(preempt_count() == preempt_offset &amp;&amp;</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">       1713 :         return unlikely(preempt_count() == preempt_offset &amp;&amp;</span></a>
 <a name="78"><span class="lineNum">      78 </span>            :                         tif_need_resched());</a>
 <a name="79"><span class="lineNum">      79 </span>            : }</a>
 <a name="80"><span class="lineNum">      80 </span>            : </a>

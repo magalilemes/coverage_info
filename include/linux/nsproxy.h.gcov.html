@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -163,14 +163,14 @@
 <a name="101"><span class="lineNum">     101 </span>            : </a>
 <a name="102"><span class="lineNum">     102 </span>            : static inline void put_nsproxy(struct nsproxy *ns)</a>
 <a name="103"><span class="lineNum">     103 </span>            : {</a>
-<a name="104"><span class="lineNum">     104 </span><span class="lineCov">        256 :         if (atomic_dec_and_test(&amp;ns-&gt;count)) {</span></a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineCov">        186 :         if (atomic_dec_and_test(&amp;ns-&gt;count)) {</span></a>
 <a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 :                 free_nsproxy(ns);</span></a>
 <a name="106"><span class="lineNum">     106 </span>            :         }</a>
 <a name="107"><span class="lineNum">     107 </span>            : }</a>
 <a name="108"><span class="lineNum">     108 </span>            : </a>
 <a name="109"><span class="lineNum">     109 </span>            : static inline void get_nsproxy(struct nsproxy *ns)</a>
 <a name="110"><span class="lineNum">     110 </span>            : {</a>
-<a name="111"><span class="lineNum">     111 </span><span class="lineCov">        312 :         atomic_inc(&amp;ns-&gt;count);</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">        214 :         atomic_inc(&amp;ns-&gt;count);</span></a>
 <a name="112"><span class="lineNum">     112 </span>            : }</a>
 <a name="113"><span class="lineNum">     113 </span>            : </a>
 <a name="114"><span class="lineNum">     114 </span>            : #endif</a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -605,51 +605,51 @@
 <a name="543"><span class="lineNum">     543 </span>            :     0xd6, 0x98, 0x6b, 0x07, 0x10, 0x65, 0x52, 0x65, },</a>
 <a name="544"><span class="lineNum">     544 </span>            : };</a>
 <a name="545"><span class="lineNum">     545 </span>            : </a>
-<a name="546"><span class="lineNum">     546 </span><span class="lineCov">          2 : bool __init blake2s_selftest(void)</span></a>
+<a name="546"><span class="lineNum">     546 </span><span class="lineCov">          1 : bool __init blake2s_selftest(void)</span></a>
 <a name="547"><span class="lineNum">     547 </span>            : {</a>
 <a name="548"><span class="lineNum">     548 </span>            :         u8 key[BLAKE2S_KEY_SIZE];</a>
 <a name="549"><span class="lineNum">     549 </span>            :         u8 buf[ARRAY_SIZE(blake2s_testvecs)];</a>
 <a name="550"><span class="lineNum">     550 </span>            :         u8 hash[BLAKE2S_HASH_SIZE];</a>
 <a name="551"><span class="lineNum">     551 </span>            :         struct blake2s_state state;</a>
-<a name="552"><span class="lineNum">     552 </span><span class="lineCov">          2 :         bool success = true;</span></a>
+<a name="552"><span class="lineNum">     552 </span><span class="lineCov">          1 :         bool success = true;</span></a>
 <a name="553"><span class="lineNum">     553 </span>            :         int i, l;</a>
 <a name="554"><span class="lineNum">     554 </span>            : </a>
-<a name="555"><span class="lineNum">     555 </span><span class="lineCov">          2 :         key[0] = key[1] = 1;</span></a>
-<a name="556"><span class="lineNum">     556 </span><span class="lineCov">         62 :         for (i = 2; i &lt; sizeof(key); ++i)</span></a>
-<a name="557"><span class="lineNum">     557 </span><span class="lineCov">         60 :                 key[i] = key[i - 2] + key[i - 1];</span></a>
+<a name="555"><span class="lineNum">     555 </span><span class="lineCov">          1 :         key[0] = key[1] = 1;</span></a>
+<a name="556"><span class="lineNum">     556 </span><span class="lineCov">         31 :         for (i = 2; i &lt; sizeof(key); ++i)</span></a>
+<a name="557"><span class="lineNum">     557 </span><span class="lineCov">         30 :                 key[i] = key[i - 2] + key[i - 1];</span></a>
 <a name="558"><span class="lineNum">     558 </span>            : </a>
-<a name="559"><span class="lineNum">     559 </span><span class="lineCov">        512 :         for (i = 0; i &lt; sizeof(buf); ++i)</span></a>
-<a name="560"><span class="lineNum">     560 </span><span class="lineCov">        512 :                 buf[i] = (u8)i;</span></a>
+<a name="559"><span class="lineNum">     559 </span><span class="lineCov">        256 :         for (i = 0; i &lt; sizeof(buf); ++i)</span></a>
+<a name="560"><span class="lineNum">     560 </span><span class="lineCov">        256 :                 buf[i] = (u8)i;</span></a>
 <a name="561"><span class="lineNum">     561 </span>            : </a>
-<a name="562"><span class="lineNum">     562 </span><span class="lineCov">        512 :         for (i = l = 0; i &lt; ARRAY_SIZE(blake2s_testvecs); l = (l + 37) % ++i) {</span></a>
-<a name="563"><span class="lineNum">     563 </span><span class="lineCov">        512 :                 int outlen = 1 + i % BLAKE2S_HASH_SIZE;</span></a>
-<a name="564"><span class="lineNum">     564 </span><span class="lineCov">        512 :                 int keylen = (13 * i) % (BLAKE2S_KEY_SIZE + 1);</span></a>
+<a name="562"><span class="lineNum">     562 </span><span class="lineCov">        256 :         for (i = l = 0; i &lt; ARRAY_SIZE(blake2s_testvecs); l = (l + 37) % ++i) {</span></a>
+<a name="563"><span class="lineNum">     563 </span><span class="lineCov">        256 :                 int outlen = 1 + i % BLAKE2S_HASH_SIZE;</span></a>
+<a name="564"><span class="lineNum">     564 </span><span class="lineCov">        256 :                 int keylen = (13 * i) % (BLAKE2S_KEY_SIZE + 1);</span></a>
 <a name="565"><span class="lineNum">     565 </span>            : </a>
-<a name="566"><span class="lineNum">     566 </span><span class="lineCov">        512 :                 blake2s(hash, buf, key + BLAKE2S_KEY_SIZE - keylen, outlen, i,</span></a>
+<a name="566"><span class="lineNum">     566 </span><span class="lineCov">        256 :                 blake2s(hash, buf, key + BLAKE2S_KEY_SIZE - keylen, outlen, i,</span></a>
 <a name="567"><span class="lineNum">     567 </span>            :                         keylen);</a>
-<a name="568"><span class="lineNum">     568 </span><span class="lineCov">        512 :                 if (memcmp(hash, blake2s_testvecs[i], outlen)) {</span></a>
+<a name="568"><span class="lineNum">     568 </span><span class="lineCov">        256 :                 if (memcmp(hash, blake2s_testvecs[i], outlen)) {</span></a>
 <a name="569"><span class="lineNum">     569 </span><span class="lineNoCov">          0 :                         pr_err(&quot;blake2s self-test %d: FAIL\n&quot;, i + 1);</span></a>
 <a name="570"><span class="lineNum">     570 </span><span class="lineNoCov">          0 :                         success = false;</span></a>
 <a name="571"><span class="lineNum">     571 </span>            :                 }</a>
 <a name="572"><span class="lineNum">     572 </span>            : </a>
-<a name="573"><span class="lineNum">     573 </span><span class="lineCov">        512 :                 if (!keylen)</span></a>
-<a name="574"><span class="lineNum">     574 </span><span class="lineCov">         16 :                         blake2s_init(&amp;state, outlen);</span></a>
+<a name="573"><span class="lineNum">     573 </span><span class="lineCov">        256 :                 if (!keylen)</span></a>
+<a name="574"><span class="lineNum">     574 </span><span class="lineCov">          8 :                         blake2s_init(&amp;state, outlen);</span></a>
 <a name="575"><span class="lineNum">     575 </span>            :                 else</a>
-<a name="576"><span class="lineNum">     576 </span><span class="lineCov">        496 :                         blake2s_init_key(&amp;state, outlen,</span></a>
+<a name="576"><span class="lineNum">     576 </span><span class="lineCov">        248 :                         blake2s_init_key(&amp;state, outlen,</span></a>
 <a name="577"><span class="lineNum">     577 </span>            :                                          key + BLAKE2S_KEY_SIZE - keylen,</a>
 <a name="578"><span class="lineNum">     578 </span>            :                                          keylen);</a>
 <a name="579"><span class="lineNum">     579 </span>            : </a>
-<a name="580"><span class="lineNum">     580 </span><span class="lineCov">        512 :                 blake2s_update(&amp;state, buf, l);</span></a>
-<a name="581"><span class="lineNum">     581 </span><span class="lineCov">        512 :                 blake2s_update(&amp;state, buf + l, i - l);</span></a>
-<a name="582"><span class="lineNum">     582 </span><span class="lineCov">        512 :                 blake2s_final(&amp;state, hash);</span></a>
-<a name="583"><span class="lineNum">     583 </span><span class="lineCov">        512 :                 if (memcmp(hash, blake2s_testvecs[i], outlen)) {</span></a>
+<a name="580"><span class="lineNum">     580 </span><span class="lineCov">        256 :                 blake2s_update(&amp;state, buf, l);</span></a>
+<a name="581"><span class="lineNum">     581 </span><span class="lineCov">        256 :                 blake2s_update(&amp;state, buf + l, i - l);</span></a>
+<a name="582"><span class="lineNum">     582 </span><span class="lineCov">        256 :                 blake2s_final(&amp;state, hash);</span></a>
+<a name="583"><span class="lineNum">     583 </span><span class="lineCov">        256 :                 if (memcmp(hash, blake2s_testvecs[i], outlen)) {</span></a>
 <a name="584"><span class="lineNum">     584 </span><span class="lineNoCov">          0 :                         pr_err(&quot;blake2s init/update/final self-test %d: FAIL\n&quot;,</span></a>
 <a name="585"><span class="lineNum">     585 </span>            :                                i + 1);</a>
 <a name="586"><span class="lineNum">     586 </span><span class="lineNoCov">          0 :                         success = false;</span></a>
 <a name="587"><span class="lineNum">     587 </span>            :                 }</a>
 <a name="588"><span class="lineNum">     588 </span>            :         }</a>
 <a name="589"><span class="lineNum">     589 </span>            : </a>
-<a name="590"><span class="lineNum">     590 </span><span class="lineCov">          2 :         return success;</span></a>
+<a name="590"><span class="lineNum">     590 </span><span class="lineCov">          1 :         return success;</span></a>
 <a name="591"><span class="lineNum">     591 </span>            : }</a>
 </pre>
       </td>

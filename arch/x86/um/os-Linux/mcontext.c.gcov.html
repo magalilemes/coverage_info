@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -66,7 +66,7 @@
 <a name="4"><span class="lineNum">       4 </span>            : #include &lt;asm/ptrace.h&gt;</a>
 <a name="5"><span class="lineNum">       5 </span>            : #include &lt;sysdep/ptrace.h&gt;</a>
 <a name="6"><span class="lineNum">       6 </span>            : </a>
-<a name="7"><span class="lineNum">       7 </span><span class="lineCov">        141 : void get_regs_from_mc(struct uml_pt_regs *regs, mcontext_t *mc)</span></a>
+<a name="7"><span class="lineNum">       7 </span><span class="lineCov">         47 : void get_regs_from_mc(struct uml_pt_regs *regs, mcontext_t *mc)</span></a>
 <a name="8"><span class="lineNum">       8 </span>            : {</a>
 <a name="9"><span class="lineNum">       9 </span>            : #ifdef __i386__</a>
 <a name="10"><span class="lineNum">      10 </span>            : #define COPY2(X,Y) regs-&gt;gp[X] = mc-&gt;gregs[REG_##Y]</a>
@@ -81,17 +81,17 @@
 <a name="19"><span class="lineNum">      19 </span>            : #else</a>
 <a name="20"><span class="lineNum">      20 </span>            : #define COPY2(X,Y) regs-&gt;gp[X/sizeof(unsigned long)] = mc-&gt;gregs[REG_##Y]</a>
 <a name="21"><span class="lineNum">      21 </span>            : #define COPY(X) regs-&gt;gp[X/sizeof(unsigned long)] = mc-&gt;gregs[REG_##X]</a>
-<a name="22"><span class="lineNum">      22 </span><span class="lineCov">        141 :         COPY(R8); COPY(R9); COPY(R10); COPY(R11);</span></a>
-<a name="23"><span class="lineNum">      23 </span><span class="lineCov">        141 :         COPY(R12); COPY(R13); COPY(R14); COPY(R15);</span></a>
-<a name="24"><span class="lineNum">      24 </span><span class="lineCov">        141 :         COPY(RDI); COPY(RSI); COPY(RBP); COPY(RBX);</span></a>
-<a name="25"><span class="lineNum">      25 </span><span class="lineCov">        141 :         COPY(RDX); COPY(RAX); COPY(RCX); COPY(RSP);</span></a>
-<a name="26"><span class="lineNum">      26 </span><span class="lineCov">        141 :         COPY(RIP);</span></a>
-<a name="27"><span class="lineNum">      27 </span><span class="lineCov">        141 :         COPY2(EFLAGS, EFL);</span></a>
-<a name="28"><span class="lineNum">      28 </span><span class="lineCov">        141 :         COPY2(CS, CSGSFS);</span></a>
-<a name="29"><span class="lineNum">      29 </span><span class="lineCov">        141 :         regs-&gt;gp[CS / sizeof(unsigned long)] &amp;= 0xffff;</span></a>
-<a name="30"><span class="lineNum">      30 </span><span class="lineCov">        141 :         regs-&gt;gp[CS / sizeof(unsigned long)] |= 3;</span></a>
+<a name="22"><span class="lineNum">      22 </span><span class="lineCov">         47 :         COPY(R8); COPY(R9); COPY(R10); COPY(R11);</span></a>
+<a name="23"><span class="lineNum">      23 </span><span class="lineCov">         47 :         COPY(R12); COPY(R13); COPY(R14); COPY(R15);</span></a>
+<a name="24"><span class="lineNum">      24 </span><span class="lineCov">         47 :         COPY(RDI); COPY(RSI); COPY(RBP); COPY(RBX);</span></a>
+<a name="25"><span class="lineNum">      25 </span><span class="lineCov">         47 :         COPY(RDX); COPY(RAX); COPY(RCX); COPY(RSP);</span></a>
+<a name="26"><span class="lineNum">      26 </span><span class="lineCov">         47 :         COPY(RIP);</span></a>
+<a name="27"><span class="lineNum">      27 </span><span class="lineCov">         47 :         COPY2(EFLAGS, EFL);</span></a>
+<a name="28"><span class="lineNum">      28 </span><span class="lineCov">         47 :         COPY2(CS, CSGSFS);</span></a>
+<a name="29"><span class="lineNum">      29 </span><span class="lineCov">         47 :         regs-&gt;gp[CS / sizeof(unsigned long)] &amp;= 0xffff;</span></a>
+<a name="30"><span class="lineNum">      30 </span><span class="lineCov">         47 :         regs-&gt;gp[CS / sizeof(unsigned long)] |= 3;</span></a>
 <a name="31"><span class="lineNum">      31 </span>            : #endif</a>
-<a name="32"><span class="lineNum">      32 </span><span class="lineCov">        141 : }</span></a>
+<a name="32"><span class="lineNum">      32 </span><span class="lineCov">         47 : }</span></a>
 </pre>
       </td>
     </tr>

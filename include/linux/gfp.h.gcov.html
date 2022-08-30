@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -425,18 +425,18 @@
 <a name="363"><span class="lineNum">     363 </span>            :         BUILD_BUG_ON((1UL &lt;&lt; GFP_MOVABLE_SHIFT) != ___GFP_MOVABLE);</a>
 <a name="364"><span class="lineNum">     364 </span>            :         BUILD_BUG_ON((___GFP_MOVABLE &gt;&gt; GFP_MOVABLE_SHIFT) != MIGRATE_MOVABLE);</a>
 <a name="365"><span class="lineNum">     365 </span>            : </a>
-<a name="366"><span class="lineNum">     366 </span><span class="lineCov">        965 :         if (unlikely(page_group_by_mobility_disabled))</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineCov">        483 :         if (unlikely(page_group_by_mobility_disabled))</span></a>
 <a name="367"><span class="lineNum">     367 </span>            :                 return MIGRATE_UNMOVABLE;</a>
 <a name="368"><span class="lineNum">     368 </span>            : </a>
 <a name="369"><span class="lineNum">     369 </span>            :         /* Group based on mobility */</a>
-<a name="370"><span class="lineNum">     370 </span><span class="lineCov">        965 :         return (gfp_flags &amp; GFP_MOVABLE_MASK) &gt;&gt; GFP_MOVABLE_SHIFT;</span></a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineCov">        483 :         return (gfp_flags &amp; GFP_MOVABLE_MASK) &gt;&gt; GFP_MOVABLE_SHIFT;</span></a>
 <a name="371"><span class="lineNum">     371 </span>            : }</a>
 <a name="372"><span class="lineNum">     372 </span>            : #undef GFP_MOVABLE_MASK</a>
 <a name="373"><span class="lineNum">     373 </span>            : #undef GFP_MOVABLE_SHIFT</a>
 <a name="374"><span class="lineNum">     374 </span>            : </a>
 <a name="375"><span class="lineNum">     375 </span>            : static inline bool gfpflags_allow_blocking(const gfp_t gfp_flags)</a>
 <a name="376"><span class="lineNum">     376 </span>            : {</a>
-<a name="377"><span class="lineNum">     377 </span><span class="lineCov">        540 :         return !!(gfp_flags &amp; __GFP_DIRECT_RECLAIM);</span></a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineCov">        328 :         return !!(gfp_flags &amp; __GFP_DIRECT_RECLAIM);</span></a>
 <a name="378"><span class="lineNum">     378 </span>            : }</a>
 <a name="379"><span class="lineNum">     379 </span>            : </a>
 <a name="380"><span class="lineNum">     380 </span>            : /**</a>
@@ -555,9 +555,9 @@
 <a name="493"><span class="lineNum">     493 </span>            : static inline enum zone_type gfp_zone(gfp_t flags)</a>
 <a name="494"><span class="lineNum">     494 </span>            : {</a>
 <a name="495"><span class="lineNum">     495 </span>            :         enum zone_type z;</a>
-<a name="496"><span class="lineNum">     496 </span><span class="lineCov">        971 :         int bit = (__force int) (flags &amp; GFP_ZONEMASK);</span></a>
+<a name="496"><span class="lineNum">     496 </span><span class="lineCov">        486 :         int bit = (__force int) (flags &amp; GFP_ZONEMASK);</span></a>
 <a name="497"><span class="lineNum">     497 </span>            : </a>
-<a name="498"><span class="lineNum">     498 </span><span class="lineCov">        971 :         z = (GFP_ZONE_TABLE &gt;&gt; (bit * GFP_ZONES_SHIFT)) &amp;</span></a>
+<a name="498"><span class="lineNum">     498 </span><span class="lineCov">        486 :         z = (GFP_ZONE_TABLE &gt;&gt; (bit * GFP_ZONES_SHIFT)) &amp;</span></a>
 <a name="499"><span class="lineNum">     499 </span>            :                                          ((1 &lt;&lt; GFP_ZONES_SHIFT) - 1);</a>
 <a name="500"><span class="lineNum">     500 </span>            :         VM_BUG_ON((GFP_ZONE_BAD &gt;&gt; bit) &amp; 1);</a>
 <a name="501"><span class="lineNum">     501 </span>            :         return z;</a>
@@ -590,7 +590,7 @@
 <a name="528"><span class="lineNum">     528 </span>            :  */</a>
 <a name="529"><span class="lineNum">     529 </span>            : static inline struct zonelist *node_zonelist(int nid, gfp_t flags)</a>
 <a name="530"><span class="lineNum">     530 </span>            : {</a>
-<a name="531"><span class="lineNum">     531 </span><span class="lineCov">        971 :         return NODE_DATA(nid)-&gt;node_zonelists + gfp_zonelist(flags);</span></a>
+<a name="531"><span class="lineNum">     531 </span><span class="lineCov">        486 :         return NODE_DATA(nid)-&gt;node_zonelists + gfp_zonelist(flags);</span></a>
 <a name="532"><span class="lineNum">     532 </span>            : }</a>
 <a name="533"><span class="lineNum">     533 </span>            : </a>
 <a name="534"><span class="lineNum">     534 </span>            : #ifndef HAVE_ARCH_FREE_PAGE</a>
@@ -630,10 +630,10 @@
 <a name="568"><span class="lineNum">     568 </span>            : static inline unsigned long</a>
 <a name="569"><span class="lineNum">     569 </span>            : alloc_pages_bulk_array_node(gfp_t gfp, int nid, unsigned long nr_pages, struct page **page_array)</a>
 <a name="570"><span class="lineNum">     570 </span>            : {</a>
-<a name="571"><span class="lineNum">     571 </span><span class="lineCov">         30 :         if (nid == NUMA_NO_NODE)</span></a>
-<a name="572"><span class="lineNum">     572 </span><span class="lineCov">         30 :                 nid = numa_mem_id();</span></a>
+<a name="571"><span class="lineNum">     571 </span><span class="lineCov">         15 :         if (nid == NUMA_NO_NODE)</span></a>
+<a name="572"><span class="lineNum">     572 </span><span class="lineCov">         15 :                 nid = numa_mem_id();</span></a>
 <a name="573"><span class="lineNum">     573 </span>            : </a>
-<a name="574"><span class="lineNum">     574 </span><span class="lineCov">         30 :         return __alloc_pages_bulk(gfp, nid, NULL, nr_pages, NULL, page_array);</span></a>
+<a name="574"><span class="lineNum">     574 </span><span class="lineCov">         15 :         return __alloc_pages_bulk(gfp, nid, NULL, nr_pages, NULL, page_array);</span></a>
 <a name="575"><span class="lineNum">     575 </span>            : }</a>
 <a name="576"><span class="lineNum">     576 </span>            : </a>
 <a name="577"><span class="lineNum">     577 </span>            : /*</a>
@@ -646,7 +646,7 @@
 <a name="584"><span class="lineNum">     584 </span>            :         VM_BUG_ON(nid &lt; 0 || nid &gt;= MAX_NUMNODES);</a>
 <a name="585"><span class="lineNum">     585 </span>            :         VM_WARN_ON((gfp_mask &amp; __GFP_THISNODE) &amp;&amp; !node_online(nid));</a>
 <a name="586"><span class="lineNum">     586 </span>            : </a>
-<a name="587"><span class="lineNum">     587 </span><span class="lineCov">        935 :         return __alloc_pages(gfp_mask, order, nid, NULL);</span></a>
+<a name="587"><span class="lineNum">     587 </span><span class="lineCov">        468 :         return __alloc_pages(gfp_mask, order, nid, NULL);</span></a>
 <a name="588"><span class="lineNum">     588 </span>            : }</a>
 <a name="589"><span class="lineNum">     589 </span>            : </a>
 <a name="590"><span class="lineNum">     590 </span>            : static inline</a>
@@ -669,7 +669,7 @@
 <a name="607"><span class="lineNum">     607 </span><span class="lineNoCov">          0 :         if (nid == NUMA_NO_NODE)</span></a>
 <a name="608"><span class="lineNum">     608 </span><span class="lineNoCov">          0 :                 nid = numa_mem_id();</span></a>
 <a name="609"><span class="lineNum">     609 </span>            : </a>
-<a name="610"><span class="lineNum">     610 </span><span class="lineCov">        933 :         return __alloc_pages_node(nid, gfp_mask, order);</span></a>
+<a name="610"><span class="lineNum">     610 </span><span class="lineCov">        467 :         return __alloc_pages_node(nid, gfp_mask, order);</span></a>
 <a name="611"><span class="lineNum">     611 </span>            : }</a>
 <a name="612"><span class="lineNum">     612 </span>            : </a>
 <a name="613"><span class="lineNum">     613 </span>            : #ifdef CONFIG_NUMA</a>
@@ -685,7 +685,7 @@
 <a name="623"><span class="lineNum">     623 </span>            : #else</a>
 <a name="624"><span class="lineNum">     624 </span>            : static inline struct page *alloc_pages(gfp_t gfp_mask, unsigned int order)</a>
 <a name="625"><span class="lineNum">     625 </span>            : {</a>
-<a name="626"><span class="lineNum">     626 </span><span class="lineCov">       1866 :         return alloc_pages_node(numa_node_id(), gfp_mask, order);</span></a>
+<a name="626"><span class="lineNum">     626 </span><span class="lineCov">        934 :         return alloc_pages_node(numa_node_id(), gfp_mask, order);</span></a>
 <a name="627"><span class="lineNum">     627 </span>            : }</a>
 <a name="628"><span class="lineNum">     628 </span>            : static inline struct folio *folio_alloc(gfp_t gfp, unsigned int order)</a>
 <a name="629"><span class="lineNum">     629 </span>            : {</a>

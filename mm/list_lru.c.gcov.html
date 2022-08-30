@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -392,8 +392,8 @@
 <a name="330"><span class="lineNum">     330 </span>            : </a>
 <a name="331"><span class="lineNum">     331 </span>            : static void init_one_lru(struct list_lru_one *l)</a>
 <a name="332"><span class="lineNum">     332 </span>            : {</a>
-<a name="333"><span class="lineNum">     333 </span><span class="lineCov">         84 :         INIT_LIST_HEAD(&amp;l-&gt;list);</span></a>
-<a name="334"><span class="lineNum">     334 </span><span class="lineCov">         42 :         l-&gt;nr_items = 0;</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineCov">         42 :         INIT_LIST_HEAD(&amp;l-&gt;list);</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineCov">         21 :         l-&gt;nr_items = 0;</span></a>
 <a name="335"><span class="lineNum">     335 </span>            : }</a>
 <a name="336"><span class="lineNum">     336 </span>            : </a>
 <a name="337"><span class="lineNum">     337 </span>            : #ifdef CONFIG_MEMCG_KMEM</a>
@@ -618,7 +618,7 @@
 <a name="556"><span class="lineNum">     556 </span>            : }</a>
 <a name="557"><span class="lineNum">     557 </span>            : #endif /* CONFIG_MEMCG_KMEM */</a>
 <a name="558"><span class="lineNum">     558 </span>            : </a>
-<a name="559"><span class="lineNum">     559 </span><span class="lineCov">         42 : int __list_lru_init(struct list_lru *lru, bool memcg_aware,</span></a>
+<a name="559"><span class="lineNum">     559 </span><span class="lineCov">         21 : int __list_lru_init(struct list_lru *lru, bool memcg_aware,</span></a>
 <a name="560"><span class="lineNum">     560 </span>            :                     struct lock_class_key *key, struct shrinker *shrinker)</a>
 <a name="561"><span class="lineNum">     561 </span>            : {</a>
 <a name="562"><span class="lineNum">     562 </span>            :         int i;</a>
@@ -630,15 +630,15 @@
 <a name="568"><span class="lineNum">     568 </span>            :                 lru-&gt;shrinker_id = -1;</a>
 <a name="569"><span class="lineNum">     569 </span>            : #endif</a>
 <a name="570"><span class="lineNum">     570 </span>            : </a>
-<a name="571"><span class="lineNum">     571 </span><span class="lineCov">         42 :         lru-&gt;node = kcalloc(nr_node_ids, sizeof(*lru-&gt;node), GFP_KERNEL);</span></a>
-<a name="572"><span class="lineNum">     572 </span><span class="lineCov">         42 :         if (!lru-&gt;node)</span></a>
+<a name="571"><span class="lineNum">     571 </span><span class="lineCov">         21 :         lru-&gt;node = kcalloc(nr_node_ids, sizeof(*lru-&gt;node), GFP_KERNEL);</span></a>
+<a name="572"><span class="lineNum">     572 </span><span class="lineCov">         21 :         if (!lru-&gt;node)</span></a>
 <a name="573"><span class="lineNum">     573 </span>            :                 return -ENOMEM;</a>
 <a name="574"><span class="lineNum">     574 </span>            : </a>
-<a name="575"><span class="lineNum">     575 </span><span class="lineCov">         42 :         for_each_node(i) {</span></a>
-<a name="576"><span class="lineNum">     576 </span><span class="lineCov">         42 :                 spin_lock_init(&amp;lru-&gt;node[i].lock);</span></a>
+<a name="575"><span class="lineNum">     575 </span><span class="lineCov">         21 :         for_each_node(i) {</span></a>
+<a name="576"><span class="lineNum">     576 </span><span class="lineCov">         21 :                 spin_lock_init(&amp;lru-&gt;node[i].lock);</span></a>
 <a name="577"><span class="lineNum">     577 </span>            :                 if (key)</a>
 <a name="578"><span class="lineNum">     578 </span>            :                         lockdep_set_class(&amp;lru-&gt;node[i].lock, key);</a>
-<a name="579"><span class="lineNum">     579 </span><span class="lineCov">         84 :                 init_one_lru(&amp;lru-&gt;node[i].lru);</span></a>
+<a name="579"><span class="lineNum">     579 </span><span class="lineCov">         42 :                 init_one_lru(&amp;lru-&gt;node[i].lru);</span></a>
 <a name="580"><span class="lineNum">     580 </span>            :         }</a>
 <a name="581"><span class="lineNum">     581 </span>            : </a>
 <a name="582"><span class="lineNum">     582 </span>            :         memcg_init_list_lru(lru, memcg_aware);</a>

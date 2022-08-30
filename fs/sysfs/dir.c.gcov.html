@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -99,35 +99,35 @@
 <a name="37"><span class="lineNum">      37 </span>            :  * @kobj: object we're creating directory for</a>
 <a name="38"><span class="lineNum">      38 </span>            :  * @ns: the namespace tag to use</a>
 <a name="39"><span class="lineNum">      39 </span>            :  */</a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">       1422 : int sysfs_create_dir_ns(struct kobject *kobj, const void *ns)</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">        711 : int sysfs_create_dir_ns(struct kobject *kobj, const void *ns)</span></a>
 <a name="41"><span class="lineNum">      41 </span>            : {</a>
 <a name="42"><span class="lineNum">      42 </span>            :         struct kernfs_node *parent, *kn;</a>
 <a name="43"><span class="lineNum">      43 </span>            :         kuid_t uid;</a>
 <a name="44"><span class="lineNum">      44 </span>            :         kgid_t gid;</a>
 <a name="45"><span class="lineNum">      45 </span>            : </a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">       1422 :         if (WARN_ON(!kobj))</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">        711 :         if (WARN_ON(!kobj))</span></a>
 <a name="47"><span class="lineNum">      47 </span>            :                 return -EINVAL;</a>
 <a name="48"><span class="lineNum">      48 </span>            : </a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">       1422 :         if (kobj-&gt;parent)</span></a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">       1402 :                 parent = kobj-&gt;parent-&gt;sd;</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">        711 :         if (kobj-&gt;parent)</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">        701 :                 parent = kobj-&gt;parent-&gt;sd;</span></a>
 <a name="51"><span class="lineNum">      51 </span>            :         else</a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">         20 :                 parent = sysfs_root_kn;</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">         10 :                 parent = sysfs_root_kn;</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">       1422 :         if (!parent)</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        711 :         if (!parent)</span></a>
 <a name="55"><span class="lineNum">      55 </span>            :                 return -ENOENT;</a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">       1422 :         kobject_get_ownership(kobj, &amp;uid, &amp;gid);</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        711 :         kobject_get_ownership(kobj, &amp;uid, &amp;gid);</span></a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">       1422 :         kn = kernfs_create_dir_ns(parent, kobject_name(kobj), 0755, uid, gid,</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">        711 :         kn = kernfs_create_dir_ns(parent, kobject_name(kobj), 0755, uid, gid,</span></a>
 <a name="60"><span class="lineNum">      60 </span>            :                                   kobj, ns);</a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">       1422 :         if (IS_ERR(kn)) {</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        711 :         if (IS_ERR(kn)) {</span></a>
 <a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 :                 if (PTR_ERR(kn) == -EEXIST)</span></a>
 <a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :                         sysfs_warn_dup(parent, kobject_name(kobj));</span></a>
 <a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 :                 return PTR_ERR(kn);</span></a>
 <a name="65"><span class="lineNum">      65 </span>            :         }</a>
 <a name="66"><span class="lineNum">      66 </span>            : </a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">       1422 :         kobj-&gt;sd = kn;</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">       1422 :         return 0;</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">        711 :         kobj-&gt;sd = kn;</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        711 :         return 0;</span></a>
 <a name="69"><span class="lineNum">      69 </span>            : }</a>
 <a name="70"><span class="lineNum">      70 </span>            : </a>
 <a name="71"><span class="lineNum">      71 </span>            : /**</a>
@@ -138,9 +138,9 @@
 <a name="76"><span class="lineNum">      76 </span>            :  *      the directory before we remove the directory, and we've inlined</a>
 <a name="77"><span class="lineNum">      77 </span>            :  *      what used to be sysfs_rmdir() below, instead of calling separately.</a>
 <a name="78"><span class="lineNum">      78 </span>            :  */</a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">          2 : void sysfs_remove_dir(struct kobject *kobj)</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">          1 : void sysfs_remove_dir(struct kobject *kobj)</span></a>
 <a name="80"><span class="lineNum">      80 </span>            : {</a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">          2 :         struct kernfs_node *kn = kobj-&gt;sd;</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">          1 :         struct kernfs_node *kn = kobj-&gt;sd;</span></a>
 <a name="82"><span class="lineNum">      82 </span>            : </a>
 <a name="83"><span class="lineNum">      83 </span>            :         /*</a>
 <a name="84"><span class="lineNum">      84 </span>            :          * In general, kboject owner is responsible for ensuring removal</a>
@@ -154,15 +154,15 @@
 <a name="92"><span class="lineNum">      92 </span>            :          * disassociation against symlink operations so that symlink code</a>
 <a name="93"><span class="lineNum">      93 </span>            :          * can safely dereference @kobj-&gt;sd.</a>
 <a name="94"><span class="lineNum">      94 </span>            :          */</a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineCov">          2 :         spin_lock(&amp;sysfs_symlink_target_lock);</span></a>
-<a name="96"><span class="lineNum">      96 </span><span class="lineCov">          2 :         kobj-&gt;sd = NULL;</span></a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineCov">          2 :         spin_unlock(&amp;sysfs_symlink_target_lock);</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">          1 :         spin_lock(&amp;sysfs_symlink_target_lock);</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineCov">          1 :         kobj-&gt;sd = NULL;</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">          1 :         spin_unlock(&amp;sysfs_symlink_target_lock);</span></a>
 <a name="98"><span class="lineNum">      98 </span>            : </a>
-<a name="99"><span class="lineNum">      99 </span><span class="lineCov">          2 :         if (kn) {</span></a>
-<a name="100"><span class="lineNum">     100 </span><span class="lineCov">          4 :                 WARN_ON_ONCE(kernfs_type(kn) != KERNFS_DIR);</span></a>
-<a name="101"><span class="lineNum">     101 </span><span class="lineCov">          2 :                 kernfs_remove(kn);</span></a>
+<a name="99"><span class="lineNum">      99 </span><span class="lineCov">          1 :         if (kn) {</span></a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineCov">          2 :                 WARN_ON_ONCE(kernfs_type(kn) != KERNFS_DIR);</span></a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineCov">          1 :                 kernfs_remove(kn);</span></a>
 <a name="102"><span class="lineNum">     102 </span>            :         }</a>
-<a name="103"><span class="lineNum">     103 </span><span class="lineCov">          2 : }</span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineCov">          1 : }</span></a>
 <a name="104"><span class="lineNum">     104 </span>            : </a>
 <a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 : int sysfs_rename_dir_ns(struct kobject *kobj, const char *new_name,</span></a>
 <a name="106"><span class="lineNum">     106 </span>            :                         const void *new_ns)</a>

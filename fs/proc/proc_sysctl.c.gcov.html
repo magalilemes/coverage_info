@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">25</td>
@@ -116,7 +116,7 @@
 <a name="54"><span class="lineNum">      54 </span>            : </a>
 <a name="55"><span class="lineNum">      55 </span>            : static bool is_empty_dir(struct ctl_table_header *head)</a>
 <a name="56"><span class="lineNum">      56 </span>            : {</a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">         82 :         return head-&gt;ctl_table[0].child == sysctl_mount_point;</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">         41 :         return head-&gt;ctl_table[0].child == sysctl_mount_point;</span></a>
 <a name="58"><span class="lineNum">      58 </span>            : }</a>
 <a name="59"><span class="lineNum">      59 </span>            : </a>
 <a name="60"><span class="lineNum">      60 </span>            : static void set_empty_dir(struct ctl_dir *dir)</a>
@@ -176,70 +176,70 @@
 <a name="114"><span class="lineNum">     114 </span>            : {</a>
 <a name="115"><span class="lineNum">     115 </span>            :         int cmp;</a>
 <a name="116"><span class="lineNum">     116 </span>            : </a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineCov">       1190 :         cmp = memcmp(name1, name2, min(len1, len2));</span></a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">       1190 :         if (cmp == 0)</span></a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineCov">         62 :                 cmp = len1 - len2;</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">        595 :         cmp = memcmp(name1, name2, min(len1, len2));</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">        595 :         if (cmp == 0)</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">         31 :                 cmp = len1 - len2;</span></a>
 <a name="120"><span class="lineNum">     120 </span>            :         return cmp;</a>
 <a name="121"><span class="lineNum">     121 </span>            : }</a>
 <a name="122"><span class="lineNum">     122 </span>            : </a>
 <a name="123"><span class="lineNum">     123 </span>            : /* Called under sysctl_lock */</a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        104 : static struct ctl_table *find_entry(struct ctl_table_header **phead,</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         52 : static struct ctl_table *find_entry(struct ctl_table_header **phead,</span></a>
 <a name="125"><span class="lineNum">     125 </span>            :         struct ctl_dir *dir, const char *name, int namelen)</a>
 <a name="126"><span class="lineNum">     126 </span>            : {</a>
 <a name="127"><span class="lineNum">     127 </span>            :         struct ctl_table_header *head;</a>
 <a name="128"><span class="lineNum">     128 </span>            :         struct ctl_table *entry;</a>
-<a name="129"><span class="lineNum">     129 </span><span class="lineCov">        104 :         struct rb_node *node = dir-&gt;root.rb_node;</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">         52 :         struct rb_node *node = dir-&gt;root.rb_node;</span></a>
 <a name="130"><span class="lineNum">     130 </span>            : </a>
-<a name="131"><span class="lineNum">     131 </span><span class="lineCov">        314 :         while (node)</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineCov">        157 :         while (node)</span></a>
 <a name="132"><span class="lineNum">     132 </span>            :         {</a>
 <a name="133"><span class="lineNum">     133 </span>            :                 struct ctl_node *ctl_node;</a>
 <a name="134"><span class="lineNum">     134 </span>            :                 const char *procname;</a>
 <a name="135"><span class="lineNum">     135 </span>            :                 int cmp;</a>
 <a name="136"><span class="lineNum">     136 </span>            : </a>
-<a name="137"><span class="lineNum">     137 </span><span class="lineCov">        254 :                 ctl_node = rb_entry(node, struct ctl_node, node);</span></a>
-<a name="138"><span class="lineNum">     138 </span><span class="lineCov">        254 :                 head = ctl_node-&gt;header;</span></a>
-<a name="139"><span class="lineNum">     139 </span><span class="lineCov">        254 :                 entry = &amp;head-&gt;ctl_table[ctl_node - head-&gt;node];</span></a>
-<a name="140"><span class="lineNum">     140 </span><span class="lineCov">        254 :                 procname = entry-&gt;procname;</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineCov">        127 :                 ctl_node = rb_entry(node, struct ctl_node, node);</span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">        127 :                 head = ctl_node-&gt;header;</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineCov">        127 :                 entry = &amp;head-&gt;ctl_table[ctl_node - head-&gt;node];</span></a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineCov">        127 :                 procname = entry-&gt;procname;</span></a>
 <a name="141"><span class="lineNum">     141 </span>            : </a>
-<a name="142"><span class="lineNum">     142 </span><span class="lineCov">        508 :                 cmp = namecmp(name, namelen, procname, strlen(procname));</span></a>
-<a name="143"><span class="lineNum">     143 </span><span class="lineCov">        254 :                 if (cmp &lt; 0)</span></a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineCov">         94 :                         node = node-&gt;rb_left;</span></a>
-<a name="145"><span class="lineNum">     145 </span><span class="lineCov">        160 :                 else if (cmp &gt; 0)</span></a>
-<a name="146"><span class="lineNum">     146 </span><span class="lineCov">        116 :                         node = node-&gt;rb_right;</span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineCov">        254 :                 cmp = namecmp(name, namelen, procname, strlen(procname));</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineCov">        127 :                 if (cmp &lt; 0)</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineCov">         47 :                         node = node-&gt;rb_left;</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">         80 :                 else if (cmp &gt; 0)</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineCov">         58 :                         node = node-&gt;rb_right;</span></a>
 <a name="147"><span class="lineNum">     147 </span>            :                 else {</a>
-<a name="148"><span class="lineNum">     148 </span><span class="lineCov">         44 :                         *phead = head;</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineCov">         22 :                         *phead = head;</span></a>
 <a name="149"><span class="lineNum">     149 </span>            :                         return entry;</a>
 <a name="150"><span class="lineNum">     150 </span>            :                 }</a>
 <a name="151"><span class="lineNum">     151 </span>            :         }</a>
 <a name="152"><span class="lineNum">     152 </span>            :         return NULL;</a>
 <a name="153"><span class="lineNum">     153 </span>            : }</a>
 <a name="154"><span class="lineNum">     154 </span>            : </a>
-<a name="155"><span class="lineNum">     155 </span><span class="lineCov">        286 : static int insert_entry(struct ctl_table_header *head, struct ctl_table *entry)</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineCov">        143 : static int insert_entry(struct ctl_table_header *head, struct ctl_table *entry)</span></a>
 <a name="156"><span class="lineNum">     156 </span>            : {</a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">        286 :         struct rb_node *node = &amp;head-&gt;node[entry - head-&gt;ctl_table].node;</span></a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">        286 :         struct rb_node **p = &amp;head-&gt;parent-&gt;root.rb_node;</span></a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">        286 :         struct rb_node *parent = NULL;</span></a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">        286 :         const char *name = entry-&gt;procname;</span></a>
-<a name="161"><span class="lineNum">     161 </span><span class="lineCov">        286 :         int namelen = strlen(name);</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">        143 :         struct rb_node *node = &amp;head-&gt;node[entry - head-&gt;ctl_table].node;</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">        143 :         struct rb_node **p = &amp;head-&gt;parent-&gt;root.rb_node;</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">        143 :         struct rb_node *parent = NULL;</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">        143 :         const char *name = entry-&gt;procname;</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineCov">        143 :         int namelen = strlen(name);</span></a>
 <a name="162"><span class="lineNum">     162 </span>            : </a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">       1508 :         while (*p) {</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">        754 :         while (*p) {</span></a>
 <a name="164"><span class="lineNum">     164 </span>            :                 struct ctl_table_header *parent_head;</a>
 <a name="165"><span class="lineNum">     165 </span>            :                 struct ctl_table *parent_entry;</a>
 <a name="166"><span class="lineNum">     166 </span>            :                 struct ctl_node *parent_node;</a>
 <a name="167"><span class="lineNum">     167 </span>            :                 const char *parent_name;</a>
 <a name="168"><span class="lineNum">     168 </span>            :                 int cmp;</a>
 <a name="169"><span class="lineNum">     169 </span>            : </a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">        936 :                 parent = *p;</span></a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">        936 :                 parent_node = rb_entry(parent, struct ctl_node, node);</span></a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">        936 :                 parent_head = parent_node-&gt;header;</span></a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineCov">        936 :                 parent_entry = &amp;parent_head-&gt;ctl_table[parent_node - parent_head-&gt;node];</span></a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">        936 :                 parent_name = parent_entry-&gt;procname;</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">        468 :                 parent = *p;</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">        468 :                 parent_node = rb_entry(parent, struct ctl_node, node);</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">        468 :                 parent_head = parent_node-&gt;header;</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">        468 :                 parent_entry = &amp;parent_head-&gt;ctl_table[parent_node - parent_head-&gt;node];</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">        468 :                 parent_name = parent_entry-&gt;procname;</span></a>
 <a name="175"><span class="lineNum">     175 </span>            : </a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineCov">       1872 :                 cmp = namecmp(name, namelen, parent_name, strlen(parent_name));</span></a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">        936 :                 if (cmp &lt; 0)</span></a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">        510 :                         p = &amp;(*p)-&gt;rb_left;</span></a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">        426 :                 else if (cmp &gt; 0)</span></a>
-<a name="180"><span class="lineNum">     180 </span><span class="lineCov">        426 :                         p = &amp;(*p)-&gt;rb_right;</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">        936 :                 cmp = namecmp(name, namelen, parent_name, strlen(parent_name));</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">        468 :                 if (cmp &lt; 0)</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">        255 :                         p = &amp;(*p)-&gt;rb_left;</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">        213 :                 else if (cmp &gt; 0)</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">        213 :                         p = &amp;(*p)-&gt;rb_right;</span></a>
 <a name="181"><span class="lineNum">     181 </span>            :                 else {</a>
 <a name="182"><span class="lineNum">     182 </span><span class="lineNoCov">          0 :                         pr_err(&quot;sysctl duplicate entry: &quot;);</span></a>
 <a name="183"><span class="lineNum">     183 </span><span class="lineNoCov">          0 :                         sysctl_print_dir(head-&gt;parent);</span></a>
@@ -248,9 +248,9 @@
 <a name="186"><span class="lineNum">     186 </span>            :                 }</a>
 <a name="187"><span class="lineNum">     187 </span>            :         }</a>
 <a name="188"><span class="lineNum">     188 </span>            : </a>
-<a name="189"><span class="lineNum">     189 </span><span class="lineCov">        286 :         rb_link_node(node, parent, p);</span></a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineCov">        286 :         rb_insert_color(node, &amp;head-&gt;parent-&gt;root);</span></a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineCov">        286 :         return 0;</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineCov">        143 :         rb_link_node(node, parent, p);</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineCov">        143 :         rb_insert_color(node, &amp;head-&gt;parent-&gt;root);</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">        143 :         return 0;</span></a>
 <a name="192"><span class="lineNum">     192 </span>            : }</a>
 <a name="193"><span class="lineNum">     193 </span>            : </a>
 <a name="194"><span class="lineNum">     194 </span>            : static void erase_entry(struct ctl_table_header *head, struct ctl_table *entry)</a>
@@ -264,21 +264,21 @@
 <a name="202"><span class="lineNum">     202 </span>            :         struct ctl_table_root *root, struct ctl_table_set *set,</a>
 <a name="203"><span class="lineNum">     203 </span>            :         struct ctl_node *node, struct ctl_table *table)</a>
 <a name="204"><span class="lineNum">     204 </span>            : {</a>
-<a name="205"><span class="lineNum">     205 </span><span class="lineCov">         84 :         head-&gt;ctl_table = table;</span></a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineCov">         84 :         head-&gt;ctl_table_arg = table;</span></a>
-<a name="207"><span class="lineNum">     207 </span><span class="lineCov">         84 :         head-&gt;used = 0;</span></a>
-<a name="208"><span class="lineNum">     208 </span><span class="lineCov">         84 :         head-&gt;count = 1;</span></a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineCov">         84 :         head-&gt;nreg = 1;</span></a>
-<a name="210"><span class="lineNum">     210 </span><span class="lineCov">         84 :         head-&gt;unregistering = NULL;</span></a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineCov">         84 :         head-&gt;root = root;</span></a>
-<a name="212"><span class="lineNum">     212 </span><span class="lineCov">         84 :         head-&gt;set = set;</span></a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineCov">         84 :         head-&gt;parent = NULL;</span></a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineCov">         84 :         head-&gt;node = node;</span></a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineCov">         84 :         INIT_HLIST_HEAD(&amp;head-&gt;inodes);</span></a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineCov">         82 :         if (node) {</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineCov">         42 :         head-&gt;ctl_table = table;</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">         42 :         head-&gt;ctl_table_arg = table;</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">         42 :         head-&gt;used = 0;</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineCov">         42 :         head-&gt;count = 1;</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineCov">         42 :         head-&gt;nreg = 1;</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineCov">         42 :         head-&gt;unregistering = NULL;</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineCov">         42 :         head-&gt;root = root;</span></a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineCov">         42 :         head-&gt;set = set;</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineCov">         42 :         head-&gt;parent = NULL;</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">         42 :         head-&gt;node = node;</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">         42 :         INIT_HLIST_HEAD(&amp;head-&gt;inodes);</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineCov">         41 :         if (node) {</span></a>
 <a name="217"><span class="lineNum">     217 </span>            :                 struct ctl_table *entry;</a>
-<a name="218"><span class="lineNum">     218 </span><span class="lineCov">        286 :                 for (entry = table; entry-&gt;procname; entry++, node++)</span></a>
-<a name="219"><span class="lineNum">     219 </span><span class="lineCov">        286 :                         node-&gt;header = head;</span></a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineCov">        143 :                 for (entry = table; entry-&gt;procname; entry++, node++)</span></a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineCov">        143 :                         node-&gt;header = head;</span></a>
 <a name="220"><span class="lineNum">     220 </span>            :         }</a>
 <a name="221"><span class="lineNum">     221 </span>            : }</a>
 <a name="222"><span class="lineNum">     222 </span>            : </a>
@@ -289,30 +289,30 @@
 <a name="227"><span class="lineNum">     227 </span><span class="lineNoCov">          0 :                 erase_entry(head, entry);</span></a>
 <a name="228"><span class="lineNum">     228 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="229"><span class="lineNum">     229 </span>            : </a>
-<a name="230"><span class="lineNum">     230 </span><span class="lineCov">         82 : static int insert_header(struct ctl_dir *dir, struct ctl_table_header *header)</span></a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineCov">         41 : static int insert_header(struct ctl_dir *dir, struct ctl_table_header *header)</span></a>
 <a name="231"><span class="lineNum">     231 </span>            : {</a>
 <a name="232"><span class="lineNum">     232 </span>            :         struct ctl_table *entry;</a>
 <a name="233"><span class="lineNum">     233 </span>            :         int err;</a>
 <a name="234"><span class="lineNum">     234 </span>            : </a>
 <a name="235"><span class="lineNum">     235 </span>            :         /* Is this a permanently empty directory? */</a>
-<a name="236"><span class="lineNum">     236 </span><span class="lineCov">        164 :         if (is_empty_dir(&amp;dir-&gt;header))</span></a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineCov">         82 :         if (is_empty_dir(&amp;dir-&gt;header))</span></a>
 <a name="237"><span class="lineNum">     237 </span>            :                 return -EROFS;</a>
 <a name="238"><span class="lineNum">     238 </span>            : </a>
 <a name="239"><span class="lineNum">     239 </span>            :         /* Am I creating a permanently empty directory? */</a>
-<a name="240"><span class="lineNum">     240 </span><span class="lineCov">         82 :         if (header-&gt;ctl_table == sysctl_mount_point) {</span></a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineCov">         41 :         if (header-&gt;ctl_table == sysctl_mount_point) {</span></a>
 <a name="241"><span class="lineNum">     241 </span><span class="lineNoCov">          0 :                 if (!RB_EMPTY_ROOT(&amp;dir-&gt;root))</span></a>
 <a name="242"><span class="lineNum">     242 </span>            :                         return -EINVAL;</a>
 <a name="243"><span class="lineNum">     243 </span><span class="lineNoCov">          0 :                 set_empty_dir(dir);</span></a>
 <a name="244"><span class="lineNum">     244 </span>            :         }</a>
 <a name="245"><span class="lineNum">     245 </span>            : </a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineCov">         82 :         dir-&gt;header.nreg++;</span></a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineCov">         82 :         header-&gt;parent = dir;</span></a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineCov">         82 :         err = insert_links(header);</span></a>
-<a name="249"><span class="lineNum">     249 </span><span class="lineCov">         82 :         if (err)</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">         41 :         dir-&gt;header.nreg++;</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineCov">         41 :         header-&gt;parent = dir;</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">         41 :         err = insert_links(header);</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineCov">         41 :         if (err)</span></a>
 <a name="250"><span class="lineNum">     250 </span>            :                 goto fail_links;</a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineCov">        368 :         for (entry = header-&gt;ctl_table; entry-&gt;procname; entry++) {</span></a>
-<a name="252"><span class="lineNum">     252 </span><span class="lineCov">        286 :                 err = insert_entry(header, entry);</span></a>
-<a name="253"><span class="lineNum">     253 </span><span class="lineCov">        286 :                 if (err)</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineCov">        184 :         for (entry = header-&gt;ctl_table; entry-&gt;procname; entry++) {</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineCov">        143 :                 err = insert_entry(header, entry);</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineCov">        143 :                 if (err)</span></a>
 <a name="254"><span class="lineNum">     254 </span>            :                         goto fail;</a>
 <a name="255"><span class="lineNum">     255 </span>            :         }</a>
 <a name="256"><span class="lineNum">     256 </span>            :         return 0;</a>
@@ -1008,21 +1008,21 @@
 <a name="946"><span class="lineNum">     946 </span>            :         .d_compare      = proc_sys_compare,</a>
 <a name="947"><span class="lineNum">     947 </span>            : };</a>
 <a name="948"><span class="lineNum">     948 </span>            : </a>
-<a name="949"><span class="lineNum">     949 </span><span class="lineCov">         96 : static struct ctl_dir *find_subdir(struct ctl_dir *dir,</span></a>
+<a name="949"><span class="lineNum">     949 </span><span class="lineCov">         48 : static struct ctl_dir *find_subdir(struct ctl_dir *dir,</span></a>
 <a name="950"><span class="lineNum">     950 </span>            :                                    const char *name, int namelen)</a>
 <a name="951"><span class="lineNum">     951 </span>            : {</a>
 <a name="952"><span class="lineNum">     952 </span>            :         struct ctl_table_header *head;</a>
 <a name="953"><span class="lineNum">     953 </span>            :         struct ctl_table *entry;</a>
 <a name="954"><span class="lineNum">     954 </span>            : </a>
-<a name="955"><span class="lineNum">     955 </span><span class="lineCov">         96 :         entry = find_entry(&amp;head, dir, name, namelen);</span></a>
-<a name="956"><span class="lineNum">     956 </span><span class="lineCov">         96 :         if (!entry)</span></a>
+<a name="955"><span class="lineNum">     955 </span><span class="lineCov">         48 :         entry = find_entry(&amp;head, dir, name, namelen);</span></a>
+<a name="956"><span class="lineNum">     956 </span><span class="lineCov">         48 :         if (!entry)</span></a>
 <a name="957"><span class="lineNum">     957 </span>            :                 return ERR_PTR(-ENOENT);</a>
-<a name="958"><span class="lineNum">     958 </span><span class="lineCov">         40 :         if (!S_ISDIR(entry-&gt;mode))</span></a>
+<a name="958"><span class="lineNum">     958 </span><span class="lineCov">         20 :         if (!S_ISDIR(entry-&gt;mode))</span></a>
 <a name="959"><span class="lineNum">     959 </span>            :                 return ERR_PTR(-ENOTDIR);</a>
-<a name="960"><span class="lineNum">     960 </span><span class="lineCov">         40 :         return container_of(head, struct ctl_dir, header);</span></a>
+<a name="960"><span class="lineNum">     960 </span><span class="lineCov">         20 :         return container_of(head, struct ctl_dir, header);</span></a>
 <a name="961"><span class="lineNum">     961 </span>            : }</a>
 <a name="962"><span class="lineNum">     962 </span>            : </a>
-<a name="963"><span class="lineNum">     963 </span><span class="lineCov">         28 : static struct ctl_dir *new_dir(struct ctl_table_set *set,</span></a>
+<a name="963"><span class="lineNum">     963 </span><span class="lineCov">         14 : static struct ctl_dir *new_dir(struct ctl_table_set *set,</span></a>
 <a name="964"><span class="lineNum">     964 </span>            :                                const char *name, int namelen)</a>
 <a name="965"><span class="lineNum">     965 </span>            : {</a>
 <a name="966"><span class="lineNum">     966 </span>            :         struct ctl_table *table;</a>
@@ -1030,20 +1030,20 @@
 <a name="968"><span class="lineNum">     968 </span>            :         struct ctl_node *node;</a>
 <a name="969"><span class="lineNum">     969 </span>            :         char *new_name;</a>
 <a name="970"><span class="lineNum">     970 </span>            : </a>
-<a name="971"><span class="lineNum">     971 </span><span class="lineCov">         28 :         new = kzalloc(sizeof(*new) + sizeof(struct ctl_node) +</span></a>
+<a name="971"><span class="lineNum">     971 </span><span class="lineCov">         14 :         new = kzalloc(sizeof(*new) + sizeof(struct ctl_node) +</span></a>
 <a name="972"><span class="lineNum">     972 </span>            :                       sizeof(struct ctl_table)*2 +  namelen + 1,</a>
 <a name="973"><span class="lineNum">     973 </span>            :                       GFP_KERNEL);</a>
-<a name="974"><span class="lineNum">     974 </span><span class="lineCov">         28 :         if (!new)</span></a>
+<a name="974"><span class="lineNum">     974 </span><span class="lineCov">         14 :         if (!new)</span></a>
 <a name="975"><span class="lineNum">     975 </span>            :                 return NULL;</a>
 <a name="976"><span class="lineNum">     976 </span>            : </a>
-<a name="977"><span class="lineNum">     977 </span><span class="lineCov">         28 :         node = (struct ctl_node *)(new + 1);</span></a>
-<a name="978"><span class="lineNum">     978 </span><span class="lineCov">         28 :         table = (struct ctl_table *)(node + 1);</span></a>
-<a name="979"><span class="lineNum">     979 </span><span class="lineCov">         28 :         new_name = (char *)(table + 2);</span></a>
-<a name="980"><span class="lineNum">     980 </span><span class="lineCov">         28 :         memcpy(new_name, name, namelen);</span></a>
-<a name="981"><span class="lineNum">     981 </span><span class="lineCov">         28 :         new_name[namelen] = '\0';</span></a>
-<a name="982"><span class="lineNum">     982 </span><span class="lineCov">         28 :         table[0].procname = new_name;</span></a>
-<a name="983"><span class="lineNum">     983 </span><span class="lineCov">         28 :         table[0].mode = S_IFDIR|S_IRUGO|S_IXUGO;</span></a>
-<a name="984"><span class="lineNum">     984 </span><span class="lineCov">         28 :         init_header(&amp;new-&gt;header, set-&gt;dir.header.root, set, node, table);</span></a>
+<a name="977"><span class="lineNum">     977 </span><span class="lineCov">         14 :         node = (struct ctl_node *)(new + 1);</span></a>
+<a name="978"><span class="lineNum">     978 </span><span class="lineCov">         14 :         table = (struct ctl_table *)(node + 1);</span></a>
+<a name="979"><span class="lineNum">     979 </span><span class="lineCov">         14 :         new_name = (char *)(table + 2);</span></a>
+<a name="980"><span class="lineNum">     980 </span><span class="lineCov">         14 :         memcpy(new_name, name, namelen);</span></a>
+<a name="981"><span class="lineNum">     981 </span><span class="lineCov">         14 :         new_name[namelen] = '\0';</span></a>
+<a name="982"><span class="lineNum">     982 </span><span class="lineCov">         14 :         table[0].procname = new_name;</span></a>
+<a name="983"><span class="lineNum">     983 </span><span class="lineCov">         14 :         table[0].mode = S_IFDIR|S_IRUGO|S_IXUGO;</span></a>
+<a name="984"><span class="lineNum">     984 </span><span class="lineCov">         14 :         init_header(&amp;new-&gt;header, set-&gt;dir.header.root, set, node, table);</span></a>
 <a name="985"><span class="lineNum">     985 </span>            : </a>
 <a name="986"><span class="lineNum">     986 </span>            :         return new;</a>
 <a name="987"><span class="lineNum">     987 </span>            : }</a>
@@ -1060,67 +1060,67 @@
 <a name="998"><span class="lineNum">     998 </span>            :  * Upon error an error code is returned and the reference on @dir is</a>
 <a name="999"><span class="lineNum">     999 </span>            :  * simply dropped.</a>
 <a name="1000"><span class="lineNum">    1000 </span>            :  */</a>
-<a name="1001"><span class="lineNum">    1001 </span><span class="lineCov">         66 : static struct ctl_dir *get_subdir(struct ctl_dir *dir,</span></a>
+<a name="1001"><span class="lineNum">    1001 </span><span class="lineCov">         33 : static struct ctl_dir *get_subdir(struct ctl_dir *dir,</span></a>
 <a name="1002"><span class="lineNum">    1002 </span>            :                                   const char *name, int namelen)</a>
 <a name="1003"><span class="lineNum">    1003 </span>            : {</a>
-<a name="1004"><span class="lineNum">    1004 </span><span class="lineCov">         66 :         struct ctl_table_set *set = dir-&gt;header.set;</span></a>
-<a name="1005"><span class="lineNum">    1005 </span><span class="lineCov">         66 :         struct ctl_dir *subdir, *new = NULL;</span></a>
+<a name="1004"><span class="lineNum">    1004 </span><span class="lineCov">         33 :         struct ctl_table_set *set = dir-&gt;header.set;</span></a>
+<a name="1005"><span class="lineNum">    1005 </span><span class="lineCov">         33 :         struct ctl_dir *subdir, *new = NULL;</span></a>
 <a name="1006"><span class="lineNum">    1006 </span>            :         int err;</a>
 <a name="1007"><span class="lineNum">    1007 </span>            : </a>
-<a name="1008"><span class="lineNum">    1008 </span><span class="lineCov">         66 :         spin_lock(&amp;sysctl_lock);</span></a>
-<a name="1009"><span class="lineNum">    1009 </span><span class="lineCov">         66 :         subdir = find_subdir(dir, name, namelen);</span></a>
-<a name="1010"><span class="lineNum">    1010 </span><span class="lineCov">         66 :         if (!IS_ERR(subdir))</span></a>
+<a name="1008"><span class="lineNum">    1008 </span><span class="lineCov">         33 :         spin_lock(&amp;sysctl_lock);</span></a>
+<a name="1009"><span class="lineNum">    1009 </span><span class="lineCov">         33 :         subdir = find_subdir(dir, name, namelen);</span></a>
+<a name="1010"><span class="lineNum">    1010 </span><span class="lineCov">         33 :         if (!IS_ERR(subdir))</span></a>
 <a name="1011"><span class="lineNum">    1011 </span>            :                 goto found;</a>
-<a name="1012"><span class="lineNum">    1012 </span><span class="lineCov">         28 :         if (PTR_ERR(subdir) != -ENOENT)</span></a>
+<a name="1012"><span class="lineNum">    1012 </span><span class="lineCov">         14 :         if (PTR_ERR(subdir) != -ENOENT)</span></a>
 <a name="1013"><span class="lineNum">    1013 </span>            :                 goto failed;</a>
 <a name="1014"><span class="lineNum">    1014 </span>            : </a>
-<a name="1015"><span class="lineNum">    1015 </span><span class="lineCov">         28 :         spin_unlock(&amp;sysctl_lock);</span></a>
-<a name="1016"><span class="lineNum">    1016 </span><span class="lineCov">         28 :         new = new_dir(set, name, namelen);</span></a>
-<a name="1017"><span class="lineNum">    1017 </span><span class="lineCov">         28 :         spin_lock(&amp;sysctl_lock);</span></a>
-<a name="1018"><span class="lineNum">    1018 </span><span class="lineCov">         28 :         subdir = ERR_PTR(-ENOMEM);</span></a>
-<a name="1019"><span class="lineNum">    1019 </span><span class="lineCov">         28 :         if (!new)</span></a>
+<a name="1015"><span class="lineNum">    1015 </span><span class="lineCov">         14 :         spin_unlock(&amp;sysctl_lock);</span></a>
+<a name="1016"><span class="lineNum">    1016 </span><span class="lineCov">         14 :         new = new_dir(set, name, namelen);</span></a>
+<a name="1017"><span class="lineNum">    1017 </span><span class="lineCov">         14 :         spin_lock(&amp;sysctl_lock);</span></a>
+<a name="1018"><span class="lineNum">    1018 </span><span class="lineCov">         14 :         subdir = ERR_PTR(-ENOMEM);</span></a>
+<a name="1019"><span class="lineNum">    1019 </span><span class="lineCov">         14 :         if (!new)</span></a>
 <a name="1020"><span class="lineNum">    1020 </span>            :                 goto failed;</a>
 <a name="1021"><span class="lineNum">    1021 </span>            : </a>
 <a name="1022"><span class="lineNum">    1022 </span>            :         /* Was the subdir added while we dropped the lock? */</a>
-<a name="1023"><span class="lineNum">    1023 </span><span class="lineCov">         28 :         subdir = find_subdir(dir, name, namelen);</span></a>
-<a name="1024"><span class="lineNum">    1024 </span><span class="lineCov">         28 :         if (!IS_ERR(subdir))</span></a>
+<a name="1023"><span class="lineNum">    1023 </span><span class="lineCov">         14 :         subdir = find_subdir(dir, name, namelen);</span></a>
+<a name="1024"><span class="lineNum">    1024 </span><span class="lineCov">         14 :         if (!IS_ERR(subdir))</span></a>
 <a name="1025"><span class="lineNum">    1025 </span>            :                 goto found;</a>
-<a name="1026"><span class="lineNum">    1026 </span><span class="lineCov">         28 :         if (PTR_ERR(subdir) != -ENOENT)</span></a>
+<a name="1026"><span class="lineNum">    1026 </span><span class="lineCov">         14 :         if (PTR_ERR(subdir) != -ENOENT)</span></a>
 <a name="1027"><span class="lineNum">    1027 </span>            :                 goto failed;</a>
 <a name="1028"><span class="lineNum">    1028 </span>            : </a>
 <a name="1029"><span class="lineNum">    1029 </span>            :         /* Nope.  Use the our freshly made directory entry. */</a>
-<a name="1030"><span class="lineNum">    1030 </span><span class="lineCov">         28 :         err = insert_header(dir, &amp;new-&gt;header);</span></a>
-<a name="1031"><span class="lineNum">    1031 </span><span class="lineCov">         56 :         subdir = ERR_PTR(err);</span></a>
-<a name="1032"><span class="lineNum">    1032 </span><span class="lineCov">         28 :         if (err)</span></a>
+<a name="1030"><span class="lineNum">    1030 </span><span class="lineCov">         14 :         err = insert_header(dir, &amp;new-&gt;header);</span></a>
+<a name="1031"><span class="lineNum">    1031 </span><span class="lineCov">         28 :         subdir = ERR_PTR(err);</span></a>
+<a name="1032"><span class="lineNum">    1032 </span><span class="lineCov">         14 :         if (err)</span></a>
 <a name="1033"><span class="lineNum">    1033 </span>            :                 goto failed;</a>
 <a name="1034"><span class="lineNum">    1034 </span>            :         subdir = new;</a>
 <a name="1035"><span class="lineNum">    1035 </span>            : found:</a>
-<a name="1036"><span class="lineNum">    1036 </span><span class="lineCov">         66 :         subdir-&gt;header.nreg++;</span></a>
+<a name="1036"><span class="lineNum">    1036 </span><span class="lineCov">         33 :         subdir-&gt;header.nreg++;</span></a>
 <a name="1037"><span class="lineNum">    1037 </span>            : failed:</a>
-<a name="1038"><span class="lineNum">    1038 </span><span class="lineCov">         66 :         if (IS_ERR(subdir)) {</span></a>
+<a name="1038"><span class="lineNum">    1038 </span><span class="lineCov">         33 :         if (IS_ERR(subdir)) {</span></a>
 <a name="1039"><span class="lineNum">    1039 </span><span class="lineNoCov">          0 :                 pr_err(&quot;sysctl could not get directory: &quot;);</span></a>
 <a name="1040"><span class="lineNum">    1040 </span><span class="lineNoCov">          0 :                 sysctl_print_dir(dir);</span></a>
 <a name="1041"><span class="lineNum">    1041 </span><span class="lineNoCov">          0 :                 pr_cont(&quot;%*.*s %ld\n&quot;, namelen, namelen, name,</span></a>
 <a name="1042"><span class="lineNum">    1042 </span>            :                         PTR_ERR(subdir));</a>
 <a name="1043"><span class="lineNum">    1043 </span>            :         }</a>
-<a name="1044"><span class="lineNum">    1044 </span><span class="lineCov">         66 :         drop_sysctl_table(&amp;dir-&gt;header);</span></a>
-<a name="1045"><span class="lineNum">    1045 </span><span class="lineCov">         66 :         if (new)</span></a>
-<a name="1046"><span class="lineNum">    1046 </span><span class="lineCov">         28 :                 drop_sysctl_table(&amp;new-&gt;header);</span></a>
-<a name="1047"><span class="lineNum">    1047 </span><span class="lineCov">         66 :         spin_unlock(&amp;sysctl_lock);</span></a>
-<a name="1048"><span class="lineNum">    1048 </span><span class="lineCov">         66 :         return subdir;</span></a>
+<a name="1044"><span class="lineNum">    1044 </span><span class="lineCov">         33 :         drop_sysctl_table(&amp;dir-&gt;header);</span></a>
+<a name="1045"><span class="lineNum">    1045 </span><span class="lineCov">         33 :         if (new)</span></a>
+<a name="1046"><span class="lineNum">    1046 </span><span class="lineCov">         14 :                 drop_sysctl_table(&amp;new-&gt;header);</span></a>
+<a name="1047"><span class="lineNum">    1047 </span><span class="lineCov">         33 :         spin_unlock(&amp;sysctl_lock);</span></a>
+<a name="1048"><span class="lineNum">    1048 </span><span class="lineCov">         33 :         return subdir;</span></a>
 <a name="1049"><span class="lineNum">    1049 </span>            : }</a>
 <a name="1050"><span class="lineNum">    1050 </span>            : </a>
-<a name="1051"><span class="lineNum">    1051 </span><span class="lineCov">          6 : static struct ctl_dir *xlate_dir(struct ctl_table_set *set, struct ctl_dir *dir)</span></a>
+<a name="1051"><span class="lineNum">    1051 </span><span class="lineCov">          3 : static struct ctl_dir *xlate_dir(struct ctl_table_set *set, struct ctl_dir *dir)</span></a>
 <a name="1052"><span class="lineNum">    1052 </span>            : {</a>
 <a name="1053"><span class="lineNum">    1053 </span>            :         struct ctl_dir *parent;</a>
 <a name="1054"><span class="lineNum">    1054 </span>            :         const char *procname;</a>
-<a name="1055"><span class="lineNum">    1055 </span><span class="lineCov">          6 :         if (!dir-&gt;header.parent)</span></a>
-<a name="1056"><span class="lineNum">    1056 </span><span class="lineCov">          4 :                 return &amp;set-&gt;dir;</span></a>
-<a name="1057"><span class="lineNum">    1057 </span><span class="lineCov">          2 :         parent = xlate_dir(set, dir-&gt;header.parent);</span></a>
-<a name="1058"><span class="lineNum">    1058 </span><span class="lineCov">          2 :         if (IS_ERR(parent))</span></a>
+<a name="1055"><span class="lineNum">    1055 </span><span class="lineCov">          3 :         if (!dir-&gt;header.parent)</span></a>
+<a name="1056"><span class="lineNum">    1056 </span><span class="lineCov">          2 :                 return &amp;set-&gt;dir;</span></a>
+<a name="1057"><span class="lineNum">    1057 </span><span class="lineCov">          1 :         parent = xlate_dir(set, dir-&gt;header.parent);</span></a>
+<a name="1058"><span class="lineNum">    1058 </span><span class="lineCov">          1 :         if (IS_ERR(parent))</span></a>
 <a name="1059"><span class="lineNum">    1059 </span>            :                 return parent;</a>
-<a name="1060"><span class="lineNum">    1060 </span><span class="lineCov">          2 :         procname = dir-&gt;header.ctl_table[0].procname;</span></a>
-<a name="1061"><span class="lineNum">    1061 </span><span class="lineCov">          2 :         return find_subdir(parent, procname, strlen(procname));</span></a>
+<a name="1060"><span class="lineNum">    1060 </span><span class="lineCov">          1 :         procname = dir-&gt;header.ctl_table[0].procname;</span></a>
+<a name="1061"><span class="lineNum">    1061 </span><span class="lineCov">          1 :         return find_subdir(parent, procname, strlen(procname));</span></a>
 <a name="1062"><span class="lineNum">    1062 </span>            : }</a>
 <a name="1063"><span class="lineNum">    1063 </span>            : </a>
 <a name="1064"><span class="lineNum">    1064 </span><span class="lineNoCov">          0 : static int sysctl_follow_link(struct ctl_table_header **phead,</span></a>
@@ -1172,60 +1172,60 @@
 <a name="1110"><span class="lineNum">    1110 </span><span class="lineNoCov">          0 :         return -EINVAL;</span></a>
 <a name="1111"><span class="lineNum">    1111 </span>            : }</a>
 <a name="1112"><span class="lineNum">    1112 </span>            : </a>
-<a name="1113"><span class="lineNum">    1113 </span><span class="lineCov">        146 : static int sysctl_check_table_array(const char *path, struct ctl_table *table)</span></a>
+<a name="1113"><span class="lineNum">    1113 </span><span class="lineCov">         73 : static int sysctl_check_table_array(const char *path, struct ctl_table *table)</span></a>
 <a name="1114"><span class="lineNum">    1114 </span>            : {</a>
-<a name="1115"><span class="lineNum">    1115 </span><span class="lineCov">        146 :         int err = 0;</span></a>
+<a name="1115"><span class="lineNum">    1115 </span><span class="lineCov">         73 :         int err = 0;</span></a>
 <a name="1116"><span class="lineNum">    1116 </span>            : </a>
-<a name="1117"><span class="lineNum">    1117 </span><span class="lineCov">        146 :         if ((table-&gt;proc_handler == proc_douintvec) ||</span></a>
+<a name="1117"><span class="lineNum">    1117 </span><span class="lineCov">         73 :         if ((table-&gt;proc_handler == proc_douintvec) ||</span></a>
 <a name="1118"><span class="lineNum">    1118 </span>            :             (table-&gt;proc_handler == proc_douintvec_minmax)) {</a>
 <a name="1119"><span class="lineNum">    1119 </span><span class="lineNoCov">          0 :                 if (table-&gt;maxlen != sizeof(unsigned int))</span></a>
 <a name="1120"><span class="lineNum">    1120 </span><span class="lineNoCov">          0 :                         err |= sysctl_err(path, table, &quot;array not allowed&quot;);</span></a>
 <a name="1121"><span class="lineNum">    1121 </span>            :         }</a>
 <a name="1122"><span class="lineNum">    1122 </span>            : </a>
-<a name="1123"><span class="lineNum">    1123 </span><span class="lineCov">        146 :         if (table-&gt;proc_handler == proc_dou8vec_minmax) {</span></a>
+<a name="1123"><span class="lineNum">    1123 </span><span class="lineCov">         73 :         if (table-&gt;proc_handler == proc_dou8vec_minmax) {</span></a>
 <a name="1124"><span class="lineNum">    1124 </span><span class="lineNoCov">          0 :                 if (table-&gt;maxlen != sizeof(u8))</span></a>
 <a name="1125"><span class="lineNum">    1125 </span><span class="lineNoCov">          0 :                         err |= sysctl_err(path, table, &quot;array not allowed&quot;);</span></a>
 <a name="1126"><span class="lineNum">    1126 </span>            :         }</a>
 <a name="1127"><span class="lineNum">    1127 </span>            : </a>
-<a name="1128"><span class="lineNum">    1128 </span><span class="lineCov">        146 :         return err;</span></a>
+<a name="1128"><span class="lineNum">    1128 </span><span class="lineCov">         73 :         return err;</span></a>
 <a name="1129"><span class="lineNum">    1129 </span>            : }</a>
 <a name="1130"><span class="lineNum">    1130 </span>            : </a>
-<a name="1131"><span class="lineNum">    1131 </span><span class="lineCov">         52 : static int sysctl_check_table(const char *path, struct ctl_table *table)</span></a>
+<a name="1131"><span class="lineNum">    1131 </span><span class="lineCov">         26 : static int sysctl_check_table(const char *path, struct ctl_table *table)</span></a>
 <a name="1132"><span class="lineNum">    1132 </span>            : {</a>
-<a name="1133"><span class="lineNum">    1133 </span><span class="lineCov">         52 :         int err = 0;</span></a>
-<a name="1134"><span class="lineNum">    1134 </span><span class="lineCov">        290 :         for (; table-&gt;procname; table++) {</span></a>
-<a name="1135"><span class="lineNum">    1135 </span><span class="lineCov">        238 :                 if (table-&gt;child)</span></a>
+<a name="1133"><span class="lineNum">    1133 </span><span class="lineCov">         26 :         int err = 0;</span></a>
+<a name="1134"><span class="lineNum">    1134 </span><span class="lineCov">        145 :         for (; table-&gt;procname; table++) {</span></a>
+<a name="1135"><span class="lineNum">    1135 </span><span class="lineCov">        119 :                 if (table-&gt;child)</span></a>
 <a name="1136"><span class="lineNum">    1136 </span><span class="lineNoCov">          0 :                         err |= sysctl_err(path, table, &quot;Not a file&quot;);</span></a>
 <a name="1137"><span class="lineNum">    1137 </span>            : </a>
-<a name="1138"><span class="lineNum">    1138 </span><span class="lineCov">        238 :                 if ((table-&gt;proc_handler == proc_dostring) ||</span></a>
-<a name="1139"><span class="lineNum">    1139 </span><span class="lineCov">        186 :                     (table-&gt;proc_handler == proc_dointvec) ||</span></a>
-<a name="1140"><span class="lineNum">    1140 </span><span class="lineCov">        186 :                     (table-&gt;proc_handler == proc_douintvec) ||</span></a>
-<a name="1141"><span class="lineNum">    1141 </span><span class="lineCov">        186 :                     (table-&gt;proc_handler == proc_douintvec_minmax) ||</span></a>
-<a name="1142"><span class="lineNum">    1142 </span><span class="lineCov">        138 :                     (table-&gt;proc_handler == proc_dointvec_minmax) ||</span></a>
-<a name="1143"><span class="lineNum">    1143 </span><span class="lineCov">        138 :                     (table-&gt;proc_handler == proc_dou8vec_minmax) ||</span></a>
-<a name="1144"><span class="lineNum">    1144 </span><span class="lineCov">        134 :                     (table-&gt;proc_handler == proc_dointvec_jiffies) ||</span></a>
-<a name="1145"><span class="lineNum">    1145 </span><span class="lineCov">        134 :                     (table-&gt;proc_handler == proc_dointvec_userhz_jiffies) ||</span></a>
-<a name="1146"><span class="lineNum">    1146 </span><span class="lineCov">        134 :                     (table-&gt;proc_handler == proc_dointvec_ms_jiffies) ||</span></a>
-<a name="1147"><span class="lineNum">    1147 </span><span class="lineCov">         92 :                     (table-&gt;proc_handler == proc_doulongvec_minmax) ||</span></a>
+<a name="1138"><span class="lineNum">    1138 </span><span class="lineCov">        119 :                 if ((table-&gt;proc_handler == proc_dostring) ||</span></a>
+<a name="1139"><span class="lineNum">    1139 </span><span class="lineCov">         93 :                     (table-&gt;proc_handler == proc_dointvec) ||</span></a>
+<a name="1140"><span class="lineNum">    1140 </span><span class="lineCov">         93 :                     (table-&gt;proc_handler == proc_douintvec) ||</span></a>
+<a name="1141"><span class="lineNum">    1141 </span><span class="lineCov">         93 :                     (table-&gt;proc_handler == proc_douintvec_minmax) ||</span></a>
+<a name="1142"><span class="lineNum">    1142 </span><span class="lineCov">         69 :                     (table-&gt;proc_handler == proc_dointvec_minmax) ||</span></a>
+<a name="1143"><span class="lineNum">    1143 </span><span class="lineCov">         69 :                     (table-&gt;proc_handler == proc_dou8vec_minmax) ||</span></a>
+<a name="1144"><span class="lineNum">    1144 </span><span class="lineCov">         67 :                     (table-&gt;proc_handler == proc_dointvec_jiffies) ||</span></a>
+<a name="1145"><span class="lineNum">    1145 </span><span class="lineCov">         67 :                     (table-&gt;proc_handler == proc_dointvec_userhz_jiffies) ||</span></a>
+<a name="1146"><span class="lineNum">    1146 </span><span class="lineCov">         67 :                     (table-&gt;proc_handler == proc_dointvec_ms_jiffies) ||</span></a>
+<a name="1147"><span class="lineNum">    1147 </span><span class="lineCov">         46 :                     (table-&gt;proc_handler == proc_doulongvec_minmax) ||</span></a>
 <a name="1148"><span class="lineNum">    1148 </span>            :                     (table-&gt;proc_handler == proc_doulongvec_ms_jiffies_minmax)) {</a>
-<a name="1149"><span class="lineNum">    1149 </span><span class="lineCov">        146 :                         if (!table-&gt;data)</span></a>
+<a name="1149"><span class="lineNum">    1149 </span><span class="lineCov">         73 :                         if (!table-&gt;data)</span></a>
 <a name="1150"><span class="lineNum">    1150 </span><span class="lineNoCov">          0 :                                 err |= sysctl_err(path, table, &quot;No data&quot;);</span></a>
-<a name="1151"><span class="lineNum">    1151 </span><span class="lineCov">        146 :                         if (!table-&gt;maxlen)</span></a>
+<a name="1151"><span class="lineNum">    1151 </span><span class="lineCov">         73 :                         if (!table-&gt;maxlen)</span></a>
 <a name="1152"><span class="lineNum">    1152 </span><span class="lineNoCov">          0 :                                 err |= sysctl_err(path, table, &quot;No maxlen&quot;);</span></a>
 <a name="1153"><span class="lineNum">    1153 </span>            :                         else</a>
-<a name="1154"><span class="lineNum">    1154 </span><span class="lineCov">        146 :                                 err |= sysctl_check_table_array(path, table);</span></a>
+<a name="1154"><span class="lineNum">    1154 </span><span class="lineCov">         73 :                                 err |= sysctl_check_table_array(path, table);</span></a>
 <a name="1155"><span class="lineNum">    1155 </span>            :                 }</a>
-<a name="1156"><span class="lineNum">    1156 </span><span class="lineCov">        238 :                 if (!table-&gt;proc_handler)</span></a>
+<a name="1156"><span class="lineNum">    1156 </span><span class="lineCov">        119 :                 if (!table-&gt;proc_handler)</span></a>
 <a name="1157"><span class="lineNum">    1157 </span><span class="lineNoCov">          0 :                         err |= sysctl_err(path, table, &quot;No proc_handler&quot;);</span></a>
 <a name="1158"><span class="lineNum">    1158 </span>            : </a>
-<a name="1159"><span class="lineNum">    1159 </span><span class="lineCov">        238 :                 if ((table-&gt;mode &amp; (S_IRUGO|S_IWUGO)) != table-&gt;mode)</span></a>
+<a name="1159"><span class="lineNum">    1159 </span><span class="lineCov">        119 :                 if ((table-&gt;mode &amp; (S_IRUGO|S_IWUGO)) != table-&gt;mode)</span></a>
 <a name="1160"><span class="lineNum">    1160 </span><span class="lineNoCov">          0 :                         err |= sysctl_err(path, table, &quot;bogus .mode 0%o&quot;,</span></a>
 <a name="1161"><span class="lineNum">    1161 </span>            :                                 table-&gt;mode);</a>
 <a name="1162"><span class="lineNum">    1162 </span>            :         }</a>
-<a name="1163"><span class="lineNum">    1163 </span><span class="lineCov">         52 :         return err;</span></a>
+<a name="1163"><span class="lineNum">    1163 </span><span class="lineCov">         26 :         return err;</span></a>
 <a name="1164"><span class="lineNum">    1164 </span>            : }</a>
 <a name="1165"><span class="lineNum">    1165 </span>            : </a>
-<a name="1166"><span class="lineNum">    1166 </span><span class="lineCov">          2 : static struct ctl_table_header *new_links(struct ctl_dir *dir, struct ctl_table *table,</span></a>
+<a name="1166"><span class="lineNum">    1166 </span><span class="lineCov">          1 : static struct ctl_table_header *new_links(struct ctl_dir *dir, struct ctl_table *table,</span></a>
 <a name="1167"><span class="lineNum">    1167 </span>            :         struct ctl_table_root *link_root)</a>
 <a name="1168"><span class="lineNum">    1168 </span>            : {</a>
 <a name="1169"><span class="lineNum">    1169 </span>            :         struct ctl_table *link_table, *entry, *link;</a>
@@ -1234,107 +1234,107 @@
 <a name="1172"><span class="lineNum">    1172 </span>            :         char *link_name;</a>
 <a name="1173"><span class="lineNum">    1173 </span>            :         int nr_entries, name_bytes;</a>
 <a name="1174"><span class="lineNum">    1174 </span>            : </a>
-<a name="1175"><span class="lineNum">    1175 </span><span class="lineCov">          2 :         name_bytes = 0;</span></a>
-<a name="1176"><span class="lineNum">    1176 </span><span class="lineCov">          2 :         nr_entries = 0;</span></a>
-<a name="1177"><span class="lineNum">    1177 </span><span class="lineCov">         22 :         for (entry = table; entry-&gt;procname; entry++) {</span></a>
-<a name="1178"><span class="lineNum">    1178 </span><span class="lineCov">         20 :                 nr_entries++;</span></a>
-<a name="1179"><span class="lineNum">    1179 </span><span class="lineCov">         20 :                 name_bytes += strlen(entry-&gt;procname) + 1;</span></a>
+<a name="1175"><span class="lineNum">    1175 </span><span class="lineCov">          1 :         name_bytes = 0;</span></a>
+<a name="1176"><span class="lineNum">    1176 </span><span class="lineCov">          1 :         nr_entries = 0;</span></a>
+<a name="1177"><span class="lineNum">    1177 </span><span class="lineCov">         11 :         for (entry = table; entry-&gt;procname; entry++) {</span></a>
+<a name="1178"><span class="lineNum">    1178 </span><span class="lineCov">         10 :                 nr_entries++;</span></a>
+<a name="1179"><span class="lineNum">    1179 </span><span class="lineCov">         10 :                 name_bytes += strlen(entry-&gt;procname) + 1;</span></a>
 <a name="1180"><span class="lineNum">    1180 </span>            :         }</a>
 <a name="1181"><span class="lineNum">    1181 </span>            : </a>
-<a name="1182"><span class="lineNum">    1182 </span><span class="lineCov">          2 :         links = kzalloc(sizeof(struct ctl_table_header) +</span></a>
-<a name="1183"><span class="lineNum">    1183 </span><span class="lineCov">          4 :                         sizeof(struct ctl_node)*nr_entries +</span></a>
-<a name="1184"><span class="lineNum">    1184 </span><span class="lineCov">          4 :                         sizeof(struct ctl_table)*(nr_entries + 1) +</span></a>
+<a name="1182"><span class="lineNum">    1182 </span><span class="lineCov">          1 :         links = kzalloc(sizeof(struct ctl_table_header) +</span></a>
+<a name="1183"><span class="lineNum">    1183 </span><span class="lineCov">          2 :                         sizeof(struct ctl_node)*nr_entries +</span></a>
+<a name="1184"><span class="lineNum">    1184 </span><span class="lineCov">          2 :                         sizeof(struct ctl_table)*(nr_entries + 1) +</span></a>
 <a name="1185"><span class="lineNum">    1185 </span>            :                         name_bytes,</a>
 <a name="1186"><span class="lineNum">    1186 </span>            :                         GFP_KERNEL);</a>
 <a name="1187"><span class="lineNum">    1187 </span>            : </a>
-<a name="1188"><span class="lineNum">    1188 </span><span class="lineCov">          2 :         if (!links)</span></a>
+<a name="1188"><span class="lineNum">    1188 </span><span class="lineCov">          1 :         if (!links)</span></a>
 <a name="1189"><span class="lineNum">    1189 </span>            :                 return NULL;</a>
 <a name="1190"><span class="lineNum">    1190 </span>            : </a>
-<a name="1191"><span class="lineNum">    1191 </span><span class="lineCov">          2 :         node = (struct ctl_node *)(links + 1);</span></a>
-<a name="1192"><span class="lineNum">    1192 </span><span class="lineCov">          2 :         link_table = (struct ctl_table *)(node + nr_entries);</span></a>
-<a name="1193"><span class="lineNum">    1193 </span><span class="lineCov">          2 :         link_name = (char *)&amp;link_table[nr_entries + 1];</span></a>
+<a name="1191"><span class="lineNum">    1191 </span><span class="lineCov">          1 :         node = (struct ctl_node *)(links + 1);</span></a>
+<a name="1192"><span class="lineNum">    1192 </span><span class="lineCov">          1 :         link_table = (struct ctl_table *)(node + nr_entries);</span></a>
+<a name="1193"><span class="lineNum">    1193 </span><span class="lineCov">          1 :         link_name = (char *)&amp;link_table[nr_entries + 1];</span></a>
 <a name="1194"><span class="lineNum">    1194 </span>            : </a>
-<a name="1195"><span class="lineNum">    1195 </span><span class="lineCov">         22 :         for (link = link_table, entry = table; entry-&gt;procname; link++, entry++) {</span></a>
-<a name="1196"><span class="lineNum">    1196 </span><span class="lineCov">         20 :                 int len = strlen(entry-&gt;procname) + 1;</span></a>
-<a name="1197"><span class="lineNum">    1197 </span><span class="lineCov">         20 :                 memcpy(link_name, entry-&gt;procname, len);</span></a>
-<a name="1198"><span class="lineNum">    1198 </span><span class="lineCov">         20 :                 link-&gt;procname = link_name;</span></a>
-<a name="1199"><span class="lineNum">    1199 </span><span class="lineCov">         20 :                 link-&gt;mode = S_IFLNK|S_IRWXUGO;</span></a>
-<a name="1200"><span class="lineNum">    1200 </span><span class="lineCov">         20 :                 link-&gt;data = link_root;</span></a>
-<a name="1201"><span class="lineNum">    1201 </span><span class="lineCov">         20 :                 link_name += len;</span></a>
+<a name="1195"><span class="lineNum">    1195 </span><span class="lineCov">         11 :         for (link = link_table, entry = table; entry-&gt;procname; link++, entry++) {</span></a>
+<a name="1196"><span class="lineNum">    1196 </span><span class="lineCov">         10 :                 int len = strlen(entry-&gt;procname) + 1;</span></a>
+<a name="1197"><span class="lineNum">    1197 </span><span class="lineCov">         10 :                 memcpy(link_name, entry-&gt;procname, len);</span></a>
+<a name="1198"><span class="lineNum">    1198 </span><span class="lineCov">         10 :                 link-&gt;procname = link_name;</span></a>
+<a name="1199"><span class="lineNum">    1199 </span><span class="lineCov">         10 :                 link-&gt;mode = S_IFLNK|S_IRWXUGO;</span></a>
+<a name="1200"><span class="lineNum">    1200 </span><span class="lineCov">         10 :                 link-&gt;data = link_root;</span></a>
+<a name="1201"><span class="lineNum">    1201 </span><span class="lineCov">         10 :                 link_name += len;</span></a>
 <a name="1202"><span class="lineNum">    1202 </span>            :         }</a>
-<a name="1203"><span class="lineNum">    1203 </span><span class="lineCov">          4 :         init_header(links, dir-&gt;header.root, dir-&gt;header.set, node, link_table);</span></a>
-<a name="1204"><span class="lineNum">    1204 </span><span class="lineCov">          2 :         links-&gt;nreg = nr_entries;</span></a>
+<a name="1203"><span class="lineNum">    1203 </span><span class="lineCov">          2 :         init_header(links, dir-&gt;header.root, dir-&gt;header.set, node, link_table);</span></a>
+<a name="1204"><span class="lineNum">    1204 </span><span class="lineCov">          1 :         links-&gt;nreg = nr_entries;</span></a>
 <a name="1205"><span class="lineNum">    1205 </span>            : </a>
 <a name="1206"><span class="lineNum">    1206 </span>            :         return links;</a>
 <a name="1207"><span class="lineNum">    1207 </span>            : }</a>
 <a name="1208"><span class="lineNum">    1208 </span>            : </a>
-<a name="1209"><span class="lineNum">    1209 </span><span class="lineCov">          6 : static bool get_links(struct ctl_dir *dir,</span></a>
+<a name="1209"><span class="lineNum">    1209 </span><span class="lineCov">          3 : static bool get_links(struct ctl_dir *dir,</span></a>
 <a name="1210"><span class="lineNum">    1210 </span>            :         struct ctl_table *table, struct ctl_table_root *link_root)</a>
 <a name="1211"><span class="lineNum">    1211 </span>            : {</a>
 <a name="1212"><span class="lineNum">    1212 </span>            :         struct ctl_table_header *head;</a>
 <a name="1213"><span class="lineNum">    1213 </span>            :         struct ctl_table *entry, *link;</a>
 <a name="1214"><span class="lineNum">    1214 </span>            : </a>
 <a name="1215"><span class="lineNum">    1215 </span>            :         /* Are there links available for every entry in table? */</a>
-<a name="1216"><span class="lineNum">    1216 </span><span class="lineCov">          8 :         for (entry = table; entry-&gt;procname; entry++) {</span></a>
-<a name="1217"><span class="lineNum">    1217 </span><span class="lineCov">          6 :                 const char *procname = entry-&gt;procname;</span></a>
-<a name="1218"><span class="lineNum">    1218 </span><span class="lineCov">          6 :                 link = find_entry(&amp;head, dir, procname, strlen(procname));</span></a>
-<a name="1219"><span class="lineNum">    1219 </span><span class="lineCov">          6 :                 if (!link)</span></a>
+<a name="1216"><span class="lineNum">    1216 </span><span class="lineCov">          4 :         for (entry = table; entry-&gt;procname; entry++) {</span></a>
+<a name="1217"><span class="lineNum">    1217 </span><span class="lineCov">          3 :                 const char *procname = entry-&gt;procname;</span></a>
+<a name="1218"><span class="lineNum">    1218 </span><span class="lineCov">          3 :                 link = find_entry(&amp;head, dir, procname, strlen(procname));</span></a>
+<a name="1219"><span class="lineNum">    1219 </span><span class="lineCov">          3 :                 if (!link)</span></a>
 <a name="1220"><span class="lineNum">    1220 </span>            :                         return false;</a>
-<a name="1221"><span class="lineNum">    1221 </span><span class="lineCov">          2 :                 if (S_ISDIR(link-&gt;mode) &amp;&amp; S_ISDIR(entry-&gt;mode))</span></a>
-<a name="1222"><span class="lineNum">    1222 </span><span class="lineCov">          2 :                         continue;</span></a>
+<a name="1221"><span class="lineNum">    1221 </span><span class="lineCov">          1 :                 if (S_ISDIR(link-&gt;mode) &amp;&amp; S_ISDIR(entry-&gt;mode))</span></a>
+<a name="1222"><span class="lineNum">    1222 </span><span class="lineCov">          1 :                         continue;</span></a>
 <a name="1223"><span class="lineNum">    1223 </span><span class="lineNoCov">          0 :                 if (S_ISLNK(link-&gt;mode) &amp;&amp; (link-&gt;data == link_root))</span></a>
 <a name="1224"><span class="lineNum">    1224 </span><span class="lineNoCov">          0 :                         continue;</span></a>
 <a name="1225"><span class="lineNum">    1225 </span>            :                 return false;</a>
 <a name="1226"><span class="lineNum">    1226 </span>            :         }</a>
 <a name="1227"><span class="lineNum">    1227 </span>            : </a>
 <a name="1228"><span class="lineNum">    1228 </span>            :         /* The checks passed.  Increase the registration count on the links */</a>
-<a name="1229"><span class="lineNum">    1229 </span><span class="lineCov">          2 :         for (entry = table; entry-&gt;procname; entry++) {</span></a>
-<a name="1230"><span class="lineNum">    1230 </span><span class="lineCov">          2 :                 const char *procname = entry-&gt;procname;</span></a>
-<a name="1231"><span class="lineNum">    1231 </span><span class="lineCov">          2 :                 link = find_entry(&amp;head, dir, procname, strlen(procname));</span></a>
-<a name="1232"><span class="lineNum">    1232 </span><span class="lineCov">          2 :                 head-&gt;nreg++;</span></a>
+<a name="1229"><span class="lineNum">    1229 </span><span class="lineCov">          1 :         for (entry = table; entry-&gt;procname; entry++) {</span></a>
+<a name="1230"><span class="lineNum">    1230 </span><span class="lineCov">          1 :                 const char *procname = entry-&gt;procname;</span></a>
+<a name="1231"><span class="lineNum">    1231 </span><span class="lineCov">          1 :                 link = find_entry(&amp;head, dir, procname, strlen(procname));</span></a>
+<a name="1232"><span class="lineNum">    1232 </span><span class="lineCov">          1 :                 head-&gt;nreg++;</span></a>
 <a name="1233"><span class="lineNum">    1233 </span>            :         }</a>
 <a name="1234"><span class="lineNum">    1234 </span>            :         return true;</a>
 <a name="1235"><span class="lineNum">    1235 </span>            : }</a>
 <a name="1236"><span class="lineNum">    1236 </span>            : </a>
-<a name="1237"><span class="lineNum">    1237 </span><span class="lineCov">         82 : static int insert_links(struct ctl_table_header *head)</span></a>
+<a name="1237"><span class="lineNum">    1237 </span><span class="lineCov">         41 : static int insert_links(struct ctl_table_header *head)</span></a>
 <a name="1238"><span class="lineNum">    1238 </span>            : {</a>
-<a name="1239"><span class="lineNum">    1239 </span><span class="lineCov">         82 :         struct ctl_table_set *root_set = &amp;sysctl_table_root.default_set;</span></a>
-<a name="1240"><span class="lineNum">    1240 </span><span class="lineCov">         82 :         struct ctl_dir *core_parent = NULL;</span></a>
+<a name="1239"><span class="lineNum">    1239 </span><span class="lineCov">         41 :         struct ctl_table_set *root_set = &amp;sysctl_table_root.default_set;</span></a>
+<a name="1240"><span class="lineNum">    1240 </span><span class="lineCov">         41 :         struct ctl_dir *core_parent = NULL;</span></a>
 <a name="1241"><span class="lineNum">    1241 </span>            :         struct ctl_table_header *links;</a>
 <a name="1242"><span class="lineNum">    1242 </span>            :         int err;</a>
 <a name="1243"><span class="lineNum">    1243 </span>            : </a>
-<a name="1244"><span class="lineNum">    1244 </span><span class="lineCov">         82 :         if (head-&gt;set == root_set)</span></a>
+<a name="1244"><span class="lineNum">    1244 </span><span class="lineCov">         41 :         if (head-&gt;set == root_set)</span></a>
 <a name="1245"><span class="lineNum">    1245 </span>            :                 return 0;</a>
 <a name="1246"><span class="lineNum">    1246 </span>            : </a>
-<a name="1247"><span class="lineNum">    1247 </span><span class="lineCov">          4 :         core_parent = xlate_dir(root_set, head-&gt;parent);</span></a>
-<a name="1248"><span class="lineNum">    1248 </span><span class="lineCov">          4 :         if (IS_ERR(core_parent))</span></a>
+<a name="1247"><span class="lineNum">    1247 </span><span class="lineCov">          2 :         core_parent = xlate_dir(root_set, head-&gt;parent);</span></a>
+<a name="1248"><span class="lineNum">    1248 </span><span class="lineCov">          2 :         if (IS_ERR(core_parent))</span></a>
 <a name="1249"><span class="lineNum">    1249 </span>            :                 return 0;</a>
 <a name="1250"><span class="lineNum">    1250 </span>            : </a>
-<a name="1251"><span class="lineNum">    1251 </span><span class="lineCov">          4 :         if (get_links(core_parent, head-&gt;ctl_table, head-&gt;root))</span></a>
+<a name="1251"><span class="lineNum">    1251 </span><span class="lineCov">          2 :         if (get_links(core_parent, head-&gt;ctl_table, head-&gt;root))</span></a>
 <a name="1252"><span class="lineNum">    1252 </span>            :                 return 0;</a>
 <a name="1253"><span class="lineNum">    1253 </span>            : </a>
-<a name="1254"><span class="lineNum">    1254 </span><span class="lineCov">          2 :         core_parent-&gt;header.nreg++;</span></a>
-<a name="1255"><span class="lineNum">    1255 </span><span class="lineCov">          2 :         spin_unlock(&amp;sysctl_lock);</span></a>
+<a name="1254"><span class="lineNum">    1254 </span><span class="lineCov">          1 :         core_parent-&gt;header.nreg++;</span></a>
+<a name="1255"><span class="lineNum">    1255 </span><span class="lineCov">          1 :         spin_unlock(&amp;sysctl_lock);</span></a>
 <a name="1256"><span class="lineNum">    1256 </span>            : </a>
-<a name="1257"><span class="lineNum">    1257 </span><span class="lineCov">          2 :         links = new_links(core_parent, head-&gt;ctl_table, head-&gt;root);</span></a>
+<a name="1257"><span class="lineNum">    1257 </span><span class="lineCov">          1 :         links = new_links(core_parent, head-&gt;ctl_table, head-&gt;root);</span></a>
 <a name="1258"><span class="lineNum">    1258 </span>            : </a>
-<a name="1259"><span class="lineNum">    1259 </span><span class="lineCov">          2 :         spin_lock(&amp;sysctl_lock);</span></a>
-<a name="1260"><span class="lineNum">    1260 </span><span class="lineCov">          2 :         err = -ENOMEM;</span></a>
-<a name="1261"><span class="lineNum">    1261 </span><span class="lineCov">          2 :         if (!links)</span></a>
+<a name="1259"><span class="lineNum">    1259 </span><span class="lineCov">          1 :         spin_lock(&amp;sysctl_lock);</span></a>
+<a name="1260"><span class="lineNum">    1260 </span><span class="lineCov">          1 :         err = -ENOMEM;</span></a>
+<a name="1261"><span class="lineNum">    1261 </span><span class="lineCov">          1 :         if (!links)</span></a>
 <a name="1262"><span class="lineNum">    1262 </span>            :                 goto out;</a>
 <a name="1263"><span class="lineNum">    1263 </span>            : </a>
-<a name="1264"><span class="lineNum">    1264 </span><span class="lineCov">          2 :         err = 0;</span></a>
-<a name="1265"><span class="lineNum">    1265 </span><span class="lineCov">          2 :         if (get_links(core_parent, head-&gt;ctl_table, head-&gt;root)) {</span></a>
+<a name="1264"><span class="lineNum">    1264 </span><span class="lineCov">          1 :         err = 0;</span></a>
+<a name="1265"><span class="lineNum">    1265 </span><span class="lineCov">          1 :         if (get_links(core_parent, head-&gt;ctl_table, head-&gt;root)) {</span></a>
 <a name="1266"><span class="lineNum">    1266 </span><span class="lineNoCov">          0 :                 kfree(links);</span></a>
 <a name="1267"><span class="lineNum">    1267 </span><span class="lineNoCov">          0 :                 goto out;</span></a>
 <a name="1268"><span class="lineNum">    1268 </span>            :         }</a>
 <a name="1269"><span class="lineNum">    1269 </span>            : </a>
-<a name="1270"><span class="lineNum">    1270 </span><span class="lineCov">          2 :         err = insert_header(core_parent, links);</span></a>
-<a name="1271"><span class="lineNum">    1271 </span><span class="lineCov">          2 :         if (err)</span></a>
+<a name="1270"><span class="lineNum">    1270 </span><span class="lineCov">          1 :         err = insert_header(core_parent, links);</span></a>
+<a name="1271"><span class="lineNum">    1271 </span><span class="lineCov">          1 :         if (err)</span></a>
 <a name="1272"><span class="lineNum">    1272 </span><span class="lineNoCov">          0 :                 kfree(links);</span></a>
 <a name="1273"><span class="lineNum">    1273 </span>            : out:</a>
-<a name="1274"><span class="lineNum">    1274 </span><span class="lineCov">          2 :         drop_sysctl_table(&amp;core_parent-&gt;header);</span></a>
-<a name="1275"><span class="lineNum">    1275 </span><span class="lineCov">          2 :         return err;</span></a>
+<a name="1274"><span class="lineNum">    1274 </span><span class="lineCov">          1 :         drop_sysctl_table(&amp;core_parent-&gt;header);</span></a>
+<a name="1275"><span class="lineNum">    1275 </span><span class="lineCov">          1 :         return err;</span></a>
 <a name="1276"><span class="lineNum">    1276 </span>            : }</a>
 <a name="1277"><span class="lineNum">    1277 </span>            : </a>
 <a name="1278"><span class="lineNum">    1278 </span>            : /**</a>
@@ -1379,63 +1379,63 @@
 <a name="1317"><span class="lineNum">    1317 </span>            :  * This routine returns %NULL on a failure to register, and a pointer</a>
 <a name="1318"><span class="lineNum">    1318 </span>            :  * to the table header on success.</a>
 <a name="1319"><span class="lineNum">    1319 </span>            :  */</a>
-<a name="1320"><span class="lineNum">    1320 </span><span class="lineCov">         52 : struct ctl_table_header *__register_sysctl_table(</span></a>
+<a name="1320"><span class="lineNum">    1320 </span><span class="lineCov">         26 : struct ctl_table_header *__register_sysctl_table(</span></a>
 <a name="1321"><span class="lineNum">    1321 </span>            :         struct ctl_table_set *set,</a>
 <a name="1322"><span class="lineNum">    1322 </span>            :         const char *path, struct ctl_table *table)</a>
 <a name="1323"><span class="lineNum">    1323 </span>            : {</a>
-<a name="1324"><span class="lineNum">    1324 </span><span class="lineCov">         52 :         struct ctl_table_root *root = set-&gt;dir.header.root;</span></a>
+<a name="1324"><span class="lineNum">    1324 </span><span class="lineCov">         26 :         struct ctl_table_root *root = set-&gt;dir.header.root;</span></a>
 <a name="1325"><span class="lineNum">    1325 </span>            :         struct ctl_table_header *header;</a>
 <a name="1326"><span class="lineNum">    1326 </span>            :         const char *name, *nextname;</a>
 <a name="1327"><span class="lineNum">    1327 </span>            :         struct ctl_dir *dir;</a>
 <a name="1328"><span class="lineNum">    1328 </span>            :         struct ctl_table *entry;</a>
 <a name="1329"><span class="lineNum">    1329 </span>            :         struct ctl_node *node;</a>
-<a name="1330"><span class="lineNum">    1330 </span><span class="lineCov">         52 :         int nr_entries = 0;</span></a>
+<a name="1330"><span class="lineNum">    1330 </span><span class="lineCov">         26 :         int nr_entries = 0;</span></a>
 <a name="1331"><span class="lineNum">    1331 </span>            : </a>
-<a name="1332"><span class="lineNum">    1332 </span><span class="lineCov">        290 :         for (entry = table; entry-&gt;procname; entry++)</span></a>
-<a name="1333"><span class="lineNum">    1333 </span><span class="lineCov">        238 :                 nr_entries++;</span></a>
+<a name="1332"><span class="lineNum">    1332 </span><span class="lineCov">        145 :         for (entry = table; entry-&gt;procname; entry++)</span></a>
+<a name="1333"><span class="lineNum">    1333 </span><span class="lineCov">        119 :                 nr_entries++;</span></a>
 <a name="1334"><span class="lineNum">    1334 </span>            : </a>
-<a name="1335"><span class="lineNum">    1335 </span><span class="lineCov">         52 :         header = kzalloc(sizeof(struct ctl_table_header) +</span></a>
-<a name="1336"><span class="lineNum">    1336 </span><span class="lineCov">         52 :                          sizeof(struct ctl_node)*nr_entries, GFP_KERNEL);</span></a>
-<a name="1337"><span class="lineNum">    1337 </span><span class="lineCov">         52 :         if (!header)</span></a>
+<a name="1335"><span class="lineNum">    1335 </span><span class="lineCov">         26 :         header = kzalloc(sizeof(struct ctl_table_header) +</span></a>
+<a name="1336"><span class="lineNum">    1336 </span><span class="lineCov">         26 :                          sizeof(struct ctl_node)*nr_entries, GFP_KERNEL);</span></a>
+<a name="1337"><span class="lineNum">    1337 </span><span class="lineCov">         26 :         if (!header)</span></a>
 <a name="1338"><span class="lineNum">    1338 </span>            :                 return NULL;</a>
 <a name="1339"><span class="lineNum">    1339 </span>            : </a>
-<a name="1340"><span class="lineNum">    1340 </span><span class="lineCov">         52 :         node = (struct ctl_node *)(header + 1);</span></a>
-<a name="1341"><span class="lineNum">    1341 </span><span class="lineCov">         52 :         init_header(header, root, set, node, table);</span></a>
-<a name="1342"><span class="lineNum">    1342 </span><span class="lineCov">         52 :         if (sysctl_check_table(path, table))</span></a>
+<a name="1340"><span class="lineNum">    1340 </span><span class="lineCov">         26 :         node = (struct ctl_node *)(header + 1);</span></a>
+<a name="1341"><span class="lineNum">    1341 </span><span class="lineCov">         26 :         init_header(header, root, set, node, table);</span></a>
+<a name="1342"><span class="lineNum">    1342 </span><span class="lineCov">         26 :         if (sysctl_check_table(path, table))</span></a>
 <a name="1343"><span class="lineNum">    1343 </span>            :                 goto fail;</a>
 <a name="1344"><span class="lineNum">    1344 </span>            : </a>
-<a name="1345"><span class="lineNum">    1345 </span><span class="lineCov">         52 :         spin_lock(&amp;sysctl_lock);</span></a>
-<a name="1346"><span class="lineNum">    1346 </span><span class="lineCov">         52 :         dir = &amp;set-&gt;dir;</span></a>
+<a name="1345"><span class="lineNum">    1345 </span><span class="lineCov">         26 :         spin_lock(&amp;sysctl_lock);</span></a>
+<a name="1346"><span class="lineNum">    1346 </span><span class="lineCov">         26 :         dir = &amp;set-&gt;dir;</span></a>
 <a name="1347"><span class="lineNum">    1347 </span>            :         /* Reference moved down the diretory tree get_subdir */</a>
-<a name="1348"><span class="lineNum">    1348 </span><span class="lineCov">         52 :         dir-&gt;header.nreg++;</span></a>
-<a name="1349"><span class="lineNum">    1349 </span><span class="lineCov">         52 :         spin_unlock(&amp;sysctl_lock);</span></a>
+<a name="1348"><span class="lineNum">    1348 </span><span class="lineCov">         26 :         dir-&gt;header.nreg++;</span></a>
+<a name="1349"><span class="lineNum">    1349 </span><span class="lineCov">         26 :         spin_unlock(&amp;sysctl_lock);</span></a>
 <a name="1350"><span class="lineNum">    1350 </span>            : </a>
 <a name="1351"><span class="lineNum">    1351 </span>            :         /* Find the directory for the ctl_table */</a>
-<a name="1352"><span class="lineNum">    1352 </span><span class="lineCov">        188 :         for (name = path; name; name = nextname) {</span></a>
+<a name="1352"><span class="lineNum">    1352 </span><span class="lineCov">         94 :         for (name = path; name; name = nextname) {</span></a>
 <a name="1353"><span class="lineNum">    1353 </span>            :                 int namelen;</a>
-<a name="1354"><span class="lineNum">    1354 </span><span class="lineCov">         84 :                 nextname = strchr(name, '/');</span></a>
-<a name="1355"><span class="lineNum">    1355 </span><span class="lineCov">         84 :                 if (nextname) {</span></a>
-<a name="1356"><span class="lineNum">    1356 </span><span class="lineCov">         32 :                         namelen = nextname - name;</span></a>
-<a name="1357"><span class="lineNum">    1357 </span><span class="lineCov">         32 :                         nextname++;</span></a>
+<a name="1354"><span class="lineNum">    1354 </span><span class="lineCov">         42 :                 nextname = strchr(name, '/');</span></a>
+<a name="1355"><span class="lineNum">    1355 </span><span class="lineCov">         42 :                 if (nextname) {</span></a>
+<a name="1356"><span class="lineNum">    1356 </span><span class="lineCov">         16 :                         namelen = nextname - name;</span></a>
+<a name="1357"><span class="lineNum">    1357 </span><span class="lineCov">         16 :                         nextname++;</span></a>
 <a name="1358"><span class="lineNum">    1358 </span>            :                 } else {</a>
-<a name="1359"><span class="lineNum">    1359 </span><span class="lineCov">         52 :                         namelen = strlen(name);</span></a>
+<a name="1359"><span class="lineNum">    1359 </span><span class="lineCov">         26 :                         namelen = strlen(name);</span></a>
 <a name="1360"><span class="lineNum">    1360 </span>            :                 }</a>
-<a name="1361"><span class="lineNum">    1361 </span><span class="lineCov">         84 :                 if (namelen == 0)</span></a>
-<a name="1362"><span class="lineNum">    1362 </span><span class="lineCov">         18 :                         continue;</span></a>
+<a name="1361"><span class="lineNum">    1361 </span><span class="lineCov">         42 :                 if (namelen == 0)</span></a>
+<a name="1362"><span class="lineNum">    1362 </span><span class="lineCov">          9 :                         continue;</span></a>
 <a name="1363"><span class="lineNum">    1363 </span>            : </a>
-<a name="1364"><span class="lineNum">    1364 </span><span class="lineCov">         66 :                 dir = get_subdir(dir, name, namelen);</span></a>
-<a name="1365"><span class="lineNum">    1365 </span><span class="lineCov">         66 :                 if (IS_ERR(dir))</span></a>
+<a name="1364"><span class="lineNum">    1364 </span><span class="lineCov">         33 :                 dir = get_subdir(dir, name, namelen);</span></a>
+<a name="1365"><span class="lineNum">    1365 </span><span class="lineCov">         33 :                 if (IS_ERR(dir))</span></a>
 <a name="1366"><span class="lineNum">    1366 </span>            :                         goto fail;</a>
 <a name="1367"><span class="lineNum">    1367 </span>            :         }</a>
 <a name="1368"><span class="lineNum">    1368 </span>            : </a>
-<a name="1369"><span class="lineNum">    1369 </span><span class="lineCov">         52 :         spin_lock(&amp;sysctl_lock);</span></a>
-<a name="1370"><span class="lineNum">    1370 </span><span class="lineCov">         52 :         if (insert_header(dir, header))</span></a>
+<a name="1369"><span class="lineNum">    1369 </span><span class="lineCov">         26 :         spin_lock(&amp;sysctl_lock);</span></a>
+<a name="1370"><span class="lineNum">    1370 </span><span class="lineCov">         26 :         if (insert_header(dir, header))</span></a>
 <a name="1371"><span class="lineNum">    1371 </span>            :                 goto fail_put_dir_locked;</a>
 <a name="1372"><span class="lineNum">    1372 </span>            : </a>
-<a name="1373"><span class="lineNum">    1373 </span><span class="lineCov">         52 :         drop_sysctl_table(&amp;dir-&gt;header);</span></a>
-<a name="1374"><span class="lineNum">    1374 </span><span class="lineCov">         52 :         spin_unlock(&amp;sysctl_lock);</span></a>
+<a name="1373"><span class="lineNum">    1373 </span><span class="lineCov">         26 :         drop_sysctl_table(&amp;dir-&gt;header);</span></a>
+<a name="1374"><span class="lineNum">    1374 </span><span class="lineCov">         26 :         spin_unlock(&amp;sysctl_lock);</span></a>
 <a name="1375"><span class="lineNum">    1375 </span>            : </a>
-<a name="1376"><span class="lineNum">    1376 </span><span class="lineCov">         52 :         return header;</span></a>
+<a name="1376"><span class="lineNum">    1376 </span><span class="lineCov">         26 :         return header;</span></a>
 <a name="1377"><span class="lineNum">    1377 </span>            : </a>
 <a name="1378"><span class="lineNum">    1378 </span>            : fail_put_dir_locked:</a>
 <a name="1379"><span class="lineNum">    1379 </span><span class="lineNoCov">          0 :         drop_sysctl_table(&amp;dir-&gt;header);</span></a>
@@ -1456,9 +1456,9 @@
 <a name="1394"><span class="lineNum">    1394 </span>            :  *</a>
 <a name="1395"><span class="lineNum">    1395 </span>            :  * See __register_sysctl_table for more details.</a>
 <a name="1396"><span class="lineNum">    1396 </span>            :  */</a>
-<a name="1397"><span class="lineNum">    1397 </span><span class="lineCov">          6 : struct ctl_table_header *register_sysctl(const char *path, struct ctl_table *table)</span></a>
+<a name="1397"><span class="lineNum">    1397 </span><span class="lineCov">          3 : struct ctl_table_header *register_sysctl(const char *path, struct ctl_table *table)</span></a>
 <a name="1398"><span class="lineNum">    1398 </span>            : {</a>
-<a name="1399"><span class="lineNum">    1399 </span><span class="lineCov">         32 :         return __register_sysctl_table(&amp;sysctl_table_root.default_set,</span></a>
+<a name="1399"><span class="lineNum">    1399 </span><span class="lineCov">         16 :         return __register_sysctl_table(&amp;sysctl_table_root.default_set,</span></a>
 <a name="1400"><span class="lineNum">    1400 </span>            :                                         path, table);</a>
 <a name="1401"><span class="lineNum">    1401 </span>            : }</a>
 <a name="1402"><span class="lineNum">    1402 </span>            : EXPORT_SYMBOL(register_sysctl);</a>
@@ -1483,122 +1483,122 @@
 <a name="1421"><span class="lineNum">    1421 </span>            :  * init before init levels are processed through proc_sys_init() and</a>
 <a name="1422"><span class="lineNum">    1422 </span>            :  * sysctl_init_bases().</a>
 <a name="1423"><span class="lineNum">    1423 </span>            :  */</a>
-<a name="1424"><span class="lineNum">    1424 </span><span class="lineCov">         26 : void __init __register_sysctl_init(const char *path, struct ctl_table *table,</span></a>
+<a name="1424"><span class="lineNum">    1424 </span><span class="lineCov">         13 : void __init __register_sysctl_init(const char *path, struct ctl_table *table,</span></a>
 <a name="1425"><span class="lineNum">    1425 </span>            :                                  const char *table_name)</a>
 <a name="1426"><span class="lineNum">    1426 </span>            : {</a>
-<a name="1427"><span class="lineNum">    1427 </span><span class="lineCov">         26 :         struct ctl_table_header *hdr = register_sysctl(path, table);</span></a>
+<a name="1427"><span class="lineNum">    1427 </span><span class="lineCov">         13 :         struct ctl_table_header *hdr = register_sysctl(path, table);</span></a>
 <a name="1428"><span class="lineNum">    1428 </span>            : </a>
-<a name="1429"><span class="lineNum">    1429 </span><span class="lineCov">         26 :         if (unlikely(!hdr)) {</span></a>
+<a name="1429"><span class="lineNum">    1429 </span><span class="lineCov">         13 :         if (unlikely(!hdr)) {</span></a>
 <a name="1430"><span class="lineNum">    1430 </span><span class="lineNoCov">          0 :                 pr_err(&quot;failed when register_sysctl %s to %s\n&quot;, table_name, path);</span></a>
 <a name="1431"><span class="lineNum">    1431 </span><span class="lineNoCov">          0 :                 return;</span></a>
 <a name="1432"><span class="lineNum">    1432 </span>            :         }</a>
 <a name="1433"><span class="lineNum">    1433 </span>            :         kmemleak_not_leak(hdr);</a>
 <a name="1434"><span class="lineNum">    1434 </span>            : }</a>
 <a name="1435"><span class="lineNum">    1435 </span>            : </a>
-<a name="1436"><span class="lineNum">    1436 </span><span class="lineCov">         24 : static char *append_path(const char *path, char *pos, const char *name)</span></a>
+<a name="1436"><span class="lineNum">    1436 </span><span class="lineCov">         12 : static char *append_path(const char *path, char *pos, const char *name)</span></a>
 <a name="1437"><span class="lineNum">    1437 </span>            : {</a>
 <a name="1438"><span class="lineNum">    1438 </span>            :         int namelen;</a>
-<a name="1439"><span class="lineNum">    1439 </span><span class="lineCov">         24 :         namelen = strlen(name);</span></a>
-<a name="1440"><span class="lineNum">    1440 </span><span class="lineCov">         24 :         if (((pos - path) + namelen + 2) &gt;= PATH_MAX)</span></a>
+<a name="1439"><span class="lineNum">    1439 </span><span class="lineCov">         12 :         namelen = strlen(name);</span></a>
+<a name="1440"><span class="lineNum">    1440 </span><span class="lineCov">         12 :         if (((pos - path) + namelen + 2) &gt;= PATH_MAX)</span></a>
 <a name="1441"><span class="lineNum">    1441 </span>            :                 return NULL;</a>
-<a name="1442"><span class="lineNum">    1442 </span><span class="lineCov">         24 :         memcpy(pos, name, namelen);</span></a>
-<a name="1443"><span class="lineNum">    1443 </span><span class="lineCov">         24 :         pos[namelen] = '/';</span></a>
-<a name="1444"><span class="lineNum">    1444 </span><span class="lineCov">         24 :         pos[namelen + 1] = '\0';</span></a>
-<a name="1445"><span class="lineNum">    1445 </span><span class="lineCov">         24 :         pos += namelen + 1;</span></a>
-<a name="1446"><span class="lineNum">    1446 </span><span class="lineCov">         24 :         return pos;</span></a>
+<a name="1442"><span class="lineNum">    1442 </span><span class="lineCov">         12 :         memcpy(pos, name, namelen);</span></a>
+<a name="1443"><span class="lineNum">    1443 </span><span class="lineCov">         12 :         pos[namelen] = '/';</span></a>
+<a name="1444"><span class="lineNum">    1444 </span><span class="lineCov">         12 :         pos[namelen + 1] = '\0';</span></a>
+<a name="1445"><span class="lineNum">    1445 </span><span class="lineCov">         12 :         pos += namelen + 1;</span></a>
+<a name="1446"><span class="lineNum">    1446 </span><span class="lineCov">         12 :         return pos;</span></a>
 <a name="1447"><span class="lineNum">    1447 </span>            : }</a>
 <a name="1448"><span class="lineNum">    1448 </span>            : </a>
-<a name="1449"><span class="lineNum">    1449 </span><span class="lineCov">         36 : static int count_subheaders(struct ctl_table *table)</span></a>
+<a name="1449"><span class="lineNum">    1449 </span><span class="lineCov">         18 : static int count_subheaders(struct ctl_table *table)</span></a>
 <a name="1450"><span class="lineNum">    1450 </span>            : {</a>
-<a name="1451"><span class="lineNum">    1451 </span><span class="lineCov">         36 :         int has_files = 0;</span></a>
-<a name="1452"><span class="lineNum">    1452 </span><span class="lineCov">         36 :         int nr_subheaders = 0;</span></a>
+<a name="1451"><span class="lineNum">    1451 </span><span class="lineCov">         18 :         int has_files = 0;</span></a>
+<a name="1452"><span class="lineNum">    1452 </span><span class="lineCov">         18 :         int nr_subheaders = 0;</span></a>
 <a name="1453"><span class="lineNum">    1453 </span>            :         struct ctl_table *entry;</a>
 <a name="1454"><span class="lineNum">    1454 </span>            : </a>
 <a name="1455"><span class="lineNum">    1455 </span>            :         /* special case: no directory and empty directory */</a>
-<a name="1456"><span class="lineNum">    1456 </span><span class="lineCov">         36 :         if (!table || !table-&gt;procname)</span></a>
+<a name="1456"><span class="lineNum">    1456 </span><span class="lineCov">         18 :         if (!table || !table-&gt;procname)</span></a>
 <a name="1457"><span class="lineNum">    1457 </span>            :                 return 1;</a>
 <a name="1458"><span class="lineNum">    1458 </span>            : </a>
-<a name="1459"><span class="lineNum">    1459 </span><span class="lineCov">        158 :         for (entry = table; entry-&gt;procname; entry++) {</span></a>
-<a name="1460"><span class="lineNum">    1460 </span><span class="lineCov">        158 :                 if (entry-&gt;child)</span></a>
-<a name="1461"><span class="lineNum">    1461 </span><span class="lineCov">         20 :                         nr_subheaders += count_subheaders(entry-&gt;child);</span></a>
+<a name="1459"><span class="lineNum">    1459 </span><span class="lineCov">         79 :         for (entry = table; entry-&gt;procname; entry++) {</span></a>
+<a name="1460"><span class="lineNum">    1460 </span><span class="lineCov">         79 :                 if (entry-&gt;child)</span></a>
+<a name="1461"><span class="lineNum">    1461 </span><span class="lineCov">         10 :                         nr_subheaders += count_subheaders(entry-&gt;child);</span></a>
 <a name="1462"><span class="lineNum">    1462 </span>            :                 else</a>
 <a name="1463"><span class="lineNum">    1463 </span>            :                         has_files = 1;</a>
 <a name="1464"><span class="lineNum">    1464 </span>            :         }</a>
-<a name="1465"><span class="lineNum">    1465 </span><span class="lineCov">         32 :         return nr_subheaders + has_files;</span></a>
+<a name="1465"><span class="lineNum">    1465 </span><span class="lineCov">         16 :         return nr_subheaders + has_files;</span></a>
 <a name="1466"><span class="lineNum">    1466 </span>            : }</a>
 <a name="1467"><span class="lineNum">    1467 </span>            : </a>
-<a name="1468"><span class="lineNum">    1468 </span><span class="lineCov">          4 : static int register_leaf_sysctl_tables(const char *path, char *pos,</span></a>
+<a name="1468"><span class="lineNum">    1468 </span><span class="lineCov">          2 : static int register_leaf_sysctl_tables(const char *path, char *pos,</span></a>
 <a name="1469"><span class="lineNum">    1469 </span>            :         struct ctl_table_header ***subheader, struct ctl_table_set *set,</a>
 <a name="1470"><span class="lineNum">    1470 </span>            :         struct ctl_table *table)</a>
 <a name="1471"><span class="lineNum">    1471 </span>            : {</a>
-<a name="1472"><span class="lineNum">    1472 </span><span class="lineCov">          4 :         struct ctl_table *ctl_table_arg = NULL;</span></a>
+<a name="1472"><span class="lineNum">    1472 </span><span class="lineCov">          2 :         struct ctl_table *ctl_table_arg = NULL;</span></a>
 <a name="1473"><span class="lineNum">    1473 </span>            :         struct ctl_table *entry, *files;</a>
-<a name="1474"><span class="lineNum">    1474 </span><span class="lineCov">          4 :         int nr_files = 0;</span></a>
-<a name="1475"><span class="lineNum">    1475 </span><span class="lineCov">          4 :         int nr_dirs = 0;</span></a>
-<a name="1476"><span class="lineNum">    1476 </span><span class="lineCov">          4 :         int err = -ENOMEM;</span></a>
+<a name="1474"><span class="lineNum">    1474 </span><span class="lineCov">          2 :         int nr_files = 0;</span></a>
+<a name="1475"><span class="lineNum">    1475 </span><span class="lineCov">          2 :         int nr_dirs = 0;</span></a>
+<a name="1476"><span class="lineNum">    1476 </span><span class="lineCov">          2 :         int err = -ENOMEM;</span></a>
 <a name="1477"><span class="lineNum">    1477 </span>            : </a>
-<a name="1478"><span class="lineNum">    1478 </span><span class="lineCov">         58 :         for (entry = table; entry-&gt;procname; entry++) {</span></a>
-<a name="1479"><span class="lineNum">    1479 </span><span class="lineCov">         54 :                 if (entry-&gt;child)</span></a>
-<a name="1480"><span class="lineNum">    1480 </span><span class="lineCov">          2 :                         nr_dirs++;</span></a>
+<a name="1478"><span class="lineNum">    1478 </span><span class="lineCov">         29 :         for (entry = table; entry-&gt;procname; entry++) {</span></a>
+<a name="1479"><span class="lineNum">    1479 </span><span class="lineCov">         27 :                 if (entry-&gt;child)</span></a>
+<a name="1480"><span class="lineNum">    1480 </span><span class="lineCov">          1 :                         nr_dirs++;</span></a>
 <a name="1481"><span class="lineNum">    1481 </span>            :                 else</a>
-<a name="1482"><span class="lineNum">    1482 </span><span class="lineCov">         52 :                         nr_files++;</span></a>
+<a name="1482"><span class="lineNum">    1482 </span><span class="lineCov">         26 :                         nr_files++;</span></a>
 <a name="1483"><span class="lineNum">    1483 </span>            :         }</a>
 <a name="1484"><span class="lineNum">    1484 </span>            : </a>
-<a name="1485"><span class="lineNum">    1485 </span><span class="lineCov">          4 :         files = table;</span></a>
+<a name="1485"><span class="lineNum">    1485 </span><span class="lineCov">          2 :         files = table;</span></a>
 <a name="1486"><span class="lineNum">    1486 </span>            :         /* If there are mixed files and directories we need a new table */</a>
-<a name="1487"><span class="lineNum">    1487 </span><span class="lineCov">          4 :         if (nr_dirs &amp;&amp; nr_files) {</span></a>
+<a name="1487"><span class="lineNum">    1487 </span><span class="lineCov">          2 :         if (nr_dirs &amp;&amp; nr_files) {</span></a>
 <a name="1488"><span class="lineNum">    1488 </span>            :                 struct ctl_table *new;</a>
-<a name="1489"><span class="lineNum">    1489 </span><span class="lineCov">          4 :                 files = kcalloc(nr_files + 1, sizeof(struct ctl_table),</span></a>
+<a name="1489"><span class="lineNum">    1489 </span><span class="lineCov">          2 :                 files = kcalloc(nr_files + 1, sizeof(struct ctl_table),</span></a>
 <a name="1490"><span class="lineNum">    1490 </span>            :                                 GFP_KERNEL);</a>
-<a name="1491"><span class="lineNum">    1491 </span><span class="lineCov">          2 :                 if (!files)</span></a>
+<a name="1491"><span class="lineNum">    1491 </span><span class="lineCov">          1 :                 if (!files)</span></a>
 <a name="1492"><span class="lineNum">    1492 </span>            :                         goto out;</a>
 <a name="1493"><span class="lineNum">    1493 </span>            : </a>
 <a name="1494"><span class="lineNum">    1494 </span>            :                 ctl_table_arg = files;</a>
-<a name="1495"><span class="lineNum">    1495 </span><span class="lineCov">         50 :                 for (new = files, entry = table; entry-&gt;procname; entry++) {</span></a>
-<a name="1496"><span class="lineNum">    1496 </span><span class="lineCov">         50 :                         if (entry-&gt;child)</span></a>
-<a name="1497"><span class="lineNum">    1497 </span><span class="lineCov">          2 :                                 continue;</span></a>
-<a name="1498"><span class="lineNum">    1498 </span><span class="lineCov">         48 :                         *new = *entry;</span></a>
-<a name="1499"><span class="lineNum">    1499 </span><span class="lineCov">         48 :                         new++;</span></a>
+<a name="1495"><span class="lineNum">    1495 </span><span class="lineCov">         25 :                 for (new = files, entry = table; entry-&gt;procname; entry++) {</span></a>
+<a name="1496"><span class="lineNum">    1496 </span><span class="lineCov">         25 :                         if (entry-&gt;child)</span></a>
+<a name="1497"><span class="lineNum">    1497 </span><span class="lineCov">          1 :                                 continue;</span></a>
+<a name="1498"><span class="lineNum">    1498 </span><span class="lineCov">         24 :                         *new = *entry;</span></a>
+<a name="1499"><span class="lineNum">    1499 </span><span class="lineCov">         24 :                         new++;</span></a>
 <a name="1500"><span class="lineNum">    1500 </span>            :                 }</a>
 <a name="1501"><span class="lineNum">    1501 </span>            :         }</a>
 <a name="1502"><span class="lineNum">    1502 </span>            : </a>
 <a name="1503"><span class="lineNum">    1503 </span>            :         /* Register everything except a directory full of subdirectories */</a>
-<a name="1504"><span class="lineNum">    1504 </span><span class="lineCov">          4 :         if (nr_files || !nr_dirs) {</span></a>
+<a name="1504"><span class="lineNum">    1504 </span><span class="lineCov">          2 :         if (nr_files || !nr_dirs) {</span></a>
 <a name="1505"><span class="lineNum">    1505 </span>            :                 struct ctl_table_header *header;</a>
-<a name="1506"><span class="lineNum">    1506 </span><span class="lineCov">          4 :                 header = __register_sysctl_table(set, path, files);</span></a>
-<a name="1507"><span class="lineNum">    1507 </span><span class="lineCov">          4 :                 if (!header) {</span></a>
+<a name="1506"><span class="lineNum">    1506 </span><span class="lineCov">          2 :                 header = __register_sysctl_table(set, path, files);</span></a>
+<a name="1507"><span class="lineNum">    1507 </span><span class="lineCov">          2 :                 if (!header) {</span></a>
 <a name="1508"><span class="lineNum">    1508 </span><span class="lineNoCov">          0 :                         kfree(ctl_table_arg);</span></a>
 <a name="1509"><span class="lineNum">    1509 </span><span class="lineNoCov">          0 :                         goto out;</span></a>
 <a name="1510"><span class="lineNum">    1510 </span>            :                 }</a>
 <a name="1511"><span class="lineNum">    1511 </span>            : </a>
 <a name="1512"><span class="lineNum">    1512 </span>            :                 /* Remember if we need to free the file table */</a>
-<a name="1513"><span class="lineNum">    1513 </span><span class="lineCov">          4 :                 header-&gt;ctl_table_arg = ctl_table_arg;</span></a>
-<a name="1514"><span class="lineNum">    1514 </span><span class="lineCov">          4 :                 **subheader = header;</span></a>
-<a name="1515"><span class="lineNum">    1515 </span><span class="lineCov">          4 :                 (*subheader)++;</span></a>
+<a name="1513"><span class="lineNum">    1513 </span><span class="lineCov">          2 :                 header-&gt;ctl_table_arg = ctl_table_arg;</span></a>
+<a name="1514"><span class="lineNum">    1514 </span><span class="lineCov">          2 :                 **subheader = header;</span></a>
+<a name="1515"><span class="lineNum">    1515 </span><span class="lineCov">          2 :                 (*subheader)++;</span></a>
 <a name="1516"><span class="lineNum">    1516 </span>            :         }</a>
 <a name="1517"><span class="lineNum">    1517 </span>            : </a>
 <a name="1518"><span class="lineNum">    1518 </span>            :         /* Recurse into the subdirectories. */</a>
-<a name="1519"><span class="lineNum">    1519 </span><span class="lineCov">         54 :         for (entry = table; entry-&gt;procname; entry++) {</span></a>
+<a name="1519"><span class="lineNum">    1519 </span><span class="lineCov">         27 :         for (entry = table; entry-&gt;procname; entry++) {</span></a>
 <a name="1520"><span class="lineNum">    1520 </span>            :                 char *child_pos;</a>
 <a name="1521"><span class="lineNum">    1521 </span>            : </a>
-<a name="1522"><span class="lineNum">    1522 </span><span class="lineCov">         54 :                 if (!entry-&gt;child)</span></a>
-<a name="1523"><span class="lineNum">    1523 </span><span class="lineCov">         52 :                         continue;</span></a>
+<a name="1522"><span class="lineNum">    1522 </span><span class="lineCov">         27 :                 if (!entry-&gt;child)</span></a>
+<a name="1523"><span class="lineNum">    1523 </span><span class="lineCov">         26 :                         continue;</span></a>
 <a name="1524"><span class="lineNum">    1524 </span>            : </a>
-<a name="1525"><span class="lineNum">    1525 </span><span class="lineCov">          2 :                 err = -ENAMETOOLONG;</span></a>
-<a name="1526"><span class="lineNum">    1526 </span><span class="lineCov">          2 :                 child_pos = append_path(path, pos, entry-&gt;procname);</span></a>
-<a name="1527"><span class="lineNum">    1527 </span><span class="lineCov">          2 :                 if (!child_pos)</span></a>
+<a name="1525"><span class="lineNum">    1525 </span><span class="lineCov">          1 :                 err = -ENAMETOOLONG;</span></a>
+<a name="1526"><span class="lineNum">    1526 </span><span class="lineCov">          1 :                 child_pos = append_path(path, pos, entry-&gt;procname);</span></a>
+<a name="1527"><span class="lineNum">    1527 </span><span class="lineCov">          1 :                 if (!child_pos)</span></a>
 <a name="1528"><span class="lineNum">    1528 </span>            :                         goto out;</a>
 <a name="1529"><span class="lineNum">    1529 </span>            : </a>
-<a name="1530"><span class="lineNum">    1530 </span><span class="lineCov">          2 :                 err = register_leaf_sysctl_tables(path, child_pos, subheader,</span></a>
+<a name="1530"><span class="lineNum">    1530 </span><span class="lineCov">          1 :                 err = register_leaf_sysctl_tables(path, child_pos, subheader,</span></a>
 <a name="1531"><span class="lineNum">    1531 </span>            :                                                   set, entry-&gt;child);</a>
-<a name="1532"><span class="lineNum">    1532 </span><span class="lineCov">          2 :                 pos[0] = '\0';</span></a>
-<a name="1533"><span class="lineNum">    1533 </span><span class="lineCov">          2 :                 if (err)</span></a>
+<a name="1532"><span class="lineNum">    1532 </span><span class="lineCov">          1 :                 pos[0] = '\0';</span></a>
+<a name="1533"><span class="lineNum">    1533 </span><span class="lineCov">          1 :                 if (err)</span></a>
 <a name="1534"><span class="lineNum">    1534 </span>            :                         goto out;</a>
 <a name="1535"><span class="lineNum">    1535 </span>            :         }</a>
 <a name="1536"><span class="lineNum">    1536 </span>            :         err = 0;</a>
 <a name="1537"><span class="lineNum">    1537 </span>            : out:</a>
 <a name="1538"><span class="lineNum">    1538 </span>            :         /* On failure our caller will unregister all registered subheaders */</a>
-<a name="1539"><span class="lineNum">    1539 </span><span class="lineCov">          4 :         return err;</span></a>
+<a name="1539"><span class="lineNum">    1539 </span><span class="lineCov">          2 :         return err;</span></a>
 <a name="1540"><span class="lineNum">    1540 </span>            : }</a>
 <a name="1541"><span class="lineNum">    1541 </span>            : </a>
 <a name="1542"><span class="lineNum">    1542 </span>            : /**</a>
@@ -1612,54 +1612,54 @@
 <a name="1550"><span class="lineNum">    1550 </span>            :  *</a>
 <a name="1551"><span class="lineNum">    1551 </span>            :  * See __register_sysctl_table for more details.</a>
 <a name="1552"><span class="lineNum">    1552 </span>            :  */</a>
-<a name="1553"><span class="lineNum">    1553 </span><span class="lineCov">         16 : struct ctl_table_header *__register_sysctl_paths(</span></a>
+<a name="1553"><span class="lineNum">    1553 </span><span class="lineCov">          8 : struct ctl_table_header *__register_sysctl_paths(</span></a>
 <a name="1554"><span class="lineNum">    1554 </span>            :         struct ctl_table_set *set,</a>
 <a name="1555"><span class="lineNum">    1555 </span>            :         const struct ctl_path *path, struct ctl_table *table)</a>
 <a name="1556"><span class="lineNum">    1556 </span>            : {</a>
-<a name="1557"><span class="lineNum">    1557 </span><span class="lineCov">         16 :         struct ctl_table *ctl_table_arg = table;</span></a>
-<a name="1558"><span class="lineNum">    1558 </span><span class="lineCov">         16 :         int nr_subheaders = count_subheaders(table);</span></a>
-<a name="1559"><span class="lineNum">    1559 </span><span class="lineCov">         16 :         struct ctl_table_header *header = NULL, **subheaders, **subheader;</span></a>
+<a name="1557"><span class="lineNum">    1557 </span><span class="lineCov">          8 :         struct ctl_table *ctl_table_arg = table;</span></a>
+<a name="1558"><span class="lineNum">    1558 </span><span class="lineCov">          8 :         int nr_subheaders = count_subheaders(table);</span></a>
+<a name="1559"><span class="lineNum">    1559 </span><span class="lineCov">          8 :         struct ctl_table_header *header = NULL, **subheaders, **subheader;</span></a>
 <a name="1560"><span class="lineNum">    1560 </span>            :         const struct ctl_path *component;</a>
 <a name="1561"><span class="lineNum">    1561 </span>            :         char *new_path, *pos;</a>
 <a name="1562"><span class="lineNum">    1562 </span>            : </a>
-<a name="1563"><span class="lineNum">    1563 </span><span class="lineCov">         16 :         pos = new_path = kmalloc(PATH_MAX, GFP_KERNEL);</span></a>
-<a name="1564"><span class="lineNum">    1564 </span><span class="lineCov">         16 :         if (!new_path)</span></a>
+<a name="1563"><span class="lineNum">    1563 </span><span class="lineCov">          8 :         pos = new_path = kmalloc(PATH_MAX, GFP_KERNEL);</span></a>
+<a name="1564"><span class="lineNum">    1564 </span><span class="lineCov">          8 :         if (!new_path)</span></a>
 <a name="1565"><span class="lineNum">    1565 </span>            :                 return NULL;</a>
 <a name="1566"><span class="lineNum">    1566 </span>            : </a>
-<a name="1567"><span class="lineNum">    1567 </span><span class="lineCov">         16 :         pos[0] = '\0';</span></a>
-<a name="1568"><span class="lineNum">    1568 </span><span class="lineCov">         20 :         for (component = path; component-&gt;procname; component++) {</span></a>
-<a name="1569"><span class="lineNum">    1569 </span><span class="lineCov">          4 :                 pos = append_path(new_path, pos, component-&gt;procname);</span></a>
-<a name="1570"><span class="lineNum">    1570 </span><span class="lineCov">          4 :                 if (!pos)</span></a>
+<a name="1567"><span class="lineNum">    1567 </span><span class="lineCov">          8 :         pos[0] = '\0';</span></a>
+<a name="1568"><span class="lineNum">    1568 </span><span class="lineCov">         10 :         for (component = path; component-&gt;procname; component++) {</span></a>
+<a name="1569"><span class="lineNum">    1569 </span><span class="lineCov">          2 :                 pos = append_path(new_path, pos, component-&gt;procname);</span></a>
+<a name="1570"><span class="lineNum">    1570 </span><span class="lineCov">          2 :                 if (!pos)</span></a>
 <a name="1571"><span class="lineNum">    1571 </span>            :                         goto out;</a>
 <a name="1572"><span class="lineNum">    1572 </span>            :         }</a>
-<a name="1573"><span class="lineNum">    1573 </span><span class="lineCov">         34 :         while (table-&gt;procname &amp;&amp; table-&gt;child &amp;&amp; !table[1].procname) {</span></a>
-<a name="1574"><span class="lineNum">    1574 </span><span class="lineCov">         18 :                 pos = append_path(new_path, pos, table-&gt;procname);</span></a>
-<a name="1575"><span class="lineNum">    1575 </span><span class="lineCov">         18 :                 if (!pos)</span></a>
+<a name="1573"><span class="lineNum">    1573 </span><span class="lineCov">         17 :         while (table-&gt;procname &amp;&amp; table-&gt;child &amp;&amp; !table[1].procname) {</span></a>
+<a name="1574"><span class="lineNum">    1574 </span><span class="lineCov">          9 :                 pos = append_path(new_path, pos, table-&gt;procname);</span></a>
+<a name="1575"><span class="lineNum">    1575 </span><span class="lineCov">          9 :                 if (!pos)</span></a>
 <a name="1576"><span class="lineNum">    1576 </span>            :                         goto out;</a>
-<a name="1577"><span class="lineNum">    1577 </span><span class="lineCov">         18 :                 table = table-&gt;child;</span></a>
+<a name="1577"><span class="lineNum">    1577 </span><span class="lineCov">          9 :                 table = table-&gt;child;</span></a>
 <a name="1578"><span class="lineNum">    1578 </span>            :         }</a>
-<a name="1579"><span class="lineNum">    1579 </span><span class="lineCov">         16 :         if (nr_subheaders == 1) {</span></a>
-<a name="1580"><span class="lineNum">    1580 </span><span class="lineCov">         14 :                 header = __register_sysctl_table(set, new_path, table);</span></a>
-<a name="1581"><span class="lineNum">    1581 </span><span class="lineCov">         14 :                 if (header)</span></a>
-<a name="1582"><span class="lineNum">    1582 </span><span class="lineCov">         14 :                         header-&gt;ctl_table_arg = ctl_table_arg;</span></a>
+<a name="1579"><span class="lineNum">    1579 </span><span class="lineCov">          8 :         if (nr_subheaders == 1) {</span></a>
+<a name="1580"><span class="lineNum">    1580 </span><span class="lineCov">          7 :                 header = __register_sysctl_table(set, new_path, table);</span></a>
+<a name="1581"><span class="lineNum">    1581 </span><span class="lineCov">          7 :                 if (header)</span></a>
+<a name="1582"><span class="lineNum">    1582 </span><span class="lineCov">          7 :                         header-&gt;ctl_table_arg = ctl_table_arg;</span></a>
 <a name="1583"><span class="lineNum">    1583 </span>            :         } else {</a>
-<a name="1584"><span class="lineNum">    1584 </span><span class="lineCov">          2 :                 header = kzalloc(sizeof(*header) +</span></a>
+<a name="1584"><span class="lineNum">    1584 </span><span class="lineCov">          1 :                 header = kzalloc(sizeof(*header) +</span></a>
 <a name="1585"><span class="lineNum">    1585 </span>            :                                  sizeof(*subheaders)*nr_subheaders, GFP_KERNEL);</a>
-<a name="1586"><span class="lineNum">    1586 </span><span class="lineCov">          2 :                 if (!header)</span></a>
+<a name="1586"><span class="lineNum">    1586 </span><span class="lineCov">          1 :                 if (!header)</span></a>
 <a name="1587"><span class="lineNum">    1587 </span>            :                         goto out;</a>
 <a name="1588"><span class="lineNum">    1588 </span>            : </a>
-<a name="1589"><span class="lineNum">    1589 </span><span class="lineCov">          2 :                 subheaders = (struct ctl_table_header **) (header + 1);</span></a>
-<a name="1590"><span class="lineNum">    1590 </span><span class="lineCov">          2 :                 subheader = subheaders;</span></a>
-<a name="1591"><span class="lineNum">    1591 </span><span class="lineCov">          2 :                 header-&gt;ctl_table_arg = ctl_table_arg;</span></a>
+<a name="1589"><span class="lineNum">    1589 </span><span class="lineCov">          1 :                 subheaders = (struct ctl_table_header **) (header + 1);</span></a>
+<a name="1590"><span class="lineNum">    1590 </span><span class="lineCov">          1 :                 subheader = subheaders;</span></a>
+<a name="1591"><span class="lineNum">    1591 </span><span class="lineCov">          1 :                 header-&gt;ctl_table_arg = ctl_table_arg;</span></a>
 <a name="1592"><span class="lineNum">    1592 </span>            : </a>
-<a name="1593"><span class="lineNum">    1593 </span><span class="lineCov">          2 :                 if (register_leaf_sysctl_tables(new_path, pos, &amp;subheader,</span></a>
+<a name="1593"><span class="lineNum">    1593 </span><span class="lineCov">          1 :                 if (register_leaf_sysctl_tables(new_path, pos, &amp;subheader,</span></a>
 <a name="1594"><span class="lineNum">    1594 </span>            :                                                 set, table))</a>
 <a name="1595"><span class="lineNum">    1595 </span>            :                         goto err_register_leaves;</a>
 <a name="1596"><span class="lineNum">    1596 </span>            :         }</a>
 <a name="1597"><span class="lineNum">    1597 </span>            : </a>
 <a name="1598"><span class="lineNum">    1598 </span>            : out:</a>
-<a name="1599"><span class="lineNum">    1599 </span><span class="lineCov">         16 :         kfree(new_path);</span></a>
-<a name="1600"><span class="lineNum">    1600 </span><span class="lineCov">         16 :         return header;</span></a>
+<a name="1599"><span class="lineNum">    1599 </span><span class="lineCov">          8 :         kfree(new_path);</span></a>
+<a name="1600"><span class="lineNum">    1600 </span><span class="lineCov">          8 :         return header;</span></a>
 <a name="1601"><span class="lineNum">    1601 </span>            : </a>
 <a name="1602"><span class="lineNum">    1602 </span>            : err_register_leaves:</a>
 <a name="1603"><span class="lineNum">    1603 </span><span class="lineNoCov">          0 :         while (subheader &gt; subheaders) {</span></a>
@@ -1683,10 +1683,10 @@
 <a name="1621"><span class="lineNum">    1621 </span>            :  *</a>
 <a name="1622"><span class="lineNum">    1622 </span>            :  * See __register_sysctl_paths for more details.</a>
 <a name="1623"><span class="lineNum">    1623 </span>            :  */</a>
-<a name="1624"><span class="lineNum">    1624 </span><span class="lineCov">          2 : struct ctl_table_header *register_sysctl_paths(const struct ctl_path *path,</span></a>
+<a name="1624"><span class="lineNum">    1624 </span><span class="lineCov">          1 : struct ctl_table_header *register_sysctl_paths(const struct ctl_path *path,</span></a>
 <a name="1625"><span class="lineNum">    1625 </span>            :                                                 struct ctl_table *table)</a>
 <a name="1626"><span class="lineNum">    1626 </span>            : {</a>
-<a name="1627"><span class="lineNum">    1627 </span><span class="lineCov">         16 :         return __register_sysctl_paths(&amp;sysctl_table_root.default_set,</span></a>
+<a name="1627"><span class="lineNum">    1627 </span><span class="lineCov">          8 :         return __register_sysctl_paths(&amp;sysctl_table_root.default_set,</span></a>
 <a name="1628"><span class="lineNum">    1628 </span>            :                                         path, table);</a>
 <a name="1629"><span class="lineNum">    1629 </span>            : }</a>
 <a name="1630"><span class="lineNum">    1630 </span>            : EXPORT_SYMBOL(register_sysctl_paths);</a>
@@ -1700,21 +1700,21 @@
 <a name="1638"><span class="lineNum">    1638 </span>            :  *</a>
 <a name="1639"><span class="lineNum">    1639 </span>            :  * See register_sysctl_paths for more details.</a>
 <a name="1640"><span class="lineNum">    1640 </span>            :  */</a>
-<a name="1641"><span class="lineNum">    1641 </span><span class="lineCov">          6 : struct ctl_table_header *register_sysctl_table(struct ctl_table *table)</span></a>
+<a name="1641"><span class="lineNum">    1641 </span><span class="lineCov">          3 : struct ctl_table_header *register_sysctl_table(struct ctl_table *table)</span></a>
 <a name="1642"><span class="lineNum">    1642 </span>            : {</a>
 <a name="1643"><span class="lineNum">    1643 </span>            :         static const struct ctl_path null_path[] = { {} };</a>
 <a name="1644"><span class="lineNum">    1644 </span>            : </a>
-<a name="1645"><span class="lineNum">    1645 </span><span class="lineCov">         14 :         return register_sysctl_paths(null_path, table);</span></a>
+<a name="1645"><span class="lineNum">    1645 </span><span class="lineCov">          7 :         return register_sysctl_paths(null_path, table);</span></a>
 <a name="1646"><span class="lineNum">    1646 </span>            : }</a>
 <a name="1647"><span class="lineNum">    1647 </span>            : EXPORT_SYMBOL(register_sysctl_table);</a>
 <a name="1648"><span class="lineNum">    1648 </span>            : </a>
-<a name="1649"><span class="lineNum">    1649 </span><span class="lineCov">          8 : int __register_sysctl_base(struct ctl_table *base_table)</span></a>
+<a name="1649"><span class="lineNum">    1649 </span><span class="lineCov">          4 : int __register_sysctl_base(struct ctl_table *base_table)</span></a>
 <a name="1650"><span class="lineNum">    1650 </span>            : {</a>
 <a name="1651"><span class="lineNum">    1651 </span>            :         struct ctl_table_header *hdr;</a>
 <a name="1652"><span class="lineNum">    1652 </span>            : </a>
-<a name="1653"><span class="lineNum">    1653 </span><span class="lineCov">          8 :         hdr = register_sysctl_table(base_table);</span></a>
+<a name="1653"><span class="lineNum">    1653 </span><span class="lineCov">          4 :         hdr = register_sysctl_table(base_table);</span></a>
 <a name="1654"><span class="lineNum">    1654 </span>            :         kmemleak_not_leak(hdr);</a>
-<a name="1655"><span class="lineNum">    1655 </span><span class="lineCov">          8 :         return 0;</span></a>
+<a name="1655"><span class="lineNum">    1655 </span><span class="lineCov">          4 :         return 0;</span></a>
 <a name="1656"><span class="lineNum">    1656 </span>            : }</a>
 <a name="1657"><span class="lineNum">    1657 </span>            : </a>
 <a name="1658"><span class="lineNum">    1658 </span><span class="lineNoCov">          0 : static void put_links(struct ctl_table_header *header)</span></a>
@@ -1751,11 +1751,11 @@
 <a name="1689"><span class="lineNum">    1689 </span>            :         }</a>
 <a name="1690"><span class="lineNum">    1690 </span>            : }</a>
 <a name="1691"><span class="lineNum">    1691 </span>            : </a>
-<a name="1692"><span class="lineNum">    1692 </span><span class="lineCov">        148 : static void drop_sysctl_table(struct ctl_table_header *header)</span></a>
+<a name="1692"><span class="lineNum">    1692 </span><span class="lineCov">         74 : static void drop_sysctl_table(struct ctl_table_header *header)</span></a>
 <a name="1693"><span class="lineNum">    1693 </span>            : {</a>
-<a name="1694"><span class="lineNum">    1694 </span><span class="lineCov">        148 :         struct ctl_dir *parent = header-&gt;parent;</span></a>
+<a name="1694"><span class="lineNum">    1694 </span><span class="lineCov">         74 :         struct ctl_dir *parent = header-&gt;parent;</span></a>
 <a name="1695"><span class="lineNum">    1695 </span>            : </a>
-<a name="1696"><span class="lineNum">    1696 </span><span class="lineCov">        148 :         if (--header-&gt;nreg)</span></a>
+<a name="1696"><span class="lineNum">    1696 </span><span class="lineCov">         74 :         if (--header-&gt;nreg)</span></a>
 <a name="1697"><span class="lineNum">    1697 </span>            :                 return;</a>
 <a name="1698"><span class="lineNum">    1698 </span>            : </a>
 <a name="1699"><span class="lineNum">    1699 </span><span class="lineNoCov">          0 :         if (parent) {</span></a>
@@ -1807,30 +1807,30 @@
 <a name="1745"><span class="lineNum">    1745 </span>            : }</a>
 <a name="1746"><span class="lineNum">    1746 </span>            : EXPORT_SYMBOL(unregister_sysctl_table);</a>
 <a name="1747"><span class="lineNum">    1747 </span>            : </a>
-<a name="1748"><span class="lineNum">    1748 </span><span class="lineCov">          2 : void setup_sysctl_set(struct ctl_table_set *set,</span></a>
+<a name="1748"><span class="lineNum">    1748 </span><span class="lineCov">          1 : void setup_sysctl_set(struct ctl_table_set *set,</span></a>
 <a name="1749"><span class="lineNum">    1749 </span>            :         struct ctl_table_root *root,</a>
 <a name="1750"><span class="lineNum">    1750 </span>            :         int (*is_seen)(struct ctl_table_set *))</a>
 <a name="1751"><span class="lineNum">    1751 </span>            : {</a>
-<a name="1752"><span class="lineNum">    1752 </span><span class="lineCov">          2 :         memset(set, 0, sizeof(*set));</span></a>
-<a name="1753"><span class="lineNum">    1753 </span><span class="lineCov">          2 :         set-&gt;is_seen = is_seen;</span></a>
-<a name="1754"><span class="lineNum">    1754 </span><span class="lineCov">          4 :         init_header(&amp;set-&gt;dir.header, root, set, NULL, root_table);</span></a>
-<a name="1755"><span class="lineNum">    1755 </span><span class="lineCov">          2 : }</span></a>
+<a name="1752"><span class="lineNum">    1752 </span><span class="lineCov">          1 :         memset(set, 0, sizeof(*set));</span></a>
+<a name="1753"><span class="lineNum">    1753 </span><span class="lineCov">          1 :         set-&gt;is_seen = is_seen;</span></a>
+<a name="1754"><span class="lineNum">    1754 </span><span class="lineCov">          2 :         init_header(&amp;set-&gt;dir.header, root, set, NULL, root_table);</span></a>
+<a name="1755"><span class="lineNum">    1755 </span><span class="lineCov">          1 : }</span></a>
 <a name="1756"><span class="lineNum">    1756 </span>            : </a>
 <a name="1757"><span class="lineNum">    1757 </span><span class="lineNoCov">          0 : void retire_sysctl_set(struct ctl_table_set *set)</span></a>
 <a name="1758"><span class="lineNum">    1758 </span>            : {</a>
 <a name="1759"><span class="lineNum">    1759 </span><span class="lineNoCov">          0 :         WARN_ON(!RB_EMPTY_ROOT(&amp;set-&gt;dir.root));</span></a>
 <a name="1760"><span class="lineNum">    1760 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="1761"><span class="lineNum">    1761 </span>            : </a>
-<a name="1762"><span class="lineNum">    1762 </span><span class="lineCov">          2 : int __init proc_sys_init(void)</span></a>
+<a name="1762"><span class="lineNum">    1762 </span><span class="lineCov">          1 : int __init proc_sys_init(void)</span></a>
 <a name="1763"><span class="lineNum">    1763 </span>            : {</a>
 <a name="1764"><span class="lineNum">    1764 </span>            :         struct proc_dir_entry *proc_sys_root;</a>
 <a name="1765"><span class="lineNum">    1765 </span>            : </a>
-<a name="1766"><span class="lineNum">    1766 </span><span class="lineCov">          2 :         proc_sys_root = proc_mkdir(&quot;sys&quot;, NULL);</span></a>
-<a name="1767"><span class="lineNum">    1767 </span><span class="lineCov">          2 :         proc_sys_root-&gt;proc_iops = &amp;proc_sys_dir_operations;</span></a>
-<a name="1768"><span class="lineNum">    1768 </span><span class="lineCov">          2 :         proc_sys_root-&gt;proc_dir_ops = &amp;proc_sys_dir_file_operations;</span></a>
-<a name="1769"><span class="lineNum">    1769 </span><span class="lineCov">          2 :         proc_sys_root-&gt;nlink = 0;</span></a>
+<a name="1766"><span class="lineNum">    1766 </span><span class="lineCov">          1 :         proc_sys_root = proc_mkdir(&quot;sys&quot;, NULL);</span></a>
+<a name="1767"><span class="lineNum">    1767 </span><span class="lineCov">          1 :         proc_sys_root-&gt;proc_iops = &amp;proc_sys_dir_operations;</span></a>
+<a name="1768"><span class="lineNum">    1768 </span><span class="lineCov">          1 :         proc_sys_root-&gt;proc_dir_ops = &amp;proc_sys_dir_file_operations;</span></a>
+<a name="1769"><span class="lineNum">    1769 </span><span class="lineCov">          1 :         proc_sys_root-&gt;nlink = 0;</span></a>
 <a name="1770"><span class="lineNum">    1770 </span>            : </a>
-<a name="1771"><span class="lineNum">    1771 </span><span class="lineCov">          2 :         return sysctl_init_bases();</span></a>
+<a name="1771"><span class="lineNum">    1771 </span><span class="lineCov">          1 :         return sysctl_init_bases();</span></a>
 <a name="1772"><span class="lineNum">    1772 </span>            : }</a>
 <a name="1773"><span class="lineNum">    1773 </span>            : </a>
 <a name="1774"><span class="lineNum">    1774 </span>            : struct sysctl_alias {</a>

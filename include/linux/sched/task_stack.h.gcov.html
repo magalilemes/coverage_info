@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -100,8 +100,8 @@
 <a name="38"><span class="lineNum">      38 </span>            : </a>
 <a name="39"><span class="lineNum">      39 </span>            : static inline void setup_thread_stack(struct task_struct *p, struct task_struct *org)</a>
 <a name="40"><span class="lineNum">      40 </span>            : {</a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">        156 :         *task_thread_info(p) = *task_thread_info(org);</span></a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">        156 :         task_thread_info(p)-&gt;task = p;</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">        107 :         *task_thread_info(p) = *task_thread_info(org);</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">        107 :         task_thread_info(p)-&gt;task = p;</span></a>
 <a name="43"><span class="lineNum">      43 </span>            : }</a>
 <a name="44"><span class="lineNum">      44 </span>            : </a>
 <a name="45"><span class="lineNum">      45 </span>            : /*</a>
@@ -183,7 +183,7 @@
 <a name="121"><span class="lineNum">     121 </span>            :         /* Reliable end of stack detection:</a>
 <a name="122"><span class="lineNum">     122 </span>            :          * Some APM bios versions misalign the stack</a>
 <a name="123"><span class="lineNum">     123 </span>            :          */</a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         24 :         return !(((unsigned long)addr+sizeof(void*)-1) &amp; (THREAD_SIZE-sizeof(void*)));</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         12 :         return !(((unsigned long)addr+sizeof(void*)-1) &amp; (THREAD_SIZE-sizeof(void*)));</span></a>
 <a name="125"><span class="lineNum">     125 </span>            : }</a>
 <a name="126"><span class="lineNum">     126 </span>            : #endif</a>
 <a name="127"><span class="lineNum">     127 </span>            : </a>

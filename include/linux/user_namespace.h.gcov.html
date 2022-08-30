@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -184,7 +184,7 @@
 <a name="122"><span class="lineNum">     122 </span>            : </a>
 <a name="123"><span class="lineNum">     123 </span>            : static inline long get_ucounts_value(struct ucounts *ucounts, enum ucount_type type)</a>
 <a name="124"><span class="lineNum">     124 </span>            : {</a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineCov">        312 :         return atomic_long_read(&amp;ucounts-&gt;ucount[type]);</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">        214 :         return atomic_long_read(&amp;ucounts-&gt;ucount[type]);</span></a>
 <a name="126"><span class="lineNum">     126 </span>            : }</a>
 <a name="127"><span class="lineNum">     127 </span>            : </a>
 <a name="128"><span class="lineNum">     128 </span>            : long inc_rlimit_ucounts(struct ucounts *ucounts, enum ucount_type type, long v);</a>
@@ -196,7 +196,7 @@
 <a name="134"><span class="lineNum">     134 </span>            : static inline void set_rlimit_ucount_max(struct user_namespace *ns,</a>
 <a name="135"><span class="lineNum">     135 </span>            :                 enum ucount_type type, unsigned long max)</a>
 <a name="136"><span class="lineNum">     136 </span>            : {</a>
-<a name="137"><span class="lineNum">     137 </span><span class="lineCov">          8 :         ns-&gt;ucount_max[type] = max &lt;= LONG_MAX ? max : LONG_MAX;</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineCov">          4 :         ns-&gt;ucount_max[type] = max &lt;= LONG_MAX ? max : LONG_MAX;</span></a>
 <a name="138"><span class="lineNum">     138 </span>            : }</a>
 <a name="139"><span class="lineNum">     139 </span>            : </a>
 <a name="140"><span class="lineNum">     140 </span>            : #ifdef CONFIG_USER_NS</a>

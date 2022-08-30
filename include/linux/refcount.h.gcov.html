@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -195,7 +195,7 @@
 <a name="133"><span class="lineNum">     133 </span>            :  */</a>
 <a name="134"><span class="lineNum">     134 </span>            : static inline void refcount_set(refcount_t *r, int n)</a>
 <a name="135"><span class="lineNum">     135 </span>            : {</a>
-<a name="136"><span class="lineNum">     136 </span><span class="lineCov">       8116 :         atomic_set(&amp;r-&gt;refs, n);</span></a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineCov">       4582 :         atomic_set(&amp;r-&gt;refs, n);</span></a>
 <a name="137"><span class="lineNum">     137 </span>            : }</a>
 <a name="138"><span class="lineNum">     138 </span>            : </a>
 <a name="139"><span class="lineNum">     139 </span>            : /**</a>
@@ -206,25 +206,25 @@
 <a name="144"><span class="lineNum">     144 </span>            :  */</a>
 <a name="145"><span class="lineNum">     145 </span>            : static inline unsigned int refcount_read(const refcount_t *r)</a>
 <a name="146"><span class="lineNum">     146 </span>            : {</a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineCov">        628 :         return atomic_read(&amp;r-&gt;refs);</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">        372 :         return atomic_read(&amp;r-&gt;refs);</span></a>
 <a name="148"><span class="lineNum">     148 </span>            : }</a>
 <a name="149"><span class="lineNum">     149 </span>            : </a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">        188 : static inline __must_check bool __refcount_add_not_zero(int i, refcount_t *r, int *oldp)</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">         94 : static inline __must_check bool __refcount_add_not_zero(int i, refcount_t *r, int *oldp)</span></a>
 <a name="151"><span class="lineNum">     151 </span>            : {</a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineCov">        188 :         int old = refcount_read(r);</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">         94 :         int old = refcount_read(r);</span></a>
 <a name="153"><span class="lineNum">     153 </span>            : </a>
 <a name="154"><span class="lineNum">     154 </span>            :         do {</a>
-<a name="155"><span class="lineNum">     155 </span><span class="lineCov">        188 :                 if (!old)</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineCov">         94 :                 if (!old)</span></a>
 <a name="156"><span class="lineNum">     156 </span>            :                         break;</a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">        376 :         } while (!atomic_try_cmpxchg_relaxed(&amp;r-&gt;refs, &amp;old, old + i));</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">        188 :         } while (!atomic_try_cmpxchg_relaxed(&amp;r-&gt;refs, &amp;old, old + i));</span></a>
 <a name="158"><span class="lineNum">     158 </span>            : </a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">        188 :         if (oldp)</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">         94 :         if (oldp)</span></a>
 <a name="160"><span class="lineNum">     160 </span><span class="lineNoCov">          0 :                 *oldp = old;</span></a>
 <a name="161"><span class="lineNum">     161 </span>            : </a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineCov">        188 :         if (unlikely(old &lt; 0 || old + i &lt; 0))</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineCov">         94 :         if (unlikely(old &lt; 0 || old + i &lt; 0))</span></a>
 <a name="163"><span class="lineNum">     163 </span><span class="lineNoCov">          0 :                 refcount_warn_saturate(r, REFCOUNT_ADD_NOT_ZERO_OVF);</span></a>
 <a name="164"><span class="lineNum">     164 </span>            : </a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">        188 :         return old;</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">         94 :         return old;</span></a>
 <a name="166"><span class="lineNum">     166 </span>            : }</a>
 <a name="167"><span class="lineNum">     167 </span>            : </a>
 <a name="168"><span class="lineNum">     168 </span>            : /**</a>
@@ -250,18 +250,18 @@
 <a name="188"><span class="lineNum">     188 </span>            :         return __refcount_add_not_zero(i, r, NULL);</a>
 <a name="189"><span class="lineNum">     189 </span>            : }</a>
 <a name="190"><span class="lineNum">     190 </span>            : </a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineCov">       7885 : static inline void __refcount_add(int i, refcount_t *r, int *oldp)</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">       4099 : static inline void __refcount_add(int i, refcount_t *r, int *oldp)</span></a>
 <a name="192"><span class="lineNum">     192 </span>            : {</a>
-<a name="193"><span class="lineNum">     193 </span><span class="lineCov">      15770 :         int old = atomic_fetch_add_relaxed(i, &amp;r-&gt;refs);</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineCov">       8198 :         int old = atomic_fetch_add_relaxed(i, &amp;r-&gt;refs);</span></a>
 <a name="194"><span class="lineNum">     194 </span>            : </a>
-<a name="195"><span class="lineNum">     195 </span><span class="lineCov">       7885 :         if (oldp)</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineCov">       4099 :         if (oldp)</span></a>
 <a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :                 *oldp = old;</span></a>
 <a name="197"><span class="lineNum">     197 </span>            : </a>
-<a name="198"><span class="lineNum">     198 </span><span class="lineCov">       7885 :         if (unlikely(!old))</span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineCov">       4099 :         if (unlikely(!old))</span></a>
 <a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :                 refcount_warn_saturate(r, REFCOUNT_ADD_UAF);</span></a>
-<a name="200"><span class="lineNum">     200 </span><span class="lineCov">       7885 :         else if (unlikely(old &lt; 0 || old + i &lt; 0))</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineCov">       4099 :         else if (unlikely(old &lt; 0 || old + i &lt; 0))</span></a>
 <a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 :                 refcount_warn_saturate(r, REFCOUNT_ADD_OVF);</span></a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">       7885 : }</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">       4099 : }</span></a>
 <a name="203"><span class="lineNum">     203 </span>            : </a>
 <a name="204"><span class="lineNum">     204 </span>            : /**</a>
 <a name="205"><span class="lineNum">     205 </span>            :  * refcount_add - add a value to a refcount</a>
@@ -286,7 +286,7 @@
 <a name="224"><span class="lineNum">     224 </span>            : </a>
 <a name="225"><span class="lineNum">     225 </span>            : static inline __must_check bool __refcount_inc_not_zero(refcount_t *r, int *oldp)</a>
 <a name="226"><span class="lineNum">     226 </span>            : {</a>
-<a name="227"><span class="lineNum">     227 </span><span class="lineCov">        188 :         return __refcount_add_not_zero(1, r, oldp);</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">         94 :         return __refcount_add_not_zero(1, r, oldp);</span></a>
 <a name="228"><span class="lineNum">     228 </span>            : }</a>
 <a name="229"><span class="lineNum">     229 </span>            : </a>
 <a name="230"><span class="lineNum">     230 </span>            : /**</a>
@@ -304,12 +304,12 @@
 <a name="242"><span class="lineNum">     242 </span>            :  */</a>
 <a name="243"><span class="lineNum">     243 </span>            : static inline __must_check bool refcount_inc_not_zero(refcount_t *r)</a>
 <a name="244"><span class="lineNum">     244 </span>            : {</a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineCov">        188 :         return __refcount_inc_not_zero(r, NULL);</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">         94 :         return __refcount_inc_not_zero(r, NULL);</span></a>
 <a name="246"><span class="lineNum">     246 </span>            : }</a>
 <a name="247"><span class="lineNum">     247 </span>            : </a>
 <a name="248"><span class="lineNum">     248 </span>            : static inline void __refcount_inc(refcount_t *r, int *oldp)</a>
 <a name="249"><span class="lineNum">     249 </span>            : {</a>
-<a name="250"><span class="lineNum">     250 </span><span class="lineCov">       7885 :         __refcount_add(1, r, oldp);</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineCov">       4099 :         __refcount_add(1, r, oldp);</span></a>
 <a name="251"><span class="lineNum">     251 </span>            : }</a>
 <a name="252"><span class="lineNum">     252 </span>            : </a>
 <a name="253"><span class="lineNum">     253 </span>            : /**</a>
@@ -326,22 +326,22 @@
 <a name="264"><span class="lineNum">     264 </span>            :  */</a>
 <a name="265"><span class="lineNum">     265 </span>            : static inline void refcount_inc(refcount_t *r)</a>
 <a name="266"><span class="lineNum">     266 </span>            : {</a>
-<a name="267"><span class="lineNum">     267 </span><span class="lineCov">       7885 :         __refcount_inc(r, NULL);</span></a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineCov">       4099 :         __refcount_inc(r, NULL);</span></a>
 <a name="268"><span class="lineNum">     268 </span>            : }</a>
 <a name="269"><span class="lineNum">     269 </span>            : </a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineCov">       4112 : static inline __must_check bool __refcount_sub_and_test(int i, refcount_t *r, int *oldp)</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineCov">       2470 : static inline __must_check bool __refcount_sub_and_test(int i, refcount_t *r, int *oldp)</span></a>
 <a name="271"><span class="lineNum">     271 </span>            : {</a>
-<a name="272"><span class="lineNum">     272 </span><span class="lineCov">       8224 :         int old = atomic_fetch_sub_release(i, &amp;r-&gt;refs);</span></a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineCov">       4940 :         int old = atomic_fetch_sub_release(i, &amp;r-&gt;refs);</span></a>
 <a name="273"><span class="lineNum">     273 </span>            : </a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineCov">       4112 :         if (oldp)</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineCov">       2470 :         if (oldp)</span></a>
 <a name="275"><span class="lineNum">     275 </span><span class="lineNoCov">          0 :                 *oldp = old;</span></a>
 <a name="276"><span class="lineNum">     276 </span>            : </a>
-<a name="277"><span class="lineNum">     277 </span><span class="lineCov">       4112 :         if (old == i) {</span></a>
-<a name="278"><span class="lineNum">     278 </span><span class="lineCov">        946 :                 smp_acquire__after_ctrl_dep();</span></a>
-<a name="279"><span class="lineNum">     279 </span><span class="lineCov">        946 :                 return true;</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineCov">       2470 :         if (old == i) {</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineCov">        735 :                 smp_acquire__after_ctrl_dep();</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineCov">        735 :                 return true;</span></a>
 <a name="280"><span class="lineNum">     280 </span>            :         }</a>
 <a name="281"><span class="lineNum">     281 </span>            : </a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineCov">       3166 :         if (unlikely(old &lt; 0 || old - i &lt; 0))</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineCov">       1735 :         if (unlikely(old &lt; 0 || old - i &lt; 0))</span></a>
 <a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 :                 refcount_warn_saturate(r, REFCOUNT_SUB_UAF);</span></a>
 <a name="284"><span class="lineNum">     284 </span>            : </a>
 <a name="285"><span class="lineNum">     285 </span>            :         return false;</a>
@@ -374,7 +374,7 @@
 <a name="312"><span class="lineNum">     312 </span>            : </a>
 <a name="313"><span class="lineNum">     313 </span>            : static inline __must_check bool __refcount_dec_and_test(refcount_t *r, int *oldp)</a>
 <a name="314"><span class="lineNum">     314 </span>            : {</a>
-<a name="315"><span class="lineNum">     315 </span><span class="lineCov">       4112 :         return __refcount_sub_and_test(1, r, oldp);</span></a>
+<a name="315"><span class="lineNum">     315 </span><span class="lineCov">       2470 :         return __refcount_sub_and_test(1, r, oldp);</span></a>
 <a name="316"><span class="lineNum">     316 </span>            : }</a>
 <a name="317"><span class="lineNum">     317 </span>            : </a>
 <a name="318"><span class="lineNum">     318 </span>            : /**</a>
@@ -392,7 +392,7 @@
 <a name="330"><span class="lineNum">     330 </span>            :  */</a>
 <a name="331"><span class="lineNum">     331 </span>            : static inline __must_check bool refcount_dec_and_test(refcount_t *r)</a>
 <a name="332"><span class="lineNum">     332 </span>            : {</a>
-<a name="333"><span class="lineNum">     333 </span><span class="lineCov">       4112 :         return __refcount_dec_and_test(r, NULL);</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineCov">       2470 :         return __refcount_dec_and_test(r, NULL);</span></a>
 <a name="334"><span class="lineNum">     334 </span>            : }</a>
 <a name="335"><span class="lineNum">     335 </span>            : </a>
 <a name="336"><span class="lineNum">     336 </span>            : static inline void __refcount_dec(refcount_t *r, int *oldp)</a>

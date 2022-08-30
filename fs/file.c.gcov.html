@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -113,23 +113,23 @@
 <a name="51"><span class="lineNum">      51 </span>            :  * space if any.  This does not copy the file pointers.  Called with the files</a>
 <a name="52"><span class="lineNum">      52 </span>            :  * spinlock held for write.</a>
 <a name="53"><span class="lineNum">      53 </span>            :  */</a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          2 : static void copy_fd_bitmaps(struct fdtable *nfdt, struct fdtable *ofdt,</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          1 : static void copy_fd_bitmaps(struct fdtable *nfdt, struct fdtable *ofdt,</span></a>
 <a name="55"><span class="lineNum">      55 </span>            :                             unsigned int count)</a>
 <a name="56"><span class="lineNum">      56 </span>            : {</a>
 <a name="57"><span class="lineNum">      57 </span>            :         unsigned int cpy, set;</a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">          2 :         cpy = count / BITS_PER_BYTE;</span></a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          2 :         set = (nfdt-&gt;max_fds - count) / BITS_PER_BYTE;</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          2 :         memcpy(nfdt-&gt;open_fds, ofdt-&gt;open_fds, cpy);</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          2 :         memset((char *)nfdt-&gt;open_fds + cpy, 0, set);</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          2 :         memcpy(nfdt-&gt;close_on_exec, ofdt-&gt;close_on_exec, cpy);</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          2 :         memset((char *)nfdt-&gt;close_on_exec + cpy, 0, set);</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">          1 :         cpy = count / BITS_PER_BYTE;</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          1 :         set = (nfdt-&gt;max_fds - count) / BITS_PER_BYTE;</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          1 :         memcpy(nfdt-&gt;open_fds, ofdt-&gt;open_fds, cpy);</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          1 :         memset((char *)nfdt-&gt;open_fds + cpy, 0, set);</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          1 :         memcpy(nfdt-&gt;close_on_exec, ofdt-&gt;close_on_exec, cpy);</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          1 :         memset((char *)nfdt-&gt;close_on_exec + cpy, 0, set);</span></a>
 <a name="65"><span class="lineNum">      65 </span>            : </a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          2 :         cpy = BITBIT_SIZE(count);</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          2 :         set = BITBIT_SIZE(nfdt-&gt;max_fds) - cpy;</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          2 :         memcpy(nfdt-&gt;full_fds_bits, ofdt-&gt;full_fds_bits, cpy);</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          2 :         memset((char *)nfdt-&gt;full_fds_bits + cpy, 0, set);</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          2 : }</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          1 :         cpy = BITBIT_SIZE(count);</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          1 :         set = BITBIT_SIZE(nfdt-&gt;max_fds) - cpy;</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          1 :         memcpy(nfdt-&gt;full_fds_bits, ofdt-&gt;full_fds_bits, cpy);</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          1 :         memset((char *)nfdt-&gt;full_fds_bits + cpy, 0, set);</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          1 : }</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : </a>
 <a name="72"><span class="lineNum">      72 </span>            : /*</a>
 <a name="73"><span class="lineNum">      73 </span>            :  * Copy all file descriptors from the old table to the new, expanded table and</a>
@@ -329,21 +329,21 @@
 <a name="267"><span class="lineNum">     267 </span>            : </a>
 <a name="268"><span class="lineNum">     268 </span>            : static inline void __clear_open_fd(unsigned int fd, struct fdtable *fdt)</a>
 <a name="269"><span class="lineNum">     269 </span>            : {</a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineCov">        256 :         __clear_bit(fd, fdt-&gt;open_fds);</span></a>
-<a name="271"><span class="lineNum">     271 </span><span class="lineCov">        256 :         __clear_bit(fd / BITS_PER_LONG, fdt-&gt;full_fds_bits);</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineCov">        128 :         __clear_bit(fd, fdt-&gt;open_fds);</span></a>
+<a name="271"><span class="lineNum">     271 </span><span class="lineCov">        128 :         __clear_bit(fd / BITS_PER_LONG, fdt-&gt;full_fds_bits);</span></a>
 <a name="272"><span class="lineNum">     272 </span>            : }</a>
 <a name="273"><span class="lineNum">     273 </span>            : </a>
 <a name="274"><span class="lineNum">     274 </span>            : static unsigned int count_open_files(struct fdtable *fdt)</a>
 <a name="275"><span class="lineNum">     275 </span>            : {</a>
-<a name="276"><span class="lineNum">     276 </span><span class="lineCov">          2 :         unsigned int size = fdt-&gt;max_fds;</span></a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineCov">          1 :         unsigned int size = fdt-&gt;max_fds;</span></a>
 <a name="277"><span class="lineNum">     277 </span>            :         unsigned int i;</a>
 <a name="278"><span class="lineNum">     278 </span>            : </a>
 <a name="279"><span class="lineNum">     279 </span>            :         /* Find the last open fd */</a>
-<a name="280"><span class="lineNum">     280 </span><span class="lineCov">          6 :         for (i = size / BITS_PER_LONG; i &gt; 0; ) {</span></a>
-<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          2 :                 if (fdt-&gt;open_fds[--i])</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineCov">          3 :         for (i = size / BITS_PER_LONG; i &gt; 0; ) {</span></a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          1 :                 if (fdt-&gt;open_fds[--i])</span></a>
 <a name="282"><span class="lineNum">     282 </span>            :                         break;</a>
 <a name="283"><span class="lineNum">     283 </span>            :         }</a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          2 :         i = (i + 1) * BITS_PER_LONG;</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          1 :         i = (i + 1) * BITS_PER_LONG;</span></a>
 <a name="285"><span class="lineNum">     285 </span>            :         return i;</a>
 <a name="286"><span class="lineNum">     286 </span>            : }</a>
 <a name="287"><span class="lineNum">     287 </span>            : </a>
@@ -364,10 +364,10 @@
 <a name="302"><span class="lineNum">     302 </span>            : {</a>
 <a name="303"><span class="lineNum">     303 </span>            :         unsigned int count;</a>
 <a name="304"><span class="lineNum">     304 </span>            : </a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          4 :         count = count_open_files(fdt);</span></a>
-<a name="306"><span class="lineNum">     306 </span><span class="lineCov">          2 :         if (max_fds &lt; NR_OPEN_DEFAULT)</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          2 :         count = count_open_files(fdt);</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineCov">          1 :         if (max_fds &lt; NR_OPEN_DEFAULT)</span></a>
 <a name="307"><span class="lineNum">     307 </span><span class="lineNoCov">          0 :                 max_fds = NR_OPEN_DEFAULT;</span></a>
-<a name="308"><span class="lineNum">     308 </span><span class="lineCov">          2 :         return ALIGN(min(count, max_fds), BITS_PER_LONG);</span></a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineCov">          1 :         return ALIGN(min(count, max_fds), BITS_PER_LONG);</span></a>
 <a name="309"><span class="lineNum">     309 </span>            : }</a>
 <a name="310"><span class="lineNum">     310 </span>            : </a>
 <a name="311"><span class="lineNum">     311 </span>            : /*</a>
@@ -375,39 +375,39 @@
 <a name="313"><span class="lineNum">     313 </span>            :  * passed in files structure.</a>
 <a name="314"><span class="lineNum">     314 </span>            :  * errorp will be valid only when the returned files_struct is NULL.</a>
 <a name="315"><span class="lineNum">     315 </span>            :  */</a>
-<a name="316"><span class="lineNum">     316 </span><span class="lineCov">          2 : struct files_struct *dup_fd(struct files_struct *oldf, unsigned int max_fds, int *errorp)</span></a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineCov">          1 : struct files_struct *dup_fd(struct files_struct *oldf, unsigned int max_fds, int *errorp)</span></a>
 <a name="317"><span class="lineNum">     317 </span>            : {</a>
 <a name="318"><span class="lineNum">     318 </span>            :         struct files_struct *newf;</a>
 <a name="319"><span class="lineNum">     319 </span>            :         struct file **old_fds, **new_fds;</a>
 <a name="320"><span class="lineNum">     320 </span>            :         unsigned int open_files, i;</a>
 <a name="321"><span class="lineNum">     321 </span>            :         struct fdtable *old_fdt, *new_fdt;</a>
 <a name="322"><span class="lineNum">     322 </span>            : </a>
-<a name="323"><span class="lineNum">     323 </span><span class="lineCov">          2 :         *errorp = -ENOMEM;</span></a>
-<a name="324"><span class="lineNum">     324 </span><span class="lineCov">          2 :         newf = kmem_cache_alloc(files_cachep, GFP_KERNEL);</span></a>
-<a name="325"><span class="lineNum">     325 </span><span class="lineCov">          2 :         if (!newf)</span></a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineCov">          1 :         *errorp = -ENOMEM;</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineCov">          1 :         newf = kmem_cache_alloc(files_cachep, GFP_KERNEL);</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineCov">          1 :         if (!newf)</span></a>
 <a name="326"><span class="lineNum">     326 </span>            :                 goto out;</a>
 <a name="327"><span class="lineNum">     327 </span>            : </a>
-<a name="328"><span class="lineNum">     328 </span><span class="lineCov">          4 :         atomic_set(&amp;newf-&gt;count, 1);</span></a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineCov">          2 :         atomic_set(&amp;newf-&gt;count, 1);</span></a>
 <a name="329"><span class="lineNum">     329 </span>            : </a>
-<a name="330"><span class="lineNum">     330 </span><span class="lineCov">          2 :         spin_lock_init(&amp;newf-&gt;file_lock);</span></a>
-<a name="331"><span class="lineNum">     331 </span><span class="lineCov">          2 :         newf-&gt;resize_in_progress = false;</span></a>
-<a name="332"><span class="lineNum">     332 </span><span class="lineCov">          2 :         init_waitqueue_head(&amp;newf-&gt;resize_wait);</span></a>
-<a name="333"><span class="lineNum">     333 </span><span class="lineCov">          2 :         newf-&gt;next_fd = 0;</span></a>
-<a name="334"><span class="lineNum">     334 </span><span class="lineCov">          2 :         new_fdt = &amp;newf-&gt;fdtab;</span></a>
-<a name="335"><span class="lineNum">     335 </span><span class="lineCov">          2 :         new_fdt-&gt;max_fds = NR_OPEN_DEFAULT;</span></a>
-<a name="336"><span class="lineNum">     336 </span><span class="lineCov">          2 :         new_fdt-&gt;close_on_exec = newf-&gt;close_on_exec_init;</span></a>
-<a name="337"><span class="lineNum">     337 </span><span class="lineCov">          2 :         new_fdt-&gt;open_fds = newf-&gt;open_fds_init;</span></a>
-<a name="338"><span class="lineNum">     338 </span><span class="lineCov">          2 :         new_fdt-&gt;full_fds_bits = newf-&gt;full_fds_bits_init;</span></a>
-<a name="339"><span class="lineNum">     339 </span><span class="lineCov">          2 :         new_fdt-&gt;fd = &amp;newf-&gt;fd_array[0];</span></a>
+<a name="330"><span class="lineNum">     330 </span><span class="lineCov">          1 :         spin_lock_init(&amp;newf-&gt;file_lock);</span></a>
+<a name="331"><span class="lineNum">     331 </span><span class="lineCov">          1 :         newf-&gt;resize_in_progress = false;</span></a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineCov">          1 :         init_waitqueue_head(&amp;newf-&gt;resize_wait);</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineCov">          1 :         newf-&gt;next_fd = 0;</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineCov">          1 :         new_fdt = &amp;newf-&gt;fdtab;</span></a>
+<a name="335"><span class="lineNum">     335 </span><span class="lineCov">          1 :         new_fdt-&gt;max_fds = NR_OPEN_DEFAULT;</span></a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineCov">          1 :         new_fdt-&gt;close_on_exec = newf-&gt;close_on_exec_init;</span></a>
+<a name="337"><span class="lineNum">     337 </span><span class="lineCov">          1 :         new_fdt-&gt;open_fds = newf-&gt;open_fds_init;</span></a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineCov">          1 :         new_fdt-&gt;full_fds_bits = newf-&gt;full_fds_bits_init;</span></a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineCov">          1 :         new_fdt-&gt;fd = &amp;newf-&gt;fd_array[0];</span></a>
 <a name="340"><span class="lineNum">     340 </span>            : </a>
-<a name="341"><span class="lineNum">     341 </span><span class="lineCov">          4 :         spin_lock(&amp;oldf-&gt;file_lock);</span></a>
-<a name="342"><span class="lineNum">     342 </span><span class="lineCov">          2 :         old_fdt = files_fdtable(oldf);</span></a>
-<a name="343"><span class="lineNum">     343 </span><span class="lineCov">          2 :         open_files = sane_fdtable_size(old_fdt, max_fds);</span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineCov">          2 :         spin_lock(&amp;oldf-&gt;file_lock);</span></a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineCov">          1 :         old_fdt = files_fdtable(oldf);</span></a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineCov">          1 :         open_files = sane_fdtable_size(old_fdt, max_fds);</span></a>
 <a name="344"><span class="lineNum">     344 </span>            : </a>
 <a name="345"><span class="lineNum">     345 </span>            :         /*</a>
 <a name="346"><span class="lineNum">     346 </span>            :          * Check whether we need to allocate a larger fd array and fd set.</a>
 <a name="347"><span class="lineNum">     347 </span>            :          */</a>
-<a name="348"><span class="lineNum">     348 </span><span class="lineCov">          4 :         while (unlikely(open_files &gt; new_fdt-&gt;max_fds)) {</span></a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineCov">          2 :         while (unlikely(open_files &gt; new_fdt-&gt;max_fds)) {</span></a>
 <a name="349"><span class="lineNum">     349 </span><span class="lineNoCov">          0 :                 spin_unlock(&amp;oldf-&gt;file_lock);</span></a>
 <a name="350"><span class="lineNum">     350 </span>            : </a>
 <a name="351"><span class="lineNum">     351 </span><span class="lineNoCov">          0 :                 if (new_fdt != &amp;newf-&gt;fdtab)</span></a>
@@ -436,14 +436,14 @@
 <a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 :                 open_files = sane_fdtable_size(old_fdt, max_fds);</span></a>
 <a name="375"><span class="lineNum">     375 </span>            :         }</a>
 <a name="376"><span class="lineNum">     376 </span>            : </a>
-<a name="377"><span class="lineNum">     377 </span><span class="lineCov">          2 :         copy_fd_bitmaps(new_fdt, old_fdt, open_files);</span></a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineCov">          1 :         copy_fd_bitmaps(new_fdt, old_fdt, open_files);</span></a>
 <a name="378"><span class="lineNum">     378 </span>            : </a>
-<a name="379"><span class="lineNum">     379 </span><span class="lineCov">          2 :         old_fds = old_fdt-&gt;fd;</span></a>
-<a name="380"><span class="lineNum">     380 </span><span class="lineCov">          2 :         new_fds = new_fdt-&gt;fd;</span></a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineCov">          1 :         old_fds = old_fdt-&gt;fd;</span></a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineCov">          1 :         new_fds = new_fdt-&gt;fd;</span></a>
 <a name="381"><span class="lineNum">     381 </span>            : </a>
-<a name="382"><span class="lineNum">     382 </span><span class="lineCov">        130 :         for (i = open_files; i != 0; i--) {</span></a>
-<a name="383"><span class="lineNum">     383 </span><span class="lineCov">        128 :                 struct file *f = *old_fds++;</span></a>
-<a name="384"><span class="lineNum">     384 </span><span class="lineCov">        128 :                 if (f) {</span></a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineCov">         65 :         for (i = open_files; i != 0; i--) {</span></a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineCov">         64 :                 struct file *f = *old_fds++;</span></a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineCov">         64 :                 if (f) {</span></a>
 <a name="385"><span class="lineNum">     385 </span>            :                         get_file(f);</a>
 <a name="386"><span class="lineNum">     386 </span>            :                 } else {</a>
 <a name="387"><span class="lineNum">     387 </span>            :                         /*</a>
@@ -452,18 +452,18 @@
 <a name="390"><span class="lineNum">     390 </span>            :                          * is partway through open().  So make sure that this</a>
 <a name="391"><span class="lineNum">     391 </span>            :                          * fd is available to the new process.</a>
 <a name="392"><span class="lineNum">     392 </span>            :                          */</a>
-<a name="393"><span class="lineNum">     393 </span><span class="lineCov">        128 :                         __clear_open_fd(open_files - i, new_fdt);</span></a>
+<a name="393"><span class="lineNum">     393 </span><span class="lineCov">         64 :                         __clear_open_fd(open_files - i, new_fdt);</span></a>
 <a name="394"><span class="lineNum">     394 </span>            :                 }</a>
-<a name="395"><span class="lineNum">     395 </span><span class="lineCov">        128 :                 rcu_assign_pointer(*new_fds++, f);</span></a>
+<a name="395"><span class="lineNum">     395 </span><span class="lineCov">         64 :                 rcu_assign_pointer(*new_fds++, f);</span></a>
 <a name="396"><span class="lineNum">     396 </span>            :         }</a>
-<a name="397"><span class="lineNum">     397 </span><span class="lineCov">          4 :         spin_unlock(&amp;oldf-&gt;file_lock);</span></a>
+<a name="397"><span class="lineNum">     397 </span><span class="lineCov">          2 :         spin_unlock(&amp;oldf-&gt;file_lock);</span></a>
 <a name="398"><span class="lineNum">     398 </span>            : </a>
 <a name="399"><span class="lineNum">     399 </span>            :         /* clear the remainder */</a>
-<a name="400"><span class="lineNum">     400 </span><span class="lineCov">          2 :         memset(new_fds, 0, (new_fdt-&gt;max_fds - open_files) * sizeof(struct file *));</span></a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineCov">          1 :         memset(new_fds, 0, (new_fdt-&gt;max_fds - open_files) * sizeof(struct file *));</span></a>
 <a name="401"><span class="lineNum">     401 </span>            : </a>
-<a name="402"><span class="lineNum">     402 </span><span class="lineCov">          2 :         rcu_assign_pointer(newf-&gt;fdt, new_fdt);</span></a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineCov">          1 :         rcu_assign_pointer(newf-&gt;fdt, new_fdt);</span></a>
 <a name="403"><span class="lineNum">     403 </span>            : </a>
-<a name="404"><span class="lineNum">     404 </span><span class="lineCov">          2 :         return newf;</span></a>
+<a name="404"><span class="lineNum">     404 </span><span class="lineCov">          1 :         return newf;</span></a>
 <a name="405"><span class="lineNum">     405 </span>            : </a>
 <a name="406"><span class="lineNum">     406 </span>            : out_release:</a>
 <a name="407"><span class="lineNum">     407 </span><span class="lineNoCov">          0 :         kmem_cache_free(files_cachep, newf);</span></a>
@@ -503,9 +503,9 @@
 <a name="441"><span class="lineNum">     441 </span><span class="lineNoCov">          0 :         return fdt;</span></a>
 <a name="442"><span class="lineNum">     442 </span>            : }</a>
 <a name="443"><span class="lineNum">     443 </span>            : </a>
-<a name="444"><span class="lineNum">     444 </span><span class="lineCov">        128 : void put_files_struct(struct files_struct *files)</span></a>
+<a name="444"><span class="lineNum">     444 </span><span class="lineCov">         93 : void put_files_struct(struct files_struct *files)</span></a>
 <a name="445"><span class="lineNum">     445 </span>            : {</a>
-<a name="446"><span class="lineNum">     446 </span><span class="lineCov">        256 :         if (atomic_dec_and_test(&amp;files-&gt;count)) {</span></a>
+<a name="446"><span class="lineNum">     446 </span><span class="lineCov">        186 :         if (atomic_dec_and_test(&amp;files-&gt;count)) {</span></a>
 <a name="447"><span class="lineNum">     447 </span><span class="lineNoCov">          0 :                 struct fdtable *fdt = close_files(files);</span></a>
 <a name="448"><span class="lineNum">     448 </span>            : </a>
 <a name="449"><span class="lineNum">     449 </span>            :                 /* free the arrays if they are not embedded */</a>
@@ -513,19 +513,19 @@
 <a name="451"><span class="lineNum">     451 </span><span class="lineNoCov">          0 :                         __free_fdtable(fdt);</span></a>
 <a name="452"><span class="lineNum">     452 </span><span class="lineNoCov">          0 :                 kmem_cache_free(files_cachep, files);</span></a>
 <a name="453"><span class="lineNum">     453 </span>            :         }</a>
-<a name="454"><span class="lineNum">     454 </span><span class="lineCov">        128 : }</span></a>
+<a name="454"><span class="lineNum">     454 </span><span class="lineCov">         93 : }</span></a>
 <a name="455"><span class="lineNum">     455 </span>            : </a>
-<a name="456"><span class="lineNum">     456 </span><span class="lineCov">        128 : void exit_files(struct task_struct *tsk)</span></a>
+<a name="456"><span class="lineNum">     456 </span><span class="lineCov">         93 : void exit_files(struct task_struct *tsk)</span></a>
 <a name="457"><span class="lineNum">     457 </span>            : {</a>
-<a name="458"><span class="lineNum">     458 </span><span class="lineCov">        128 :         struct files_struct * files = tsk-&gt;files;</span></a>
+<a name="458"><span class="lineNum">     458 </span><span class="lineCov">         93 :         struct files_struct * files = tsk-&gt;files;</span></a>
 <a name="459"><span class="lineNum">     459 </span>            : </a>
-<a name="460"><span class="lineNum">     460 </span><span class="lineCov">        128 :         if (files) {</span></a>
-<a name="461"><span class="lineNum">     461 </span><span class="lineCov">        128 :                 task_lock(tsk);</span></a>
-<a name="462"><span class="lineNum">     462 </span><span class="lineCov">        128 :                 tsk-&gt;files = NULL;</span></a>
-<a name="463"><span class="lineNum">     463 </span><span class="lineCov">        128 :                 task_unlock(tsk);</span></a>
-<a name="464"><span class="lineNum">     464 </span><span class="lineCov">        128 :                 put_files_struct(files);</span></a>
+<a name="460"><span class="lineNum">     460 </span><span class="lineCov">         93 :         if (files) {</span></a>
+<a name="461"><span class="lineNum">     461 </span><span class="lineCov">         93 :                 task_lock(tsk);</span></a>
+<a name="462"><span class="lineNum">     462 </span><span class="lineCov">         93 :                 tsk-&gt;files = NULL;</span></a>
+<a name="463"><span class="lineNum">     463 </span><span class="lineCov">         93 :                 task_unlock(tsk);</span></a>
+<a name="464"><span class="lineNum">     464 </span><span class="lineCov">         93 :                 put_files_struct(files);</span></a>
 <a name="465"><span class="lineNum">     465 </span>            :         }</a>
-<a name="466"><span class="lineNum">     466 </span><span class="lineCov">        128 : }</span></a>
+<a name="466"><span class="lineNum">     466 </span><span class="lineCov">         93 : }</span></a>
 <a name="467"><span class="lineNum">     467 </span>            : </a>
 <a name="468"><span class="lineNum">     468 </span>            : struct files_struct init_files = {</a>
 <a name="469"><span class="lineNum">     469 </span>            :         .count          = ATOMIC_INIT(1),</a>

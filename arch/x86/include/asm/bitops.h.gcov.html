@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -113,13 +113,13 @@
 <a name="51"><span class="lineNum">      51 </span>            : static __always_inline void</a>
 <a name="52"><span class="lineNum">      52 </span>            : arch_set_bit(long nr, volatile unsigned long *addr)</a>
 <a name="53"><span class="lineNum">      53 </span>            : {</a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">       1208 :         if (__builtin_constant_p(nr)) {</span></a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        475 :                 asm volatile(LOCK_PREFIX &quot;orb %b1,%0&quot;</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        613 :         if (__builtin_constant_p(nr)) {</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        323 :                 asm volatile(LOCK_PREFIX &quot;orb %b1,%0&quot;</span></a>
 <a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 :                         : CONST_MASK_ADDR(nr, addr)</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          2 :                         : &quot;iq&quot; (CONST_MASK(nr))</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          1 :                         : &quot;iq&quot; (CONST_MASK(nr))</span></a>
 <a name="58"><span class="lineNum">      58 </span>            :                         : &quot;memory&quot;);</a>
 <a name="59"><span class="lineNum">      59 </span>            :         } else {</a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">       1206 :                 asm volatile(LOCK_PREFIX __ASM_SIZE(bts) &quot; %1,%0&quot;</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">        612 :                 asm volatile(LOCK_PREFIX __ASM_SIZE(bts) &quot; %1,%0&quot;</span></a>
 <a name="61"><span class="lineNum">      61 </span>            :                         : : RLONG_ADDR(addr), &quot;Ir&quot; (nr) : &quot;memory&quot;);</a>
 <a name="62"><span class="lineNum">      62 </span>            :         }</a>
 <a name="63"><span class="lineNum">      63 </span>            : }</a>
@@ -127,14 +127,14 @@
 <a name="65"><span class="lineNum">      65 </span>            : static __always_inline void</a>
 <a name="66"><span class="lineNum">      66 </span>            : arch___set_bit(long nr, volatile unsigned long *addr)</a>
 <a name="67"><span class="lineNum">      67 </span>            : {</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">      33888 :         asm volatile(__ASM_SIZE(bts) &quot; %1,%0&quot; : : ADDR, &quot;Ir&quot; (nr) : &quot;memory&quot;);</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">      21819 :         asm volatile(__ASM_SIZE(bts) &quot; %1,%0&quot; : : ADDR, &quot;Ir&quot; (nr) : &quot;memory&quot;);</span></a>
 <a name="69"><span class="lineNum">      69 </span>            : }</a>
 <a name="70"><span class="lineNum">      70 </span>            : </a>
 <a name="71"><span class="lineNum">      71 </span>            : static __always_inline void</a>
 <a name="72"><span class="lineNum">      72 </span>            : arch_clear_bit(long nr, volatile unsigned long *addr)</a>
 <a name="73"><span class="lineNum">      73 </span>            : {</a>
 <a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 :         if (__builtin_constant_p(nr)) {</span></a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">       1648 :                 asm volatile(LOCK_PREFIX &quot;andb %b1,%0&quot;</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">       1142 :                 asm volatile(LOCK_PREFIX &quot;andb %b1,%0&quot;</span></a>
 <a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :                         : CONST_MASK_ADDR(nr, addr)</span></a>
 <a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :                         : &quot;iq&quot; (~CONST_MASK(nr)));</span></a>
 <a name="78"><span class="lineNum">      78 </span>            :         } else {</a>
@@ -153,7 +153,7 @@
 <a name="91"><span class="lineNum">      91 </span>            : static __always_inline void</a>
 <a name="92"><span class="lineNum">      92 </span>            : arch___clear_bit(long nr, volatile unsigned long *addr)</a>
 <a name="93"><span class="lineNum">      93 </span>            : {</a>
-<a name="94"><span class="lineNum">      94 </span><span class="lineCov">     526123 :         asm volatile(__ASM_SIZE(btr) &quot; %1,%0&quot; : : ADDR, &quot;Ir&quot; (nr) : &quot;memory&quot;);</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineCov">     262628 :         asm volatile(__ASM_SIZE(btr) &quot; %1,%0&quot; : : ADDR, &quot;Ir&quot; (nr) : &quot;memory&quot;);</span></a>
 <a name="95"><span class="lineNum">      95 </span>            : }</a>
 <a name="96"><span class="lineNum">      96 </span>            : </a>
 <a name="97"><span class="lineNum">      97 </span>            : static __always_inline bool</a>
@@ -197,7 +197,7 @@
 <a name="135"><span class="lineNum">     135 </span>            : static __always_inline bool</a>
 <a name="136"><span class="lineNum">     136 </span>            : arch_test_and_set_bit(long nr, volatile unsigned long *addr)</a>
 <a name="137"><span class="lineNum">     137 </span>            : {</a>
-<a name="138"><span class="lineNum">     138 </span><span class="lineCov">         14 :         return GEN_BINARY_RMWcc(LOCK_PREFIX __ASM_SIZE(bts), *addr, c, &quot;Ir&quot;, nr);</span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">          7 :         return GEN_BINARY_RMWcc(LOCK_PREFIX __ASM_SIZE(bts), *addr, c, &quot;Ir&quot;, nr);</span></a>
 <a name="139"><span class="lineNum">     139 </span>            : }</a>
 <a name="140"><span class="lineNum">     140 </span>            : </a>
 <a name="141"><span class="lineNum">     141 </span>            : static __always_inline bool</a>
@@ -265,15 +265,15 @@
 <a name="203"><span class="lineNum">     203 </span>            : </a>
 <a name="204"><span class="lineNum">     204 </span>            : static __always_inline bool constant_test_bit(long nr, const volatile unsigned long *addr)</a>
 <a name="205"><span class="lineNum">     205 </span>            : {</a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineCov">          6 :         return ((1UL &lt;&lt; (nr &amp; (BITS_PER_LONG-1))) &amp;</span></a>
-<a name="207"><span class="lineNum">     207 </span><span class="lineCov">      20136 :                 (addr[nr &gt;&gt; _BITOPS_LONG_SHIFT])) != 0;</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">          3 :         return ((1UL &lt;&lt; (nr &amp; (BITS_PER_LONG-1))) &amp;</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">      11730 :                 (addr[nr &gt;&gt; _BITOPS_LONG_SHIFT])) != 0;</span></a>
 <a name="208"><span class="lineNum">     208 </span>            : }</a>
 <a name="209"><span class="lineNum">     209 </span>            : </a>
 <a name="210"><span class="lineNum">     210 </span>            : static __always_inline bool variable_test_bit(long nr, volatile const unsigned long *addr)</a>
 <a name="211"><span class="lineNum">     211 </span>            : {</a>
 <a name="212"><span class="lineNum">     212 </span>            :         bool oldbit;</a>
 <a name="213"><span class="lineNum">     213 </span>            : </a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineCov">     112770 :         asm volatile(__ASM_SIZE(bt) &quot; %2,%1&quot;</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">      56646 :         asm volatile(__ASM_SIZE(bt) &quot; %2,%1&quot;</span></a>
 <a name="215"><span class="lineNum">     215 </span>            :                      CC_SET(c)</a>
 <a name="216"><span class="lineNum">     216 </span>            :                      : CC_OUT(c) (oldbit)</a>
 <a name="217"><span class="lineNum">     217 </span>            :                      : &quot;m&quot; (*(unsigned long *)addr), &quot;Ir&quot; (nr) : &quot;memory&quot;);</a>
@@ -294,7 +294,7 @@
 <a name="232"><span class="lineNum">     232 </span>            :  */</a>
 <a name="233"><span class="lineNum">     233 </span>            : static __always_inline unsigned long __ffs(unsigned long word)</a>
 <a name="234"><span class="lineNum">     234 </span>            : {</a>
-<a name="235"><span class="lineNum">     235 </span><span class="lineCov">       3891 :         asm(&quot;rep; bsf %1,%0&quot;</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineCov">       1948 :         asm(&quot;rep; bsf %1,%0&quot;</span></a>
 <a name="236"><span class="lineNum">     236 </span>            :                 : &quot;=r&quot; (word)</a>
 <a name="237"><span class="lineNum">     237 </span>            :                 : &quot;rm&quot; (word));</a>
 <a name="238"><span class="lineNum">     238 </span>            :         return word;</a>
@@ -308,9 +308,9 @@
 <a name="246"><span class="lineNum">     246 </span>            :  */</a>
 <a name="247"><span class="lineNum">     247 </span>            : static __always_inline unsigned long ffz(unsigned long word)</a>
 <a name="248"><span class="lineNum">     248 </span>            : {</a>
-<a name="249"><span class="lineNum">     249 </span><span class="lineCov">        404 :         asm(&quot;rep; bsf %1,%0&quot;</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineCov">        202 :         asm(&quot;rep; bsf %1,%0&quot;</span></a>
 <a name="250"><span class="lineNum">     250 </span>            :                 : &quot;=r&quot; (word)</a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineCov">        404 :                 : &quot;r&quot; (~word));</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineCov">        202 :                 : &quot;r&quot; (~word));</span></a>
 <a name="252"><span class="lineNum">     252 </span>            :         return word;</a>
 <a name="253"><span class="lineNum">     253 </span>            : }</a>
 <a name="254"><span class="lineNum">     254 </span>            : </a>
@@ -322,7 +322,7 @@
 <a name="260"><span class="lineNum">     260 </span>            :  */</a>
 <a name="261"><span class="lineNum">     261 </span>            : static __always_inline unsigned long __fls(unsigned long word)</a>
 <a name="262"><span class="lineNum">     262 </span>            : {</a>
-<a name="263"><span class="lineNum">     263 </span><span class="lineCov">          2 :         asm(&quot;bsr %1,%0&quot;</span></a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineCov">          5 :         asm(&quot;bsr %1,%0&quot;</span></a>
 <a name="264"><span class="lineNum">     264 </span>            :             : &quot;=r&quot; (word)</a>
 <a name="265"><span class="lineNum">     265 </span>            :             : &quot;rm&quot; (word));</a>
 <a name="266"><span class="lineNum">     266 </span>            :         return word;</a>
@@ -356,7 +356,7 @@
 <a name="294"><span class="lineNum">     294 </span>            :          * We cannot do this on 32 bits because at the very least some</a>
 <a name="295"><span class="lineNum">     295 </span>            :          * 486 CPUs did not behave this way.</a>
 <a name="296"><span class="lineNum">     296 </span>            :          */</a>
-<a name="297"><span class="lineNum">     297 </span><span class="lineCov">        508 :         asm(&quot;bsfl %1,%0&quot;</span></a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineCov">        370 :         asm(&quot;bsfl %1,%0&quot;</span></a>
 <a name="298"><span class="lineNum">     298 </span>            :             : &quot;=r&quot; (r)</a>
 <a name="299"><span class="lineNum">     299 </span>            :             : &quot;rm&quot; (x), &quot;0&quot; (-1));</a>
 <a name="300"><span class="lineNum">     300 </span>            : #elif defined(CONFIG_X86_CMOV)</a>
@@ -369,7 +369,7 @@
 <a name="307"><span class="lineNum">     307 </span>            :             &quot;movl $-1,%0\n&quot;</a>
 <a name="308"><span class="lineNum">     308 </span>            :             &quot;1:&quot; : &quot;=r&quot; (r) : &quot;rm&quot; (x));</a>
 <a name="309"><span class="lineNum">     309 </span>            : #endif</a>
-<a name="310"><span class="lineNum">     310 </span><span class="lineCov">        508 :         return r + 1;</span></a>
+<a name="310"><span class="lineNum">     310 </span><span class="lineCov">        370 :         return r + 1;</span></a>
 <a name="311"><span class="lineNum">     311 </span>            : }</a>
 <a name="312"><span class="lineNum">     312 </span>            : </a>
 <a name="313"><span class="lineNum">     313 </span>            : /**</a>
@@ -397,7 +397,7 @@
 <a name="335"><span class="lineNum">     335 </span>            :          * We cannot do this on 32 bits because at the very least some</a>
 <a name="336"><span class="lineNum">     336 </span>            :          * 486 CPUs did not behave this way.</a>
 <a name="337"><span class="lineNum">     337 </span>            :          */</a>
-<a name="338"><span class="lineNum">     338 </span><span class="lineCov">       1962 :         asm(&quot;bsrl %1,%0&quot;</span></a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineCov">        986 :         asm(&quot;bsrl %1,%0&quot;</span></a>
 <a name="339"><span class="lineNum">     339 </span>            :             : &quot;=r&quot; (r)</a>
 <a name="340"><span class="lineNum">     340 </span>            :             : &quot;rm&quot; (x), &quot;0&quot; (-1));</a>
 <a name="341"><span class="lineNum">     341 </span>            : #elif defined(CONFIG_X86_CMOV)</a>
@@ -410,7 +410,7 @@
 <a name="348"><span class="lineNum">     348 </span>            :             &quot;movl $-1,%0\n&quot;</a>
 <a name="349"><span class="lineNum">     349 </span>            :             &quot;1:&quot; : &quot;=r&quot; (r) : &quot;rm&quot; (x));</a>
 <a name="350"><span class="lineNum">     350 </span>            : #endif</a>
-<a name="351"><span class="lineNum">     351 </span><span class="lineCov">        266 :         return r + 1;</span></a>
+<a name="351"><span class="lineNum">     351 </span><span class="lineCov">        138 :         return r + 1;</span></a>
 <a name="352"><span class="lineNum">     352 </span>            : }</a>
 <a name="353"><span class="lineNum">     353 </span>            : </a>
 <a name="354"><span class="lineNum">     354 </span>            : /**</a>
@@ -427,16 +427,16 @@
 <a name="365"><span class="lineNum">     365 </span>            : #ifdef CONFIG_X86_64</a>
 <a name="366"><span class="lineNum">     366 </span>            : static __always_inline int fls64(__u64 x)</a>
 <a name="367"><span class="lineNum">     367 </span>            : {</a>
-<a name="368"><span class="lineNum">     368 </span><span class="lineCov">        387 :         int bitpos = -1;</span></a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineCov">        195 :         int bitpos = -1;</span></a>
 <a name="369"><span class="lineNum">     369 </span>            :         /*</a>
 <a name="370"><span class="lineNum">     370 </span>            :          * AMD64 says BSRQ won't clobber the dest reg if x==0; Intel64 says the</a>
 <a name="371"><span class="lineNum">     371 </span>            :          * dest reg is undefined if x==0, but their CPU architect says its</a>
 <a name="372"><span class="lineNum">     372 </span>            :          * value is written to set it to the same as before.</a>
 <a name="373"><span class="lineNum">     373 </span>            :          */</a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineCov">        387 :         asm(&quot;bsrq %1,%q0&quot;</span></a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineCov">        195 :         asm(&quot;bsrq %1,%q0&quot;</span></a>
 <a name="375"><span class="lineNum">     375 </span>            :             : &quot;+r&quot; (bitpos)</a>
 <a name="376"><span class="lineNum">     376 </span>            :             : &quot;rm&quot; (x));</a>
-<a name="377"><span class="lineNum">     377 </span><span class="lineCov">        322 :         return bitpos + 1;</span></a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineCov">        161 :         return bitpos + 1;</span></a>
 <a name="378"><span class="lineNum">     378 </span>            : }</a>
 <a name="379"><span class="lineNum">     379 </span>            : #else</a>
 <a name="380"><span class="lineNum">     380 </span>            : #include &lt;asm-generic/bitops/fls64.h&gt;</a>

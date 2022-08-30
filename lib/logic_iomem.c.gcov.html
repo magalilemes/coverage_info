@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -98,35 +98,35 @@
 <a name="36"><span class="lineNum">      36 </span>            : static LIST_HEAD(regions_list);</a>
 <a name="37"><span class="lineNum">      37 </span>            : static struct logic_iomem_area mapped_areas[MAX_AREAS];</a>
 <a name="38"><span class="lineNum">      38 </span>            : </a>
-<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          4 : int logic_iomem_add_region(struct resource *resource,</span></a>
+<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          2 : int logic_iomem_add_region(struct resource *resource,</span></a>
 <a name="40"><span class="lineNum">      40 </span>            :                            const struct logic_iomem_region_ops *ops)</a>
 <a name="41"><span class="lineNum">      41 </span>            : {</a>
 <a name="42"><span class="lineNum">      42 </span>            :         struct logic_iomem_region *rreg;</a>
 <a name="43"><span class="lineNum">      43 </span>            :         int err;</a>
 <a name="44"><span class="lineNum">      44 </span>            : </a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">          4 :         if (WARN_ON(!resource || !ops))</span></a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineCov">          2 :         if (WARN_ON(!resource || !ops))</span></a>
 <a name="46"><span class="lineNum">      46 </span>            :                 return -EINVAL;</a>
 <a name="47"><span class="lineNum">      47 </span>            : </a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          4 :         if (WARN_ON((resource-&gt;flags &amp; IORESOURCE_TYPE_BITS) != IORESOURCE_MEM))</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          2 :         if (WARN_ON((resource-&gt;flags &amp; IORESOURCE_TYPE_BITS) != IORESOURCE_MEM))</span></a>
 <a name="49"><span class="lineNum">      49 </span>            :                 return -EINVAL;</a>
 <a name="50"><span class="lineNum">      50 </span>            : </a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          4 :         rreg = kzalloc(sizeof(*rreg), GFP_KERNEL);</span></a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          4 :         if (!rreg)</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          2 :         rreg = kzalloc(sizeof(*rreg), GFP_KERNEL);</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          2 :         if (!rreg)</span></a>
 <a name="53"><span class="lineNum">      53 </span>            :                 return -ENOMEM;</a>
 <a name="54"><span class="lineNum">      54 </span>            : </a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          4 :         err = request_resource(&amp;iomem_resource, resource);</span></a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          4 :         if (err) {</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          2 :         err = request_resource(&amp;iomem_resource, resource);</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          2 :         if (err) {</span></a>
 <a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 :                 kfree(rreg);</span></a>
 <a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 :                 return -ENOMEM;</span></a>
 <a name="59"><span class="lineNum">      59 </span>            :         }</a>
 <a name="60"><span class="lineNum">      60 </span>            : </a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          4 :         mutex_lock(&amp;regions_mtx);</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          4 :         rreg-&gt;res = resource;</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          4 :         rreg-&gt;ops = ops;</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          8 :         list_add_tail(&amp;rreg-&gt;list, &amp;regions_list);</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          4 :         mutex_unlock(&amp;regions_mtx);</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          2 :         mutex_lock(&amp;regions_mtx);</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          2 :         rreg-&gt;res = resource;</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          2 :         rreg-&gt;ops = ops;</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          4 :         list_add_tail(&amp;rreg-&gt;list, &amp;regions_list);</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          2 :         mutex_unlock(&amp;regions_mtx);</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : </a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          4 :         return 0;</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          2 :         return 0;</span></a>
 <a name="68"><span class="lineNum">      68 </span>            : }</a>
 <a name="69"><span class="lineNum">      69 </span>            : EXPORT_SYMBOL(logic_iomem_add_region);</a>
 <a name="70"><span class="lineNum">      70 </span>            : </a>

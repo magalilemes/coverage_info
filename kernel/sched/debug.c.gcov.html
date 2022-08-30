@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -358,25 +358,25 @@
 <a name="296"><span class="lineNum">     296 </span>            : </a>
 <a name="297"><span class="lineNum">     297 </span>            : static struct dentry *debugfs_sched;</a>
 <a name="298"><span class="lineNum">     298 </span>            : </a>
-<a name="299"><span class="lineNum">     299 </span><span class="lineCov">          2 : static __init int sched_init_debug(void)</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineCov">          1 : static __init int sched_init_debug(void)</span></a>
 <a name="300"><span class="lineNum">     300 </span>            : {</a>
 <a name="301"><span class="lineNum">     301 </span>            :         struct dentry __maybe_unused *numa;</a>
 <a name="302"><span class="lineNum">     302 </span>            : </a>
-<a name="303"><span class="lineNum">     303 </span><span class="lineCov">          4 :         debugfs_sched = debugfs_create_dir(&quot;sched&quot;, NULL);</span></a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineCov">          2 :         debugfs_sched = debugfs_create_dir(&quot;sched&quot;, NULL);</span></a>
 <a name="304"><span class="lineNum">     304 </span>            : </a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          4 :         debugfs_create_file(&quot;features&quot;, 0644, debugfs_sched, NULL, &amp;sched_feat_fops);</span></a>
-<a name="306"><span class="lineNum">     306 </span><span class="lineCov">          2 :         debugfs_create_bool(&quot;verbose&quot;, 0644, debugfs_sched, &amp;sched_debug_verbose);</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          2 :         debugfs_create_file(&quot;features&quot;, 0644, debugfs_sched, NULL, &amp;sched_feat_fops);</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineCov">          1 :         debugfs_create_bool(&quot;verbose&quot;, 0644, debugfs_sched, &amp;sched_debug_verbose);</span></a>
 <a name="307"><span class="lineNum">     307 </span>            : #ifdef CONFIG_PREEMPT_DYNAMIC</a>
 <a name="308"><span class="lineNum">     308 </span>            :         debugfs_create_file(&quot;preempt&quot;, 0644, debugfs_sched, NULL, &amp;sched_dynamic_fops);</a>
 <a name="309"><span class="lineNum">     309 </span>            : #endif</a>
 <a name="310"><span class="lineNum">     310 </span>            : </a>
-<a name="311"><span class="lineNum">     311 </span><span class="lineCov">          2 :         debugfs_create_u32(&quot;latency_ns&quot;, 0644, debugfs_sched, &amp;sysctl_sched_latency);</span></a>
-<a name="312"><span class="lineNum">     312 </span><span class="lineCov">          2 :         debugfs_create_u32(&quot;min_granularity_ns&quot;, 0644, debugfs_sched, &amp;sysctl_sched_min_granularity);</span></a>
-<a name="313"><span class="lineNum">     313 </span><span class="lineCov">          2 :         debugfs_create_u32(&quot;idle_min_granularity_ns&quot;, 0644, debugfs_sched, &amp;sysctl_sched_idle_min_granularity);</span></a>
-<a name="314"><span class="lineNum">     314 </span><span class="lineCov">          2 :         debugfs_create_u32(&quot;wakeup_granularity_ns&quot;, 0644, debugfs_sched, &amp;sysctl_sched_wakeup_granularity);</span></a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineCov">          1 :         debugfs_create_u32(&quot;latency_ns&quot;, 0644, debugfs_sched, &amp;sysctl_sched_latency);</span></a>
+<a name="312"><span class="lineNum">     312 </span><span class="lineCov">          1 :         debugfs_create_u32(&quot;min_granularity_ns&quot;, 0644, debugfs_sched, &amp;sysctl_sched_min_granularity);</span></a>
+<a name="313"><span class="lineNum">     313 </span><span class="lineCov">          1 :         debugfs_create_u32(&quot;idle_min_granularity_ns&quot;, 0644, debugfs_sched, &amp;sysctl_sched_idle_min_granularity);</span></a>
+<a name="314"><span class="lineNum">     314 </span><span class="lineCov">          1 :         debugfs_create_u32(&quot;wakeup_granularity_ns&quot;, 0644, debugfs_sched, &amp;sysctl_sched_wakeup_granularity);</span></a>
 <a name="315"><span class="lineNum">     315 </span>            : </a>
-<a name="316"><span class="lineNum">     316 </span><span class="lineCov">          2 :         debugfs_create_u32(&quot;latency_warn_ms&quot;, 0644, debugfs_sched, &amp;sysctl_resched_latency_warn_ms);</span></a>
-<a name="317"><span class="lineNum">     317 </span><span class="lineCov">          2 :         debugfs_create_u32(&quot;latency_warn_once&quot;, 0644, debugfs_sched, &amp;sysctl_resched_latency_warn_once);</span></a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineCov">          1 :         debugfs_create_u32(&quot;latency_warn_ms&quot;, 0644, debugfs_sched, &amp;sysctl_resched_latency_warn_ms);</span></a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineCov">          1 :         debugfs_create_u32(&quot;latency_warn_once&quot;, 0644, debugfs_sched, &amp;sysctl_resched_latency_warn_once);</span></a>
 <a name="318"><span class="lineNum">     318 </span>            : </a>
 <a name="319"><span class="lineNum">     319 </span>            : #ifdef CONFIG_SMP</a>
 <a name="320"><span class="lineNum">     320 </span>            :         debugfs_create_file(&quot;tunable_scaling&quot;, 0644, debugfs_sched, NULL, &amp;sched_scaling_fops);</a>
@@ -397,9 +397,9 @@
 <a name="335"><span class="lineNum">     335 </span>            :         debugfs_create_u32(&quot;scan_size_mb&quot;, 0644, numa, &amp;sysctl_numa_balancing_scan_size);</a>
 <a name="336"><span class="lineNum">     336 </span>            : #endif</a>
 <a name="337"><span class="lineNum">     337 </span>            : </a>
-<a name="338"><span class="lineNum">     338 </span><span class="lineCov">          4 :         debugfs_create_file(&quot;debug&quot;, 0444, debugfs_sched, NULL, &amp;sched_debug_fops);</span></a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineCov">          2 :         debugfs_create_file(&quot;debug&quot;, 0444, debugfs_sched, NULL, &amp;sched_debug_fops);</span></a>
 <a name="339"><span class="lineNum">     339 </span>            : </a>
-<a name="340"><span class="lineNum">     340 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="341"><span class="lineNum">     341 </span>            : }</a>
 <a name="342"><span class="lineNum">     342 </span>            : late_initcall(sched_init_debug);</a>
 <a name="343"><span class="lineNum">     343 </span>            : </a>

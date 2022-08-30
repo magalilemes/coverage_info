@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -130,20 +130,20 @@
 <a name="68"><span class="lineNum">      68 </span>            :  * indirectly by using &amp;tty_port refcounting (tty_port_put()) or directly if</a>
 <a name="69"><span class="lineNum">      69 </span>            :  * refcounting is not used.</a>
 <a name="70"><span class="lineNum">      70 </span>            :  */</a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">         32 : void tty_port_init(struct tty_port *port)</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">         16 : void tty_port_init(struct tty_port *port)</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : {</a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">         32 :         memset(port, 0, sizeof(*port));</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">         32 :         tty_buffer_init(port);</span></a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">         32 :         init_waitqueue_head(&amp;port-&gt;open_wait);</span></a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">         32 :         init_waitqueue_head(&amp;port-&gt;delta_msr_wait);</span></a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">         32 :         mutex_init(&amp;port-&gt;mutex);</span></a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">         32 :         mutex_init(&amp;port-&gt;buf_mutex);</span></a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         32 :         spin_lock_init(&amp;port-&gt;lock);</span></a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">         32 :         port-&gt;close_delay = (50 * HZ) / 100;</span></a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">         32 :         port-&gt;closing_wait = (3000 * HZ) / 100;</span></a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         32 :         port-&gt;client_ops = &amp;tty_port_default_client_ops;</span></a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">         64 :         kref_init(&amp;port-&gt;kref);</span></a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">         32 : }</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">         16 :         memset(port, 0, sizeof(*port));</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">         16 :         tty_buffer_init(port);</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">         16 :         init_waitqueue_head(&amp;port-&gt;open_wait);</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">         16 :         init_waitqueue_head(&amp;port-&gt;delta_msr_wait);</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">         16 :         mutex_init(&amp;port-&gt;mutex);</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">         16 :         mutex_init(&amp;port-&gt;buf_mutex);</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         16 :         spin_lock_init(&amp;port-&gt;lock);</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">         16 :         port-&gt;close_delay = (50 * HZ) / 100;</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">         16 :         port-&gt;closing_wait = (3000 * HZ) / 100;</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         16 :         port-&gt;client_ops = &amp;tty_port_default_client_ops;</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">         32 :         kref_init(&amp;port-&gt;kref);</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">         16 : }</span></a>
 <a name="85"><span class="lineNum">      85 </span>            : EXPORT_SYMBOL(tty_port_init);</a>
 <a name="86"><span class="lineNum">      86 </span>            : </a>
 <a name="87"><span class="lineNum">      87 </span>            : /**</a>
@@ -157,12 +157,12 @@
 <a name="95"><span class="lineNum">      95 </span>            :  * tty_port_install() is used in the driver. If used, this has to be called</a>
 <a name="96"><span class="lineNum">      96 </span>            :  * before tty_register_driver().</a>
 <a name="97"><span class="lineNum">      97 </span>            :  */</a>
-<a name="98"><span class="lineNum">      98 </span><span class="lineCov">          2 : void tty_port_link_device(struct tty_port *port,</span></a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineCov">          1 : void tty_port_link_device(struct tty_port *port,</span></a>
 <a name="99"><span class="lineNum">      99 </span>            :                 struct tty_driver *driver, unsigned index)</a>
 <a name="100"><span class="lineNum">     100 </span>            : {</a>
-<a name="101"><span class="lineNum">     101 </span><span class="lineCov">          2 :         if (WARN_ON(index &gt;= driver-&gt;num))</span></a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineCov">          1 :         if (WARN_ON(index &gt;= driver-&gt;num))</span></a>
 <a name="102"><span class="lineNum">     102 </span>            :                 return;</a>
-<a name="103"><span class="lineNum">     103 </span><span class="lineCov">          2 :         driver-&gt;ports[index] = port;</span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineCov">          1 :         driver-&gt;ports[index] = port;</span></a>
 <a name="104"><span class="lineNum">     104 </span>            : }</a>
 <a name="105"><span class="lineNum">     105 </span>            : EXPORT_SYMBOL_GPL(tty_port_link_device);</a>
 <a name="106"><span class="lineNum">     106 </span>            : </a>
@@ -177,11 +177,11 @@
 <a name="115"><span class="lineNum">     115 </span>            :  * to a concrete tty specified by @index. Use this or tty_port_install() (or</a>
 <a name="116"><span class="lineNum">     116 </span>            :  * both). Call tty_port_link_device() as a last resort.</a>
 <a name="117"><span class="lineNum">     117 </span>            :  */</a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">          2 : struct device *tty_port_register_device(struct tty_port *port,</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">          1 : struct device *tty_port_register_device(struct tty_port *port,</span></a>
 <a name="119"><span class="lineNum">     119 </span>            :                 struct tty_driver *driver, unsigned index,</a>
 <a name="120"><span class="lineNum">     120 </span>            :                 struct device *device)</a>
 <a name="121"><span class="lineNum">     121 </span>            : {</a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">          2 :         return tty_port_register_device_attr(port, driver, index, device, NULL, NULL);</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">          1 :         return tty_port_register_device_attr(port, driver, index, device, NULL, NULL);</span></a>
 <a name="123"><span class="lineNum">     123 </span>            : }</a>
 <a name="124"><span class="lineNum">     124 </span>            : EXPORT_SYMBOL_GPL(tty_port_register_device);</a>
 <a name="125"><span class="lineNum">     125 </span>            : </a>
@@ -203,8 +203,8 @@
 <a name="141"><span class="lineNum">     141 </span>            :                 struct device *device, void *drvdata,</a>
 <a name="142"><span class="lineNum">     142 </span>            :                 const struct attribute_group **attr_grp)</a>
 <a name="143"><span class="lineNum">     143 </span>            : {</a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineCov">          2 :         tty_port_link_device(port, driver, index);</span></a>
-<a name="145"><span class="lineNum">     145 </span><span class="lineCov">          2 :         return tty_register_device_attr(driver, index, device, drvdata,</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineCov">          1 :         tty_port_link_device(port, driver, index);</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">          1 :         return tty_register_device_attr(driver, index, device, drvdata,</span></a>
 <a name="146"><span class="lineNum">     146 </span>            :                         attr_grp);</a>
 <a name="147"><span class="lineNum">     147 </span>            : }</a>
 <a name="148"><span class="lineNum">     148 </span>            : EXPORT_SYMBOL_GPL(tty_port_register_device_attr);</a>

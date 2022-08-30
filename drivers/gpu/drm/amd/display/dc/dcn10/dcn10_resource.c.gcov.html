@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">496</td>
+            <td class="headerCovTableEntry">501</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -1557,168 +1557,186 @@
 <a name="1495"><span class="lineNum">    1495 </span>            :         /* Other architectures we build for build this with soft-float */</a>
 <a name="1496"><span class="lineNum">    1496 </span><span class="lineNoCov">          0 :         dcn10_resource_construct_fp(dc);</span></a>
 <a name="1497"><span class="lineNum">    1497 </span>            : </a>
-<a name="1498"><span class="lineNum">    1498 </span><span class="lineNoCov">          0 :         pool-&gt;base.pp_smu = dcn10_pp_smu_create(ctx);</span></a>
-<a name="1499"><span class="lineNum">    1499 </span>            : </a>
-<a name="1500"><span class="lineNum">    1500 </span>            :         /*</a>
-<a name="1501"><span class="lineNum">    1501 </span>            :          * Right now SMU/PPLIB and DAL all have the AZ D3 force PME notification *</a>
-<a name="1502"><span class="lineNum">    1502 </span>            :          * implemented. So AZ D3 should work.For issue 197007.                   *</a>
-<a name="1503"><span class="lineNum">    1503 </span>            :          */</a>
-<a name="1504"><span class="lineNum">    1504 </span><span class="lineNoCov">          0 :         if (pool-&gt;base.pp_smu != NULL</span></a>
-<a name="1505"><span class="lineNum">    1505 </span><span class="lineNoCov">          0 :                         &amp;&amp; pool-&gt;base.pp_smu-&gt;rv_funcs.set_pme_wa_enable != NULL)</span></a>
-<a name="1506"><span class="lineNum">    1506 </span><span class="lineNoCov">          0 :                 dc-&gt;debug.az_endpoint_mute_only = false;</span></a>
-<a name="1507"><span class="lineNum">    1507 </span>            : </a>
-<a name="1508"><span class="lineNum">    1508 </span><span class="lineNoCov">          0 :         DC_FP_START();</span></a>
-<a name="1509"><span class="lineNum">    1509 </span><span class="lineNoCov">          0 :         if (!dc-&gt;debug.disable_pplib_clock_request)</span></a>
-<a name="1510"><span class="lineNum">    1510 </span><span class="lineNoCov">          0 :                 dcn_bw_update_from_pplib(dc);</span></a>
-<a name="1511"><span class="lineNum">    1511 </span><span class="lineNoCov">          0 :         dcn_bw_sync_calcs_and_dml(dc);</span></a>
-<a name="1512"><span class="lineNum">    1512 </span><span class="lineNoCov">          0 :         if (!dc-&gt;debug.disable_pplib_wm_range) {</span></a>
-<a name="1513"><span class="lineNum">    1513 </span><span class="lineNoCov">          0 :                 dc-&gt;res_pool = &amp;pool-&gt;base;</span></a>
-<a name="1514"><span class="lineNum">    1514 </span><span class="lineNoCov">          0 :                 dcn_bw_notify_pplib_of_wm_ranges(dc);</span></a>
-<a name="1515"><span class="lineNum">    1515 </span>            :         }</a>
-<a name="1516"><span class="lineNum">    1516 </span><span class="lineNoCov">          0 :         DC_FP_END();</span></a>
+<a name="1498"><span class="lineNum">    1498 </span><span class="lineNoCov">          0 :         if (!dc-&gt;config.is_vmin_only_asic)</span></a>
+<a name="1499"><span class="lineNum">    1499 </span><span class="lineNoCov">          0 :                 if (ASICREV_IS_RAVEN2(dc-&gt;ctx-&gt;asic_id.hw_internal_rev))</span></a>
+<a name="1500"><span class="lineNum">    1500 </span><span class="lineNoCov">          0 :                         switch (dc-&gt;ctx-&gt;asic_id.pci_revision_id) {</span></a>
+<a name="1501"><span class="lineNum">    1501 </span>            :                         case PRID_DALI_DE:</a>
+<a name="1502"><span class="lineNum">    1502 </span>            :                         case PRID_DALI_DF:</a>
+<a name="1503"><span class="lineNum">    1503 </span>            :                         case PRID_DALI_E3:</a>
+<a name="1504"><span class="lineNum">    1504 </span>            :                         case PRID_DALI_E4:</a>
+<a name="1505"><span class="lineNum">    1505 </span>            :                         case PRID_POLLOCK_94:</a>
+<a name="1506"><span class="lineNum">    1506 </span>            :                         case PRID_POLLOCK_95:</a>
+<a name="1507"><span class="lineNum">    1507 </span>            :                         case PRID_POLLOCK_E9:</a>
+<a name="1508"><span class="lineNum">    1508 </span>            :                         case PRID_POLLOCK_EA:</a>
+<a name="1509"><span class="lineNum">    1509 </span>            :                         case PRID_POLLOCK_EB:</a>
+<a name="1510"><span class="lineNum">    1510 </span><span class="lineNoCov">          0 :                                 dc-&gt;config.is_vmin_only_asic = true;</span></a>
+<a name="1511"><span class="lineNum">    1511 </span><span class="lineNoCov">          0 :                                 break;</span></a>
+<a name="1512"><span class="lineNum">    1512 </span>            :                         default:</a>
+<a name="1513"><span class="lineNum">    1513 </span>            :                                 break;</a>
+<a name="1514"><span class="lineNum">    1514 </span>            :                         }</a>
+<a name="1515"><span class="lineNum">    1515 </span>            : </a>
+<a name="1516"><span class="lineNum">    1516 </span><span class="lineNoCov">          0 :         pool-&gt;base.pp_smu = dcn10_pp_smu_create(ctx);</span></a>
 <a name="1517"><span class="lineNum">    1517 </span>            : </a>
-<a name="1518"><span class="lineNum">    1518 </span>            :         {</a>
-<a name="1519"><span class="lineNum">    1519 </span>            :                 struct irq_service_init_data init_data;</a>
-<a name="1520"><span class="lineNum">    1520 </span><span class="lineNoCov">          0 :                 init_data.ctx = dc-&gt;ctx;</span></a>
-<a name="1521"><span class="lineNum">    1521 </span><span class="lineNoCov">          0 :                 pool-&gt;base.irqs = dal_irq_service_dcn10_create(&amp;init_data);</span></a>
-<a name="1522"><span class="lineNum">    1522 </span><span class="lineNoCov">          0 :                 if (!pool-&gt;base.irqs)</span></a>
-<a name="1523"><span class="lineNum">    1523 </span>            :                         goto fail;</a>
-<a name="1524"><span class="lineNum">    1524 </span>            :         }</a>
+<a name="1518"><span class="lineNum">    1518 </span>            :         /*</a>
+<a name="1519"><span class="lineNum">    1519 </span>            :          * Right now SMU/PPLIB and DAL all have the AZ D3 force PME notification *</a>
+<a name="1520"><span class="lineNum">    1520 </span>            :          * implemented. So AZ D3 should work.For issue 197007.                   *</a>
+<a name="1521"><span class="lineNum">    1521 </span>            :          */</a>
+<a name="1522"><span class="lineNum">    1522 </span><span class="lineNoCov">          0 :         if (pool-&gt;base.pp_smu != NULL</span></a>
+<a name="1523"><span class="lineNum">    1523 </span><span class="lineNoCov">          0 :                         &amp;&amp; pool-&gt;base.pp_smu-&gt;rv_funcs.set_pme_wa_enable != NULL)</span></a>
+<a name="1524"><span class="lineNum">    1524 </span><span class="lineNoCov">          0 :                 dc-&gt;debug.az_endpoint_mute_only = false;</span></a>
 <a name="1525"><span class="lineNum">    1525 </span>            : </a>
-<a name="1526"><span class="lineNum">    1526 </span>            :         /* index to valid pipe resource  */</a>
-<a name="1527"><span class="lineNum">    1527 </span><span class="lineNoCov">          0 :         j = 0;</span></a>
-<a name="1528"><span class="lineNum">    1528 </span>            :         /* mem input -&gt; ipp -&gt; dpp -&gt; opp -&gt; TG */</a>
-<a name="1529"><span class="lineNum">    1529 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; pool-&gt;base.pipe_count; i++) {</span></a>
-<a name="1530"><span class="lineNum">    1530 </span>            :                 /* if pipe is disabled, skip instance of HW pipe,</a>
-<a name="1531"><span class="lineNum">    1531 </span>            :                  * i.e, skip ASIC register instance</a>
-<a name="1532"><span class="lineNum">    1532 </span>            :                  */</a>
-<a name="1533"><span class="lineNum">    1533 </span><span class="lineNoCov">          0 :                 if ((pipe_fuses &amp; (1 &lt;&lt; i)) != 0)</span></a>
-<a name="1534"><span class="lineNum">    1534 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="1526"><span class="lineNum">    1526 </span><span class="lineNoCov">          0 :         DC_FP_START();</span></a>
+<a name="1527"><span class="lineNum">    1527 </span><span class="lineNoCov">          0 :         if (!dc-&gt;debug.disable_pplib_clock_request)</span></a>
+<a name="1528"><span class="lineNum">    1528 </span><span class="lineNoCov">          0 :                 dcn_bw_update_from_pplib(dc);</span></a>
+<a name="1529"><span class="lineNum">    1529 </span><span class="lineNoCov">          0 :         dcn_bw_sync_calcs_and_dml(dc);</span></a>
+<a name="1530"><span class="lineNum">    1530 </span><span class="lineNoCov">          0 :         if (!dc-&gt;debug.disable_pplib_wm_range) {</span></a>
+<a name="1531"><span class="lineNum">    1531 </span><span class="lineNoCov">          0 :                 dc-&gt;res_pool = &amp;pool-&gt;base;</span></a>
+<a name="1532"><span class="lineNum">    1532 </span><span class="lineNoCov">          0 :                 dcn_bw_notify_pplib_of_wm_ranges(dc);</span></a>
+<a name="1533"><span class="lineNum">    1533 </span>            :         }</a>
+<a name="1534"><span class="lineNum">    1534 </span><span class="lineNoCov">          0 :         DC_FP_END();</span></a>
 <a name="1535"><span class="lineNum">    1535 </span>            : </a>
-<a name="1536"><span class="lineNum">    1536 </span><span class="lineNoCov">          0 :                 pool-&gt;base.hubps[j] = dcn10_hubp_create(ctx, i);</span></a>
-<a name="1537"><span class="lineNum">    1537 </span><span class="lineNoCov">          0 :                 if (pool-&gt;base.hubps[j] == NULL) {</span></a>
-<a name="1538"><span class="lineNum">    1538 </span><span class="lineNoCov">          0 :                         BREAK_TO_DEBUGGER();</span></a>
-<a name="1539"><span class="lineNum">    1539 </span><span class="lineNoCov">          0 :                         dm_error(</span></a>
-<a name="1540"><span class="lineNum">    1540 </span>            :                                 &quot;DC: failed to create memory input!\n&quot;);</a>
-<a name="1541"><span class="lineNum">    1541 </span><span class="lineNoCov">          0 :                         goto fail;</span></a>
-<a name="1542"><span class="lineNum">    1542 </span>            :                 }</a>
+<a name="1536"><span class="lineNum">    1536 </span>            :         {</a>
+<a name="1537"><span class="lineNum">    1537 </span>            :                 struct irq_service_init_data init_data;</a>
+<a name="1538"><span class="lineNum">    1538 </span><span class="lineNoCov">          0 :                 init_data.ctx = dc-&gt;ctx;</span></a>
+<a name="1539"><span class="lineNum">    1539 </span><span class="lineNoCov">          0 :                 pool-&gt;base.irqs = dal_irq_service_dcn10_create(&amp;init_data);</span></a>
+<a name="1540"><span class="lineNum">    1540 </span><span class="lineNoCov">          0 :                 if (!pool-&gt;base.irqs)</span></a>
+<a name="1541"><span class="lineNum">    1541 </span>            :                         goto fail;</a>
+<a name="1542"><span class="lineNum">    1542 </span>            :         }</a>
 <a name="1543"><span class="lineNum">    1543 </span>            : </a>
-<a name="1544"><span class="lineNum">    1544 </span><span class="lineNoCov">          0 :                 pool-&gt;base.ipps[j] = dcn10_ipp_create(ctx, i);</span></a>
-<a name="1545"><span class="lineNum">    1545 </span><span class="lineNoCov">          0 :                 if (pool-&gt;base.ipps[j] == NULL) {</span></a>
-<a name="1546"><span class="lineNum">    1546 </span><span class="lineNoCov">          0 :                         BREAK_TO_DEBUGGER();</span></a>
-<a name="1547"><span class="lineNum">    1547 </span><span class="lineNoCov">          0 :                         dm_error(</span></a>
-<a name="1548"><span class="lineNum">    1548 </span>            :                                 &quot;DC: failed to create input pixel processor!\n&quot;);</a>
-<a name="1549"><span class="lineNum">    1549 </span><span class="lineNoCov">          0 :                         goto fail;</span></a>
-<a name="1550"><span class="lineNum">    1550 </span>            :                 }</a>
-<a name="1551"><span class="lineNum">    1551 </span>            : </a>
-<a name="1552"><span class="lineNum">    1552 </span><span class="lineNoCov">          0 :                 pool-&gt;base.dpps[j] = dcn10_dpp_create(ctx, i);</span></a>
-<a name="1553"><span class="lineNum">    1553 </span><span class="lineNoCov">          0 :                 if (pool-&gt;base.dpps[j] == NULL) {</span></a>
-<a name="1554"><span class="lineNum">    1554 </span><span class="lineNoCov">          0 :                         BREAK_TO_DEBUGGER();</span></a>
-<a name="1555"><span class="lineNum">    1555 </span><span class="lineNoCov">          0 :                         dm_error(</span></a>
-<a name="1556"><span class="lineNum">    1556 </span>            :                                 &quot;DC: failed to create dpp!\n&quot;);</a>
-<a name="1557"><span class="lineNum">    1557 </span><span class="lineNoCov">          0 :                         goto fail;</span></a>
-<a name="1558"><span class="lineNum">    1558 </span>            :                 }</a>
-<a name="1559"><span class="lineNum">    1559 </span>            : </a>
-<a name="1560"><span class="lineNum">    1560 </span><span class="lineNoCov">          0 :                 pool-&gt;base.opps[j] = dcn10_opp_create(ctx, i);</span></a>
-<a name="1561"><span class="lineNum">    1561 </span><span class="lineNoCov">          0 :                 if (pool-&gt;base.opps[j] == NULL) {</span></a>
-<a name="1562"><span class="lineNum">    1562 </span><span class="lineNoCov">          0 :                         BREAK_TO_DEBUGGER();</span></a>
-<a name="1563"><span class="lineNum">    1563 </span><span class="lineNoCov">          0 :                         dm_error(</span></a>
-<a name="1564"><span class="lineNum">    1564 </span>            :                                 &quot;DC: failed to create output pixel processor!\n&quot;);</a>
-<a name="1565"><span class="lineNum">    1565 </span><span class="lineNoCov">          0 :                         goto fail;</span></a>
-<a name="1566"><span class="lineNum">    1566 </span>            :                 }</a>
-<a name="1567"><span class="lineNum">    1567 </span>            : </a>
-<a name="1568"><span class="lineNum">    1568 </span><span class="lineNoCov">          0 :                 pool-&gt;base.timing_generators[j] = dcn10_timing_generator_create(</span></a>
-<a name="1569"><span class="lineNum">    1569 </span>            :                                 ctx, i);</a>
-<a name="1570"><span class="lineNum">    1570 </span><span class="lineNoCov">          0 :                 if (pool-&gt;base.timing_generators[j] == NULL) {</span></a>
-<a name="1571"><span class="lineNum">    1571 </span><span class="lineNoCov">          0 :                         BREAK_TO_DEBUGGER();</span></a>
-<a name="1572"><span class="lineNum">    1572 </span><span class="lineNoCov">          0 :                         dm_error(&quot;DC: failed to create tg!\n&quot;);</span></a>
-<a name="1573"><span class="lineNum">    1573 </span><span class="lineNoCov">          0 :                         goto fail;</span></a>
-<a name="1574"><span class="lineNum">    1574 </span>            :                 }</a>
-<a name="1575"><span class="lineNum">    1575 </span>            :                 /* check next valid pipe */</a>
-<a name="1576"><span class="lineNum">    1576 </span><span class="lineNoCov">          0 :                 j++;</span></a>
-<a name="1577"><span class="lineNum">    1577 </span>            :         }</a>
-<a name="1578"><span class="lineNum">    1578 </span>            : </a>
-<a name="1579"><span class="lineNum">    1579 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; pool-&gt;base.res_cap-&gt;num_ddc; i++) {</span></a>
-<a name="1580"><span class="lineNum">    1580 </span><span class="lineNoCov">          0 :                 pool-&gt;base.engines[i] = dcn10_aux_engine_create(ctx, i);</span></a>
-<a name="1581"><span class="lineNum">    1581 </span><span class="lineNoCov">          0 :                 if (pool-&gt;base.engines[i] == NULL) {</span></a>
-<a name="1582"><span class="lineNum">    1582 </span><span class="lineNoCov">          0 :                         BREAK_TO_DEBUGGER();</span></a>
-<a name="1583"><span class="lineNum">    1583 </span><span class="lineNoCov">          0 :                         dm_error(</span></a>
-<a name="1584"><span class="lineNum">    1584 </span>            :                                 &quot;DC:failed to create aux engine!!\n&quot;);</a>
-<a name="1585"><span class="lineNum">    1585 </span><span class="lineNoCov">          0 :                         goto fail;</span></a>
-<a name="1586"><span class="lineNum">    1586 </span>            :                 }</a>
-<a name="1587"><span class="lineNum">    1587 </span><span class="lineNoCov">          0 :                 pool-&gt;base.hw_i2cs[i] = dcn10_i2c_hw_create(ctx, i);</span></a>
-<a name="1588"><span class="lineNum">    1588 </span><span class="lineNoCov">          0 :                 if (pool-&gt;base.hw_i2cs[i] == NULL) {</span></a>
+<a name="1544"><span class="lineNum">    1544 </span>            :         /* index to valid pipe resource  */</a>
+<a name="1545"><span class="lineNum">    1545 </span><span class="lineNoCov">          0 :         j = 0;</span></a>
+<a name="1546"><span class="lineNum">    1546 </span>            :         /* mem input -&gt; ipp -&gt; dpp -&gt; opp -&gt; TG */</a>
+<a name="1547"><span class="lineNum">    1547 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; pool-&gt;base.pipe_count; i++) {</span></a>
+<a name="1548"><span class="lineNum">    1548 </span>            :                 /* if pipe is disabled, skip instance of HW pipe,</a>
+<a name="1549"><span class="lineNum">    1549 </span>            :                  * i.e, skip ASIC register instance</a>
+<a name="1550"><span class="lineNum">    1550 </span>            :                  */</a>
+<a name="1551"><span class="lineNum">    1551 </span><span class="lineNoCov">          0 :                 if ((pipe_fuses &amp; (1 &lt;&lt; i)) != 0)</span></a>
+<a name="1552"><span class="lineNum">    1552 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="1553"><span class="lineNum">    1553 </span>            : </a>
+<a name="1554"><span class="lineNum">    1554 </span><span class="lineNoCov">          0 :                 pool-&gt;base.hubps[j] = dcn10_hubp_create(ctx, i);</span></a>
+<a name="1555"><span class="lineNum">    1555 </span><span class="lineNoCov">          0 :                 if (pool-&gt;base.hubps[j] == NULL) {</span></a>
+<a name="1556"><span class="lineNum">    1556 </span><span class="lineNoCov">          0 :                         BREAK_TO_DEBUGGER();</span></a>
+<a name="1557"><span class="lineNum">    1557 </span><span class="lineNoCov">          0 :                         dm_error(</span></a>
+<a name="1558"><span class="lineNum">    1558 </span>            :                                 &quot;DC: failed to create memory input!\n&quot;);</a>
+<a name="1559"><span class="lineNum">    1559 </span><span class="lineNoCov">          0 :                         goto fail;</span></a>
+<a name="1560"><span class="lineNum">    1560 </span>            :                 }</a>
+<a name="1561"><span class="lineNum">    1561 </span>            : </a>
+<a name="1562"><span class="lineNum">    1562 </span><span class="lineNoCov">          0 :                 pool-&gt;base.ipps[j] = dcn10_ipp_create(ctx, i);</span></a>
+<a name="1563"><span class="lineNum">    1563 </span><span class="lineNoCov">          0 :                 if (pool-&gt;base.ipps[j] == NULL) {</span></a>
+<a name="1564"><span class="lineNum">    1564 </span><span class="lineNoCov">          0 :                         BREAK_TO_DEBUGGER();</span></a>
+<a name="1565"><span class="lineNum">    1565 </span><span class="lineNoCov">          0 :                         dm_error(</span></a>
+<a name="1566"><span class="lineNum">    1566 </span>            :                                 &quot;DC: failed to create input pixel processor!\n&quot;);</a>
+<a name="1567"><span class="lineNum">    1567 </span><span class="lineNoCov">          0 :                         goto fail;</span></a>
+<a name="1568"><span class="lineNum">    1568 </span>            :                 }</a>
+<a name="1569"><span class="lineNum">    1569 </span>            : </a>
+<a name="1570"><span class="lineNum">    1570 </span><span class="lineNoCov">          0 :                 pool-&gt;base.dpps[j] = dcn10_dpp_create(ctx, i);</span></a>
+<a name="1571"><span class="lineNum">    1571 </span><span class="lineNoCov">          0 :                 if (pool-&gt;base.dpps[j] == NULL) {</span></a>
+<a name="1572"><span class="lineNum">    1572 </span><span class="lineNoCov">          0 :                         BREAK_TO_DEBUGGER();</span></a>
+<a name="1573"><span class="lineNum">    1573 </span><span class="lineNoCov">          0 :                         dm_error(</span></a>
+<a name="1574"><span class="lineNum">    1574 </span>            :                                 &quot;DC: failed to create dpp!\n&quot;);</a>
+<a name="1575"><span class="lineNum">    1575 </span><span class="lineNoCov">          0 :                         goto fail;</span></a>
+<a name="1576"><span class="lineNum">    1576 </span>            :                 }</a>
+<a name="1577"><span class="lineNum">    1577 </span>            : </a>
+<a name="1578"><span class="lineNum">    1578 </span><span class="lineNoCov">          0 :                 pool-&gt;base.opps[j] = dcn10_opp_create(ctx, i);</span></a>
+<a name="1579"><span class="lineNum">    1579 </span><span class="lineNoCov">          0 :                 if (pool-&gt;base.opps[j] == NULL) {</span></a>
+<a name="1580"><span class="lineNum">    1580 </span><span class="lineNoCov">          0 :                         BREAK_TO_DEBUGGER();</span></a>
+<a name="1581"><span class="lineNum">    1581 </span><span class="lineNoCov">          0 :                         dm_error(</span></a>
+<a name="1582"><span class="lineNum">    1582 </span>            :                                 &quot;DC: failed to create output pixel processor!\n&quot;);</a>
+<a name="1583"><span class="lineNum">    1583 </span><span class="lineNoCov">          0 :                         goto fail;</span></a>
+<a name="1584"><span class="lineNum">    1584 </span>            :                 }</a>
+<a name="1585"><span class="lineNum">    1585 </span>            : </a>
+<a name="1586"><span class="lineNum">    1586 </span><span class="lineNoCov">          0 :                 pool-&gt;base.timing_generators[j] = dcn10_timing_generator_create(</span></a>
+<a name="1587"><span class="lineNum">    1587 </span>            :                                 ctx, i);</a>
+<a name="1588"><span class="lineNum">    1588 </span><span class="lineNoCov">          0 :                 if (pool-&gt;base.timing_generators[j] == NULL) {</span></a>
 <a name="1589"><span class="lineNum">    1589 </span><span class="lineNoCov">          0 :                         BREAK_TO_DEBUGGER();</span></a>
-<a name="1590"><span class="lineNum">    1590 </span><span class="lineNoCov">          0 :                         dm_error(</span></a>
-<a name="1591"><span class="lineNum">    1591 </span>            :                                 &quot;DC:failed to create hw i2c!!\n&quot;);</a>
-<a name="1592"><span class="lineNum">    1592 </span><span class="lineNoCov">          0 :                         goto fail;</span></a>
-<a name="1593"><span class="lineNum">    1593 </span>            :                 }</a>
-<a name="1594"><span class="lineNum">    1594 </span><span class="lineNoCov">          0 :                 pool-&gt;base.sw_i2cs[i] = NULL;</span></a>
+<a name="1590"><span class="lineNum">    1590 </span><span class="lineNoCov">          0 :                         dm_error(&quot;DC: failed to create tg!\n&quot;);</span></a>
+<a name="1591"><span class="lineNum">    1591 </span><span class="lineNoCov">          0 :                         goto fail;</span></a>
+<a name="1592"><span class="lineNum">    1592 </span>            :                 }</a>
+<a name="1593"><span class="lineNum">    1593 </span>            :                 /* check next valid pipe */</a>
+<a name="1594"><span class="lineNum">    1594 </span><span class="lineNoCov">          0 :                 j++;</span></a>
 <a name="1595"><span class="lineNum">    1595 </span>            :         }</a>
 <a name="1596"><span class="lineNum">    1596 </span>            : </a>
-<a name="1597"><span class="lineNum">    1597 </span>            :         /* valid pipe num */</a>
-<a name="1598"><span class="lineNum">    1598 </span><span class="lineNoCov">          0 :         pool-&gt;base.pipe_count = j;</span></a>
-<a name="1599"><span class="lineNum">    1599 </span><span class="lineNoCov">          0 :         pool-&gt;base.timing_generator_count = j;</span></a>
-<a name="1600"><span class="lineNum">    1600 </span>            : </a>
-<a name="1601"><span class="lineNum">    1601 </span>            :         /* within dml lib, it is hard code to 4. If ASIC pipe is fused,</a>
-<a name="1602"><span class="lineNum">    1602 </span>            :          * the value may be changed</a>
-<a name="1603"><span class="lineNum">    1603 </span>            :          */</a>
-<a name="1604"><span class="lineNum">    1604 </span><span class="lineNoCov">          0 :         dc-&gt;dml.ip.max_num_dpp = pool-&gt;base.pipe_count;</span></a>
-<a name="1605"><span class="lineNum">    1605 </span><span class="lineNoCov">          0 :         dc-&gt;dcn_ip-&gt;max_num_dpp = pool-&gt;base.pipe_count;</span></a>
-<a name="1606"><span class="lineNum">    1606 </span>            : </a>
-<a name="1607"><span class="lineNum">    1607 </span><span class="lineNoCov">          0 :         pool-&gt;base.mpc = dcn10_mpc_create(ctx);</span></a>
-<a name="1608"><span class="lineNum">    1608 </span><span class="lineNoCov">          0 :         if (pool-&gt;base.mpc == NULL) {</span></a>
-<a name="1609"><span class="lineNum">    1609 </span><span class="lineNoCov">          0 :                 BREAK_TO_DEBUGGER();</span></a>
-<a name="1610"><span class="lineNum">    1610 </span><span class="lineNoCov">          0 :                 dm_error(&quot;DC: failed to create mpc!\n&quot;);</span></a>
-<a name="1611"><span class="lineNum">    1611 </span><span class="lineNoCov">          0 :                 goto fail;</span></a>
-<a name="1612"><span class="lineNum">    1612 </span>            :         }</a>
-<a name="1613"><span class="lineNum">    1613 </span>            : </a>
-<a name="1614"><span class="lineNum">    1614 </span><span class="lineNoCov">          0 :         pool-&gt;base.hubbub = dcn10_hubbub_create(ctx);</span></a>
-<a name="1615"><span class="lineNum">    1615 </span><span class="lineNoCov">          0 :         if (pool-&gt;base.hubbub == NULL) {</span></a>
-<a name="1616"><span class="lineNum">    1616 </span><span class="lineNoCov">          0 :                 BREAK_TO_DEBUGGER();</span></a>
-<a name="1617"><span class="lineNum">    1617 </span><span class="lineNoCov">          0 :                 dm_error(&quot;DC: failed to create hubbub!\n&quot;);</span></a>
-<a name="1618"><span class="lineNum">    1618 </span><span class="lineNoCov">          0 :                 goto fail;</span></a>
-<a name="1619"><span class="lineNum">    1619 </span>            :         }</a>
-<a name="1620"><span class="lineNum">    1620 </span>            : </a>
-<a name="1621"><span class="lineNum">    1621 </span><span class="lineNoCov">          0 :         if (!resource_construct(num_virtual_links, dc, &amp;pool-&gt;base,</span></a>
-<a name="1622"><span class="lineNum">    1622 </span><span class="lineNoCov">          0 :                         (!IS_FPGA_MAXIMUS_DC(dc-&gt;ctx-&gt;dce_environment) ?</span></a>
-<a name="1623"><span class="lineNum">    1623 </span>            :                         &amp;res_create_funcs : &amp;res_create_maximus_funcs)))</a>
-<a name="1624"><span class="lineNum">    1624 </span>            :                         goto fail;</a>
-<a name="1625"><span class="lineNum">    1625 </span>            : </a>
-<a name="1626"><span class="lineNum">    1626 </span><span class="lineNoCov">          0 :         dcn10_hw_sequencer_construct(dc);</span></a>
-<a name="1627"><span class="lineNum">    1627 </span><span class="lineNoCov">          0 :         dc-&gt;caps.max_planes =  pool-&gt;base.pipe_count;</span></a>
-<a name="1628"><span class="lineNum">    1628 </span>            : </a>
-<a name="1629"><span class="lineNum">    1629 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; dc-&gt;caps.max_planes; ++i)</span></a>
-<a name="1630"><span class="lineNum">    1630 </span><span class="lineNoCov">          0 :                 dc-&gt;caps.planes[i] = plane_cap;</span></a>
+<a name="1597"><span class="lineNum">    1597 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; pool-&gt;base.res_cap-&gt;num_ddc; i++) {</span></a>
+<a name="1598"><span class="lineNum">    1598 </span><span class="lineNoCov">          0 :                 pool-&gt;base.engines[i] = dcn10_aux_engine_create(ctx, i);</span></a>
+<a name="1599"><span class="lineNum">    1599 </span><span class="lineNoCov">          0 :                 if (pool-&gt;base.engines[i] == NULL) {</span></a>
+<a name="1600"><span class="lineNum">    1600 </span><span class="lineNoCov">          0 :                         BREAK_TO_DEBUGGER();</span></a>
+<a name="1601"><span class="lineNum">    1601 </span><span class="lineNoCov">          0 :                         dm_error(</span></a>
+<a name="1602"><span class="lineNum">    1602 </span>            :                                 &quot;DC:failed to create aux engine!!\n&quot;);</a>
+<a name="1603"><span class="lineNum">    1603 </span><span class="lineNoCov">          0 :                         goto fail;</span></a>
+<a name="1604"><span class="lineNum">    1604 </span>            :                 }</a>
+<a name="1605"><span class="lineNum">    1605 </span><span class="lineNoCov">          0 :                 pool-&gt;base.hw_i2cs[i] = dcn10_i2c_hw_create(ctx, i);</span></a>
+<a name="1606"><span class="lineNum">    1606 </span><span class="lineNoCov">          0 :                 if (pool-&gt;base.hw_i2cs[i] == NULL) {</span></a>
+<a name="1607"><span class="lineNum">    1607 </span><span class="lineNoCov">          0 :                         BREAK_TO_DEBUGGER();</span></a>
+<a name="1608"><span class="lineNum">    1608 </span><span class="lineNoCov">          0 :                         dm_error(</span></a>
+<a name="1609"><span class="lineNum">    1609 </span>            :                                 &quot;DC:failed to create hw i2c!!\n&quot;);</a>
+<a name="1610"><span class="lineNum">    1610 </span><span class="lineNoCov">          0 :                         goto fail;</span></a>
+<a name="1611"><span class="lineNum">    1611 </span>            :                 }</a>
+<a name="1612"><span class="lineNum">    1612 </span><span class="lineNoCov">          0 :                 pool-&gt;base.sw_i2cs[i] = NULL;</span></a>
+<a name="1613"><span class="lineNum">    1613 </span>            :         }</a>
+<a name="1614"><span class="lineNum">    1614 </span>            : </a>
+<a name="1615"><span class="lineNum">    1615 </span>            :         /* valid pipe num */</a>
+<a name="1616"><span class="lineNum">    1616 </span><span class="lineNoCov">          0 :         pool-&gt;base.pipe_count = j;</span></a>
+<a name="1617"><span class="lineNum">    1617 </span><span class="lineNoCov">          0 :         pool-&gt;base.timing_generator_count = j;</span></a>
+<a name="1618"><span class="lineNum">    1618 </span>            : </a>
+<a name="1619"><span class="lineNum">    1619 </span>            :         /* within dml lib, it is hard code to 4. If ASIC pipe is fused,</a>
+<a name="1620"><span class="lineNum">    1620 </span>            :          * the value may be changed</a>
+<a name="1621"><span class="lineNum">    1621 </span>            :          */</a>
+<a name="1622"><span class="lineNum">    1622 </span><span class="lineNoCov">          0 :         dc-&gt;dml.ip.max_num_dpp = pool-&gt;base.pipe_count;</span></a>
+<a name="1623"><span class="lineNum">    1623 </span><span class="lineNoCov">          0 :         dc-&gt;dcn_ip-&gt;max_num_dpp = pool-&gt;base.pipe_count;</span></a>
+<a name="1624"><span class="lineNum">    1624 </span>            : </a>
+<a name="1625"><span class="lineNum">    1625 </span><span class="lineNoCov">          0 :         pool-&gt;base.mpc = dcn10_mpc_create(ctx);</span></a>
+<a name="1626"><span class="lineNum">    1626 </span><span class="lineNoCov">          0 :         if (pool-&gt;base.mpc == NULL) {</span></a>
+<a name="1627"><span class="lineNum">    1627 </span><span class="lineNoCov">          0 :                 BREAK_TO_DEBUGGER();</span></a>
+<a name="1628"><span class="lineNum">    1628 </span><span class="lineNoCov">          0 :                 dm_error(&quot;DC: failed to create mpc!\n&quot;);</span></a>
+<a name="1629"><span class="lineNum">    1629 </span><span class="lineNoCov">          0 :                 goto fail;</span></a>
+<a name="1630"><span class="lineNum">    1630 </span>            :         }</a>
 <a name="1631"><span class="lineNum">    1631 </span>            : </a>
-<a name="1632"><span class="lineNum">    1632 </span><span class="lineNoCov">          0 :         dc-&gt;cap_funcs = cap_funcs;</span></a>
-<a name="1633"><span class="lineNum">    1633 </span>            : </a>
-<a name="1634"><span class="lineNum">    1634 </span><span class="lineNoCov">          0 :         return true;</span></a>
-<a name="1635"><span class="lineNum">    1635 </span>            : </a>
-<a name="1636"><span class="lineNum">    1636 </span>            : fail:</a>
-<a name="1637"><span class="lineNum">    1637 </span>            : </a>
-<a name="1638"><span class="lineNum">    1638 </span><span class="lineNoCov">          0 :         dcn10_resource_destruct(pool);</span></a>
-<a name="1639"><span class="lineNum">    1639 </span>            : </a>
-<a name="1640"><span class="lineNum">    1640 </span><span class="lineNoCov">          0 :         return false;</span></a>
-<a name="1641"><span class="lineNum">    1641 </span>            : }</a>
-<a name="1642"><span class="lineNum">    1642 </span>            : </a>
-<a name="1643"><span class="lineNum">    1643 </span><span class="lineNoCov">          0 : struct resource_pool *dcn10_create_resource_pool(</span></a>
-<a name="1644"><span class="lineNum">    1644 </span>            :                 const struct dc_init_data *init_data,</a>
-<a name="1645"><span class="lineNum">    1645 </span>            :                 struct dc *dc)</a>
-<a name="1646"><span class="lineNum">    1646 </span>            : {</a>
-<a name="1647"><span class="lineNum">    1647 </span><span class="lineNoCov">          0 :         struct dcn10_resource_pool *pool =</span></a>
-<a name="1648"><span class="lineNum">    1648 </span>            :                 kzalloc(sizeof(struct dcn10_resource_pool), GFP_KERNEL);</a>
+<a name="1632"><span class="lineNum">    1632 </span><span class="lineNoCov">          0 :         pool-&gt;base.hubbub = dcn10_hubbub_create(ctx);</span></a>
+<a name="1633"><span class="lineNum">    1633 </span><span class="lineNoCov">          0 :         if (pool-&gt;base.hubbub == NULL) {</span></a>
+<a name="1634"><span class="lineNum">    1634 </span><span class="lineNoCov">          0 :                 BREAK_TO_DEBUGGER();</span></a>
+<a name="1635"><span class="lineNum">    1635 </span><span class="lineNoCov">          0 :                 dm_error(&quot;DC: failed to create hubbub!\n&quot;);</span></a>
+<a name="1636"><span class="lineNum">    1636 </span><span class="lineNoCov">          0 :                 goto fail;</span></a>
+<a name="1637"><span class="lineNum">    1637 </span>            :         }</a>
+<a name="1638"><span class="lineNum">    1638 </span>            : </a>
+<a name="1639"><span class="lineNum">    1639 </span><span class="lineNoCov">          0 :         if (!resource_construct(num_virtual_links, dc, &amp;pool-&gt;base,</span></a>
+<a name="1640"><span class="lineNum">    1640 </span><span class="lineNoCov">          0 :                         (!IS_FPGA_MAXIMUS_DC(dc-&gt;ctx-&gt;dce_environment) ?</span></a>
+<a name="1641"><span class="lineNum">    1641 </span>            :                         &amp;res_create_funcs : &amp;res_create_maximus_funcs)))</a>
+<a name="1642"><span class="lineNum">    1642 </span>            :                         goto fail;</a>
+<a name="1643"><span class="lineNum">    1643 </span>            : </a>
+<a name="1644"><span class="lineNum">    1644 </span><span class="lineNoCov">          0 :         dcn10_hw_sequencer_construct(dc);</span></a>
+<a name="1645"><span class="lineNum">    1645 </span><span class="lineNoCov">          0 :         dc-&gt;caps.max_planes =  pool-&gt;base.pipe_count;</span></a>
+<a name="1646"><span class="lineNum">    1646 </span>            : </a>
+<a name="1647"><span class="lineNum">    1647 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; dc-&gt;caps.max_planes; ++i)</span></a>
+<a name="1648"><span class="lineNum">    1648 </span><span class="lineNoCov">          0 :                 dc-&gt;caps.planes[i] = plane_cap;</span></a>
 <a name="1649"><span class="lineNum">    1649 </span>            : </a>
-<a name="1650"><span class="lineNum">    1650 </span><span class="lineNoCov">          0 :         if (!pool)</span></a>
-<a name="1651"><span class="lineNum">    1651 </span>            :                 return NULL;</a>
-<a name="1652"><span class="lineNum">    1652 </span>            : </a>
-<a name="1653"><span class="lineNum">    1653 </span><span class="lineNoCov">          0 :         if (dcn10_resource_construct(init_data-&gt;num_virtual_links, dc, pool))</span></a>
-<a name="1654"><span class="lineNum">    1654 </span><span class="lineNoCov">          0 :                 return &amp;pool-&gt;base;</span></a>
+<a name="1650"><span class="lineNum">    1650 </span><span class="lineNoCov">          0 :         dc-&gt;cap_funcs = cap_funcs;</span></a>
+<a name="1651"><span class="lineNum">    1651 </span>            : </a>
+<a name="1652"><span class="lineNum">    1652 </span><span class="lineNoCov">          0 :         return true;</span></a>
+<a name="1653"><span class="lineNum">    1653 </span>            : </a>
+<a name="1654"><span class="lineNum">    1654 </span>            : fail:</a>
 <a name="1655"><span class="lineNum">    1655 </span>            : </a>
-<a name="1656"><span class="lineNum">    1656 </span><span class="lineNoCov">          0 :         kfree(pool);</span></a>
-<a name="1657"><span class="lineNum">    1657 </span><span class="lineNoCov">          0 :         BREAK_TO_DEBUGGER();</span></a>
-<a name="1658"><span class="lineNum">    1658 </span><span class="lineNoCov">          0 :         return NULL;</span></a>
+<a name="1656"><span class="lineNum">    1656 </span><span class="lineNoCov">          0 :         dcn10_resource_destruct(pool);</span></a>
+<a name="1657"><span class="lineNum">    1657 </span>            : </a>
+<a name="1658"><span class="lineNum">    1658 </span><span class="lineNoCov">          0 :         return false;</span></a>
 <a name="1659"><span class="lineNum">    1659 </span>            : }</a>
+<a name="1660"><span class="lineNum">    1660 </span>            : </a>
+<a name="1661"><span class="lineNum">    1661 </span><span class="lineNoCov">          0 : struct resource_pool *dcn10_create_resource_pool(</span></a>
+<a name="1662"><span class="lineNum">    1662 </span>            :                 const struct dc_init_data *init_data,</a>
+<a name="1663"><span class="lineNum">    1663 </span>            :                 struct dc *dc)</a>
+<a name="1664"><span class="lineNum">    1664 </span>            : {</a>
+<a name="1665"><span class="lineNum">    1665 </span><span class="lineNoCov">          0 :         struct dcn10_resource_pool *pool =</span></a>
+<a name="1666"><span class="lineNum">    1666 </span>            :                 kzalloc(sizeof(struct dcn10_resource_pool), GFP_KERNEL);</a>
+<a name="1667"><span class="lineNum">    1667 </span>            : </a>
+<a name="1668"><span class="lineNum">    1668 </span><span class="lineNoCov">          0 :         if (!pool)</span></a>
+<a name="1669"><span class="lineNum">    1669 </span>            :                 return NULL;</a>
+<a name="1670"><span class="lineNum">    1670 </span>            : </a>
+<a name="1671"><span class="lineNum">    1671 </span><span class="lineNoCov">          0 :         if (dcn10_resource_construct(init_data-&gt;num_virtual_links, dc, pool))</span></a>
+<a name="1672"><span class="lineNum">    1672 </span><span class="lineNoCov">          0 :                 return &amp;pool-&gt;base;</span></a>
+<a name="1673"><span class="lineNum">    1673 </span>            : </a>
+<a name="1674"><span class="lineNum">    1674 </span><span class="lineNoCov">          0 :         kfree(pool);</span></a>
+<a name="1675"><span class="lineNum">    1675 </span><span class="lineNoCov">          0 :         BREAK_TO_DEBUGGER();</span></a>
+<a name="1676"><span class="lineNum">    1676 </span><span class="lineNoCov">          0 :         return NULL;</span></a>
+<a name="1677"><span class="lineNum">    1677 </span>            : }</a>
 </pre>
       </td>
     </tr>

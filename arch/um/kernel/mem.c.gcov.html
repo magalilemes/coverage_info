@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -99,59 +99,59 @@
 <a name="37"><span class="lineNum">      37 </span>            : /* Used during early boot */</a>
 <a name="38"><span class="lineNum">      38 </span>            : static unsigned long brk_end;</a>
 <a name="39"><span class="lineNum">      39 </span>            : </a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">          2 : void __init mem_init(void)</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">          1 : void __init mem_init(void)</span></a>
 <a name="41"><span class="lineNum">      41 </span>            : {</a>
 <a name="42"><span class="lineNum">      42 </span>            :         /* clear the zero-page */</a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          2 :         memset(empty_zero_page, 0, PAGE_SIZE);</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          1 :         memset(empty_zero_page, 0, PAGE_SIZE);</span></a>
 <a name="44"><span class="lineNum">      44 </span>            : </a>
 <a name="45"><span class="lineNum">      45 </span>            :         /* Map in the area just after the brk now that kmalloc is about</a>
 <a name="46"><span class="lineNum">      46 </span>            :          * to be turned on.</a>
 <a name="47"><span class="lineNum">      47 </span>            :          */</a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          2 :         brk_end = (unsigned long) UML_ROUND_UP(sbrk(0));</span></a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          4 :         map_memory(brk_end, __pa(brk_end), uml_reserved - brk_end, 1, 1, 0);</span></a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          2 :         memblock_free((void *)brk_end, uml_reserved - brk_end);</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          2 :         uml_reserved = brk_end;</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          1 :         brk_end = (unsigned long) UML_ROUND_UP(sbrk(0));</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          2 :         map_memory(brk_end, __pa(brk_end), uml_reserved - brk_end, 1, 1, 0);</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          1 :         memblock_free((void *)brk_end, uml_reserved - brk_end);</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          1 :         uml_reserved = brk_end;</span></a>
 <a name="52"><span class="lineNum">      52 </span>            : </a>
 <a name="53"><span class="lineNum">      53 </span>            :         /* this will put all low memory onto the freelists */</a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          2 :         memblock_free_all();</span></a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          2 :         max_low_pfn = totalram_pages();</span></a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          2 :         max_pfn = max_low_pfn;</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          2 :         kmalloc_ok = 1;</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          2 : }</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          1 :         memblock_free_all();</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          1 :         max_low_pfn = totalram_pages();</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          1 :         max_pfn = max_low_pfn;</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          1 :         kmalloc_ok = 1;</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          1 : }</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : </a>
 <a name="60"><span class="lineNum">      60 </span>            : /*</a>
 <a name="61"><span class="lineNum">      61 </span>            :  * Create a page table and place a pointer to it in a middle page</a>
 <a name="62"><span class="lineNum">      62 </span>            :  * directory entry.</a>
 <a name="63"><span class="lineNum">      63 </span>            :  */</a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          2 : static void __init one_page_table_init(pmd_t *pmd)</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          1 : static void __init one_page_table_init(pmd_t *pmd)</span></a>
 <a name="65"><span class="lineNum">      65 </span>            : {</a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          2 :         if (pmd_none(*pmd)) {</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          2 :                 pte_t *pte = (pte_t *) memblock_alloc_low(PAGE_SIZE,</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          1 :         if (pmd_none(*pmd)) {</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          1 :                 pte_t *pte = (pte_t *) memblock_alloc_low(PAGE_SIZE,</span></a>
 <a name="68"><span class="lineNum">      68 </span>            :                                                           PAGE_SIZE);</a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          2 :                 if (!pte)</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          1 :                 if (!pte)</span></a>
 <a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :                         panic(&quot;%s: Failed to allocate %lu bytes align=%lx\n&quot;,</span></a>
 <a name="71"><span class="lineNum">      71 </span>            :                               __func__, PAGE_SIZE, PAGE_SIZE);</a>
 <a name="72"><span class="lineNum">      72 </span>            : </a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          4 :                 set_pmd(pmd, __pmd(_KERNPG_TABLE +</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          2 :                 set_pmd(pmd, __pmd(_KERNPG_TABLE +</span></a>
 <a name="74"><span class="lineNum">      74 </span>            :                                            (unsigned long) __pa(pte)));</a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          2 :                 BUG_ON(pte != pte_offset_kernel(pmd, 0));</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          1 :                 BUG_ON(pte != pte_offset_kernel(pmd, 0));</span></a>
 <a name="76"><span class="lineNum">      76 </span>            :         }</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">          2 : }</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">          1 : }</span></a>
 <a name="78"><span class="lineNum">      78 </span>            : </a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">          2 : static void __init one_md_table_init(pud_t *pud)</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">          1 : static void __init one_md_table_init(pud_t *pud)</span></a>
 <a name="80"><span class="lineNum">      80 </span>            : {</a>
 <a name="81"><span class="lineNum">      81 </span>            : #ifdef CONFIG_3_LEVEL_PGTABLES</a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">          2 :         pmd_t *pmd_table = (pmd_t *) memblock_alloc_low(PAGE_SIZE, PAGE_SIZE);</span></a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">          2 :         if (!pmd_table)</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">          1 :         pmd_t *pmd_table = (pmd_t *) memblock_alloc_low(PAGE_SIZE, PAGE_SIZE);</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">          1 :         if (!pmd_table)</span></a>
 <a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 :                 panic(&quot;%s: Failed to allocate %lu bytes align=%lx\n&quot;,</span></a>
 <a name="85"><span class="lineNum">      85 </span>            :                       __func__, PAGE_SIZE, PAGE_SIZE);</a>
 <a name="86"><span class="lineNum">      86 </span>            : </a>
-<a name="87"><span class="lineNum">      87 </span><span class="lineCov">          4 :         set_pud(pud, __pud(_KERNPG_TABLE + (unsigned long) __pa(pmd_table)));</span></a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">          2 :         BUG_ON(pmd_table != pmd_offset(pud, 0));</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineCov">          2 :         set_pud(pud, __pud(_KERNPG_TABLE + (unsigned long) __pa(pmd_table)));</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">          1 :         BUG_ON(pmd_table != pmd_offset(pud, 0));</span></a>
 <a name="89"><span class="lineNum">      89 </span>            : #endif</a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineCov">          2 : }</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">          1 : }</span></a>
 <a name="91"><span class="lineNum">      91 </span>            : </a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineCov">          2 : static void __init fixrange_init(unsigned long start, unsigned long end,</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">          1 : static void __init fixrange_init(unsigned long start, unsigned long end,</span></a>
 <a name="93"><span class="lineNum">      93 </span>            :                                  pgd_t *pgd_base)</a>
 <a name="94"><span class="lineNum">      94 </span>            : {</a>
 <a name="95"><span class="lineNum">      95 </span>            :         pgd_t *pgd;</a>
@@ -161,24 +161,24 @@
 <a name="99"><span class="lineNum">      99 </span>            :         int i, j;</a>
 <a name="100"><span class="lineNum">     100 </span>            :         unsigned long vaddr;</a>
 <a name="101"><span class="lineNum">     101 </span>            : </a>
-<a name="102"><span class="lineNum">     102 </span><span class="lineCov">          2 :         vaddr = start;</span></a>
-<a name="103"><span class="lineNum">     103 </span><span class="lineCov">          2 :         i = pgd_index(vaddr);</span></a>
-<a name="104"><span class="lineNum">     104 </span><span class="lineCov">          2 :         j = pmd_index(vaddr);</span></a>
-<a name="105"><span class="lineNum">     105 </span><span class="lineCov">          2 :         pgd = pgd_base + i;</span></a>
+<a name="102"><span class="lineNum">     102 </span><span class="lineCov">          1 :         vaddr = start;</span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineCov">          1 :         i = pgd_index(vaddr);</span></a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineCov">          1 :         j = pmd_index(vaddr);</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">          1 :         pgd = pgd_base + i;</span></a>
 <a name="106"><span class="lineNum">     106 </span>            : </a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">          4 :         for ( ; (i &lt; PTRS_PER_PGD) &amp;&amp; (vaddr &lt; end); pgd++, i++) {</span></a>
-<a name="108"><span class="lineNum">     108 </span><span class="lineCov">          2 :                 p4d = p4d_offset(pgd, vaddr);</span></a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">          2 :                 pud = pud_offset(p4d, vaddr);</span></a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineCov">          2 :                 if (pud_none(*pud))</span></a>
-<a name="111"><span class="lineNum">     111 </span><span class="lineCov">          2 :                         one_md_table_init(pud);</span></a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineCov">          2 :                 pmd = pmd_offset(pud, vaddr);</span></a>
-<a name="113"><span class="lineNum">     113 </span><span class="lineCov">          4 :                 for (; (j &lt; PTRS_PER_PMD) &amp;&amp; (vaddr &lt; end); pmd++, j++) {</span></a>
-<a name="114"><span class="lineNum">     114 </span><span class="lineCov">          2 :                         one_page_table_init(pmd);</span></a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">          2 :                         vaddr += PMD_SIZE;</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">          2 :         for ( ; (i &lt; PTRS_PER_PGD) &amp;&amp; (vaddr &lt; end); pgd++, i++) {</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineCov">          1 :                 p4d = p4d_offset(pgd, vaddr);</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">          1 :                 pud = pud_offset(p4d, vaddr);</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">          1 :                 if (pud_none(*pud))</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">          1 :                         one_md_table_init(pud);</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">          1 :                 pmd = pmd_offset(pud, vaddr);</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">          2 :                 for (; (j &lt; PTRS_PER_PMD) &amp;&amp; (vaddr &lt; end); pmd++, j++) {</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineCov">          1 :                         one_page_table_init(pmd);</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">          1 :                         vaddr += PMD_SIZE;</span></a>
 <a name="116"><span class="lineNum">     116 </span>            :                 }</a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineCov">          2 :                 j = 0;</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">          1 :                 j = 0;</span></a>
 <a name="118"><span class="lineNum">     118 </span>            :         }</a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineCov">          2 : }</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">          1 : }</span></a>
 <a name="120"><span class="lineNum">     120 </span>            : </a>
 <a name="121"><span class="lineNum">     121 </span>            : static void __init fixaddr_user_init( void)</a>
 <a name="122"><span class="lineNum">     122 </span>            : {</a>
@@ -207,29 +207,29 @@
 <a name="145"><span class="lineNum">     145 </span>            : #endif</a>
 <a name="146"><span class="lineNum">     146 </span>            : }</a>
 <a name="147"><span class="lineNum">     147 </span>            : </a>
-<a name="148"><span class="lineNum">     148 </span><span class="lineCov">          2 : void __init paging_init(void)</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineCov">          1 : void __init paging_init(void)</span></a>
 <a name="149"><span class="lineNum">     149 </span>            : {</a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">          2 :         unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">          1 :         unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };</span></a>
 <a name="151"><span class="lineNum">     151 </span>            :         unsigned long vaddr;</a>
 <a name="152"><span class="lineNum">     152 </span>            : </a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineCov">          2 :         empty_zero_page = (unsigned long *) memblock_alloc_low(PAGE_SIZE,</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">          1 :         empty_zero_page = (unsigned long *) memblock_alloc_low(PAGE_SIZE,</span></a>
 <a name="154"><span class="lineNum">     154 </span>            :                                                                PAGE_SIZE);</a>
-<a name="155"><span class="lineNum">     155 </span><span class="lineCov">          2 :         if (!empty_zero_page)</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineCov">          1 :         if (!empty_zero_page)</span></a>
 <a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 :                 panic(&quot;%s: Failed to allocate %lu bytes align=%lx\n&quot;,</span></a>
 <a name="157"><span class="lineNum">     157 </span>            :                       __func__, PAGE_SIZE, PAGE_SIZE);</a>
 <a name="158"><span class="lineNum">     158 </span>            : </a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">          2 :         max_zone_pfn[ZONE_NORMAL] = end_iomem &gt;&gt; PAGE_SHIFT;</span></a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          2 :         free_area_init(max_zone_pfn);</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">          1 :         max_zone_pfn[ZONE_NORMAL] = end_iomem &gt;&gt; PAGE_SHIFT;</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          1 :         free_area_init(max_zone_pfn);</span></a>
 <a name="161"><span class="lineNum">     161 </span>            : </a>
 <a name="162"><span class="lineNum">     162 </span>            :         /*</a>
 <a name="163"><span class="lineNum">     163 </span>            :          * Fixed mappings, only the page table structure has to be</a>
 <a name="164"><span class="lineNum">     164 </span>            :          * created - mappings will be set by set_fixmap():</a>
 <a name="165"><span class="lineNum">     165 </span>            :          */</a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">          2 :         vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) &amp; PMD_MASK;</span></a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">          2 :         fixrange_init(vaddr, FIXADDR_TOP, swapper_pg_dir);</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">          1 :         vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) &amp; PMD_MASK;</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">          1 :         fixrange_init(vaddr, FIXADDR_TOP, swapper_pg_dir);</span></a>
 <a name="168"><span class="lineNum">     168 </span>            : </a>
 <a name="169"><span class="lineNum">     169 </span>            :         fixaddr_user_init();</a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">          2 : }</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">          1 : }</span></a>
 <a name="171"><span class="lineNum">     171 </span>            : </a>
 <a name="172"><span class="lineNum">     172 </span>            : /*</a>
 <a name="173"><span class="lineNum">     173 </span>            :  * This can't do anything because nothing in the kernel image can be freed</a>
@@ -255,9 +255,9 @@
 <a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :         return pgd;</span></a>
 <a name="194"><span class="lineNum">     194 </span>            : }</a>
 <a name="195"><span class="lineNum">     195 </span>            : </a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineCov">          8 : void *uml_kmalloc(int size, int flags)</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineCov">          4 : void *uml_kmalloc(int size, int flags)</span></a>
 <a name="197"><span class="lineNum">     197 </span>            : {</a>
-<a name="198"><span class="lineNum">     198 </span><span class="lineCov">         16 :         return kmalloc(size, flags);</span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineCov">          8 :         return kmalloc(size, flags);</span></a>
 <a name="199"><span class="lineNum">     199 </span>            : }</a>
 </pre>
       </td>

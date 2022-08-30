@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -407,21 +407,21 @@
 <a name="345"><span class="lineNum">     345 </span>            : {</a>
 <a name="346"><span class="lineNum">     346 </span>            :         unsigned long x;</a>
 <a name="347"><span class="lineNum">     347 </span>            : </a>
-<a name="348"><span class="lineNum">     348 </span><span class="lineCov">          2 :         x = global_zone_page_state(NR_FREE_PAGES);</span></a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineCov">          1 :         x = global_zone_page_state(NR_FREE_PAGES);</span></a>
 <a name="349"><span class="lineNum">     349 </span>            :         /*</a>
 <a name="350"><span class="lineNum">     350 </span>            :          * Pages reserved for the kernel should not be considered</a>
 <a name="351"><span class="lineNum">     351 </span>            :          * dirtyable, to prevent a situation where reclaim has to</a>
 <a name="352"><span class="lineNum">     352 </span>            :          * clean pages in order to balance the zones.</a>
 <a name="353"><span class="lineNum">     353 </span>            :          */</a>
-<a name="354"><span class="lineNum">     354 </span><span class="lineCov">          2 :         x -= min(x, totalreserve_pages);</span></a>
+<a name="354"><span class="lineNum">     354 </span><span class="lineCov">          1 :         x -= min(x, totalreserve_pages);</span></a>
 <a name="355"><span class="lineNum">     355 </span>            : </a>
-<a name="356"><span class="lineNum">     356 </span><span class="lineCov">          2 :         x += global_node_page_state(NR_INACTIVE_FILE);</span></a>
-<a name="357"><span class="lineNum">     357 </span><span class="lineCov">          2 :         x += global_node_page_state(NR_ACTIVE_FILE);</span></a>
+<a name="356"><span class="lineNum">     356 </span><span class="lineCov">          1 :         x += global_node_page_state(NR_INACTIVE_FILE);</span></a>
+<a name="357"><span class="lineNum">     357 </span><span class="lineCov">          1 :         x += global_node_page_state(NR_ACTIVE_FILE);</span></a>
 <a name="358"><span class="lineNum">     358 </span>            : </a>
 <a name="359"><span class="lineNum">     359 </span>            :         if (!vm_highmem_is_dirtyable)</a>
 <a name="360"><span class="lineNum">     360 </span>            :                 x -= highmem_dirtyable_memory(x);</a>
 <a name="361"><span class="lineNum">     361 </span>            : </a>
-<a name="362"><span class="lineNum">     362 </span><span class="lineCov">          2 :         return x + 1;   /* Ensure that we never return 0 */</span></a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineCov">          1 :         return x + 1;   /* Ensure that we never return 0 */</span></a>
 <a name="363"><span class="lineNum">     363 </span>            : }</a>
 <a name="364"><span class="lineNum">     364 </span>            : </a>
 <a name="365"><span class="lineNum">     365 </span>            : /**</a>
@@ -433,15 +433,15 @@
 <a name="371"><span class="lineNum">     371 </span>            :  * must ensure that @dtc-&gt;avail is set before calling this function.  The</a>
 <a name="372"><span class="lineNum">     372 </span>            :  * dirty limits will be lifted by 1/4 for real-time tasks.</a>
 <a name="373"><span class="lineNum">     373 </span>            :  */</a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineCov">          2 : static void domain_dirty_limits(struct dirty_throttle_control *dtc)</span></a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineCov">          1 : static void domain_dirty_limits(struct dirty_throttle_control *dtc)</span></a>
 <a name="375"><span class="lineNum">     375 </span>            : {</a>
-<a name="376"><span class="lineNum">     376 </span><span class="lineCov">          2 :         const unsigned long available_memory = dtc-&gt;avail;</span></a>
-<a name="377"><span class="lineNum">     377 </span><span class="lineCov">          2 :         struct dirty_throttle_control *gdtc = mdtc_gdtc(dtc);</span></a>
-<a name="378"><span class="lineNum">     378 </span><span class="lineCov">          2 :         unsigned long bytes = vm_dirty_bytes;</span></a>
-<a name="379"><span class="lineNum">     379 </span><span class="lineCov">          2 :         unsigned long bg_bytes = dirty_background_bytes;</span></a>
+<a name="376"><span class="lineNum">     376 </span><span class="lineCov">          1 :         const unsigned long available_memory = dtc-&gt;avail;</span></a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineCov">          1 :         struct dirty_throttle_control *gdtc = mdtc_gdtc(dtc);</span></a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineCov">          1 :         unsigned long bytes = vm_dirty_bytes;</span></a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineCov">          1 :         unsigned long bg_bytes = dirty_background_bytes;</span></a>
 <a name="380"><span class="lineNum">     380 </span>            :         /* convert ratios to per-PAGE_SIZE for higher precision */</a>
-<a name="381"><span class="lineNum">     381 </span><span class="lineCov">          2 :         unsigned long ratio = (vm_dirty_ratio * PAGE_SIZE) / 100;</span></a>
-<a name="382"><span class="lineNum">     382 </span><span class="lineCov">          2 :         unsigned long bg_ratio = (dirty_background_ratio * PAGE_SIZE) / 100;</span></a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineCov">          1 :         unsigned long ratio = (vm_dirty_ratio * PAGE_SIZE) / 100;</span></a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineCov">          1 :         unsigned long bg_ratio = (dirty_background_ratio * PAGE_SIZE) / 100;</span></a>
 <a name="383"><span class="lineNum">     383 </span>            :         unsigned long thresh;</a>
 <a name="384"><span class="lineNum">     384 </span>            :         unsigned long bg_thresh;</a>
 <a name="385"><span class="lineNum">     385 </span>            :         struct task_struct *tsk;</a>
@@ -466,30 +466,30 @@
 <a name="404"><span class="lineNum">     404 </span>            :                 bytes = bg_bytes = 0;</a>
 <a name="405"><span class="lineNum">     405 </span>            :         }</a>
 <a name="406"><span class="lineNum">     406 </span>            : </a>
-<a name="407"><span class="lineNum">     407 </span><span class="lineCov">          2 :         if (bytes)</span></a>
+<a name="407"><span class="lineNum">     407 </span><span class="lineCov">          1 :         if (bytes)</span></a>
 <a name="408"><span class="lineNum">     408 </span><span class="lineNoCov">          0 :                 thresh = DIV_ROUND_UP(bytes, PAGE_SIZE);</span></a>
 <a name="409"><span class="lineNum">     409 </span>            :         else</a>
-<a name="410"><span class="lineNum">     410 </span><span class="lineCov">          2 :                 thresh = (ratio * available_memory) / PAGE_SIZE;</span></a>
+<a name="410"><span class="lineNum">     410 </span><span class="lineCov">          1 :                 thresh = (ratio * available_memory) / PAGE_SIZE;</span></a>
 <a name="411"><span class="lineNum">     411 </span>            : </a>
-<a name="412"><span class="lineNum">     412 </span><span class="lineCov">          2 :         if (bg_bytes)</span></a>
+<a name="412"><span class="lineNum">     412 </span><span class="lineCov">          1 :         if (bg_bytes)</span></a>
 <a name="413"><span class="lineNum">     413 </span><span class="lineNoCov">          0 :                 bg_thresh = DIV_ROUND_UP(bg_bytes, PAGE_SIZE);</span></a>
 <a name="414"><span class="lineNum">     414 </span>            :         else</a>
-<a name="415"><span class="lineNum">     415 </span><span class="lineCov">          2 :                 bg_thresh = (bg_ratio * available_memory) / PAGE_SIZE;</span></a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineCov">          1 :                 bg_thresh = (bg_ratio * available_memory) / PAGE_SIZE;</span></a>
 <a name="416"><span class="lineNum">     416 </span>            : </a>
-<a name="417"><span class="lineNum">     417 </span><span class="lineCov">          2 :         if (bg_thresh &gt;= thresh)</span></a>
+<a name="417"><span class="lineNum">     417 </span><span class="lineCov">          1 :         if (bg_thresh &gt;= thresh)</span></a>
 <a name="418"><span class="lineNum">     418 </span><span class="lineNoCov">          0 :                 bg_thresh = thresh / 2;</span></a>
-<a name="419"><span class="lineNum">     419 </span><span class="lineCov">          2 :         tsk = current;</span></a>
-<a name="420"><span class="lineNum">     420 </span><span class="lineCov">          4 :         if (rt_task(tsk)) {</span></a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineCov">          1 :         tsk = current;</span></a>
+<a name="420"><span class="lineNum">     420 </span><span class="lineCov">          2 :         if (rt_task(tsk)) {</span></a>
 <a name="421"><span class="lineNum">     421 </span><span class="lineNoCov">          0 :                 bg_thresh += bg_thresh / 4 + global_wb_domain.dirty_limit / 32;</span></a>
 <a name="422"><span class="lineNum">     422 </span><span class="lineNoCov">          0 :                 thresh += thresh / 4 + global_wb_domain.dirty_limit / 32;</span></a>
 <a name="423"><span class="lineNum">     423 </span>            :         }</a>
-<a name="424"><span class="lineNum">     424 </span><span class="lineCov">          2 :         dtc-&gt;thresh = thresh;</span></a>
-<a name="425"><span class="lineNum">     425 </span><span class="lineCov">          2 :         dtc-&gt;bg_thresh = bg_thresh;</span></a>
+<a name="424"><span class="lineNum">     424 </span><span class="lineCov">          1 :         dtc-&gt;thresh = thresh;</span></a>
+<a name="425"><span class="lineNum">     425 </span><span class="lineCov">          1 :         dtc-&gt;bg_thresh = bg_thresh;</span></a>
 <a name="426"><span class="lineNum">     426 </span>            : </a>
 <a name="427"><span class="lineNum">     427 </span>            :         /* we should eventually report the domain in the TP */</a>
 <a name="428"><span class="lineNum">     428 </span>            :         if (!gdtc)</a>
 <a name="429"><span class="lineNum">     429 </span>            :                 trace_global_dirty_state(bg_thresh, thresh);</a>
-<a name="430"><span class="lineNum">     430 </span><span class="lineCov">          2 : }</span></a>
+<a name="430"><span class="lineNum">     430 </span><span class="lineCov">          1 : }</span></a>
 <a name="431"><span class="lineNum">     431 </span>            : </a>
 <a name="432"><span class="lineNum">     432 </span>            : /**</a>
 <a name="433"><span class="lineNum">     433 </span>            :  * global_dirty_limits - background-writeback and dirty-throttling thresholds</a>
@@ -499,16 +499,16 @@
 <a name="437"><span class="lineNum">     437 </span>            :  * Calculate bg_thresh and thresh for global_wb_domain.  See</a>
 <a name="438"><span class="lineNum">     438 </span>            :  * domain_dirty_limits() for details.</a>
 <a name="439"><span class="lineNum">     439 </span>            :  */</a>
-<a name="440"><span class="lineNum">     440 </span><span class="lineCov">          2 : void global_dirty_limits(unsigned long *pbackground, unsigned long *pdirty)</span></a>
+<a name="440"><span class="lineNum">     440 </span><span class="lineCov">          1 : void global_dirty_limits(unsigned long *pbackground, unsigned long *pdirty)</span></a>
 <a name="441"><span class="lineNum">     441 </span>            : {</a>
-<a name="442"><span class="lineNum">     442 </span><span class="lineCov">          2 :         struct dirty_throttle_control gdtc = { GDTC_INIT_NO_WB };</span></a>
+<a name="442"><span class="lineNum">     442 </span><span class="lineCov">          1 :         struct dirty_throttle_control gdtc = { GDTC_INIT_NO_WB };</span></a>
 <a name="443"><span class="lineNum">     443 </span>            : </a>
-<a name="444"><span class="lineNum">     444 </span><span class="lineCov">          2 :         gdtc.avail = global_dirtyable_memory();</span></a>
-<a name="445"><span class="lineNum">     445 </span><span class="lineCov">          2 :         domain_dirty_limits(&amp;gdtc);</span></a>
+<a name="444"><span class="lineNum">     444 </span><span class="lineCov">          1 :         gdtc.avail = global_dirtyable_memory();</span></a>
+<a name="445"><span class="lineNum">     445 </span><span class="lineCov">          1 :         domain_dirty_limits(&amp;gdtc);</span></a>
 <a name="446"><span class="lineNum">     446 </span>            : </a>
-<a name="447"><span class="lineNum">     447 </span><span class="lineCov">          2 :         *pbackground = gdtc.bg_thresh;</span></a>
-<a name="448"><span class="lineNum">     448 </span><span class="lineCov">          2 :         *pdirty = gdtc.thresh;</span></a>
-<a name="449"><span class="lineNum">     449 </span><span class="lineCov">          2 : }</span></a>
+<a name="447"><span class="lineNum">     447 </span><span class="lineCov">          1 :         *pbackground = gdtc.bg_thresh;</span></a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineCov">          1 :         *pdirty = gdtc.thresh;</span></a>
+<a name="449"><span class="lineNum">     449 </span><span class="lineCov">          1 : }</span></a>
 <a name="450"><span class="lineNum">     450 </span>            : </a>
 <a name="451"><span class="lineNum">     451 </span>            : /**</a>
 <a name="452"><span class="lineNum">     452 </span>            :  * node_dirty_limit - maximum number of dirty pages allowed in a node</a>
@@ -682,17 +682,17 @@
 <a name="620"><span class="lineNum">     620 </span>            :         }</a>
 <a name="621"><span class="lineNum">     621 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="622"><span class="lineNum">     622 </span>            : </a>
-<a name="623"><span class="lineNum">     623 </span><span class="lineCov">          2 : int wb_domain_init(struct wb_domain *dom, gfp_t gfp)</span></a>
+<a name="623"><span class="lineNum">     623 </span><span class="lineCov">          1 : int wb_domain_init(struct wb_domain *dom, gfp_t gfp)</span></a>
 <a name="624"><span class="lineNum">     624 </span>            : {</a>
-<a name="625"><span class="lineNum">     625 </span><span class="lineCov">          2 :         memset(dom, 0, sizeof(*dom));</span></a>
+<a name="625"><span class="lineNum">     625 </span><span class="lineCov">          1 :         memset(dom, 0, sizeof(*dom));</span></a>
 <a name="626"><span class="lineNum">     626 </span>            : </a>
-<a name="627"><span class="lineNum">     627 </span><span class="lineCov">          2 :         spin_lock_init(&amp;dom-&gt;lock);</span></a>
+<a name="627"><span class="lineNum">     627 </span><span class="lineCov">          1 :         spin_lock_init(&amp;dom-&gt;lock);</span></a>
 <a name="628"><span class="lineNum">     628 </span>            : </a>
-<a name="629"><span class="lineNum">     629 </span><span class="lineCov">          2 :         timer_setup(&amp;dom-&gt;period_timer, writeout_period, TIMER_DEFERRABLE);</span></a>
+<a name="629"><span class="lineNum">     629 </span><span class="lineCov">          1 :         timer_setup(&amp;dom-&gt;period_timer, writeout_period, TIMER_DEFERRABLE);</span></a>
 <a name="630"><span class="lineNum">     630 </span>            : </a>
-<a name="631"><span class="lineNum">     631 </span><span class="lineCov">          2 :         dom-&gt;dirty_limit_tstamp = jiffies;</span></a>
+<a name="631"><span class="lineNum">     631 </span><span class="lineCov">          1 :         dom-&gt;dirty_limit_tstamp = jiffies;</span></a>
 <a name="632"><span class="lineNum">     632 </span>            : </a>
-<a name="633"><span class="lineNum">     633 </span><span class="lineCov">          2 :         return fprop_global_init(&amp;dom-&gt;completions, gfp);</span></a>
+<a name="633"><span class="lineNum">     633 </span><span class="lineCov">          1 :         return fprop_global_init(&amp;dom-&gt;completions, gfp);</span></a>
 <a name="634"><span class="lineNum">     634 </span>            : }</a>
 <a name="635"><span class="lineNum">     635 </span>            : </a>
 <a name="636"><span class="lineNum">     636 </span>            : #ifdef CONFIG_CGROUP_WRITEBACK</a>
@@ -2112,23 +2112,23 @@
 <a name="2050"><span class="lineNum">    2050 </span>            :  * thresholds.</a>
 <a name="2051"><span class="lineNum">    2051 </span>            :  */</a>
 <a name="2052"><span class="lineNum">    2052 </span>            : </a>
-<a name="2053"><span class="lineNum">    2053 </span><span class="lineCov">          2 : void writeback_set_ratelimit(void)</span></a>
+<a name="2053"><span class="lineNum">    2053 </span><span class="lineCov">          1 : void writeback_set_ratelimit(void)</span></a>
 <a name="2054"><span class="lineNum">    2054 </span>            : {</a>
-<a name="2055"><span class="lineNum">    2055 </span><span class="lineCov">          2 :         struct wb_domain *dom = &amp;global_wb_domain;</span></a>
+<a name="2055"><span class="lineNum">    2055 </span><span class="lineCov">          1 :         struct wb_domain *dom = &amp;global_wb_domain;</span></a>
 <a name="2056"><span class="lineNum">    2056 </span>            :         unsigned long background_thresh;</a>
 <a name="2057"><span class="lineNum">    2057 </span>            :         unsigned long dirty_thresh;</a>
 <a name="2058"><span class="lineNum">    2058 </span>            : </a>
-<a name="2059"><span class="lineNum">    2059 </span><span class="lineCov">          2 :         global_dirty_limits(&amp;background_thresh, &amp;dirty_thresh);</span></a>
-<a name="2060"><span class="lineNum">    2060 </span><span class="lineCov">          2 :         dom-&gt;dirty_limit = dirty_thresh;</span></a>
-<a name="2061"><span class="lineNum">    2061 </span><span class="lineCov">          2 :         ratelimit_pages = dirty_thresh / (num_online_cpus() * 32);</span></a>
-<a name="2062"><span class="lineNum">    2062 </span><span class="lineCov">          2 :         if (ratelimit_pages &lt; 16)</span></a>
+<a name="2059"><span class="lineNum">    2059 </span><span class="lineCov">          1 :         global_dirty_limits(&amp;background_thresh, &amp;dirty_thresh);</span></a>
+<a name="2060"><span class="lineNum">    2060 </span><span class="lineCov">          1 :         dom-&gt;dirty_limit = dirty_thresh;</span></a>
+<a name="2061"><span class="lineNum">    2061 </span><span class="lineCov">          1 :         ratelimit_pages = dirty_thresh / (num_online_cpus() * 32);</span></a>
+<a name="2062"><span class="lineNum">    2062 </span><span class="lineCov">          1 :         if (ratelimit_pages &lt; 16)</span></a>
 <a name="2063"><span class="lineNum">    2063 </span><span class="lineNoCov">          0 :                 ratelimit_pages = 16;</span></a>
-<a name="2064"><span class="lineNum">    2064 </span><span class="lineCov">          2 : }</span></a>
+<a name="2064"><span class="lineNum">    2064 </span><span class="lineCov">          1 : }</span></a>
 <a name="2065"><span class="lineNum">    2065 </span>            : </a>
-<a name="2066"><span class="lineNum">    2066 </span><span class="lineCov">          2 : static int page_writeback_cpu_online(unsigned int cpu)</span></a>
+<a name="2066"><span class="lineNum">    2066 </span><span class="lineCov">          1 : static int page_writeback_cpu_online(unsigned int cpu)</span></a>
 <a name="2067"><span class="lineNum">    2067 </span>            : {</a>
-<a name="2068"><span class="lineNum">    2068 </span><span class="lineCov">          2 :         writeback_set_ratelimit();</span></a>
-<a name="2069"><span class="lineNum">    2069 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="2068"><span class="lineNum">    2068 </span><span class="lineCov">          1 :         writeback_set_ratelimit();</span></a>
+<a name="2069"><span class="lineNum">    2069 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="2070"><span class="lineNum">    2070 </span>            : }</a>
 <a name="2071"><span class="lineNum">    2071 </span>            : </a>
 <a name="2072"><span class="lineNum">    2072 </span>            : /*</a>
@@ -2147,15 +2147,15 @@
 <a name="2085"><span class="lineNum">    2085 </span>            :  * But we might still want to scale the dirty_ratio by how</a>
 <a name="2086"><span class="lineNum">    2086 </span>            :  * much memory the box has..</a>
 <a name="2087"><span class="lineNum">    2087 </span>            :  */</a>
-<a name="2088"><span class="lineNum">    2088 </span><span class="lineCov">          2 : void __init page_writeback_init(void)</span></a>
+<a name="2088"><span class="lineNum">    2088 </span><span class="lineCov">          1 : void __init page_writeback_init(void)</span></a>
 <a name="2089"><span class="lineNum">    2089 </span>            : {</a>
-<a name="2090"><span class="lineNum">    2090 </span><span class="lineCov">          2 :         BUG_ON(wb_domain_init(&amp;global_wb_domain, GFP_KERNEL));</span></a>
+<a name="2090"><span class="lineNum">    2090 </span><span class="lineCov">          1 :         BUG_ON(wb_domain_init(&amp;global_wb_domain, GFP_KERNEL));</span></a>
 <a name="2091"><span class="lineNum">    2091 </span>            : </a>
-<a name="2092"><span class="lineNum">    2092 </span><span class="lineCov">          2 :         cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, &quot;mm/writeback:online&quot;,</span></a>
+<a name="2092"><span class="lineNum">    2092 </span><span class="lineCov">          1 :         cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, &quot;mm/writeback:online&quot;,</span></a>
 <a name="2093"><span class="lineNum">    2093 </span>            :                           page_writeback_cpu_online, NULL);</a>
-<a name="2094"><span class="lineNum">    2094 </span><span class="lineCov">          2 :         cpuhp_setup_state(CPUHP_MM_WRITEBACK_DEAD, &quot;mm/writeback:dead&quot;, NULL,</span></a>
+<a name="2094"><span class="lineNum">    2094 </span><span class="lineCov">          1 :         cpuhp_setup_state(CPUHP_MM_WRITEBACK_DEAD, &quot;mm/writeback:dead&quot;, NULL,</span></a>
 <a name="2095"><span class="lineNum">    2095 </span>            :                           page_writeback_cpu_online);</a>
-<a name="2096"><span class="lineNum">    2096 </span><span class="lineCov">          2 : }</span></a>
+<a name="2096"><span class="lineNum">    2096 </span><span class="lineCov">          1 : }</span></a>
 <a name="2097"><span class="lineNum">    2097 </span>            : </a>
 <a name="2098"><span class="lineNum">    2098 </span>            : /**</a>
 <a name="2099"><span class="lineNum">    2099 </span>            :  * tag_pages_for_writeback - tag pages to be written by write_cache_pages</a>

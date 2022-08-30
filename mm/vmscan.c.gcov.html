@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">8</td>
@@ -674,28 +674,28 @@
 <a name="612"><span class="lineNum">     612 </span>            : /*</a>
 <a name="613"><span class="lineNum">     613 </span>            :  * Add a shrinker callback to be called from the vm.</a>
 <a name="614"><span class="lineNum">     614 </span>            :  */</a>
-<a name="615"><span class="lineNum">     615 </span><span class="lineCov">         22 : int prealloc_shrinker(struct shrinker *shrinker)</span></a>
+<a name="615"><span class="lineNum">     615 </span><span class="lineCov">         11 : int prealloc_shrinker(struct shrinker *shrinker)</span></a>
 <a name="616"><span class="lineNum">     616 </span>            : {</a>
 <a name="617"><span class="lineNum">     617 </span>            :         unsigned int size;</a>
 <a name="618"><span class="lineNum">     618 </span>            :         int err;</a>
 <a name="619"><span class="lineNum">     619 </span>            : </a>
-<a name="620"><span class="lineNum">     620 </span><span class="lineCov">         22 :         if (shrinker-&gt;flags &amp; SHRINKER_MEMCG_AWARE) {</span></a>
-<a name="621"><span class="lineNum">     621 </span><span class="lineCov">         22 :                 err = prealloc_memcg_shrinker(shrinker);</span></a>
+<a name="620"><span class="lineNum">     620 </span><span class="lineCov">         11 :         if (shrinker-&gt;flags &amp; SHRINKER_MEMCG_AWARE) {</span></a>
+<a name="621"><span class="lineNum">     621 </span><span class="lineCov">         11 :                 err = prealloc_memcg_shrinker(shrinker);</span></a>
 <a name="622"><span class="lineNum">     622 </span>            :                 if (err != -ENOSYS)</a>
 <a name="623"><span class="lineNum">     623 </span>            :                         return err;</a>
 <a name="624"><span class="lineNum">     624 </span>            : </a>
-<a name="625"><span class="lineNum">     625 </span><span class="lineCov">         22 :                 shrinker-&gt;flags &amp;= ~SHRINKER_MEMCG_AWARE;</span></a>
+<a name="625"><span class="lineNum">     625 </span><span class="lineCov">         11 :                 shrinker-&gt;flags &amp;= ~SHRINKER_MEMCG_AWARE;</span></a>
 <a name="626"><span class="lineNum">     626 </span>            :         }</a>
 <a name="627"><span class="lineNum">     627 </span>            : </a>
-<a name="628"><span class="lineNum">     628 </span><span class="lineCov">         22 :         size = sizeof(*shrinker-&gt;nr_deferred);</span></a>
+<a name="628"><span class="lineNum">     628 </span><span class="lineCov">         11 :         size = sizeof(*shrinker-&gt;nr_deferred);</span></a>
 <a name="629"><span class="lineNum">     629 </span>            :         if (shrinker-&gt;flags &amp; SHRINKER_NUMA_AWARE)</a>
 <a name="630"><span class="lineNum">     630 </span>            :                 size *= nr_node_ids;</a>
 <a name="631"><span class="lineNum">     631 </span>            : </a>
-<a name="632"><span class="lineNum">     632 </span><span class="lineCov">         22 :         shrinker-&gt;nr_deferred = kzalloc(size, GFP_KERNEL);</span></a>
-<a name="633"><span class="lineNum">     633 </span><span class="lineCov">         22 :         if (!shrinker-&gt;nr_deferred)</span></a>
+<a name="632"><span class="lineNum">     632 </span><span class="lineCov">         11 :         shrinker-&gt;nr_deferred = kzalloc(size, GFP_KERNEL);</span></a>
+<a name="633"><span class="lineNum">     633 </span><span class="lineCov">         11 :         if (!shrinker-&gt;nr_deferred)</span></a>
 <a name="634"><span class="lineNum">     634 </span>            :                 return -ENOMEM;</a>
 <a name="635"><span class="lineNum">     635 </span>            : </a>
-<a name="636"><span class="lineNum">     636 </span><span class="lineCov">         22 :         return 0;</span></a>
+<a name="636"><span class="lineNum">     636 </span><span class="lineCov">         11 :         return 0;</span></a>
 <a name="637"><span class="lineNum">     637 </span>            : }</a>
 <a name="638"><span class="lineNum">     638 </span>            : </a>
 <a name="639"><span class="lineNum">     639 </span><span class="lineNoCov">          0 : void free_prealloced_shrinker(struct shrinker *shrinker)</span></a>
@@ -711,13 +711,13 @@
 <a name="649"><span class="lineNum">     649 </span><span class="lineNoCov">          0 :         shrinker-&gt;nr_deferred = NULL;</span></a>
 <a name="650"><span class="lineNum">     650 </span>            : }</a>
 <a name="651"><span class="lineNum">     651 </span>            : </a>
-<a name="652"><span class="lineNum">     652 </span><span class="lineCov">         22 : void register_shrinker_prepared(struct shrinker *shrinker)</span></a>
+<a name="652"><span class="lineNum">     652 </span><span class="lineCov">         11 : void register_shrinker_prepared(struct shrinker *shrinker)</span></a>
 <a name="653"><span class="lineNum">     653 </span>            : {</a>
-<a name="654"><span class="lineNum">     654 </span><span class="lineCov">         22 :         down_write(&amp;shrinker_rwsem);</span></a>
-<a name="655"><span class="lineNum">     655 </span><span class="lineCov">         44 :         list_add_tail(&amp;shrinker-&gt;list, &amp;shrinker_list);</span></a>
-<a name="656"><span class="lineNum">     656 </span><span class="lineCov">         22 :         shrinker-&gt;flags |= SHRINKER_REGISTERED;</span></a>
-<a name="657"><span class="lineNum">     657 </span><span class="lineCov">         22 :         up_write(&amp;shrinker_rwsem);</span></a>
-<a name="658"><span class="lineNum">     658 </span><span class="lineCov">         22 : }</span></a>
+<a name="654"><span class="lineNum">     654 </span><span class="lineCov">         11 :         down_write(&amp;shrinker_rwsem);</span></a>
+<a name="655"><span class="lineNum">     655 </span><span class="lineCov">         22 :         list_add_tail(&amp;shrinker-&gt;list, &amp;shrinker_list);</span></a>
+<a name="656"><span class="lineNum">     656 </span><span class="lineCov">         11 :         shrinker-&gt;flags |= SHRINKER_REGISTERED;</span></a>
+<a name="657"><span class="lineNum">     657 </span><span class="lineCov">         11 :         up_write(&amp;shrinker_rwsem);</span></a>
+<a name="658"><span class="lineNum">     658 </span><span class="lineCov">         11 : }</span></a>
 <a name="659"><span class="lineNum">     659 </span>            : </a>
 <a name="660"><span class="lineNum">     660 </span><span class="lineNoCov">          0 : int register_shrinker(struct shrinker *shrinker)</span></a>
 <a name="661"><span class="lineNum">     661 </span>            : {</a>
@@ -3949,27 +3949,27 @@
 <a name="3887"><span class="lineNum">    3887 </span>            :  * Returns true if there is an eligible zone balanced for the request order</a>
 <a name="3888"><span class="lineNum">    3888 </span>            :  * and highest_zoneidx</a>
 <a name="3889"><span class="lineNum">    3889 </span>            :  */</a>
-<a name="3890"><span class="lineNum">    3890 </span><span class="lineCov">          2 : static bool pgdat_balanced(pg_data_t *pgdat, int order, int highest_zoneidx)</span></a>
+<a name="3890"><span class="lineNum">    3890 </span><span class="lineCov">          1 : static bool pgdat_balanced(pg_data_t *pgdat, int order, int highest_zoneidx)</span></a>
 <a name="3891"><span class="lineNum">    3891 </span>            : {</a>
 <a name="3892"><span class="lineNum">    3892 </span>            :         int i;</a>
-<a name="3893"><span class="lineNum">    3893 </span><span class="lineCov">          2 :         unsigned long mark = -1;</span></a>
+<a name="3893"><span class="lineNum">    3893 </span><span class="lineCov">          1 :         unsigned long mark = -1;</span></a>
 <a name="3894"><span class="lineNum">    3894 </span>            :         struct zone *zone;</a>
 <a name="3895"><span class="lineNum">    3895 </span>            : </a>
 <a name="3896"><span class="lineNum">    3896 </span>            :         /*</a>
 <a name="3897"><span class="lineNum">    3897 </span>            :          * Check watermarks bottom-up as lower zones are more likely to</a>
 <a name="3898"><span class="lineNum">    3898 </span>            :          * meet watermarks.</a>
 <a name="3899"><span class="lineNum">    3899 </span>            :          */</a>
-<a name="3900"><span class="lineNum">    3900 </span><span class="lineCov">          2 :         for (i = 0; i &lt;= highest_zoneidx; i++) {</span></a>
-<a name="3901"><span class="lineNum">    3901 </span><span class="lineCov">          2 :                 zone = pgdat-&gt;node_zones + i;</span></a>
+<a name="3900"><span class="lineNum">    3900 </span><span class="lineCov">          1 :         for (i = 0; i &lt;= highest_zoneidx; i++) {</span></a>
+<a name="3901"><span class="lineNum">    3901 </span><span class="lineCov">          1 :                 zone = pgdat-&gt;node_zones + i;</span></a>
 <a name="3902"><span class="lineNum">    3902 </span>            : </a>
-<a name="3903"><span class="lineNum">    3903 </span><span class="lineCov">          2 :                 if (!managed_zone(zone))</span></a>
+<a name="3903"><span class="lineNum">    3903 </span><span class="lineCov">          1 :                 if (!managed_zone(zone))</span></a>
 <a name="3904"><span class="lineNum">    3904 </span><span class="lineNoCov">          0 :                         continue;</span></a>
 <a name="3905"><span class="lineNum">    3905 </span>            : </a>
 <a name="3906"><span class="lineNum">    3906 </span>            :                 if (sysctl_numa_balancing_mode &amp; NUMA_BALANCING_MEMORY_TIERING)</a>
 <a name="3907"><span class="lineNum">    3907 </span>            :                         mark = wmark_pages(zone, WMARK_PROMO);</a>
 <a name="3908"><span class="lineNum">    3908 </span>            :                 else</a>
-<a name="3909"><span class="lineNum">    3909 </span><span class="lineCov">          2 :                         mark = high_wmark_pages(zone);</span></a>
-<a name="3910"><span class="lineNum">    3910 </span><span class="lineCov">          2 :                 if (zone_watermark_ok_safe(zone, order, mark, highest_zoneidx))</span></a>
+<a name="3909"><span class="lineNum">    3909 </span><span class="lineCov">          1 :                         mark = high_wmark_pages(zone);</span></a>
+<a name="3910"><span class="lineNum">    3910 </span><span class="lineCov">          1 :                 if (zone_watermark_ok_safe(zone, order, mark, highest_zoneidx))</span></a>
 <a name="3911"><span class="lineNum">    3911 </span>            :                         return true;</a>
 <a name="3912"><span class="lineNum">    3912 </span>            :         }</a>
 <a name="3913"><span class="lineNum">    3913 </span>            : </a>
@@ -3987,11 +3987,11 @@
 <a name="3925"><span class="lineNum">    3925 </span>            : /* Clear pgdat state for congested, dirty or under writeback. */</a>
 <a name="3926"><span class="lineNum">    3926 </span>            : static void clear_pgdat_congested(pg_data_t *pgdat)</a>
 <a name="3927"><span class="lineNum">    3927 </span>            : {</a>
-<a name="3928"><span class="lineNum">    3928 </span><span class="lineCov">          2 :         struct lruvec *lruvec = mem_cgroup_lruvec(NULL, pgdat);</span></a>
+<a name="3928"><span class="lineNum">    3928 </span><span class="lineCov">          1 :         struct lruvec *lruvec = mem_cgroup_lruvec(NULL, pgdat);</span></a>
 <a name="3929"><span class="lineNum">    3929 </span>            : </a>
-<a name="3930"><span class="lineNum">    3930 </span><span class="lineCov">          4 :         clear_bit(LRUVEC_CONGESTED, &amp;lruvec-&gt;flags);</span></a>
-<a name="3931"><span class="lineNum">    3931 </span><span class="lineCov">          4 :         clear_bit(PGDAT_DIRTY, &amp;pgdat-&gt;flags);</span></a>
-<a name="3932"><span class="lineNum">    3932 </span><span class="lineCov">          4 :         clear_bit(PGDAT_WRITEBACK, &amp;pgdat-&gt;flags);</span></a>
+<a name="3930"><span class="lineNum">    3930 </span><span class="lineCov">          2 :         clear_bit(LRUVEC_CONGESTED, &amp;lruvec-&gt;flags);</span></a>
+<a name="3931"><span class="lineNum">    3931 </span><span class="lineCov">          2 :         clear_bit(PGDAT_DIRTY, &amp;pgdat-&gt;flags);</span></a>
+<a name="3932"><span class="lineNum">    3932 </span><span class="lineCov">          2 :         clear_bit(PGDAT_WRITEBACK, &amp;pgdat-&gt;flags);</span></a>
 <a name="3933"><span class="lineNum">    3933 </span>            : }</a>
 <a name="3934"><span class="lineNum">    3934 </span>            : </a>
 <a name="3935"><span class="lineNum">    3935 </span>            : /*</a>
@@ -4000,7 +4000,7 @@
 <a name="3938"><span class="lineNum">    3938 </span>            :  *</a>
 <a name="3939"><span class="lineNum">    3939 </span>            :  * Returns true if kswapd is ready to sleep</a>
 <a name="3940"><span class="lineNum">    3940 </span>            :  */</a>
-<a name="3941"><span class="lineNum">    3941 </span><span class="lineCov">          2 : static bool prepare_kswapd_sleep(pg_data_t *pgdat, int order,</span></a>
+<a name="3941"><span class="lineNum">    3941 </span><span class="lineCov">          1 : static bool prepare_kswapd_sleep(pg_data_t *pgdat, int order,</span></a>
 <a name="3942"><span class="lineNum">    3942 </span>            :                                 int highest_zoneidx)</a>
 <a name="3943"><span class="lineNum">    3943 </span>            : {</a>
 <a name="3944"><span class="lineNum">    3944 </span>            :         /*</a>
@@ -4016,16 +4016,16 @@
 <a name="3954"><span class="lineNum">    3954 </span>            :          * throttled again. The difference from wake ups in balance_pgdat() is</a>
 <a name="3955"><span class="lineNum">    3955 </span>            :          * that here we are under prepare_to_wait().</a>
 <a name="3956"><span class="lineNum">    3956 </span>            :          */</a>
-<a name="3957"><span class="lineNum">    3957 </span><span class="lineCov">          4 :         if (waitqueue_active(&amp;pgdat-&gt;pfmemalloc_wait))</span></a>
+<a name="3957"><span class="lineNum">    3957 </span><span class="lineCov">          2 :         if (waitqueue_active(&amp;pgdat-&gt;pfmemalloc_wait))</span></a>
 <a name="3958"><span class="lineNum">    3958 </span><span class="lineNoCov">          0 :                 wake_up_all(&amp;pgdat-&gt;pfmemalloc_wait);</span></a>
 <a name="3959"><span class="lineNum">    3959 </span>            : </a>
 <a name="3960"><span class="lineNum">    3960 </span>            :         /* Hopeless node, leave it to direct reclaim */</a>
-<a name="3961"><span class="lineNum">    3961 </span><span class="lineCov">          2 :         if (pgdat-&gt;kswapd_failures &gt;= MAX_RECLAIM_RETRIES)</span></a>
+<a name="3961"><span class="lineNum">    3961 </span><span class="lineCov">          1 :         if (pgdat-&gt;kswapd_failures &gt;= MAX_RECLAIM_RETRIES)</span></a>
 <a name="3962"><span class="lineNum">    3962 </span>            :                 return true;</a>
 <a name="3963"><span class="lineNum">    3963 </span>            : </a>
-<a name="3964"><span class="lineNum">    3964 </span><span class="lineCov">          2 :         if (pgdat_balanced(pgdat, order, highest_zoneidx)) {</span></a>
-<a name="3965"><span class="lineNum">    3965 </span><span class="lineCov">          2 :                 clear_pgdat_congested(pgdat);</span></a>
-<a name="3966"><span class="lineNum">    3966 </span><span class="lineCov">          2 :                 return true;</span></a>
+<a name="3964"><span class="lineNum">    3964 </span><span class="lineCov">          1 :         if (pgdat_balanced(pgdat, order, highest_zoneidx)) {</span></a>
+<a name="3965"><span class="lineNum">    3965 </span><span class="lineCov">          1 :                 clear_pgdat_congested(pgdat);</span></a>
+<a name="3966"><span class="lineNum">    3966 </span><span class="lineCov">          1 :                 return true;</span></a>
 <a name="3967"><span class="lineNum">    3967 </span>            :         }</a>
 <a name="3968"><span class="lineNum">    3968 </span>            : </a>
 <a name="3969"><span class="lineNum">    3969 </span>            :         return false;</a>
@@ -4340,21 +4340,21 @@
 <a name="4278"><span class="lineNum">    4278 </span>            : static enum zone_type kswapd_highest_zoneidx(pg_data_t *pgdat,</a>
 <a name="4279"><span class="lineNum">    4279 </span>            :                                            enum zone_type prev_highest_zoneidx)</a>
 <a name="4280"><span class="lineNum">    4280 </span>            : {</a>
-<a name="4281"><span class="lineNum">    4281 </span><span class="lineCov">          2 :         enum zone_type curr_idx = READ_ONCE(pgdat-&gt;kswapd_highest_zoneidx);</span></a>
+<a name="4281"><span class="lineNum">    4281 </span><span class="lineCov">          1 :         enum zone_type curr_idx = READ_ONCE(pgdat-&gt;kswapd_highest_zoneidx);</span></a>
 <a name="4282"><span class="lineNum">    4282 </span>            : </a>
-<a name="4283"><span class="lineNum">    4283 </span><span class="lineCov">          2 :         return curr_idx == MAX_NR_ZONES ? prev_highest_zoneidx : curr_idx;</span></a>
+<a name="4283"><span class="lineNum">    4283 </span><span class="lineCov">          1 :         return curr_idx == MAX_NR_ZONES ? prev_highest_zoneidx : curr_idx;</span></a>
 <a name="4284"><span class="lineNum">    4284 </span>            : }</a>
 <a name="4285"><span class="lineNum">    4285 </span>            : </a>
-<a name="4286"><span class="lineNum">    4286 </span><span class="lineCov">          2 : static void kswapd_try_to_sleep(pg_data_t *pgdat, int alloc_order, int reclaim_order,</span></a>
+<a name="4286"><span class="lineNum">    4286 </span><span class="lineCov">          1 : static void kswapd_try_to_sleep(pg_data_t *pgdat, int alloc_order, int reclaim_order,</span></a>
 <a name="4287"><span class="lineNum">    4287 </span>            :                                 unsigned int highest_zoneidx)</a>
 <a name="4288"><span class="lineNum">    4288 </span>            : {</a>
-<a name="4289"><span class="lineNum">    4289 </span><span class="lineCov">          2 :         long remaining = 0;</span></a>
-<a name="4290"><span class="lineNum">    4290 </span><span class="lineCov">          4 :         DEFINE_WAIT(wait);</span></a>
+<a name="4289"><span class="lineNum">    4289 </span><span class="lineCov">          1 :         long remaining = 0;</span></a>
+<a name="4290"><span class="lineNum">    4290 </span><span class="lineCov">          2 :         DEFINE_WAIT(wait);</span></a>
 <a name="4291"><span class="lineNum">    4291 </span>            : </a>
-<a name="4292"><span class="lineNum">    4292 </span><span class="lineCov">          4 :         if (freezing(current) || kthread_should_stop())</span></a>
+<a name="4292"><span class="lineNum">    4292 </span><span class="lineCov">          2 :         if (freezing(current) || kthread_should_stop())</span></a>
 <a name="4293"><span class="lineNum">    4293 </span><span class="lineNoCov">          0 :                 return;</span></a>
 <a name="4294"><span class="lineNum">    4294 </span>            : </a>
-<a name="4295"><span class="lineNum">    4295 </span><span class="lineCov">          2 :         prepare_to_wait(&amp;pgdat-&gt;kswapd_wait, &amp;wait, TASK_INTERRUPTIBLE);</span></a>
+<a name="4295"><span class="lineNum">    4295 </span><span class="lineCov">          1 :         prepare_to_wait(&amp;pgdat-&gt;kswapd_wait, &amp;wait, TASK_INTERRUPTIBLE);</span></a>
 <a name="4296"><span class="lineNum">    4296 </span>            : </a>
 <a name="4297"><span class="lineNum">    4297 </span>            :         /*</a>
 <a name="4298"><span class="lineNum">    4298 </span>            :          * Try to sleep for a short interval. Note that kcompactd will only be</a>
@@ -4363,22 +4363,22 @@
 <a name="4301"><span class="lineNum">    4301 </span>            :          * eligible zone balanced that it's also unlikely that compaction will</a>
 <a name="4302"><span class="lineNum">    4302 </span>            :          * succeed.</a>
 <a name="4303"><span class="lineNum">    4303 </span>            :          */</a>
-<a name="4304"><span class="lineNum">    4304 </span><span class="lineCov">          2 :         if (prepare_kswapd_sleep(pgdat, reclaim_order, highest_zoneidx)) {</span></a>
+<a name="4304"><span class="lineNum">    4304 </span><span class="lineCov">          1 :         if (prepare_kswapd_sleep(pgdat, reclaim_order, highest_zoneidx)) {</span></a>
 <a name="4305"><span class="lineNum">    4305 </span>            :                 /*</a>
 <a name="4306"><span class="lineNum">    4306 </span>            :                  * Compaction records what page blocks it recently failed to</a>
 <a name="4307"><span class="lineNum">    4307 </span>            :                  * isolate pages from and skips them in the future scanning.</a>
 <a name="4308"><span class="lineNum">    4308 </span>            :                  * When kswapd is going to sleep, it is reasonable to assume</a>
 <a name="4309"><span class="lineNum">    4309 </span>            :                  * that pages and compaction may succeed so reset the cache.</a>
 <a name="4310"><span class="lineNum">    4310 </span>            :                  */</a>
-<a name="4311"><span class="lineNum">    4311 </span><span class="lineCov">          2 :                 reset_isolation_suitable(pgdat);</span></a>
+<a name="4311"><span class="lineNum">    4311 </span><span class="lineCov">          1 :                 reset_isolation_suitable(pgdat);</span></a>
 <a name="4312"><span class="lineNum">    4312 </span>            : </a>
 <a name="4313"><span class="lineNum">    4313 </span>            :                 /*</a>
 <a name="4314"><span class="lineNum">    4314 </span>            :                  * We have freed the memory, now we should compact it to make</a>
 <a name="4315"><span class="lineNum">    4315 </span>            :                  * allocation of the requested order possible.</a>
 <a name="4316"><span class="lineNum">    4316 </span>            :                  */</a>
-<a name="4317"><span class="lineNum">    4317 </span><span class="lineCov">          2 :                 wakeup_kcompactd(pgdat, alloc_order, highest_zoneidx);</span></a>
+<a name="4317"><span class="lineNum">    4317 </span><span class="lineCov">          1 :                 wakeup_kcompactd(pgdat, alloc_order, highest_zoneidx);</span></a>
 <a name="4318"><span class="lineNum">    4318 </span>            : </a>
-<a name="4319"><span class="lineNum">    4319 </span><span class="lineCov">          2 :                 remaining = schedule_timeout(HZ/10);</span></a>
+<a name="4319"><span class="lineNum">    4319 </span><span class="lineCov">          1 :                 remaining = schedule_timeout(HZ/10);</span></a>
 <a name="4320"><span class="lineNum">    4320 </span>            : </a>
 <a name="4321"><span class="lineNum">    4321 </span>            :                 /*</a>
 <a name="4322"><span class="lineNum">    4322 </span>            :                  * If woken prematurely then reset kswapd_highest_zoneidx and</a>
@@ -4442,16 +4442,16 @@
 <a name="4380"><span class="lineNum">    4380 </span>            :  * If there are applications that are active memory-allocators</a>
 <a name="4381"><span class="lineNum">    4381 </span>            :  * (most normal use), this basically shouldn't matter.</a>
 <a name="4382"><span class="lineNum">    4382 </span>            :  */</a>
-<a name="4383"><span class="lineNum">    4383 </span><span class="lineCov">          2 : static int kswapd(void *p)</span></a>
+<a name="4383"><span class="lineNum">    4383 </span><span class="lineCov">          1 : static int kswapd(void *p)</span></a>
 <a name="4384"><span class="lineNum">    4384 </span>            : {</a>
 <a name="4385"><span class="lineNum">    4385 </span>            :         unsigned int alloc_order, reclaim_order;</a>
-<a name="4386"><span class="lineNum">    4386 </span><span class="lineCov">          2 :         unsigned int highest_zoneidx = MAX_NR_ZONES - 1;</span></a>
-<a name="4387"><span class="lineNum">    4387 </span><span class="lineCov">          2 :         pg_data_t *pgdat = (pg_data_t *)p;</span></a>
-<a name="4388"><span class="lineNum">    4388 </span><span class="lineCov">          2 :         struct task_struct *tsk = current;</span></a>
-<a name="4389"><span class="lineNum">    4389 </span><span class="lineCov">          2 :         const struct cpumask *cpumask = cpumask_of_node(pgdat-&gt;node_id);</span></a>
+<a name="4386"><span class="lineNum">    4386 </span><span class="lineCov">          1 :         unsigned int highest_zoneidx = MAX_NR_ZONES - 1;</span></a>
+<a name="4387"><span class="lineNum">    4387 </span><span class="lineCov">          1 :         pg_data_t *pgdat = (pg_data_t *)p;</span></a>
+<a name="4388"><span class="lineNum">    4388 </span><span class="lineCov">          1 :         struct task_struct *tsk = current;</span></a>
+<a name="4389"><span class="lineNum">    4389 </span><span class="lineCov">          1 :         const struct cpumask *cpumask = cpumask_of_node(pgdat-&gt;node_id);</span></a>
 <a name="4390"><span class="lineNum">    4390 </span>            : </a>
-<a name="4391"><span class="lineNum">    4391 </span><span class="lineCov">          2 :         if (!cpumask_empty(cpumask))</span></a>
-<a name="4392"><span class="lineNum">    4392 </span><span class="lineCov">          2 :                 set_cpus_allowed_ptr(tsk, cpumask);</span></a>
+<a name="4391"><span class="lineNum">    4391 </span><span class="lineCov">          1 :         if (!cpumask_empty(cpumask))</span></a>
+<a name="4392"><span class="lineNum">    4392 </span><span class="lineCov">          1 :                 set_cpus_allowed_ptr(tsk, cpumask);</span></a>
 <a name="4393"><span class="lineNum">    4393 </span>            : </a>
 <a name="4394"><span class="lineNum">    4394 </span>            :         /*</a>
 <a name="4395"><span class="lineNum">    4395 </span>            :          * Tell the memory management that we're a &quot;memory allocator&quot;,</a>
@@ -4465,21 +4465,21 @@
 <a name="4403"><span class="lineNum">    4403 </span>            :          * us from recursively trying to free more memory as we're</a>
 <a name="4404"><span class="lineNum">    4404 </span>            :          * trying to free the first piece of memory in the first place).</a>
 <a name="4405"><span class="lineNum">    4405 </span>            :          */</a>
-<a name="4406"><span class="lineNum">    4406 </span><span class="lineCov">          2 :         tsk-&gt;flags |= PF_MEMALLOC | PF_KSWAPD;</span></a>
-<a name="4407"><span class="lineNum">    4407 </span><span class="lineCov">          2 :         set_freezable();</span></a>
+<a name="4406"><span class="lineNum">    4406 </span><span class="lineCov">          1 :         tsk-&gt;flags |= PF_MEMALLOC | PF_KSWAPD;</span></a>
+<a name="4407"><span class="lineNum">    4407 </span><span class="lineCov">          1 :         set_freezable();</span></a>
 <a name="4408"><span class="lineNum">    4408 </span>            : </a>
-<a name="4409"><span class="lineNum">    4409 </span><span class="lineCov">          2 :         WRITE_ONCE(pgdat-&gt;kswapd_order, 0);</span></a>
-<a name="4410"><span class="lineNum">    4410 </span><span class="lineCov">          2 :         WRITE_ONCE(pgdat-&gt;kswapd_highest_zoneidx, MAX_NR_ZONES);</span></a>
-<a name="4411"><span class="lineNum">    4411 </span><span class="lineCov">          2 :         atomic_set(&amp;pgdat-&gt;nr_writeback_throttled, 0);</span></a>
+<a name="4409"><span class="lineNum">    4409 </span><span class="lineCov">          1 :         WRITE_ONCE(pgdat-&gt;kswapd_order, 0);</span></a>
+<a name="4410"><span class="lineNum">    4410 </span><span class="lineCov">          1 :         WRITE_ONCE(pgdat-&gt;kswapd_highest_zoneidx, MAX_NR_ZONES);</span></a>
+<a name="4411"><span class="lineNum">    4411 </span><span class="lineCov">          1 :         atomic_set(&amp;pgdat-&gt;nr_writeback_throttled, 0);</span></a>
 <a name="4412"><span class="lineNum">    4412 </span>            :         for ( ; ; ) {</a>
 <a name="4413"><span class="lineNum">    4413 </span>            :                 bool ret;</a>
 <a name="4414"><span class="lineNum">    4414 </span>            : </a>
-<a name="4415"><span class="lineNum">    4415 </span><span class="lineCov">          2 :                 alloc_order = reclaim_order = READ_ONCE(pgdat-&gt;kswapd_order);</span></a>
+<a name="4415"><span class="lineNum">    4415 </span><span class="lineCov">          1 :                 alloc_order = reclaim_order = READ_ONCE(pgdat-&gt;kswapd_order);</span></a>
 <a name="4416"><span class="lineNum">    4416 </span>            :                 highest_zoneidx = kswapd_highest_zoneidx(pgdat,</a>
 <a name="4417"><span class="lineNum">    4417 </span>            :                                                         highest_zoneidx);</a>
 <a name="4418"><span class="lineNum">    4418 </span>            : </a>
 <a name="4419"><span class="lineNum">    4419 </span>            : kswapd_try_sleep:</a>
-<a name="4420"><span class="lineNum">    4420 </span><span class="lineCov">          2 :                 kswapd_try_to_sleep(pgdat, alloc_order, reclaim_order,</span></a>
+<a name="4420"><span class="lineNum">    4420 </span><span class="lineCov">          1 :                 kswapd_try_to_sleep(pgdat, alloc_order, reclaim_order,</span></a>
 <a name="4421"><span class="lineNum">    4421 </span>            :                                         highest_zoneidx);</a>
 <a name="4422"><span class="lineNum">    4422 </span>            : </a>
 <a name="4423"><span class="lineNum">    4423 </span>            :                 /* Read the new order and highest_zoneidx */</a>
@@ -4616,15 +4616,15 @@
 <a name="4554"><span class="lineNum">    4554 </span>            :  * This kswapd start function will be called by init and node-hot-add.</a>
 <a name="4555"><span class="lineNum">    4555 </span>            :  * On node-hot-add, kswapd will moved to proper cpus if cpus are hot-added.</a>
 <a name="4556"><span class="lineNum">    4556 </span>            :  */</a>
-<a name="4557"><span class="lineNum">    4557 </span><span class="lineCov">          2 : void kswapd_run(int nid)</span></a>
+<a name="4557"><span class="lineNum">    4557 </span><span class="lineCov">          1 : void kswapd_run(int nid)</span></a>
 <a name="4558"><span class="lineNum">    4558 </span>            : {</a>
-<a name="4559"><span class="lineNum">    4559 </span><span class="lineCov">          2 :         pg_data_t *pgdat = NODE_DATA(nid);</span></a>
+<a name="4559"><span class="lineNum">    4559 </span><span class="lineCov">          1 :         pg_data_t *pgdat = NODE_DATA(nid);</span></a>
 <a name="4560"><span class="lineNum">    4560 </span>            : </a>
-<a name="4561"><span class="lineNum">    4561 </span><span class="lineCov">          2 :         if (pgdat-&gt;kswapd)</span></a>
+<a name="4561"><span class="lineNum">    4561 </span><span class="lineCov">          1 :         if (pgdat-&gt;kswapd)</span></a>
 <a name="4562"><span class="lineNum">    4562 </span>            :                 return;</a>
 <a name="4563"><span class="lineNum">    4563 </span>            : </a>
-<a name="4564"><span class="lineNum">    4564 </span><span class="lineCov">          4 :         pgdat-&gt;kswapd = kthread_run(kswapd, pgdat, &quot;kswapd%d&quot;, nid);</span></a>
-<a name="4565"><span class="lineNum">    4565 </span><span class="lineCov">          2 :         if (IS_ERR(pgdat-&gt;kswapd)) {</span></a>
+<a name="4564"><span class="lineNum">    4564 </span><span class="lineCov">          2 :         pgdat-&gt;kswapd = kthread_run(kswapd, pgdat, &quot;kswapd%d&quot;, nid);</span></a>
+<a name="4565"><span class="lineNum">    4565 </span><span class="lineCov">          1 :         if (IS_ERR(pgdat-&gt;kswapd)) {</span></a>
 <a name="4566"><span class="lineNum">    4566 </span>            :                 /* failure at boot is fatal */</a>
 <a name="4567"><span class="lineNum">    4567 </span><span class="lineNoCov">          0 :                 BUG_ON(system_state &lt; SYSTEM_RUNNING);</span></a>
 <a name="4568"><span class="lineNum">    4568 </span><span class="lineNoCov">          0 :                 pr_err(&quot;Failed to start kswapd on node %d\n&quot;, nid);</span></a>
@@ -4646,14 +4646,14 @@
 <a name="4584"><span class="lineNum">    4584 </span>            :         }</a>
 <a name="4585"><span class="lineNum">    4585 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="4586"><span class="lineNum">    4586 </span>            : </a>
-<a name="4587"><span class="lineNum">    4587 </span><span class="lineCov">          2 : static int __init kswapd_init(void)</span></a>
+<a name="4587"><span class="lineNum">    4587 </span><span class="lineCov">          1 : static int __init kswapd_init(void)</span></a>
 <a name="4588"><span class="lineNum">    4588 </span>            : {</a>
 <a name="4589"><span class="lineNum">    4589 </span>            :         int nid;</a>
 <a name="4590"><span class="lineNum">    4590 </span>            : </a>
-<a name="4591"><span class="lineNum">    4591 </span><span class="lineCov">          2 :         swap_setup();</span></a>
-<a name="4592"><span class="lineNum">    4592 </span><span class="lineCov">          4 :         for_each_node_state(nid, N_MEMORY)</span></a>
-<a name="4593"><span class="lineNum">    4593 </span><span class="lineCov">          2 :                 kswapd_run(nid);</span></a>
-<a name="4594"><span class="lineNum">    4594 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="4591"><span class="lineNum">    4591 </span><span class="lineCov">          1 :         swap_setup();</span></a>
+<a name="4592"><span class="lineNum">    4592 </span><span class="lineCov">          2 :         for_each_node_state(nid, N_MEMORY)</span></a>
+<a name="4593"><span class="lineNum">    4593 </span><span class="lineCov">          1 :                 kswapd_run(nid);</span></a>
+<a name="4594"><span class="lineNum">    4594 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="4595"><span class="lineNum">    4595 </span>            : }</a>
 <a name="4596"><span class="lineNum">    4596 </span>            : </a>
 <a name="4597"><span class="lineNum">    4597 </span>            : module_init(kswapd_init)</a>

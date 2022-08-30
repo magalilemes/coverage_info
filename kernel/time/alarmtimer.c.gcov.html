@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -966,7 +966,7 @@
 <a name="904"><span class="lineNum">     904 </span>            :  * This function initializes the alarm bases and registers</a>
 <a name="905"><span class="lineNum">     905 </span>            :  * the posix clock ids.</a>
 <a name="906"><span class="lineNum">     906 </span>            :  */</a>
-<a name="907"><span class="lineNum">     907 </span><span class="lineCov">          2 : static int __init alarmtimer_init(void)</span></a>
+<a name="907"><span class="lineNum">     907 </span><span class="lineCov">          1 : static int __init alarmtimer_init(void)</span></a>
 <a name="908"><span class="lineNum">     908 </span>            : {</a>
 <a name="909"><span class="lineNum">     909 </span>            :         int error;</a>
 <a name="910"><span class="lineNum">     910 </span>            :         int i;</a>
@@ -974,23 +974,23 @@
 <a name="912"><span class="lineNum">     912 </span>            :         alarmtimer_rtc_timer_init();</a>
 <a name="913"><span class="lineNum">     913 </span>            : </a>
 <a name="914"><span class="lineNum">     914 </span>            :         /* Initialize alarm bases */</a>
-<a name="915"><span class="lineNum">     915 </span><span class="lineCov">          2 :         alarm_bases[ALARM_REALTIME].base_clockid = CLOCK_REALTIME;</span></a>
-<a name="916"><span class="lineNum">     916 </span><span class="lineCov">          2 :         alarm_bases[ALARM_REALTIME].get_ktime = &amp;ktime_get_real;</span></a>
-<a name="917"><span class="lineNum">     917 </span><span class="lineCov">          2 :         alarm_bases[ALARM_REALTIME].get_timespec = ktime_get_real_ts64;</span></a>
-<a name="918"><span class="lineNum">     918 </span><span class="lineCov">          2 :         alarm_bases[ALARM_BOOTTIME].base_clockid = CLOCK_BOOTTIME;</span></a>
-<a name="919"><span class="lineNum">     919 </span><span class="lineCov">          2 :         alarm_bases[ALARM_BOOTTIME].get_ktime = &amp;ktime_get_boottime;</span></a>
-<a name="920"><span class="lineNum">     920 </span><span class="lineCov">          2 :         alarm_bases[ALARM_BOOTTIME].get_timespec = get_boottime_timespec;</span></a>
-<a name="921"><span class="lineNum">     921 </span><span class="lineCov">          6 :         for (i = 0; i &lt; ALARM_NUMTYPE; i++) {</span></a>
-<a name="922"><span class="lineNum">     922 </span><span class="lineCov">          8 :                 timerqueue_init_head(&amp;alarm_bases[i].timerqueue);</span></a>
-<a name="923"><span class="lineNum">     923 </span><span class="lineCov">          4 :                 spin_lock_init(&amp;alarm_bases[i].lock);</span></a>
+<a name="915"><span class="lineNum">     915 </span><span class="lineCov">          1 :         alarm_bases[ALARM_REALTIME].base_clockid = CLOCK_REALTIME;</span></a>
+<a name="916"><span class="lineNum">     916 </span><span class="lineCov">          1 :         alarm_bases[ALARM_REALTIME].get_ktime = &amp;ktime_get_real;</span></a>
+<a name="917"><span class="lineNum">     917 </span><span class="lineCov">          1 :         alarm_bases[ALARM_REALTIME].get_timespec = ktime_get_real_ts64;</span></a>
+<a name="918"><span class="lineNum">     918 </span><span class="lineCov">          1 :         alarm_bases[ALARM_BOOTTIME].base_clockid = CLOCK_BOOTTIME;</span></a>
+<a name="919"><span class="lineNum">     919 </span><span class="lineCov">          1 :         alarm_bases[ALARM_BOOTTIME].get_ktime = &amp;ktime_get_boottime;</span></a>
+<a name="920"><span class="lineNum">     920 </span><span class="lineCov">          1 :         alarm_bases[ALARM_BOOTTIME].get_timespec = get_boottime_timespec;</span></a>
+<a name="921"><span class="lineNum">     921 </span><span class="lineCov">          3 :         for (i = 0; i &lt; ALARM_NUMTYPE; i++) {</span></a>
+<a name="922"><span class="lineNum">     922 </span><span class="lineCov">          4 :                 timerqueue_init_head(&amp;alarm_bases[i].timerqueue);</span></a>
+<a name="923"><span class="lineNum">     923 </span><span class="lineCov">          2 :                 spin_lock_init(&amp;alarm_bases[i].lock);</span></a>
 <a name="924"><span class="lineNum">     924 </span>            :         }</a>
 <a name="925"><span class="lineNum">     925 </span>            : </a>
-<a name="926"><span class="lineNum">     926 </span><span class="lineCov">          2 :         error = alarmtimer_rtc_interface_setup();</span></a>
+<a name="926"><span class="lineNum">     926 </span><span class="lineCov">          1 :         error = alarmtimer_rtc_interface_setup();</span></a>
 <a name="927"><span class="lineNum">     927 </span>            :         if (error)</a>
 <a name="928"><span class="lineNum">     928 </span>            :                 return error;</a>
 <a name="929"><span class="lineNum">     929 </span>            : </a>
-<a name="930"><span class="lineNum">     930 </span><span class="lineCov">          2 :         error = platform_driver_register(&amp;alarmtimer_driver);</span></a>
-<a name="931"><span class="lineNum">     931 </span><span class="lineCov">          2 :         if (error)</span></a>
+<a name="930"><span class="lineNum">     930 </span><span class="lineCov">          1 :         error = platform_driver_register(&amp;alarmtimer_driver);</span></a>
+<a name="931"><span class="lineNum">     931 </span><span class="lineCov">          1 :         if (error)</span></a>
 <a name="932"><span class="lineNum">     932 </span>            :                 goto out_if;</a>
 <a name="933"><span class="lineNum">     933 </span>            : </a>
 <a name="934"><span class="lineNum">     934 </span>            :         return 0;</a>

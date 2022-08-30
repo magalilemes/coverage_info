@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -445,14 +445,14 @@
 <a name="383"><span class="lineNum">     383 </span>            : static  __cacheline_aligned_in_smp DEFINE_SPINLOCK(bdev_lock);</a>
 <a name="384"><span class="lineNum">     384 </span>            : static struct kmem_cache * bdev_cachep __read_mostly;</a>
 <a name="385"><span class="lineNum">     385 </span>            : </a>
-<a name="386"><span class="lineNum">     386 </span><span class="lineCov">          2 : static struct inode *bdev_alloc_inode(struct super_block *sb)</span></a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineCov">          1 : static struct inode *bdev_alloc_inode(struct super_block *sb)</span></a>
 <a name="387"><span class="lineNum">     387 </span>            : {</a>
-<a name="388"><span class="lineNum">     388 </span><span class="lineCov">          4 :         struct bdev_inode *ei = alloc_inode_sb(sb, bdev_cachep, GFP_KERNEL);</span></a>
+<a name="388"><span class="lineNum">     388 </span><span class="lineCov">          2 :         struct bdev_inode *ei = alloc_inode_sb(sb, bdev_cachep, GFP_KERNEL);</span></a>
 <a name="389"><span class="lineNum">     389 </span>            : </a>
-<a name="390"><span class="lineNum">     390 </span><span class="lineCov">          2 :         if (!ei)</span></a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineCov">          1 :         if (!ei)</span></a>
 <a name="391"><span class="lineNum">     391 </span>            :                 return NULL;</a>
-<a name="392"><span class="lineNum">     392 </span><span class="lineCov">          2 :         memset(&amp;ei-&gt;bdev, 0, sizeof(ei-&gt;bdev));</span></a>
-<a name="393"><span class="lineNum">     393 </span><span class="lineCov">          2 :         return &amp;ei-&gt;vfs_inode;</span></a>
+<a name="392"><span class="lineNum">     392 </span><span class="lineCov">          1 :         memset(&amp;ei-&gt;bdev, 0, sizeof(ei-&gt;bdev));</span></a>
+<a name="393"><span class="lineNum">     393 </span><span class="lineCov">          1 :         return &amp;ei-&gt;vfs_inode;</span></a>
 <a name="394"><span class="lineNum">     394 </span>            : }</a>
 <a name="395"><span class="lineNum">     395 </span>            : </a>
 <a name="396"><span class="lineNum">     396 </span><span class="lineNoCov">          0 : static void bdev_free_inode(struct inode *inode)</span></a>
@@ -474,12 +474,12 @@
 <a name="412"><span class="lineNum">     412 </span><span class="lineNoCov">          0 :         kmem_cache_free(bdev_cachep, BDEV_I(inode));</span></a>
 <a name="413"><span class="lineNum">     413 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="414"><span class="lineNum">     414 </span>            : </a>
-<a name="415"><span class="lineNum">     415 </span><span class="lineCov">         22 : static void init_once(void *data)</span></a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineCov">         11 : static void init_once(void *data)</span></a>
 <a name="416"><span class="lineNum">     416 </span>            : {</a>
-<a name="417"><span class="lineNum">     417 </span><span class="lineCov">         22 :         struct bdev_inode *ei = data;</span></a>
+<a name="417"><span class="lineNum">     417 </span><span class="lineCov">         11 :         struct bdev_inode *ei = data;</span></a>
 <a name="418"><span class="lineNum">     418 </span>            : </a>
-<a name="419"><span class="lineNum">     419 </span><span class="lineCov">         22 :         inode_init_once(&amp;ei-&gt;vfs_inode);</span></a>
-<a name="420"><span class="lineNum">     420 </span><span class="lineCov">         22 : }</span></a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineCov">         11 :         inode_init_once(&amp;ei-&gt;vfs_inode);</span></a>
+<a name="420"><span class="lineNum">     420 </span><span class="lineCov">         11 : }</span></a>
 <a name="421"><span class="lineNum">     421 </span>            : </a>
 <a name="422"><span class="lineNum">     422 </span><span class="lineNoCov">          0 : static void bdev_evict_inode(struct inode *inode)</span></a>
 <a name="423"><span class="lineNum">     423 </span>            : {</a>
@@ -496,14 +496,14 @@
 <a name="434"><span class="lineNum">     434 </span>            :         .evict_inode = bdev_evict_inode,</a>
 <a name="435"><span class="lineNum">     435 </span>            : };</a>
 <a name="436"><span class="lineNum">     436 </span>            : </a>
-<a name="437"><span class="lineNum">     437 </span><span class="lineCov">          2 : static int bd_init_fs_context(struct fs_context *fc)</span></a>
+<a name="437"><span class="lineNum">     437 </span><span class="lineCov">          1 : static int bd_init_fs_context(struct fs_context *fc)</span></a>
 <a name="438"><span class="lineNum">     438 </span>            : {</a>
-<a name="439"><span class="lineNum">     439 </span><span class="lineCov">          2 :         struct pseudo_fs_context *ctx = init_pseudo(fc, BDEVFS_MAGIC);</span></a>
-<a name="440"><span class="lineNum">     440 </span><span class="lineCov">          2 :         if (!ctx)</span></a>
+<a name="439"><span class="lineNum">     439 </span><span class="lineCov">          1 :         struct pseudo_fs_context *ctx = init_pseudo(fc, BDEVFS_MAGIC);</span></a>
+<a name="440"><span class="lineNum">     440 </span><span class="lineCov">          1 :         if (!ctx)</span></a>
 <a name="441"><span class="lineNum">     441 </span>            :                 return -ENOMEM;</a>
-<a name="442"><span class="lineNum">     442 </span><span class="lineCov">          2 :         fc-&gt;s_iflags |= SB_I_CGROUPWB;</span></a>
-<a name="443"><span class="lineNum">     443 </span><span class="lineCov">          2 :         ctx-&gt;ops = &amp;bdev_sops;</span></a>
-<a name="444"><span class="lineNum">     444 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="442"><span class="lineNum">     442 </span><span class="lineCov">          1 :         fc-&gt;s_iflags |= SB_I_CGROUPWB;</span></a>
+<a name="443"><span class="lineNum">     443 </span><span class="lineCov">          1 :         ctx-&gt;ops = &amp;bdev_sops;</span></a>
+<a name="444"><span class="lineNum">     444 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="445"><span class="lineNum">     445 </span>            : }</a>
 <a name="446"><span class="lineNum">     446 </span>            : </a>
 <a name="447"><span class="lineNum">     447 </span>            : static struct file_system_type bd_type = {</a>
@@ -515,23 +515,23 @@
 <a name="453"><span class="lineNum">     453 </span>            : struct super_block *blockdev_superblock __read_mostly;</a>
 <a name="454"><span class="lineNum">     454 </span>            : EXPORT_SYMBOL_GPL(blockdev_superblock);</a>
 <a name="455"><span class="lineNum">     455 </span>            : </a>
-<a name="456"><span class="lineNum">     456 </span><span class="lineCov">          2 : void __init bdev_cache_init(void)</span></a>
+<a name="456"><span class="lineNum">     456 </span><span class="lineCov">          1 : void __init bdev_cache_init(void)</span></a>
 <a name="457"><span class="lineNum">     457 </span>            : {</a>
 <a name="458"><span class="lineNum">     458 </span>            :         int err;</a>
 <a name="459"><span class="lineNum">     459 </span>            :         static struct vfsmount *bd_mnt;</a>
 <a name="460"><span class="lineNum">     460 </span>            : </a>
-<a name="461"><span class="lineNum">     461 </span><span class="lineCov">          2 :         bdev_cachep = kmem_cache_create(&quot;bdev_cache&quot;, sizeof(struct bdev_inode),</span></a>
+<a name="461"><span class="lineNum">     461 </span><span class="lineCov">          1 :         bdev_cachep = kmem_cache_create(&quot;bdev_cache&quot;, sizeof(struct bdev_inode),</span></a>
 <a name="462"><span class="lineNum">     462 </span>            :                         0, (SLAB_HWCACHE_ALIGN|SLAB_RECLAIM_ACCOUNT|</a>
 <a name="463"><span class="lineNum">     463 </span>            :                                 SLAB_MEM_SPREAD|SLAB_ACCOUNT|SLAB_PANIC),</a>
 <a name="464"><span class="lineNum">     464 </span>            :                         init_once);</a>
-<a name="465"><span class="lineNum">     465 </span><span class="lineCov">          2 :         err = register_filesystem(&amp;bd_type);</span></a>
-<a name="466"><span class="lineNum">     466 </span><span class="lineCov">          2 :         if (err)</span></a>
+<a name="465"><span class="lineNum">     465 </span><span class="lineCov">          1 :         err = register_filesystem(&amp;bd_type);</span></a>
+<a name="466"><span class="lineNum">     466 </span><span class="lineCov">          1 :         if (err)</span></a>
 <a name="467"><span class="lineNum">     467 </span><span class="lineNoCov">          0 :                 panic(&quot;Cannot register bdev pseudo-fs&quot;);</span></a>
-<a name="468"><span class="lineNum">     468 </span><span class="lineCov">          2 :         bd_mnt = kern_mount(&amp;bd_type);</span></a>
-<a name="469"><span class="lineNum">     469 </span><span class="lineCov">          4 :         if (IS_ERR(bd_mnt))</span></a>
+<a name="468"><span class="lineNum">     468 </span><span class="lineCov">          1 :         bd_mnt = kern_mount(&amp;bd_type);</span></a>
+<a name="469"><span class="lineNum">     469 </span><span class="lineCov">          2 :         if (IS_ERR(bd_mnt))</span></a>
 <a name="470"><span class="lineNum">     470 </span><span class="lineNoCov">          0 :                 panic(&quot;Cannot create bdev pseudo-fs&quot;);</span></a>
-<a name="471"><span class="lineNum">     471 </span><span class="lineCov">          2 :         blockdev_superblock = bd_mnt-&gt;mnt_sb;   /* For writeback */</span></a>
-<a name="472"><span class="lineNum">     472 </span><span class="lineCov">          2 : }</span></a>
+<a name="471"><span class="lineNum">     471 </span><span class="lineCov">          1 :         blockdev_superblock = bd_mnt-&gt;mnt_sb;   /* For writeback */</span></a>
+<a name="472"><span class="lineNum">     472 </span><span class="lineCov">          1 : }</span></a>
 <a name="473"><span class="lineNum">     473 </span>            : </a>
 <a name="474"><span class="lineNum">     474 </span><span class="lineNoCov">          0 : struct block_device *bdev_alloc(struct gendisk *disk, u8 partno)</span></a>
 <a name="475"><span class="lineNum">     475 </span>            : {</a>
@@ -569,17 +569,17 @@
 <a name="507"><span class="lineNum">     507 </span><span class="lineNoCov">          0 :         insert_inode_hash(bdev-&gt;bd_inode);</span></a>
 <a name="508"><span class="lineNum">     508 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="509"><span class="lineNum">     509 </span>            : </a>
-<a name="510"><span class="lineNum">     510 </span><span class="lineCov">          6 : long nr_blockdev_pages(void)</span></a>
+<a name="510"><span class="lineNum">     510 </span><span class="lineCov">          3 : long nr_blockdev_pages(void)</span></a>
 <a name="511"><span class="lineNum">     511 </span>            : {</a>
 <a name="512"><span class="lineNum">     512 </span>            :         struct inode *inode;</a>
-<a name="513"><span class="lineNum">     513 </span><span class="lineCov">          6 :         long ret = 0;</span></a>
+<a name="513"><span class="lineNum">     513 </span><span class="lineCov">          3 :         long ret = 0;</span></a>
 <a name="514"><span class="lineNum">     514 </span>            : </a>
-<a name="515"><span class="lineNum">     515 </span><span class="lineCov">         12 :         spin_lock(&amp;blockdev_superblock-&gt;s_inode_list_lock);</span></a>
-<a name="516"><span class="lineNum">     516 </span><span class="lineCov">         12 :         list_for_each_entry(inode, &amp;blockdev_superblock-&gt;s_inodes, i_sb_list)</span></a>
-<a name="517"><span class="lineNum">     517 </span><span class="lineCov">          6 :                 ret += inode-&gt;i_mapping-&gt;nrpages;</span></a>
-<a name="518"><span class="lineNum">     518 </span><span class="lineCov">         12 :         spin_unlock(&amp;blockdev_superblock-&gt;s_inode_list_lock);</span></a>
+<a name="515"><span class="lineNum">     515 </span><span class="lineCov">          6 :         spin_lock(&amp;blockdev_superblock-&gt;s_inode_list_lock);</span></a>
+<a name="516"><span class="lineNum">     516 </span><span class="lineCov">          6 :         list_for_each_entry(inode, &amp;blockdev_superblock-&gt;s_inodes, i_sb_list)</span></a>
+<a name="517"><span class="lineNum">     517 </span><span class="lineCov">          3 :                 ret += inode-&gt;i_mapping-&gt;nrpages;</span></a>
+<a name="518"><span class="lineNum">     518 </span><span class="lineCov">          6 :         spin_unlock(&amp;blockdev_superblock-&gt;s_inode_list_lock);</span></a>
 <a name="519"><span class="lineNum">     519 </span>            : </a>
-<a name="520"><span class="lineNum">     520 </span><span class="lineCov">          6 :         return ret;</span></a>
+<a name="520"><span class="lineNum">     520 </span><span class="lineCov">          3 :         return ret;</span></a>
 <a name="521"><span class="lineNum">     521 </span>            : }</a>
 <a name="522"><span class="lineNum">     522 </span>            : </a>
 <a name="523"><span class="lineNum">     523 </span>            : /**</a>

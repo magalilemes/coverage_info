@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -666,7 +666,7 @@
 <a name="604"><span class="lineNum">     604 </span>            :  */</a>
 <a name="605"><span class="lineNum">     605 </span>            : static struct lock_class_key shadow_nodes_key;</a>
 <a name="606"><span class="lineNum">     606 </span>            : </a>
-<a name="607"><span class="lineNum">     607 </span><span class="lineCov">          2 : static int __init workingset_init(void)</span></a>
+<a name="607"><span class="lineNum">     607 </span><span class="lineCov">          1 : static int __init workingset_init(void)</span></a>
 <a name="608"><span class="lineNum">     608 </span>            : {</a>
 <a name="609"><span class="lineNum">     609 </span>            :         unsigned int timestamp_bits;</a>
 <a name="610"><span class="lineNum">     610 </span>            :         unsigned int max_order;</a>
@@ -680,22 +680,22 @@
 <a name="618"><span class="lineNum">     618 </span>            :          * some more pages at runtime, so keep working with up to</a>
 <a name="619"><span class="lineNum">     619 </span>            :          * double the initial memory by using totalram_pages as-is.</a>
 <a name="620"><span class="lineNum">     620 </span>            :          */</a>
-<a name="621"><span class="lineNum">     621 </span><span class="lineCov">          2 :         timestamp_bits = BITS_PER_LONG - EVICTION_SHIFT;</span></a>
-<a name="622"><span class="lineNum">     622 </span><span class="lineCov">          4 :         max_order = fls_long(totalram_pages() - 1);</span></a>
-<a name="623"><span class="lineNum">     623 </span><span class="lineCov">          2 :         if (max_order &gt; timestamp_bits)</span></a>
+<a name="621"><span class="lineNum">     621 </span><span class="lineCov">          1 :         timestamp_bits = BITS_PER_LONG - EVICTION_SHIFT;</span></a>
+<a name="622"><span class="lineNum">     622 </span><span class="lineCov">          2 :         max_order = fls_long(totalram_pages() - 1);</span></a>
+<a name="623"><span class="lineNum">     623 </span><span class="lineCov">          1 :         if (max_order &gt; timestamp_bits)</span></a>
 <a name="624"><span class="lineNum">     624 </span><span class="lineNoCov">          0 :                 bucket_order = max_order - timestamp_bits;</span></a>
-<a name="625"><span class="lineNum">     625 </span><span class="lineCov">          2 :         pr_info(&quot;workingset: timestamp_bits=%d max_order=%d bucket_order=%u\n&quot;,</span></a>
+<a name="625"><span class="lineNum">     625 </span><span class="lineCov">          1 :         pr_info(&quot;workingset: timestamp_bits=%d max_order=%d bucket_order=%u\n&quot;,</span></a>
 <a name="626"><span class="lineNum">     626 </span>            :                timestamp_bits, max_order, bucket_order);</a>
 <a name="627"><span class="lineNum">     627 </span>            : </a>
-<a name="628"><span class="lineNum">     628 </span><span class="lineCov">          2 :         ret = prealloc_shrinker(&amp;workingset_shadow_shrinker);</span></a>
-<a name="629"><span class="lineNum">     629 </span><span class="lineCov">          2 :         if (ret)</span></a>
+<a name="628"><span class="lineNum">     628 </span><span class="lineCov">          1 :         ret = prealloc_shrinker(&amp;workingset_shadow_shrinker);</span></a>
+<a name="629"><span class="lineNum">     629 </span><span class="lineCov">          1 :         if (ret)</span></a>
 <a name="630"><span class="lineNum">     630 </span>            :                 goto err;</a>
-<a name="631"><span class="lineNum">     631 </span><span class="lineCov">          2 :         ret = __list_lru_init(&amp;shadow_nodes, true, &amp;shadow_nodes_key,</span></a>
+<a name="631"><span class="lineNum">     631 </span><span class="lineCov">          1 :         ret = __list_lru_init(&amp;shadow_nodes, true, &amp;shadow_nodes_key,</span></a>
 <a name="632"><span class="lineNum">     632 </span>            :                               &amp;workingset_shadow_shrinker);</a>
-<a name="633"><span class="lineNum">     633 </span><span class="lineCov">          2 :         if (ret)</span></a>
+<a name="633"><span class="lineNum">     633 </span><span class="lineCov">          1 :         if (ret)</span></a>
 <a name="634"><span class="lineNum">     634 </span>            :                 goto err_list_lru;</a>
-<a name="635"><span class="lineNum">     635 </span><span class="lineCov">          2 :         register_shrinker_prepared(&amp;workingset_shadow_shrinker);</span></a>
-<a name="636"><span class="lineNum">     636 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="635"><span class="lineNum">     635 </span><span class="lineCov">          1 :         register_shrinker_prepared(&amp;workingset_shadow_shrinker);</span></a>
+<a name="636"><span class="lineNum">     636 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="637"><span class="lineNum">     637 </span>            : err_list_lru:</a>
 <a name="638"><span class="lineNum">     638 </span><span class="lineNoCov">          0 :         free_prealloced_shrinker(&amp;workingset_shadow_shrinker);</span></a>
 <a name="639"><span class="lineNum">     639 </span>            : err:</a>

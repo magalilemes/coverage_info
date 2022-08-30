@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -1400,22 +1400,22 @@
 <a name="1338"><span class="lineNum">    1338 </span>            :         .proc_release   = seq_release,</a>
 <a name="1339"><span class="lineNum">    1339 </span>            : };</a>
 <a name="1340"><span class="lineNum">    1340 </span>            : </a>
-<a name="1341"><span class="lineNum">    1341 </span><span class="lineCov">          2 : static int __init input_proc_init(void)</span></a>
+<a name="1341"><span class="lineNum">    1341 </span><span class="lineCov">          1 : static int __init input_proc_init(void)</span></a>
 <a name="1342"><span class="lineNum">    1342 </span>            : {</a>
 <a name="1343"><span class="lineNum">    1343 </span>            :         struct proc_dir_entry *entry;</a>
 <a name="1344"><span class="lineNum">    1344 </span>            : </a>
-<a name="1345"><span class="lineNum">    1345 </span><span class="lineCov">          2 :         proc_bus_input_dir = proc_mkdir(&quot;bus/input&quot;, NULL);</span></a>
-<a name="1346"><span class="lineNum">    1346 </span><span class="lineCov">          2 :         if (!proc_bus_input_dir)</span></a>
+<a name="1345"><span class="lineNum">    1345 </span><span class="lineCov">          1 :         proc_bus_input_dir = proc_mkdir(&quot;bus/input&quot;, NULL);</span></a>
+<a name="1346"><span class="lineNum">    1346 </span><span class="lineCov">          1 :         if (!proc_bus_input_dir)</span></a>
 <a name="1347"><span class="lineNum">    1347 </span>            :                 return -ENOMEM;</a>
 <a name="1348"><span class="lineNum">    1348 </span>            : </a>
-<a name="1349"><span class="lineNum">    1349 </span><span class="lineCov">          2 :         entry = proc_create(&quot;devices&quot;, 0, proc_bus_input_dir,</span></a>
+<a name="1349"><span class="lineNum">    1349 </span><span class="lineCov">          1 :         entry = proc_create(&quot;devices&quot;, 0, proc_bus_input_dir,</span></a>
 <a name="1350"><span class="lineNum">    1350 </span>            :                             &amp;input_devices_proc_ops);</a>
-<a name="1351"><span class="lineNum">    1351 </span><span class="lineCov">          2 :         if (!entry)</span></a>
+<a name="1351"><span class="lineNum">    1351 </span><span class="lineCov">          1 :         if (!entry)</span></a>
 <a name="1352"><span class="lineNum">    1352 </span>            :                 goto fail1;</a>
 <a name="1353"><span class="lineNum">    1353 </span>            : </a>
-<a name="1354"><span class="lineNum">    1354 </span><span class="lineCov">          2 :         entry = proc_create(&quot;handlers&quot;, 0, proc_bus_input_dir,</span></a>
+<a name="1354"><span class="lineNum">    1354 </span><span class="lineCov">          1 :         entry = proc_create(&quot;handlers&quot;, 0, proc_bus_input_dir,</span></a>
 <a name="1355"><span class="lineNum">    1355 </span>            :                             &amp;input_handlers_proc_ops);</a>
-<a name="1356"><span class="lineNum">    1356 </span><span class="lineCov">          2 :         if (!entry)</span></a>
+<a name="1356"><span class="lineNum">    1356 </span><span class="lineCov">          1 :         if (!entry)</span></a>
 <a name="1357"><span class="lineNum">    1357 </span>            :                 goto fail2;</a>
 <a name="1358"><span class="lineNum">    1358 </span>            : </a>
 <a name="1359"><span class="lineNum">    1359 </span>            :         return 0;</a>
@@ -2709,23 +2709,23 @@
 <a name="2647"><span class="lineNum">    2647 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="2648"><span class="lineNum">    2648 </span>            : EXPORT_SYMBOL(input_free_minor);</a>
 <a name="2649"><span class="lineNum">    2649 </span>            : </a>
-<a name="2650"><span class="lineNum">    2650 </span><span class="lineCov">          2 : static int __init input_init(void)</span></a>
+<a name="2650"><span class="lineNum">    2650 </span><span class="lineCov">          1 : static int __init input_init(void)</span></a>
 <a name="2651"><span class="lineNum">    2651 </span>            : {</a>
 <a name="2652"><span class="lineNum">    2652 </span>            :         int err;</a>
 <a name="2653"><span class="lineNum">    2653 </span>            : </a>
-<a name="2654"><span class="lineNum">    2654 </span><span class="lineCov">          2 :         err = class_register(&amp;input_class);</span></a>
-<a name="2655"><span class="lineNum">    2655 </span><span class="lineCov">          2 :         if (err) {</span></a>
+<a name="2654"><span class="lineNum">    2654 </span><span class="lineCov">          1 :         err = class_register(&amp;input_class);</span></a>
+<a name="2655"><span class="lineNum">    2655 </span><span class="lineCov">          1 :         if (err) {</span></a>
 <a name="2656"><span class="lineNum">    2656 </span><span class="lineNoCov">          0 :                 pr_err(&quot;unable to register input_dev class\n&quot;);</span></a>
 <a name="2657"><span class="lineNum">    2657 </span><span class="lineNoCov">          0 :                 return err;</span></a>
 <a name="2658"><span class="lineNum">    2658 </span>            :         }</a>
 <a name="2659"><span class="lineNum">    2659 </span>            : </a>
-<a name="2660"><span class="lineNum">    2660 </span><span class="lineCov">          2 :         err = input_proc_init();</span></a>
-<a name="2661"><span class="lineNum">    2661 </span><span class="lineCov">          2 :         if (err)</span></a>
+<a name="2660"><span class="lineNum">    2660 </span><span class="lineCov">          1 :         err = input_proc_init();</span></a>
+<a name="2661"><span class="lineNum">    2661 </span><span class="lineCov">          1 :         if (err)</span></a>
 <a name="2662"><span class="lineNum">    2662 </span>            :                 goto fail1;</a>
 <a name="2663"><span class="lineNum">    2663 </span>            : </a>
-<a name="2664"><span class="lineNum">    2664 </span><span class="lineCov">          2 :         err = register_chrdev_region(MKDEV(INPUT_MAJOR, 0),</span></a>
+<a name="2664"><span class="lineNum">    2664 </span><span class="lineCov">          1 :         err = register_chrdev_region(MKDEV(INPUT_MAJOR, 0),</span></a>
 <a name="2665"><span class="lineNum">    2665 </span>            :                                      INPUT_MAX_CHAR_DEVICES, &quot;input&quot;);</a>
-<a name="2666"><span class="lineNum">    2666 </span><span class="lineCov">          2 :         if (err) {</span></a>
+<a name="2666"><span class="lineNum">    2666 </span><span class="lineCov">          1 :         if (err) {</span></a>
 <a name="2667"><span class="lineNum">    2667 </span><span class="lineNoCov">          0 :                 pr_err(&quot;unable to register char major %d&quot;, INPUT_MAJOR);</span></a>
 <a name="2668"><span class="lineNum">    2668 </span>            :                 goto fail2;</a>
 <a name="2669"><span class="lineNum">    2669 </span>            :         }</a>

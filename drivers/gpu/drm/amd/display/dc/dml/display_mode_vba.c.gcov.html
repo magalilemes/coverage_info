@@ -31,18 +31,18 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">54</td>
+            <td class="headerCovTableEntry">66</td>
             <td class="headerCovTableEntry">729</td>
-            <td class="headerCovTableEntryLo">7.4 %</td>
+            <td class="headerCovTableEntryLo">9.1 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">4</td>
             <td class="headerCovTableEntry">122</td>
-            <td class="headerCovTableEntryLo">1.6 %</td>
+            <td class="headerCovTableEntryLo">3.3 %</td>
           </tr>
           <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -1070,37 +1070,37 @@
 <a name="1008"><span class="lineNum">    1008 </span>            :         }</a>
 <a name="1009"><span class="lineNum">    1009 </span><span class="lineCov">         16 : }</span></a>
 <a name="1010"><span class="lineNum">    1010 </span>            : </a>
-<a name="1011"><span class="lineNum">    1011 </span><span class="lineNoCov">          0 : bool CalculateMinAndMaxPrefetchMode(</span></a>
+<a name="1011"><span class="lineNum">    1011 </span><span class="lineCov">          5 : bool CalculateMinAndMaxPrefetchMode(</span></a>
 <a name="1012"><span class="lineNum">    1012 </span>            :                 enum self_refresh_affinity AllowDRAMSelfRefreshOrDRAMClockChangeInVblank,</a>
 <a name="1013"><span class="lineNum">    1013 </span>            :                 unsigned int *MinPrefetchMode,</a>
 <a name="1014"><span class="lineNum">    1014 </span>            :                 unsigned int *MaxPrefetchMode)</a>
 <a name="1015"><span class="lineNum">    1015 </span>            : {</a>
-<a name="1016"><span class="lineNum">    1016 </span><span class="lineNoCov">          0 :         if (AllowDRAMSelfRefreshOrDRAMClockChangeInVblank</span></a>
+<a name="1016"><span class="lineNum">    1016 </span><span class="lineCov">          5 :         if (AllowDRAMSelfRefreshOrDRAMClockChangeInVblank</span></a>
 <a name="1017"><span class="lineNum">    1017 </span>            :                         == dm_neither_self_refresh_nor_mclk_switch) {</a>
 <a name="1018"><span class="lineNum">    1018 </span><span class="lineCov">          1 :                 *MinPrefetchMode = 2;</span></a>
 <a name="1019"><span class="lineNum">    1019 </span><span class="lineCov">          1 :                 *MaxPrefetchMode = 2;</span></a>
-<a name="1020"><span class="lineNum">    1020 </span><span class="lineNoCov">          0 :                 return false;</span></a>
-<a name="1021"><span class="lineNum">    1021 </span><span class="lineNoCov">          0 :         } else if (AllowDRAMSelfRefreshOrDRAMClockChangeInVblank == dm_allow_self_refresh) {</span></a>
+<a name="1020"><span class="lineNum">    1020 </span><span class="lineCov">          1 :                 return false;</span></a>
+<a name="1021"><span class="lineNum">    1021 </span><span class="lineCov">          4 :         } else if (AllowDRAMSelfRefreshOrDRAMClockChangeInVblank == dm_allow_self_refresh) {</span></a>
 <a name="1022"><span class="lineNum">    1022 </span><span class="lineCov">          1 :                 *MinPrefetchMode = 1;</span></a>
 <a name="1023"><span class="lineNum">    1023 </span><span class="lineCov">          1 :                 *MaxPrefetchMode = 1;</span></a>
-<a name="1024"><span class="lineNum">    1024 </span><span class="lineNoCov">          0 :                 return false;</span></a>
-<a name="1025"><span class="lineNum">    1025 </span><span class="lineNoCov">          0 :         } else if (AllowDRAMSelfRefreshOrDRAMClockChangeInVblank</span></a>
+<a name="1024"><span class="lineNum">    1024 </span><span class="lineCov">          1 :                 return false;</span></a>
+<a name="1025"><span class="lineNum">    1025 </span><span class="lineCov">          3 :         } else if (AllowDRAMSelfRefreshOrDRAMClockChangeInVblank</span></a>
 <a name="1026"><span class="lineNum">    1026 </span>            :                         == dm_allow_self_refresh_and_mclk_switch) {</a>
 <a name="1027"><span class="lineNum">    1027 </span><span class="lineCov">          1 :                 *MinPrefetchMode = 0;</span></a>
 <a name="1028"><span class="lineNum">    1028 </span><span class="lineCov">          1 :                 *MaxPrefetchMode = 0;</span></a>
-<a name="1029"><span class="lineNum">    1029 </span><span class="lineNoCov">          0 :                 return false;</span></a>
-<a name="1030"><span class="lineNum">    1030 </span><span class="lineNoCov">          0 :         } else if (AllowDRAMSelfRefreshOrDRAMClockChangeInVblank</span></a>
+<a name="1029"><span class="lineNum">    1029 </span><span class="lineCov">          1 :                 return false;</span></a>
+<a name="1030"><span class="lineNum">    1030 </span><span class="lineCov">          2 :         } else if (AllowDRAMSelfRefreshOrDRAMClockChangeInVblank</span></a>
 <a name="1031"><span class="lineNum">    1031 </span>            :                         == dm_try_to_allow_self_refresh_and_mclk_switch) {</a>
 <a name="1032"><span class="lineNum">    1032 </span><span class="lineCov">          1 :                 *MinPrefetchMode = 0;</span></a>
 <a name="1033"><span class="lineNum">    1033 </span><span class="lineCov">          1 :                 *MaxPrefetchMode = 2;</span></a>
-<a name="1034"><span class="lineNum">    1034 </span><span class="lineNoCov">          0 :                 return false;</span></a>
+<a name="1034"><span class="lineNum">    1034 </span><span class="lineCov">          1 :                 return false;</span></a>
 <a name="1035"><span class="lineNum">    1035 </span>            :         }</a>
 <a name="1036"><span class="lineNum">    1036 </span><span class="lineCov">          1 :         *MinPrefetchMode = 0;</span></a>
 <a name="1037"><span class="lineNum">    1037 </span><span class="lineCov">          1 :         *MaxPrefetchMode = 2;</span></a>
-<a name="1038"><span class="lineNum">    1038 </span><span class="lineNoCov">          0 :         return true;</span></a>
+<a name="1038"><span class="lineNum">    1038 </span><span class="lineCov">          1 :         return true;</span></a>
 <a name="1039"><span class="lineNum">    1039 </span>            : }</a>
 <a name="1040"><span class="lineNum">    1040 </span>            : </a>
-<a name="1041"><span class="lineNum">    1041 </span><span class="lineNoCov">          0 : void PixelClockAdjustmentForProgressiveToInterlaceUnit(struct display_mode_lib *mode_lib)</span></a>
+<a name="1041"><span class="lineNum">    1041 </span><span class="lineCov">          8 : void PixelClockAdjustmentForProgressiveToInterlaceUnit(struct display_mode_lib *mode_lib)</span></a>
 <a name="1042"><span class="lineNum">    1042 </span>            : {</a>
 <a name="1043"><span class="lineNum">    1043 </span>            :         unsigned int k;</a>
 <a name="1044"><span class="lineNum">    1044 </span>            : </a>
@@ -1112,7 +1112,7 @@
 <a name="1050"><span class="lineNum">    1050 </span><span class="lineCov">         17 :                         mode_lib-&gt;vba.PixelClock[k] = 2 * mode_lib-&gt;vba.PixelClock[k];</span></a>
 <a name="1051"><span class="lineNum">    1051 </span>            :                 }</a>
 <a name="1052"><span class="lineNum">    1052 </span>            :         }</a>
-<a name="1053"><span class="lineNum">    1053 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1053"><span class="lineNum">    1053 </span><span class="lineCov">          8 : }</span></a>
 <a name="1054"><span class="lineNum">    1054 </span>            : </a>
 <a name="1055"><span class="lineNum">    1055 </span>            : static unsigned int CursorBppEnumToBits(enum cursor_bpp ebpp)</a>
 <a name="1056"><span class="lineNum">    1056 </span>            : {</a>
@@ -1194,9 +1194,6 @@
 <a name="1132"><span class="lineNum">    1132 </span><span class="lineCov">         13 :         return CalculateWriteBackDISPCLK;</span></a>
 <a name="1133"><span class="lineNum">    1133 </span>            : }</a>
 <a name="1134"><span class="lineNum">    1134 </span>            : </a>
-<a name="1135"><span class="lineNum">    1135 </span>            : #if IS_ENABLED(CONFIG_DML_KUNIT_TEST)</a>
-<a name="1136"><span class="lineNum">    1136 </span>            : #include &quot;../../tests/dc/dml/display_mode_vba_test.c&quot;</a>
-<a name="1137"><span class="lineNum">    1137 </span>            : #endif</a>
 </pre>
       </td>
     </tr>

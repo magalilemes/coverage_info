@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -199,7 +199,7 @@
 <a name="137"><span class="lineNum">     137 </span>            :  */</a>
 <a name="138"><span class="lineNum">     138 </span>            : static inline bool slab_test_pfmemalloc(const struct slab *slab)</a>
 <a name="139"><span class="lineNum">     139 </span>            : {</a>
-<a name="140"><span class="lineNum">     140 </span><span class="lineCov">       2014 :         return folio_test_active((struct folio *)slab_folio(slab));</span></a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineCov">       1008 :         return folio_test_active((struct folio *)slab_folio(slab));</span></a>
 <a name="141"><span class="lineNum">     141 </span>            : }</a>
 <a name="142"><span class="lineNum">     142 </span>            : </a>
 <a name="143"><span class="lineNum">     143 </span>            : static inline void slab_set_pfmemalloc(struct slab *slab)</a>
@@ -214,29 +214,29 @@
 <a name="152"><span class="lineNum">     152 </span>            : </a>
 <a name="153"><span class="lineNum">     153 </span>            : static inline void __slab_clear_pfmemalloc(struct slab *slab)</a>
 <a name="154"><span class="lineNum">     154 </span>            : {</a>
-<a name="155"><span class="lineNum">     155 </span><span class="lineCov">          6 :         __folio_clear_active(slab_folio(slab));</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineCov">          3 :         __folio_clear_active(slab_folio(slab));</span></a>
 <a name="156"><span class="lineNum">     156 </span>            : }</a>
 <a name="157"><span class="lineNum">     157 </span>            : </a>
 <a name="158"><span class="lineNum">     158 </span>            : static inline void *slab_address(const struct slab *slab)</a>
 <a name="159"><span class="lineNum">     159 </span>            : {</a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">        907 :         return folio_address(slab_folio(slab));</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">        454 :         return folio_address(slab_folio(slab));</span></a>
 <a name="161"><span class="lineNum">     161 </span>            : }</a>
 <a name="162"><span class="lineNum">     162 </span>            : </a>
 <a name="163"><span class="lineNum">     163 </span>            : static inline int slab_nid(const struct slab *slab)</a>
 <a name="164"><span class="lineNum">     164 </span>            : {</a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">       1100 :         return folio_nid(slab_folio(slab));</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">        551 :         return folio_nid(slab_folio(slab));</span></a>
 <a name="166"><span class="lineNum">     166 </span>            : }</a>
 <a name="167"><span class="lineNum">     167 </span>            : </a>
 <a name="168"><span class="lineNum">     168 </span>            : static inline pg_data_t *slab_pgdat(const struct slab *slab)</a>
 <a name="169"><span class="lineNum">     169 </span>            : {</a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">        913 :         return folio_pgdat(slab_folio(slab));</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">        457 :         return folio_pgdat(slab_folio(slab));</span></a>
 <a name="171"><span class="lineNum">     171 </span>            : }</a>
 <a name="172"><span class="lineNum">     172 </span>            : </a>
 <a name="173"><span class="lineNum">     173 </span>            : static inline struct slab *virt_to_slab(const void *addr)</a>
 <a name="174"><span class="lineNum">     174 </span>            : {</a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineCov">       5532 :         struct folio *folio = virt_to_folio(addr);</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">       2969 :         struct folio *folio = virt_to_folio(addr);</span></a>
 <a name="176"><span class="lineNum">     176 </span>            : </a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">       5532 :         if (!folio_test_slab(folio))</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">       2969 :         if (!folio_test_slab(folio))</span></a>
 <a name="178"><span class="lineNum">     178 </span>            :                 return NULL;</a>
 <a name="179"><span class="lineNum">     179 </span>            : </a>
 <a name="180"><span class="lineNum">     180 </span>            :         return folio_slab(folio);</a>
@@ -452,8 +452,8 @@
 <a name="390"><span class="lineNum">     390 </span>            : </a>
 <a name="391"><span class="lineNum">     391 </span>            : static inline enum node_stat_item cache_vmstat_idx(struct kmem_cache *s)</a>
 <a name="392"><span class="lineNum">     392 </span>            : {</a>
-<a name="393"><span class="lineNum">     393 </span><span class="lineCov">        913 :         return (s-&gt;flags &amp; SLAB_RECLAIM_ACCOUNT) ?</span></a>
-<a name="394"><span class="lineNum">     394 </span><span class="lineCov">        913 :                 NR_SLAB_RECLAIMABLE_B : NR_SLAB_UNRECLAIMABLE_B;</span></a>
+<a name="393"><span class="lineNum">     393 </span><span class="lineCov">        457 :         return (s-&gt;flags &amp; SLAB_RECLAIM_ACCOUNT) ?</span></a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineCov">        457 :                 NR_SLAB_RECLAIMABLE_B : NR_SLAB_UNRECLAIMABLE_B;</span></a>
 <a name="395"><span class="lineNum">     395 </span>            : }</a>
 <a name="396"><span class="lineNum">     396 </span>            : </a>
 <a name="397"><span class="lineNum">     397 </span>            : #ifdef CONFIG_SLUB_DEBUG</a>
@@ -466,7 +466,7 @@
 <a name="404"><span class="lineNum">     404 </span>            : long validate_slab_cache(struct kmem_cache *s);</a>
 <a name="405"><span class="lineNum">     405 </span>            : static inline bool __slub_debug_enabled(void)</a>
 <a name="406"><span class="lineNum">     406 </span>            : {</a>
-<a name="407"><span class="lineNum">     407 </span><span class="lineCov">      39198 :         return static_branch_unlikely(&amp;slub_debug_enabled);</span></a>
+<a name="407"><span class="lineNum">     407 </span><span class="lineCov">      19844 :         return static_branch_unlikely(&amp;slub_debug_enabled);</span></a>
 <a name="408"><span class="lineNum">     408 </span>            : }</a>
 <a name="409"><span class="lineNum">     409 </span>            : #else</a>
 <a name="410"><span class="lineNum">     410 </span>            : static inline void print_tracking(struct kmem_cache *s, void *object)</a>
@@ -487,7 +487,7 @@
 <a name="425"><span class="lineNum">     425 </span>            : {</a>
 <a name="426"><span class="lineNum">     426 </span>            :         if (IS_ENABLED(CONFIG_SLUB_DEBUG))</a>
 <a name="427"><span class="lineNum">     427 </span>            :                 VM_WARN_ON_ONCE(!(flags &amp; SLAB_DEBUG_FLAGS));</a>
-<a name="428"><span class="lineNum">     428 </span><span class="lineCov">      39196 :         if (__slub_debug_enabled())</span></a>
+<a name="428"><span class="lineNum">     428 </span><span class="lineCov">      19843 :         if (__slub_debug_enabled())</span></a>
 <a name="429"><span class="lineNum">     429 </span><span class="lineNoCov">          0 :                 return s-&gt;flags &amp; flags;</span></a>
 <a name="430"><span class="lineNum">     430 </span>            :         return false;</a>
 <a name="431"><span class="lineNum">     431 </span>            : }</a>
@@ -713,8 +713,8 @@
 <a name="651"><span class="lineNum">     651 </span>            :         if (memcg_kmem_enabled() &amp;&amp; (s-&gt;flags &amp; SLAB_ACCOUNT))</a>
 <a name="652"><span class="lineNum">     652 </span>            :                 memcg_alloc_slab_cgroups(slab, s, gfp, true);</a>
 <a name="653"><span class="lineNum">     653 </span>            : </a>
-<a name="654"><span class="lineNum">     654 </span><span class="lineCov">       3628 :         mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),</span></a>
-<a name="655"><span class="lineNum">     655 </span><span class="lineCov">        907 :                             PAGE_SIZE &lt;&lt; order);</span></a>
+<a name="654"><span class="lineNum">     654 </span><span class="lineCov">       1816 :         mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),</span></a>
+<a name="655"><span class="lineNum">     655 </span><span class="lineCov">        454 :                             PAGE_SIZE &lt;&lt; order);</span></a>
 <a name="656"><span class="lineNum">     656 </span>            : }</a>
 <a name="657"><span class="lineNum">     657 </span>            : </a>
 <a name="658"><span class="lineNum">     658 </span>            : static __always_inline void unaccount_slab(struct slab *slab, int order,</a>
@@ -723,16 +723,16 @@
 <a name="661"><span class="lineNum">     661 </span>            :         if (memcg_kmem_enabled())</a>
 <a name="662"><span class="lineNum">     662 </span>            :                 memcg_free_slab_cgroups(slab);</a>
 <a name="663"><span class="lineNum">     663 </span>            : </a>
-<a name="664"><span class="lineNum">     664 </span><span class="lineCov">         24 :         mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),</span></a>
-<a name="665"><span class="lineNum">     665 </span><span class="lineCov">          6 :                             -(PAGE_SIZE &lt;&lt; order));</span></a>
+<a name="664"><span class="lineNum">     664 </span><span class="lineCov">         12 :         mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),</span></a>
+<a name="665"><span class="lineNum">     665 </span><span class="lineCov">          3 :                             -(PAGE_SIZE &lt;&lt; order));</span></a>
 <a name="666"><span class="lineNum">     666 </span>            : }</a>
 <a name="667"><span class="lineNum">     667 </span>            : </a>
-<a name="668"><span class="lineNum">     668 </span><span class="lineCov">       5532 : static inline struct kmem_cache *cache_from_obj(struct kmem_cache *s, void *x)</span></a>
+<a name="668"><span class="lineNum">     668 </span><span class="lineCov">       2969 : static inline struct kmem_cache *cache_from_obj(struct kmem_cache *s, void *x)</span></a>
 <a name="669"><span class="lineNum">     669 </span>            : {</a>
 <a name="670"><span class="lineNum">     670 </span>            :         struct kmem_cache *cachep;</a>
 <a name="671"><span class="lineNum">     671 </span>            : </a>
-<a name="672"><span class="lineNum">     672 </span><span class="lineCov">       5532 :         if (!IS_ENABLED(CONFIG_SLAB_FREELIST_HARDENED) &amp;&amp;</span></a>
-<a name="673"><span class="lineNum">     673 </span><span class="lineCov">      11064 :             !kmem_cache_debug_flags(s, SLAB_CONSISTENCY_CHECKS))</span></a>
+<a name="672"><span class="lineNum">     672 </span><span class="lineCov">       2969 :         if (!IS_ENABLED(CONFIG_SLAB_FREELIST_HARDENED) &amp;&amp;</span></a>
+<a name="673"><span class="lineNum">     673 </span><span class="lineCov">       5938 :             !kmem_cache_debug_flags(s, SLAB_CONSISTENCY_CHECKS))</span></a>
 <a name="674"><span class="lineNum">     674 </span>            :                 return s;</a>
 <a name="675"><span class="lineNum">     675 </span>            : </a>
 <a name="676"><span class="lineNum">     676 </span><span class="lineNoCov">          0 :         cachep = virt_to_cache(x);</span></a>
@@ -755,7 +755,7 @@
 <a name="693"><span class="lineNum">     693 </span>            :          * Debugging requires use of the padding between object</a>
 <a name="694"><span class="lineNum">     694 </span>            :          * and whatever may come after it.</a>
 <a name="695"><span class="lineNum">     695 </span>            :          */</a>
-<a name="696"><span class="lineNum">     696 </span><span class="lineCov">        456 :         if (s-&gt;flags &amp; (SLAB_RED_ZONE | SLAB_POISON))</span></a>
+<a name="696"><span class="lineNum">     696 </span><span class="lineCov">        228 :         if (s-&gt;flags &amp; (SLAB_RED_ZONE | SLAB_POISON))</span></a>
 <a name="697"><span class="lineNum">     697 </span><span class="lineNoCov">          0 :                 return s-&gt;object_size;</span></a>
 <a name="698"><span class="lineNum">     698 </span>            : # endif</a>
 <a name="699"><span class="lineNum">     699 </span>            :         if (s-&gt;flags &amp; SLAB_KASAN)</a>
@@ -765,12 +765,12 @@
 <a name="703"><span class="lineNum">     703 </span>            :          * back there or track user information then we can</a>
 <a name="704"><span class="lineNum">     704 </span>            :          * only use the space before that information.</a>
 <a name="705"><span class="lineNum">     705 </span>            :          */</a>
-<a name="706"><span class="lineNum">     706 </span><span class="lineCov">        456 :         if (s-&gt;flags &amp; (SLAB_TYPESAFE_BY_RCU | SLAB_STORE_USER))</span></a>
+<a name="706"><span class="lineNum">     706 </span><span class="lineCov">        228 :         if (s-&gt;flags &amp; (SLAB_TYPESAFE_BY_RCU | SLAB_STORE_USER))</span></a>
 <a name="707"><span class="lineNum">     707 </span><span class="lineNoCov">          0 :                 return s-&gt;inuse;</span></a>
 <a name="708"><span class="lineNum">     708 </span>            :         /*</a>
 <a name="709"><span class="lineNum">     709 </span>            :          * Else we can use all the padding etc for the allocation</a>
 <a name="710"><span class="lineNum">     710 </span>            :          */</a>
-<a name="711"><span class="lineNum">     711 </span><span class="lineCov">        456 :         return s-&gt;size;</span></a>
+<a name="711"><span class="lineNum">     711 </span><span class="lineCov">        228 :         return s-&gt;size;</span></a>
 <a name="712"><span class="lineNum">     712 </span>            : #endif</a>
 <a name="713"><span class="lineNum">     713 </span>            : }</a>
 <a name="714"><span class="lineNum">     714 </span>            : </a>
@@ -779,26 +779,26 @@
 <a name="717"><span class="lineNum">     717 </span>            :                                                      struct obj_cgroup **objcgp,</a>
 <a name="718"><span class="lineNum">     718 </span>            :                                                      size_t size, gfp_t flags)</a>
 <a name="719"><span class="lineNum">     719 </span>            : {</a>
-<a name="720"><span class="lineNum">     720 </span><span class="lineCov">      35656 :         flags &amp;= gfp_allowed_mask;</span></a>
+<a name="720"><span class="lineNum">     720 </span><span class="lineCov">      18327 :         flags &amp;= gfp_allowed_mask;</span></a>
 <a name="721"><span class="lineNum">     721 </span>            : </a>
-<a name="722"><span class="lineNum">     722 </span><span class="lineCov">      35656 :         might_alloc(flags);</span></a>
+<a name="722"><span class="lineNum">     722 </span><span class="lineCov">      18327 :         might_alloc(flags);</span></a>
 <a name="723"><span class="lineNum">     723 </span>            : </a>
-<a name="724"><span class="lineNum">     724 </span><span class="lineCov">      35656 :         if (should_failslab(s, flags))</span></a>
+<a name="724"><span class="lineNum">     724 </span><span class="lineCov">      18327 :         if (should_failslab(s, flags))</span></a>
 <a name="725"><span class="lineNum">     725 </span>            :                 return NULL;</a>
 <a name="726"><span class="lineNum">     726 </span>            : </a>
-<a name="727"><span class="lineNum">     727 </span><span class="lineCov">      35656 :         if (!memcg_slab_pre_alloc_hook(s, lru, objcgp, size, flags))</span></a>
+<a name="727"><span class="lineNum">     727 </span><span class="lineCov">      18327 :         if (!memcg_slab_pre_alloc_hook(s, lru, objcgp, size, flags))</span></a>
 <a name="728"><span class="lineNum">     728 </span>            :                 return NULL;</a>
 <a name="729"><span class="lineNum">     729 </span>            : </a>
 <a name="730"><span class="lineNum">     730 </span>            :         return s;</a>
 <a name="731"><span class="lineNum">     731 </span>            : }</a>
 <a name="732"><span class="lineNum">     732 </span>            : </a>
-<a name="733"><span class="lineNum">     733 </span><span class="lineCov">      35656 : static inline void slab_post_alloc_hook(struct kmem_cache *s,</span></a>
+<a name="733"><span class="lineNum">     733 </span><span class="lineCov">      18327 : static inline void slab_post_alloc_hook(struct kmem_cache *s,</span></a>
 <a name="734"><span class="lineNum">     734 </span>            :                                         struct obj_cgroup *objcg, gfp_t flags,</a>
 <a name="735"><span class="lineNum">     735 </span>            :                                         size_t size, void **p, bool init)</a>
 <a name="736"><span class="lineNum">     736 </span>            : {</a>
 <a name="737"><span class="lineNum">     737 </span>            :         size_t i;</a>
 <a name="738"><span class="lineNum">     738 </span>            : </a>
-<a name="739"><span class="lineNum">     739 </span><span class="lineCov">      35656 :         flags &amp;= gfp_allowed_mask;</span></a>
+<a name="739"><span class="lineNum">     739 </span><span class="lineCov">      18327 :         flags &amp;= gfp_allowed_mask;</span></a>
 <a name="740"><span class="lineNum">     740 </span>            : </a>
 <a name="741"><span class="lineNum">     741 </span>            :         /*</a>
 <a name="742"><span class="lineNum">     742 </span>            :          * As memory initialization might be integrated into KASAN,</a>
@@ -807,16 +807,16 @@
 <a name="745"><span class="lineNum">     745 </span>            :          *</a>
 <a name="746"><span class="lineNum">     746 </span>            :          * As p[i] might get tagged, memset and kmemleak hook come after KASAN.</a>
 <a name="747"><span class="lineNum">     747 </span>            :          */</a>
-<a name="748"><span class="lineNum">     748 </span><span class="lineCov">      71312 :         for (i = 0; i &lt; size; i++) {</span></a>
-<a name="749"><span class="lineNum">     749 </span><span class="lineCov">      35656 :                 p[i] = kasan_slab_alloc(s, p[i], flags, init);</span></a>
-<a name="750"><span class="lineNum">     750 </span><span class="lineCov">      35656 :                 if (p[i] &amp;&amp; init &amp;&amp; !kasan_has_integrated_init())</span></a>
-<a name="751"><span class="lineNum">     751 </span><span class="lineCov">      29094 :                         memset(p[i], 0, s-&gt;object_size);</span></a>
-<a name="752"><span class="lineNum">     752 </span><span class="lineCov">      35656 :                 kmemleak_alloc_recursive(p[i], s-&gt;object_size, 1,</span></a>
+<a name="748"><span class="lineNum">     748 </span><span class="lineCov">      36654 :         for (i = 0; i &lt; size; i++) {</span></a>
+<a name="749"><span class="lineNum">     749 </span><span class="lineCov">      18327 :                 p[i] = kasan_slab_alloc(s, p[i], flags, init);</span></a>
+<a name="750"><span class="lineNum">     750 </span><span class="lineCov">      18327 :                 if (p[i] &amp;&amp; init &amp;&amp; !kasan_has_integrated_init())</span></a>
+<a name="751"><span class="lineNum">     751 </span><span class="lineCov">      14794 :                         memset(p[i], 0, s-&gt;object_size);</span></a>
+<a name="752"><span class="lineNum">     752 </span><span class="lineCov">      18327 :                 kmemleak_alloc_recursive(p[i], s-&gt;object_size, 1,</span></a>
 <a name="753"><span class="lineNum">     753 </span>            :                                          s-&gt;flags, flags);</a>
 <a name="754"><span class="lineNum">     754 </span>            :         }</a>
 <a name="755"><span class="lineNum">     755 </span>            : </a>
-<a name="756"><span class="lineNum">     756 </span><span class="lineCov">      35656 :         memcg_slab_post_alloc_hook(s, objcg, flags, size, p);</span></a>
-<a name="757"><span class="lineNum">     757 </span><span class="lineCov">      35656 : }</span></a>
+<a name="756"><span class="lineNum">     756 </span><span class="lineCov">      18327 :         memcg_slab_post_alloc_hook(s, objcg, flags, size, p);</span></a>
+<a name="757"><span class="lineNum">     757 </span><span class="lineCov">      18327 : }</span></a>
 <a name="758"><span class="lineNum">     758 </span>            : </a>
 <a name="759"><span class="lineNum">     759 </span>            : #ifndef CONFIG_SLOB</a>
 <a name="760"><span class="lineNum">     760 </span>            : /*</a>
@@ -854,7 +854,7 @@
 <a name="792"><span class="lineNum">     792 </span>            : </a>
 <a name="793"><span class="lineNum">     793 </span>            : static inline struct kmem_cache_node *get_node(struct kmem_cache *s, int node)</a>
 <a name="794"><span class="lineNum">     794 </span>            : {</a>
-<a name="795"><span class="lineNum">     795 </span><span class="lineCov">       2101 :         return s-&gt;node[node];</span></a>
+<a name="795"><span class="lineNum">     795 </span><span class="lineCov">       1052 :         return s-&gt;node[node];</span></a>
 <a name="796"><span class="lineNum">     796 </span>            : }</a>
 <a name="797"><span class="lineNum">     797 </span>            : </a>
 <a name="798"><span class="lineNum">     798 </span>            : /*</a>
@@ -892,7 +892,7 @@
 <a name="830"><span class="lineNum">     830 </span>            : </a>
 <a name="831"><span class="lineNum">     831 </span>            : static inline bool slab_want_init_on_alloc(gfp_t flags, struct kmem_cache *c)</a>
 <a name="832"><span class="lineNum">     832 </span>            : {</a>
-<a name="833"><span class="lineNum">     833 </span><span class="lineCov">      35656 :         if (static_branch_maybe(CONFIG_INIT_ON_ALLOC_DEFAULT_ON,</span></a>
+<a name="833"><span class="lineNum">     833 </span><span class="lineCov">      18327 :         if (static_branch_maybe(CONFIG_INIT_ON_ALLOC_DEFAULT_ON,</span></a>
 <a name="834"><span class="lineNum">     834 </span>            :                                 &amp;init_on_alloc)) {</a>
 <a name="835"><span class="lineNum">     835 </span><span class="lineNoCov">          0 :                 if (c-&gt;ctor)</span></a>
 <a name="836"><span class="lineNum">     836 </span>            :                         return false;</a>
@@ -900,12 +900,12 @@
 <a name="838"><span class="lineNum">     838 </span><span class="lineNoCov">          0 :                         return flags &amp; __GFP_ZERO;</span></a>
 <a name="839"><span class="lineNum">     839 </span>            :                 return true;</a>
 <a name="840"><span class="lineNum">     840 </span>            :         }</a>
-<a name="841"><span class="lineNum">     841 </span><span class="lineCov">      35656 :         return flags &amp; __GFP_ZERO;</span></a>
+<a name="841"><span class="lineNum">     841 </span><span class="lineCov">      18327 :         return flags &amp; __GFP_ZERO;</span></a>
 <a name="842"><span class="lineNum">     842 </span>            : }</a>
 <a name="843"><span class="lineNum">     843 </span>            : </a>
 <a name="844"><span class="lineNum">     844 </span>            : static inline bool slab_want_init_on_free(struct kmem_cache *c)</a>
 <a name="845"><span class="lineNum">     845 </span>            : {</a>
-<a name="846"><span class="lineNum">     846 </span><span class="lineCov">      45280 :         if (static_branch_maybe(CONFIG_INIT_ON_FREE_DEFAULT_ON,</span></a>
+<a name="846"><span class="lineNum">     846 </span><span class="lineCov">      23638 :         if (static_branch_maybe(CONFIG_INIT_ON_FREE_DEFAULT_ON,</span></a>
 <a name="847"><span class="lineNum">     847 </span>            :                                 &amp;init_on_free))</a>
 <a name="848"><span class="lineNum">     848 </span><span class="lineNoCov">          0 :                 return !(c-&gt;ctor ||</span></a>
 <a name="849"><span class="lineNum">     849 </span><span class="lineNoCov">          0 :                          (c-&gt;flags &amp; (SLAB_TYPESAFE_BY_RCU | SLAB_POISON)));</span></a>

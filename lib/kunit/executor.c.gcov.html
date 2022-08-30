@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">19</td>
-            <td class="headerCovTableEntry">95</td>
-            <td class="headerCovTableEntryLo">20.0 %</td>
+            <td class="headerCovTableEntry">93</td>
+            <td class="headerCovTableEntryLo">20.4 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -117,7 +117,7 @@
 <a name="55"><span class="lineNum">      55 </span>            : </a>
 <a name="56"><span class="lineNum">      56 </span>            : /* Create a copy of suite with only tests that match test_glob. */</a>
 <a name="57"><span class="lineNum">      57 </span>            : static struct kunit_suite *</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 : kunit_filter_tests(struct kunit_suite *const suite, const char *test_glob)</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 : kunit_filter_tests(const struct kunit_suite *const suite, const char *test_glob)</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : {</a>
 <a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :         int n = 0;</span></a>
 <a name="61"><span class="lineNum">      61 </span>            :         struct kunit_case *filtered, *test_case;</a>
@@ -131,159 +131,157 @@
 <a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :         if (n == 0)</span></a>
 <a name="70"><span class="lineNum">      70 </span>            :                 return NULL;</a>
 <a name="71"><span class="lineNum">      71 </span>            : </a>
-<a name="72"><span class="lineNum">      72 </span>            :         /* Use memcpy to workaround copy-&gt;name being const. */</a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 :         copy = kmalloc(sizeof(*copy), GFP_KERNEL);</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 :         if (!copy)</span></a>
-<a name="75"><span class="lineNum">      75 </span>            :                 return ERR_PTR(-ENOMEM);</a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :         memcpy(copy, suite, sizeof(*copy));</span></a>
-<a name="77"><span class="lineNum">      77 </span>            : </a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :         filtered = kcalloc(n + 1, sizeof(*filtered), GFP_KERNEL);</span></a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineNoCov">          0 :         if (!filtered) {</span></a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :                 kfree(copy);</span></a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineNoCov">          0 :                 return ERR_PTR(-ENOMEM);</span></a>
-<a name="82"><span class="lineNum">      82 </span>            :         }</a>
-<a name="83"><span class="lineNum">      83 </span>            : </a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 :         n = 0;</span></a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :         kunit_suite_for_each_test_case(suite, test_case) {</span></a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineNoCov">          0 :                 if (!test_glob || glob_match(test_glob, test_case-&gt;name))</span></a>
-<a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 :                         filtered[n++] = *test_case;</span></a>
-<a name="88"><span class="lineNum">      88 </span>            :         }</a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :         copy = kmemdup(suite, sizeof(*copy), GFP_KERNEL);</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 :         if (!copy)</span></a>
+<a name="74"><span class="lineNum">      74 </span>            :                 return ERR_PTR(-ENOMEM);</a>
+<a name="75"><span class="lineNum">      75 </span>            : </a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :         filtered = kcalloc(n + 1, sizeof(*filtered), GFP_KERNEL);</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :         if (!filtered)</span></a>
+<a name="78"><span class="lineNum">      78 </span>            :                 return ERR_PTR(-ENOMEM);</a>
+<a name="79"><span class="lineNum">      79 </span>            : </a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :         n = 0;</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineNoCov">          0 :         kunit_suite_for_each_test_case(suite, test_case) {</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineNoCov">          0 :                 if (!test_glob || glob_match(test_glob, test_case-&gt;name))</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 :                         filtered[n++] = *test_case;</span></a>
+<a name="84"><span class="lineNum">      84 </span>            :         }</a>
+<a name="85"><span class="lineNum">      85 </span>            : </a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineNoCov">          0 :         copy-&gt;test_cases = filtered;</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 :         return copy;</span></a>
+<a name="88"><span class="lineNum">      88 </span>            : }</a>
 <a name="89"><span class="lineNum">      89 </span>            : </a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 :         copy-&gt;test_cases = filtered;</span></a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineNoCov">          0 :         return copy;</span></a>
-<a name="92"><span class="lineNum">      92 </span>            : }</a>
-<a name="93"><span class="lineNum">      93 </span>            : </a>
-<a name="94"><span class="lineNum">      94 </span>            : static char *kunit_shutdown;</a>
-<a name="95"><span class="lineNum">      95 </span>            : core_param(kunit_shutdown, kunit_shutdown, charp, 0644);</a>
-<a name="96"><span class="lineNum">      96 </span>            : </a>
-<a name="97"><span class="lineNum">      97 </span>            : /* Stores an array of suites, end points one past the end */</a>
-<a name="98"><span class="lineNum">      98 </span>            : struct suite_set {</a>
-<a name="99"><span class="lineNum">      99 </span>            :         struct kunit_suite * const *start;</a>
-<a name="100"><span class="lineNum">     100 </span>            :         struct kunit_suite * const *end;</a>
-<a name="101"><span class="lineNum">     101 </span>            : };</a>
+<a name="90"><span class="lineNum">      90 </span>            : static char *kunit_shutdown;</a>
+<a name="91"><span class="lineNum">      91 </span>            : core_param(kunit_shutdown, kunit_shutdown, charp, 0644);</a>
+<a name="92"><span class="lineNum">      92 </span>            : </a>
+<a name="93"><span class="lineNum">      93 </span>            : /* Stores a NULL-terminated array of suites. */</a>
+<a name="94"><span class="lineNum">      94 </span>            : struct suite_set {</a>
+<a name="95"><span class="lineNum">      95 </span>            :         struct kunit_suite * const *start;</a>
+<a name="96"><span class="lineNum">      96 </span>            :         struct kunit_suite * const *end;</a>
+<a name="97"><span class="lineNum">      97 </span>            : };</a>
+<a name="98"><span class="lineNum">      98 </span>            : </a>
+<a name="99"><span class="lineNum">      99 </span><span class="lineNoCov">          0 : static void kunit_free_suite_set(struct suite_set suite_set)</span></a>
+<a name="100"><span class="lineNum">     100 </span>            : {</a>
+<a name="101"><span class="lineNum">     101 </span>            :         struct kunit_suite * const *suites;</a>
 <a name="102"><span class="lineNum">     102 </span>            : </a>
-<a name="103"><span class="lineNum">     103 </span><span class="lineNoCov">          0 : static void kunit_free_suite_set(struct suite_set suite_set)</span></a>
-<a name="104"><span class="lineNum">     104 </span>            : {</a>
-<a name="105"><span class="lineNum">     105 </span>            :         struct kunit_suite * const *suites;</a>
-<a name="106"><span class="lineNum">     106 </span>            : </a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 :         for (suites = suite_set.start; suites &lt; suite_set.end; suites++)</span></a>
-<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 :                 kfree(*suites);</span></a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 :         kfree(suite_set.start);</span></a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="111"><span class="lineNum">     111 </span>            : </a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineNoCov">          0 : static struct suite_set kunit_filter_suites(const struct suite_set *suite_set,</span></a>
-<a name="113"><span class="lineNum">     113 </span>            :                                             const char *filter_glob,</a>
-<a name="114"><span class="lineNum">     114 </span>            :                                             int *err)</a>
-<a name="115"><span class="lineNum">     115 </span>            : {</a>
-<a name="116"><span class="lineNum">     116 </span>            :         int i;</a>
-<a name="117"><span class="lineNum">     117 </span>            :         struct kunit_suite **copy, *filtered_suite;</a>
-<a name="118"><span class="lineNum">     118 </span>            :         struct suite_set filtered;</a>
-<a name="119"><span class="lineNum">     119 </span>            :         struct kunit_test_filter filter;</a>
-<a name="120"><span class="lineNum">     120 </span>            : </a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 :         const size_t max = suite_set-&gt;end - suite_set-&gt;start;</span></a>
-<a name="122"><span class="lineNum">     122 </span>            : </a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :         copy = kmalloc_array(max, sizeof(*filtered.start), GFP_KERNEL);</span></a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :         filtered.start = copy;</span></a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineNoCov">          0 :         if (!copy) { /* won't be able to run anything, return an empty set */</span></a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineNoCov">          0 :                 filtered.end = copy;</span></a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineNoCov">          0 :                 return filtered;</span></a>
-<a name="128"><span class="lineNum">     128 </span>            :         }</a>
-<a name="129"><span class="lineNum">     129 </span>            : </a>
-<a name="130"><span class="lineNum">     130 </span><span class="lineNoCov">          0 :         kunit_parse_filter_glob(&amp;filter, filter_glob);</span></a>
-<a name="131"><span class="lineNum">     131 </span>            : </a>
-<a name="132"><span class="lineNum">     132 </span><span class="lineNoCov">          0 :         for (i = 0; &amp;suite_set-&gt;start[i] != suite_set-&gt;end; i++) {</span></a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineNoCov">          0 :                 if (!glob_match(filter.suite_glob, suite_set-&gt;start[i]-&gt;name))</span></a>
-<a name="134"><span class="lineNum">     134 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="135"><span class="lineNum">     135 </span>            : </a>
-<a name="136"><span class="lineNum">     136 </span><span class="lineNoCov">          0 :                 filtered_suite = kunit_filter_tests(suite_set-&gt;start[i], filter.test_glob);</span></a>
-<a name="137"><span class="lineNum">     137 </span><span class="lineNoCov">          0 :                 if (IS_ERR(filtered_suite)) {</span></a>
-<a name="138"><span class="lineNum">     138 </span><span class="lineNoCov">          0 :                         *err = PTR_ERR(filtered_suite);</span></a>
-<a name="139"><span class="lineNum">     139 </span><span class="lineNoCov">          0 :                         return filtered;</span></a>
-<a name="140"><span class="lineNum">     140 </span>            :                 }</a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 :                 if (!filtered_suite)</span></a>
-<a name="142"><span class="lineNum">     142 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="143"><span class="lineNum">     143 </span>            : </a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineNoCov">          0 :                 *copy++ = filtered_suite;</span></a>
-<a name="145"><span class="lineNum">     145 </span>            :         }</a>
-<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 :         filtered.end = copy;</span></a>
-<a name="147"><span class="lineNum">     147 </span>            : </a>
-<a name="148"><span class="lineNum">     148 </span><span class="lineNoCov">          0 :         kfree(filter.suite_glob);</span></a>
-<a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 :         kfree(filter.test_glob);</span></a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 :         return filtered;</span></a>
-<a name="151"><span class="lineNum">     151 </span>            : }</a>
-<a name="152"><span class="lineNum">     152 </span>            : </a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineCov">          2 : static void kunit_handle_shutdown(void)</span></a>
-<a name="154"><span class="lineNum">     154 </span>            : {</a>
-<a name="155"><span class="lineNum">     155 </span><span class="lineCov">          2 :         if (!kunit_shutdown)</span></a>
-<a name="156"><span class="lineNum">     156 </span>            :                 return;</a>
-<a name="157"><span class="lineNum">     157 </span>            : </a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">          2 :         if (!strcmp(kunit_shutdown, &quot;poweroff&quot;))</span></a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineNoCov">          0 :                 kernel_power_off();</span></a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          2 :         else if (!strcmp(kunit_shutdown, &quot;halt&quot;))</span></a>
-<a name="161"><span class="lineNum">     161 </span><span class="lineCov">          2 :                 kernel_halt();</span></a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineNoCov">          0 :         else if (!strcmp(kunit_shutdown, &quot;reboot&quot;))</span></a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineNoCov">          0 :                 kernel_restart(NULL);</span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineNoCov">          0 :         for (suites = suite_set.start; suites &lt; suite_set.end; suites++)</span></a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineNoCov">          0 :                 kfree(*suites);</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 :         kfree(suite_set.start);</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="107"><span class="lineNum">     107 </span>            : </a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 : static struct suite_set kunit_filter_suites(const struct suite_set *suite_set,</span></a>
+<a name="109"><span class="lineNum">     109 </span>            :                                             const char *filter_glob,</a>
+<a name="110"><span class="lineNum">     110 </span>            :                                             int *err)</a>
+<a name="111"><span class="lineNum">     111 </span>            : {</a>
+<a name="112"><span class="lineNum">     112 </span>            :         int i;</a>
+<a name="113"><span class="lineNum">     113 </span>            :         struct kunit_suite **copy, *filtered_suite;</a>
+<a name="114"><span class="lineNum">     114 </span>            :         struct suite_set filtered;</a>
+<a name="115"><span class="lineNum">     115 </span>            :         struct kunit_test_filter filter;</a>
+<a name="116"><span class="lineNum">     116 </span>            : </a>
+<a name="117"><span class="lineNum">     117 </span>            :         /* Note: this includes space for the terminating NULL. */</a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineNoCov">          0 :         const size_t max = suite_set-&gt;end - suite_set-&gt;start;</span></a>
+<a name="119"><span class="lineNum">     119 </span>            : </a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineNoCov">          0 :         copy = kmalloc_array(max, sizeof(*filtered.start), GFP_KERNEL);</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 :         filtered.start = copy;</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 :         if (!copy) { /* won't be able to run anything, return an empty set */</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :                 filtered.end = copy;</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :                 return filtered;</span></a>
+<a name="125"><span class="lineNum">     125 </span>            :         }</a>
+<a name="126"><span class="lineNum">     126 </span>            : </a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineNoCov">          0 :         kunit_parse_filter_glob(&amp;filter, filter_glob);</span></a>
+<a name="128"><span class="lineNum">     128 </span>            : </a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 :         for (i = 0; suite_set-&gt;start[i] != NULL; i++) {</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineNoCov">          0 :                 if (!glob_match(filter.suite_glob, suite_set-&gt;start[i]-&gt;name))</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="132"><span class="lineNum">     132 </span>            : </a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineNoCov">          0 :                 filtered_suite = kunit_filter_tests(suite_set-&gt;start[i], filter.test_glob);</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineNoCov">          0 :                 if (IS_ERR(filtered_suite)) {</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 :                         *err = PTR_ERR(filtered_suite);</span></a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineNoCov">          0 :                         return filtered;</span></a>
+<a name="137"><span class="lineNum">     137 </span>            :                 }</a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineNoCov">          0 :                 if (!filtered_suite)</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="140"><span class="lineNum">     140 </span>            : </a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 :                 *copy++ = filtered_suite;</span></a>
+<a name="142"><span class="lineNum">     142 </span>            :         }</a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineNoCov">          0 :         *copy = NULL;</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineNoCov">          0 :         filtered.end = copy;</span></a>
+<a name="145"><span class="lineNum">     145 </span>            : </a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 :         kfree(filter.suite_glob);</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineNoCov">          0 :         kfree(filter.test_glob);</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineNoCov">          0 :         return filtered;</span></a>
+<a name="149"><span class="lineNum">     149 </span>            : }</a>
+<a name="150"><span class="lineNum">     150 </span>            : </a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineCov">          1 : static void kunit_handle_shutdown(void)</span></a>
+<a name="152"><span class="lineNum">     152 </span>            : {</a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">          1 :         if (!kunit_shutdown)</span></a>
+<a name="154"><span class="lineNum">     154 </span>            :                 return;</a>
+<a name="155"><span class="lineNum">     155 </span>            : </a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">          1 :         if (!strcmp(kunit_shutdown, &quot;poweroff&quot;))</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :                 kernel_power_off();</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">          1 :         else if (!strcmp(kunit_shutdown, &quot;halt&quot;))</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">          1 :                 kernel_halt();</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineNoCov">          0 :         else if (!strcmp(kunit_shutdown, &quot;reboot&quot;))</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineNoCov">          0 :                 kernel_restart(NULL);</span></a>
+<a name="162"><span class="lineNum">     162 </span>            : </a>
+<a name="163"><span class="lineNum">     163 </span>            : }</a>
 <a name="164"><span class="lineNum">     164 </span>            : </a>
-<a name="165"><span class="lineNum">     165 </span>            : }</a>
-<a name="166"><span class="lineNum">     166 </span>            : </a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">          2 : static void kunit_exec_run_tests(struct suite_set *suite_set)</span></a>
-<a name="168"><span class="lineNum">     168 </span>            : {</a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineCov">          2 :         size_t num_suites = suite_set-&gt;end - suite_set-&gt;start;</span></a>
-<a name="170"><span class="lineNum">     170 </span>            : </a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">          2 :         pr_info(&quot;TAP version 14\n&quot;);</span></a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">          2 :         pr_info(&quot;1..%zu\n&quot;, num_suites);</span></a>
-<a name="173"><span class="lineNum">     173 </span>            : </a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">          2 :         __kunit_test_suites_init(suite_set-&gt;start, num_suites);</span></a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineCov">          2 : }</span></a>
-<a name="176"><span class="lineNum">     176 </span>            : </a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 : static void kunit_exec_list_tests(struct suite_set *suite_set)</span></a>
-<a name="178"><span class="lineNum">     178 </span>            : {</a>
-<a name="179"><span class="lineNum">     179 </span>            :         struct kunit_suite * const *suites;</a>
-<a name="180"><span class="lineNum">     180 </span>            :         struct kunit_case *test_case;</a>
-<a name="181"><span class="lineNum">     181 </span>            : </a>
-<a name="182"><span class="lineNum">     182 </span>            :         /* Hack: print a tap header so kunit.py can find the start of KUnit output. */</a>
-<a name="183"><span class="lineNum">     183 </span><span class="lineNoCov">          0 :         pr_info(&quot;TAP version 14\n&quot;);</span></a>
-<a name="184"><span class="lineNum">     184 </span>            : </a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 :         for (suites = suite_set-&gt;start; suites &lt; suite_set-&gt;end; suites++)</span></a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :                 kunit_suite_for_each_test_case((*suites), test_case) {</span></a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 :                         pr_info(&quot;%s.%s\n&quot;, (*suites)-&gt;name, test_case-&gt;name);</span></a>
-<a name="188"><span class="lineNum">     188 </span>            :                 }</a>
-<a name="189"><span class="lineNum">     189 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="190"><span class="lineNum">     190 </span>            : </a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          2 : int kunit_run_all_tests(void)</span></a>
-<a name="192"><span class="lineNum">     192 </span>            : {</a>
-<a name="193"><span class="lineNum">     193 </span><span class="lineCov">          2 :         struct suite_set suite_set = {__kunit_suites_start, __kunit_suites_end};</span></a>
-<a name="194"><span class="lineNum">     194 </span><span class="lineCov">          2 :         int err = 0;</span></a>
-<a name="195"><span class="lineNum">     195 </span>            : </a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineCov">          2 :         if (filter_glob_param) {</span></a>
-<a name="197"><span class="lineNum">     197 </span><span class="lineNoCov">          0 :                 suite_set = kunit_filter_suites(&amp;suite_set, filter_glob_param, &amp;err);</span></a>
-<a name="198"><span class="lineNum">     198 </span><span class="lineNoCov">          0 :                 if (err) {</span></a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :                         pr_err(&quot;kunit executor: error filtering suites: %d\n&quot;, err);</span></a>
-<a name="200"><span class="lineNum">     200 </span><span class="lineNoCov">          0 :                         goto out;</span></a>
-<a name="201"><span class="lineNum">     201 </span>            :                 }</a>
-<a name="202"><span class="lineNum">     202 </span>            :         }</a>
-<a name="203"><span class="lineNum">     203 </span>            : </a>
-<a name="204"><span class="lineNum">     204 </span><span class="lineCov">          2 :         if (!action_param)</span></a>
-<a name="205"><span class="lineNum">     205 </span><span class="lineCov">          2 :                 kunit_exec_run_tests(&amp;suite_set);</span></a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 :         else if (strcmp(action_param, &quot;list&quot;) == 0)</span></a>
-<a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 :                 kunit_exec_list_tests(&amp;suite_set);</span></a>
-<a name="208"><span class="lineNum">     208 </span>            :         else</a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineNoCov">          0 :                 pr_err(&quot;kunit executor: unknown action '%s'\n&quot;, action_param);</span></a>
-<a name="210"><span class="lineNum">     210 </span>            : </a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineCov">          2 :         if (filter_glob_param) { /* a copy was made of each suite */</span></a>
-<a name="212"><span class="lineNum">     212 </span><span class="lineNoCov">          0 :                 kunit_free_suite_set(suite_set);</span></a>
-<a name="213"><span class="lineNum">     213 </span>            :         }</a>
-<a name="214"><span class="lineNum">     214 </span>            : </a>
-<a name="215"><span class="lineNum">     215 </span>            : out:</a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineCov">          2 :         kunit_handle_shutdown();</span></a>
-<a name="217"><span class="lineNum">     217 </span><span class="lineNoCov">          0 :         return err;</span></a>
-<a name="218"><span class="lineNum">     218 </span>            : }</a>
-<a name="219"><span class="lineNum">     219 </span>            : </a>
-<a name="220"><span class="lineNum">     220 </span>            : #if IS_BUILTIN(CONFIG_KUNIT_TEST)</a>
-<a name="221"><span class="lineNum">     221 </span>            : #include &quot;executor_test.c&quot;</a>
-<a name="222"><span class="lineNum">     222 </span>            : #endif</a>
-<a name="223"><span class="lineNum">     223 </span>            : </a>
-<a name="224"><span class="lineNum">     224 </span>            : #endif /* IS_BUILTIN(CONFIG_KUNIT) */</a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">          1 : static void kunit_exec_run_tests(struct suite_set *suite_set)</span></a>
+<a name="166"><span class="lineNum">     166 </span>            : {</a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">          1 :         size_t num_suites = suite_set-&gt;end - suite_set-&gt;start;</span></a>
+<a name="168"><span class="lineNum">     168 </span>            : </a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">          1 :         pr_info(&quot;TAP version 14\n&quot;);</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">          1 :         pr_info(&quot;1..%zu\n&quot;, num_suites);</span></a>
+<a name="171"><span class="lineNum">     171 </span>            : </a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">          1 :         __kunit_test_suites_init(suite_set-&gt;start, num_suites);</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          1 : }</span></a>
+<a name="174"><span class="lineNum">     174 </span>            : </a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineNoCov">          0 : static void kunit_exec_list_tests(struct suite_set *suite_set)</span></a>
+<a name="176"><span class="lineNum">     176 </span>            : {</a>
+<a name="177"><span class="lineNum">     177 </span>            :         struct kunit_suite * const *suites;</a>
+<a name="178"><span class="lineNum">     178 </span>            :         struct kunit_case *test_case;</a>
+<a name="179"><span class="lineNum">     179 </span>            : </a>
+<a name="180"><span class="lineNum">     180 </span>            :         /* Hack: print a tap header so kunit.py can find the start of KUnit output. */</a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 :         pr_info(&quot;TAP version 14\n&quot;);</span></a>
+<a name="182"><span class="lineNum">     182 </span>            : </a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineNoCov">          0 :         for (suites = suite_set-&gt;start; suites &lt; suite_set-&gt;end; suites++)</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineNoCov">          0 :                 kunit_suite_for_each_test_case((*suites), test_case) {</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 :                         pr_info(&quot;%s.%s\n&quot;, (*suites)-&gt;name, test_case-&gt;name);</span></a>
+<a name="186"><span class="lineNum">     186 </span>            :                 }</a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="188"><span class="lineNum">     188 </span>            : </a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineCov">          1 : int kunit_run_all_tests(void)</span></a>
+<a name="190"><span class="lineNum">     190 </span>            : {</a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          1 :         struct suite_set suite_set = {__kunit_suites_start, __kunit_suites_end};</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">          1 :         int err = 0;</span></a>
+<a name="193"><span class="lineNum">     193 </span>            : </a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineCov">          1 :         if (filter_glob_param) {</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineNoCov">          0 :                 suite_set = kunit_filter_suites(&amp;suite_set, filter_glob_param, &amp;err);</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :                 if (err) {</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineNoCov">          0 :                         pr_err(&quot;kunit executor: error filtering suites: %d\n&quot;, err);</span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineNoCov">          0 :                         goto out;</span></a>
+<a name="199"><span class="lineNum">     199 </span>            :                 }</a>
+<a name="200"><span class="lineNum">     200 </span>            :         }</a>
+<a name="201"><span class="lineNum">     201 </span>            : </a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">          1 :         if (!action_param)</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineCov">          1 :                 kunit_exec_run_tests(&amp;suite_set);</span></a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineNoCov">          0 :         else if (strcmp(action_param, &quot;list&quot;) == 0)</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 :                 kunit_exec_list_tests(&amp;suite_set);</span></a>
+<a name="206"><span class="lineNum">     206 </span>            :         else</a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 :                 pr_err(&quot;kunit executor: unknown action '%s'\n&quot;, action_param);</span></a>
+<a name="208"><span class="lineNum">     208 </span>            : </a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineCov">          1 :         if (filter_glob_param) { /* a copy was made of each suite */</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 :                 kunit_free_suite_set(suite_set);</span></a>
+<a name="211"><span class="lineNum">     211 </span>            :         }</a>
+<a name="212"><span class="lineNum">     212 </span>            : </a>
+<a name="213"><span class="lineNum">     213 </span>            : out:</a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">          1 :         kunit_handle_shutdown();</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineNoCov">          0 :         return err;</span></a>
+<a name="216"><span class="lineNum">     216 </span>            : }</a>
+<a name="217"><span class="lineNum">     217 </span>            : </a>
+<a name="218"><span class="lineNum">     218 </span>            : #if IS_BUILTIN(CONFIG_KUNIT_TEST)</a>
+<a name="219"><span class="lineNum">     219 </span>            : #include &quot;executor_test.c&quot;</a>
+<a name="220"><span class="lineNum">     220 </span>            : #endif</a>
+<a name="221"><span class="lineNum">     221 </span>            : </a>
+<a name="222"><span class="lineNum">     222 </span>            : #endif /* IS_BUILTIN(CONFIG_KUNIT) */</a>
 </pre>
       </td>
     </tr>

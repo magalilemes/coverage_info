@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">9</td>
@@ -328,12 +328,12 @@
 <a name="266"><span class="lineNum">     266 </span>            :  * get_next_ino()). This case is indicated by passing NULL as inop.</a>
 <a name="267"><span class="lineNum">     267 </span>            :  */</a>
 <a name="268"><span class="lineNum">     268 </span>            : #define SHMEM_INO_BATCH 1024</a>
-<a name="269"><span class="lineNum">     269 </span><span class="lineCov">          2 : static int shmem_reserve_inode(struct super_block *sb, ino_t *inop)</span></a>
+<a name="269"><span class="lineNum">     269 </span><span class="lineCov">          1 : static int shmem_reserve_inode(struct super_block *sb, ino_t *inop)</span></a>
 <a name="270"><span class="lineNum">     270 </span>            : {</a>
-<a name="271"><span class="lineNum">     271 </span><span class="lineCov">          2 :         struct shmem_sb_info *sbinfo = SHMEM_SB(sb);</span></a>
+<a name="271"><span class="lineNum">     271 </span><span class="lineCov">          1 :         struct shmem_sb_info *sbinfo = SHMEM_SB(sb);</span></a>
 <a name="272"><span class="lineNum">     272 </span>            :         ino_t ino;</a>
 <a name="273"><span class="lineNum">     273 </span>            : </a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineCov">          2 :         if (!(sb-&gt;s_flags &amp; SB_KERNMOUNT)) {</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineCov">          1 :         if (!(sb-&gt;s_flags &amp; SB_KERNMOUNT)) {</span></a>
 <a name="275"><span class="lineNum">     275 </span><span class="lineNoCov">          0 :                 raw_spin_lock(&amp;sbinfo-&gt;stat_lock);</span></a>
 <a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 :                 if (sbinfo-&gt;max_inodes) {</span></a>
 <a name="277"><span class="lineNum">     277 </span><span class="lineNoCov">          0 :                         if (!sbinfo-&gt;free_inodes) {</span></a>
@@ -361,7 +361,7 @@
 <a name="299"><span class="lineNum">     299 </span><span class="lineNoCov">          0 :                         *inop = ino;</span></a>
 <a name="300"><span class="lineNum">     300 </span>            :                 }</a>
 <a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 :                 raw_spin_unlock(&amp;sbinfo-&gt;stat_lock);</span></a>
-<a name="302"><span class="lineNum">     302 </span><span class="lineCov">          2 :         } else if (inop) {</span></a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineCov">          1 :         } else if (inop) {</span></a>
 <a name="303"><span class="lineNum">     303 </span>            :                 /*</a>
 <a name="304"><span class="lineNum">     304 </span>            :                  * __shmem_file_setup, one of our callers, is lock-free: it</a>
 <a name="305"><span class="lineNum">     305 </span>            :                  * doesn't hold stat_lock in shmem_reserve_inode since</a>
@@ -376,19 +376,19 @@
 <a name="314"><span class="lineNum">     314 </span>            :                  */</a>
 <a name="315"><span class="lineNum">     315 </span>            :                 ino_t *next_ino;</a>
 <a name="316"><span class="lineNum">     316 </span>            : </a>
-<a name="317"><span class="lineNum">     317 </span><span class="lineCov">          2 :                 next_ino = per_cpu_ptr(sbinfo-&gt;ino_batch, get_cpu());</span></a>
-<a name="318"><span class="lineNum">     318 </span><span class="lineCov">          2 :                 ino = *next_ino;</span></a>
-<a name="319"><span class="lineNum">     319 </span><span class="lineCov">          2 :                 if (unlikely(ino % SHMEM_INO_BATCH == 0)) {</span></a>
-<a name="320"><span class="lineNum">     320 </span><span class="lineCov">          2 :                         raw_spin_lock(&amp;sbinfo-&gt;stat_lock);</span></a>
-<a name="321"><span class="lineNum">     321 </span><span class="lineCov">          2 :                         ino = sbinfo-&gt;next_ino;</span></a>
-<a name="322"><span class="lineNum">     322 </span><span class="lineCov">          2 :                         sbinfo-&gt;next_ino += SHMEM_INO_BATCH;</span></a>
-<a name="323"><span class="lineNum">     323 </span><span class="lineCov">          2 :                         raw_spin_unlock(&amp;sbinfo-&gt;stat_lock);</span></a>
-<a name="324"><span class="lineNum">     324 </span><span class="lineCov">          2 :                         if (unlikely(is_zero_ino(ino)))</span></a>
-<a name="325"><span class="lineNum">     325 </span><span class="lineCov">          2 :                                 ino++;</span></a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineCov">          1 :                 next_ino = per_cpu_ptr(sbinfo-&gt;ino_batch, get_cpu());</span></a>
+<a name="318"><span class="lineNum">     318 </span><span class="lineCov">          1 :                 ino = *next_ino;</span></a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineCov">          1 :                 if (unlikely(ino % SHMEM_INO_BATCH == 0)) {</span></a>
+<a name="320"><span class="lineNum">     320 </span><span class="lineCov">          1 :                         raw_spin_lock(&amp;sbinfo-&gt;stat_lock);</span></a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineCov">          1 :                         ino = sbinfo-&gt;next_ino;</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineCov">          1 :                         sbinfo-&gt;next_ino += SHMEM_INO_BATCH;</span></a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineCov">          1 :                         raw_spin_unlock(&amp;sbinfo-&gt;stat_lock);</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineCov">          1 :                         if (unlikely(is_zero_ino(ino)))</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineCov">          1 :                                 ino++;</span></a>
 <a name="326"><span class="lineNum">     326 </span>            :                 }</a>
-<a name="327"><span class="lineNum">     327 </span><span class="lineCov">          2 :                 *inop = ino;</span></a>
-<a name="328"><span class="lineNum">     328 </span><span class="lineCov">          2 :                 *next_ino = ++ino;</span></a>
-<a name="329"><span class="lineNum">     329 </span><span class="lineCov">          2 :                 put_cpu();</span></a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineCov">          1 :                 *inop = ino;</span></a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineCov">          1 :                 *next_ino = ++ino;</span></a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineCov">          1 :                 put_cpu();</span></a>
 <a name="330"><span class="lineNum">     330 </span>            :         }</a>
 <a name="331"><span class="lineNum">     331 </span>            : </a>
 <a name="332"><span class="lineNum">     332 </span>            :         return 0;</a>
@@ -2309,38 +2309,38 @@
 <a name="2247"><span class="lineNum">    2247 </span><span class="lineNoCov">          0 :         return 0;</span></a>
 <a name="2248"><span class="lineNum">    2248 </span>            : }</a>
 <a name="2249"><span class="lineNum">    2249 </span>            : </a>
-<a name="2250"><span class="lineNum">    2250 </span><span class="lineCov">          2 : static struct inode *shmem_get_inode(struct super_block *sb, const struct inode *dir,</span></a>
+<a name="2250"><span class="lineNum">    2250 </span><span class="lineCov">          1 : static struct inode *shmem_get_inode(struct super_block *sb, const struct inode *dir,</span></a>
 <a name="2251"><span class="lineNum">    2251 </span>            :                                      umode_t mode, dev_t dev, unsigned long flags)</a>
 <a name="2252"><span class="lineNum">    2252 </span>            : {</a>
 <a name="2253"><span class="lineNum">    2253 </span>            :         struct inode *inode;</a>
 <a name="2254"><span class="lineNum">    2254 </span>            :         struct shmem_inode_info *info;</a>
-<a name="2255"><span class="lineNum">    2255 </span><span class="lineCov">          2 :         struct shmem_sb_info *sbinfo = SHMEM_SB(sb);</span></a>
+<a name="2255"><span class="lineNum">    2255 </span><span class="lineCov">          1 :         struct shmem_sb_info *sbinfo = SHMEM_SB(sb);</span></a>
 <a name="2256"><span class="lineNum">    2256 </span>            :         ino_t ino;</a>
 <a name="2257"><span class="lineNum">    2257 </span>            : </a>
-<a name="2258"><span class="lineNum">    2258 </span><span class="lineCov">          2 :         if (shmem_reserve_inode(sb, &amp;ino))</span></a>
+<a name="2258"><span class="lineNum">    2258 </span><span class="lineCov">          1 :         if (shmem_reserve_inode(sb, &amp;ino))</span></a>
 <a name="2259"><span class="lineNum">    2259 </span>            :                 return NULL;</a>
 <a name="2260"><span class="lineNum">    2260 </span>            : </a>
-<a name="2261"><span class="lineNum">    2261 </span><span class="lineCov">          2 :         inode = new_inode(sb);</span></a>
-<a name="2262"><span class="lineNum">    2262 </span><span class="lineCov">          2 :         if (inode) {</span></a>
-<a name="2263"><span class="lineNum">    2263 </span><span class="lineCov">          2 :                 inode-&gt;i_ino = ino;</span></a>
-<a name="2264"><span class="lineNum">    2264 </span><span class="lineCov">          2 :                 inode_init_owner(&amp;init_user_ns, inode, dir, mode);</span></a>
-<a name="2265"><span class="lineNum">    2265 </span><span class="lineCov">          2 :                 inode-&gt;i_blocks = 0;</span></a>
-<a name="2266"><span class="lineNum">    2266 </span><span class="lineCov">          2 :                 inode-&gt;i_atime = inode-&gt;i_mtime = inode-&gt;i_ctime = current_time(inode);</span></a>
-<a name="2267"><span class="lineNum">    2267 </span><span class="lineCov">          2 :                 inode-&gt;i_generation = prandom_u32();</span></a>
-<a name="2268"><span class="lineNum">    2268 </span><span class="lineCov">          2 :                 info = SHMEM_I(inode);</span></a>
-<a name="2269"><span class="lineNum">    2269 </span><span class="lineCov">          2 :                 memset(info, 0, (char *)inode - (char *)info);</span></a>
-<a name="2270"><span class="lineNum">    2270 </span><span class="lineCov">          2 :                 spin_lock_init(&amp;info-&gt;lock);</span></a>
-<a name="2271"><span class="lineNum">    2271 </span><span class="lineCov">          4 :                 atomic_set(&amp;info-&gt;stop_eviction, 0);</span></a>
-<a name="2272"><span class="lineNum">    2272 </span><span class="lineCov">          2 :                 info-&gt;seals = F_SEAL_SEAL;</span></a>
-<a name="2273"><span class="lineNum">    2273 </span><span class="lineCov">          2 :                 info-&gt;flags = flags &amp; VM_NORESERVE;</span></a>
-<a name="2274"><span class="lineNum">    2274 </span><span class="lineCov">          2 :                 info-&gt;i_crtime = inode-&gt;i_mtime;</span></a>
-<a name="2275"><span class="lineNum">    2275 </span><span class="lineCov">          4 :                 INIT_LIST_HEAD(&amp;info-&gt;shrinklist);</span></a>
-<a name="2276"><span class="lineNum">    2276 </span><span class="lineCov">          4 :                 INIT_LIST_HEAD(&amp;info-&gt;swaplist);</span></a>
-<a name="2277"><span class="lineNum">    2277 </span><span class="lineCov">          4 :                 simple_xattrs_init(&amp;info-&gt;xattrs);</span></a>
-<a name="2278"><span class="lineNum">    2278 </span><span class="lineCov">          2 :                 cache_no_acl(inode);</span></a>
-<a name="2279"><span class="lineNum">    2279 </span><span class="lineCov">          4 :                 mapping_set_large_folios(inode-&gt;i_mapping);</span></a>
+<a name="2261"><span class="lineNum">    2261 </span><span class="lineCov">          1 :         inode = new_inode(sb);</span></a>
+<a name="2262"><span class="lineNum">    2262 </span><span class="lineCov">          1 :         if (inode) {</span></a>
+<a name="2263"><span class="lineNum">    2263 </span><span class="lineCov">          1 :                 inode-&gt;i_ino = ino;</span></a>
+<a name="2264"><span class="lineNum">    2264 </span><span class="lineCov">          1 :                 inode_init_owner(&amp;init_user_ns, inode, dir, mode);</span></a>
+<a name="2265"><span class="lineNum">    2265 </span><span class="lineCov">          1 :                 inode-&gt;i_blocks = 0;</span></a>
+<a name="2266"><span class="lineNum">    2266 </span><span class="lineCov">          1 :                 inode-&gt;i_atime = inode-&gt;i_mtime = inode-&gt;i_ctime = current_time(inode);</span></a>
+<a name="2267"><span class="lineNum">    2267 </span><span class="lineCov">          1 :                 inode-&gt;i_generation = prandom_u32();</span></a>
+<a name="2268"><span class="lineNum">    2268 </span><span class="lineCov">          1 :                 info = SHMEM_I(inode);</span></a>
+<a name="2269"><span class="lineNum">    2269 </span><span class="lineCov">          1 :                 memset(info, 0, (char *)inode - (char *)info);</span></a>
+<a name="2270"><span class="lineNum">    2270 </span><span class="lineCov">          1 :                 spin_lock_init(&amp;info-&gt;lock);</span></a>
+<a name="2271"><span class="lineNum">    2271 </span><span class="lineCov">          2 :                 atomic_set(&amp;info-&gt;stop_eviction, 0);</span></a>
+<a name="2272"><span class="lineNum">    2272 </span><span class="lineCov">          1 :                 info-&gt;seals = F_SEAL_SEAL;</span></a>
+<a name="2273"><span class="lineNum">    2273 </span><span class="lineCov">          1 :                 info-&gt;flags = flags &amp; VM_NORESERVE;</span></a>
+<a name="2274"><span class="lineNum">    2274 </span><span class="lineCov">          1 :                 info-&gt;i_crtime = inode-&gt;i_mtime;</span></a>
+<a name="2275"><span class="lineNum">    2275 </span><span class="lineCov">          2 :                 INIT_LIST_HEAD(&amp;info-&gt;shrinklist);</span></a>
+<a name="2276"><span class="lineNum">    2276 </span><span class="lineCov">          2 :                 INIT_LIST_HEAD(&amp;info-&gt;swaplist);</span></a>
+<a name="2277"><span class="lineNum">    2277 </span><span class="lineCov">          2 :                 simple_xattrs_init(&amp;info-&gt;xattrs);</span></a>
+<a name="2278"><span class="lineNum">    2278 </span><span class="lineCov">          1 :                 cache_no_acl(inode);</span></a>
+<a name="2279"><span class="lineNum">    2279 </span><span class="lineCov">          2 :                 mapping_set_large_folios(inode-&gt;i_mapping);</span></a>
 <a name="2280"><span class="lineNum">    2280 </span>            : </a>
-<a name="2281"><span class="lineNum">    2281 </span><span class="lineCov">          2 :                 switch (mode &amp; S_IFMT) {</span></a>
+<a name="2281"><span class="lineNum">    2281 </span><span class="lineCov">          1 :                 switch (mode &amp; S_IFMT) {</span></a>
 <a name="2282"><span class="lineNum">    2282 </span>            :                 default:</a>
 <a name="2283"><span class="lineNum">    2283 </span><span class="lineNoCov">          0 :                         inode-&gt;i_op = &amp;shmem_special_inode_operations;</span></a>
 <a name="2284"><span class="lineNum">    2284 </span><span class="lineNoCov">          0 :                         init_special_inode(inode, mode, dev);</span></a>
@@ -2353,12 +2353,12 @@
 <a name="2291"><span class="lineNum">    2291 </span>            :                                                  shmem_get_sbmpol(sbinfo));</a>
 <a name="2292"><span class="lineNum">    2292 </span>            :                         break;</a>
 <a name="2293"><span class="lineNum">    2293 </span>            :                 case S_IFDIR:</a>
-<a name="2294"><span class="lineNum">    2294 </span><span class="lineCov">          2 :                         inc_nlink(inode);</span></a>
+<a name="2294"><span class="lineNum">    2294 </span><span class="lineCov">          1 :                         inc_nlink(inode);</span></a>
 <a name="2295"><span class="lineNum">    2295 </span>            :                         /* Some things misbehave if size == 0 on a directory */</a>
-<a name="2296"><span class="lineNum">    2296 </span><span class="lineCov">          2 :                         inode-&gt;i_size = 2 * BOGO_DIRENT_SIZE;</span></a>
-<a name="2297"><span class="lineNum">    2297 </span><span class="lineCov">          2 :                         inode-&gt;i_op = &amp;shmem_dir_inode_operations;</span></a>
-<a name="2298"><span class="lineNum">    2298 </span><span class="lineCov">          2 :                         inode-&gt;i_fop = &amp;simple_dir_operations;</span></a>
-<a name="2299"><span class="lineNum">    2299 </span><span class="lineCov">          2 :                         break;</span></a>
+<a name="2296"><span class="lineNum">    2296 </span><span class="lineCov">          1 :                         inode-&gt;i_size = 2 * BOGO_DIRENT_SIZE;</span></a>
+<a name="2297"><span class="lineNum">    2297 </span><span class="lineCov">          1 :                         inode-&gt;i_op = &amp;shmem_dir_inode_operations;</span></a>
+<a name="2298"><span class="lineNum">    2298 </span><span class="lineCov">          1 :                         inode-&gt;i_fop = &amp;simple_dir_operations;</span></a>
+<a name="2299"><span class="lineNum">    2299 </span><span class="lineCov">          1 :                         break;</span></a>
 <a name="2300"><span class="lineNum">    2300 </span>            :                 case S_IFLNK:</a>
 <a name="2301"><span class="lineNum">    2301 </span>            :                         /*</a>
 <a name="2302"><span class="lineNum">    2302 </span>            :                          * Must not load anything in the rbtree,</a>
@@ -3666,19 +3666,19 @@
 <a name="3604"><span class="lineNum">    3604 </span><span class="lineNoCov">          0 :         sb-&gt;s_fs_info = NULL;</span></a>
 <a name="3605"><span class="lineNum">    3605 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="3606"><span class="lineNum">    3606 </span>            : </a>
-<a name="3607"><span class="lineNum">    3607 </span><span class="lineCov">          2 : static int shmem_fill_super(struct super_block *sb, struct fs_context *fc)</span></a>
+<a name="3607"><span class="lineNum">    3607 </span><span class="lineCov">          1 : static int shmem_fill_super(struct super_block *sb, struct fs_context *fc)</span></a>
 <a name="3608"><span class="lineNum">    3608 </span>            : {</a>
-<a name="3609"><span class="lineNum">    3609 </span><span class="lineCov">          2 :         struct shmem_options *ctx = fc-&gt;fs_private;</span></a>
+<a name="3609"><span class="lineNum">    3609 </span><span class="lineCov">          1 :         struct shmem_options *ctx = fc-&gt;fs_private;</span></a>
 <a name="3610"><span class="lineNum">    3610 </span>            :         struct inode *inode;</a>
 <a name="3611"><span class="lineNum">    3611 </span>            :         struct shmem_sb_info *sbinfo;</a>
 <a name="3612"><span class="lineNum">    3612 </span>            : </a>
 <a name="3613"><span class="lineNum">    3613 </span>            :         /* Round up to L1_CACHE_BYTES to resist false sharing */</a>
-<a name="3614"><span class="lineNum">    3614 </span><span class="lineCov">          2 :         sbinfo = kzalloc(max((int)sizeof(struct shmem_sb_info),</span></a>
+<a name="3614"><span class="lineNum">    3614 </span><span class="lineCov">          1 :         sbinfo = kzalloc(max((int)sizeof(struct shmem_sb_info),</span></a>
 <a name="3615"><span class="lineNum">    3615 </span>            :                                 L1_CACHE_BYTES), GFP_KERNEL);</a>
-<a name="3616"><span class="lineNum">    3616 </span><span class="lineCov">          2 :         if (!sbinfo)</span></a>
+<a name="3616"><span class="lineNum">    3616 </span><span class="lineCov">          1 :         if (!sbinfo)</span></a>
 <a name="3617"><span class="lineNum">    3617 </span>            :                 return -ENOMEM;</a>
 <a name="3618"><span class="lineNum">    3618 </span>            : </a>
-<a name="3619"><span class="lineNum">    3619 </span><span class="lineCov">          2 :         sb-&gt;s_fs_info = sbinfo;</span></a>
+<a name="3619"><span class="lineNum">    3619 </span><span class="lineCov">          1 :         sb-&gt;s_fs_info = sbinfo;</span></a>
 <a name="3620"><span class="lineNum">    3620 </span>            : </a>
 <a name="3621"><span class="lineNum">    3621 </span>            : #ifdef CONFIG_TMPFS</a>
 <a name="3622"><span class="lineNum">    3622 </span>            :         /*</a>
@@ -3699,50 +3699,50 @@
 <a name="3637"><span class="lineNum">    3637 </span>            :         sb-&gt;s_export_op = &amp;shmem_export_ops;</a>
 <a name="3638"><span class="lineNum">    3638 </span>            :         sb-&gt;s_flags |= SB_NOSEC;</a>
 <a name="3639"><span class="lineNum">    3639 </span>            : #else</a>
-<a name="3640"><span class="lineNum">    3640 </span><span class="lineCov">          2 :         sb-&gt;s_flags |= SB_NOUSER;</span></a>
+<a name="3640"><span class="lineNum">    3640 </span><span class="lineCov">          1 :         sb-&gt;s_flags |= SB_NOUSER;</span></a>
 <a name="3641"><span class="lineNum">    3641 </span>            : #endif</a>
-<a name="3642"><span class="lineNum">    3642 </span><span class="lineCov">          2 :         sbinfo-&gt;max_blocks = ctx-&gt;blocks;</span></a>
-<a name="3643"><span class="lineNum">    3643 </span><span class="lineCov">          2 :         sbinfo-&gt;free_inodes = sbinfo-&gt;max_inodes = ctx-&gt;inodes;</span></a>
-<a name="3644"><span class="lineNum">    3644 </span><span class="lineCov">          2 :         if (sb-&gt;s_flags &amp; SB_KERNMOUNT) {</span></a>
-<a name="3645"><span class="lineNum">    3645 </span><span class="lineCov">          2 :                 sbinfo-&gt;ino_batch = alloc_percpu(ino_t);</span></a>
-<a name="3646"><span class="lineNum">    3646 </span><span class="lineCov">          2 :                 if (!sbinfo-&gt;ino_batch)</span></a>
+<a name="3642"><span class="lineNum">    3642 </span><span class="lineCov">          1 :         sbinfo-&gt;max_blocks = ctx-&gt;blocks;</span></a>
+<a name="3643"><span class="lineNum">    3643 </span><span class="lineCov">          1 :         sbinfo-&gt;free_inodes = sbinfo-&gt;max_inodes = ctx-&gt;inodes;</span></a>
+<a name="3644"><span class="lineNum">    3644 </span><span class="lineCov">          1 :         if (sb-&gt;s_flags &amp; SB_KERNMOUNT) {</span></a>
+<a name="3645"><span class="lineNum">    3645 </span><span class="lineCov">          1 :                 sbinfo-&gt;ino_batch = alloc_percpu(ino_t);</span></a>
+<a name="3646"><span class="lineNum">    3646 </span><span class="lineCov">          1 :                 if (!sbinfo-&gt;ino_batch)</span></a>
 <a name="3647"><span class="lineNum">    3647 </span>            :                         goto failed;</a>
 <a name="3648"><span class="lineNum">    3648 </span>            :         }</a>
-<a name="3649"><span class="lineNum">    3649 </span><span class="lineCov">          2 :         sbinfo-&gt;uid = ctx-&gt;uid;</span></a>
-<a name="3650"><span class="lineNum">    3650 </span><span class="lineCov">          2 :         sbinfo-&gt;gid = ctx-&gt;gid;</span></a>
-<a name="3651"><span class="lineNum">    3651 </span><span class="lineCov">          2 :         sbinfo-&gt;full_inums = ctx-&gt;full_inums;</span></a>
-<a name="3652"><span class="lineNum">    3652 </span><span class="lineCov">          2 :         sbinfo-&gt;mode = ctx-&gt;mode;</span></a>
-<a name="3653"><span class="lineNum">    3653 </span><span class="lineCov">          2 :         sbinfo-&gt;huge = ctx-&gt;huge;</span></a>
-<a name="3654"><span class="lineNum">    3654 </span><span class="lineCov">          2 :         sbinfo-&gt;mpol = ctx-&gt;mpol;</span></a>
-<a name="3655"><span class="lineNum">    3655 </span><span class="lineCov">          2 :         ctx-&gt;mpol = NULL;</span></a>
+<a name="3649"><span class="lineNum">    3649 </span><span class="lineCov">          1 :         sbinfo-&gt;uid = ctx-&gt;uid;</span></a>
+<a name="3650"><span class="lineNum">    3650 </span><span class="lineCov">          1 :         sbinfo-&gt;gid = ctx-&gt;gid;</span></a>
+<a name="3651"><span class="lineNum">    3651 </span><span class="lineCov">          1 :         sbinfo-&gt;full_inums = ctx-&gt;full_inums;</span></a>
+<a name="3652"><span class="lineNum">    3652 </span><span class="lineCov">          1 :         sbinfo-&gt;mode = ctx-&gt;mode;</span></a>
+<a name="3653"><span class="lineNum">    3653 </span><span class="lineCov">          1 :         sbinfo-&gt;huge = ctx-&gt;huge;</span></a>
+<a name="3654"><span class="lineNum">    3654 </span><span class="lineCov">          1 :         sbinfo-&gt;mpol = ctx-&gt;mpol;</span></a>
+<a name="3655"><span class="lineNum">    3655 </span><span class="lineCov">          1 :         ctx-&gt;mpol = NULL;</span></a>
 <a name="3656"><span class="lineNum">    3656 </span>            : </a>
 <a name="3657"><span class="lineNum">    3657 </span>            :         raw_spin_lock_init(&amp;sbinfo-&gt;stat_lock);</a>
-<a name="3658"><span class="lineNum">    3658 </span><span class="lineCov">          4 :         if (percpu_counter_init(&amp;sbinfo-&gt;used_blocks, 0, GFP_KERNEL))</span></a>
+<a name="3658"><span class="lineNum">    3658 </span><span class="lineCov">          2 :         if (percpu_counter_init(&amp;sbinfo-&gt;used_blocks, 0, GFP_KERNEL))</span></a>
 <a name="3659"><span class="lineNum">    3659 </span>            :                 goto failed;</a>
-<a name="3660"><span class="lineNum">    3660 </span><span class="lineCov">          2 :         spin_lock_init(&amp;sbinfo-&gt;shrinklist_lock);</span></a>
-<a name="3661"><span class="lineNum">    3661 </span><span class="lineCov">          4 :         INIT_LIST_HEAD(&amp;sbinfo-&gt;shrinklist);</span></a>
+<a name="3660"><span class="lineNum">    3660 </span><span class="lineCov">          1 :         spin_lock_init(&amp;sbinfo-&gt;shrinklist_lock);</span></a>
+<a name="3661"><span class="lineNum">    3661 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;sbinfo-&gt;shrinklist);</span></a>
 <a name="3662"><span class="lineNum">    3662 </span>            : </a>
-<a name="3663"><span class="lineNum">    3663 </span><span class="lineCov">          2 :         sb-&gt;s_maxbytes = MAX_LFS_FILESIZE;</span></a>
-<a name="3664"><span class="lineNum">    3664 </span><span class="lineCov">          2 :         sb-&gt;s_blocksize = PAGE_SIZE;</span></a>
-<a name="3665"><span class="lineNum">    3665 </span><span class="lineCov">          2 :         sb-&gt;s_blocksize_bits = PAGE_SHIFT;</span></a>
-<a name="3666"><span class="lineNum">    3666 </span><span class="lineCov">          2 :         sb-&gt;s_magic = TMPFS_MAGIC;</span></a>
-<a name="3667"><span class="lineNum">    3667 </span><span class="lineCov">          2 :         sb-&gt;s_op = &amp;shmem_ops;</span></a>
-<a name="3668"><span class="lineNum">    3668 </span><span class="lineCov">          2 :         sb-&gt;s_time_gran = 1;</span></a>
+<a name="3663"><span class="lineNum">    3663 </span><span class="lineCov">          1 :         sb-&gt;s_maxbytes = MAX_LFS_FILESIZE;</span></a>
+<a name="3664"><span class="lineNum">    3664 </span><span class="lineCov">          1 :         sb-&gt;s_blocksize = PAGE_SIZE;</span></a>
+<a name="3665"><span class="lineNum">    3665 </span><span class="lineCov">          1 :         sb-&gt;s_blocksize_bits = PAGE_SHIFT;</span></a>
+<a name="3666"><span class="lineNum">    3666 </span><span class="lineCov">          1 :         sb-&gt;s_magic = TMPFS_MAGIC;</span></a>
+<a name="3667"><span class="lineNum">    3667 </span><span class="lineCov">          1 :         sb-&gt;s_op = &amp;shmem_ops;</span></a>
+<a name="3668"><span class="lineNum">    3668 </span><span class="lineCov">          1 :         sb-&gt;s_time_gran = 1;</span></a>
 <a name="3669"><span class="lineNum">    3669 </span>            : #ifdef CONFIG_TMPFS_XATTR</a>
 <a name="3670"><span class="lineNum">    3670 </span>            :         sb-&gt;s_xattr = shmem_xattr_handlers;</a>
 <a name="3671"><span class="lineNum">    3671 </span>            : #endif</a>
 <a name="3672"><span class="lineNum">    3672 </span>            : #ifdef CONFIG_TMPFS_POSIX_ACL</a>
 <a name="3673"><span class="lineNum">    3673 </span>            :         sb-&gt;s_flags |= SB_POSIXACL;</a>
 <a name="3674"><span class="lineNum">    3674 </span>            : #endif</a>
-<a name="3675"><span class="lineNum">    3675 </span><span class="lineCov">          2 :         uuid_gen(&amp;sb-&gt;s_uuid);</span></a>
+<a name="3675"><span class="lineNum">    3675 </span><span class="lineCov">          1 :         uuid_gen(&amp;sb-&gt;s_uuid);</span></a>
 <a name="3676"><span class="lineNum">    3676 </span>            : </a>
-<a name="3677"><span class="lineNum">    3677 </span><span class="lineCov">          2 :         inode = shmem_get_inode(sb, NULL, S_IFDIR | sbinfo-&gt;mode, 0, VM_NORESERVE);</span></a>
-<a name="3678"><span class="lineNum">    3678 </span><span class="lineCov">          2 :         if (!inode)</span></a>
+<a name="3677"><span class="lineNum">    3677 </span><span class="lineCov">          1 :         inode = shmem_get_inode(sb, NULL, S_IFDIR | sbinfo-&gt;mode, 0, VM_NORESERVE);</span></a>
+<a name="3678"><span class="lineNum">    3678 </span><span class="lineCov">          1 :         if (!inode)</span></a>
 <a name="3679"><span class="lineNum">    3679 </span>            :                 goto failed;</a>
-<a name="3680"><span class="lineNum">    3680 </span><span class="lineCov">          2 :         inode-&gt;i_uid = sbinfo-&gt;uid;</span></a>
-<a name="3681"><span class="lineNum">    3681 </span><span class="lineCov">          2 :         inode-&gt;i_gid = sbinfo-&gt;gid;</span></a>
-<a name="3682"><span class="lineNum">    3682 </span><span class="lineCov">          2 :         sb-&gt;s_root = d_make_root(inode);</span></a>
-<a name="3683"><span class="lineNum">    3683 </span><span class="lineCov">          2 :         if (!sb-&gt;s_root)</span></a>
+<a name="3680"><span class="lineNum">    3680 </span><span class="lineCov">          1 :         inode-&gt;i_uid = sbinfo-&gt;uid;</span></a>
+<a name="3681"><span class="lineNum">    3681 </span><span class="lineCov">          1 :         inode-&gt;i_gid = sbinfo-&gt;gid;</span></a>
+<a name="3682"><span class="lineNum">    3682 </span><span class="lineCov">          1 :         sb-&gt;s_root = d_make_root(inode);</span></a>
+<a name="3683"><span class="lineNum">    3683 </span><span class="lineCov">          1 :         if (!sb-&gt;s_root)</span></a>
 <a name="3684"><span class="lineNum">    3684 </span>            :                 goto failed;</a>
 <a name="3685"><span class="lineNum">    3685 </span>            :         return 0;</a>
 <a name="3686"><span class="lineNum">    3686 </span>            : </a>
@@ -3751,20 +3751,20 @@
 <a name="3689"><span class="lineNum">    3689 </span><span class="lineNoCov">          0 :         return -ENOMEM;</span></a>
 <a name="3690"><span class="lineNum">    3690 </span>            : }</a>
 <a name="3691"><span class="lineNum">    3691 </span>            : </a>
-<a name="3692"><span class="lineNum">    3692 </span><span class="lineCov">          2 : static int shmem_get_tree(struct fs_context *fc)</span></a>
+<a name="3692"><span class="lineNum">    3692 </span><span class="lineCov">          1 : static int shmem_get_tree(struct fs_context *fc)</span></a>
 <a name="3693"><span class="lineNum">    3693 </span>            : {</a>
-<a name="3694"><span class="lineNum">    3694 </span><span class="lineCov">          2 :         return get_tree_nodev(fc, shmem_fill_super);</span></a>
+<a name="3694"><span class="lineNum">    3694 </span><span class="lineCov">          1 :         return get_tree_nodev(fc, shmem_fill_super);</span></a>
 <a name="3695"><span class="lineNum">    3695 </span>            : }</a>
 <a name="3696"><span class="lineNum">    3696 </span>            : </a>
-<a name="3697"><span class="lineNum">    3697 </span><span class="lineCov">          2 : static void shmem_free_fc(struct fs_context *fc)</span></a>
+<a name="3697"><span class="lineNum">    3697 </span><span class="lineCov">          1 : static void shmem_free_fc(struct fs_context *fc)</span></a>
 <a name="3698"><span class="lineNum">    3698 </span>            : {</a>
-<a name="3699"><span class="lineNum">    3699 </span><span class="lineCov">          2 :         struct shmem_options *ctx = fc-&gt;fs_private;</span></a>
+<a name="3699"><span class="lineNum">    3699 </span><span class="lineCov">          1 :         struct shmem_options *ctx = fc-&gt;fs_private;</span></a>
 <a name="3700"><span class="lineNum">    3700 </span>            : </a>
-<a name="3701"><span class="lineNum">    3701 </span><span class="lineCov">          2 :         if (ctx) {</span></a>
-<a name="3702"><span class="lineNum">    3702 </span><span class="lineCov">          2 :                 mpol_put(ctx-&gt;mpol);</span></a>
-<a name="3703"><span class="lineNum">    3703 </span><span class="lineCov">          2 :                 kfree(ctx);</span></a>
+<a name="3701"><span class="lineNum">    3701 </span><span class="lineCov">          1 :         if (ctx) {</span></a>
+<a name="3702"><span class="lineNum">    3702 </span><span class="lineCov">          1 :                 mpol_put(ctx-&gt;mpol);</span></a>
+<a name="3703"><span class="lineNum">    3703 </span><span class="lineCov">          1 :                 kfree(ctx);</span></a>
 <a name="3704"><span class="lineNum">    3704 </span>            :         }</a>
-<a name="3705"><span class="lineNum">    3705 </span><span class="lineCov">          2 : }</span></a>
+<a name="3705"><span class="lineNum">    3705 </span><span class="lineCov">          1 : }</span></a>
 <a name="3706"><span class="lineNum">    3706 </span>            : </a>
 <a name="3707"><span class="lineNum">    3707 </span>            : static const struct fs_context_operations shmem_fs_context_ops = {</a>
 <a name="3708"><span class="lineNum">    3708 </span>            :         .free                   = shmem_free_fc,</a>
@@ -3778,13 +3778,13 @@
 <a name="3716"><span class="lineNum">    3716 </span>            : </a>
 <a name="3717"><span class="lineNum">    3717 </span>            : static struct kmem_cache *shmem_inode_cachep;</a>
 <a name="3718"><span class="lineNum">    3718 </span>            : </a>
-<a name="3719"><span class="lineNum">    3719 </span><span class="lineCov">          2 : static struct inode *shmem_alloc_inode(struct super_block *sb)</span></a>
+<a name="3719"><span class="lineNum">    3719 </span><span class="lineCov">          1 : static struct inode *shmem_alloc_inode(struct super_block *sb)</span></a>
 <a name="3720"><span class="lineNum">    3720 </span>            : {</a>
 <a name="3721"><span class="lineNum">    3721 </span>            :         struct shmem_inode_info *info;</a>
-<a name="3722"><span class="lineNum">    3722 </span><span class="lineCov">          4 :         info = alloc_inode_sb(sb, shmem_inode_cachep, GFP_KERNEL);</span></a>
-<a name="3723"><span class="lineNum">    3723 </span><span class="lineCov">          2 :         if (!info)</span></a>
+<a name="3722"><span class="lineNum">    3722 </span><span class="lineCov">          2 :         info = alloc_inode_sb(sb, shmem_inode_cachep, GFP_KERNEL);</span></a>
+<a name="3723"><span class="lineNum">    3723 </span><span class="lineCov">          1 :         if (!info)</span></a>
 <a name="3724"><span class="lineNum">    3724 </span>            :                 return NULL;</a>
-<a name="3725"><span class="lineNum">    3725 </span><span class="lineCov">          2 :         return &amp;info-&gt;vfs_inode;</span></a>
+<a name="3725"><span class="lineNum">    3725 </span><span class="lineCov">          1 :         return &amp;info-&gt;vfs_inode;</span></a>
 <a name="3726"><span class="lineNum">    3726 </span>            : }</a>
 <a name="3727"><span class="lineNum">    3727 </span>            : </a>
 <a name="3728"><span class="lineNum">    3728 </span><span class="lineNoCov">          0 : static void shmem_free_in_core_inode(struct inode *inode)</span></a>
@@ -3800,15 +3800,15 @@
 <a name="3738"><span class="lineNum">    3738 </span>            :                 mpol_free_shared_policy(&amp;SHMEM_I(inode)-&gt;policy);</a>
 <a name="3739"><span class="lineNum">    3739 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="3740"><span class="lineNum">    3740 </span>            : </a>
-<a name="3741"><span class="lineNum">    3741 </span><span class="lineCov">         24 : static void shmem_init_inode(void *foo)</span></a>
+<a name="3741"><span class="lineNum">    3741 </span><span class="lineCov">         12 : static void shmem_init_inode(void *foo)</span></a>
 <a name="3742"><span class="lineNum">    3742 </span>            : {</a>
-<a name="3743"><span class="lineNum">    3743 </span><span class="lineCov">         24 :         struct shmem_inode_info *info = foo;</span></a>
-<a name="3744"><span class="lineNum">    3744 </span><span class="lineCov">         24 :         inode_init_once(&amp;info-&gt;vfs_inode);</span></a>
-<a name="3745"><span class="lineNum">    3745 </span><span class="lineCov">         24 : }</span></a>
+<a name="3743"><span class="lineNum">    3743 </span><span class="lineCov">         12 :         struct shmem_inode_info *info = foo;</span></a>
+<a name="3744"><span class="lineNum">    3744 </span><span class="lineCov">         12 :         inode_init_once(&amp;info-&gt;vfs_inode);</span></a>
+<a name="3745"><span class="lineNum">    3745 </span><span class="lineCov">         12 : }</span></a>
 <a name="3746"><span class="lineNum">    3746 </span>            : </a>
 <a name="3747"><span class="lineNum">    3747 </span>            : static void shmem_init_inodecache(void)</a>
 <a name="3748"><span class="lineNum">    3748 </span>            : {</a>
-<a name="3749"><span class="lineNum">    3749 </span><span class="lineCov">          2 :         shmem_inode_cachep = kmem_cache_create(&quot;shmem_inode_cache&quot;,</span></a>
+<a name="3749"><span class="lineNum">    3749 </span><span class="lineCov">          1 :         shmem_inode_cachep = kmem_cache_create(&quot;shmem_inode_cache&quot;,</span></a>
 <a name="3750"><span class="lineNum">    3750 </span>            :                                 sizeof(struct shmem_inode_info),</a>
 <a name="3751"><span class="lineNum">    3751 </span>            :                                 0, SLAB_PANIC|SLAB_ACCOUNT, shmem_init_inode);</a>
 <a name="3752"><span class="lineNum">    3752 </span>            : }</a>
@@ -3922,21 +3922,21 @@
 <a name="3860"><span class="lineNum">    3860 </span>            : #endif</a>
 <a name="3861"><span class="lineNum">    3861 </span>            : };</a>
 <a name="3862"><span class="lineNum">    3862 </span>            : </a>
-<a name="3863"><span class="lineNum">    3863 </span><span class="lineCov">          2 : int shmem_init_fs_context(struct fs_context *fc)</span></a>
+<a name="3863"><span class="lineNum">    3863 </span><span class="lineCov">          1 : int shmem_init_fs_context(struct fs_context *fc)</span></a>
 <a name="3864"><span class="lineNum">    3864 </span>            : {</a>
 <a name="3865"><span class="lineNum">    3865 </span>            :         struct shmem_options *ctx;</a>
 <a name="3866"><span class="lineNum">    3866 </span>            : </a>
-<a name="3867"><span class="lineNum">    3867 </span><span class="lineCov">          2 :         ctx = kzalloc(sizeof(struct shmem_options), GFP_KERNEL);</span></a>
-<a name="3868"><span class="lineNum">    3868 </span><span class="lineCov">          2 :         if (!ctx)</span></a>
+<a name="3867"><span class="lineNum">    3867 </span><span class="lineCov">          1 :         ctx = kzalloc(sizeof(struct shmem_options), GFP_KERNEL);</span></a>
+<a name="3868"><span class="lineNum">    3868 </span><span class="lineCov">          1 :         if (!ctx)</span></a>
 <a name="3869"><span class="lineNum">    3869 </span>            :                 return -ENOMEM;</a>
 <a name="3870"><span class="lineNum">    3870 </span>            : </a>
-<a name="3871"><span class="lineNum">    3871 </span><span class="lineCov">          2 :         ctx-&gt;mode = 0777 | S_ISVTX;</span></a>
-<a name="3872"><span class="lineNum">    3872 </span><span class="lineCov">          2 :         ctx-&gt;uid = current_fsuid();</span></a>
-<a name="3873"><span class="lineNum">    3873 </span><span class="lineCov">          2 :         ctx-&gt;gid = current_fsgid();</span></a>
+<a name="3871"><span class="lineNum">    3871 </span><span class="lineCov">          1 :         ctx-&gt;mode = 0777 | S_ISVTX;</span></a>
+<a name="3872"><span class="lineNum">    3872 </span><span class="lineCov">          1 :         ctx-&gt;uid = current_fsuid();</span></a>
+<a name="3873"><span class="lineNum">    3873 </span><span class="lineCov">          1 :         ctx-&gt;gid = current_fsgid();</span></a>
 <a name="3874"><span class="lineNum">    3874 </span>            : </a>
-<a name="3875"><span class="lineNum">    3875 </span><span class="lineCov">          2 :         fc-&gt;fs_private = ctx;</span></a>
-<a name="3876"><span class="lineNum">    3876 </span><span class="lineCov">          2 :         fc-&gt;ops = &amp;shmem_fs_context_ops;</span></a>
-<a name="3877"><span class="lineNum">    3877 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="3875"><span class="lineNum">    3875 </span><span class="lineCov">          1 :         fc-&gt;fs_private = ctx;</span></a>
+<a name="3876"><span class="lineNum">    3876 </span><span class="lineCov">          1 :         fc-&gt;ops = &amp;shmem_fs_context_ops;</span></a>
+<a name="3877"><span class="lineNum">    3877 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="3878"><span class="lineNum">    3878 </span>            : }</a>
 <a name="3879"><span class="lineNum">    3879 </span>            : </a>
 <a name="3880"><span class="lineNum">    3880 </span>            : static struct file_system_type shmem_fs_type = {</a>
@@ -3950,20 +3950,20 @@
 <a name="3888"><span class="lineNum">    3888 </span>            :         .fs_flags       = FS_USERNS_MOUNT,</a>
 <a name="3889"><span class="lineNum">    3889 </span>            : };</a>
 <a name="3890"><span class="lineNum">    3890 </span>            : </a>
-<a name="3891"><span class="lineNum">    3891 </span><span class="lineCov">          2 : int __init shmem_init(void)</span></a>
+<a name="3891"><span class="lineNum">    3891 </span><span class="lineCov">          1 : int __init shmem_init(void)</span></a>
 <a name="3892"><span class="lineNum">    3892 </span>            : {</a>
 <a name="3893"><span class="lineNum">    3893 </span>            :         int error;</a>
 <a name="3894"><span class="lineNum">    3894 </span>            : </a>
 <a name="3895"><span class="lineNum">    3895 </span>            :         shmem_init_inodecache();</a>
 <a name="3896"><span class="lineNum">    3896 </span>            : </a>
-<a name="3897"><span class="lineNum">    3897 </span><span class="lineCov">          2 :         error = register_filesystem(&amp;shmem_fs_type);</span></a>
-<a name="3898"><span class="lineNum">    3898 </span><span class="lineCov">          2 :         if (error) {</span></a>
+<a name="3897"><span class="lineNum">    3897 </span><span class="lineCov">          1 :         error = register_filesystem(&amp;shmem_fs_type);</span></a>
+<a name="3898"><span class="lineNum">    3898 </span><span class="lineCov">          1 :         if (error) {</span></a>
 <a name="3899"><span class="lineNum">    3899 </span><span class="lineNoCov">          0 :                 pr_err(&quot;Could not register tmpfs\n&quot;);</span></a>
 <a name="3900"><span class="lineNum">    3900 </span><span class="lineNoCov">          0 :                 goto out2;</span></a>
 <a name="3901"><span class="lineNum">    3901 </span>            :         }</a>
 <a name="3902"><span class="lineNum">    3902 </span>            : </a>
-<a name="3903"><span class="lineNum">    3903 </span><span class="lineCov">          2 :         shm_mnt = kern_mount(&amp;shmem_fs_type);</span></a>
-<a name="3904"><span class="lineNum">    3904 </span><span class="lineCov">          4 :         if (IS_ERR(shm_mnt)) {</span></a>
+<a name="3903"><span class="lineNum">    3903 </span><span class="lineCov">          1 :         shm_mnt = kern_mount(&amp;shmem_fs_type);</span></a>
+<a name="3904"><span class="lineNum">    3904 </span><span class="lineCov">          2 :         if (IS_ERR(shm_mnt)) {</span></a>
 <a name="3905"><span class="lineNum">    3905 </span><span class="lineNoCov">          0 :                 error = PTR_ERR(shm_mnt);</span></a>
 <a name="3906"><span class="lineNum">    3906 </span><span class="lineNoCov">          0 :                 pr_err(&quot;Could not kern_mount tmpfs\n&quot;);</span></a>
 <a name="3907"><span class="lineNum">    3907 </span>            :                 goto out1;</a>

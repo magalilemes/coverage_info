@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -198,33 +198,33 @@
 <a name="136"><span class="lineNum">     136 </span><span class="lineNoCov">          0 :         wake_up_process(action-&gt;thread);</span></a>
 <a name="137"><span class="lineNum">     137 </span>            : }</a>
 <a name="138"><span class="lineNum">     138 </span>            : </a>
-<a name="139"><span class="lineNum">     139 </span><span class="lineCov">         17 : irqreturn_t __handle_irq_event_percpu(struct irq_desc *desc)</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineCov">          9 : irqreturn_t __handle_irq_event_percpu(struct irq_desc *desc)</span></a>
 <a name="140"><span class="lineNum">     140 </span>            : {</a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineCov">         17 :         irqreturn_t retval = IRQ_NONE;</span></a>
-<a name="142"><span class="lineNum">     142 </span><span class="lineCov">         17 :         unsigned int irq = desc-&gt;irq_data.irq;</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">          9 :         irqreturn_t retval = IRQ_NONE;</span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineCov">          9 :         unsigned int irq = desc-&gt;irq_data.irq;</span></a>
 <a name="143"><span class="lineNum">     143 </span>            :         struct irqaction *action;</a>
 <a name="144"><span class="lineNum">     144 </span>            : </a>
-<a name="145"><span class="lineNum">     145 </span><span class="lineCov">         17 :         record_irq_time(desc);</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">          9 :         record_irq_time(desc);</span></a>
 <a name="146"><span class="lineNum">     146 </span>            : </a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineCov">         34 :         for_each_action_of_desc(desc, action) {</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">         18 :         for_each_action_of_desc(desc, action) {</span></a>
 <a name="148"><span class="lineNum">     148 </span>            :                 irqreturn_t res;</a>
 <a name="149"><span class="lineNum">     149 </span>            : </a>
 <a name="150"><span class="lineNum">     150 </span>            :                 /*</a>
 <a name="151"><span class="lineNum">     151 </span>            :                  * If this IRQ would be threaded under force_irqthreads, mark it so.</a>
 <a name="152"><span class="lineNum">     152 </span>            :                  */</a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineCov">         17 :                 if (irq_settings_can_thread(desc) &amp;&amp;</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">          9 :                 if (irq_settings_can_thread(desc) &amp;&amp;</span></a>
 <a name="154"><span class="lineNum">     154 </span>            :                     !(action-&gt;flags &amp; (IRQF_NO_THREAD | IRQF_PERCPU | IRQF_ONESHOT)))</a>
 <a name="155"><span class="lineNum">     155 </span>            :                         lockdep_hardirq_threaded();</a>
 <a name="156"><span class="lineNum">     156 </span>            : </a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">         17 :                 trace_irq_handler_entry(irq, action);</span></a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">         17 :                 res = action-&gt;handler(irq, action-&gt;dev_id);</span></a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">         17 :                 trace_irq_handler_exit(irq, action, res);</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">          9 :                 trace_irq_handler_entry(irq, action);</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">          9 :                 res = action-&gt;handler(irq, action-&gt;dev_id);</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">          9 :                 trace_irq_handler_exit(irq, action, res);</span></a>
 <a name="160"><span class="lineNum">     160 </span>            : </a>
-<a name="161"><span class="lineNum">     161 </span><span class="lineCov">         17 :                 if (WARN_ONCE(!irqs_disabled(),&quot;irq %u handler %pS enabled interrupts\n&quot;,</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineCov">          9 :                 if (WARN_ONCE(!irqs_disabled(),&quot;irq %u handler %pS enabled interrupts\n&quot;,</span></a>
 <a name="162"><span class="lineNum">     162 </span>            :                               irq, action-&gt;handler))</a>
 <a name="163"><span class="lineNum">     163 </span>            :                         local_irq_disable();</a>
 <a name="164"><span class="lineNum">     164 </span>            : </a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">         17 :                 switch (res) {</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">          9 :                 switch (res) {</span></a>
 <a name="166"><span class="lineNum">     166 </span>            :                 case IRQ_WAKE_THREAD:</a>
 <a name="167"><span class="lineNum">     167 </span>            :                         /*</a>
 <a name="168"><span class="lineNum">     168 </span>            :                          * Catch drivers which return WAKE_THREAD but</a>
@@ -242,38 +242,38 @@
 <a name="180"><span class="lineNum">     180 </span>            :                         break;</a>
 <a name="181"><span class="lineNum">     181 </span>            :                 }</a>
 <a name="182"><span class="lineNum">     182 </span>            : </a>
-<a name="183"><span class="lineNum">     183 </span><span class="lineCov">         17 :                 retval |= res;</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          9 :                 retval |= res;</span></a>
 <a name="184"><span class="lineNum">     184 </span>            :         }</a>
 <a name="185"><span class="lineNum">     185 </span>            : </a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineCov">         17 :         return retval;</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          9 :         return retval;</span></a>
 <a name="187"><span class="lineNum">     187 </span>            : }</a>
 <a name="188"><span class="lineNum">     188 </span>            : </a>
-<a name="189"><span class="lineNum">     189 </span><span class="lineCov">         17 : irqreturn_t handle_irq_event_percpu(struct irq_desc *desc)</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineCov">          9 : irqreturn_t handle_irq_event_percpu(struct irq_desc *desc)</span></a>
 <a name="190"><span class="lineNum">     190 </span>            : {</a>
 <a name="191"><span class="lineNum">     191 </span>            :         irqreturn_t retval;</a>
 <a name="192"><span class="lineNum">     192 </span>            : </a>
-<a name="193"><span class="lineNum">     193 </span><span class="lineCov">         17 :         retval = __handle_irq_event_percpu(desc);</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineCov">          9 :         retval = __handle_irq_event_percpu(desc);</span></a>
 <a name="194"><span class="lineNum">     194 </span>            : </a>
-<a name="195"><span class="lineNum">     195 </span><span class="lineCov">         17 :         add_interrupt_randomness(desc-&gt;irq_data.irq);</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineCov">          9 :         add_interrupt_randomness(desc-&gt;irq_data.irq);</span></a>
 <a name="196"><span class="lineNum">     196 </span>            : </a>
-<a name="197"><span class="lineNum">     197 </span><span class="lineCov">         34 :         if (!irq_settings_no_debug(desc))</span></a>
-<a name="198"><span class="lineNum">     198 </span><span class="lineCov">         17 :                 note_interrupt(desc, retval);</span></a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineCov">         17 :         return retval;</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineCov">         18 :         if (!irq_settings_no_debug(desc))</span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineCov">          9 :                 note_interrupt(desc, retval);</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">          9 :         return retval;</span></a>
 <a name="200"><span class="lineNum">     200 </span>            : }</a>
 <a name="201"><span class="lineNum">     201 </span>            : </a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">         17 : irqreturn_t handle_irq_event(struct irq_desc *desc)</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">          9 : irqreturn_t handle_irq_event(struct irq_desc *desc)</span></a>
 <a name="203"><span class="lineNum">     203 </span>            : {</a>
 <a name="204"><span class="lineNum">     204 </span>            :         irqreturn_t ret;</a>
 <a name="205"><span class="lineNum">     205 </span>            : </a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineCov">         17 :         desc-&gt;istate &amp;= ~IRQS_PENDING;</span></a>
-<a name="207"><span class="lineNum">     207 </span><span class="lineCov">         34 :         irqd_set(&amp;desc-&gt;irq_data, IRQD_IRQ_INPROGRESS);</span></a>
-<a name="208"><span class="lineNum">     208 </span><span class="lineCov">         17 :         raw_spin_unlock(&amp;desc-&gt;lock);</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">          9 :         desc-&gt;istate &amp;= ~IRQS_PENDING;</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">         18 :         irqd_set(&amp;desc-&gt;irq_data, IRQD_IRQ_INPROGRESS);</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineCov">          9 :         raw_spin_unlock(&amp;desc-&gt;lock);</span></a>
 <a name="209"><span class="lineNum">     209 </span>            : </a>
-<a name="210"><span class="lineNum">     210 </span><span class="lineCov">         17 :         ret = handle_irq_event_percpu(desc);</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineCov">          9 :         ret = handle_irq_event_percpu(desc);</span></a>
 <a name="211"><span class="lineNum">     211 </span>            : </a>
-<a name="212"><span class="lineNum">     212 </span><span class="lineCov">         17 :         raw_spin_lock(&amp;desc-&gt;lock);</span></a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineCov">         34 :         irqd_clear(&amp;desc-&gt;irq_data, IRQD_IRQ_INPROGRESS);</span></a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineCov">         17 :         return ret;</span></a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineCov">          9 :         raw_spin_lock(&amp;desc-&gt;lock);</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineCov">         18 :         irqd_clear(&amp;desc-&gt;irq_data, IRQD_IRQ_INPROGRESS);</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">          9 :         return ret;</span></a>
 <a name="215"><span class="lineNum">     215 </span>            : }</a>
 <a name="216"><span class="lineNum">     216 </span>            : </a>
 <a name="217"><span class="lineNum">     217 </span>            : #ifdef CONFIG_GENERIC_IRQ_MULTI_HANDLER</a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -324,11 +324,11 @@
 <a name="262"><span class="lineNum">     262 </span>            :  *                tasklist_lock is taken to walk process list for sessions</a>
 <a name="263"><span class="lineNum">     263 </span>            :  *                  -&gt;siglock is taken to protect -&gt;signal/-&gt;sighand</a>
 <a name="264"><span class="lineNum">     264 </span>            :  */</a>
-<a name="265"><span class="lineNum">     265 </span><span class="lineCov">        128 : void disassociate_ctty(int on_exit)</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">         93 : void disassociate_ctty(int on_exit)</span></a>
 <a name="266"><span class="lineNum">     266 </span>            : {</a>
 <a name="267"><span class="lineNum">     267 </span>            :         struct tty_struct *tty;</a>
 <a name="268"><span class="lineNum">     268 </span>            : </a>
-<a name="269"><span class="lineNum">     269 </span><span class="lineCov">        128 :         if (!current-&gt;signal-&gt;leader)</span></a>
+<a name="269"><span class="lineNum">     269 </span><span class="lineCov">         93 :         if (!current-&gt;signal-&gt;leader)</span></a>
 <a name="270"><span class="lineNum">     270 </span>            :                 return;</a>
 <a name="271"><span class="lineNum">     271 </span>            : </a>
 <a name="272"><span class="lineNum">     272 </span><span class="lineNoCov">          0 :         tty = get_current_tty();</span></a>

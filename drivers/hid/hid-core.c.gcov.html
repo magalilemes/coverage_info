@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -2889,16 +2889,16 @@
 <a name="2827"><span class="lineNum">    2827 </span>            :         return 0;</a>
 <a name="2828"><span class="lineNum">    2828 </span>            : }</a>
 <a name="2829"><span class="lineNum">    2829 </span>            : </a>
-<a name="2830"><span class="lineNum">    2830 </span><span class="lineCov">        132 : static int __hid_bus_driver_added(struct device_driver *drv, void *data)</span></a>
+<a name="2830"><span class="lineNum">    2830 </span><span class="lineCov">         66 : static int __hid_bus_driver_added(struct device_driver *drv, void *data)</span></a>
 <a name="2831"><span class="lineNum">    2831 </span>            : {</a>
-<a name="2832"><span class="lineNum">    2832 </span><span class="lineCov">        132 :         struct hid_driver *hdrv = to_hid_driver(drv);</span></a>
+<a name="2832"><span class="lineNum">    2832 </span><span class="lineCov">         66 :         struct hid_driver *hdrv = to_hid_driver(drv);</span></a>
 <a name="2833"><span class="lineNum">    2833 </span>            : </a>
-<a name="2834"><span class="lineNum">    2834 </span><span class="lineCov">        132 :         if (hdrv-&gt;match) {</span></a>
-<a name="2835"><span class="lineNum">    2835 </span><span class="lineCov">         22 :                 bus_for_each_dev(&amp;hid_bus_type, NULL, hdrv,</span></a>
+<a name="2834"><span class="lineNum">    2834 </span><span class="lineCov">         66 :         if (hdrv-&gt;match) {</span></a>
+<a name="2835"><span class="lineNum">    2835 </span><span class="lineCov">         11 :                 bus_for_each_dev(&amp;hid_bus_type, NULL, hdrv,</span></a>
 <a name="2836"><span class="lineNum">    2836 </span>            :                                  __hid_bus_reprobe_drivers);</a>
 <a name="2837"><span class="lineNum">    2837 </span>            :         }</a>
 <a name="2838"><span class="lineNum">    2838 </span>            : </a>
-<a name="2839"><span class="lineNum">    2839 </span><span class="lineCov">        132 :         return 0;</span></a>
+<a name="2839"><span class="lineNum">    2839 </span><span class="lineCov">         66 :         return 0;</span></a>
 <a name="2840"><span class="lineNum">    2840 </span>            : }</a>
 <a name="2841"><span class="lineNum">    2841 </span>            : </a>
 <a name="2842"><span class="lineNum">    2842 </span><span class="lineNoCov">          0 : static int __bus_removed_driver(struct device_driver *drv, void *data)</span></a>
@@ -2906,26 +2906,26 @@
 <a name="2844"><span class="lineNum">    2844 </span><span class="lineNoCov">          0 :         return bus_rescan_devices(&amp;hid_bus_type);</span></a>
 <a name="2845"><span class="lineNum">    2845 </span>            : }</a>
 <a name="2846"><span class="lineNum">    2846 </span>            : </a>
-<a name="2847"><span class="lineNum">    2847 </span><span class="lineCov">         22 : int __hid_register_driver(struct hid_driver *hdrv, struct module *owner,</span></a>
+<a name="2847"><span class="lineNum">    2847 </span><span class="lineCov">         11 : int __hid_register_driver(struct hid_driver *hdrv, struct module *owner,</span></a>
 <a name="2848"><span class="lineNum">    2848 </span>            :                 const char *mod_name)</a>
 <a name="2849"><span class="lineNum">    2849 </span>            : {</a>
 <a name="2850"><span class="lineNum">    2850 </span>            :         int ret;</a>
 <a name="2851"><span class="lineNum">    2851 </span>            : </a>
-<a name="2852"><span class="lineNum">    2852 </span><span class="lineCov">         22 :         hdrv-&gt;driver.name = hdrv-&gt;name;</span></a>
-<a name="2853"><span class="lineNum">    2853 </span><span class="lineCov">         22 :         hdrv-&gt;driver.bus = &amp;hid_bus_type;</span></a>
-<a name="2854"><span class="lineNum">    2854 </span><span class="lineCov">         22 :         hdrv-&gt;driver.owner = owner;</span></a>
-<a name="2855"><span class="lineNum">    2855 </span><span class="lineCov">         22 :         hdrv-&gt;driver.mod_name = mod_name;</span></a>
+<a name="2852"><span class="lineNum">    2852 </span><span class="lineCov">         11 :         hdrv-&gt;driver.name = hdrv-&gt;name;</span></a>
+<a name="2853"><span class="lineNum">    2853 </span><span class="lineCov">         11 :         hdrv-&gt;driver.bus = &amp;hid_bus_type;</span></a>
+<a name="2854"><span class="lineNum">    2854 </span><span class="lineCov">         11 :         hdrv-&gt;driver.owner = owner;</span></a>
+<a name="2855"><span class="lineNum">    2855 </span><span class="lineCov">         11 :         hdrv-&gt;driver.mod_name = mod_name;</span></a>
 <a name="2856"><span class="lineNum">    2856 </span>            : </a>
-<a name="2857"><span class="lineNum">    2857 </span><span class="lineCov">         44 :         INIT_LIST_HEAD(&amp;hdrv-&gt;dyn_list);</span></a>
-<a name="2858"><span class="lineNum">    2858 </span><span class="lineCov">         22 :         spin_lock_init(&amp;hdrv-&gt;dyn_lock);</span></a>
+<a name="2857"><span class="lineNum">    2857 </span><span class="lineCov">         22 :         INIT_LIST_HEAD(&amp;hdrv-&gt;dyn_list);</span></a>
+<a name="2858"><span class="lineNum">    2858 </span><span class="lineCov">         11 :         spin_lock_init(&amp;hdrv-&gt;dyn_lock);</span></a>
 <a name="2859"><span class="lineNum">    2859 </span>            : </a>
-<a name="2860"><span class="lineNum">    2860 </span><span class="lineCov">         22 :         ret = driver_register(&amp;hdrv-&gt;driver);</span></a>
+<a name="2860"><span class="lineNum">    2860 </span><span class="lineCov">         11 :         ret = driver_register(&amp;hdrv-&gt;driver);</span></a>
 <a name="2861"><span class="lineNum">    2861 </span>            : </a>
-<a name="2862"><span class="lineNum">    2862 </span><span class="lineCov">         22 :         if (ret == 0)</span></a>
-<a name="2863"><span class="lineNum">    2863 </span><span class="lineCov">         22 :                 bus_for_each_drv(&amp;hid_bus_type, NULL, NULL,</span></a>
+<a name="2862"><span class="lineNum">    2862 </span><span class="lineCov">         11 :         if (ret == 0)</span></a>
+<a name="2863"><span class="lineNum">    2863 </span><span class="lineCov">         11 :                 bus_for_each_drv(&amp;hid_bus_type, NULL, NULL,</span></a>
 <a name="2864"><span class="lineNum">    2864 </span>            :                                  __hid_bus_driver_added);</a>
 <a name="2865"><span class="lineNum">    2865 </span>            : </a>
-<a name="2866"><span class="lineNum">    2866 </span><span class="lineCov">         22 :         return ret;</span></a>
+<a name="2866"><span class="lineNum">    2866 </span><span class="lineCov">         11 :         return ret;</span></a>
 <a name="2867"><span class="lineNum">    2867 </span>            : }</a>
 <a name="2868"><span class="lineNum">    2868 </span>            : EXPORT_SYMBOL_GPL(__hid_register_driver);</a>
 <a name="2869"><span class="lineNum">    2869 </span>            : </a>
@@ -2956,16 +2956,16 @@
 <a name="2894"><span class="lineNum">    2894 </span>            : }</a>
 <a name="2895"><span class="lineNum">    2895 </span>            : EXPORT_SYMBOL_GPL(hid_check_keys_pressed);</a>
 <a name="2896"><span class="lineNum">    2896 </span>            : </a>
-<a name="2897"><span class="lineNum">    2897 </span><span class="lineCov">          2 : static int __init hid_init(void)</span></a>
+<a name="2897"><span class="lineNum">    2897 </span><span class="lineCov">          1 : static int __init hid_init(void)</span></a>
 <a name="2898"><span class="lineNum">    2898 </span>            : {</a>
 <a name="2899"><span class="lineNum">    2899 </span>            :         int ret;</a>
 <a name="2900"><span class="lineNum">    2900 </span>            : </a>
-<a name="2901"><span class="lineNum">    2901 </span><span class="lineCov">          2 :         if (hid_debug)</span></a>
+<a name="2901"><span class="lineNum">    2901 </span><span class="lineCov">          1 :         if (hid_debug)</span></a>
 <a name="2902"><span class="lineNum">    2902 </span><span class="lineNoCov">          0 :                 pr_warn(&quot;hid_debug is now used solely for parser and driver debugging.\n&quot;</span></a>
 <a name="2903"><span class="lineNum">    2903 </span>            :                         &quot;debugfs is now used for inspecting the device (report descriptor, reports)\n&quot;);</a>
 <a name="2904"><span class="lineNum">    2904 </span>            : </a>
-<a name="2905"><span class="lineNum">    2905 </span><span class="lineCov">          2 :         ret = bus_register(&amp;hid_bus_type);</span></a>
-<a name="2906"><span class="lineNum">    2906 </span><span class="lineCov">          2 :         if (ret) {</span></a>
+<a name="2905"><span class="lineNum">    2905 </span><span class="lineCov">          1 :         ret = bus_register(&amp;hid_bus_type);</span></a>
+<a name="2906"><span class="lineNum">    2906 </span><span class="lineCov">          1 :         if (ret) {</span></a>
 <a name="2907"><span class="lineNum">    2907 </span><span class="lineNoCov">          0 :                 pr_err(&quot;can't register hid bus\n&quot;);</span></a>
 <a name="2908"><span class="lineNum">    2908 </span>            :                 goto err;</a>
 <a name="2909"><span class="lineNum">    2909 </span>            :         }</a>

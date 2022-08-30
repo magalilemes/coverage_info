@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -65,13 +65,13 @@
 <a name="3"><span class="lineNum">       3 </span>            :  * &lt;linux/swait.h&gt; (simple wait queues ) implementation:</a>
 <a name="4"><span class="lineNum">       4 </span>            :  */</a>
 <a name="5"><span class="lineNum">       5 </span>            : </a>
-<a name="6"><span class="lineNum">       6 </span><span class="lineCov">       1396 : void __init_swait_queue_head(struct swait_queue_head *q, const char *name,</span></a>
+<a name="6"><span class="lineNum">       6 </span><span class="lineCov">        756 : void __init_swait_queue_head(struct swait_queue_head *q, const char *name,</span></a>
 <a name="7"><span class="lineNum">       7 </span>            :                              struct lock_class_key *key)</a>
 <a name="8"><span class="lineNum">       8 </span>            : {</a>
 <a name="9"><span class="lineNum">       9 </span>            :         raw_spin_lock_init(&amp;q-&gt;lock);</a>
 <a name="10"><span class="lineNum">      10 </span>            :         lockdep_set_class_and_name(&amp;q-&gt;lock, key, name);</a>
-<a name="11"><span class="lineNum">      11 </span><span class="lineCov">       2792 :         INIT_LIST_HEAD(&amp;q-&gt;task_list);</span></a>
-<a name="12"><span class="lineNum">      12 </span><span class="lineCov">       1396 : }</span></a>
+<a name="11"><span class="lineNum">      11 </span><span class="lineCov">       1512 :         INIT_LIST_HEAD(&amp;q-&gt;task_list);</span></a>
+<a name="12"><span class="lineNum">      12 </span><span class="lineCov">        756 : }</span></a>
 <a name="13"><span class="lineNum">      13 </span>            : EXPORT_SYMBOL(__init_swait_queue_head);</a>
 <a name="14"><span class="lineNum">      14 </span>            : </a>
 <a name="15"><span class="lineNum">      15 </span>            : /*</a>
@@ -80,16 +80,16 @@
 <a name="18"><span class="lineNum">      18 </span>            :  * If for some reason it would return 0, that means the previously waiting</a>
 <a name="19"><span class="lineNum">      19 </span>            :  * task is already running, so it will observe condition true (or has already).</a>
 <a name="20"><span class="lineNum">      20 </span>            :  */</a>
-<a name="21"><span class="lineNum">      21 </span><span class="lineCov">        416 : void swake_up_locked(struct swait_queue_head *q)</span></a>
+<a name="21"><span class="lineNum">      21 </span><span class="lineCov">        295 : void swake_up_locked(struct swait_queue_head *q)</span></a>
 <a name="22"><span class="lineNum">      22 </span>            : {</a>
 <a name="23"><span class="lineNum">      23 </span>            :         struct swait_queue *curr;</a>
 <a name="24"><span class="lineNum">      24 </span>            : </a>
-<a name="25"><span class="lineNum">      25 </span><span class="lineCov">        832 :         if (list_empty(&amp;q-&gt;task_list))</span></a>
+<a name="25"><span class="lineNum">      25 </span><span class="lineCov">        590 :         if (list_empty(&amp;q-&gt;task_list))</span></a>
 <a name="26"><span class="lineNum">      26 </span>            :                 return;</a>
 <a name="27"><span class="lineNum">      27 </span>            : </a>
-<a name="28"><span class="lineNum">      28 </span><span class="lineCov">        288 :         curr = list_first_entry(&amp;q-&gt;task_list, typeof(*curr), task_list);</span></a>
-<a name="29"><span class="lineNum">      29 </span><span class="lineCov">        288 :         wake_up_process(curr-&gt;task);</span></a>
-<a name="30"><span class="lineNum">      30 </span><span class="lineCov">        288 :         list_del_init(&amp;curr-&gt;task_list);</span></a>
+<a name="28"><span class="lineNum">      28 </span><span class="lineCov">        202 :         curr = list_first_entry(&amp;q-&gt;task_list, typeof(*curr), task_list);</span></a>
+<a name="29"><span class="lineNum">      29 </span><span class="lineCov">        202 :         wake_up_process(curr-&gt;task);</span></a>
+<a name="30"><span class="lineNum">      30 </span><span class="lineCov">        202 :         list_del_init(&amp;curr-&gt;task_list);</span></a>
 <a name="31"><span class="lineNum">      31 </span>            : }</a>
 <a name="32"><span class="lineNum">      32 </span>            : EXPORT_SYMBOL(swake_up_locked);</a>
 <a name="33"><span class="lineNum">      33 </span>            : </a>
@@ -102,7 +102,7 @@
 <a name="40"><span class="lineNum">      40 </span>            :  */</a>
 <a name="41"><span class="lineNum">      41 </span><span class="lineNoCov">          0 : void swake_up_all_locked(struct swait_queue_head *q)</span></a>
 <a name="42"><span class="lineNum">      42 </span>            : {</a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">       2144 :         while (!list_empty(&amp;q-&gt;task_list))</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">       1072 :         while (!list_empty(&amp;q-&gt;task_list))</span></a>
 <a name="44"><span class="lineNum">      44 </span><span class="lineNoCov">          0 :                 swake_up_locked(q);</span></a>
 <a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="46"><span class="lineNum">      46 </span>            : </a>
@@ -145,9 +145,9 @@
 <a name="83"><span class="lineNum">      83 </span>            : </a>
 <a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 : void __prepare_to_swait(struct swait_queue_head *q, struct swait_queue *wait)</span></a>
 <a name="85"><span class="lineNum">      85 </span>            : {</a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        288 :         wait-&gt;task = current;</span></a>
-<a name="87"><span class="lineNum">      87 </span><span class="lineCov">        576 :         if (list_empty(&amp;wait-&gt;task_list))</span></a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">        288 :                 list_add_tail(&amp;wait-&gt;task_list, &amp;q-&gt;task_list);</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        202 :         wait-&gt;task = current;</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineCov">        404 :         if (list_empty(&amp;wait-&gt;task_list))</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">        202 :                 list_add_tail(&amp;wait-&gt;task_list, &amp;q-&gt;task_list);</span></a>
 <a name="89"><span class="lineNum">      89 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="90"><span class="lineNum">      90 </span>            : </a>
 <a name="91"><span class="lineNum">      91 </span><span class="lineNoCov">          0 : void prepare_to_swait_exclusive(struct swait_queue_head *q, struct swait_queue *wait, int state)</span></a>
@@ -186,8 +186,8 @@
 <a name="124"><span class="lineNum">     124 </span>            : </a>
 <a name="125"><span class="lineNum">     125 </span><span class="lineNoCov">          0 : void __finish_swait(struct swait_queue_head *q, struct swait_queue *wait)</span></a>
 <a name="126"><span class="lineNum">     126 </span>            : {</a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineCov">        288 :         __set_current_state(TASK_RUNNING);</span></a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineCov">        576 :         if (!list_empty(&amp;wait-&gt;task_list))</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineCov">        202 :         __set_current_state(TASK_RUNNING);</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">        404 :         if (!list_empty(&amp;wait-&gt;task_list))</span></a>
 <a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 :                 list_del_init(&amp;wait-&gt;task_list);</span></a>
 <a name="130"><span class="lineNum">     130 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="131"><span class="lineNum">     131 </span>            : </a>

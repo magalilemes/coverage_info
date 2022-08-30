@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -165,24 +165,24 @@
 <a name="103"><span class="lineNum">     103 </span>            :  *</a>
 <a name="104"><span class="lineNum">     104 </span>            :  * Is called with interrupts disabled and desc-&gt;lock held.</a>
 <a name="105"><span class="lineNum">     105 </span>            :  */</a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">          4 : int check_irq_resend(struct irq_desc *desc, bool inject)</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">          2 : int check_irq_resend(struct irq_desc *desc, bool inject)</span></a>
 <a name="107"><span class="lineNum">     107 </span>            : {</a>
-<a name="108"><span class="lineNum">     108 </span><span class="lineCov">          4 :         int err = 0;</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineCov">          2 :         int err = 0;</span></a>
 <a name="109"><span class="lineNum">     109 </span>            : </a>
 <a name="110"><span class="lineNum">     110 </span>            :         /*</a>
 <a name="111"><span class="lineNum">     111 </span>            :          * We do not resend level type interrupts. Level type interrupts</a>
 <a name="112"><span class="lineNum">     112 </span>            :          * are resent by hardware when they are still active. Clear the</a>
 <a name="113"><span class="lineNum">     113 </span>            :          * pending bit so suspend/resume does not get confused.</a>
 <a name="114"><span class="lineNum">     114 </span>            :          */</a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">          8 :         if (irq_settings_is_level(desc)) {</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">          4 :         if (irq_settings_is_level(desc)) {</span></a>
 <a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 :                 desc-&gt;istate &amp;= ~IRQS_PENDING;</span></a>
 <a name="117"><span class="lineNum">     117 </span><span class="lineNoCov">          0 :                 return -EINVAL;</span></a>
 <a name="118"><span class="lineNum">     118 </span>            :         }</a>
 <a name="119"><span class="lineNum">     119 </span>            : </a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">          4 :         if (desc-&gt;istate &amp; IRQS_REPLAY)</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">          2 :         if (desc-&gt;istate &amp; IRQS_REPLAY)</span></a>
 <a name="121"><span class="lineNum">     121 </span>            :                 return -EBUSY;</a>
 <a name="122"><span class="lineNum">     122 </span>            : </a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">          4 :         if (!(desc-&gt;istate &amp; IRQS_PENDING) &amp;&amp; !inject)</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">          2 :         if (!(desc-&gt;istate &amp; IRQS_PENDING) &amp;&amp; !inject)</span></a>
 <a name="124"><span class="lineNum">     124 </span>            :                 return 0;</a>
 <a name="125"><span class="lineNum">     125 </span>            : </a>
 <a name="126"><span class="lineNum">     126 </span><span class="lineNoCov">          0 :         desc-&gt;istate &amp;= ~IRQS_PENDING;</span></a>

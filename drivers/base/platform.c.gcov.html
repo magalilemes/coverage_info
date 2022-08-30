@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -916,13 +916,13 @@
 <a name="854"><span class="lineNum">     854 </span>            :  * @drv: platform driver structure</a>
 <a name="855"><span class="lineNum">     855 </span>            :  * @owner: owning module/driver</a>
 <a name="856"><span class="lineNum">     856 </span>            :  */</a>
-<a name="857"><span class="lineNum">     857 </span><span class="lineCov">          4 : int __platform_driver_register(struct platform_driver *drv,</span></a>
+<a name="857"><span class="lineNum">     857 </span><span class="lineCov">          2 : int __platform_driver_register(struct platform_driver *drv,</span></a>
 <a name="858"><span class="lineNum">     858 </span>            :                                 struct module *owner)</a>
 <a name="859"><span class="lineNum">     859 </span>            : {</a>
-<a name="860"><span class="lineNum">     860 </span><span class="lineCov">          4 :         drv-&gt;driver.owner = owner;</span></a>
-<a name="861"><span class="lineNum">     861 </span><span class="lineCov">          4 :         drv-&gt;driver.bus = &amp;platform_bus_type;</span></a>
+<a name="860"><span class="lineNum">     860 </span><span class="lineCov">          2 :         drv-&gt;driver.owner = owner;</span></a>
+<a name="861"><span class="lineNum">     861 </span><span class="lineCov">          2 :         drv-&gt;driver.bus = &amp;platform_bus_type;</span></a>
 <a name="862"><span class="lineNum">     862 </span>            : </a>
-<a name="863"><span class="lineNum">     863 </span><span class="lineCov">          4 :         return driver_register(&amp;drv-&gt;driver);</span></a>
+<a name="863"><span class="lineNum">     863 </span><span class="lineCov">          2 :         return driver_register(&amp;drv-&gt;driver);</span></a>
 <a name="864"><span class="lineNum">     864 </span>            : }</a>
 <a name="865"><span class="lineNum">     865 </span>            : EXPORT_SYMBOL_GPL(__platform_driver_register);</a>
 <a name="866"><span class="lineNum">     866 </span>            : </a>
@@ -930,10 +930,10 @@
 <a name="868"><span class="lineNum">     868 </span>            :  * platform_driver_unregister - unregister a driver for platform-level devices</a>
 <a name="869"><span class="lineNum">     869 </span>            :  * @drv: platform driver structure</a>
 <a name="870"><span class="lineNum">     870 </span>            :  */</a>
-<a name="871"><span class="lineNum">     871 </span><span class="lineCov">          2 : void platform_driver_unregister(struct platform_driver *drv)</span></a>
+<a name="871"><span class="lineNum">     871 </span><span class="lineCov">          1 : void platform_driver_unregister(struct platform_driver *drv)</span></a>
 <a name="872"><span class="lineNum">     872 </span>            : {</a>
-<a name="873"><span class="lineNum">     873 </span><span class="lineCov">          2 :         driver_unregister(&amp;drv-&gt;driver);</span></a>
-<a name="874"><span class="lineNum">     874 </span><span class="lineCov">          2 : }</span></a>
+<a name="873"><span class="lineNum">     873 </span><span class="lineCov">          1 :         driver_unregister(&amp;drv-&gt;driver);</span></a>
+<a name="874"><span class="lineNum">     874 </span><span class="lineCov">          1 : }</span></a>
 <a name="875"><span class="lineNum">     875 </span>            : EXPORT_SYMBOL_GPL(platform_driver_unregister);</a>
 <a name="876"><span class="lineNum">     876 </span>            : </a>
 <a name="877"><span class="lineNum">     877 </span><span class="lineNoCov">          0 : static int platform_probe_fail(struct platform_device *pdev)</span></a>
@@ -1569,21 +1569,21 @@
 <a name="1507"><span class="lineNum">    1507 </span>            : }</a>
 <a name="1508"><span class="lineNum">    1508 </span>            : EXPORT_SYMBOL_GPL(platform_find_device_by_driver);</a>
 <a name="1509"><span class="lineNum">    1509 </span>            : </a>
-<a name="1510"><span class="lineNum">    1510 </span><span class="lineCov">          2 : void __weak __init early_platform_cleanup(void) { }</span></a>
+<a name="1510"><span class="lineNum">    1510 </span><span class="lineCov">          1 : void __weak __init early_platform_cleanup(void) { }</span></a>
 <a name="1511"><span class="lineNum">    1511 </span>            : </a>
-<a name="1512"><span class="lineNum">    1512 </span><span class="lineCov">          2 : int __init platform_bus_init(void)</span></a>
+<a name="1512"><span class="lineNum">    1512 </span><span class="lineCov">          1 : int __init platform_bus_init(void)</span></a>
 <a name="1513"><span class="lineNum">    1513 </span>            : {</a>
 <a name="1514"><span class="lineNum">    1514 </span>            :         int error;</a>
 <a name="1515"><span class="lineNum">    1515 </span>            : </a>
-<a name="1516"><span class="lineNum">    1516 </span><span class="lineCov">          2 :         early_platform_cleanup();</span></a>
+<a name="1516"><span class="lineNum">    1516 </span><span class="lineCov">          1 :         early_platform_cleanup();</span></a>
 <a name="1517"><span class="lineNum">    1517 </span>            : </a>
-<a name="1518"><span class="lineNum">    1518 </span><span class="lineCov">          2 :         error = device_register(&amp;platform_bus);</span></a>
-<a name="1519"><span class="lineNum">    1519 </span><span class="lineCov">          2 :         if (error) {</span></a>
+<a name="1518"><span class="lineNum">    1518 </span><span class="lineCov">          1 :         error = device_register(&amp;platform_bus);</span></a>
+<a name="1519"><span class="lineNum">    1519 </span><span class="lineCov">          1 :         if (error) {</span></a>
 <a name="1520"><span class="lineNum">    1520 </span><span class="lineNoCov">          0 :                 put_device(&amp;platform_bus);</span></a>
 <a name="1521"><span class="lineNum">    1521 </span><span class="lineNoCov">          0 :                 return error;</span></a>
 <a name="1522"><span class="lineNum">    1522 </span>            :         }</a>
-<a name="1523"><span class="lineNum">    1523 </span><span class="lineCov">          2 :         error =  bus_register(&amp;platform_bus_type);</span></a>
-<a name="1524"><span class="lineNum">    1524 </span><span class="lineCov">          2 :         if (error)</span></a>
+<a name="1523"><span class="lineNum">    1523 </span><span class="lineCov">          1 :         error =  bus_register(&amp;platform_bus_type);</span></a>
+<a name="1524"><span class="lineNum">    1524 </span><span class="lineCov">          1 :         if (error)</span></a>
 <a name="1525"><span class="lineNum">    1525 </span><span class="lineNoCov">          0 :                 device_unregister(&amp;platform_bus);</span></a>
 <a name="1526"><span class="lineNum">    1526 </span>            :         of_platform_register_reconfig_notifier();</a>
 <a name="1527"><span class="lineNum">    1527 </span>            :         return error;</a>

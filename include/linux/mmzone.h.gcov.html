@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -175,13 +175,13 @@
 <a name="113"><span class="lineNum">     113 </span>            : static inline struct page *get_page_from_free_area(struct free_area *area,</a>
 <a name="114"><span class="lineNum">     114 </span>            :                                             int migratetype)</a>
 <a name="115"><span class="lineNum">     115 </span>            : {</a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">       2826 :         return list_first_entry_or_null(&amp;area-&gt;free_list[migratetype],</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">       1413 :         return list_first_entry_or_null(&amp;area-&gt;free_list[migratetype],</span></a>
 <a name="117"><span class="lineNum">     117 </span>            :                                         struct page, lru);</a>
 <a name="118"><span class="lineNum">     118 </span>            : }</a>
 <a name="119"><span class="lineNum">     119 </span>            : </a>
 <a name="120"><span class="lineNum">     120 </span>            : static inline bool free_area_empty(struct free_area *area, int migratetype)</a>
 <a name="121"><span class="lineNum">     121 </span>            : {</a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        620 :         return list_empty(&amp;area-&gt;free_list[migratetype]);</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        318 :         return list_empty(&amp;area-&gt;free_list[migratetype]);</span></a>
 <a name="123"><span class="lineNum">     123 </span>            : }</a>
 <a name="124"><span class="lineNum">     124 </span>            : </a>
 <a name="125"><span class="lineNum">     125 </span>            : struct pglist_data;</a>
@@ -323,7 +323,7 @@
 <a name="261"><span class="lineNum">     261 </span>            :          * by individual slab objects. These counters are actually</a>
 <a name="262"><span class="lineNum">     262 </span>            :          * byte-precise.</a>
 <a name="263"><span class="lineNum">     263 </span>            :          */</a>
-<a name="264"><span class="lineNum">     264 </span><span class="lineCov">        913 :         return (idx == NR_SLAB_RECLAIMABLE_B ||</span></a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineCov">        457 :         return (idx == NR_SLAB_RECLAIMABLE_B ||</span></a>
 <a name="265"><span class="lineNum">     265 </span>            :                 idx == NR_SLAB_UNRECLAIMABLE_B);</a>
 <a name="266"><span class="lineNum">     266 </span>            : }</a>
 <a name="267"><span class="lineNum">     267 </span>            : </a>
@@ -763,7 +763,7 @@
 <a name="701"><span class="lineNum">     701 </span>            : </a>
 <a name="702"><span class="lineNum">     702 </span>            : static inline unsigned long zone_managed_pages(struct zone *zone)</a>
 <a name="703"><span class="lineNum">     703 </span>            : {</a>
-<a name="704"><span class="lineNum">     704 </span><span class="lineCov">         84 :         return (unsigned long)atomic_long_read(&amp;zone-&gt;managed_pages);</span></a>
+<a name="704"><span class="lineNum">     704 </span><span class="lineCov">         42 :         return (unsigned long)atomic_long_read(&amp;zone-&gt;managed_pages);</span></a>
 <a name="705"><span class="lineNum">     705 </span>            : }</a>
 <a name="706"><span class="lineNum">     706 </span>            : </a>
 <a name="707"><span class="lineNum">     707 </span>            : static inline unsigned long zone_cma_pages(struct zone *zone)</a>
@@ -777,7 +777,7 @@
 <a name="715"><span class="lineNum">     715 </span>            : </a>
 <a name="716"><span class="lineNum">     716 </span>            : static inline unsigned long zone_end_pfn(const struct zone *zone)</a>
 <a name="717"><span class="lineNum">     717 </span>            : {</a>
-<a name="718"><span class="lineNum">     718 </span><span class="lineCov">        521 :         return zone-&gt;zone_start_pfn + zone-&gt;spanned_pages;</span></a>
+<a name="718"><span class="lineNum">     718 </span><span class="lineCov">        265 :         return zone-&gt;zone_start_pfn + zone-&gt;spanned_pages;</span></a>
 <a name="719"><span class="lineNum">     719 </span>            : }</a>
 <a name="720"><span class="lineNum">     720 </span>            : </a>
 <a name="721"><span class="lineNum">     721 </span>            : static inline bool zone_spans_pfn(const struct zone *zone, unsigned long pfn)</a>
@@ -1003,7 +1003,7 @@
 <a name="941"><span class="lineNum">     941 </span>            : </a>
 <a name="942"><span class="lineNum">     942 </span>            : static inline unsigned long pgdat_end_pfn(pg_data_t *pgdat)</a>
 <a name="943"><span class="lineNum">     943 </span>            : {</a>
-<a name="944"><span class="lineNum">     944 </span><span class="lineCov">          2 :         return pgdat-&gt;node_start_pfn + pgdat-&gt;node_spanned_pages;</span></a>
+<a name="944"><span class="lineNum">     944 </span><span class="lineCov">          1 :         return pgdat-&gt;node_start_pfn + pgdat-&gt;node_spanned_pages;</span></a>
 <a name="945"><span class="lineNum">     945 </span>            : }</a>
 <a name="946"><span class="lineNum">     946 </span>            : </a>
 <a name="947"><span class="lineNum">     947 </span>            : static inline bool pgdat_is_empty(pg_data_t *pgdat)</a>
@@ -1078,7 +1078,7 @@
 <a name="1016"><span class="lineNum">    1016 </span>            :  */</a>
 <a name="1017"><span class="lineNum">    1017 </span>            : static inline bool managed_zone(struct zone *zone)</a>
 <a name="1018"><span class="lineNum">    1018 </span>            : {</a>
-<a name="1019"><span class="lineNum">    1019 </span><span class="lineCov">          2 :         return zone_managed_pages(zone);</span></a>
+<a name="1019"><span class="lineNum">    1019 </span><span class="lineCov">          1 :         return zone_managed_pages(zone);</span></a>
 <a name="1020"><span class="lineNum">    1020 </span>            : }</a>
 <a name="1021"><span class="lineNum">    1021 </span>            : </a>
 <a name="1022"><span class="lineNum">    1022 </span>            : /* Returns true if a zone has memory */</a>
@@ -1249,7 +1249,7 @@
 <a name="1187"><span class="lineNum">    1187 </span>            :                                         enum zone_type highest_zoneidx,</a>
 <a name="1188"><span class="lineNum">    1188 </span>            :                                         nodemask_t *nodes)</a>
 <a name="1189"><span class="lineNum">    1189 </span>            : {</a>
-<a name="1190"><span class="lineNum">    1190 </span><span class="lineCov">       1007 :         if (likely(!nodes &amp;&amp; zonelist_zone_idx(z) &lt;= highest_zoneidx))</span></a>
+<a name="1190"><span class="lineNum">    1190 </span><span class="lineCov">        504 :         if (likely(!nodes &amp;&amp; zonelist_zone_idx(z) &lt;= highest_zoneidx))</span></a>
 <a name="1191"><span class="lineNum">    1191 </span>            :                 return z;</a>
 <a name="1192"><span class="lineNum">    1192 </span><span class="lineNoCov">          0 :         return __next_zones_zonelist(z, highest_zoneidx, nodes);</span></a>
 <a name="1193"><span class="lineNum">    1193 </span>            : }</a>
@@ -1275,7 +1275,7 @@
 <a name="1213"><span class="lineNum">    1213 </span>            :                                         enum zone_type highest_zoneidx,</a>
 <a name="1214"><span class="lineNum">    1214 </span>            :                                         nodemask_t *nodes)</a>
 <a name="1215"><span class="lineNum">    1215 </span>            : {</a>
-<a name="1216"><span class="lineNum">    1216 </span><span class="lineCov">       2002 :         return next_zones_zonelist(zonelist-&gt;_zonerefs,</span></a>
+<a name="1216"><span class="lineNum">    1216 </span><span class="lineCov">       1002 :         return next_zones_zonelist(zonelist-&gt;_zonerefs,</span></a>
 <a name="1217"><span class="lineNum">    1217 </span>            :                                                         highest_zoneidx, nodes);</a>
 <a name="1218"><span class="lineNum">    1218 </span>            : }</a>
 <a name="1219"><span class="lineNum">    1219 </span>            : </a>

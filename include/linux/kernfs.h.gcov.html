@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -337,7 +337,7 @@
 <a name="275"><span class="lineNum">     275 </span>            : </a>
 <a name="276"><span class="lineNum">     276 </span>            : static inline enum kernfs_node_type kernfs_type(struct kernfs_node *kn)</a>
 <a name="277"><span class="lineNum">     277 </span>            : {</a>
-<a name="278"><span class="lineNum">     278 </span><span class="lineCov">      53502 :         return kn-&gt;flags &amp; KERNFS_TYPE_MASK;</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineCov">      26751 :         return kn-&gt;flags &amp; KERNFS_TYPE_MASK;</span></a>
 <a name="279"><span class="lineNum">     279 </span>            : }</a>
 <a name="280"><span class="lineNum">     280 </span>            : </a>
 <a name="281"><span class="lineNum">     281 </span>            : static inline ino_t kernfs_id_ino(u64 id)</a>
@@ -360,7 +360,7 @@
 <a name="298"><span class="lineNum">     298 </span>            : </a>
 <a name="299"><span class="lineNum">     299 </span>            : static inline ino_t kernfs_ino(struct kernfs_node *kn)</a>
 <a name="300"><span class="lineNum">     300 </span>            : {</a>
-<a name="301"><span class="lineNum">     301 </span><span class="lineCov">       4650 :         return kernfs_id_ino(kn-&gt;id);</span></a>
+<a name="301"><span class="lineNum">     301 </span><span class="lineCov">       2325 :         return kernfs_id_ino(kn-&gt;id);</span></a>
 <a name="302"><span class="lineNum">     302 </span>            : }</a>
 <a name="303"><span class="lineNum">     303 </span>            : </a>
 <a name="304"><span class="lineNum">     304 </span>            : static inline ino_t kernfs_gen(struct kernfs_node *kn)</a>
@@ -391,7 +391,7 @@
 <a name="329"><span class="lineNum">     329 </span>            :  */</a>
 <a name="330"><span class="lineNum">     330 </span>            : static inline bool kernfs_ns_enabled(struct kernfs_node *kn)</a>
 <a name="331"><span class="lineNum">     331 </span>            : {</a>
-<a name="332"><span class="lineNum">     332 </span><span class="lineCov">      28000 :         return kn-&gt;flags &amp; KERNFS_NS;</span></a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineCov">      14000 :         return kn-&gt;flags &amp; KERNFS_NS;</span></a>
 <a name="333"><span class="lineNum">     333 </span>            : }</a>
 <a name="334"><span class="lineNum">     334 </span>            : </a>
 <a name="335"><span class="lineNum">     335 </span>            : int kernfs_name(struct kernfs_node *kn, char *buf, size_t buflen);</a>
@@ -596,7 +596,7 @@
 <a name="534"><span class="lineNum">     534 </span>            : static inline struct kernfs_node *</a>
 <a name="535"><span class="lineNum">     535 </span>            : kernfs_find_and_get(struct kernfs_node *kn, const char *name)</a>
 <a name="536"><span class="lineNum">     536 </span>            : {</a>
-<a name="537"><span class="lineNum">     537 </span><span class="lineCov">       1266 :         return kernfs_find_and_get_ns(kn, name, NULL);</span></a>
+<a name="537"><span class="lineNum">     537 </span><span class="lineCov">        633 :         return kernfs_find_and_get_ns(kn, name, NULL);</span></a>
 <a name="538"><span class="lineNum">     538 </span>            : }</a>
 <a name="539"><span class="lineNum">     539 </span>            : </a>
 <a name="540"><span class="lineNum">     540 </span>            : static inline struct kernfs_node *</a>
@@ -617,7 +617,7 @@
 <a name="555"><span class="lineNum">     555 </span>            : static inline int kernfs_remove_by_name(struct kernfs_node *parent,</a>
 <a name="556"><span class="lineNum">     556 </span>            :                                         const char *name)</a>
 <a name="557"><span class="lineNum">     557 </span>            : {</a>
-<a name="558"><span class="lineNum">     558 </span><span class="lineCov">       4630 :         return kernfs_remove_by_name_ns(parent, name, NULL);</span></a>
+<a name="558"><span class="lineNum">     558 </span><span class="lineCov">       2315 :         return kernfs_remove_by_name_ns(parent, name, NULL);</span></a>
 <a name="559"><span class="lineNum">     559 </span>            : }</a>
 <a name="560"><span class="lineNum">     560 </span>            : </a>
 <a name="561"><span class="lineNum">     561 </span>            : static inline int kernfs_rename(struct kernfs_node *kn,</a>

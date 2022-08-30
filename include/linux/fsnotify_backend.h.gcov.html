@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -572,7 +572,7 @@
 <a name="510"><span class="lineNum">     510 </span>            : static inline int fsnotify_inode_watches_children(struct inode *inode)</a>
 <a name="511"><span class="lineNum">     511 </span>            : {</a>
 <a name="512"><span class="lineNum">     512 </span>            :         /* FS_EVENT_ON_CHILD is set if the inode may care */</a>
-<a name="513"><span class="lineNum">     513 </span><span class="lineCov">         30 :         if (!(inode-&gt;i_fsnotify_mask &amp; FS_EVENT_ON_CHILD))</span></a>
+<a name="513"><span class="lineNum">     513 </span><span class="lineCov">         15 :         if (!(inode-&gt;i_fsnotify_mask &amp; FS_EVENT_ON_CHILD))</span></a>
 <a name="514"><span class="lineNum">     514 </span>            :                 return 0;</a>
 <a name="515"><span class="lineNum">     515 </span>            :         /* this inode might care about child events, does it care about the</a>
 <a name="516"><span class="lineNum">     516 </span>            :          * specific set of events that can happen on a child? */</a>
@@ -594,10 +594,10 @@
 <a name="532"><span class="lineNum">     532 </span>            :          * find our entry, so it will spin until we complete here, and update</a>
 <a name="533"><span class="lineNum">     533 </span>            :          * us with the new state.</a>
 <a name="534"><span class="lineNum">     534 </span>            :          */</a>
-<a name="535"><span class="lineNum">     535 </span><span class="lineCov">         60 :         if (fsnotify_inode_watches_children(dentry-&gt;d_parent-&gt;d_inode))</span></a>
+<a name="535"><span class="lineNum">     535 </span><span class="lineCov">         30 :         if (fsnotify_inode_watches_children(dentry-&gt;d_parent-&gt;d_inode))</span></a>
 <a name="536"><span class="lineNum">     536 </span><span class="lineNoCov">          0 :                 dentry-&gt;d_flags |= DCACHE_FSNOTIFY_PARENT_WATCHED;</span></a>
 <a name="537"><span class="lineNum">     537 </span>            :         else</a>
-<a name="538"><span class="lineNum">     538 </span><span class="lineCov">         30 :                 dentry-&gt;d_flags &amp;= ~DCACHE_FSNOTIFY_PARENT_WATCHED;</span></a>
+<a name="538"><span class="lineNum">     538 </span><span class="lineCov">         15 :                 dentry-&gt;d_flags &amp;= ~DCACHE_FSNOTIFY_PARENT_WATCHED;</span></a>
 <a name="539"><span class="lineNum">     539 </span>            : }</a>
 <a name="540"><span class="lineNum">     540 </span>            : </a>
 <a name="541"><span class="lineNum">     541 </span>            : /* called from fsnotify listeners, such as fanotify or dnotify */</a>

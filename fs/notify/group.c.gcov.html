@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -173,38 +173,38 @@
 <a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="112"><span class="lineNum">     112 </span>            : EXPORT_SYMBOL_GPL(fsnotify_put_group);</a>
 <a name="113"><span class="lineNum">     113 </span>            : </a>
-<a name="114"><span class="lineNum">     114 </span><span class="lineCov">          2 : static struct fsnotify_group *__fsnotify_alloc_group(</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineCov">          1 : static struct fsnotify_group *__fsnotify_alloc_group(</span></a>
 <a name="115"><span class="lineNum">     115 </span>            :                                 const struct fsnotify_ops *ops, gfp_t gfp)</a>
 <a name="116"><span class="lineNum">     116 </span>            : {</a>
 <a name="117"><span class="lineNum">     117 </span>            :         struct fsnotify_group *group;</a>
 <a name="118"><span class="lineNum">     118 </span>            : </a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineCov">          2 :         group = kzalloc(sizeof(struct fsnotify_group), gfp);</span></a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">          2 :         if (!group)</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">          1 :         group = kzalloc(sizeof(struct fsnotify_group), gfp);</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">          1 :         if (!group)</span></a>
 <a name="121"><span class="lineNum">     121 </span>            :                 return ERR_PTR(-ENOMEM);</a>
 <a name="122"><span class="lineNum">     122 </span>            : </a>
 <a name="123"><span class="lineNum">     123 </span>            :         /* set to 0 when there a no external references to this group */</a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">          4 :         refcount_set(&amp;group-&gt;refcnt, 1);</span></a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineCov">          4 :         atomic_set(&amp;group-&gt;user_waits, 0);</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">          2 :         refcount_set(&amp;group-&gt;refcnt, 1);</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">          2 :         atomic_set(&amp;group-&gt;user_waits, 0);</span></a>
 <a name="126"><span class="lineNum">     126 </span>            : </a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineCov">          2 :         spin_lock_init(&amp;group-&gt;notification_lock);</span></a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineCov">          4 :         INIT_LIST_HEAD(&amp;group-&gt;notification_list);</span></a>
-<a name="129"><span class="lineNum">     129 </span><span class="lineCov">          2 :         init_waitqueue_head(&amp;group-&gt;notification_waitq);</span></a>
-<a name="130"><span class="lineNum">     130 </span><span class="lineCov">          2 :         group-&gt;max_events = UINT_MAX;</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineCov">          1 :         spin_lock_init(&amp;group-&gt;notification_lock);</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;group-&gt;notification_list);</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">          1 :         init_waitqueue_head(&amp;group-&gt;notification_waitq);</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineCov">          1 :         group-&gt;max_events = UINT_MAX;</span></a>
 <a name="131"><span class="lineNum">     131 </span>            : </a>
-<a name="132"><span class="lineNum">     132 </span><span class="lineCov">          2 :         mutex_init(&amp;group-&gt;mark_mutex);</span></a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">          4 :         INIT_LIST_HEAD(&amp;group-&gt;marks_list);</span></a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineCov">          1 :         mutex_init(&amp;group-&gt;mark_mutex);</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;group-&gt;marks_list);</span></a>
 <a name="134"><span class="lineNum">     134 </span>            : </a>
-<a name="135"><span class="lineNum">     135 </span><span class="lineCov">          2 :         group-&gt;ops = ops;</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineCov">          1 :         group-&gt;ops = ops;</span></a>
 <a name="136"><span class="lineNum">     136 </span>            : </a>
-<a name="137"><span class="lineNum">     137 </span><span class="lineCov">          2 :         return group;</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineCov">          1 :         return group;</span></a>
 <a name="138"><span class="lineNum">     138 </span>            : }</a>
 <a name="139"><span class="lineNum">     139 </span>            : </a>
 <a name="140"><span class="lineNum">     140 </span>            : /*</a>
 <a name="141"><span class="lineNum">     141 </span>            :  * Create a new fsnotify_group and hold a reference for the group returned.</a>
 <a name="142"><span class="lineNum">     142 </span>            :  */</a>
-<a name="143"><span class="lineNum">     143 </span><span class="lineCov">          2 : struct fsnotify_group *fsnotify_alloc_group(const struct fsnotify_ops *ops)</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineCov">          1 : struct fsnotify_group *fsnotify_alloc_group(const struct fsnotify_ops *ops)</span></a>
 <a name="144"><span class="lineNum">     144 </span>            : {</a>
-<a name="145"><span class="lineNum">     145 </span><span class="lineCov">          2 :         return __fsnotify_alloc_group(ops, GFP_KERNEL);</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">          1 :         return __fsnotify_alloc_group(ops, GFP_KERNEL);</span></a>
 <a name="146"><span class="lineNum">     146 </span>            : }</a>
 <a name="147"><span class="lineNum">     147 </span>            : EXPORT_SYMBOL_GPL(fsnotify_alloc_group);</a>
 <a name="148"><span class="lineNum">     148 </span>            : </a>

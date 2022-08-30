@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -2414,17 +2414,17 @@
 <a name="2352"><span class="lineNum">    2352 </span>            :         { }</a>
 <a name="2353"><span class="lineNum">    2353 </span>            : };</a>
 <a name="2354"><span class="lineNum">    2354 </span>            : </a>
-<a name="2355"><span class="lineNum">    2355 </span><span class="lineCov">          2 : static int __init seccomp_sysctl_init(void)</span></a>
+<a name="2355"><span class="lineNum">    2355 </span><span class="lineCov">          1 : static int __init seccomp_sysctl_init(void)</span></a>
 <a name="2356"><span class="lineNum">    2356 </span>            : {</a>
 <a name="2357"><span class="lineNum">    2357 </span>            :         struct ctl_table_header *hdr;</a>
 <a name="2358"><span class="lineNum">    2358 </span>            : </a>
-<a name="2359"><span class="lineNum">    2359 </span><span class="lineCov">          2 :         hdr = register_sysctl_paths(seccomp_sysctl_path, seccomp_sysctl_table);</span></a>
-<a name="2360"><span class="lineNum">    2360 </span><span class="lineCov">          2 :         if (!hdr)</span></a>
+<a name="2359"><span class="lineNum">    2359 </span><span class="lineCov">          1 :         hdr = register_sysctl_paths(seccomp_sysctl_path, seccomp_sysctl_table);</span></a>
+<a name="2360"><span class="lineNum">    2360 </span><span class="lineCov">          1 :         if (!hdr)</span></a>
 <a name="2361"><span class="lineNum">    2361 </span><span class="lineNoCov">          0 :                 pr_warn(&quot;sysctl registration failed\n&quot;);</span></a>
 <a name="2362"><span class="lineNum">    2362 </span>            :         else</a>
 <a name="2363"><span class="lineNum">    2363 </span>            :                 kmemleak_not_leak(hdr);</a>
 <a name="2364"><span class="lineNum">    2364 </span>            : </a>
-<a name="2365"><span class="lineNum">    2365 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="2365"><span class="lineNum">    2365 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="2366"><span class="lineNum">    2366 </span>            : }</a>
 <a name="2367"><span class="lineNum">    2367 </span>            : </a>
 <a name="2368"><span class="lineNum">    2368 </span>            : device_initcall(seccomp_sysctl_init)</a>

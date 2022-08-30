@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -97,16 +97,16 @@
 <a name="35"><span class="lineNum">      35 </span>            :  */</a>
 <a name="36"><span class="lineNum">      36 </span>            : #include &lt;linux/flex_proportions.h&gt;</a>
 <a name="37"><span class="lineNum">      37 </span>            : </a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          2 : int fprop_global_init(struct fprop_global *p, gfp_t gfp)</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          1 : int fprop_global_init(struct fprop_global *p, gfp_t gfp)</span></a>
 <a name="39"><span class="lineNum">      39 </span>            : {</a>
 <a name="40"><span class="lineNum">      40 </span>            :         int err;</a>
 <a name="41"><span class="lineNum">      41 </span>            : </a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          2 :         p-&gt;period = 0;</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          1 :         p-&gt;period = 0;</span></a>
 <a name="43"><span class="lineNum">      43 </span>            :         /* Use 1 to avoid dealing with periods with 0 events... */</a>
-<a name="44"><span class="lineNum">      44 </span><span class="lineCov">          4 :         err = percpu_counter_init(&amp;p-&gt;events, 1, gfp);</span></a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineCov">          2 :         err = percpu_counter_init(&amp;p-&gt;events, 1, gfp);</span></a>
 <a name="45"><span class="lineNum">      45 </span>            :         if (err)</a>
 <a name="46"><span class="lineNum">      46 </span>            :                 return err;</a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          4 :         seqcount_init(&amp;p-&gt;sequence);</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          2 :         seqcount_init(&amp;p-&gt;sequence);</span></a>
 <a name="48"><span class="lineNum">      48 </span>            :         return 0;</a>
 <a name="49"><span class="lineNum">      49 </span>            : }</a>
 <a name="50"><span class="lineNum">      50 </span>            : </a>
@@ -231,14 +231,14 @@
 <a name="169"><span class="lineNum">     169 </span>            :  */</a>
 <a name="170"><span class="lineNum">     170 </span>            : #define PROP_BATCH (8*(1+ilog2(nr_cpu_ids)))</a>
 <a name="171"><span class="lineNum">     171 </span>            : </a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">          2 : int fprop_local_init_percpu(struct fprop_local_percpu *pl, gfp_t gfp)</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">          1 : int fprop_local_init_percpu(struct fprop_local_percpu *pl, gfp_t gfp)</span></a>
 <a name="173"><span class="lineNum">     173 </span>            : {</a>
 <a name="174"><span class="lineNum">     174 </span>            :         int err;</a>
 <a name="175"><span class="lineNum">     175 </span>            : </a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineCov">          4 :         err = percpu_counter_init(&amp;pl-&gt;events, 0, gfp);</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">          2 :         err = percpu_counter_init(&amp;pl-&gt;events, 0, gfp);</span></a>
 <a name="177"><span class="lineNum">     177 </span>            :         if (err)</a>
 <a name="178"><span class="lineNum">     178 </span>            :                 return err;</a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          2 :         pl-&gt;period = 0;</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          1 :         pl-&gt;period = 0;</span></a>
 <a name="180"><span class="lineNum">     180 </span>            :         raw_spin_lock_init(&amp;pl-&gt;lock);</a>
 <a name="181"><span class="lineNum">     181 </span>            :         return 0;</a>
 <a name="182"><span class="lineNum">     182 </span>            : }</a>

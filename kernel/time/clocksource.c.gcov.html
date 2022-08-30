@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -109,14 +109,14 @@
 <a name="47"><span class="lineNum">      47 </span><span class="lineNoCov">          0 : clocks_calc_mult_shift(u32 *mult, u32 *shift, u32 from, u32 to, u32 maxsec)</span></a>
 <a name="48"><span class="lineNum">      48 </span>            : {</a>
 <a name="49"><span class="lineNum">      49 </span>            :         u64 tmp;</a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          2 :         u32 sft, sftacc= 32;</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          1 :         u32 sft, sftacc= 32;</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : </a>
 <a name="52"><span class="lineNum">      52 </span>            :         /*</a>
 <a name="53"><span class="lineNum">      53 </span>            :          * Calculate the shift factor which is limiting the conversion</a>
 <a name="54"><span class="lineNum">      54 </span>            :          * range:</a>
 <a name="55"><span class="lineNum">      55 </span>            :          */</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          2 :         tmp = ((u64)maxsec * from) &gt;&gt; 32;</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          2 :         while (tmp) {</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          1 :         tmp = ((u64)maxsec * from) &gt;&gt; 32;</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">          1 :         while (tmp) {</span></a>
 <a name="58"><span class="lineNum">      58 </span><span class="lineNoCov">          0 :                 tmp &gt;&gt;=1;</span></a>
 <a name="59"><span class="lineNum">      59 </span><span class="lineNoCov">          0 :                 sftacc--;</span></a>
 <a name="60"><span class="lineNum">      60 </span>            :         }</a>
@@ -125,15 +125,15 @@
 <a name="63"><span class="lineNum">      63 </span>            :          * Find the conversion shift/mult pair which has the best</a>
 <a name="64"><span class="lineNum">      64 </span>            :          * accuracy and fits the maxsec conversion range:</a>
 <a name="65"><span class="lineNum">      65 </span>            :          */</a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">         18 :         for (sft = 32; sft &gt; 0; sft--) {</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">         20 :                 tmp = (u64) to &lt;&lt; sft;</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         20 :                 tmp += from / 2;</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         20 :                 do_div(tmp, from);</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">         20 :                 if ((tmp &gt;&gt; sftacc) == 0)</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          9 :         for (sft = 32; sft &gt; 0; sft--) {</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">         10 :                 tmp = (u64) to &lt;&lt; sft;</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         10 :                 tmp += from / 2;</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         10 :                 do_div(tmp, from);</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">         10 :                 if ((tmp &gt;&gt; sftacc) == 0)</span></a>
 <a name="71"><span class="lineNum">      71 </span>            :                         break;</a>
 <a name="72"><span class="lineNum">      72 </span>            :         }</a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          2 :         *mult = tmp;</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          2 :         *shift = sft;</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          1 :         *mult = tmp;</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          1 :         *shift = sft;</span></a>
 <a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : EXPORT_SYMBOL_GPL(clocks_calc_mult_shift);</a>
 <a name="77"><span class="lineNum">      77 </span>            : </a>
@@ -725,8 +725,8 @@
 <a name="663"><span class="lineNum">     663 </span>            : </a>
 <a name="664"><span class="lineNum">     664 </span>            : static void clocksource_enqueue_watchdog(struct clocksource *cs)</a>
 <a name="665"><span class="lineNum">     665 </span>            : {</a>
-<a name="666"><span class="lineNum">     666 </span><span class="lineCov">          4 :         if (cs-&gt;flags &amp; CLOCK_SOURCE_IS_CONTINUOUS)</span></a>
-<a name="667"><span class="lineNum">     667 </span><span class="lineCov">          2 :                 cs-&gt;flags |= CLOCK_SOURCE_VALID_FOR_HRES;</span></a>
+<a name="666"><span class="lineNum">     666 </span><span class="lineCov">          2 :         if (cs-&gt;flags &amp; CLOCK_SOURCE_IS_CONTINUOUS)</span></a>
+<a name="667"><span class="lineNum">     667 </span><span class="lineCov">          1 :                 cs-&gt;flags |= CLOCK_SOURCE_VALID_FOR_HRES;</span></a>
 <a name="668"><span class="lineNum">     668 </span>            : }</a>
 <a name="669"><span class="lineNum">     669 </span>            : </a>
 <a name="670"><span class="lineNum">     670 </span>            : static void clocksource_select_watchdog(bool fallback) { }</a>
@@ -746,12 +746,12 @@
 <a name="684"><span class="lineNum">     684 </span><span class="lineNoCov">          0 :         return cs == suspend_clocksource;</span></a>
 <a name="685"><span class="lineNum">     685 </span>            : }</a>
 <a name="686"><span class="lineNum">     686 </span>            : </a>
-<a name="687"><span class="lineNum">     687 </span><span class="lineCov">          4 : static void __clocksource_suspend_select(struct clocksource *cs)</span></a>
+<a name="687"><span class="lineNum">     687 </span><span class="lineCov">          2 : static void __clocksource_suspend_select(struct clocksource *cs)</span></a>
 <a name="688"><span class="lineNum">     688 </span>            : {</a>
 <a name="689"><span class="lineNum">     689 </span>            :         /*</a>
 <a name="690"><span class="lineNum">     690 </span>            :          * Skip the clocksource which will be stopped in suspend state.</a>
 <a name="691"><span class="lineNum">     691 </span>            :          */</a>
-<a name="692"><span class="lineNum">     692 </span><span class="lineCov">          4 :         if (!(cs-&gt;flags &amp; CLOCK_SOURCE_SUSPEND_NONSTOP))</span></a>
+<a name="692"><span class="lineNum">     692 </span><span class="lineCov">          2 :         if (!(cs-&gt;flags &amp; CLOCK_SOURCE_SUSPEND_NONSTOP))</span></a>
 <a name="693"><span class="lineNum">     693 </span>            :                 return;</a>
 <a name="694"><span class="lineNum">     694 </span>            : </a>
 <a name="695"><span class="lineNum">     695 </span>            :         /*</a>
@@ -924,9 +924,9 @@
 <a name="862"><span class="lineNum">     862 </span>            :         /*</a>
 <a name="863"><span class="lineNum">     863 </span>            :          * We won't try to correct for more than 11% adjustments (110,000 ppm),</a>
 <a name="864"><span class="lineNum">     864 </span>            :          */</a>
-<a name="865"><span class="lineNum">     865 </span><span class="lineCov">          4 :         ret = (u64)cs-&gt;mult * 11;</span></a>
-<a name="866"><span class="lineNum">     866 </span><span class="lineCov">          4 :         do_div(ret,100);</span></a>
-<a name="867"><span class="lineNum">     867 </span><span class="lineCov">          4 :         return (u32)ret;</span></a>
+<a name="865"><span class="lineNum">     865 </span><span class="lineCov">          2 :         ret = (u64)cs-&gt;mult * 11;</span></a>
+<a name="866"><span class="lineNum">     866 </span><span class="lineCov">          2 :         do_div(ret,100);</span></a>
+<a name="867"><span class="lineNum">     867 </span><span class="lineCov">          2 :         return (u32)ret;</span></a>
 <a name="868"><span class="lineNum">     868 </span>            : }</a>
 <a name="869"><span class="lineNum">     869 </span>            : </a>
 <a name="870"><span class="lineNum">     870 </span>            : /**</a>
@@ -952,8 +952,8 @@
 <a name="890"><span class="lineNum">     890 </span>            :          * Calculate the maximum number of cycles that we can pass to the</a>
 <a name="891"><span class="lineNum">     891 </span>            :          * cyc2ns() function without overflowing a 64-bit result.</a>
 <a name="892"><span class="lineNum">     892 </span>            :          */</a>
-<a name="893"><span class="lineNum">     893 </span><span class="lineCov">          4 :         max_cycles = ULLONG_MAX;</span></a>
-<a name="894"><span class="lineNum">     894 </span><span class="lineCov">          4 :         do_div(max_cycles, mult+maxadj);</span></a>
+<a name="893"><span class="lineNum">     893 </span><span class="lineCov">          2 :         max_cycles = ULLONG_MAX;</span></a>
+<a name="894"><span class="lineNum">     894 </span><span class="lineCov">          2 :         do_div(max_cycles, mult+maxadj);</span></a>
 <a name="895"><span class="lineNum">     895 </span>            : </a>
 <a name="896"><span class="lineNum">     896 </span>            :         /*</a>
 <a name="897"><span class="lineNum">     897 </span>            :          * The actual maximum number of cycles we can defer the clocksource is</a>
@@ -961,15 +961,15 @@
 <a name="899"><span class="lineNum">     899 </span>            :          * Note: Here we subtract the maxadj to make sure we don't sleep for</a>
 <a name="900"><span class="lineNum">     900 </span>            :          * too long if there's a large negative adjustment.</a>
 <a name="901"><span class="lineNum">     901 </span>            :          */</a>
-<a name="902"><span class="lineNum">     902 </span><span class="lineCov">          4 :         max_cycles = min(max_cycles, mask);</span></a>
-<a name="903"><span class="lineNum">     903 </span><span class="lineCov">          8 :         max_nsecs = clocksource_cyc2ns(max_cycles, mult - maxadj, shift);</span></a>
+<a name="902"><span class="lineNum">     902 </span><span class="lineCov">          2 :         max_cycles = min(max_cycles, mask);</span></a>
+<a name="903"><span class="lineNum">     903 </span><span class="lineCov">          4 :         max_nsecs = clocksource_cyc2ns(max_cycles, mult - maxadj, shift);</span></a>
 <a name="904"><span class="lineNum">     904 </span>            : </a>
 <a name="905"><span class="lineNum">     905 </span>            :         /* return the max_cycles value as well if requested */</a>
-<a name="906"><span class="lineNum">     906 </span><span class="lineCov">          4 :         if (max_cyc)</span></a>
-<a name="907"><span class="lineNum">     907 </span><span class="lineCov">          4 :                 *max_cyc = max_cycles;</span></a>
+<a name="906"><span class="lineNum">     906 </span><span class="lineCov">          2 :         if (max_cyc)</span></a>
+<a name="907"><span class="lineNum">     907 </span><span class="lineCov">          2 :                 *max_cyc = max_cycles;</span></a>
 <a name="908"><span class="lineNum">     908 </span>            : </a>
 <a name="909"><span class="lineNum">     909 </span>            :         /* Return 50% of the actual maximum, so we can detect bad values */</a>
-<a name="910"><span class="lineNum">     910 </span><span class="lineCov">          4 :         max_nsecs &gt;&gt;= 1;</span></a>
+<a name="910"><span class="lineNum">     910 </span><span class="lineCov">          2 :         max_nsecs &gt;&gt;= 1;</span></a>
 <a name="911"><span class="lineNum">     911 </span>            : </a>
 <a name="912"><span class="lineNum">     912 </span><span class="lineNoCov">          0 :         return max_nsecs;</span></a>
 <a name="913"><span class="lineNum">     913 </span>            : }</a>
@@ -981,16 +981,16 @@
 <a name="919"><span class="lineNum">     919 </span>            :  */</a>
 <a name="920"><span class="lineNum">     920 </span>            : static inline void clocksource_update_max_deferment(struct clocksource *cs)</a>
 <a name="921"><span class="lineNum">     921 </span>            : {</a>
-<a name="922"><span class="lineNum">     922 </span><span class="lineCov">          8 :         cs-&gt;max_idle_ns = clocks_calc_max_nsecs(cs-&gt;mult, cs-&gt;shift,</span></a>
+<a name="922"><span class="lineNum">     922 </span><span class="lineCov">          4 :         cs-&gt;max_idle_ns = clocks_calc_max_nsecs(cs-&gt;mult, cs-&gt;shift,</span></a>
 <a name="923"><span class="lineNum">     923 </span>            :                                                 cs-&gt;maxadj, cs-&gt;mask,</a>
 <a name="924"><span class="lineNum">     924 </span>            :                                                 &amp;cs-&gt;max_cycles);</a>
 <a name="925"><span class="lineNum">     925 </span>            : }</a>
 <a name="926"><span class="lineNum">     926 </span>            : </a>
-<a name="927"><span class="lineNum">     927 </span><span class="lineCov">          6 : static struct clocksource *clocksource_find_best(bool oneshot, bool skipcur)</span></a>
+<a name="927"><span class="lineNum">     927 </span><span class="lineCov">          3 : static struct clocksource *clocksource_find_best(bool oneshot, bool skipcur)</span></a>
 <a name="928"><span class="lineNum">     928 </span>            : {</a>
 <a name="929"><span class="lineNum">     929 </span>            :         struct clocksource *cs;</a>
 <a name="930"><span class="lineNum">     930 </span>            : </a>
-<a name="931"><span class="lineNum">     931 </span><span class="lineCov">          8 :         if (!finished_booting || list_empty(&amp;clocksource_list))</span></a>
+<a name="931"><span class="lineNum">     931 </span><span class="lineCov">          4 :         if (!finished_booting || list_empty(&amp;clocksource_list))</span></a>
 <a name="932"><span class="lineNum">     932 </span>            :                 return NULL;</a>
 <a name="933"><span class="lineNum">     933 </span>            : </a>
 <a name="934"><span class="lineNum">     934 </span>            :         /*</a>
@@ -998,27 +998,27 @@
 <a name="936"><span class="lineNum">     936 </span>            :          * mode is active, we pick the highres valid clocksource with</a>
 <a name="937"><span class="lineNum">     937 </span>            :          * the best rating.</a>
 <a name="938"><span class="lineNum">     938 </span>            :          */</a>
-<a name="939"><span class="lineNum">     939 </span><span class="lineCov">          2 :         list_for_each_entry(cs, &amp;clocksource_list, list) {</span></a>
-<a name="940"><span class="lineNum">     940 </span><span class="lineCov">          2 :                 if (skipcur &amp;&amp; cs == curr_clocksource)</span></a>
+<a name="939"><span class="lineNum">     939 </span><span class="lineCov">          1 :         list_for_each_entry(cs, &amp;clocksource_list, list) {</span></a>
+<a name="940"><span class="lineNum">     940 </span><span class="lineCov">          1 :                 if (skipcur &amp;&amp; cs == curr_clocksource)</span></a>
 <a name="941"><span class="lineNum">     941 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="942"><span class="lineNum">     942 </span><span class="lineCov">          2 :                 if (oneshot &amp;&amp; !(cs-&gt;flags &amp; CLOCK_SOURCE_VALID_FOR_HRES))</span></a>
+<a name="942"><span class="lineNum">     942 </span><span class="lineCov">          1 :                 if (oneshot &amp;&amp; !(cs-&gt;flags &amp; CLOCK_SOURCE_VALID_FOR_HRES))</span></a>
 <a name="943"><span class="lineNum">     943 </span><span class="lineNoCov">          0 :                         continue;</span></a>
 <a name="944"><span class="lineNum">     944 </span>            :                 return cs;</a>
 <a name="945"><span class="lineNum">     945 </span>            :         }</a>
 <a name="946"><span class="lineNum">     946 </span>            :         return NULL;</a>
 <a name="947"><span class="lineNum">     947 </span>            : }</a>
 <a name="948"><span class="lineNum">     948 </span>            : </a>
-<a name="949"><span class="lineNum">     949 </span><span class="lineCov">          6 : static void __clocksource_select(bool skipcur)</span></a>
+<a name="949"><span class="lineNum">     949 </span><span class="lineCov">          3 : static void __clocksource_select(bool skipcur)</span></a>
 <a name="950"><span class="lineNum">     950 </span>            : {</a>
-<a name="951"><span class="lineNum">     951 </span><span class="lineCov">          6 :         bool oneshot = tick_oneshot_mode_active();</span></a>
+<a name="951"><span class="lineNum">     951 </span><span class="lineCov">          3 :         bool oneshot = tick_oneshot_mode_active();</span></a>
 <a name="952"><span class="lineNum">     952 </span>            :         struct clocksource *best, *cs;</a>
 <a name="953"><span class="lineNum">     953 </span>            : </a>
 <a name="954"><span class="lineNum">     954 </span>            :         /* Find the best suitable clocksource */</a>
-<a name="955"><span class="lineNum">     955 </span><span class="lineCov">          6 :         best = clocksource_find_best(oneshot, skipcur);</span></a>
-<a name="956"><span class="lineNum">     956 </span><span class="lineCov">          6 :         if (!best)</span></a>
+<a name="955"><span class="lineNum">     955 </span><span class="lineCov">          3 :         best = clocksource_find_best(oneshot, skipcur);</span></a>
+<a name="956"><span class="lineNum">     956 </span><span class="lineCov">          3 :         if (!best)</span></a>
 <a name="957"><span class="lineNum">     957 </span>            :                 return;</a>
 <a name="958"><span class="lineNum">     958 </span>            : </a>
-<a name="959"><span class="lineNum">     959 </span><span class="lineCov">          2 :         if (!strlen(override_name))</span></a>
+<a name="959"><span class="lineNum">     959 </span><span class="lineCov">          1 :         if (!strlen(override_name))</span></a>
 <a name="960"><span class="lineNum">     960 </span>            :                 goto found;</a>
 <a name="961"><span class="lineNum">     961 </span>            : </a>
 <a name="962"><span class="lineNum">     962 </span>            :         /* Check for the override clocksource. */</a>
@@ -1053,9 +1053,9 @@
 <a name="991"><span class="lineNum">     991 </span>            :         }</a>
 <a name="992"><span class="lineNum">     992 </span>            : </a>
 <a name="993"><span class="lineNum">     993 </span>            : found:</a>
-<a name="994"><span class="lineNum">     994 </span><span class="lineCov">          2 :         if (curr_clocksource != best &amp;&amp; !timekeeping_notify(best)) {</span></a>
-<a name="995"><span class="lineNum">     995 </span><span class="lineCov">          2 :                 pr_info(&quot;Switched to clocksource %s\n&quot;, best-&gt;name);</span></a>
-<a name="996"><span class="lineNum">     996 </span><span class="lineCov">          2 :                 curr_clocksource = best;</span></a>
+<a name="994"><span class="lineNum">     994 </span><span class="lineCov">          1 :         if (curr_clocksource != best &amp;&amp; !timekeeping_notify(best)) {</span></a>
+<a name="995"><span class="lineNum">     995 </span><span class="lineCov">          1 :                 pr_info(&quot;Switched to clocksource %s\n&quot;, best-&gt;name);</span></a>
+<a name="996"><span class="lineNum">     996 </span><span class="lineCov">          1 :                 curr_clocksource = best;</span></a>
 <a name="997"><span class="lineNum">     997 </span>            :         }</a>
 <a name="998"><span class="lineNum">     998 </span>            : }</a>
 <a name="999"><span class="lineNum">     999 </span>            : </a>
@@ -1069,7 +1069,7 @@
 <a name="1007"><span class="lineNum">    1007 </span>            :  */</a>
 <a name="1008"><span class="lineNum">    1008 </span>            : static void clocksource_select(void)</a>
 <a name="1009"><span class="lineNum">    1009 </span>            : {</a>
-<a name="1010"><span class="lineNum">    1010 </span><span class="lineCov">          6 :         __clocksource_select(false);</span></a>
+<a name="1010"><span class="lineNum">    1010 </span><span class="lineCov">          3 :         __clocksource_select(false);</span></a>
 <a name="1011"><span class="lineNum">    1011 </span>            : }</a>
 <a name="1012"><span class="lineNum">    1012 </span>            : </a>
 <a name="1013"><span class="lineNum">    1013 </span>            : static void clocksource_select_fallback(void)</a>
@@ -1084,18 +1084,18 @@
 <a name="1022"><span class="lineNum">    1022 </span>            :  * We use fs_initcall because we want this to start before</a>
 <a name="1023"><span class="lineNum">    1023 </span>            :  * device_initcall but after subsys_initcall.</a>
 <a name="1024"><span class="lineNum">    1024 </span>            :  */</a>
-<a name="1025"><span class="lineNum">    1025 </span><span class="lineCov">          2 : static int __init clocksource_done_booting(void)</span></a>
+<a name="1025"><span class="lineNum">    1025 </span><span class="lineCov">          1 : static int __init clocksource_done_booting(void)</span></a>
 <a name="1026"><span class="lineNum">    1026 </span>            : {</a>
-<a name="1027"><span class="lineNum">    1027 </span><span class="lineCov">          2 :         mutex_lock(&amp;clocksource_mutex);</span></a>
-<a name="1028"><span class="lineNum">    1028 </span><span class="lineCov">          2 :         curr_clocksource = clocksource_default_clock();</span></a>
-<a name="1029"><span class="lineNum">    1029 </span><span class="lineCov">          2 :         finished_booting = 1;</span></a>
+<a name="1027"><span class="lineNum">    1027 </span><span class="lineCov">          1 :         mutex_lock(&amp;clocksource_mutex);</span></a>
+<a name="1028"><span class="lineNum">    1028 </span><span class="lineCov">          1 :         curr_clocksource = clocksource_default_clock();</span></a>
+<a name="1029"><span class="lineNum">    1029 </span><span class="lineCov">          1 :         finished_booting = 1;</span></a>
 <a name="1030"><span class="lineNum">    1030 </span>            :         /*</a>
 <a name="1031"><span class="lineNum">    1031 </span>            :          * Run the watchdog first to eliminate unstable clock sources</a>
 <a name="1032"><span class="lineNum">    1032 </span>            :          */</a>
 <a name="1033"><span class="lineNum">    1033 </span>            :         __clocksource_watchdog_kthread();</a>
 <a name="1034"><span class="lineNum">    1034 </span>            :         clocksource_select();</a>
-<a name="1035"><span class="lineNum">    1035 </span><span class="lineCov">          2 :         mutex_unlock(&amp;clocksource_mutex);</span></a>
-<a name="1036"><span class="lineNum">    1036 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="1035"><span class="lineNum">    1035 </span><span class="lineCov">          1 :         mutex_unlock(&amp;clocksource_mutex);</span></a>
+<a name="1036"><span class="lineNum">    1036 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="1037"><span class="lineNum">    1037 </span>            : }</a>
 <a name="1038"><span class="lineNum">    1038 </span>            : fs_initcall(clocksource_done_booting);</a>
 <a name="1039"><span class="lineNum">    1039 </span>            : </a>
@@ -1104,16 +1104,16 @@
 <a name="1042"><span class="lineNum">    1042 </span>            :  */</a>
 <a name="1043"><span class="lineNum">    1043 </span>            : static void clocksource_enqueue(struct clocksource *cs)</a>
 <a name="1044"><span class="lineNum">    1044 </span>            : {</a>
-<a name="1045"><span class="lineNum">    1045 </span><span class="lineCov">          4 :         struct list_head *entry = &amp;clocksource_list;</span></a>
+<a name="1045"><span class="lineNum">    1045 </span><span class="lineCov">          2 :         struct list_head *entry = &amp;clocksource_list;</span></a>
 <a name="1046"><span class="lineNum">    1046 </span>            :         struct clocksource *tmp;</a>
 <a name="1047"><span class="lineNum">    1047 </span>            : </a>
-<a name="1048"><span class="lineNum">    1048 </span><span class="lineCov">          6 :         list_for_each_entry(tmp, &amp;clocksource_list, list) {</span></a>
+<a name="1048"><span class="lineNum">    1048 </span><span class="lineCov">          3 :         list_for_each_entry(tmp, &amp;clocksource_list, list) {</span></a>
 <a name="1049"><span class="lineNum">    1049 </span>            :                 /* Keep track of the place, where to insert */</a>
-<a name="1050"><span class="lineNum">    1050 </span><span class="lineCov">          2 :                 if (tmp-&gt;rating &lt; cs-&gt;rating)</span></a>
+<a name="1050"><span class="lineNum">    1050 </span><span class="lineCov">          1 :                 if (tmp-&gt;rating &lt; cs-&gt;rating)</span></a>
 <a name="1051"><span class="lineNum">    1051 </span>            :                         break;</a>
-<a name="1052"><span class="lineNum">    1052 </span><span class="lineCov">          2 :                 entry = &amp;tmp-&gt;list;</span></a>
+<a name="1052"><span class="lineNum">    1052 </span><span class="lineCov">          1 :                 entry = &amp;tmp-&gt;list;</span></a>
 <a name="1053"><span class="lineNum">    1053 </span>            :         }</a>
-<a name="1054"><span class="lineNum">    1054 </span><span class="lineCov">          8 :         list_add(&amp;cs-&gt;list, entry);</span></a>
+<a name="1054"><span class="lineNum">    1054 </span><span class="lineCov">          4 :         list_add(&amp;cs-&gt;list, entry);</span></a>
 <a name="1055"><span class="lineNum">    1055 </span>            : }</a>
 <a name="1056"><span class="lineNum">    1056 </span>            : </a>
 <a name="1057"><span class="lineNum">    1057 </span>            : /**</a>
@@ -1128,7 +1128,7 @@
 <a name="1066"><span class="lineNum">    1066 </span>            :  * __clocksource_update_freq_hz() or __clocksource_update_freq_khz() helper</a>
 <a name="1067"><span class="lineNum">    1067 </span>            :  * functions.</a>
 <a name="1068"><span class="lineNum">    1068 </span>            :  */</a>
-<a name="1069"><span class="lineNum">    1069 </span><span class="lineCov">          4 : void __clocksource_update_freq_scale(struct clocksource *cs, u32 scale, u32 freq)</span></a>
+<a name="1069"><span class="lineNum">    1069 </span><span class="lineCov">          2 : void __clocksource_update_freq_scale(struct clocksource *cs, u32 scale, u32 freq)</span></a>
 <a name="1070"><span class="lineNum">    1070 </span>            : {</a>
 <a name="1071"><span class="lineNum">    1071 </span>            :         u64 sec;</a>
 <a name="1072"><span class="lineNum">    1072 </span>            : </a>
@@ -1136,7 +1136,7 @@
 <a name="1074"><span class="lineNum">    1074 </span>            :          * Default clocksources are *special* and self-define their mult/shift.</a>
 <a name="1075"><span class="lineNum">    1075 </span>            :          * But, you're not special, so you should specify a freq value.</a>
 <a name="1076"><span class="lineNum">    1076 </span>            :          */</a>
-<a name="1077"><span class="lineNum">    1077 </span><span class="lineCov">          4 :         if (freq) {</span></a>
+<a name="1077"><span class="lineNum">    1077 </span><span class="lineCov">          2 :         if (freq) {</span></a>
 <a name="1078"><span class="lineNum">    1078 </span>            :                 /*</a>
 <a name="1079"><span class="lineNum">    1079 </span>            :                  * Calc the maximum number of seconds which we can run before</a>
 <a name="1080"><span class="lineNum">    1080 </span>            :                  * wrapping around. For clocksources which have a mask &gt; 32-bit</a>
@@ -1146,16 +1146,16 @@
 <a name="1084"><span class="lineNum">    1084 </span>            :                  * clocksource with mask &gt;= 40-bit and f &gt;= 4GHz. That maps to</a>
 <a name="1085"><span class="lineNum">    1085 </span>            :                  * ~ 0.06ppm granularity for NTP.</a>
 <a name="1086"><span class="lineNum">    1086 </span>            :                  */</a>
-<a name="1087"><span class="lineNum">    1087 </span><span class="lineCov">          2 :                 sec = cs-&gt;mask;</span></a>
-<a name="1088"><span class="lineNum">    1088 </span><span class="lineCov">          2 :                 do_div(sec, freq);</span></a>
-<a name="1089"><span class="lineNum">    1089 </span><span class="lineCov">          2 :                 do_div(sec, scale);</span></a>
-<a name="1090"><span class="lineNum">    1090 </span><span class="lineCov">          2 :                 if (!sec)</span></a>
+<a name="1087"><span class="lineNum">    1087 </span><span class="lineCov">          1 :                 sec = cs-&gt;mask;</span></a>
+<a name="1088"><span class="lineNum">    1088 </span><span class="lineCov">          1 :                 do_div(sec, freq);</span></a>
+<a name="1089"><span class="lineNum">    1089 </span><span class="lineCov">          1 :                 do_div(sec, scale);</span></a>
+<a name="1090"><span class="lineNum">    1090 </span><span class="lineCov">          1 :                 if (!sec)</span></a>
 <a name="1091"><span class="lineNum">    1091 </span>            :                         sec = 1;</a>
-<a name="1092"><span class="lineNum">    1092 </span><span class="lineCov">          2 :                 else if (sec &gt; 600 &amp;&amp; cs-&gt;mask &gt; UINT_MAX)</span></a>
-<a name="1093"><span class="lineNum">    1093 </span><span class="lineCov">          2 :                         sec = 600;</span></a>
+<a name="1092"><span class="lineNum">    1092 </span><span class="lineCov">          1 :                 else if (sec &gt; 600 &amp;&amp; cs-&gt;mask &gt; UINT_MAX)</span></a>
+<a name="1093"><span class="lineNum">    1093 </span><span class="lineCov">          1 :                         sec = 600;</span></a>
 <a name="1094"><span class="lineNum">    1094 </span>            : </a>
-<a name="1095"><span class="lineNum">    1095 </span><span class="lineCov">          4 :                 clocks_calc_mult_shift(&amp;cs-&gt;mult, &amp;cs-&gt;shift, freq,</span></a>
-<a name="1096"><span class="lineNum">    1096 </span><span class="lineCov">          2 :                                        NSEC_PER_SEC / scale, sec * scale);</span></a>
+<a name="1095"><span class="lineNum">    1095 </span><span class="lineCov">          2 :                 clocks_calc_mult_shift(&amp;cs-&gt;mult, &amp;cs-&gt;shift, freq,</span></a>
+<a name="1096"><span class="lineNum">    1096 </span><span class="lineCov">          1 :                                        NSEC_PER_SEC / scale, sec * scale);</span></a>
 <a name="1097"><span class="lineNum">    1097 </span>            :         }</a>
 <a name="1098"><span class="lineNum">    1098 </span>            : </a>
 <a name="1099"><span class="lineNum">    1099 </span>            :         /*</a>
@@ -1168,22 +1168,22 @@
 <a name="1106"><span class="lineNum">    1106 </span>            :          * to be specified by the caller for testing purposes, but warn</a>
 <a name="1107"><span class="lineNum">    1107 </span>            :          * to discourage production use of this capability.</a>
 <a name="1108"><span class="lineNum">    1108 </span>            :          */</a>
-<a name="1109"><span class="lineNum">    1109 </span><span class="lineCov">          4 :         if (scale &amp;&amp; freq &amp;&amp; !cs-&gt;uncertainty_margin) {</span></a>
-<a name="1110"><span class="lineNum">    1110 </span><span class="lineCov">          2 :                 cs-&gt;uncertainty_margin = NSEC_PER_SEC / (scale * freq);</span></a>
-<a name="1111"><span class="lineNum">    1111 </span><span class="lineCov">          2 :                 if (cs-&gt;uncertainty_margin &lt; 2 * WATCHDOG_MAX_SKEW)</span></a>
-<a name="1112"><span class="lineNum">    1112 </span><span class="lineCov">          2 :                         cs-&gt;uncertainty_margin = 2 * WATCHDOG_MAX_SKEW;</span></a>
-<a name="1113"><span class="lineNum">    1113 </span><span class="lineCov">          2 :         } else if (!cs-&gt;uncertainty_margin) {</span></a>
+<a name="1109"><span class="lineNum">    1109 </span><span class="lineCov">          2 :         if (scale &amp;&amp; freq &amp;&amp; !cs-&gt;uncertainty_margin) {</span></a>
+<a name="1110"><span class="lineNum">    1110 </span><span class="lineCov">          1 :                 cs-&gt;uncertainty_margin = NSEC_PER_SEC / (scale * freq);</span></a>
+<a name="1111"><span class="lineNum">    1111 </span><span class="lineCov">          1 :                 if (cs-&gt;uncertainty_margin &lt; 2 * WATCHDOG_MAX_SKEW)</span></a>
+<a name="1112"><span class="lineNum">    1112 </span><span class="lineCov">          1 :                         cs-&gt;uncertainty_margin = 2 * WATCHDOG_MAX_SKEW;</span></a>
+<a name="1113"><span class="lineNum">    1113 </span><span class="lineCov">          1 :         } else if (!cs-&gt;uncertainty_margin) {</span></a>
 <a name="1114"><span class="lineNum">    1114 </span><span class="lineNoCov">          0 :                 cs-&gt;uncertainty_margin = WATCHDOG_THRESHOLD;</span></a>
 <a name="1115"><span class="lineNum">    1115 </span>            :         }</a>
-<a name="1116"><span class="lineNum">    1116 </span><span class="lineCov">          4 :         WARN_ON_ONCE(cs-&gt;uncertainty_margin &lt; 2 * WATCHDOG_MAX_SKEW);</span></a>
+<a name="1116"><span class="lineNum">    1116 </span><span class="lineCov">          2 :         WARN_ON_ONCE(cs-&gt;uncertainty_margin &lt; 2 * WATCHDOG_MAX_SKEW);</span></a>
 <a name="1117"><span class="lineNum">    1117 </span>            : </a>
 <a name="1118"><span class="lineNum">    1118 </span>            :         /*</a>
 <a name="1119"><span class="lineNum">    1119 </span>            :          * Ensure clocksources that have large 'mult' values don't overflow</a>
 <a name="1120"><span class="lineNum">    1120 </span>            :          * when adjusted.</a>
 <a name="1121"><span class="lineNum">    1121 </span>            :          */</a>
-<a name="1122"><span class="lineNum">    1122 </span><span class="lineCov">          8 :         cs-&gt;maxadj = clocksource_max_adjustment(cs);</span></a>
-<a name="1123"><span class="lineNum">    1123 </span><span class="lineCov">          8 :         while (freq &amp;&amp; ((cs-&gt;mult + cs-&gt;maxadj &lt; cs-&gt;mult)</span></a>
-<a name="1124"><span class="lineNum">    1124 </span><span class="lineCov">          2 :                 || (cs-&gt;mult - cs-&gt;maxadj &gt; cs-&gt;mult))) {</span></a>
+<a name="1122"><span class="lineNum">    1122 </span><span class="lineCov">          4 :         cs-&gt;maxadj = clocksource_max_adjustment(cs);</span></a>
+<a name="1123"><span class="lineNum">    1123 </span><span class="lineCov">          4 :         while (freq &amp;&amp; ((cs-&gt;mult + cs-&gt;maxadj &lt; cs-&gt;mult)</span></a>
+<a name="1124"><span class="lineNum">    1124 </span><span class="lineCov">          1 :                 || (cs-&gt;mult - cs-&gt;maxadj &gt; cs-&gt;mult))) {</span></a>
 <a name="1125"><span class="lineNum">    1125 </span><span class="lineNoCov">          0 :                 cs-&gt;mult &gt;&gt;= 1;</span></a>
 <a name="1126"><span class="lineNum">    1126 </span><span class="lineNoCov">          0 :                 cs-&gt;shift--;</span></a>
 <a name="1127"><span class="lineNum">    1127 </span><span class="lineNoCov">          0 :                 cs-&gt;maxadj = clocksource_max_adjustment(cs);</span></a>
@@ -1193,15 +1193,15 @@
 <a name="1131"><span class="lineNum">    1131 </span>            :          * Only warn for *special* clocksources that self-define</a>
 <a name="1132"><span class="lineNum">    1132 </span>            :          * their mult/shift values and don't specify a freq.</a>
 <a name="1133"><span class="lineNum">    1133 </span>            :          */</a>
-<a name="1134"><span class="lineNum">    1134 </span><span class="lineCov">          4 :         WARN_ONCE(cs-&gt;mult + cs-&gt;maxadj &lt; cs-&gt;mult,</span></a>
+<a name="1134"><span class="lineNum">    1134 </span><span class="lineCov">          2 :         WARN_ONCE(cs-&gt;mult + cs-&gt;maxadj &lt; cs-&gt;mult,</span></a>
 <a name="1135"><span class="lineNum">    1135 </span>            :                 &quot;timekeeping: Clocksource %s might overflow on 11%% adjustment\n&quot;,</a>
 <a name="1136"><span class="lineNum">    1136 </span>            :                 cs-&gt;name);</a>
 <a name="1137"><span class="lineNum">    1137 </span>            : </a>
-<a name="1138"><span class="lineNum">    1138 </span><span class="lineCov">          4 :         clocksource_update_max_deferment(cs);</span></a>
+<a name="1138"><span class="lineNum">    1138 </span><span class="lineCov">          2 :         clocksource_update_max_deferment(cs);</span></a>
 <a name="1139"><span class="lineNum">    1139 </span>            : </a>
-<a name="1140"><span class="lineNum">    1140 </span><span class="lineCov">          4 :         pr_info(&quot;%s: mask: 0x%llx max_cycles: 0x%llx, max_idle_ns: %lld ns\n&quot;,</span></a>
+<a name="1140"><span class="lineNum">    1140 </span><span class="lineCov">          2 :         pr_info(&quot;%s: mask: 0x%llx max_cycles: 0x%llx, max_idle_ns: %lld ns\n&quot;,</span></a>
 <a name="1141"><span class="lineNum">    1141 </span>            :                 cs-&gt;name, cs-&gt;mask, cs-&gt;max_cycles, cs-&gt;max_idle_ns);</a>
-<a name="1142"><span class="lineNum">    1142 </span><span class="lineCov">          4 : }</span></a>
+<a name="1142"><span class="lineNum">    1142 </span><span class="lineCov">          2 : }</span></a>
 <a name="1143"><span class="lineNum">    1143 </span>            : EXPORT_SYMBOL_GPL(__clocksource_update_freq_scale);</a>
 <a name="1144"><span class="lineNum">    1144 </span>            : </a>
 <a name="1145"><span class="lineNum">    1145 </span>            : /**</a>
@@ -1215,37 +1215,37 @@
 <a name="1153"><span class="lineNum">    1153 </span>            :  * This *SHOULD NOT* be called directly! Please use the</a>
 <a name="1154"><span class="lineNum">    1154 </span>            :  * clocksource_register_hz() or clocksource_register_khz helper functions.</a>
 <a name="1155"><span class="lineNum">    1155 </span>            :  */</a>
-<a name="1156"><span class="lineNum">    1156 </span><span class="lineCov">          4 : int __clocksource_register_scale(struct clocksource *cs, u32 scale, u32 freq)</span></a>
+<a name="1156"><span class="lineNum">    1156 </span><span class="lineCov">          2 : int __clocksource_register_scale(struct clocksource *cs, u32 scale, u32 freq)</span></a>
 <a name="1157"><span class="lineNum">    1157 </span>            : {</a>
 <a name="1158"><span class="lineNum">    1158 </span>            :         unsigned long flags;</a>
 <a name="1159"><span class="lineNum">    1159 </span>            : </a>
-<a name="1160"><span class="lineNum">    1160 </span><span class="lineCov">          4 :         clocksource_arch_init(cs);</span></a>
+<a name="1160"><span class="lineNum">    1160 </span><span class="lineCov">          2 :         clocksource_arch_init(cs);</span></a>
 <a name="1161"><span class="lineNum">    1161 </span>            : </a>
-<a name="1162"><span class="lineNum">    1162 </span><span class="lineCov">          4 :         if (WARN_ON_ONCE((unsigned int)cs-&gt;id &gt;= CSID_MAX))</span></a>
+<a name="1162"><span class="lineNum">    1162 </span><span class="lineCov">          2 :         if (WARN_ON_ONCE((unsigned int)cs-&gt;id &gt;= CSID_MAX))</span></a>
 <a name="1163"><span class="lineNum">    1163 </span><span class="lineNoCov">          0 :                 cs-&gt;id = CSID_GENERIC;</span></a>
-<a name="1164"><span class="lineNum">    1164 </span><span class="lineCov">          4 :         if (cs-&gt;vdso_clock_mode &lt; 0 ||</span></a>
-<a name="1165"><span class="lineNum">    1165 </span><span class="lineCov">          4 :             cs-&gt;vdso_clock_mode &gt;= VDSO_CLOCKMODE_MAX) {</span></a>
+<a name="1164"><span class="lineNum">    1164 </span><span class="lineCov">          2 :         if (cs-&gt;vdso_clock_mode &lt; 0 ||</span></a>
+<a name="1165"><span class="lineNum">    1165 </span><span class="lineCov">          2 :             cs-&gt;vdso_clock_mode &gt;= VDSO_CLOCKMODE_MAX) {</span></a>
 <a name="1166"><span class="lineNum">    1166 </span><span class="lineNoCov">          0 :                 pr_warn(&quot;clocksource %s registered with invalid VDSO mode %d. Disabling VDSO support.\n&quot;,</span></a>
 <a name="1167"><span class="lineNum">    1167 </span>            :                         cs-&gt;name, cs-&gt;vdso_clock_mode);</a>
 <a name="1168"><span class="lineNum">    1168 </span><span class="lineNoCov">          0 :                 cs-&gt;vdso_clock_mode = VDSO_CLOCKMODE_NONE;</span></a>
 <a name="1169"><span class="lineNum">    1169 </span>            :         }</a>
 <a name="1170"><span class="lineNum">    1170 </span>            : </a>
 <a name="1171"><span class="lineNum">    1171 </span>            :         /* Initialize mult/shift and max_idle_ns */</a>
-<a name="1172"><span class="lineNum">    1172 </span><span class="lineCov">          4 :         __clocksource_update_freq_scale(cs, scale, freq);</span></a>
+<a name="1172"><span class="lineNum">    1172 </span><span class="lineCov">          2 :         __clocksource_update_freq_scale(cs, scale, freq);</span></a>
 <a name="1173"><span class="lineNum">    1173 </span>            : </a>
 <a name="1174"><span class="lineNum">    1174 </span>            :         /* Add clocksource to the clocksource list */</a>
-<a name="1175"><span class="lineNum">    1175 </span><span class="lineCov">          4 :         mutex_lock(&amp;clocksource_mutex);</span></a>
+<a name="1175"><span class="lineNum">    1175 </span><span class="lineCov">          2 :         mutex_lock(&amp;clocksource_mutex);</span></a>
 <a name="1176"><span class="lineNum">    1176 </span>            : </a>
-<a name="1177"><span class="lineNum">    1177 </span><span class="lineCov">          4 :         clocksource_watchdog_lock(&amp;flags);</span></a>
-<a name="1178"><span class="lineNum">    1178 </span><span class="lineCov">          4 :         clocksource_enqueue(cs);</span></a>
-<a name="1179"><span class="lineNum">    1179 </span><span class="lineCov">          4 :         clocksource_enqueue_watchdog(cs);</span></a>
-<a name="1180"><span class="lineNum">    1180 </span><span class="lineCov">          4 :         clocksource_watchdog_unlock(&amp;flags);</span></a>
+<a name="1177"><span class="lineNum">    1177 </span><span class="lineCov">          2 :         clocksource_watchdog_lock(&amp;flags);</span></a>
+<a name="1178"><span class="lineNum">    1178 </span><span class="lineCov">          2 :         clocksource_enqueue(cs);</span></a>
+<a name="1179"><span class="lineNum">    1179 </span><span class="lineCov">          2 :         clocksource_enqueue_watchdog(cs);</span></a>
+<a name="1180"><span class="lineNum">    1180 </span><span class="lineCov">          2 :         clocksource_watchdog_unlock(&amp;flags);</span></a>
 <a name="1181"><span class="lineNum">    1181 </span>            : </a>
-<a name="1182"><span class="lineNum">    1182 </span><span class="lineCov">          4 :         clocksource_select();</span></a>
-<a name="1183"><span class="lineNum">    1183 </span><span class="lineCov">          4 :         clocksource_select_watchdog(false);</span></a>
-<a name="1184"><span class="lineNum">    1184 </span><span class="lineCov">          4 :         __clocksource_suspend_select(cs);</span></a>
-<a name="1185"><span class="lineNum">    1185 </span><span class="lineCov">          4 :         mutex_unlock(&amp;clocksource_mutex);</span></a>
-<a name="1186"><span class="lineNum">    1186 </span><span class="lineCov">          4 :         return 0;</span></a>
+<a name="1182"><span class="lineNum">    1182 </span><span class="lineCov">          2 :         clocksource_select();</span></a>
+<a name="1183"><span class="lineNum">    1183 </span><span class="lineCov">          2 :         clocksource_select_watchdog(false);</span></a>
+<a name="1184"><span class="lineNum">    1184 </span><span class="lineCov">          2 :         __clocksource_suspend_select(cs);</span></a>
+<a name="1185"><span class="lineNum">    1185 </span><span class="lineCov">          2 :         mutex_unlock(&amp;clocksource_mutex);</span></a>
+<a name="1186"><span class="lineNum">    1186 </span><span class="lineCov">          2 :         return 0;</span></a>
 <a name="1187"><span class="lineNum">    1187 </span>            : }</a>
 <a name="1188"><span class="lineNum">    1188 </span>            : EXPORT_SYMBOL_GPL(__clocksource_register_scale);</a>
 <a name="1189"><span class="lineNum">    1189 </span>            : </a>
@@ -1488,14 +1488,14 @@
 <a name="1426"><span class="lineNum">    1426 </span>            :         .groups = clocksource_groups,</a>
 <a name="1427"><span class="lineNum">    1427 </span>            : };</a>
 <a name="1428"><span class="lineNum">    1428 </span>            : </a>
-<a name="1429"><span class="lineNum">    1429 </span><span class="lineCov">          2 : static int __init init_clocksource_sysfs(void)</span></a>
+<a name="1429"><span class="lineNum">    1429 </span><span class="lineCov">          1 : static int __init init_clocksource_sysfs(void)</span></a>
 <a name="1430"><span class="lineNum">    1430 </span>            : {</a>
-<a name="1431"><span class="lineNum">    1431 </span><span class="lineCov">          2 :         int error = subsys_system_register(&amp;clocksource_subsys, NULL);</span></a>
+<a name="1431"><span class="lineNum">    1431 </span><span class="lineCov">          1 :         int error = subsys_system_register(&amp;clocksource_subsys, NULL);</span></a>
 <a name="1432"><span class="lineNum">    1432 </span>            : </a>
-<a name="1433"><span class="lineNum">    1433 </span><span class="lineCov">          2 :         if (!error)</span></a>
-<a name="1434"><span class="lineNum">    1434 </span><span class="lineCov">          2 :                 error = device_register(&amp;device_clocksource);</span></a>
+<a name="1433"><span class="lineNum">    1433 </span><span class="lineCov">          1 :         if (!error)</span></a>
+<a name="1434"><span class="lineNum">    1434 </span><span class="lineCov">          1 :                 error = device_register(&amp;device_clocksource);</span></a>
 <a name="1435"><span class="lineNum">    1435 </span>            : </a>
-<a name="1436"><span class="lineNum">    1436 </span><span class="lineCov">          2 :         return error;</span></a>
+<a name="1436"><span class="lineNum">    1436 </span><span class="lineCov">          1 :         return error;</span></a>
 <a name="1437"><span class="lineNum">    1437 </span>            : }</a>
 <a name="1438"><span class="lineNum">    1438 </span>            : </a>
 <a name="1439"><span class="lineNum">    1439 </span>            : device_initcall(init_clocksource_sysfs);</a>

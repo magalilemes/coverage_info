@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -488,13 +488,13 @@
 <a name="426"><span class="lineNum">     426 </span><span class="lineNoCov">          0 :         resched_curr(rq);</span></a>
 <a name="427"><span class="lineNum">     427 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="428"><span class="lineNum">     428 </span>            : </a>
-<a name="429"><span class="lineNum">     429 </span><span class="lineCov">          4 : static void put_prev_task_idle(struct rq *rq, struct task_struct *prev)</span></a>
+<a name="429"><span class="lineNum">     429 </span><span class="lineCov">          2 : static void put_prev_task_idle(struct rq *rq, struct task_struct *prev)</span></a>
 <a name="430"><span class="lineNum">     430 </span>            : {</a>
-<a name="431"><span class="lineNum">     431 </span><span class="lineCov">          4 : }</span></a>
+<a name="431"><span class="lineNum">     431 </span><span class="lineCov">          2 : }</span></a>
 <a name="432"><span class="lineNum">     432 </span>            : </a>
 <a name="433"><span class="lineNum">     433 </span><span class="lineNoCov">          0 : static void set_next_task_idle(struct rq *rq, struct task_struct *next, bool first)</span></a>
 <a name="434"><span class="lineNum">     434 </span>            : {</a>
-<a name="435"><span class="lineNum">     435 </span><span class="lineCov">          2 :         update_idle_core(rq);</span></a>
+<a name="435"><span class="lineNum">     435 </span><span class="lineCov">          1 :         update_idle_core(rq);</span></a>
 <a name="436"><span class="lineNum">     436 </span>            :         schedstat_inc(rq-&gt;sched_goidle);</a>
 <a name="437"><span class="lineNum">     437 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="438"><span class="lineNum">     438 </span>            : </a>
@@ -505,13 +505,13 @@
 <a name="443"><span class="lineNum">     443 </span>            : }</a>
 <a name="444"><span class="lineNum">     444 </span>            : #endif</a>
 <a name="445"><span class="lineNum">     445 </span>            : </a>
-<a name="446"><span class="lineNum">     446 </span><span class="lineCov">          2 : struct task_struct *pick_next_task_idle(struct rq *rq)</span></a>
+<a name="446"><span class="lineNum">     446 </span><span class="lineCov">          1 : struct task_struct *pick_next_task_idle(struct rq *rq)</span></a>
 <a name="447"><span class="lineNum">     447 </span>            : {</a>
-<a name="448"><span class="lineNum">     448 </span><span class="lineCov">          2 :         struct task_struct *next = rq-&gt;idle;</span></a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineCov">          1 :         struct task_struct *next = rq-&gt;idle;</span></a>
 <a name="449"><span class="lineNum">     449 </span>            : </a>
-<a name="450"><span class="lineNum">     450 </span><span class="lineCov">          2 :         set_next_task_idle(rq, next, true);</span></a>
+<a name="450"><span class="lineNum">     450 </span><span class="lineCov">          1 :         set_next_task_idle(rq, next, true);</span></a>
 <a name="451"><span class="lineNum">     451 </span>            : </a>
-<a name="452"><span class="lineNum">     452 </span><span class="lineCov">          2 :         return next;</span></a>
+<a name="452"><span class="lineNum">     452 </span><span class="lineCov">          1 :         return next;</span></a>
 <a name="453"><span class="lineNum">     453 </span>            : }</a>
 <a name="454"><span class="lineNum">     454 </span>            : </a>
 <a name="455"><span class="lineNum">     455 </span>            : /*</a>
@@ -535,9 +535,9 @@
 <a name="473"><span class="lineNum">     473 </span>            :  * and everything must be accessed through the @rq and @curr passed in</a>
 <a name="474"><span class="lineNum">     474 </span>            :  * parameters.</a>
 <a name="475"><span class="lineNum">     475 </span>            :  */</a>
-<a name="476"><span class="lineNum">     476 </span><span class="lineCov">         13 : static void task_tick_idle(struct rq *rq, struct task_struct *curr, int queued)</span></a>
+<a name="476"><span class="lineNum">     476 </span><span class="lineCov">          7 : static void task_tick_idle(struct rq *rq, struct task_struct *curr, int queued)</span></a>
 <a name="477"><span class="lineNum">     477 </span>            : {</a>
-<a name="478"><span class="lineNum">     478 </span><span class="lineCov">         13 : }</span></a>
+<a name="478"><span class="lineNum">     478 </span><span class="lineCov">          7 : }</span></a>
 <a name="479"><span class="lineNum">     479 </span>            : </a>
 <a name="480"><span class="lineNum">     480 </span><span class="lineNoCov">          0 : static void switched_to_idle(struct rq *rq, struct task_struct *p)</span></a>
 <a name="481"><span class="lineNum">     481 </span>            : {</a>

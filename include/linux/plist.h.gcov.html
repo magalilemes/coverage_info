@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -186,7 +186,7 @@
 <a name="124"><span class="lineNum">     124 </span>            : static inline void</a>
 <a name="125"><span class="lineNum">     125 </span>            : plist_head_init(struct plist_head *head)</a>
 <a name="126"><span class="lineNum">     126 </span>            : {</a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineCov">       1044 :         INIT_LIST_HEAD(&amp;head-&gt;node_list);</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineCov">        522 :         INIT_LIST_HEAD(&amp;head-&gt;node_list);</span></a>
 <a name="128"><span class="lineNum">     128 </span>            : }</a>
 <a name="129"><span class="lineNum">     129 </span>            : </a>
 <a name="130"><span class="lineNum">     130 </span>            : /**</a>
@@ -196,9 +196,9 @@
 <a name="134"><span class="lineNum">     134 </span>            :  */</a>
 <a name="135"><span class="lineNum">     135 </span>            : static inline void plist_node_init(struct plist_node *node, int prio)</a>
 <a name="136"><span class="lineNum">     136 </span>            : {</a>
-<a name="137"><span class="lineNum">     137 </span><span class="lineCov">          2 :         node-&gt;prio = prio;</span></a>
-<a name="138"><span class="lineNum">     138 </span><span class="lineCov">          4 :         INIT_LIST_HEAD(&amp;node-&gt;prio_list);</span></a>
-<a name="139"><span class="lineNum">     139 </span><span class="lineCov">          4 :         INIT_LIST_HEAD(&amp;node-&gt;node_list);</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineCov">          1 :         node-&gt;prio = prio;</span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;node-&gt;prio_list);</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;node-&gt;node_list);</span></a>
 <a name="140"><span class="lineNum">     140 </span>            : }</a>
 <a name="141"><span class="lineNum">     141 </span>            : </a>
 <a name="142"><span class="lineNum">     142 </span>            : extern void plist_add(struct plist_node *node, struct plist_head *head);</a>
@@ -274,7 +274,7 @@
 <a name="212"><span class="lineNum">     212 </span>            :  */</a>
 <a name="213"><span class="lineNum">     213 </span>            : static inline int plist_head_empty(const struct plist_head *head)</a>
 <a name="214"><span class="lineNum">     214 </span>            : {</a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineCov">         12 :         return list_empty(&amp;head-&gt;node_list);</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">          6 :         return list_empty(&amp;head-&gt;node_list);</span></a>
 <a name="216"><span class="lineNum">     216 </span>            : }</a>
 <a name="217"><span class="lineNum">     217 </span>            : </a>
 <a name="218"><span class="lineNum">     218 </span>            : /**</a>
@@ -283,7 +283,7 @@
 <a name="221"><span class="lineNum">     221 </span>            :  */</a>
 <a name="222"><span class="lineNum">     222 </span>            : static inline int plist_node_empty(const struct plist_node *node)</a>
 <a name="223"><span class="lineNum">     223 </span>            : {</a>
-<a name="224"><span class="lineNum">     224 </span><span class="lineCov">          4 :         return list_empty(&amp;node-&gt;node_list);</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineCov">          2 :         return list_empty(&amp;node-&gt;node_list);</span></a>
 <a name="225"><span class="lineNum">     225 </span>            : }</a>
 <a name="226"><span class="lineNum">     226 </span>            : </a>
 <a name="227"><span class="lineNum">     227 </span>            : /* All functions below assume the plist_head is not empty. */</a>
@@ -344,7 +344,7 @@
 <a name="282"><span class="lineNum">     282 </span>            :  */</a>
 <a name="283"><span class="lineNum">     283 </span>            : static inline struct plist_node *plist_first(const struct plist_head *head)</a>
 <a name="284"><span class="lineNum">     284 </span>            : {</a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineCov">          2 :         return list_entry(head-&gt;node_list.next,</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">          1 :         return list_entry(head-&gt;node_list.next,</span></a>
 <a name="286"><span class="lineNum">     286 </span>            :                           struct plist_node, node_list);</a>
 <a name="287"><span class="lineNum">     287 </span>            : }</a>
 <a name="288"><span class="lineNum">     288 </span>            : </a>

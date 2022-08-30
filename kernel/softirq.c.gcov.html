@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">14</td>
@@ -136,10 +136,10 @@
 <a name="74"><span class="lineNum">      74 </span>            : static void wakeup_softirqd(void)</a>
 <a name="75"><span class="lineNum">      75 </span>            : {</a>
 <a name="76"><span class="lineNum">      76 </span>            :         /* Interrupts are disabled: no need to stop preemption */</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        256 :         struct task_struct *tsk = __this_cpu_read(ksoftirqd);</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        186 :         struct task_struct *tsk = __this_cpu_read(ksoftirqd);</span></a>
 <a name="78"><span class="lineNum">      78 </span>            : </a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        256 :         if (tsk)</span></a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        256 :                 wake_up_process(tsk);</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        186 :         if (tsk)</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">        186 :                 wake_up_process(tsk);</span></a>
 <a name="81"><span class="lineNum">      81 </span>            : }</a>
 <a name="82"><span class="lineNum">      82 </span>            : </a>
 <a name="83"><span class="lineNum">      83 </span>            : /*</a>
@@ -402,10 +402,10 @@
 <a name="340"><span class="lineNum">     340 </span>            :         if (preempt_count() == cnt)</a>
 <a name="341"><span class="lineNum">     341 </span>            :                 trace_preempt_on(CALLER_ADDR0, get_lock_parent_ip());</a>
 <a name="342"><span class="lineNum">     342 </span>            : </a>
-<a name="343"><span class="lineNum">     343 </span><span class="lineCov">        128 :         if (softirq_count() == (cnt &amp; SOFTIRQ_MASK))</span></a>
-<a name="344"><span class="lineNum">     344 </span><span class="lineCov">        128 :                 lockdep_softirqs_on(_RET_IP_);</span></a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineCov">         93 :         if (softirq_count() == (cnt &amp; SOFTIRQ_MASK))</span></a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineCov">         93 :                 lockdep_softirqs_on(_RET_IP_);</span></a>
 <a name="345"><span class="lineNum">     345 </span>            : </a>
-<a name="346"><span class="lineNum">     346 </span><span class="lineCov">        256 :         __preempt_count_sub(cnt);</span></a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineCov">        186 :         __preempt_count_sub(cnt);</span></a>
 <a name="347"><span class="lineNum">     347 </span>            : }</a>
 <a name="348"><span class="lineNum">     348 </span>            : </a>
 <a name="349"><span class="lineNum">     349 </span>            : /*</a>
@@ -419,9 +419,9 @@
 <a name="357"><span class="lineNum">     357 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="358"><span class="lineNum">     358 </span>            : EXPORT_SYMBOL(_local_bh_enable);</a>
 <a name="359"><span class="lineNum">     359 </span>            : </a>
-<a name="360"><span class="lineNum">     360 </span><span class="lineCov">        622 : void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)</span></a>
+<a name="360"><span class="lineNum">     360 </span><span class="lineCov">        456 : void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)</span></a>
 <a name="361"><span class="lineNum">     361 </span>            : {</a>
-<a name="362"><span class="lineNum">     362 </span><span class="lineCov">        622 :         WARN_ON_ONCE(in_hardirq());</span></a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineCov">        456 :         WARN_ON_ONCE(in_hardirq());</span></a>
 <a name="363"><span class="lineNum">     363 </span>            :         lockdep_assert_irqs_enabled();</a>
 <a name="364"><span class="lineNum">     364 </span>            : #ifdef CONFIG_TRACE_IRQFLAGS</a>
 <a name="365"><span class="lineNum">     365 </span>            :         local_irq_disable();</a>
@@ -435,9 +435,9 @@
 <a name="373"><span class="lineNum">     373 </span>            :          * Keep preemption disabled until we are done with</a>
 <a name="374"><span class="lineNum">     374 </span>            :          * softirq processing:</a>
 <a name="375"><span class="lineNum">     375 </span>            :          */</a>
-<a name="376"><span class="lineNum">     376 </span><span class="lineCov">       1244 :         __preempt_count_sub(cnt - 1);</span></a>
+<a name="376"><span class="lineNum">     376 </span><span class="lineCov">        912 :         __preempt_count_sub(cnt - 1);</span></a>
 <a name="377"><span class="lineNum">     377 </span>            : </a>
-<a name="378"><span class="lineNum">     378 </span><span class="lineCov">        622 :         if (unlikely(!in_interrupt() &amp;&amp; local_softirq_pending())) {</span></a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineCov">        456 :         if (unlikely(!in_interrupt() &amp;&amp; local_softirq_pending())) {</span></a>
 <a name="379"><span class="lineNum">     379 </span>            :                 /*</a>
 <a name="380"><span class="lineNum">     380 </span>            :                  * Run softirq if any pending. And do it in its own stack</a>
 <a name="381"><span class="lineNum">     381 </span>            :                  * as we may be calling this deep in a task call stack already.</a>
@@ -445,24 +445,24 @@
 <a name="383"><span class="lineNum">     383 </span><span class="lineNoCov">          0 :                 do_softirq();</span></a>
 <a name="384"><span class="lineNum">     384 </span>            :         }</a>
 <a name="385"><span class="lineNum">     385 </span>            : </a>
-<a name="386"><span class="lineNum">     386 </span><span class="lineCov">        622 :         preempt_count_dec();</span></a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineCov">        456 :         preempt_count_dec();</span></a>
 <a name="387"><span class="lineNum">     387 </span>            : #ifdef CONFIG_TRACE_IRQFLAGS</a>
 <a name="388"><span class="lineNum">     388 </span>            :         local_irq_enable();</a>
 <a name="389"><span class="lineNum">     389 </span>            : #endif</a>
 <a name="390"><span class="lineNum">     390 </span>            :         preempt_check_resched();</a>
-<a name="391"><span class="lineNum">     391 </span><span class="lineCov">        622 : }</span></a>
+<a name="391"><span class="lineNum">     391 </span><span class="lineCov">        456 : }</span></a>
 <a name="392"><span class="lineNum">     392 </span>            : EXPORT_SYMBOL(__local_bh_enable_ip);</a>
 <a name="393"><span class="lineNum">     393 </span>            : </a>
 <a name="394"><span class="lineNum">     394 </span>            : static inline void softirq_handle_begin(void)</a>
 <a name="395"><span class="lineNum">     395 </span>            : {</a>
-<a name="396"><span class="lineNum">     396 </span><span class="lineCov">        256 :         __local_bh_disable_ip(_RET_IP_, SOFTIRQ_OFFSET);</span></a>
+<a name="396"><span class="lineNum">     396 </span><span class="lineCov">        186 :         __local_bh_disable_ip(_RET_IP_, SOFTIRQ_OFFSET);</span></a>
 <a name="397"><span class="lineNum">     397 </span>            : }</a>
 <a name="398"><span class="lineNum">     398 </span>            : </a>
-<a name="399"><span class="lineNum">     399 </span><span class="lineCov">        128 : static inline void softirq_handle_end(void)</span></a>
+<a name="399"><span class="lineNum">     399 </span><span class="lineCov">         93 : static inline void softirq_handle_end(void)</span></a>
 <a name="400"><span class="lineNum">     400 </span>            : {</a>
-<a name="401"><span class="lineNum">     401 </span><span class="lineCov">        128 :         __local_bh_enable(SOFTIRQ_OFFSET);</span></a>
-<a name="402"><span class="lineNum">     402 </span><span class="lineCov">        128 :         WARN_ON_ONCE(in_interrupt());</span></a>
-<a name="403"><span class="lineNum">     403 </span><span class="lineCov">        128 : }</span></a>
+<a name="401"><span class="lineNum">     401 </span><span class="lineCov">         93 :         __local_bh_enable(SOFTIRQ_OFFSET);</span></a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineCov">         93 :         WARN_ON_ONCE(in_interrupt());</span></a>
+<a name="403"><span class="lineNum">     403 </span><span class="lineCov">         93 : }</span></a>
 <a name="404"><span class="lineNum">     404 </span>            : </a>
 <a name="405"><span class="lineNum">     405 </span>            : static inline void ksoftirqd_run_begin(void)</a>
 <a name="406"><span class="lineNum">     406 </span>            : {</a>
@@ -574,11 +574,11 @@
 <a name="512"><span class="lineNum">     512 </span>            : static inline void lockdep_softirq_end(bool in_hardirq) { }</a>
 <a name="513"><span class="lineNum">     513 </span>            : #endif</a>
 <a name="514"><span class="lineNum">     514 </span>            : </a>
-<a name="515"><span class="lineNum">     515 </span><span class="lineCov">        128 : asmlinkage __visible void __softirq_entry __do_softirq(void)</span></a>
+<a name="515"><span class="lineNum">     515 </span><span class="lineCov">         93 : asmlinkage __visible void __softirq_entry __do_softirq(void)</span></a>
 <a name="516"><span class="lineNum">     516 </span>            : {</a>
-<a name="517"><span class="lineNum">     517 </span><span class="lineCov">        128 :         unsigned long end = jiffies + MAX_SOFTIRQ_TIME;</span></a>
-<a name="518"><span class="lineNum">     518 </span><span class="lineCov">        128 :         unsigned long old_flags = current-&gt;flags;</span></a>
-<a name="519"><span class="lineNum">     519 </span><span class="lineCov">        128 :         int max_restart = MAX_SOFTIRQ_RESTART;</span></a>
+<a name="517"><span class="lineNum">     517 </span><span class="lineCov">         93 :         unsigned long end = jiffies + MAX_SOFTIRQ_TIME;</span></a>
+<a name="518"><span class="lineNum">     518 </span><span class="lineCov">         93 :         unsigned long old_flags = current-&gt;flags;</span></a>
+<a name="519"><span class="lineNum">     519 </span><span class="lineCov">         93 :         int max_restart = MAX_SOFTIRQ_RESTART;</span></a>
 <a name="520"><span class="lineNum">     520 </span>            :         struct softirq_action *h;</a>
 <a name="521"><span class="lineNum">     521 </span>            :         bool in_hardirq;</a>
 <a name="522"><span class="lineNum">     522 </span>            :         __u32 pending;</a>
@@ -589,89 +589,89 @@
 <a name="527"><span class="lineNum">     527 </span>            :          * softirq. A softirq handled, such as network RX, might set PF_MEMALLOC</a>
 <a name="528"><span class="lineNum">     528 </span>            :          * again if the socket is related to swapping.</a>
 <a name="529"><span class="lineNum">     529 </span>            :          */</a>
-<a name="530"><span class="lineNum">     530 </span><span class="lineCov">        128 :         current-&gt;flags &amp;= ~PF_MEMALLOC;</span></a>
+<a name="530"><span class="lineNum">     530 </span><span class="lineCov">         93 :         current-&gt;flags &amp;= ~PF_MEMALLOC;</span></a>
 <a name="531"><span class="lineNum">     531 </span>            : </a>
-<a name="532"><span class="lineNum">     532 </span><span class="lineCov">        128 :         pending = local_softirq_pending();</span></a>
+<a name="532"><span class="lineNum">     532 </span><span class="lineCov">         93 :         pending = local_softirq_pending();</span></a>
 <a name="533"><span class="lineNum">     533 </span>            : </a>
-<a name="534"><span class="lineNum">     534 </span><span class="lineCov">        128 :         softirq_handle_begin();</span></a>
-<a name="535"><span class="lineNum">     535 </span><span class="lineCov">        128 :         in_hardirq = lockdep_softirq_start();</span></a>
-<a name="536"><span class="lineNum">     536 </span><span class="lineCov">        128 :         account_softirq_enter(current);</span></a>
+<a name="534"><span class="lineNum">     534 </span><span class="lineCov">         93 :         softirq_handle_begin();</span></a>
+<a name="535"><span class="lineNum">     535 </span><span class="lineCov">         93 :         in_hardirq = lockdep_softirq_start();</span></a>
+<a name="536"><span class="lineNum">     536 </span><span class="lineCov">         93 :         account_softirq_enter(current);</span></a>
 <a name="537"><span class="lineNum">     537 </span>            : </a>
 <a name="538"><span class="lineNum">     538 </span>            : restart:</a>
 <a name="539"><span class="lineNum">     539 </span>            :         /* Reset the pending bitmask before enabling irqs */</a>
-<a name="540"><span class="lineNum">     540 </span><span class="lineCov">        254 :         set_softirq_pending(0);</span></a>
+<a name="540"><span class="lineNum">     540 </span><span class="lineCov">        185 :         set_softirq_pending(0);</span></a>
 <a name="541"><span class="lineNum">     541 </span>            : </a>
 <a name="542"><span class="lineNum">     542 </span>            :         local_irq_enable();</a>
 <a name="543"><span class="lineNum">     543 </span>            : </a>
-<a name="544"><span class="lineNum">     544 </span><span class="lineCov">        254 :         h = softirq_vec;</span></a>
+<a name="544"><span class="lineNum">     544 </span><span class="lineCov">        185 :         h = softirq_vec;</span></a>
 <a name="545"><span class="lineNum">     545 </span>            : </a>
-<a name="546"><span class="lineNum">     546 </span><span class="lineCov">       1270 :         while ((softirq_bit = ffs(pending))) {</span></a>
+<a name="546"><span class="lineNum">     546 </span><span class="lineCov">        925 :         while ((softirq_bit = ffs(pending))) {</span></a>
 <a name="547"><span class="lineNum">     547 </span>            :                 unsigned int vec_nr;</a>
 <a name="548"><span class="lineNum">     548 </span>            :                 int prev_count;</a>
 <a name="549"><span class="lineNum">     549 </span>            : </a>
-<a name="550"><span class="lineNum">     550 </span><span class="lineCov">        254 :                 h += softirq_bit - 1;</span></a>
+<a name="550"><span class="lineNum">     550 </span><span class="lineCov">        185 :                 h += softirq_bit - 1;</span></a>
 <a name="551"><span class="lineNum">     551 </span>            : </a>
-<a name="552"><span class="lineNum">     552 </span><span class="lineCov">        254 :                 vec_nr = h - softirq_vec;</span></a>
-<a name="553"><span class="lineNum">     553 </span><span class="lineCov">        254 :                 prev_count = preempt_count();</span></a>
+<a name="552"><span class="lineNum">     552 </span><span class="lineCov">        185 :                 vec_nr = h - softirq_vec;</span></a>
+<a name="553"><span class="lineNum">     553 </span><span class="lineCov">        185 :                 prev_count = preempt_count();</span></a>
 <a name="554"><span class="lineNum">     554 </span>            : </a>
-<a name="555"><span class="lineNum">     555 </span><span class="lineCov">        254 :                 kstat_incr_softirqs_this_cpu(vec_nr);</span></a>
+<a name="555"><span class="lineNum">     555 </span><span class="lineCov">        185 :                 kstat_incr_softirqs_this_cpu(vec_nr);</span></a>
 <a name="556"><span class="lineNum">     556 </span>            : </a>
-<a name="557"><span class="lineNum">     557 </span><span class="lineCov">        254 :                 trace_softirq_entry(vec_nr);</span></a>
-<a name="558"><span class="lineNum">     558 </span><span class="lineCov">        254 :                 h-&gt;action(h);</span></a>
-<a name="559"><span class="lineNum">     559 </span><span class="lineCov">        254 :                 trace_softirq_exit(vec_nr);</span></a>
-<a name="560"><span class="lineNum">     560 </span><span class="lineCov">        254 :                 if (unlikely(prev_count != preempt_count())) {</span></a>
+<a name="557"><span class="lineNum">     557 </span><span class="lineCov">        185 :                 trace_softirq_entry(vec_nr);</span></a>
+<a name="558"><span class="lineNum">     558 </span><span class="lineCov">        185 :                 h-&gt;action(h);</span></a>
+<a name="559"><span class="lineNum">     559 </span><span class="lineCov">        185 :                 trace_softirq_exit(vec_nr);</span></a>
+<a name="560"><span class="lineNum">     560 </span><span class="lineCov">        185 :                 if (unlikely(prev_count != preempt_count())) {</span></a>
 <a name="561"><span class="lineNum">     561 </span><span class="lineNoCov">          0 :                         pr_err(&quot;huh, entered softirq %u %s %p with preempt_count %08x, exited with %08x?\n&quot;,</span></a>
 <a name="562"><span class="lineNum">     562 </span>            :                                vec_nr, softirq_to_name[vec_nr], h-&gt;action,</a>
 <a name="563"><span class="lineNum">     563 </span>            :                                prev_count, preempt_count());</a>
 <a name="564"><span class="lineNum">     564 </span>            :                         preempt_count_set(prev_count);</a>
 <a name="565"><span class="lineNum">     565 </span>            :                 }</a>
-<a name="566"><span class="lineNum">     566 </span><span class="lineCov">        254 :                 h++;</span></a>
-<a name="567"><span class="lineNum">     567 </span><span class="lineCov">        254 :                 pending &gt;&gt;= softirq_bit;</span></a>
+<a name="566"><span class="lineNum">     566 </span><span class="lineCov">        185 :                 h++;</span></a>
+<a name="567"><span class="lineNum">     567 </span><span class="lineCov">        185 :                 pending &gt;&gt;= softirq_bit;</span></a>
 <a name="568"><span class="lineNum">     568 </span>            :         }</a>
 <a name="569"><span class="lineNum">     569 </span>            : </a>
-<a name="570"><span class="lineNum">     570 </span><span class="lineCov">        254 :         if (!IS_ENABLED(CONFIG_PREEMPT_RT) &amp;&amp;</span></a>
-<a name="571"><span class="lineNum">     571 </span><span class="lineCov">        508 :             __this_cpu_read(ksoftirqd) == current)</span></a>
+<a name="570"><span class="lineNum">     570 </span><span class="lineCov">        185 :         if (!IS_ENABLED(CONFIG_PREEMPT_RT) &amp;&amp;</span></a>
+<a name="571"><span class="lineNum">     571 </span><span class="lineCov">        370 :             __this_cpu_read(ksoftirqd) == current)</span></a>
 <a name="572"><span class="lineNum">     572 </span>            :                 rcu_softirq_qs();</a>
 <a name="573"><span class="lineNum">     573 </span>            : </a>
 <a name="574"><span class="lineNum">     574 </span>            :         local_irq_disable();</a>
 <a name="575"><span class="lineNum">     575 </span>            : </a>
-<a name="576"><span class="lineNum">     576 </span><span class="lineCov">        254 :         pending = local_softirq_pending();</span></a>
-<a name="577"><span class="lineNum">     577 </span><span class="lineCov">        254 :         if (pending) {</span></a>
-<a name="578"><span class="lineNum">     578 </span><span class="lineCov">        252 :                 if (time_before(jiffies, end) &amp;&amp; !need_resched() &amp;&amp;</span></a>
+<a name="576"><span class="lineNum">     576 </span><span class="lineCov">        185 :         pending = local_softirq_pending();</span></a>
+<a name="577"><span class="lineNum">     577 </span><span class="lineCov">        185 :         if (pending) {</span></a>
+<a name="578"><span class="lineNum">     578 </span><span class="lineCov">        184 :                 if (time_before(jiffies, end) &amp;&amp; !need_resched() &amp;&amp;</span></a>
 <a name="579"><span class="lineNum">     579 </span>            :                     --max_restart)</a>
 <a name="580"><span class="lineNum">     580 </span>            :                         goto restart;</a>
 <a name="581"><span class="lineNum">     581 </span>            : </a>
 <a name="582"><span class="lineNum">     582 </span>            :                 wakeup_softirqd();</a>
 <a name="583"><span class="lineNum">     583 </span>            :         }</a>
 <a name="584"><span class="lineNum">     584 </span>            : </a>
-<a name="585"><span class="lineNum">     585 </span><span class="lineCov">        128 :         account_softirq_exit(current);</span></a>
-<a name="586"><span class="lineNum">     586 </span><span class="lineCov">        128 :         lockdep_softirq_end(in_hardirq);</span></a>
-<a name="587"><span class="lineNum">     587 </span><span class="lineCov">        128 :         softirq_handle_end();</span></a>
-<a name="588"><span class="lineNum">     588 </span><span class="lineCov">        128 :         current_restore_flags(old_flags, PF_MEMALLOC);</span></a>
-<a name="589"><span class="lineNum">     589 </span><span class="lineCov">        128 : }</span></a>
+<a name="585"><span class="lineNum">     585 </span><span class="lineCov">         93 :         account_softirq_exit(current);</span></a>
+<a name="586"><span class="lineNum">     586 </span><span class="lineCov">         93 :         lockdep_softirq_end(in_hardirq);</span></a>
+<a name="587"><span class="lineNum">     587 </span><span class="lineCov">         93 :         softirq_handle_end();</span></a>
+<a name="588"><span class="lineNum">     588 </span><span class="lineCov">         93 :         current_restore_flags(old_flags, PF_MEMALLOC);</span></a>
+<a name="589"><span class="lineNum">     589 </span><span class="lineCov">         93 : }</span></a>
 <a name="590"><span class="lineNum">     590 </span>            : </a>
 <a name="591"><span class="lineNum">     591 </span>            : /**</a>
 <a name="592"><span class="lineNum">     592 </span>            :  * irq_enter_rcu - Enter an interrupt context with RCU watching</a>
 <a name="593"><span class="lineNum">     593 </span>            :  */</a>
-<a name="594"><span class="lineNum">     594 </span><span class="lineCov">         17 : void irq_enter_rcu(void)</span></a>
+<a name="594"><span class="lineNum">     594 </span><span class="lineCov">          9 : void irq_enter_rcu(void)</span></a>
 <a name="595"><span class="lineNum">     595 </span>            : {</a>
-<a name="596"><span class="lineNum">     596 </span><span class="lineCov">         17 :         __irq_enter_raw();</span></a>
+<a name="596"><span class="lineNum">     596 </span><span class="lineCov">          9 :         __irq_enter_raw();</span></a>
 <a name="597"><span class="lineNum">     597 </span>            : </a>
-<a name="598"><span class="lineNum">     598 </span><span class="lineCov">         34 :         if (tick_nohz_full_cpu(smp_processor_id()) ||</span></a>
-<a name="599"><span class="lineNum">     599 </span><span class="lineCov">         34 :             (is_idle_task(current) &amp;&amp; (irq_count() == HARDIRQ_OFFSET)))</span></a>
+<a name="598"><span class="lineNum">     598 </span><span class="lineCov">         18 :         if (tick_nohz_full_cpu(smp_processor_id()) ||</span></a>
+<a name="599"><span class="lineNum">     599 </span><span class="lineCov">         18 :             (is_idle_task(current) &amp;&amp; (irq_count() == HARDIRQ_OFFSET)))</span></a>
 <a name="600"><span class="lineNum">     600 </span>            :                 tick_irq_enter();</a>
 <a name="601"><span class="lineNum">     601 </span>            : </a>
-<a name="602"><span class="lineNum">     602 </span><span class="lineCov">         17 :         account_hardirq_enter(current);</span></a>
-<a name="603"><span class="lineNum">     603 </span><span class="lineCov">         17 : }</span></a>
+<a name="602"><span class="lineNum">     602 </span><span class="lineCov">          9 :         account_hardirq_enter(current);</span></a>
+<a name="603"><span class="lineNum">     603 </span><span class="lineCov">          9 : }</span></a>
 <a name="604"><span class="lineNum">     604 </span>            : </a>
 <a name="605"><span class="lineNum">     605 </span>            : /**</a>
 <a name="606"><span class="lineNum">     606 </span>            :  * irq_enter - Enter an interrupt context including RCU update</a>
 <a name="607"><span class="lineNum">     607 </span>            :  */</a>
-<a name="608"><span class="lineNum">     608 </span><span class="lineCov">         17 : void irq_enter(void)</span></a>
+<a name="608"><span class="lineNum">     608 </span><span class="lineCov">          9 : void irq_enter(void)</span></a>
 <a name="609"><span class="lineNum">     609 </span>            : {</a>
 <a name="610"><span class="lineNum">     610 </span>            :         rcu_irq_enter();</a>
-<a name="611"><span class="lineNum">     611 </span><span class="lineCov">         17 :         irq_enter_rcu();</span></a>
-<a name="612"><span class="lineNum">     612 </span><span class="lineCov">         17 : }</span></a>
+<a name="611"><span class="lineNum">     611 </span><span class="lineCov">          9 :         irq_enter_rcu();</span></a>
+<a name="612"><span class="lineNum">     612 </span><span class="lineCov">          9 : }</span></a>
 <a name="613"><span class="lineNum">     613 </span>            : </a>
 <a name="614"><span class="lineNum">     614 </span>            : static inline void tick_irq_exit(void)</a>
 <a name="615"><span class="lineNum">     615 </span>            : {</a>
@@ -686,20 +686,20 @@
 <a name="624"><span class="lineNum">     624 </span>            : #endif</a>
 <a name="625"><span class="lineNum">     625 </span>            : }</a>
 <a name="626"><span class="lineNum">     626 </span>            : </a>
-<a name="627"><span class="lineNum">     627 </span><span class="lineCov">         17 : static inline void __irq_exit_rcu(void)</span></a>
+<a name="627"><span class="lineNum">     627 </span><span class="lineCov">          9 : static inline void __irq_exit_rcu(void)</span></a>
 <a name="628"><span class="lineNum">     628 </span>            : {</a>
 <a name="629"><span class="lineNum">     629 </span>            : #ifndef __ARCH_IRQ_EXIT_IRQS_DISABLED</a>
 <a name="630"><span class="lineNum">     630 </span>            :         local_irq_disable();</a>
 <a name="631"><span class="lineNum">     631 </span>            : #else</a>
 <a name="632"><span class="lineNum">     632 </span>            :         lockdep_assert_irqs_disabled();</a>
 <a name="633"><span class="lineNum">     633 </span>            : #endif</a>
-<a name="634"><span class="lineNum">     634 </span><span class="lineCov">         34 :         account_hardirq_exit(current);</span></a>
-<a name="635"><span class="lineNum">     635 </span><span class="lineCov">         17 :         preempt_count_sub(HARDIRQ_OFFSET);</span></a>
-<a name="636"><span class="lineNum">     636 </span><span class="lineCov">         17 :         if (!in_interrupt() &amp;&amp; local_softirq_pending())</span></a>
+<a name="634"><span class="lineNum">     634 </span><span class="lineCov">         18 :         account_hardirq_exit(current);</span></a>
+<a name="635"><span class="lineNum">     635 </span><span class="lineCov">          9 :         preempt_count_sub(HARDIRQ_OFFSET);</span></a>
+<a name="636"><span class="lineNum">     636 </span><span class="lineCov">          9 :         if (!in_interrupt() &amp;&amp; local_softirq_pending())</span></a>
 <a name="637"><span class="lineNum">     637 </span><span class="lineNoCov">          0 :                 invoke_softirq();</span></a>
 <a name="638"><span class="lineNum">     638 </span>            : </a>
 <a name="639"><span class="lineNum">     639 </span>            :         tick_irq_exit();</a>
-<a name="640"><span class="lineNum">     640 </span><span class="lineCov">         17 : }</span></a>
+<a name="640"><span class="lineNum">     640 </span><span class="lineCov">          9 : }</span></a>
 <a name="641"><span class="lineNum">     641 </span>            : </a>
 <a name="642"><span class="lineNum">     642 </span>            : /**</a>
 <a name="643"><span class="lineNum">     643 </span>            :  * irq_exit_rcu() - Exit an interrupt context without updating RCU</a>
@@ -718,20 +718,20 @@
 <a name="656"><span class="lineNum">     656 </span>            :  *</a>
 <a name="657"><span class="lineNum">     657 </span>            :  * Also processes softirqs if needed and possible.</a>
 <a name="658"><span class="lineNum">     658 </span>            :  */</a>
-<a name="659"><span class="lineNum">     659 </span><span class="lineCov">         17 : void irq_exit(void)</span></a>
+<a name="659"><span class="lineNum">     659 </span><span class="lineCov">          9 : void irq_exit(void)</span></a>
 <a name="660"><span class="lineNum">     660 </span>            : {</a>
-<a name="661"><span class="lineNum">     661 </span><span class="lineCov">         17 :         __irq_exit_rcu();</span></a>
+<a name="661"><span class="lineNum">     661 </span><span class="lineCov">          9 :         __irq_exit_rcu();</span></a>
 <a name="662"><span class="lineNum">     662 </span>            :         rcu_irq_exit();</a>
 <a name="663"><span class="lineNum">     663 </span>            :          /* must be last! */</a>
 <a name="664"><span class="lineNum">     664 </span>            :         lockdep_hardirq_exit();</a>
-<a name="665"><span class="lineNum">     665 </span><span class="lineCov">         17 : }</span></a>
+<a name="665"><span class="lineNum">     665 </span><span class="lineCov">          9 : }</span></a>
 <a name="666"><span class="lineNum">     666 </span>            : </a>
 <a name="667"><span class="lineNum">     667 </span>            : /*</a>
 <a name="668"><span class="lineNum">     668 </span>            :  * This function must run with irqs disabled!</a>
 <a name="669"><span class="lineNum">     669 </span>            :  */</a>
-<a name="670"><span class="lineNum">     670 </span><span class="lineCov">        382 : inline void raise_softirq_irqoff(unsigned int nr)</span></a>
+<a name="670"><span class="lineNum">     670 </span><span class="lineCov">        278 : inline void raise_softirq_irqoff(unsigned int nr)</span></a>
 <a name="671"><span class="lineNum">     671 </span>            : {</a>
-<a name="672"><span class="lineNum">     672 </span><span class="lineCov">        382 :         __raise_softirq_irqoff(nr);</span></a>
+<a name="672"><span class="lineNum">     672 </span><span class="lineCov">        278 :         __raise_softirq_irqoff(nr);</span></a>
 <a name="673"><span class="lineNum">     673 </span>            : </a>
 <a name="674"><span class="lineNum">     674 </span>            :         /*</a>
 <a name="675"><span class="lineNum">     675 </span>            :          * If we're in an interrupt or softirq, we're done</a>
@@ -742,9 +742,9 @@
 <a name="680"><span class="lineNum">     680 </span>            :          * Otherwise we wake up ksoftirqd to make sure we</a>
 <a name="681"><span class="lineNum">     681 </span>            :          * schedule the softirq soon.</a>
 <a name="682"><span class="lineNum">     682 </span>            :          */</a>
-<a name="683"><span class="lineNum">     683 </span><span class="lineCov">        382 :         if (!in_interrupt() &amp;&amp; should_wake_ksoftirqd())</span></a>
+<a name="683"><span class="lineNum">     683 </span><span class="lineCov">        278 :         if (!in_interrupt() &amp;&amp; should_wake_ksoftirqd())</span></a>
 <a name="684"><span class="lineNum">     684 </span>            :                 wakeup_softirqd();</a>
-<a name="685"><span class="lineNum">     685 </span><span class="lineCov">        382 : }</span></a>
+<a name="685"><span class="lineNum">     685 </span><span class="lineCov">        278 : }</span></a>
 <a name="686"><span class="lineNum">     686 </span>            : </a>
 <a name="687"><span class="lineNum">     687 </span><span class="lineNoCov">          0 : void raise_softirq(unsigned int nr)</span></a>
 <a name="688"><span class="lineNum">     688 </span>            : {</a>
@@ -758,14 +758,14 @@
 <a name="696"><span class="lineNum">     696 </span><span class="lineNoCov">          0 : void __raise_softirq_irqoff(unsigned int nr)</span></a>
 <a name="697"><span class="lineNum">     697 </span>            : {</a>
 <a name="698"><span class="lineNum">     698 </span>            :         lockdep_assert_irqs_disabled();</a>
-<a name="699"><span class="lineNum">     699 </span><span class="lineCov">        382 :         trace_softirq_raise(nr);</span></a>
-<a name="700"><span class="lineNum">     700 </span><span class="lineCov">        382 :         or_softirq_pending(1UL &lt;&lt; nr);</span></a>
+<a name="699"><span class="lineNum">     699 </span><span class="lineCov">        278 :         trace_softirq_raise(nr);</span></a>
+<a name="700"><span class="lineNum">     700 </span><span class="lineCov">        278 :         or_softirq_pending(1UL &lt;&lt; nr);</span></a>
 <a name="701"><span class="lineNum">     701 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="702"><span class="lineNum">     702 </span>            : </a>
-<a name="703"><span class="lineNum">     703 </span><span class="lineCov">          8 : void open_softirq(int nr, void (*action)(struct softirq_action *))</span></a>
+<a name="703"><span class="lineNum">     703 </span><span class="lineCov">          4 : void open_softirq(int nr, void (*action)(struct softirq_action *))</span></a>
 <a name="704"><span class="lineNum">     704 </span>            : {</a>
-<a name="705"><span class="lineNum">     705 </span><span class="lineCov">         12 :         softirq_vec[nr].action = action;</span></a>
-<a name="706"><span class="lineNum">     706 </span><span class="lineCov">          8 : }</span></a>
+<a name="705"><span class="lineNum">     705 </span><span class="lineCov">          6 :         softirq_vec[nr].action = action;</span></a>
+<a name="706"><span class="lineNum">     706 </span><span class="lineCov">          4 : }</span></a>
 <a name="707"><span class="lineNum">     707 </span>            : </a>
 <a name="708"><span class="lineNum">     708 </span>            : /*</a>
 <a name="709"><span class="lineNum">     709 </span>            :  * Tasklets</a>
@@ -952,38 +952,38 @@
 <a name="890"><span class="lineNum">     890 </span>            : EXPORT_SYMBOL_GPL(tasklet_unlock_wait);</a>
 <a name="891"><span class="lineNum">     891 </span>            : #endif</a>
 <a name="892"><span class="lineNum">     892 </span>            : </a>
-<a name="893"><span class="lineNum">     893 </span><span class="lineCov">          2 : void __init softirq_init(void)</span></a>
+<a name="893"><span class="lineNum">     893 </span><span class="lineCov">          1 : void __init softirq_init(void)</span></a>
 <a name="894"><span class="lineNum">     894 </span>            : {</a>
 <a name="895"><span class="lineNum">     895 </span>            :         int cpu;</a>
 <a name="896"><span class="lineNum">     896 </span>            : </a>
-<a name="897"><span class="lineNum">     897 </span><span class="lineCov">          4 :         for_each_possible_cpu(cpu) {</span></a>
-<a name="898"><span class="lineNum">     898 </span><span class="lineCov">          4 :                 per_cpu(tasklet_vec, cpu).tail =</span></a>
-<a name="899"><span class="lineNum">     899 </span><span class="lineCov">          2 :                         &amp;per_cpu(tasklet_vec, cpu).head;</span></a>
-<a name="900"><span class="lineNum">     900 </span><span class="lineCov">          4 :                 per_cpu(tasklet_hi_vec, cpu).tail =</span></a>
-<a name="901"><span class="lineNum">     901 </span><span class="lineCov">          2 :                         &amp;per_cpu(tasklet_hi_vec, cpu).head;</span></a>
+<a name="897"><span class="lineNum">     897 </span><span class="lineCov">          2 :         for_each_possible_cpu(cpu) {</span></a>
+<a name="898"><span class="lineNum">     898 </span><span class="lineCov">          2 :                 per_cpu(tasklet_vec, cpu).tail =</span></a>
+<a name="899"><span class="lineNum">     899 </span><span class="lineCov">          1 :                         &amp;per_cpu(tasklet_vec, cpu).head;</span></a>
+<a name="900"><span class="lineNum">     900 </span><span class="lineCov">          2 :                 per_cpu(tasklet_hi_vec, cpu).tail =</span></a>
+<a name="901"><span class="lineNum">     901 </span><span class="lineCov">          1 :                         &amp;per_cpu(tasklet_hi_vec, cpu).head;</span></a>
 <a name="902"><span class="lineNum">     902 </span>            :         }</a>
 <a name="903"><span class="lineNum">     903 </span>            : </a>
-<a name="904"><span class="lineNum">     904 </span><span class="lineCov">          2 :         open_softirq(TASKLET_SOFTIRQ, tasklet_action);</span></a>
-<a name="905"><span class="lineNum">     905 </span><span class="lineCov">          2 :         open_softirq(HI_SOFTIRQ, tasklet_hi_action);</span></a>
-<a name="906"><span class="lineNum">     906 </span><span class="lineCov">          2 : }</span></a>
+<a name="904"><span class="lineNum">     904 </span><span class="lineCov">          1 :         open_softirq(TASKLET_SOFTIRQ, tasklet_action);</span></a>
+<a name="905"><span class="lineNum">     905 </span><span class="lineCov">          1 :         open_softirq(HI_SOFTIRQ, tasklet_hi_action);</span></a>
+<a name="906"><span class="lineNum">     906 </span><span class="lineCov">          1 : }</span></a>
 <a name="907"><span class="lineNum">     907 </span>            : </a>
-<a name="908"><span class="lineNum">     908 </span><span class="lineCov">        256 : static int ksoftirqd_should_run(unsigned int cpu)</span></a>
+<a name="908"><span class="lineNum">     908 </span><span class="lineCov">        186 : static int ksoftirqd_should_run(unsigned int cpu)</span></a>
 <a name="909"><span class="lineNum">     909 </span>            : {</a>
-<a name="910"><span class="lineNum">     910 </span><span class="lineCov">        256 :         return local_softirq_pending();</span></a>
+<a name="910"><span class="lineNum">     910 </span><span class="lineCov">        186 :         return local_softirq_pending();</span></a>
 <a name="911"><span class="lineNum">     911 </span>            : }</a>
 <a name="912"><span class="lineNum">     912 </span>            : </a>
-<a name="913"><span class="lineNum">     913 </span><span class="lineCov">        128 : static void run_ksoftirqd(unsigned int cpu)</span></a>
+<a name="913"><span class="lineNum">     913 </span><span class="lineCov">         93 : static void run_ksoftirqd(unsigned int cpu)</span></a>
 <a name="914"><span class="lineNum">     914 </span>            : {</a>
 <a name="915"><span class="lineNum">     915 </span>            :         ksoftirqd_run_begin();</a>
-<a name="916"><span class="lineNum">     916 </span><span class="lineCov">        128 :         if (local_softirq_pending()) {</span></a>
+<a name="916"><span class="lineNum">     916 </span><span class="lineCov">         93 :         if (local_softirq_pending()) {</span></a>
 <a name="917"><span class="lineNum">     917 </span>            :                 /*</a>
 <a name="918"><span class="lineNum">     918 </span>            :                  * We can safely run softirq on inline stack, as we are not deep</a>
 <a name="919"><span class="lineNum">     919 </span>            :                  * in the task stack here.</a>
 <a name="920"><span class="lineNum">     920 </span>            :                  */</a>
-<a name="921"><span class="lineNum">     921 </span><span class="lineCov">        128 :                 __do_softirq();</span></a>
+<a name="921"><span class="lineNum">     921 </span><span class="lineCov">         93 :                 __do_softirq();</span></a>
 <a name="922"><span class="lineNum">     922 </span>            :                 ksoftirqd_run_end();</a>
-<a name="923"><span class="lineNum">     923 </span><span class="lineCov">        128 :                 cond_resched();</span></a>
-<a name="924"><span class="lineNum">     924 </span><span class="lineCov">        128 :                 return;</span></a>
+<a name="923"><span class="lineNum">     923 </span><span class="lineCov">         93 :                 cond_resched();</span></a>
+<a name="924"><span class="lineNum">     924 </span><span class="lineCov">         93 :                 return;</span></a>
 <a name="925"><span class="lineNum">     925 </span>            :         }</a>
 <a name="926"><span class="lineNum">     926 </span>            :         ksoftirqd_run_end();</a>
 <a name="927"><span class="lineNum">     927 </span>            : }</a>
@@ -1025,13 +1025,13 @@
 <a name="963"><span class="lineNum">     963 </span>            :         .thread_comm            = &quot;ksoftirqd/%u&quot;,</a>
 <a name="964"><span class="lineNum">     964 </span>            : };</a>
 <a name="965"><span class="lineNum">     965 </span>            : </a>
-<a name="966"><span class="lineNum">     966 </span><span class="lineCov">          2 : static __init int spawn_ksoftirqd(void)</span></a>
+<a name="966"><span class="lineNum">     966 </span><span class="lineCov">          1 : static __init int spawn_ksoftirqd(void)</span></a>
 <a name="967"><span class="lineNum">     967 </span>            : {</a>
-<a name="968"><span class="lineNum">     968 </span><span class="lineCov">          2 :         cpuhp_setup_state_nocalls(CPUHP_SOFTIRQ_DEAD, &quot;softirq:dead&quot;, NULL,</span></a>
+<a name="968"><span class="lineNum">     968 </span><span class="lineCov">          1 :         cpuhp_setup_state_nocalls(CPUHP_SOFTIRQ_DEAD, &quot;softirq:dead&quot;, NULL,</span></a>
 <a name="969"><span class="lineNum">     969 </span>            :                                   takeover_tasklets);</a>
-<a name="970"><span class="lineNum">     970 </span><span class="lineCov">          2 :         BUG_ON(smpboot_register_percpu_thread(&amp;softirq_threads));</span></a>
+<a name="970"><span class="lineNum">     970 </span><span class="lineCov">          1 :         BUG_ON(smpboot_register_percpu_thread(&amp;softirq_threads));</span></a>
 <a name="971"><span class="lineNum">     971 </span>            : </a>
-<a name="972"><span class="lineNum">     972 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="972"><span class="lineNum">     972 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="973"><span class="lineNum">     973 </span>            : }</a>
 <a name="974"><span class="lineNum">     974 </span>            : early_initcall(spawn_ksoftirqd);</a>
 <a name="975"><span class="lineNum">     975 </span>            : </a>
@@ -1050,9 +1050,9 @@
 <a name="988"><span class="lineNum">     988 </span><span class="lineNoCov">          0 :         return NR_IRQS_LEGACY;</span></a>
 <a name="989"><span class="lineNum">     989 </span>            : }</a>
 <a name="990"><span class="lineNum">     990 </span>            : </a>
-<a name="991"><span class="lineNum">     991 </span><span class="lineCov">          2 : int __init __weak arch_early_irq_init(void)</span></a>
+<a name="991"><span class="lineNum">     991 </span><span class="lineCov">          1 : int __init __weak arch_early_irq_init(void)</span></a>
 <a name="992"><span class="lineNum">     992 </span>            : {</a>
-<a name="993"><span class="lineNum">     993 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="993"><span class="lineNum">     993 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="994"><span class="lineNum">     994 </span>            : }</a>
 <a name="995"><span class="lineNum">     995 </span>            : </a>
 <a name="996"><span class="lineNum">     996 </span><span class="lineNoCov">          0 : unsigned int __weak arch_dynirq_lower_bound(unsigned int from)</span></a>

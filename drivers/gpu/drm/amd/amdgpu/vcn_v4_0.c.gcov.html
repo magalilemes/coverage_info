@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -1177,7 +1177,7 @@
 <a name="1115"><span class="lineNum">    1115 </span>            :  *</a>
 <a name="1116"><span class="lineNum">    1116 </span>            :  * Stop VCN block with dpg mode</a>
 <a name="1117"><span class="lineNum">    1117 </span>            :  */</a>
-<a name="1118"><span class="lineNum">    1118 </span><span class="lineNoCov">          0 : static int vcn_v4_0_stop_dpg_mode(struct amdgpu_device *adev, int inst_idx)</span></a>
+<a name="1118"><span class="lineNum">    1118 </span><span class="lineNoCov">          0 : static void vcn_v4_0_stop_dpg_mode(struct amdgpu_device *adev, int inst_idx)</span></a>
 <a name="1119"><span class="lineNum">    1119 </span>            : {</a>
 <a name="1120"><span class="lineNum">    1120 </span>            :         uint32_t tmp;</a>
 <a name="1121"><span class="lineNum">    1121 </span>            : </a>
@@ -1195,594 +1195,593 @@
 <a name="1133"><span class="lineNum">    1133 </span>            :         /* disable dynamic power gating mode */</a>
 <a name="1134"><span class="lineNum">    1134 </span><span class="lineNoCov">          0 :         WREG32_P(SOC15_REG_OFFSET(VCN, inst_idx, regUVD_POWER_STATUS), 0,</span></a>
 <a name="1135"><span class="lineNum">    1135 </span>            :                 ~UVD_POWER_STATUS__UVD_PG_MODE_MASK);</a>
-<a name="1136"><span class="lineNum">    1136 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="1137"><span class="lineNum">    1137 </span>            : }</a>
-<a name="1138"><span class="lineNum">    1138 </span>            : </a>
-<a name="1139"><span class="lineNum">    1139 </span>            : /**</a>
-<a name="1140"><span class="lineNum">    1140 </span>            :  * vcn_v4_0_stop - VCN stop</a>
-<a name="1141"><span class="lineNum">    1141 </span>            :  *</a>
-<a name="1142"><span class="lineNum">    1142 </span>            :  * @adev: amdgpu_device pointer</a>
-<a name="1143"><span class="lineNum">    1143 </span>            :  *</a>
-<a name="1144"><span class="lineNum">    1144 </span>            :  * Stop VCN block</a>
-<a name="1145"><span class="lineNum">    1145 </span>            :  */</a>
-<a name="1146"><span class="lineNum">    1146 </span><span class="lineNoCov">          0 : static int vcn_v4_0_stop(struct amdgpu_device *adev)</span></a>
-<a name="1147"><span class="lineNum">    1147 </span>            : {</a>
-<a name="1148"><span class="lineNum">    1148 </span>            :         volatile struct amdgpu_vcn4_fw_shared *fw_shared;</a>
-<a name="1149"><span class="lineNum">    1149 </span>            :         uint32_t tmp;</a>
-<a name="1150"><span class="lineNum">    1150 </span><span class="lineNoCov">          0 :         int i, r = 0;</span></a>
-<a name="1151"><span class="lineNum">    1151 </span>            : </a>
-<a name="1152"><span class="lineNum">    1152 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;vcn.num_vcn_inst; ++i) {</span></a>
-<a name="1153"><span class="lineNum">    1153 </span><span class="lineNoCov">          0 :                 fw_shared = adev-&gt;vcn.inst[i].fw_shared.cpu_addr;</span></a>
-<a name="1154"><span class="lineNum">    1154 </span><span class="lineNoCov">          0 :                 fw_shared-&gt;sq.queue_mode |= FW_QUEUE_DPG_HOLD_OFF;</span></a>
-<a name="1155"><span class="lineNum">    1155 </span>            : </a>
-<a name="1156"><span class="lineNum">    1156 </span><span class="lineNoCov">          0 :                 if (adev-&gt;pg_flags &amp; AMD_PG_SUPPORT_VCN_DPG) {</span></a>
-<a name="1157"><span class="lineNum">    1157 </span><span class="lineNoCov">          0 :                         r = vcn_v4_0_stop_dpg_mode(adev, i);</span></a>
-<a name="1158"><span class="lineNum">    1158 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="1159"><span class="lineNum">    1159 </span>            :                 }</a>
-<a name="1160"><span class="lineNum">    1160 </span>            : </a>
-<a name="1161"><span class="lineNum">    1161 </span>            :                 /* wait for vcn idle */</a>
-<a name="1162"><span class="lineNum">    1162 </span><span class="lineNoCov">          0 :                 r = SOC15_WAIT_ON_RREG(VCN, i, regUVD_STATUS, UVD_STATUS__IDLE, 0x7);</span></a>
-<a name="1163"><span class="lineNum">    1163 </span><span class="lineNoCov">          0 :                 if (r)</span></a>
-<a name="1164"><span class="lineNum">    1164 </span>            :                         return r;</a>
-<a name="1165"><span class="lineNum">    1165 </span>            : </a>
-<a name="1166"><span class="lineNum">    1166 </span><span class="lineNoCov">          0 :                 tmp = UVD_LMI_STATUS__VCPU_LMI_WRITE_CLEAN_MASK |</span></a>
-<a name="1167"><span class="lineNum">    1167 </span>            :                         UVD_LMI_STATUS__READ_CLEAN_MASK |</a>
-<a name="1168"><span class="lineNum">    1168 </span>            :                         UVD_LMI_STATUS__WRITE_CLEAN_MASK |</a>
-<a name="1169"><span class="lineNum">    1169 </span>            :                         UVD_LMI_STATUS__WRITE_CLEAN_RAW_MASK;</a>
-<a name="1170"><span class="lineNum">    1170 </span><span class="lineNoCov">          0 :                 r = SOC15_WAIT_ON_RREG(VCN, i, regUVD_LMI_STATUS, tmp, tmp);</span></a>
-<a name="1171"><span class="lineNum">    1171 </span><span class="lineNoCov">          0 :                 if (r)</span></a>
-<a name="1172"><span class="lineNum">    1172 </span>            :                         return r;</a>
-<a name="1173"><span class="lineNum">    1173 </span>            : </a>
-<a name="1174"><span class="lineNum">    1174 </span>            :                 /* disable LMI UMC channel */</a>
-<a name="1175"><span class="lineNum">    1175 </span><span class="lineNoCov">          0 :                 tmp = RREG32_SOC15(VCN, i, regUVD_LMI_CTRL2);</span></a>
-<a name="1176"><span class="lineNum">    1176 </span><span class="lineNoCov">          0 :                 tmp |= UVD_LMI_CTRL2__STALL_ARB_UMC_MASK;</span></a>
-<a name="1177"><span class="lineNum">    1177 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(VCN, i, regUVD_LMI_CTRL2, tmp);</span></a>
-<a name="1178"><span class="lineNum">    1178 </span><span class="lineNoCov">          0 :                 tmp = UVD_LMI_STATUS__UMC_READ_CLEAN_RAW_MASK |</span></a>
-<a name="1179"><span class="lineNum">    1179 </span>            :                         UVD_LMI_STATUS__UMC_WRITE_CLEAN_RAW_MASK;</a>
-<a name="1180"><span class="lineNum">    1180 </span><span class="lineNoCov">          0 :                 r = SOC15_WAIT_ON_RREG(VCN, i, regUVD_LMI_STATUS, tmp, tmp);</span></a>
-<a name="1181"><span class="lineNum">    1181 </span><span class="lineNoCov">          0 :                 if (r)</span></a>
-<a name="1182"><span class="lineNum">    1182 </span>            :                         return r;</a>
-<a name="1183"><span class="lineNum">    1183 </span>            : </a>
-<a name="1184"><span class="lineNum">    1184 </span>            :                 /* block VCPU register access */</a>
-<a name="1185"><span class="lineNum">    1185 </span><span class="lineNoCov">          0 :                 WREG32_P(SOC15_REG_OFFSET(VCN, i, regUVD_RB_ARB_CTRL),</span></a>
-<a name="1186"><span class="lineNum">    1186 </span>            :                                 UVD_RB_ARB_CTRL__VCPU_DIS_MASK,</a>
-<a name="1187"><span class="lineNum">    1187 </span>            :                                 ~UVD_RB_ARB_CTRL__VCPU_DIS_MASK);</a>
-<a name="1188"><span class="lineNum">    1188 </span>            : </a>
-<a name="1189"><span class="lineNum">    1189 </span>            :                 /* reset VCPU */</a>
-<a name="1190"><span class="lineNum">    1190 </span><span class="lineNoCov">          0 :                 WREG32_P(SOC15_REG_OFFSET(VCN, i, regUVD_VCPU_CNTL),</span></a>
-<a name="1191"><span class="lineNum">    1191 </span>            :                                 UVD_VCPU_CNTL__BLK_RST_MASK,</a>
-<a name="1192"><span class="lineNum">    1192 </span>            :                                 ~UVD_VCPU_CNTL__BLK_RST_MASK);</a>
-<a name="1193"><span class="lineNum">    1193 </span>            : </a>
-<a name="1194"><span class="lineNum">    1194 </span>            :                 /* disable VCPU clock */</a>
-<a name="1195"><span class="lineNum">    1195 </span><span class="lineNoCov">          0 :                 WREG32_P(SOC15_REG_OFFSET(VCN, i, regUVD_VCPU_CNTL), 0,</span></a>
-<a name="1196"><span class="lineNum">    1196 </span>            :                                 ~(UVD_VCPU_CNTL__CLK_EN_MASK));</a>
-<a name="1197"><span class="lineNum">    1197 </span>            : </a>
-<a name="1198"><span class="lineNum">    1198 </span>            :                 /* apply soft reset */</a>
-<a name="1199"><span class="lineNum">    1199 </span><span class="lineNoCov">          0 :                 tmp = RREG32_SOC15(VCN, i, regUVD_SOFT_RESET);</span></a>
-<a name="1200"><span class="lineNum">    1200 </span><span class="lineNoCov">          0 :                 tmp |= UVD_SOFT_RESET__LMI_UMC_SOFT_RESET_MASK;</span></a>
-<a name="1201"><span class="lineNum">    1201 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(VCN, i, regUVD_SOFT_RESET, tmp);</span></a>
-<a name="1202"><span class="lineNum">    1202 </span><span class="lineNoCov">          0 :                 tmp = RREG32_SOC15(VCN, i, regUVD_SOFT_RESET);</span></a>
-<a name="1203"><span class="lineNum">    1203 </span><span class="lineNoCov">          0 :                 tmp |= UVD_SOFT_RESET__LMI_SOFT_RESET_MASK;</span></a>
-<a name="1204"><span class="lineNum">    1204 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(VCN, i, regUVD_SOFT_RESET, tmp);</span></a>
-<a name="1205"><span class="lineNum">    1205 </span>            : </a>
-<a name="1206"><span class="lineNum">    1206 </span>            :                 /* clear status */</a>
-<a name="1207"><span class="lineNum">    1207 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(VCN, i, regUVD_STATUS, 0);</span></a>
-<a name="1208"><span class="lineNum">    1208 </span>            : </a>
-<a name="1209"><span class="lineNum">    1209 </span>            :                 /* apply HW clock gating */</a>
-<a name="1210"><span class="lineNum">    1210 </span><span class="lineNoCov">          0 :                 vcn_v4_0_enable_clock_gating(adev, i);</span></a>
-<a name="1211"><span class="lineNum">    1211 </span>            : </a>
-<a name="1212"><span class="lineNum">    1212 </span>            :                 /* enable VCN power gating */</a>
-<a name="1213"><span class="lineNum">    1213 </span><span class="lineNoCov">          0 :                 vcn_v4_0_enable_static_power_gating(adev, i);</span></a>
-<a name="1214"><span class="lineNum">    1214 </span>            :         }</a>
-<a name="1215"><span class="lineNum">    1215 </span>            : </a>
-<a name="1216"><span class="lineNum">    1216 </span><span class="lineNoCov">          0 :         if (adev-&gt;pm.dpm_enabled)</span></a>
-<a name="1217"><span class="lineNum">    1217 </span><span class="lineNoCov">          0 :                 amdgpu_dpm_enable_uvd(adev, false);</span></a>
-<a name="1218"><span class="lineNum">    1218 </span>            : </a>
-<a name="1219"><span class="lineNum">    1219 </span>            :         return 0;</a>
-<a name="1220"><span class="lineNum">    1220 </span>            : }</a>
-<a name="1221"><span class="lineNum">    1221 </span>            : </a>
-<a name="1222"><span class="lineNum">    1222 </span>            : /**</a>
-<a name="1223"><span class="lineNum">    1223 </span>            :  * vcn_v4_0_pause_dpg_mode - VCN pause with dpg mode</a>
-<a name="1224"><span class="lineNum">    1224 </span>            :  *</a>
-<a name="1225"><span class="lineNum">    1225 </span>            :  * @adev: amdgpu_device pointer</a>
-<a name="1226"><span class="lineNum">    1226 </span>            :  * @inst_idx: instance number index</a>
-<a name="1227"><span class="lineNum">    1227 </span>            :  * @new_state: pause state</a>
-<a name="1228"><span class="lineNum">    1228 </span>            :  *</a>
-<a name="1229"><span class="lineNum">    1229 </span>            :  * Pause dpg mode for VCN block</a>
-<a name="1230"><span class="lineNum">    1230 </span>            :  */</a>
-<a name="1231"><span class="lineNum">    1231 </span><span class="lineNoCov">          0 : static int vcn_v4_0_pause_dpg_mode(struct amdgpu_device *adev, int inst_idx,</span></a>
-<a name="1232"><span class="lineNum">    1232 </span>            :       struct dpg_pause_state *new_state)</a>
-<a name="1233"><span class="lineNum">    1233 </span>            : {</a>
-<a name="1234"><span class="lineNum">    1234 </span><span class="lineNoCov">          0 :         uint32_t reg_data = 0;</span></a>
-<a name="1235"><span class="lineNum">    1235 </span>            :         int ret_code;</a>
-<a name="1236"><span class="lineNum">    1236 </span>            : </a>
-<a name="1237"><span class="lineNum">    1237 </span>            :         /* pause/unpause if state is changed */</a>
-<a name="1238"><span class="lineNum">    1238 </span><span class="lineNoCov">          0 :         if (adev-&gt;vcn.inst[inst_idx].pause_state.fw_based != new_state-&gt;fw_based) {</span></a>
-<a name="1239"><span class="lineNum">    1239 </span><span class="lineNoCov">          0 :                 DRM_DEV_DEBUG(adev-&gt;dev, &quot;dpg pause state changed %d -&gt; %d&quot;,</span></a>
-<a name="1240"><span class="lineNum">    1240 </span>            :                         adev-&gt;vcn.inst[inst_idx].pause_state.fw_based,       new_state-&gt;fw_based);</a>
-<a name="1241"><span class="lineNum">    1241 </span><span class="lineNoCov">          0 :                 reg_data = RREG32_SOC15(VCN, inst_idx, regUVD_DPG_PAUSE) &amp;</span></a>
-<a name="1242"><span class="lineNum">    1242 </span>            :                         (~UVD_DPG_PAUSE__NJ_PAUSE_DPG_ACK_MASK);</a>
-<a name="1243"><span class="lineNum">    1243 </span>            : </a>
-<a name="1244"><span class="lineNum">    1244 </span><span class="lineNoCov">          0 :                 if (new_state-&gt;fw_based == VCN_DPG_STATE__PAUSE) {</span></a>
-<a name="1245"><span class="lineNum">    1245 </span><span class="lineNoCov">          0 :                         ret_code = SOC15_WAIT_ON_RREG(VCN, inst_idx, regUVD_POWER_STATUS, 0x1,</span></a>
-<a name="1246"><span class="lineNum">    1246 </span>            :                                 UVD_POWER_STATUS__UVD_POWER_STATUS_MASK);</a>
-<a name="1247"><span class="lineNum">    1247 </span>            : </a>
-<a name="1248"><span class="lineNum">    1248 </span><span class="lineNoCov">          0 :                         if (!ret_code) {</span></a>
-<a name="1249"><span class="lineNum">    1249 </span>            :                                 /* pause DPG */</a>
-<a name="1250"><span class="lineNum">    1250 </span><span class="lineNoCov">          0 :                                 reg_data |= UVD_DPG_PAUSE__NJ_PAUSE_DPG_REQ_MASK;</span></a>
-<a name="1251"><span class="lineNum">    1251 </span><span class="lineNoCov">          0 :                                 WREG32_SOC15(VCN, inst_idx, regUVD_DPG_PAUSE, reg_data);</span></a>
-<a name="1252"><span class="lineNum">    1252 </span>            : </a>
-<a name="1253"><span class="lineNum">    1253 </span>            :                                 /* wait for ACK */</a>
-<a name="1254"><span class="lineNum">    1254 </span><span class="lineNoCov">          0 :                                 SOC15_WAIT_ON_RREG(VCN, inst_idx, regUVD_DPG_PAUSE,</span></a>
-<a name="1255"><span class="lineNum">    1255 </span>            :                                         UVD_DPG_PAUSE__NJ_PAUSE_DPG_ACK_MASK,</a>
-<a name="1256"><span class="lineNum">    1256 </span>            :                                         UVD_DPG_PAUSE__NJ_PAUSE_DPG_ACK_MASK);</a>
-<a name="1257"><span class="lineNum">    1257 </span>            : </a>
-<a name="1258"><span class="lineNum">    1258 </span><span class="lineNoCov">          0 :                                 SOC15_WAIT_ON_RREG(VCN, inst_idx, regUVD_POWER_STATUS,</span></a>
-<a name="1259"><span class="lineNum">    1259 </span>            :                                         UVD_PGFSM_CONFIG__UVDM_UVDU_PWR_ON, UVD_POWER_STATUS__UVD_POWER_STATUS_MASK);</a>
-<a name="1260"><span class="lineNum">    1260 </span>            :                         }</a>
-<a name="1261"><span class="lineNum">    1261 </span>            :                 } else {</a>
-<a name="1262"><span class="lineNum">    1262 </span>            :                         /* unpause dpg, no need to wait */</a>
-<a name="1263"><span class="lineNum">    1263 </span><span class="lineNoCov">          0 :                         reg_data &amp;= ~UVD_DPG_PAUSE__NJ_PAUSE_DPG_REQ_MASK;</span></a>
-<a name="1264"><span class="lineNum">    1264 </span><span class="lineNoCov">          0 :                         WREG32_SOC15(VCN, inst_idx, regUVD_DPG_PAUSE, reg_data);</span></a>
-<a name="1265"><span class="lineNum">    1265 </span>            :                 }</a>
-<a name="1266"><span class="lineNum">    1266 </span><span class="lineNoCov">          0 :                 adev-&gt;vcn.inst[inst_idx].pause_state.fw_based = new_state-&gt;fw_based;</span></a>
-<a name="1267"><span class="lineNum">    1267 </span>            :         }</a>
-<a name="1268"><span class="lineNum">    1268 </span>            : </a>
-<a name="1269"><span class="lineNum">    1269 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="1270"><span class="lineNum">    1270 </span>            : }</a>
-<a name="1271"><span class="lineNum">    1271 </span>            : </a>
-<a name="1272"><span class="lineNum">    1272 </span>            : /**</a>
-<a name="1273"><span class="lineNum">    1273 </span>            :  * vcn_v4_0_unified_ring_get_rptr - get unified read pointer</a>
-<a name="1274"><span class="lineNum">    1274 </span>            :  *</a>
-<a name="1275"><span class="lineNum">    1275 </span>            :  * @ring: amdgpu_ring pointer</a>
-<a name="1276"><span class="lineNum">    1276 </span>            :  *</a>
-<a name="1277"><span class="lineNum">    1277 </span>            :  * Returns the current hardware unified read pointer</a>
-<a name="1278"><span class="lineNum">    1278 </span>            :  */</a>
-<a name="1279"><span class="lineNum">    1279 </span><span class="lineNoCov">          0 : static uint64_t vcn_v4_0_unified_ring_get_rptr(struct amdgpu_ring *ring)</span></a>
-<a name="1280"><span class="lineNum">    1280 </span>            : {</a>
-<a name="1281"><span class="lineNum">    1281 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = ring-&gt;adev;</span></a>
-<a name="1282"><span class="lineNum">    1282 </span>            : </a>
-<a name="1283"><span class="lineNum">    1283 </span><span class="lineNoCov">          0 :         if (ring != &amp;adev-&gt;vcn.inst[ring-&gt;me].ring_enc[0])</span></a>
-<a name="1284"><span class="lineNum">    1284 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;wrong ring id is identified in %s&quot;, __func__);</span></a>
-<a name="1285"><span class="lineNum">    1285 </span>            : </a>
-<a name="1286"><span class="lineNum">    1286 </span><span class="lineNoCov">          0 :         return RREG32_SOC15(VCN, ring-&gt;me, regUVD_RB_RPTR);</span></a>
-<a name="1287"><span class="lineNum">    1287 </span>            : }</a>
-<a name="1288"><span class="lineNum">    1288 </span>            : </a>
-<a name="1289"><span class="lineNum">    1289 </span>            : /**</a>
-<a name="1290"><span class="lineNum">    1290 </span>            :  * vcn_v4_0_unified_ring_get_wptr - get unified write pointer</a>
-<a name="1291"><span class="lineNum">    1291 </span>            :  *</a>
-<a name="1292"><span class="lineNum">    1292 </span>            :  * @ring: amdgpu_ring pointer</a>
-<a name="1293"><span class="lineNum">    1293 </span>            :  *</a>
-<a name="1294"><span class="lineNum">    1294 </span>            :  * Returns the current hardware unified write pointer</a>
-<a name="1295"><span class="lineNum">    1295 </span>            :  */</a>
-<a name="1296"><span class="lineNum">    1296 </span><span class="lineNoCov">          0 : static uint64_t vcn_v4_0_unified_ring_get_wptr(struct amdgpu_ring *ring)</span></a>
-<a name="1297"><span class="lineNum">    1297 </span>            : {</a>
-<a name="1298"><span class="lineNum">    1298 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = ring-&gt;adev;</span></a>
-<a name="1299"><span class="lineNum">    1299 </span>            : </a>
-<a name="1300"><span class="lineNum">    1300 </span><span class="lineNoCov">          0 :         if (ring != &amp;adev-&gt;vcn.inst[ring-&gt;me].ring_enc[0])</span></a>
-<a name="1301"><span class="lineNum">    1301 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;wrong ring id is identified in %s&quot;, __func__);</span></a>
-<a name="1302"><span class="lineNum">    1302 </span>            : </a>
-<a name="1303"><span class="lineNum">    1303 </span><span class="lineNoCov">          0 :         if (ring-&gt;use_doorbell)</span></a>
-<a name="1304"><span class="lineNum">    1304 </span><span class="lineNoCov">          0 :                 return *ring-&gt;wptr_cpu_addr;</span></a>
-<a name="1305"><span class="lineNum">    1305 </span>            :         else</a>
-<a name="1306"><span class="lineNum">    1306 </span><span class="lineNoCov">          0 :                 return RREG32_SOC15(VCN, ring-&gt;me, regUVD_RB_WPTR);</span></a>
-<a name="1307"><span class="lineNum">    1307 </span>            : }</a>
-<a name="1308"><span class="lineNum">    1308 </span>            : </a>
-<a name="1309"><span class="lineNum">    1309 </span>            : /**</a>
-<a name="1310"><span class="lineNum">    1310 </span>            :  * vcn_v4_0_unified_ring_set_wptr - set enc write pointer</a>
-<a name="1311"><span class="lineNum">    1311 </span>            :  *</a>
-<a name="1312"><span class="lineNum">    1312 </span>            :  * @ring: amdgpu_ring pointer</a>
-<a name="1313"><span class="lineNum">    1313 </span>            :  *</a>
-<a name="1314"><span class="lineNum">    1314 </span>            :  * Commits the enc write pointer to the hardware</a>
-<a name="1315"><span class="lineNum">    1315 </span>            :  */</a>
-<a name="1316"><span class="lineNum">    1316 </span><span class="lineNoCov">          0 : static void vcn_v4_0_unified_ring_set_wptr(struct amdgpu_ring *ring)</span></a>
-<a name="1317"><span class="lineNum">    1317 </span>            : {</a>
-<a name="1318"><span class="lineNum">    1318 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = ring-&gt;adev;</span></a>
-<a name="1319"><span class="lineNum">    1319 </span>            : </a>
-<a name="1320"><span class="lineNum">    1320 </span><span class="lineNoCov">          0 :         if (ring != &amp;adev-&gt;vcn.inst[ring-&gt;me].ring_enc[0])</span></a>
-<a name="1321"><span class="lineNum">    1321 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;wrong ring id is identified in %s&quot;, __func__);</span></a>
-<a name="1322"><span class="lineNum">    1322 </span>            : </a>
-<a name="1323"><span class="lineNum">    1323 </span><span class="lineNoCov">          0 :         if (ring-&gt;use_doorbell) {</span></a>
-<a name="1324"><span class="lineNum">    1324 </span><span class="lineNoCov">          0 :                 *ring-&gt;wptr_cpu_addr = lower_32_bits(ring-&gt;wptr);</span></a>
-<a name="1325"><span class="lineNum">    1325 </span><span class="lineNoCov">          0 :                 WDOORBELL32(ring-&gt;doorbell_index, lower_32_bits(ring-&gt;wptr));</span></a>
-<a name="1326"><span class="lineNum">    1326 </span>            :         } else {</a>
-<a name="1327"><span class="lineNum">    1327 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(VCN, ring-&gt;me, regUVD_RB_WPTR, lower_32_bits(ring-&gt;wptr));</span></a>
-<a name="1328"><span class="lineNum">    1328 </span>            :         }</a>
-<a name="1329"><span class="lineNum">    1329 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="1330"><span class="lineNum">    1330 </span>            : </a>
-<a name="1331"><span class="lineNum">    1331 </span>            : static int vcn_v4_0_limit_sched(struct amdgpu_cs_parser *p)</a>
-<a name="1332"><span class="lineNum">    1332 </span>            : {</a>
-<a name="1333"><span class="lineNum">    1333 </span>            :         struct drm_gpu_scheduler **scheds;</a>
-<a name="1334"><span class="lineNum">    1334 </span>            : </a>
-<a name="1335"><span class="lineNum">    1335 </span>            :         /* The create msg must be in the first IB submitted */</a>
-<a name="1336"><span class="lineNum">    1336 </span><span class="lineNoCov">          0 :         if (atomic_read(&amp;p-&gt;entity-&gt;fence_seq))</span></a>
-<a name="1337"><span class="lineNum">    1337 </span>            :                 return -EINVAL;</a>
-<a name="1338"><span class="lineNum">    1338 </span>            : </a>
-<a name="1339"><span class="lineNum">    1339 </span><span class="lineNoCov">          0 :         scheds = p-&gt;adev-&gt;gpu_sched[AMDGPU_HW_IP_VCN_ENC]</span></a>
-<a name="1340"><span class="lineNum">    1340 </span>            :                 [AMDGPU_RING_PRIO_0].sched;</a>
-<a name="1341"><span class="lineNum">    1341 </span><span class="lineNoCov">          0 :         drm_sched_entity_modify_sched(p-&gt;entity, scheds, 1);</span></a>
-<a name="1342"><span class="lineNum">    1342 </span>            :         return 0;</a>
-<a name="1343"><span class="lineNum">    1343 </span>            : }</a>
-<a name="1344"><span class="lineNum">    1344 </span>            : </a>
-<a name="1345"><span class="lineNum">    1345 </span><span class="lineNoCov">          0 : static int vcn_v4_0_dec_msg(struct amdgpu_cs_parser *p, uint64_t addr)</span></a>
-<a name="1346"><span class="lineNum">    1346 </span>            : {</a>
-<a name="1347"><span class="lineNum">    1347 </span><span class="lineNoCov">          0 :         struct ttm_operation_ctx ctx = { false, false };</span></a>
-<a name="1348"><span class="lineNum">    1348 </span>            :         struct amdgpu_bo_va_mapping *map;</a>
-<a name="1349"><span class="lineNum">    1349 </span>            :         uint32_t *msg, num_buffers;</a>
-<a name="1350"><span class="lineNum">    1350 </span>            :         struct amdgpu_bo *bo;</a>
-<a name="1351"><span class="lineNum">    1351 </span>            :         uint64_t start, end;</a>
-<a name="1352"><span class="lineNum">    1352 </span>            :         unsigned int i;</a>
-<a name="1353"><span class="lineNum">    1353 </span>            :         void *ptr;</a>
-<a name="1354"><span class="lineNum">    1354 </span>            :         int r;</a>
-<a name="1355"><span class="lineNum">    1355 </span>            : </a>
-<a name="1356"><span class="lineNum">    1356 </span><span class="lineNoCov">          0 :         addr &amp;= AMDGPU_GMC_HOLE_MASK;</span></a>
-<a name="1357"><span class="lineNum">    1357 </span><span class="lineNoCov">          0 :         r = amdgpu_cs_find_mapping(p, addr, &amp;bo, &amp;map);</span></a>
-<a name="1358"><span class="lineNum">    1358 </span><span class="lineNoCov">          0 :         if (r) {</span></a>
-<a name="1359"><span class="lineNum">    1359 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;Can't find BO for addr 0x%08llx\n&quot;, addr);</span></a>
-<a name="1360"><span class="lineNum">    1360 </span><span class="lineNoCov">          0 :                 return r;</span></a>
-<a name="1361"><span class="lineNum">    1361 </span>            :         }</a>
-<a name="1362"><span class="lineNum">    1362 </span>            : </a>
-<a name="1363"><span class="lineNum">    1363 </span><span class="lineNoCov">          0 :         start = map-&gt;start * AMDGPU_GPU_PAGE_SIZE;</span></a>
-<a name="1364"><span class="lineNum">    1364 </span><span class="lineNoCov">          0 :         end = (map-&gt;last + 1) * AMDGPU_GPU_PAGE_SIZE;</span></a>
-<a name="1365"><span class="lineNum">    1365 </span><span class="lineNoCov">          0 :         if (addr &amp; 0x7) {</span></a>
-<a name="1366"><span class="lineNum">    1366 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;VCN messages must be 8 byte aligned!\n&quot;);</span></a>
-<a name="1367"><span class="lineNum">    1367 </span><span class="lineNoCov">          0 :                 return -EINVAL;</span></a>
-<a name="1368"><span class="lineNum">    1368 </span>            :         }</a>
-<a name="1369"><span class="lineNum">    1369 </span>            : </a>
-<a name="1370"><span class="lineNum">    1370 </span><span class="lineNoCov">          0 :         bo-&gt;flags |= AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;</span></a>
-<a name="1371"><span class="lineNum">    1371 </span><span class="lineNoCov">          0 :         amdgpu_bo_placement_from_domain(bo, bo-&gt;allowed_domains);</span></a>
-<a name="1372"><span class="lineNum">    1372 </span><span class="lineNoCov">          0 :         r = ttm_bo_validate(&amp;bo-&gt;tbo, &amp;bo-&gt;placement, &amp;ctx);</span></a>
-<a name="1373"><span class="lineNum">    1373 </span><span class="lineNoCov">          0 :         if (r) {</span></a>
-<a name="1374"><span class="lineNum">    1374 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;Failed validating the VCN message BO (%d)!\n&quot;, r);</span></a>
-<a name="1375"><span class="lineNum">    1375 </span><span class="lineNoCov">          0 :                 return r;</span></a>
-<a name="1376"><span class="lineNum">    1376 </span>            :         }</a>
-<a name="1377"><span class="lineNum">    1377 </span>            : </a>
-<a name="1378"><span class="lineNum">    1378 </span><span class="lineNoCov">          0 :         r = amdgpu_bo_kmap(bo, &amp;ptr);</span></a>
-<a name="1379"><span class="lineNum">    1379 </span><span class="lineNoCov">          0 :         if (r) {</span></a>
-<a name="1380"><span class="lineNum">    1380 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;Failed mapping the VCN message (%d)!\n&quot;, r);</span></a>
-<a name="1381"><span class="lineNum">    1381 </span><span class="lineNoCov">          0 :                 return r;</span></a>
-<a name="1382"><span class="lineNum">    1382 </span>            :         }</a>
-<a name="1383"><span class="lineNum">    1383 </span>            : </a>
-<a name="1384"><span class="lineNum">    1384 </span><span class="lineNoCov">          0 :         msg = ptr + addr - start;</span></a>
-<a name="1385"><span class="lineNum">    1385 </span>            : </a>
-<a name="1386"><span class="lineNum">    1386 </span>            :         /* Check length */</a>
-<a name="1387"><span class="lineNum">    1387 </span><span class="lineNoCov">          0 :         if (msg[1] &gt; end - addr) {</span></a>
-<a name="1388"><span class="lineNum">    1388 </span>            :                 r = -EINVAL;</a>
-<a name="1389"><span class="lineNum">    1389 </span>            :                 goto out;</a>
-<a name="1390"><span class="lineNum">    1390 </span>            :         }</a>
-<a name="1391"><span class="lineNum">    1391 </span>            : </a>
-<a name="1392"><span class="lineNum">    1392 </span><span class="lineNoCov">          0 :         if (msg[3] != RDECODE_MSG_CREATE)</span></a>
-<a name="1393"><span class="lineNum">    1393 </span>            :                 goto out;</a>
-<a name="1394"><span class="lineNum">    1394 </span>            : </a>
-<a name="1395"><span class="lineNum">    1395 </span><span class="lineNoCov">          0 :         num_buffers = msg[2];</span></a>
-<a name="1396"><span class="lineNum">    1396 </span><span class="lineNoCov">          0 :         for (i = 0, msg = &amp;msg[6]; i &lt; num_buffers; ++i, msg += 4) {</span></a>
-<a name="1397"><span class="lineNum">    1397 </span>            :                 uint32_t offset, size, *create;</a>
-<a name="1398"><span class="lineNum">    1398 </span>            : </a>
-<a name="1399"><span class="lineNum">    1399 </span><span class="lineNoCov">          0 :                 if (msg[0] != RDECODE_MESSAGE_CREATE)</span></a>
-<a name="1400"><span class="lineNum">    1400 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="1401"><span class="lineNum">    1401 </span>            : </a>
-<a name="1402"><span class="lineNum">    1402 </span><span class="lineNoCov">          0 :                 offset = msg[1];</span></a>
-<a name="1403"><span class="lineNum">    1403 </span><span class="lineNoCov">          0 :                 size = msg[2];</span></a>
-<a name="1404"><span class="lineNum">    1404 </span>            : </a>
-<a name="1405"><span class="lineNum">    1405 </span><span class="lineNoCov">          0 :                 if (offset + size &gt; end) {</span></a>
-<a name="1406"><span class="lineNum">    1406 </span>            :                         r = -EINVAL;</a>
-<a name="1407"><span class="lineNum">    1407 </span>            :                         goto out;</a>
-<a name="1408"><span class="lineNum">    1408 </span>            :                 }</a>
-<a name="1409"><span class="lineNum">    1409 </span>            : </a>
-<a name="1410"><span class="lineNum">    1410 </span><span class="lineNoCov">          0 :                 create = ptr + addr + offset - start;</span></a>
-<a name="1411"><span class="lineNum">    1411 </span>            : </a>
-<a name="1412"><span class="lineNum">    1412 </span>            :                 /* H246, HEVC and VP9 can run on any instance */</a>
-<a name="1413"><span class="lineNum">    1413 </span><span class="lineNoCov">          0 :                 if (create[0] == 0x7 || create[0] == 0x10 || create[0] == 0x11)</span></a>
-<a name="1414"><span class="lineNum">    1414 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="1415"><span class="lineNum">    1415 </span>            : </a>
-<a name="1416"><span class="lineNum">    1416 </span><span class="lineNoCov">          0 :                 r = vcn_v4_0_limit_sched(p);</span></a>
-<a name="1417"><span class="lineNum">    1417 </span><span class="lineNoCov">          0 :                 if (r)</span></a>
-<a name="1418"><span class="lineNum">    1418 </span>            :                         goto out;</a>
-<a name="1419"><span class="lineNum">    1419 </span>            :         }</a>
-<a name="1420"><span class="lineNum">    1420 </span>            : </a>
-<a name="1421"><span class="lineNum">    1421 </span>            : out:</a>
-<a name="1422"><span class="lineNum">    1422 </span><span class="lineNoCov">          0 :         amdgpu_bo_kunmap(bo);</span></a>
-<a name="1423"><span class="lineNum">    1423 </span><span class="lineNoCov">          0 :         return r;</span></a>
-<a name="1424"><span class="lineNum">    1424 </span>            : }</a>
-<a name="1425"><span class="lineNum">    1425 </span>            : </a>
-<a name="1426"><span class="lineNum">    1426 </span>            : #define RADEON_VCN_ENGINE_TYPE_DECODE                                 (0x00000003)</a>
-<a name="1427"><span class="lineNum">    1427 </span>            : </a>
-<a name="1428"><span class="lineNum">    1428 </span><span class="lineNoCov">          0 : static int vcn_v4_0_ring_patch_cs_in_place(struct amdgpu_cs_parser *p,</span></a>
-<a name="1429"><span class="lineNum">    1429 </span>            :                                 struct amdgpu_job *job,</a>
-<a name="1430"><span class="lineNum">    1430 </span>            :                                 struct amdgpu_ib *ib)</a>
-<a name="1431"><span class="lineNum">    1431 </span>            : {</a>
-<a name="1432"><span class="lineNum">    1432 </span><span class="lineNoCov">          0 :         struct amdgpu_ring *ring = to_amdgpu_ring(p-&gt;entity-&gt;rq-&gt;sched);</span></a>
-<a name="1433"><span class="lineNum">    1433 </span><span class="lineNoCov">          0 :         struct amdgpu_vcn_decode_buffer *decode_buffer = NULL;</span></a>
-<a name="1434"><span class="lineNum">    1434 </span>            :         uint32_t val;</a>
-<a name="1435"><span class="lineNum">    1435 </span><span class="lineNoCov">          0 :         int r = 0;</span></a>
-<a name="1436"><span class="lineNum">    1436 </span>            : </a>
-<a name="1437"><span class="lineNum">    1437 </span>            :         /* The first instance can decode anything */</a>
-<a name="1438"><span class="lineNum">    1438 </span><span class="lineNoCov">          0 :         if (!ring-&gt;me)</span></a>
-<a name="1439"><span class="lineNum">    1439 </span>            :                 return r;</a>
-<a name="1440"><span class="lineNum">    1440 </span>            : </a>
-<a name="1441"><span class="lineNum">    1441 </span>            :         /* unified queue ib header has 8 double words. */</a>
-<a name="1442"><span class="lineNum">    1442 </span><span class="lineNoCov">          0 :         if (ib-&gt;length_dw &lt; 8)</span></a>
-<a name="1443"><span class="lineNum">    1443 </span>            :                 return r;</a>
-<a name="1444"><span class="lineNum">    1444 </span>            : </a>
-<a name="1445"><span class="lineNum">    1445 </span><span class="lineNoCov">          0 :         val = amdgpu_ib_get_value(ib, 6); //RADEON_VCN_ENGINE_TYPE</span></a>
-<a name="1446"><span class="lineNum">    1446 </span>            : </a>
-<a name="1447"><span class="lineNum">    1447 </span><span class="lineNoCov">          0 :         if (val == RADEON_VCN_ENGINE_TYPE_DECODE) {</span></a>
-<a name="1448"><span class="lineNum">    1448 </span><span class="lineNoCov">          0 :                 decode_buffer = (struct amdgpu_vcn_decode_buffer *)&amp;ib-&gt;ptr[10];</span></a>
-<a name="1449"><span class="lineNum">    1449 </span>            : </a>
-<a name="1450"><span class="lineNum">    1450 </span><span class="lineNoCov">          0 :                 if (decode_buffer-&gt;valid_buf_flag  &amp; 0x1)</span></a>
-<a name="1451"><span class="lineNum">    1451 </span><span class="lineNoCov">          0 :                         r = vcn_v4_0_dec_msg(p, ((u64)decode_buffer-&gt;msg_buffer_address_hi) &lt;&lt; 32 |</span></a>
-<a name="1452"><span class="lineNum">    1452 </span><span class="lineNoCov">          0 :                                                 decode_buffer-&gt;msg_buffer_address_lo);</span></a>
-<a name="1453"><span class="lineNum">    1453 </span>            :         }</a>
-<a name="1454"><span class="lineNum">    1454 </span>            :         return r;</a>
-<a name="1455"><span class="lineNum">    1455 </span>            : }</a>
-<a name="1456"><span class="lineNum">    1456 </span>            : </a>
-<a name="1457"><span class="lineNum">    1457 </span>            : static const struct amdgpu_ring_funcs vcn_v4_0_unified_ring_vm_funcs = {</a>
-<a name="1458"><span class="lineNum">    1458 </span>            :         .type = AMDGPU_RING_TYPE_VCN_ENC,</a>
-<a name="1459"><span class="lineNum">    1459 </span>            :         .align_mask = 0x3f,</a>
-<a name="1460"><span class="lineNum">    1460 </span>            :         .nop = VCN_ENC_CMD_NO_OP,</a>
-<a name="1461"><span class="lineNum">    1461 </span>            :         .vmhub = AMDGPU_MMHUB_0,</a>
-<a name="1462"><span class="lineNum">    1462 </span>            :         .get_rptr = vcn_v4_0_unified_ring_get_rptr,</a>
-<a name="1463"><span class="lineNum">    1463 </span>            :         .get_wptr = vcn_v4_0_unified_ring_get_wptr,</a>
-<a name="1464"><span class="lineNum">    1464 </span>            :         .set_wptr = vcn_v4_0_unified_ring_set_wptr,</a>
-<a name="1465"><span class="lineNum">    1465 </span>            :         .patch_cs_in_place = vcn_v4_0_ring_patch_cs_in_place,</a>
-<a name="1466"><span class="lineNum">    1466 </span>            :         .emit_frame_size =</a>
-<a name="1467"><span class="lineNum">    1467 </span>            :                 SOC15_FLUSH_GPU_TLB_NUM_WREG * 3 +</a>
-<a name="1468"><span class="lineNum">    1468 </span>            :                 SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 4 +</a>
-<a name="1469"><span class="lineNum">    1469 </span>            :                 4 + /* vcn_v2_0_enc_ring_emit_vm_flush */</a>
-<a name="1470"><span class="lineNum">    1470 </span>            :                 5 + 5 + /* vcn_v2_0_enc_ring_emit_fence x2 vm fence */</a>
-<a name="1471"><span class="lineNum">    1471 </span>            :                 1, /* vcn_v2_0_enc_ring_insert_end */</a>
-<a name="1472"><span class="lineNum">    1472 </span>            :         .emit_ib_size = 5, /* vcn_v2_0_enc_ring_emit_ib */</a>
-<a name="1473"><span class="lineNum">    1473 </span>            :         .emit_ib = vcn_v2_0_enc_ring_emit_ib,</a>
-<a name="1474"><span class="lineNum">    1474 </span>            :         .emit_fence = vcn_v2_0_enc_ring_emit_fence,</a>
-<a name="1475"><span class="lineNum">    1475 </span>            :         .emit_vm_flush = vcn_v2_0_enc_ring_emit_vm_flush,</a>
-<a name="1476"><span class="lineNum">    1476 </span>            :         .test_ring = amdgpu_vcn_enc_ring_test_ring,</a>
-<a name="1477"><span class="lineNum">    1477 </span>            :         .test_ib = amdgpu_vcn_unified_ring_test_ib,</a>
-<a name="1478"><span class="lineNum">    1478 </span>            :         .insert_nop = amdgpu_ring_insert_nop,</a>
-<a name="1479"><span class="lineNum">    1479 </span>            :         .insert_end = vcn_v2_0_enc_ring_insert_end,</a>
-<a name="1480"><span class="lineNum">    1480 </span>            :         .pad_ib = amdgpu_ring_generic_pad_ib,</a>
-<a name="1481"><span class="lineNum">    1481 </span>            :         .begin_use = amdgpu_vcn_ring_begin_use,</a>
-<a name="1482"><span class="lineNum">    1482 </span>            :         .end_use = amdgpu_vcn_ring_end_use,</a>
-<a name="1483"><span class="lineNum">    1483 </span>            :         .emit_wreg = vcn_v2_0_enc_ring_emit_wreg,</a>
-<a name="1484"><span class="lineNum">    1484 </span>            :         .emit_reg_wait = vcn_v2_0_enc_ring_emit_reg_wait,</a>
-<a name="1485"><span class="lineNum">    1485 </span>            :         .emit_reg_write_reg_wait = amdgpu_ring_emit_reg_write_reg_wait_helper,</a>
-<a name="1486"><span class="lineNum">    1486 </span>            : };</a>
-<a name="1487"><span class="lineNum">    1487 </span>            : </a>
-<a name="1488"><span class="lineNum">    1488 </span>            : /**</a>
-<a name="1489"><span class="lineNum">    1489 </span>            :  * vcn_v4_0_set_unified_ring_funcs - set unified ring functions</a>
-<a name="1490"><span class="lineNum">    1490 </span>            :  *</a>
-<a name="1491"><span class="lineNum">    1491 </span>            :  * @adev: amdgpu_device pointer</a>
-<a name="1492"><span class="lineNum">    1492 </span>            :  *</a>
-<a name="1493"><span class="lineNum">    1493 </span>            :  * Set unified ring functions</a>
-<a name="1494"><span class="lineNum">    1494 </span>            :  */</a>
-<a name="1495"><span class="lineNum">    1495 </span><span class="lineNoCov">          0 : static void vcn_v4_0_set_unified_ring_funcs(struct amdgpu_device *adev)</span></a>
-<a name="1496"><span class="lineNum">    1496 </span>            : {</a>
-<a name="1497"><span class="lineNum">    1497 </span>            :         int i;</a>
-<a name="1498"><span class="lineNum">    1498 </span>            : </a>
-<a name="1499"><span class="lineNum">    1499 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;vcn.num_vcn_inst; ++i) {</span></a>
-<a name="1500"><span class="lineNum">    1500 </span><span class="lineNoCov">          0 :                 if (adev-&gt;vcn.harvest_config &amp; (1 &lt;&lt; i))</span></a>
-<a name="1501"><span class="lineNum">    1501 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="1502"><span class="lineNum">    1502 </span>            : </a>
-<a name="1503"><span class="lineNum">    1503 </span><span class="lineNoCov">          0 :                 adev-&gt;vcn.inst[i].ring_enc[0].funcs = &amp;vcn_v4_0_unified_ring_vm_funcs;</span></a>
-<a name="1504"><span class="lineNum">    1504 </span><span class="lineNoCov">          0 :                 adev-&gt;vcn.inst[i].ring_enc[0].me = i;</span></a>
-<a name="1505"><span class="lineNum">    1505 </span>            : </a>
-<a name="1506"><span class="lineNum">    1506 </span><span class="lineNoCov">          0 :                 DRM_INFO(&quot;VCN(%d) encode/decode are enabled in VM mode\n&quot;, i);</span></a>
-<a name="1507"><span class="lineNum">    1507 </span>            :         }</a>
-<a name="1508"><span class="lineNum">    1508 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="1509"><span class="lineNum">    1509 </span>            : </a>
-<a name="1510"><span class="lineNum">    1510 </span>            : /**</a>
-<a name="1511"><span class="lineNum">    1511 </span>            :  * vcn_v4_0_is_idle - check VCN block is idle</a>
-<a name="1512"><span class="lineNum">    1512 </span>            :  *</a>
-<a name="1513"><span class="lineNum">    1513 </span>            :  * @handle: amdgpu_device pointer</a>
-<a name="1514"><span class="lineNum">    1514 </span>            :  *</a>
-<a name="1515"><span class="lineNum">    1515 </span>            :  * Check whether VCN block is idle</a>
-<a name="1516"><span class="lineNum">    1516 </span>            :  */</a>
-<a name="1517"><span class="lineNum">    1517 </span><span class="lineNoCov">          0 : static bool vcn_v4_0_is_idle(void *handle)</span></a>
-<a name="1518"><span class="lineNum">    1518 </span>            : {</a>
-<a name="1519"><span class="lineNum">    1519 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
-<a name="1520"><span class="lineNum">    1520 </span><span class="lineNoCov">          0 :         int i, ret = 1;</span></a>
-<a name="1521"><span class="lineNum">    1521 </span>            : </a>
-<a name="1522"><span class="lineNum">    1522 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;vcn.num_vcn_inst; ++i) {</span></a>
-<a name="1523"><span class="lineNum">    1523 </span><span class="lineNoCov">          0 :                 if (adev-&gt;vcn.harvest_config &amp; (1 &lt;&lt; i))</span></a>
-<a name="1524"><span class="lineNum">    1524 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="1525"><span class="lineNum">    1525 </span>            : </a>
-<a name="1526"><span class="lineNum">    1526 </span><span class="lineNoCov">          0 :                 ret &amp;= (RREG32_SOC15(VCN, i, regUVD_STATUS) == UVD_STATUS__IDLE);</span></a>
-<a name="1527"><span class="lineNum">    1527 </span>            :         }</a>
-<a name="1528"><span class="lineNum">    1528 </span>            : </a>
-<a name="1529"><span class="lineNum">    1529 </span><span class="lineNoCov">          0 :         return ret;</span></a>
-<a name="1530"><span class="lineNum">    1530 </span>            : }</a>
-<a name="1531"><span class="lineNum">    1531 </span>            : </a>
-<a name="1532"><span class="lineNum">    1532 </span>            : /**</a>
-<a name="1533"><span class="lineNum">    1533 </span>            :  * vcn_v4_0_wait_for_idle - wait for VCN block idle</a>
-<a name="1534"><span class="lineNum">    1534 </span>            :  *</a>
-<a name="1535"><span class="lineNum">    1535 </span>            :  * @handle: amdgpu_device pointer</a>
-<a name="1536"><span class="lineNum">    1536 </span>            :  *</a>
-<a name="1537"><span class="lineNum">    1537 </span>            :  * Wait for VCN block idle</a>
-<a name="1538"><span class="lineNum">    1538 </span>            :  */</a>
-<a name="1539"><span class="lineNum">    1539 </span><span class="lineNoCov">          0 : static int vcn_v4_0_wait_for_idle(void *handle)</span></a>
-<a name="1540"><span class="lineNum">    1540 </span>            : {</a>
-<a name="1541"><span class="lineNum">    1541 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
-<a name="1542"><span class="lineNum">    1542 </span><span class="lineNoCov">          0 :         int i, ret = 0;</span></a>
-<a name="1543"><span class="lineNum">    1543 </span>            : </a>
-<a name="1544"><span class="lineNum">    1544 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;vcn.num_vcn_inst; ++i) {</span></a>
-<a name="1545"><span class="lineNum">    1545 </span><span class="lineNoCov">          0 :                 if (adev-&gt;vcn.harvest_config &amp; (1 &lt;&lt; i))</span></a>
-<a name="1546"><span class="lineNum">    1546 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="1547"><span class="lineNum">    1547 </span>            : </a>
-<a name="1548"><span class="lineNum">    1548 </span><span class="lineNoCov">          0 :                 ret = SOC15_WAIT_ON_RREG(VCN, i, regUVD_STATUS, UVD_STATUS__IDLE,</span></a>
-<a name="1549"><span class="lineNum">    1549 </span>            :                         UVD_STATUS__IDLE);</a>
-<a name="1550"><span class="lineNum">    1550 </span><span class="lineNoCov">          0 :                 if (ret)</span></a>
-<a name="1551"><span class="lineNum">    1551 </span>            :                         return ret;</a>
-<a name="1552"><span class="lineNum">    1552 </span>            :         }</a>
-<a name="1553"><span class="lineNum">    1553 </span>            : </a>
-<a name="1554"><span class="lineNum">    1554 </span>            :         return ret;</a>
-<a name="1555"><span class="lineNum">    1555 </span>            : }</a>
-<a name="1556"><span class="lineNum">    1556 </span>            : </a>
-<a name="1557"><span class="lineNum">    1557 </span>            : /**</a>
-<a name="1558"><span class="lineNum">    1558 </span>            :  * vcn_v4_0_set_clockgating_state - set VCN block clockgating state</a>
-<a name="1559"><span class="lineNum">    1559 </span>            :  *</a>
-<a name="1560"><span class="lineNum">    1560 </span>            :  * @handle: amdgpu_device pointer</a>
-<a name="1561"><span class="lineNum">    1561 </span>            :  * @state: clock gating state</a>
-<a name="1562"><span class="lineNum">    1562 </span>            :  *</a>
-<a name="1563"><span class="lineNum">    1563 </span>            :  * Set VCN block clockgating state</a>
-<a name="1564"><span class="lineNum">    1564 </span>            :  */</a>
-<a name="1565"><span class="lineNum">    1565 </span><span class="lineNoCov">          0 : static int vcn_v4_0_set_clockgating_state(void *handle, enum amd_clockgating_state state)</span></a>
-<a name="1566"><span class="lineNum">    1566 </span>            : {</a>
-<a name="1567"><span class="lineNum">    1567 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
-<a name="1568"><span class="lineNum">    1568 </span><span class="lineNoCov">          0 :         bool enable = (state == AMD_CG_STATE_GATE) ? true : false;</span></a>
-<a name="1569"><span class="lineNum">    1569 </span>            :         int i;</a>
-<a name="1570"><span class="lineNum">    1570 </span>            : </a>
-<a name="1571"><span class="lineNum">    1571 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;vcn.num_vcn_inst; ++i) {</span></a>
-<a name="1572"><span class="lineNum">    1572 </span><span class="lineNoCov">          0 :                 if (adev-&gt;vcn.harvest_config &amp; (1 &lt;&lt; i))</span></a>
-<a name="1573"><span class="lineNum">    1573 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="1574"><span class="lineNum">    1574 </span>            : </a>
-<a name="1575"><span class="lineNum">    1575 </span><span class="lineNoCov">          0 :                 if (enable) {</span></a>
-<a name="1576"><span class="lineNum">    1576 </span><span class="lineNoCov">          0 :                         if (RREG32_SOC15(VCN, i, regUVD_STATUS) != UVD_STATUS__IDLE)</span></a>
-<a name="1577"><span class="lineNum">    1577 </span>            :                                 return -EBUSY;</a>
-<a name="1578"><span class="lineNum">    1578 </span><span class="lineNoCov">          0 :                         vcn_v4_0_enable_clock_gating(adev, i);</span></a>
-<a name="1579"><span class="lineNum">    1579 </span>            :                 } else {</a>
-<a name="1580"><span class="lineNum">    1580 </span><span class="lineNoCov">          0 :                         vcn_v4_0_disable_clock_gating(adev, i);</span></a>
-<a name="1581"><span class="lineNum">    1581 </span>            :                 }</a>
-<a name="1582"><span class="lineNum">    1582 </span>            :         }</a>
-<a name="1583"><span class="lineNum">    1583 </span>            : </a>
-<a name="1584"><span class="lineNum">    1584 </span>            :         return 0;</a>
-<a name="1585"><span class="lineNum">    1585 </span>            : }</a>
-<a name="1586"><span class="lineNum">    1586 </span>            : </a>
-<a name="1587"><span class="lineNum">    1587 </span>            : /**</a>
-<a name="1588"><span class="lineNum">    1588 </span>            :  * vcn_v4_0_set_powergating_state - set VCN block powergating state</a>
-<a name="1589"><span class="lineNum">    1589 </span>            :  *</a>
-<a name="1590"><span class="lineNum">    1590 </span>            :  * @handle: amdgpu_device pointer</a>
-<a name="1591"><span class="lineNum">    1591 </span>            :  * @state: power gating state</a>
-<a name="1592"><span class="lineNum">    1592 </span>            :  *</a>
-<a name="1593"><span class="lineNum">    1593 </span>            :  * Set VCN block powergating state</a>
-<a name="1594"><span class="lineNum">    1594 </span>            :  */</a>
-<a name="1595"><span class="lineNum">    1595 </span><span class="lineNoCov">          0 : static int vcn_v4_0_set_powergating_state(void *handle, enum amd_powergating_state state)</span></a>
-<a name="1596"><span class="lineNum">    1596 </span>            : {</a>
-<a name="1597"><span class="lineNum">    1597 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
-<a name="1598"><span class="lineNum">    1598 </span>            :         int ret;</a>
-<a name="1599"><span class="lineNum">    1599 </span>            : </a>
-<a name="1600"><span class="lineNum">    1600 </span><span class="lineNoCov">          0 :         if(state == adev-&gt;vcn.cur_state)</span></a>
-<a name="1601"><span class="lineNum">    1601 </span>            :                 return 0;</a>
-<a name="1602"><span class="lineNum">    1602 </span>            : </a>
-<a name="1603"><span class="lineNum">    1603 </span><span class="lineNoCov">          0 :         if (state == AMD_PG_STATE_GATE)</span></a>
-<a name="1604"><span class="lineNum">    1604 </span><span class="lineNoCov">          0 :                 ret = vcn_v4_0_stop(adev);</span></a>
-<a name="1605"><span class="lineNum">    1605 </span>            :         else</a>
-<a name="1606"><span class="lineNum">    1606 </span><span class="lineNoCov">          0 :                 ret = vcn_v4_0_start(adev);</span></a>
-<a name="1607"><span class="lineNum">    1607 </span>            : </a>
-<a name="1608"><span class="lineNum">    1608 </span><span class="lineNoCov">          0 :         if(!ret)</span></a>
-<a name="1609"><span class="lineNum">    1609 </span><span class="lineNoCov">          0 :                 adev-&gt;vcn.cur_state = state;</span></a>
-<a name="1610"><span class="lineNum">    1610 </span>            : </a>
-<a name="1611"><span class="lineNum">    1611 </span>            :         return ret;</a>
-<a name="1612"><span class="lineNum">    1612 </span>            : }</a>
-<a name="1613"><span class="lineNum">    1613 </span>            : </a>
-<a name="1614"><span class="lineNum">    1614 </span>            : /**</a>
-<a name="1615"><span class="lineNum">    1615 </span>            :  * vcn_v4_0_set_interrupt_state - set VCN block interrupt state</a>
-<a name="1616"><span class="lineNum">    1616 </span>            :  *</a>
-<a name="1617"><span class="lineNum">    1617 </span>            :  * @adev: amdgpu_device pointer</a>
-<a name="1618"><span class="lineNum">    1618 </span>            :  * @source: interrupt sources</a>
-<a name="1619"><span class="lineNum">    1619 </span>            :  * @type: interrupt types</a>
-<a name="1620"><span class="lineNum">    1620 </span>            :  * @state: interrupt states</a>
-<a name="1621"><span class="lineNum">    1621 </span>            :  *</a>
-<a name="1622"><span class="lineNum">    1622 </span>            :  * Set VCN block interrupt state</a>
-<a name="1623"><span class="lineNum">    1623 </span>            :  */</a>
-<a name="1624"><span class="lineNum">    1624 </span><span class="lineNoCov">          0 : static int vcn_v4_0_set_interrupt_state(struct amdgpu_device *adev, struct amdgpu_irq_src *source,</span></a>
-<a name="1625"><span class="lineNum">    1625 </span>            :       unsigned type, enum amdgpu_interrupt_state state)</a>
-<a name="1626"><span class="lineNum">    1626 </span>            : {</a>
-<a name="1627"><span class="lineNum">    1627 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="1628"><span class="lineNum">    1628 </span>            : }</a>
-<a name="1629"><span class="lineNum">    1629 </span>            : </a>
-<a name="1630"><span class="lineNum">    1630 </span>            : /**</a>
-<a name="1631"><span class="lineNum">    1631 </span>            :  * vcn_v4_0_process_interrupt - process VCN block interrupt</a>
-<a name="1632"><span class="lineNum">    1632 </span>            :  *</a>
-<a name="1633"><span class="lineNum">    1633 </span>            :  * @adev: amdgpu_device pointer</a>
-<a name="1634"><span class="lineNum">    1634 </span>            :  * @source: interrupt sources</a>
-<a name="1635"><span class="lineNum">    1635 </span>            :  * @entry: interrupt entry from clients and sources</a>
-<a name="1636"><span class="lineNum">    1636 </span>            :  *</a>
-<a name="1637"><span class="lineNum">    1637 </span>            :  * Process VCN block interrupt</a>
-<a name="1638"><span class="lineNum">    1638 </span>            :  */</a>
-<a name="1639"><span class="lineNum">    1639 </span><span class="lineNoCov">          0 : static int vcn_v4_0_process_interrupt(struct amdgpu_device *adev, struct amdgpu_irq_src *source,</span></a>
-<a name="1640"><span class="lineNum">    1640 </span>            :       struct amdgpu_iv_entry *entry)</a>
-<a name="1641"><span class="lineNum">    1641 </span>            : {</a>
-<a name="1642"><span class="lineNum">    1642 </span>            :         uint32_t ip_instance;</a>
-<a name="1643"><span class="lineNum">    1643 </span>            : </a>
-<a name="1644"><span class="lineNum">    1644 </span><span class="lineNoCov">          0 :         switch (entry-&gt;client_id) {</span></a>
-<a name="1645"><span class="lineNum">    1645 </span>            :         case SOC15_IH_CLIENTID_VCN:</a>
-<a name="1646"><span class="lineNum">    1646 </span>            :                 ip_instance = 0;</a>
-<a name="1647"><span class="lineNum">    1647 </span>            :                 break;</a>
-<a name="1648"><span class="lineNum">    1648 </span>            :         case SOC15_IH_CLIENTID_VCN1:</a>
-<a name="1649"><span class="lineNum">    1649 </span><span class="lineNoCov">          0 :                 ip_instance = 1;</span></a>
-<a name="1650"><span class="lineNum">    1650 </span><span class="lineNoCov">          0 :                 break;</span></a>
-<a name="1651"><span class="lineNum">    1651 </span>            :         default:</a>
-<a name="1652"><span class="lineNum">    1652 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;Unhandled client id: %d\n&quot;, entry-&gt;client_id);</span></a>
-<a name="1653"><span class="lineNum">    1653 </span><span class="lineNoCov">          0 :                 return 0;</span></a>
-<a name="1654"><span class="lineNum">    1654 </span>            :         }</a>
-<a name="1655"><span class="lineNum">    1655 </span>            : </a>
-<a name="1656"><span class="lineNum">    1656 </span><span class="lineNoCov">          0 :         DRM_DEBUG(&quot;IH: VCN TRAP\n&quot;);</span></a>
-<a name="1657"><span class="lineNum">    1657 </span>            : </a>
-<a name="1658"><span class="lineNum">    1658 </span><span class="lineNoCov">          0 :         switch (entry-&gt;src_id) {</span></a>
-<a name="1659"><span class="lineNum">    1659 </span>            :         case VCN_4_0__SRCID__UVD_ENC_GENERAL_PURPOSE:</a>
-<a name="1660"><span class="lineNum">    1660 </span><span class="lineNoCov">          0 :                 amdgpu_fence_process(&amp;adev-&gt;vcn.inst[ip_instance].ring_enc[0]);</span></a>
-<a name="1661"><span class="lineNum">    1661 </span><span class="lineNoCov">          0 :                 break;</span></a>
-<a name="1662"><span class="lineNum">    1662 </span>            :         default:</a>
-<a name="1663"><span class="lineNum">    1663 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;Unhandled interrupt: %d %d\n&quot;,</span></a>
-<a name="1664"><span class="lineNum">    1664 </span>            :                           entry-&gt;src_id, entry-&gt;src_data[0]);</a>
-<a name="1665"><span class="lineNum">    1665 </span><span class="lineNoCov">          0 :                 break;</span></a>
-<a name="1666"><span class="lineNum">    1666 </span>            :         }</a>
-<a name="1667"><span class="lineNum">    1667 </span>            : </a>
-<a name="1668"><span class="lineNum">    1668 </span>            :         return 0;</a>
-<a name="1669"><span class="lineNum">    1669 </span>            : }</a>
-<a name="1670"><span class="lineNum">    1670 </span>            : </a>
-<a name="1671"><span class="lineNum">    1671 </span>            : static const struct amdgpu_irq_src_funcs vcn_v4_0_irq_funcs = {</a>
-<a name="1672"><span class="lineNum">    1672 </span>            :         .set = vcn_v4_0_set_interrupt_state,</a>
-<a name="1673"><span class="lineNum">    1673 </span>            :         .process = vcn_v4_0_process_interrupt,</a>
-<a name="1674"><span class="lineNum">    1674 </span>            : };</a>
-<a name="1675"><span class="lineNum">    1675 </span>            : </a>
-<a name="1676"><span class="lineNum">    1676 </span>            : /**</a>
-<a name="1677"><span class="lineNum">    1677 </span>            :  * vcn_v4_0_set_irq_funcs - set VCN block interrupt irq functions</a>
-<a name="1678"><span class="lineNum">    1678 </span>            :  *</a>
-<a name="1679"><span class="lineNum">    1679 </span>            :  * @adev: amdgpu_device pointer</a>
-<a name="1680"><span class="lineNum">    1680 </span>            :  *</a>
-<a name="1681"><span class="lineNum">    1681 </span>            :  * Set VCN block interrupt irq functions</a>
-<a name="1682"><span class="lineNum">    1682 </span>            :  */</a>
-<a name="1683"><span class="lineNum">    1683 </span>            : static void vcn_v4_0_set_irq_funcs(struct amdgpu_device *adev)</a>
-<a name="1684"><span class="lineNum">    1684 </span>            : {</a>
-<a name="1685"><span class="lineNum">    1685 </span>            :         int i;</a>
-<a name="1686"><span class="lineNum">    1686 </span>            : </a>
-<a name="1687"><span class="lineNum">    1687 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;vcn.num_vcn_inst; ++i) {</span></a>
-<a name="1688"><span class="lineNum">    1688 </span><span class="lineNoCov">          0 :                 if (adev-&gt;vcn.harvest_config &amp; (1 &lt;&lt; i))</span></a>
-<a name="1689"><span class="lineNum">    1689 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="1690"><span class="lineNum">    1690 </span>            : </a>
-<a name="1691"><span class="lineNum">    1691 </span><span class="lineNoCov">          0 :                 adev-&gt;vcn.inst[i].irq.num_types = adev-&gt;vcn.num_enc_rings + 1;</span></a>
-<a name="1692"><span class="lineNum">    1692 </span><span class="lineNoCov">          0 :                 adev-&gt;vcn.inst[i].irq.funcs = &amp;vcn_v4_0_irq_funcs;</span></a>
-<a name="1693"><span class="lineNum">    1693 </span>            :         }</a>
-<a name="1694"><span class="lineNum">    1694 </span>            : }</a>
-<a name="1695"><span class="lineNum">    1695 </span>            : </a>
-<a name="1696"><span class="lineNum">    1696 </span>            : static const struct amd_ip_funcs vcn_v4_0_ip_funcs = {</a>
-<a name="1697"><span class="lineNum">    1697 </span>            :         .name = &quot;vcn_v4_0&quot;,</a>
-<a name="1698"><span class="lineNum">    1698 </span>            :         .early_init = vcn_v4_0_early_init,</a>
-<a name="1699"><span class="lineNum">    1699 </span>            :         .late_init = NULL,</a>
-<a name="1700"><span class="lineNum">    1700 </span>            :         .sw_init = vcn_v4_0_sw_init,</a>
-<a name="1701"><span class="lineNum">    1701 </span>            :         .sw_fini = vcn_v4_0_sw_fini,</a>
-<a name="1702"><span class="lineNum">    1702 </span>            :         .hw_init = vcn_v4_0_hw_init,</a>
-<a name="1703"><span class="lineNum">    1703 </span>            :         .hw_fini = vcn_v4_0_hw_fini,</a>
-<a name="1704"><span class="lineNum">    1704 </span>            :         .suspend = vcn_v4_0_suspend,</a>
-<a name="1705"><span class="lineNum">    1705 </span>            :         .resume = vcn_v4_0_resume,</a>
-<a name="1706"><span class="lineNum">    1706 </span>            :         .is_idle = vcn_v4_0_is_idle,</a>
-<a name="1707"><span class="lineNum">    1707 </span>            :         .wait_for_idle = vcn_v4_0_wait_for_idle,</a>
-<a name="1708"><span class="lineNum">    1708 </span>            :         .check_soft_reset = NULL,</a>
-<a name="1709"><span class="lineNum">    1709 </span>            :         .pre_soft_reset = NULL,</a>
-<a name="1710"><span class="lineNum">    1710 </span>            :         .soft_reset = NULL,</a>
-<a name="1711"><span class="lineNum">    1711 </span>            :         .post_soft_reset = NULL,</a>
-<a name="1712"><span class="lineNum">    1712 </span>            :         .set_clockgating_state = vcn_v4_0_set_clockgating_state,</a>
-<a name="1713"><span class="lineNum">    1713 </span>            :         .set_powergating_state = vcn_v4_0_set_powergating_state,</a>
-<a name="1714"><span class="lineNum">    1714 </span>            : };</a>
-<a name="1715"><span class="lineNum">    1715 </span>            : </a>
-<a name="1716"><span class="lineNum">    1716 </span>            : const struct amdgpu_ip_block_version vcn_v4_0_ip_block =</a>
-<a name="1717"><span class="lineNum">    1717 </span>            : {</a>
-<a name="1718"><span class="lineNum">    1718 </span>            :         .type = AMD_IP_BLOCK_TYPE_VCN,</a>
-<a name="1719"><span class="lineNum">    1719 </span>            :         .major = 4,</a>
-<a name="1720"><span class="lineNum">    1720 </span>            :         .minor = 0,</a>
-<a name="1721"><span class="lineNum">    1721 </span>            :         .rev = 0,</a>
-<a name="1722"><span class="lineNum">    1722 </span>            :         .funcs = &amp;vcn_v4_0_ip_funcs,</a>
-<a name="1723"><span class="lineNum">    1723 </span>            : };</a>
+<a name="1136"><span class="lineNum">    1136 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1137"><span class="lineNum">    1137 </span>            : </a>
+<a name="1138"><span class="lineNum">    1138 </span>            : /**</a>
+<a name="1139"><span class="lineNum">    1139 </span>            :  * vcn_v4_0_stop - VCN stop</a>
+<a name="1140"><span class="lineNum">    1140 </span>            :  *</a>
+<a name="1141"><span class="lineNum">    1141 </span>            :  * @adev: amdgpu_device pointer</a>
+<a name="1142"><span class="lineNum">    1142 </span>            :  *</a>
+<a name="1143"><span class="lineNum">    1143 </span>            :  * Stop VCN block</a>
+<a name="1144"><span class="lineNum">    1144 </span>            :  */</a>
+<a name="1145"><span class="lineNum">    1145 </span><span class="lineNoCov">          0 : static int vcn_v4_0_stop(struct amdgpu_device *adev)</span></a>
+<a name="1146"><span class="lineNum">    1146 </span>            : {</a>
+<a name="1147"><span class="lineNum">    1147 </span>            :         volatile struct amdgpu_vcn4_fw_shared *fw_shared;</a>
+<a name="1148"><span class="lineNum">    1148 </span>            :         uint32_t tmp;</a>
+<a name="1149"><span class="lineNum">    1149 </span><span class="lineNoCov">          0 :         int i, r = 0;</span></a>
+<a name="1150"><span class="lineNum">    1150 </span>            : </a>
+<a name="1151"><span class="lineNum">    1151 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;vcn.num_vcn_inst; ++i) {</span></a>
+<a name="1152"><span class="lineNum">    1152 </span><span class="lineNoCov">          0 :                 fw_shared = adev-&gt;vcn.inst[i].fw_shared.cpu_addr;</span></a>
+<a name="1153"><span class="lineNum">    1153 </span><span class="lineNoCov">          0 :                 fw_shared-&gt;sq.queue_mode |= FW_QUEUE_DPG_HOLD_OFF;</span></a>
+<a name="1154"><span class="lineNum">    1154 </span>            : </a>
+<a name="1155"><span class="lineNum">    1155 </span><span class="lineNoCov">          0 :                 if (adev-&gt;pg_flags &amp; AMD_PG_SUPPORT_VCN_DPG) {</span></a>
+<a name="1156"><span class="lineNum">    1156 </span><span class="lineNoCov">          0 :                         vcn_v4_0_stop_dpg_mode(adev, i);</span></a>
+<a name="1157"><span class="lineNum">    1157 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="1158"><span class="lineNum">    1158 </span>            :                 }</a>
+<a name="1159"><span class="lineNum">    1159 </span>            : </a>
+<a name="1160"><span class="lineNum">    1160 </span>            :                 /* wait for vcn idle */</a>
+<a name="1161"><span class="lineNum">    1161 </span><span class="lineNoCov">          0 :                 r = SOC15_WAIT_ON_RREG(VCN, i, regUVD_STATUS, UVD_STATUS__IDLE, 0x7);</span></a>
+<a name="1162"><span class="lineNum">    1162 </span><span class="lineNoCov">          0 :                 if (r)</span></a>
+<a name="1163"><span class="lineNum">    1163 </span>            :                         return r;</a>
+<a name="1164"><span class="lineNum">    1164 </span>            : </a>
+<a name="1165"><span class="lineNum">    1165 </span><span class="lineNoCov">          0 :                 tmp = UVD_LMI_STATUS__VCPU_LMI_WRITE_CLEAN_MASK |</span></a>
+<a name="1166"><span class="lineNum">    1166 </span>            :                         UVD_LMI_STATUS__READ_CLEAN_MASK |</a>
+<a name="1167"><span class="lineNum">    1167 </span>            :                         UVD_LMI_STATUS__WRITE_CLEAN_MASK |</a>
+<a name="1168"><span class="lineNum">    1168 </span>            :                         UVD_LMI_STATUS__WRITE_CLEAN_RAW_MASK;</a>
+<a name="1169"><span class="lineNum">    1169 </span><span class="lineNoCov">          0 :                 r = SOC15_WAIT_ON_RREG(VCN, i, regUVD_LMI_STATUS, tmp, tmp);</span></a>
+<a name="1170"><span class="lineNum">    1170 </span><span class="lineNoCov">          0 :                 if (r)</span></a>
+<a name="1171"><span class="lineNum">    1171 </span>            :                         return r;</a>
+<a name="1172"><span class="lineNum">    1172 </span>            : </a>
+<a name="1173"><span class="lineNum">    1173 </span>            :                 /* disable LMI UMC channel */</a>
+<a name="1174"><span class="lineNum">    1174 </span><span class="lineNoCov">          0 :                 tmp = RREG32_SOC15(VCN, i, regUVD_LMI_CTRL2);</span></a>
+<a name="1175"><span class="lineNum">    1175 </span><span class="lineNoCov">          0 :                 tmp |= UVD_LMI_CTRL2__STALL_ARB_UMC_MASK;</span></a>
+<a name="1176"><span class="lineNum">    1176 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(VCN, i, regUVD_LMI_CTRL2, tmp);</span></a>
+<a name="1177"><span class="lineNum">    1177 </span><span class="lineNoCov">          0 :                 tmp = UVD_LMI_STATUS__UMC_READ_CLEAN_RAW_MASK |</span></a>
+<a name="1178"><span class="lineNum">    1178 </span>            :                         UVD_LMI_STATUS__UMC_WRITE_CLEAN_RAW_MASK;</a>
+<a name="1179"><span class="lineNum">    1179 </span><span class="lineNoCov">          0 :                 r = SOC15_WAIT_ON_RREG(VCN, i, regUVD_LMI_STATUS, tmp, tmp);</span></a>
+<a name="1180"><span class="lineNum">    1180 </span><span class="lineNoCov">          0 :                 if (r)</span></a>
+<a name="1181"><span class="lineNum">    1181 </span>            :                         return r;</a>
+<a name="1182"><span class="lineNum">    1182 </span>            : </a>
+<a name="1183"><span class="lineNum">    1183 </span>            :                 /* block VCPU register access */</a>
+<a name="1184"><span class="lineNum">    1184 </span><span class="lineNoCov">          0 :                 WREG32_P(SOC15_REG_OFFSET(VCN, i, regUVD_RB_ARB_CTRL),</span></a>
+<a name="1185"><span class="lineNum">    1185 </span>            :                                 UVD_RB_ARB_CTRL__VCPU_DIS_MASK,</a>
+<a name="1186"><span class="lineNum">    1186 </span>            :                                 ~UVD_RB_ARB_CTRL__VCPU_DIS_MASK);</a>
+<a name="1187"><span class="lineNum">    1187 </span>            : </a>
+<a name="1188"><span class="lineNum">    1188 </span>            :                 /* reset VCPU */</a>
+<a name="1189"><span class="lineNum">    1189 </span><span class="lineNoCov">          0 :                 WREG32_P(SOC15_REG_OFFSET(VCN, i, regUVD_VCPU_CNTL),</span></a>
+<a name="1190"><span class="lineNum">    1190 </span>            :                                 UVD_VCPU_CNTL__BLK_RST_MASK,</a>
+<a name="1191"><span class="lineNum">    1191 </span>            :                                 ~UVD_VCPU_CNTL__BLK_RST_MASK);</a>
+<a name="1192"><span class="lineNum">    1192 </span>            : </a>
+<a name="1193"><span class="lineNum">    1193 </span>            :                 /* disable VCPU clock */</a>
+<a name="1194"><span class="lineNum">    1194 </span><span class="lineNoCov">          0 :                 WREG32_P(SOC15_REG_OFFSET(VCN, i, regUVD_VCPU_CNTL), 0,</span></a>
+<a name="1195"><span class="lineNum">    1195 </span>            :                                 ~(UVD_VCPU_CNTL__CLK_EN_MASK));</a>
+<a name="1196"><span class="lineNum">    1196 </span>            : </a>
+<a name="1197"><span class="lineNum">    1197 </span>            :                 /* apply soft reset */</a>
+<a name="1198"><span class="lineNum">    1198 </span><span class="lineNoCov">          0 :                 tmp = RREG32_SOC15(VCN, i, regUVD_SOFT_RESET);</span></a>
+<a name="1199"><span class="lineNum">    1199 </span><span class="lineNoCov">          0 :                 tmp |= UVD_SOFT_RESET__LMI_UMC_SOFT_RESET_MASK;</span></a>
+<a name="1200"><span class="lineNum">    1200 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(VCN, i, regUVD_SOFT_RESET, tmp);</span></a>
+<a name="1201"><span class="lineNum">    1201 </span><span class="lineNoCov">          0 :                 tmp = RREG32_SOC15(VCN, i, regUVD_SOFT_RESET);</span></a>
+<a name="1202"><span class="lineNum">    1202 </span><span class="lineNoCov">          0 :                 tmp |= UVD_SOFT_RESET__LMI_SOFT_RESET_MASK;</span></a>
+<a name="1203"><span class="lineNum">    1203 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(VCN, i, regUVD_SOFT_RESET, tmp);</span></a>
+<a name="1204"><span class="lineNum">    1204 </span>            : </a>
+<a name="1205"><span class="lineNum">    1205 </span>            :                 /* clear status */</a>
+<a name="1206"><span class="lineNum">    1206 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(VCN, i, regUVD_STATUS, 0);</span></a>
+<a name="1207"><span class="lineNum">    1207 </span>            : </a>
+<a name="1208"><span class="lineNum">    1208 </span>            :                 /* apply HW clock gating */</a>
+<a name="1209"><span class="lineNum">    1209 </span><span class="lineNoCov">          0 :                 vcn_v4_0_enable_clock_gating(adev, i);</span></a>
+<a name="1210"><span class="lineNum">    1210 </span>            : </a>
+<a name="1211"><span class="lineNum">    1211 </span>            :                 /* enable VCN power gating */</a>
+<a name="1212"><span class="lineNum">    1212 </span><span class="lineNoCov">          0 :                 vcn_v4_0_enable_static_power_gating(adev, i);</span></a>
+<a name="1213"><span class="lineNum">    1213 </span>            :         }</a>
+<a name="1214"><span class="lineNum">    1214 </span>            : </a>
+<a name="1215"><span class="lineNum">    1215 </span><span class="lineNoCov">          0 :         if (adev-&gt;pm.dpm_enabled)</span></a>
+<a name="1216"><span class="lineNum">    1216 </span><span class="lineNoCov">          0 :                 amdgpu_dpm_enable_uvd(adev, false);</span></a>
+<a name="1217"><span class="lineNum">    1217 </span>            : </a>
+<a name="1218"><span class="lineNum">    1218 </span>            :         return 0;</a>
+<a name="1219"><span class="lineNum">    1219 </span>            : }</a>
+<a name="1220"><span class="lineNum">    1220 </span>            : </a>
+<a name="1221"><span class="lineNum">    1221 </span>            : /**</a>
+<a name="1222"><span class="lineNum">    1222 </span>            :  * vcn_v4_0_pause_dpg_mode - VCN pause with dpg mode</a>
+<a name="1223"><span class="lineNum">    1223 </span>            :  *</a>
+<a name="1224"><span class="lineNum">    1224 </span>            :  * @adev: amdgpu_device pointer</a>
+<a name="1225"><span class="lineNum">    1225 </span>            :  * @inst_idx: instance number index</a>
+<a name="1226"><span class="lineNum">    1226 </span>            :  * @new_state: pause state</a>
+<a name="1227"><span class="lineNum">    1227 </span>            :  *</a>
+<a name="1228"><span class="lineNum">    1228 </span>            :  * Pause dpg mode for VCN block</a>
+<a name="1229"><span class="lineNum">    1229 </span>            :  */</a>
+<a name="1230"><span class="lineNum">    1230 </span><span class="lineNoCov">          0 : static int vcn_v4_0_pause_dpg_mode(struct amdgpu_device *adev, int inst_idx,</span></a>
+<a name="1231"><span class="lineNum">    1231 </span>            :       struct dpg_pause_state *new_state)</a>
+<a name="1232"><span class="lineNum">    1232 </span>            : {</a>
+<a name="1233"><span class="lineNum">    1233 </span><span class="lineNoCov">          0 :         uint32_t reg_data = 0;</span></a>
+<a name="1234"><span class="lineNum">    1234 </span>            :         int ret_code;</a>
+<a name="1235"><span class="lineNum">    1235 </span>            : </a>
+<a name="1236"><span class="lineNum">    1236 </span>            :         /* pause/unpause if state is changed */</a>
+<a name="1237"><span class="lineNum">    1237 </span><span class="lineNoCov">          0 :         if (adev-&gt;vcn.inst[inst_idx].pause_state.fw_based != new_state-&gt;fw_based) {</span></a>
+<a name="1238"><span class="lineNum">    1238 </span><span class="lineNoCov">          0 :                 DRM_DEV_DEBUG(adev-&gt;dev, &quot;dpg pause state changed %d -&gt; %d&quot;,</span></a>
+<a name="1239"><span class="lineNum">    1239 </span>            :                         adev-&gt;vcn.inst[inst_idx].pause_state.fw_based,       new_state-&gt;fw_based);</a>
+<a name="1240"><span class="lineNum">    1240 </span><span class="lineNoCov">          0 :                 reg_data = RREG32_SOC15(VCN, inst_idx, regUVD_DPG_PAUSE) &amp;</span></a>
+<a name="1241"><span class="lineNum">    1241 </span>            :                         (~UVD_DPG_PAUSE__NJ_PAUSE_DPG_ACK_MASK);</a>
+<a name="1242"><span class="lineNum">    1242 </span>            : </a>
+<a name="1243"><span class="lineNum">    1243 </span><span class="lineNoCov">          0 :                 if (new_state-&gt;fw_based == VCN_DPG_STATE__PAUSE) {</span></a>
+<a name="1244"><span class="lineNum">    1244 </span><span class="lineNoCov">          0 :                         ret_code = SOC15_WAIT_ON_RREG(VCN, inst_idx, regUVD_POWER_STATUS, 0x1,</span></a>
+<a name="1245"><span class="lineNum">    1245 </span>            :                                 UVD_POWER_STATUS__UVD_POWER_STATUS_MASK);</a>
+<a name="1246"><span class="lineNum">    1246 </span>            : </a>
+<a name="1247"><span class="lineNum">    1247 </span><span class="lineNoCov">          0 :                         if (!ret_code) {</span></a>
+<a name="1248"><span class="lineNum">    1248 </span>            :                                 /* pause DPG */</a>
+<a name="1249"><span class="lineNum">    1249 </span><span class="lineNoCov">          0 :                                 reg_data |= UVD_DPG_PAUSE__NJ_PAUSE_DPG_REQ_MASK;</span></a>
+<a name="1250"><span class="lineNum">    1250 </span><span class="lineNoCov">          0 :                                 WREG32_SOC15(VCN, inst_idx, regUVD_DPG_PAUSE, reg_data);</span></a>
+<a name="1251"><span class="lineNum">    1251 </span>            : </a>
+<a name="1252"><span class="lineNum">    1252 </span>            :                                 /* wait for ACK */</a>
+<a name="1253"><span class="lineNum">    1253 </span><span class="lineNoCov">          0 :                                 SOC15_WAIT_ON_RREG(VCN, inst_idx, regUVD_DPG_PAUSE,</span></a>
+<a name="1254"><span class="lineNum">    1254 </span>            :                                         UVD_DPG_PAUSE__NJ_PAUSE_DPG_ACK_MASK,</a>
+<a name="1255"><span class="lineNum">    1255 </span>            :                                         UVD_DPG_PAUSE__NJ_PAUSE_DPG_ACK_MASK);</a>
+<a name="1256"><span class="lineNum">    1256 </span>            : </a>
+<a name="1257"><span class="lineNum">    1257 </span><span class="lineNoCov">          0 :                                 SOC15_WAIT_ON_RREG(VCN, inst_idx, regUVD_POWER_STATUS,</span></a>
+<a name="1258"><span class="lineNum">    1258 </span>            :                                         UVD_PGFSM_CONFIG__UVDM_UVDU_PWR_ON, UVD_POWER_STATUS__UVD_POWER_STATUS_MASK);</a>
+<a name="1259"><span class="lineNum">    1259 </span>            :                         }</a>
+<a name="1260"><span class="lineNum">    1260 </span>            :                 } else {</a>
+<a name="1261"><span class="lineNum">    1261 </span>            :                         /* unpause dpg, no need to wait */</a>
+<a name="1262"><span class="lineNum">    1262 </span><span class="lineNoCov">          0 :                         reg_data &amp;= ~UVD_DPG_PAUSE__NJ_PAUSE_DPG_REQ_MASK;</span></a>
+<a name="1263"><span class="lineNum">    1263 </span><span class="lineNoCov">          0 :                         WREG32_SOC15(VCN, inst_idx, regUVD_DPG_PAUSE, reg_data);</span></a>
+<a name="1264"><span class="lineNum">    1264 </span>            :                 }</a>
+<a name="1265"><span class="lineNum">    1265 </span><span class="lineNoCov">          0 :                 adev-&gt;vcn.inst[inst_idx].pause_state.fw_based = new_state-&gt;fw_based;</span></a>
+<a name="1266"><span class="lineNum">    1266 </span>            :         }</a>
+<a name="1267"><span class="lineNum">    1267 </span>            : </a>
+<a name="1268"><span class="lineNum">    1268 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="1269"><span class="lineNum">    1269 </span>            : }</a>
+<a name="1270"><span class="lineNum">    1270 </span>            : </a>
+<a name="1271"><span class="lineNum">    1271 </span>            : /**</a>
+<a name="1272"><span class="lineNum">    1272 </span>            :  * vcn_v4_0_unified_ring_get_rptr - get unified read pointer</a>
+<a name="1273"><span class="lineNum">    1273 </span>            :  *</a>
+<a name="1274"><span class="lineNum">    1274 </span>            :  * @ring: amdgpu_ring pointer</a>
+<a name="1275"><span class="lineNum">    1275 </span>            :  *</a>
+<a name="1276"><span class="lineNum">    1276 </span>            :  * Returns the current hardware unified read pointer</a>
+<a name="1277"><span class="lineNum">    1277 </span>            :  */</a>
+<a name="1278"><span class="lineNum">    1278 </span><span class="lineNoCov">          0 : static uint64_t vcn_v4_0_unified_ring_get_rptr(struct amdgpu_ring *ring)</span></a>
+<a name="1279"><span class="lineNum">    1279 </span>            : {</a>
+<a name="1280"><span class="lineNum">    1280 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = ring-&gt;adev;</span></a>
+<a name="1281"><span class="lineNum">    1281 </span>            : </a>
+<a name="1282"><span class="lineNum">    1282 </span><span class="lineNoCov">          0 :         if (ring != &amp;adev-&gt;vcn.inst[ring-&gt;me].ring_enc[0])</span></a>
+<a name="1283"><span class="lineNum">    1283 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;wrong ring id is identified in %s&quot;, __func__);</span></a>
+<a name="1284"><span class="lineNum">    1284 </span>            : </a>
+<a name="1285"><span class="lineNum">    1285 </span><span class="lineNoCov">          0 :         return RREG32_SOC15(VCN, ring-&gt;me, regUVD_RB_RPTR);</span></a>
+<a name="1286"><span class="lineNum">    1286 </span>            : }</a>
+<a name="1287"><span class="lineNum">    1287 </span>            : </a>
+<a name="1288"><span class="lineNum">    1288 </span>            : /**</a>
+<a name="1289"><span class="lineNum">    1289 </span>            :  * vcn_v4_0_unified_ring_get_wptr - get unified write pointer</a>
+<a name="1290"><span class="lineNum">    1290 </span>            :  *</a>
+<a name="1291"><span class="lineNum">    1291 </span>            :  * @ring: amdgpu_ring pointer</a>
+<a name="1292"><span class="lineNum">    1292 </span>            :  *</a>
+<a name="1293"><span class="lineNum">    1293 </span>            :  * Returns the current hardware unified write pointer</a>
+<a name="1294"><span class="lineNum">    1294 </span>            :  */</a>
+<a name="1295"><span class="lineNum">    1295 </span><span class="lineNoCov">          0 : static uint64_t vcn_v4_0_unified_ring_get_wptr(struct amdgpu_ring *ring)</span></a>
+<a name="1296"><span class="lineNum">    1296 </span>            : {</a>
+<a name="1297"><span class="lineNum">    1297 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = ring-&gt;adev;</span></a>
+<a name="1298"><span class="lineNum">    1298 </span>            : </a>
+<a name="1299"><span class="lineNum">    1299 </span><span class="lineNoCov">          0 :         if (ring != &amp;adev-&gt;vcn.inst[ring-&gt;me].ring_enc[0])</span></a>
+<a name="1300"><span class="lineNum">    1300 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;wrong ring id is identified in %s&quot;, __func__);</span></a>
+<a name="1301"><span class="lineNum">    1301 </span>            : </a>
+<a name="1302"><span class="lineNum">    1302 </span><span class="lineNoCov">          0 :         if (ring-&gt;use_doorbell)</span></a>
+<a name="1303"><span class="lineNum">    1303 </span><span class="lineNoCov">          0 :                 return *ring-&gt;wptr_cpu_addr;</span></a>
+<a name="1304"><span class="lineNum">    1304 </span>            :         else</a>
+<a name="1305"><span class="lineNum">    1305 </span><span class="lineNoCov">          0 :                 return RREG32_SOC15(VCN, ring-&gt;me, regUVD_RB_WPTR);</span></a>
+<a name="1306"><span class="lineNum">    1306 </span>            : }</a>
+<a name="1307"><span class="lineNum">    1307 </span>            : </a>
+<a name="1308"><span class="lineNum">    1308 </span>            : /**</a>
+<a name="1309"><span class="lineNum">    1309 </span>            :  * vcn_v4_0_unified_ring_set_wptr - set enc write pointer</a>
+<a name="1310"><span class="lineNum">    1310 </span>            :  *</a>
+<a name="1311"><span class="lineNum">    1311 </span>            :  * @ring: amdgpu_ring pointer</a>
+<a name="1312"><span class="lineNum">    1312 </span>            :  *</a>
+<a name="1313"><span class="lineNum">    1313 </span>            :  * Commits the enc write pointer to the hardware</a>
+<a name="1314"><span class="lineNum">    1314 </span>            :  */</a>
+<a name="1315"><span class="lineNum">    1315 </span><span class="lineNoCov">          0 : static void vcn_v4_0_unified_ring_set_wptr(struct amdgpu_ring *ring)</span></a>
+<a name="1316"><span class="lineNum">    1316 </span>            : {</a>
+<a name="1317"><span class="lineNum">    1317 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = ring-&gt;adev;</span></a>
+<a name="1318"><span class="lineNum">    1318 </span>            : </a>
+<a name="1319"><span class="lineNum">    1319 </span><span class="lineNoCov">          0 :         if (ring != &amp;adev-&gt;vcn.inst[ring-&gt;me].ring_enc[0])</span></a>
+<a name="1320"><span class="lineNum">    1320 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;wrong ring id is identified in %s&quot;, __func__);</span></a>
+<a name="1321"><span class="lineNum">    1321 </span>            : </a>
+<a name="1322"><span class="lineNum">    1322 </span><span class="lineNoCov">          0 :         if (ring-&gt;use_doorbell) {</span></a>
+<a name="1323"><span class="lineNum">    1323 </span><span class="lineNoCov">          0 :                 *ring-&gt;wptr_cpu_addr = lower_32_bits(ring-&gt;wptr);</span></a>
+<a name="1324"><span class="lineNum">    1324 </span><span class="lineNoCov">          0 :                 WDOORBELL32(ring-&gt;doorbell_index, lower_32_bits(ring-&gt;wptr));</span></a>
+<a name="1325"><span class="lineNum">    1325 </span>            :         } else {</a>
+<a name="1326"><span class="lineNum">    1326 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(VCN, ring-&gt;me, regUVD_RB_WPTR, lower_32_bits(ring-&gt;wptr));</span></a>
+<a name="1327"><span class="lineNum">    1327 </span>            :         }</a>
+<a name="1328"><span class="lineNum">    1328 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1329"><span class="lineNum">    1329 </span>            : </a>
+<a name="1330"><span class="lineNum">    1330 </span>            : static int vcn_v4_0_limit_sched(struct amdgpu_cs_parser *p)</a>
+<a name="1331"><span class="lineNum">    1331 </span>            : {</a>
+<a name="1332"><span class="lineNum">    1332 </span>            :         struct drm_gpu_scheduler **scheds;</a>
+<a name="1333"><span class="lineNum">    1333 </span>            : </a>
+<a name="1334"><span class="lineNum">    1334 </span>            :         /* The create msg must be in the first IB submitted */</a>
+<a name="1335"><span class="lineNum">    1335 </span><span class="lineNoCov">          0 :         if (atomic_read(&amp;p-&gt;entity-&gt;fence_seq))</span></a>
+<a name="1336"><span class="lineNum">    1336 </span>            :                 return -EINVAL;</a>
+<a name="1337"><span class="lineNum">    1337 </span>            : </a>
+<a name="1338"><span class="lineNum">    1338 </span><span class="lineNoCov">          0 :         scheds = p-&gt;adev-&gt;gpu_sched[AMDGPU_HW_IP_VCN_ENC]</span></a>
+<a name="1339"><span class="lineNum">    1339 </span>            :                 [AMDGPU_RING_PRIO_0].sched;</a>
+<a name="1340"><span class="lineNum">    1340 </span><span class="lineNoCov">          0 :         drm_sched_entity_modify_sched(p-&gt;entity, scheds, 1);</span></a>
+<a name="1341"><span class="lineNum">    1341 </span>            :         return 0;</a>
+<a name="1342"><span class="lineNum">    1342 </span>            : }</a>
+<a name="1343"><span class="lineNum">    1343 </span>            : </a>
+<a name="1344"><span class="lineNum">    1344 </span><span class="lineNoCov">          0 : static int vcn_v4_0_dec_msg(struct amdgpu_cs_parser *p, uint64_t addr)</span></a>
+<a name="1345"><span class="lineNum">    1345 </span>            : {</a>
+<a name="1346"><span class="lineNum">    1346 </span><span class="lineNoCov">          0 :         struct ttm_operation_ctx ctx = { false, false };</span></a>
+<a name="1347"><span class="lineNum">    1347 </span>            :         struct amdgpu_bo_va_mapping *map;</a>
+<a name="1348"><span class="lineNum">    1348 </span>            :         uint32_t *msg, num_buffers;</a>
+<a name="1349"><span class="lineNum">    1349 </span>            :         struct amdgpu_bo *bo;</a>
+<a name="1350"><span class="lineNum">    1350 </span>            :         uint64_t start, end;</a>
+<a name="1351"><span class="lineNum">    1351 </span>            :         unsigned int i;</a>
+<a name="1352"><span class="lineNum">    1352 </span>            :         void *ptr;</a>
+<a name="1353"><span class="lineNum">    1353 </span>            :         int r;</a>
+<a name="1354"><span class="lineNum">    1354 </span>            : </a>
+<a name="1355"><span class="lineNum">    1355 </span><span class="lineNoCov">          0 :         addr &amp;= AMDGPU_GMC_HOLE_MASK;</span></a>
+<a name="1356"><span class="lineNum">    1356 </span><span class="lineNoCov">          0 :         r = amdgpu_cs_find_mapping(p, addr, &amp;bo, &amp;map);</span></a>
+<a name="1357"><span class="lineNum">    1357 </span><span class="lineNoCov">          0 :         if (r) {</span></a>
+<a name="1358"><span class="lineNum">    1358 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;Can't find BO for addr 0x%08llx\n&quot;, addr);</span></a>
+<a name="1359"><span class="lineNum">    1359 </span><span class="lineNoCov">          0 :                 return r;</span></a>
+<a name="1360"><span class="lineNum">    1360 </span>            :         }</a>
+<a name="1361"><span class="lineNum">    1361 </span>            : </a>
+<a name="1362"><span class="lineNum">    1362 </span><span class="lineNoCov">          0 :         start = map-&gt;start * AMDGPU_GPU_PAGE_SIZE;</span></a>
+<a name="1363"><span class="lineNum">    1363 </span><span class="lineNoCov">          0 :         end = (map-&gt;last + 1) * AMDGPU_GPU_PAGE_SIZE;</span></a>
+<a name="1364"><span class="lineNum">    1364 </span><span class="lineNoCov">          0 :         if (addr &amp; 0x7) {</span></a>
+<a name="1365"><span class="lineNum">    1365 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;VCN messages must be 8 byte aligned!\n&quot;);</span></a>
+<a name="1366"><span class="lineNum">    1366 </span><span class="lineNoCov">          0 :                 return -EINVAL;</span></a>
+<a name="1367"><span class="lineNum">    1367 </span>            :         }</a>
+<a name="1368"><span class="lineNum">    1368 </span>            : </a>
+<a name="1369"><span class="lineNum">    1369 </span><span class="lineNoCov">          0 :         bo-&gt;flags |= AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;</span></a>
+<a name="1370"><span class="lineNum">    1370 </span><span class="lineNoCov">          0 :         amdgpu_bo_placement_from_domain(bo, bo-&gt;allowed_domains);</span></a>
+<a name="1371"><span class="lineNum">    1371 </span><span class="lineNoCov">          0 :         r = ttm_bo_validate(&amp;bo-&gt;tbo, &amp;bo-&gt;placement, &amp;ctx);</span></a>
+<a name="1372"><span class="lineNum">    1372 </span><span class="lineNoCov">          0 :         if (r) {</span></a>
+<a name="1373"><span class="lineNum">    1373 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;Failed validating the VCN message BO (%d)!\n&quot;, r);</span></a>
+<a name="1374"><span class="lineNum">    1374 </span><span class="lineNoCov">          0 :                 return r;</span></a>
+<a name="1375"><span class="lineNum">    1375 </span>            :         }</a>
+<a name="1376"><span class="lineNum">    1376 </span>            : </a>
+<a name="1377"><span class="lineNum">    1377 </span><span class="lineNoCov">          0 :         r = amdgpu_bo_kmap(bo, &amp;ptr);</span></a>
+<a name="1378"><span class="lineNum">    1378 </span><span class="lineNoCov">          0 :         if (r) {</span></a>
+<a name="1379"><span class="lineNum">    1379 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;Failed mapping the VCN message (%d)!\n&quot;, r);</span></a>
+<a name="1380"><span class="lineNum">    1380 </span><span class="lineNoCov">          0 :                 return r;</span></a>
+<a name="1381"><span class="lineNum">    1381 </span>            :         }</a>
+<a name="1382"><span class="lineNum">    1382 </span>            : </a>
+<a name="1383"><span class="lineNum">    1383 </span><span class="lineNoCov">          0 :         msg = ptr + addr - start;</span></a>
+<a name="1384"><span class="lineNum">    1384 </span>            : </a>
+<a name="1385"><span class="lineNum">    1385 </span>            :         /* Check length */</a>
+<a name="1386"><span class="lineNum">    1386 </span><span class="lineNoCov">          0 :         if (msg[1] &gt; end - addr) {</span></a>
+<a name="1387"><span class="lineNum">    1387 </span>            :                 r = -EINVAL;</a>
+<a name="1388"><span class="lineNum">    1388 </span>            :                 goto out;</a>
+<a name="1389"><span class="lineNum">    1389 </span>            :         }</a>
+<a name="1390"><span class="lineNum">    1390 </span>            : </a>
+<a name="1391"><span class="lineNum">    1391 </span><span class="lineNoCov">          0 :         if (msg[3] != RDECODE_MSG_CREATE)</span></a>
+<a name="1392"><span class="lineNum">    1392 </span>            :                 goto out;</a>
+<a name="1393"><span class="lineNum">    1393 </span>            : </a>
+<a name="1394"><span class="lineNum">    1394 </span><span class="lineNoCov">          0 :         num_buffers = msg[2];</span></a>
+<a name="1395"><span class="lineNum">    1395 </span><span class="lineNoCov">          0 :         for (i = 0, msg = &amp;msg[6]; i &lt; num_buffers; ++i, msg += 4) {</span></a>
+<a name="1396"><span class="lineNum">    1396 </span>            :                 uint32_t offset, size, *create;</a>
+<a name="1397"><span class="lineNum">    1397 </span>            : </a>
+<a name="1398"><span class="lineNum">    1398 </span><span class="lineNoCov">          0 :                 if (msg[0] != RDECODE_MESSAGE_CREATE)</span></a>
+<a name="1399"><span class="lineNum">    1399 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="1400"><span class="lineNum">    1400 </span>            : </a>
+<a name="1401"><span class="lineNum">    1401 </span><span class="lineNoCov">          0 :                 offset = msg[1];</span></a>
+<a name="1402"><span class="lineNum">    1402 </span><span class="lineNoCov">          0 :                 size = msg[2];</span></a>
+<a name="1403"><span class="lineNum">    1403 </span>            : </a>
+<a name="1404"><span class="lineNum">    1404 </span><span class="lineNoCov">          0 :                 if (offset + size &gt; end) {</span></a>
+<a name="1405"><span class="lineNum">    1405 </span>            :                         r = -EINVAL;</a>
+<a name="1406"><span class="lineNum">    1406 </span>            :                         goto out;</a>
+<a name="1407"><span class="lineNum">    1407 </span>            :                 }</a>
+<a name="1408"><span class="lineNum">    1408 </span>            : </a>
+<a name="1409"><span class="lineNum">    1409 </span><span class="lineNoCov">          0 :                 create = ptr + addr + offset - start;</span></a>
+<a name="1410"><span class="lineNum">    1410 </span>            : </a>
+<a name="1411"><span class="lineNum">    1411 </span>            :                 /* H246, HEVC and VP9 can run on any instance */</a>
+<a name="1412"><span class="lineNum">    1412 </span><span class="lineNoCov">          0 :                 if (create[0] == 0x7 || create[0] == 0x10 || create[0] == 0x11)</span></a>
+<a name="1413"><span class="lineNum">    1413 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="1414"><span class="lineNum">    1414 </span>            : </a>
+<a name="1415"><span class="lineNum">    1415 </span><span class="lineNoCov">          0 :                 r = vcn_v4_0_limit_sched(p);</span></a>
+<a name="1416"><span class="lineNum">    1416 </span><span class="lineNoCov">          0 :                 if (r)</span></a>
+<a name="1417"><span class="lineNum">    1417 </span>            :                         goto out;</a>
+<a name="1418"><span class="lineNum">    1418 </span>            :         }</a>
+<a name="1419"><span class="lineNum">    1419 </span>            : </a>
+<a name="1420"><span class="lineNum">    1420 </span>            : out:</a>
+<a name="1421"><span class="lineNum">    1421 </span><span class="lineNoCov">          0 :         amdgpu_bo_kunmap(bo);</span></a>
+<a name="1422"><span class="lineNum">    1422 </span><span class="lineNoCov">          0 :         return r;</span></a>
+<a name="1423"><span class="lineNum">    1423 </span>            : }</a>
+<a name="1424"><span class="lineNum">    1424 </span>            : </a>
+<a name="1425"><span class="lineNum">    1425 </span>            : #define RADEON_VCN_ENGINE_TYPE_DECODE                                 (0x00000003)</a>
+<a name="1426"><span class="lineNum">    1426 </span>            : </a>
+<a name="1427"><span class="lineNum">    1427 </span><span class="lineNoCov">          0 : static int vcn_v4_0_ring_patch_cs_in_place(struct amdgpu_cs_parser *p,</span></a>
+<a name="1428"><span class="lineNum">    1428 </span>            :                                 struct amdgpu_job *job,</a>
+<a name="1429"><span class="lineNum">    1429 </span>            :                                 struct amdgpu_ib *ib)</a>
+<a name="1430"><span class="lineNum">    1430 </span>            : {</a>
+<a name="1431"><span class="lineNum">    1431 </span><span class="lineNoCov">          0 :         struct amdgpu_ring *ring = to_amdgpu_ring(p-&gt;entity-&gt;rq-&gt;sched);</span></a>
+<a name="1432"><span class="lineNum">    1432 </span><span class="lineNoCov">          0 :         struct amdgpu_vcn_decode_buffer *decode_buffer = NULL;</span></a>
+<a name="1433"><span class="lineNum">    1433 </span>            :         uint32_t val;</a>
+<a name="1434"><span class="lineNum">    1434 </span><span class="lineNoCov">          0 :         int r = 0;</span></a>
+<a name="1435"><span class="lineNum">    1435 </span>            : </a>
+<a name="1436"><span class="lineNum">    1436 </span>            :         /* The first instance can decode anything */</a>
+<a name="1437"><span class="lineNum">    1437 </span><span class="lineNoCov">          0 :         if (!ring-&gt;me)</span></a>
+<a name="1438"><span class="lineNum">    1438 </span>            :                 return r;</a>
+<a name="1439"><span class="lineNum">    1439 </span>            : </a>
+<a name="1440"><span class="lineNum">    1440 </span>            :         /* unified queue ib header has 8 double words. */</a>
+<a name="1441"><span class="lineNum">    1441 </span><span class="lineNoCov">          0 :         if (ib-&gt;length_dw &lt; 8)</span></a>
+<a name="1442"><span class="lineNum">    1442 </span>            :                 return r;</a>
+<a name="1443"><span class="lineNum">    1443 </span>            : </a>
+<a name="1444"><span class="lineNum">    1444 </span><span class="lineNoCov">          0 :         val = amdgpu_ib_get_value(ib, 6); //RADEON_VCN_ENGINE_TYPE</span></a>
+<a name="1445"><span class="lineNum">    1445 </span>            : </a>
+<a name="1446"><span class="lineNum">    1446 </span><span class="lineNoCov">          0 :         if (val == RADEON_VCN_ENGINE_TYPE_DECODE) {</span></a>
+<a name="1447"><span class="lineNum">    1447 </span><span class="lineNoCov">          0 :                 decode_buffer = (struct amdgpu_vcn_decode_buffer *)&amp;ib-&gt;ptr[10];</span></a>
+<a name="1448"><span class="lineNum">    1448 </span>            : </a>
+<a name="1449"><span class="lineNum">    1449 </span><span class="lineNoCov">          0 :                 if (decode_buffer-&gt;valid_buf_flag  &amp; 0x1)</span></a>
+<a name="1450"><span class="lineNum">    1450 </span><span class="lineNoCov">          0 :                         r = vcn_v4_0_dec_msg(p, ((u64)decode_buffer-&gt;msg_buffer_address_hi) &lt;&lt; 32 |</span></a>
+<a name="1451"><span class="lineNum">    1451 </span><span class="lineNoCov">          0 :                                                 decode_buffer-&gt;msg_buffer_address_lo);</span></a>
+<a name="1452"><span class="lineNum">    1452 </span>            :         }</a>
+<a name="1453"><span class="lineNum">    1453 </span>            :         return r;</a>
+<a name="1454"><span class="lineNum">    1454 </span>            : }</a>
+<a name="1455"><span class="lineNum">    1455 </span>            : </a>
+<a name="1456"><span class="lineNum">    1456 </span>            : static const struct amdgpu_ring_funcs vcn_v4_0_unified_ring_vm_funcs = {</a>
+<a name="1457"><span class="lineNum">    1457 </span>            :         .type = AMDGPU_RING_TYPE_VCN_ENC,</a>
+<a name="1458"><span class="lineNum">    1458 </span>            :         .align_mask = 0x3f,</a>
+<a name="1459"><span class="lineNum">    1459 </span>            :         .nop = VCN_ENC_CMD_NO_OP,</a>
+<a name="1460"><span class="lineNum">    1460 </span>            :         .vmhub = AMDGPU_MMHUB_0,</a>
+<a name="1461"><span class="lineNum">    1461 </span>            :         .get_rptr = vcn_v4_0_unified_ring_get_rptr,</a>
+<a name="1462"><span class="lineNum">    1462 </span>            :         .get_wptr = vcn_v4_0_unified_ring_get_wptr,</a>
+<a name="1463"><span class="lineNum">    1463 </span>            :         .set_wptr = vcn_v4_0_unified_ring_set_wptr,</a>
+<a name="1464"><span class="lineNum">    1464 </span>            :         .patch_cs_in_place = vcn_v4_0_ring_patch_cs_in_place,</a>
+<a name="1465"><span class="lineNum">    1465 </span>            :         .emit_frame_size =</a>
+<a name="1466"><span class="lineNum">    1466 </span>            :                 SOC15_FLUSH_GPU_TLB_NUM_WREG * 3 +</a>
+<a name="1467"><span class="lineNum">    1467 </span>            :                 SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 4 +</a>
+<a name="1468"><span class="lineNum">    1468 </span>            :                 4 + /* vcn_v2_0_enc_ring_emit_vm_flush */</a>
+<a name="1469"><span class="lineNum">    1469 </span>            :                 5 + 5 + /* vcn_v2_0_enc_ring_emit_fence x2 vm fence */</a>
+<a name="1470"><span class="lineNum">    1470 </span>            :                 1, /* vcn_v2_0_enc_ring_insert_end */</a>
+<a name="1471"><span class="lineNum">    1471 </span>            :         .emit_ib_size = 5, /* vcn_v2_0_enc_ring_emit_ib */</a>
+<a name="1472"><span class="lineNum">    1472 </span>            :         .emit_ib = vcn_v2_0_enc_ring_emit_ib,</a>
+<a name="1473"><span class="lineNum">    1473 </span>            :         .emit_fence = vcn_v2_0_enc_ring_emit_fence,</a>
+<a name="1474"><span class="lineNum">    1474 </span>            :         .emit_vm_flush = vcn_v2_0_enc_ring_emit_vm_flush,</a>
+<a name="1475"><span class="lineNum">    1475 </span>            :         .test_ring = amdgpu_vcn_enc_ring_test_ring,</a>
+<a name="1476"><span class="lineNum">    1476 </span>            :         .test_ib = amdgpu_vcn_unified_ring_test_ib,</a>
+<a name="1477"><span class="lineNum">    1477 </span>            :         .insert_nop = amdgpu_ring_insert_nop,</a>
+<a name="1478"><span class="lineNum">    1478 </span>            :         .insert_end = vcn_v2_0_enc_ring_insert_end,</a>
+<a name="1479"><span class="lineNum">    1479 </span>            :         .pad_ib = amdgpu_ring_generic_pad_ib,</a>
+<a name="1480"><span class="lineNum">    1480 </span>            :         .begin_use = amdgpu_vcn_ring_begin_use,</a>
+<a name="1481"><span class="lineNum">    1481 </span>            :         .end_use = amdgpu_vcn_ring_end_use,</a>
+<a name="1482"><span class="lineNum">    1482 </span>            :         .emit_wreg = vcn_v2_0_enc_ring_emit_wreg,</a>
+<a name="1483"><span class="lineNum">    1483 </span>            :         .emit_reg_wait = vcn_v2_0_enc_ring_emit_reg_wait,</a>
+<a name="1484"><span class="lineNum">    1484 </span>            :         .emit_reg_write_reg_wait = amdgpu_ring_emit_reg_write_reg_wait_helper,</a>
+<a name="1485"><span class="lineNum">    1485 </span>            : };</a>
+<a name="1486"><span class="lineNum">    1486 </span>            : </a>
+<a name="1487"><span class="lineNum">    1487 </span>            : /**</a>
+<a name="1488"><span class="lineNum">    1488 </span>            :  * vcn_v4_0_set_unified_ring_funcs - set unified ring functions</a>
+<a name="1489"><span class="lineNum">    1489 </span>            :  *</a>
+<a name="1490"><span class="lineNum">    1490 </span>            :  * @adev: amdgpu_device pointer</a>
+<a name="1491"><span class="lineNum">    1491 </span>            :  *</a>
+<a name="1492"><span class="lineNum">    1492 </span>            :  * Set unified ring functions</a>
+<a name="1493"><span class="lineNum">    1493 </span>            :  */</a>
+<a name="1494"><span class="lineNum">    1494 </span><span class="lineNoCov">          0 : static void vcn_v4_0_set_unified_ring_funcs(struct amdgpu_device *adev)</span></a>
+<a name="1495"><span class="lineNum">    1495 </span>            : {</a>
+<a name="1496"><span class="lineNum">    1496 </span>            :         int i;</a>
+<a name="1497"><span class="lineNum">    1497 </span>            : </a>
+<a name="1498"><span class="lineNum">    1498 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;vcn.num_vcn_inst; ++i) {</span></a>
+<a name="1499"><span class="lineNum">    1499 </span><span class="lineNoCov">          0 :                 if (adev-&gt;vcn.harvest_config &amp; (1 &lt;&lt; i))</span></a>
+<a name="1500"><span class="lineNum">    1500 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="1501"><span class="lineNum">    1501 </span>            : </a>
+<a name="1502"><span class="lineNum">    1502 </span><span class="lineNoCov">          0 :                 adev-&gt;vcn.inst[i].ring_enc[0].funcs = &amp;vcn_v4_0_unified_ring_vm_funcs;</span></a>
+<a name="1503"><span class="lineNum">    1503 </span><span class="lineNoCov">          0 :                 adev-&gt;vcn.inst[i].ring_enc[0].me = i;</span></a>
+<a name="1504"><span class="lineNum">    1504 </span>            : </a>
+<a name="1505"><span class="lineNum">    1505 </span><span class="lineNoCov">          0 :                 DRM_INFO(&quot;VCN(%d) encode/decode are enabled in VM mode\n&quot;, i);</span></a>
+<a name="1506"><span class="lineNum">    1506 </span>            :         }</a>
+<a name="1507"><span class="lineNum">    1507 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1508"><span class="lineNum">    1508 </span>            : </a>
+<a name="1509"><span class="lineNum">    1509 </span>            : /**</a>
+<a name="1510"><span class="lineNum">    1510 </span>            :  * vcn_v4_0_is_idle - check VCN block is idle</a>
+<a name="1511"><span class="lineNum">    1511 </span>            :  *</a>
+<a name="1512"><span class="lineNum">    1512 </span>            :  * @handle: amdgpu_device pointer</a>
+<a name="1513"><span class="lineNum">    1513 </span>            :  *</a>
+<a name="1514"><span class="lineNum">    1514 </span>            :  * Check whether VCN block is idle</a>
+<a name="1515"><span class="lineNum">    1515 </span>            :  */</a>
+<a name="1516"><span class="lineNum">    1516 </span><span class="lineNoCov">          0 : static bool vcn_v4_0_is_idle(void *handle)</span></a>
+<a name="1517"><span class="lineNum">    1517 </span>            : {</a>
+<a name="1518"><span class="lineNum">    1518 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1519"><span class="lineNum">    1519 </span><span class="lineNoCov">          0 :         int i, ret = 1;</span></a>
+<a name="1520"><span class="lineNum">    1520 </span>            : </a>
+<a name="1521"><span class="lineNum">    1521 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;vcn.num_vcn_inst; ++i) {</span></a>
+<a name="1522"><span class="lineNum">    1522 </span><span class="lineNoCov">          0 :                 if (adev-&gt;vcn.harvest_config &amp; (1 &lt;&lt; i))</span></a>
+<a name="1523"><span class="lineNum">    1523 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="1524"><span class="lineNum">    1524 </span>            : </a>
+<a name="1525"><span class="lineNum">    1525 </span><span class="lineNoCov">          0 :                 ret &amp;= (RREG32_SOC15(VCN, i, regUVD_STATUS) == UVD_STATUS__IDLE);</span></a>
+<a name="1526"><span class="lineNum">    1526 </span>            :         }</a>
+<a name="1527"><span class="lineNum">    1527 </span>            : </a>
+<a name="1528"><span class="lineNum">    1528 </span><span class="lineNoCov">          0 :         return ret;</span></a>
+<a name="1529"><span class="lineNum">    1529 </span>            : }</a>
+<a name="1530"><span class="lineNum">    1530 </span>            : </a>
+<a name="1531"><span class="lineNum">    1531 </span>            : /**</a>
+<a name="1532"><span class="lineNum">    1532 </span>            :  * vcn_v4_0_wait_for_idle - wait for VCN block idle</a>
+<a name="1533"><span class="lineNum">    1533 </span>            :  *</a>
+<a name="1534"><span class="lineNum">    1534 </span>            :  * @handle: amdgpu_device pointer</a>
+<a name="1535"><span class="lineNum">    1535 </span>            :  *</a>
+<a name="1536"><span class="lineNum">    1536 </span>            :  * Wait for VCN block idle</a>
+<a name="1537"><span class="lineNum">    1537 </span>            :  */</a>
+<a name="1538"><span class="lineNum">    1538 </span><span class="lineNoCov">          0 : static int vcn_v4_0_wait_for_idle(void *handle)</span></a>
+<a name="1539"><span class="lineNum">    1539 </span>            : {</a>
+<a name="1540"><span class="lineNum">    1540 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1541"><span class="lineNum">    1541 </span><span class="lineNoCov">          0 :         int i, ret = 0;</span></a>
+<a name="1542"><span class="lineNum">    1542 </span>            : </a>
+<a name="1543"><span class="lineNum">    1543 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;vcn.num_vcn_inst; ++i) {</span></a>
+<a name="1544"><span class="lineNum">    1544 </span><span class="lineNoCov">          0 :                 if (adev-&gt;vcn.harvest_config &amp; (1 &lt;&lt; i))</span></a>
+<a name="1545"><span class="lineNum">    1545 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="1546"><span class="lineNum">    1546 </span>            : </a>
+<a name="1547"><span class="lineNum">    1547 </span><span class="lineNoCov">          0 :                 ret = SOC15_WAIT_ON_RREG(VCN, i, regUVD_STATUS, UVD_STATUS__IDLE,</span></a>
+<a name="1548"><span class="lineNum">    1548 </span>            :                         UVD_STATUS__IDLE);</a>
+<a name="1549"><span class="lineNum">    1549 </span><span class="lineNoCov">          0 :                 if (ret)</span></a>
+<a name="1550"><span class="lineNum">    1550 </span>            :                         return ret;</a>
+<a name="1551"><span class="lineNum">    1551 </span>            :         }</a>
+<a name="1552"><span class="lineNum">    1552 </span>            : </a>
+<a name="1553"><span class="lineNum">    1553 </span>            :         return ret;</a>
+<a name="1554"><span class="lineNum">    1554 </span>            : }</a>
+<a name="1555"><span class="lineNum">    1555 </span>            : </a>
+<a name="1556"><span class="lineNum">    1556 </span>            : /**</a>
+<a name="1557"><span class="lineNum">    1557 </span>            :  * vcn_v4_0_set_clockgating_state - set VCN block clockgating state</a>
+<a name="1558"><span class="lineNum">    1558 </span>            :  *</a>
+<a name="1559"><span class="lineNum">    1559 </span>            :  * @handle: amdgpu_device pointer</a>
+<a name="1560"><span class="lineNum">    1560 </span>            :  * @state: clock gating state</a>
+<a name="1561"><span class="lineNum">    1561 </span>            :  *</a>
+<a name="1562"><span class="lineNum">    1562 </span>            :  * Set VCN block clockgating state</a>
+<a name="1563"><span class="lineNum">    1563 </span>            :  */</a>
+<a name="1564"><span class="lineNum">    1564 </span><span class="lineNoCov">          0 : static int vcn_v4_0_set_clockgating_state(void *handle, enum amd_clockgating_state state)</span></a>
+<a name="1565"><span class="lineNum">    1565 </span>            : {</a>
+<a name="1566"><span class="lineNum">    1566 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1567"><span class="lineNum">    1567 </span><span class="lineNoCov">          0 :         bool enable = (state == AMD_CG_STATE_GATE) ? true : false;</span></a>
+<a name="1568"><span class="lineNum">    1568 </span>            :         int i;</a>
+<a name="1569"><span class="lineNum">    1569 </span>            : </a>
+<a name="1570"><span class="lineNum">    1570 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;vcn.num_vcn_inst; ++i) {</span></a>
+<a name="1571"><span class="lineNum">    1571 </span><span class="lineNoCov">          0 :                 if (adev-&gt;vcn.harvest_config &amp; (1 &lt;&lt; i))</span></a>
+<a name="1572"><span class="lineNum">    1572 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="1573"><span class="lineNum">    1573 </span>            : </a>
+<a name="1574"><span class="lineNum">    1574 </span><span class="lineNoCov">          0 :                 if (enable) {</span></a>
+<a name="1575"><span class="lineNum">    1575 </span><span class="lineNoCov">          0 :                         if (RREG32_SOC15(VCN, i, regUVD_STATUS) != UVD_STATUS__IDLE)</span></a>
+<a name="1576"><span class="lineNum">    1576 </span>            :                                 return -EBUSY;</a>
+<a name="1577"><span class="lineNum">    1577 </span><span class="lineNoCov">          0 :                         vcn_v4_0_enable_clock_gating(adev, i);</span></a>
+<a name="1578"><span class="lineNum">    1578 </span>            :                 } else {</a>
+<a name="1579"><span class="lineNum">    1579 </span><span class="lineNoCov">          0 :                         vcn_v4_0_disable_clock_gating(adev, i);</span></a>
+<a name="1580"><span class="lineNum">    1580 </span>            :                 }</a>
+<a name="1581"><span class="lineNum">    1581 </span>            :         }</a>
+<a name="1582"><span class="lineNum">    1582 </span>            : </a>
+<a name="1583"><span class="lineNum">    1583 </span>            :         return 0;</a>
+<a name="1584"><span class="lineNum">    1584 </span>            : }</a>
+<a name="1585"><span class="lineNum">    1585 </span>            : </a>
+<a name="1586"><span class="lineNum">    1586 </span>            : /**</a>
+<a name="1587"><span class="lineNum">    1587 </span>            :  * vcn_v4_0_set_powergating_state - set VCN block powergating state</a>
+<a name="1588"><span class="lineNum">    1588 </span>            :  *</a>
+<a name="1589"><span class="lineNum">    1589 </span>            :  * @handle: amdgpu_device pointer</a>
+<a name="1590"><span class="lineNum">    1590 </span>            :  * @state: power gating state</a>
+<a name="1591"><span class="lineNum">    1591 </span>            :  *</a>
+<a name="1592"><span class="lineNum">    1592 </span>            :  * Set VCN block powergating state</a>
+<a name="1593"><span class="lineNum">    1593 </span>            :  */</a>
+<a name="1594"><span class="lineNum">    1594 </span><span class="lineNoCov">          0 : static int vcn_v4_0_set_powergating_state(void *handle, enum amd_powergating_state state)</span></a>
+<a name="1595"><span class="lineNum">    1595 </span>            : {</a>
+<a name="1596"><span class="lineNum">    1596 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1597"><span class="lineNum">    1597 </span>            :         int ret;</a>
+<a name="1598"><span class="lineNum">    1598 </span>            : </a>
+<a name="1599"><span class="lineNum">    1599 </span><span class="lineNoCov">          0 :         if(state == adev-&gt;vcn.cur_state)</span></a>
+<a name="1600"><span class="lineNum">    1600 </span>            :                 return 0;</a>
+<a name="1601"><span class="lineNum">    1601 </span>            : </a>
+<a name="1602"><span class="lineNum">    1602 </span><span class="lineNoCov">          0 :         if (state == AMD_PG_STATE_GATE)</span></a>
+<a name="1603"><span class="lineNum">    1603 </span><span class="lineNoCov">          0 :                 ret = vcn_v4_0_stop(adev);</span></a>
+<a name="1604"><span class="lineNum">    1604 </span>            :         else</a>
+<a name="1605"><span class="lineNum">    1605 </span><span class="lineNoCov">          0 :                 ret = vcn_v4_0_start(adev);</span></a>
+<a name="1606"><span class="lineNum">    1606 </span>            : </a>
+<a name="1607"><span class="lineNum">    1607 </span><span class="lineNoCov">          0 :         if(!ret)</span></a>
+<a name="1608"><span class="lineNum">    1608 </span><span class="lineNoCov">          0 :                 adev-&gt;vcn.cur_state = state;</span></a>
+<a name="1609"><span class="lineNum">    1609 </span>            : </a>
+<a name="1610"><span class="lineNum">    1610 </span>            :         return ret;</a>
+<a name="1611"><span class="lineNum">    1611 </span>            : }</a>
+<a name="1612"><span class="lineNum">    1612 </span>            : </a>
+<a name="1613"><span class="lineNum">    1613 </span>            : /**</a>
+<a name="1614"><span class="lineNum">    1614 </span>            :  * vcn_v4_0_set_interrupt_state - set VCN block interrupt state</a>
+<a name="1615"><span class="lineNum">    1615 </span>            :  *</a>
+<a name="1616"><span class="lineNum">    1616 </span>            :  * @adev: amdgpu_device pointer</a>
+<a name="1617"><span class="lineNum">    1617 </span>            :  * @source: interrupt sources</a>
+<a name="1618"><span class="lineNum">    1618 </span>            :  * @type: interrupt types</a>
+<a name="1619"><span class="lineNum">    1619 </span>            :  * @state: interrupt states</a>
+<a name="1620"><span class="lineNum">    1620 </span>            :  *</a>
+<a name="1621"><span class="lineNum">    1621 </span>            :  * Set VCN block interrupt state</a>
+<a name="1622"><span class="lineNum">    1622 </span>            :  */</a>
+<a name="1623"><span class="lineNum">    1623 </span><span class="lineNoCov">          0 : static int vcn_v4_0_set_interrupt_state(struct amdgpu_device *adev, struct amdgpu_irq_src *source,</span></a>
+<a name="1624"><span class="lineNum">    1624 </span>            :       unsigned type, enum amdgpu_interrupt_state state)</a>
+<a name="1625"><span class="lineNum">    1625 </span>            : {</a>
+<a name="1626"><span class="lineNum">    1626 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="1627"><span class="lineNum">    1627 </span>            : }</a>
+<a name="1628"><span class="lineNum">    1628 </span>            : </a>
+<a name="1629"><span class="lineNum">    1629 </span>            : /**</a>
+<a name="1630"><span class="lineNum">    1630 </span>            :  * vcn_v4_0_process_interrupt - process VCN block interrupt</a>
+<a name="1631"><span class="lineNum">    1631 </span>            :  *</a>
+<a name="1632"><span class="lineNum">    1632 </span>            :  * @adev: amdgpu_device pointer</a>
+<a name="1633"><span class="lineNum">    1633 </span>            :  * @source: interrupt sources</a>
+<a name="1634"><span class="lineNum">    1634 </span>            :  * @entry: interrupt entry from clients and sources</a>
+<a name="1635"><span class="lineNum">    1635 </span>            :  *</a>
+<a name="1636"><span class="lineNum">    1636 </span>            :  * Process VCN block interrupt</a>
+<a name="1637"><span class="lineNum">    1637 </span>            :  */</a>
+<a name="1638"><span class="lineNum">    1638 </span><span class="lineNoCov">          0 : static int vcn_v4_0_process_interrupt(struct amdgpu_device *adev, struct amdgpu_irq_src *source,</span></a>
+<a name="1639"><span class="lineNum">    1639 </span>            :       struct amdgpu_iv_entry *entry)</a>
+<a name="1640"><span class="lineNum">    1640 </span>            : {</a>
+<a name="1641"><span class="lineNum">    1641 </span>            :         uint32_t ip_instance;</a>
+<a name="1642"><span class="lineNum">    1642 </span>            : </a>
+<a name="1643"><span class="lineNum">    1643 </span><span class="lineNoCov">          0 :         switch (entry-&gt;client_id) {</span></a>
+<a name="1644"><span class="lineNum">    1644 </span>            :         case SOC15_IH_CLIENTID_VCN:</a>
+<a name="1645"><span class="lineNum">    1645 </span>            :                 ip_instance = 0;</a>
+<a name="1646"><span class="lineNum">    1646 </span>            :                 break;</a>
+<a name="1647"><span class="lineNum">    1647 </span>            :         case SOC15_IH_CLIENTID_VCN1:</a>
+<a name="1648"><span class="lineNum">    1648 </span><span class="lineNoCov">          0 :                 ip_instance = 1;</span></a>
+<a name="1649"><span class="lineNum">    1649 </span><span class="lineNoCov">          0 :                 break;</span></a>
+<a name="1650"><span class="lineNum">    1650 </span>            :         default:</a>
+<a name="1651"><span class="lineNum">    1651 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;Unhandled client id: %d\n&quot;, entry-&gt;client_id);</span></a>
+<a name="1652"><span class="lineNum">    1652 </span><span class="lineNoCov">          0 :                 return 0;</span></a>
+<a name="1653"><span class="lineNum">    1653 </span>            :         }</a>
+<a name="1654"><span class="lineNum">    1654 </span>            : </a>
+<a name="1655"><span class="lineNum">    1655 </span><span class="lineNoCov">          0 :         DRM_DEBUG(&quot;IH: VCN TRAP\n&quot;);</span></a>
+<a name="1656"><span class="lineNum">    1656 </span>            : </a>
+<a name="1657"><span class="lineNum">    1657 </span><span class="lineNoCov">          0 :         switch (entry-&gt;src_id) {</span></a>
+<a name="1658"><span class="lineNum">    1658 </span>            :         case VCN_4_0__SRCID__UVD_ENC_GENERAL_PURPOSE:</a>
+<a name="1659"><span class="lineNum">    1659 </span><span class="lineNoCov">          0 :                 amdgpu_fence_process(&amp;adev-&gt;vcn.inst[ip_instance].ring_enc[0]);</span></a>
+<a name="1660"><span class="lineNum">    1660 </span><span class="lineNoCov">          0 :                 break;</span></a>
+<a name="1661"><span class="lineNum">    1661 </span>            :         default:</a>
+<a name="1662"><span class="lineNum">    1662 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;Unhandled interrupt: %d %d\n&quot;,</span></a>
+<a name="1663"><span class="lineNum">    1663 </span>            :                           entry-&gt;src_id, entry-&gt;src_data[0]);</a>
+<a name="1664"><span class="lineNum">    1664 </span><span class="lineNoCov">          0 :                 break;</span></a>
+<a name="1665"><span class="lineNum">    1665 </span>            :         }</a>
+<a name="1666"><span class="lineNum">    1666 </span>            : </a>
+<a name="1667"><span class="lineNum">    1667 </span>            :         return 0;</a>
+<a name="1668"><span class="lineNum">    1668 </span>            : }</a>
+<a name="1669"><span class="lineNum">    1669 </span>            : </a>
+<a name="1670"><span class="lineNum">    1670 </span>            : static const struct amdgpu_irq_src_funcs vcn_v4_0_irq_funcs = {</a>
+<a name="1671"><span class="lineNum">    1671 </span>            :         .set = vcn_v4_0_set_interrupt_state,</a>
+<a name="1672"><span class="lineNum">    1672 </span>            :         .process = vcn_v4_0_process_interrupt,</a>
+<a name="1673"><span class="lineNum">    1673 </span>            : };</a>
+<a name="1674"><span class="lineNum">    1674 </span>            : </a>
+<a name="1675"><span class="lineNum">    1675 </span>            : /**</a>
+<a name="1676"><span class="lineNum">    1676 </span>            :  * vcn_v4_0_set_irq_funcs - set VCN block interrupt irq functions</a>
+<a name="1677"><span class="lineNum">    1677 </span>            :  *</a>
+<a name="1678"><span class="lineNum">    1678 </span>            :  * @adev: amdgpu_device pointer</a>
+<a name="1679"><span class="lineNum">    1679 </span>            :  *</a>
+<a name="1680"><span class="lineNum">    1680 </span>            :  * Set VCN block interrupt irq functions</a>
+<a name="1681"><span class="lineNum">    1681 </span>            :  */</a>
+<a name="1682"><span class="lineNum">    1682 </span>            : static void vcn_v4_0_set_irq_funcs(struct amdgpu_device *adev)</a>
+<a name="1683"><span class="lineNum">    1683 </span>            : {</a>
+<a name="1684"><span class="lineNum">    1684 </span>            :         int i;</a>
+<a name="1685"><span class="lineNum">    1685 </span>            : </a>
+<a name="1686"><span class="lineNum">    1686 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;vcn.num_vcn_inst; ++i) {</span></a>
+<a name="1687"><span class="lineNum">    1687 </span><span class="lineNoCov">          0 :                 if (adev-&gt;vcn.harvest_config &amp; (1 &lt;&lt; i))</span></a>
+<a name="1688"><span class="lineNum">    1688 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="1689"><span class="lineNum">    1689 </span>            : </a>
+<a name="1690"><span class="lineNum">    1690 </span><span class="lineNoCov">          0 :                 adev-&gt;vcn.inst[i].irq.num_types = adev-&gt;vcn.num_enc_rings + 1;</span></a>
+<a name="1691"><span class="lineNum">    1691 </span><span class="lineNoCov">          0 :                 adev-&gt;vcn.inst[i].irq.funcs = &amp;vcn_v4_0_irq_funcs;</span></a>
+<a name="1692"><span class="lineNum">    1692 </span>            :         }</a>
+<a name="1693"><span class="lineNum">    1693 </span>            : }</a>
+<a name="1694"><span class="lineNum">    1694 </span>            : </a>
+<a name="1695"><span class="lineNum">    1695 </span>            : static const struct amd_ip_funcs vcn_v4_0_ip_funcs = {</a>
+<a name="1696"><span class="lineNum">    1696 </span>            :         .name = &quot;vcn_v4_0&quot;,</a>
+<a name="1697"><span class="lineNum">    1697 </span>            :         .early_init = vcn_v4_0_early_init,</a>
+<a name="1698"><span class="lineNum">    1698 </span>            :         .late_init = NULL,</a>
+<a name="1699"><span class="lineNum">    1699 </span>            :         .sw_init = vcn_v4_0_sw_init,</a>
+<a name="1700"><span class="lineNum">    1700 </span>            :         .sw_fini = vcn_v4_0_sw_fini,</a>
+<a name="1701"><span class="lineNum">    1701 </span>            :         .hw_init = vcn_v4_0_hw_init,</a>
+<a name="1702"><span class="lineNum">    1702 </span>            :         .hw_fini = vcn_v4_0_hw_fini,</a>
+<a name="1703"><span class="lineNum">    1703 </span>            :         .suspend = vcn_v4_0_suspend,</a>
+<a name="1704"><span class="lineNum">    1704 </span>            :         .resume = vcn_v4_0_resume,</a>
+<a name="1705"><span class="lineNum">    1705 </span>            :         .is_idle = vcn_v4_0_is_idle,</a>
+<a name="1706"><span class="lineNum">    1706 </span>            :         .wait_for_idle = vcn_v4_0_wait_for_idle,</a>
+<a name="1707"><span class="lineNum">    1707 </span>            :         .check_soft_reset = NULL,</a>
+<a name="1708"><span class="lineNum">    1708 </span>            :         .pre_soft_reset = NULL,</a>
+<a name="1709"><span class="lineNum">    1709 </span>            :         .soft_reset = NULL,</a>
+<a name="1710"><span class="lineNum">    1710 </span>            :         .post_soft_reset = NULL,</a>
+<a name="1711"><span class="lineNum">    1711 </span>            :         .set_clockgating_state = vcn_v4_0_set_clockgating_state,</a>
+<a name="1712"><span class="lineNum">    1712 </span>            :         .set_powergating_state = vcn_v4_0_set_powergating_state,</a>
+<a name="1713"><span class="lineNum">    1713 </span>            : };</a>
+<a name="1714"><span class="lineNum">    1714 </span>            : </a>
+<a name="1715"><span class="lineNum">    1715 </span>            : const struct amdgpu_ip_block_version vcn_v4_0_ip_block =</a>
+<a name="1716"><span class="lineNum">    1716 </span>            : {</a>
+<a name="1717"><span class="lineNum">    1717 </span>            :         .type = AMD_IP_BLOCK_TYPE_VCN,</a>
+<a name="1718"><span class="lineNum">    1718 </span>            :         .major = 4,</a>
+<a name="1719"><span class="lineNum">    1719 </span>            :         .minor = 0,</a>
+<a name="1720"><span class="lineNum">    1720 </span>            :         .rev = 0,</a>
+<a name="1721"><span class="lineNum">    1721 </span>            :         .funcs = &amp;vcn_v4_0_ip_funcs,</a>
+<a name="1722"><span class="lineNum">    1722 </span>            : };</a>
 </pre>
       </td>
     </tr>

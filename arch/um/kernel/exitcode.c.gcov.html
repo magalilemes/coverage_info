@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -125,12 +125,12 @@
 <a name="63"><span class="lineNum">      63 </span>            :         .proc_write     = exitcode_proc_write,</a>
 <a name="64"><span class="lineNum">      64 </span>            : };</a>
 <a name="65"><span class="lineNum">      65 </span>            : </a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          2 : static int make_proc_exitcode(void)</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          1 : static int make_proc_exitcode(void)</span></a>
 <a name="67"><span class="lineNum">      67 </span>            : {</a>
 <a name="68"><span class="lineNum">      68 </span>            :         struct proc_dir_entry *ent;</a>
 <a name="69"><span class="lineNum">      69 </span>            : </a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          2 :         ent = proc_create(&quot;exitcode&quot;, 0600, NULL, &amp;exitcode_proc_ops);</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          2 :         if (ent == NULL) {</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          1 :         ent = proc_create(&quot;exitcode&quot;, 0600, NULL, &amp;exitcode_proc_ops);</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          1 :         if (ent == NULL) {</span></a>
 <a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :                 printk(KERN_WARNING &quot;make_proc_exitcode : Failed to register &quot;</span></a>
 <a name="73"><span class="lineNum">      73 </span>            :                        &quot;/proc/exitcode\n&quot;);</a>
 <a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 :                 return 0;</span></a>

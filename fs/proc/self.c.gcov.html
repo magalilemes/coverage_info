@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -95,44 +95,44 @@
 <a name="33"><span class="lineNum">      33 </span>            : </a>
 <a name="34"><span class="lineNum">      34 </span>            : static unsigned self_inum __ro_after_init;</a>
 <a name="35"><span class="lineNum">      35 </span>            : </a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          2 : int proc_setup_self(struct super_block *s)</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          1 : int proc_setup_self(struct super_block *s)</span></a>
 <a name="37"><span class="lineNum">      37 </span>            : {</a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          2 :         struct inode *root_inode = d_inode(s-&gt;s_root);</span></a>
-<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          2 :         struct proc_fs_info *fs_info = proc_sb_info(s);</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          1 :         struct inode *root_inode = d_inode(s-&gt;s_root);</span></a>
+<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          1 :         struct proc_fs_info *fs_info = proc_sb_info(s);</span></a>
 <a name="40"><span class="lineNum">      40 </span>            :         struct dentry *self;</a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">          2 :         int ret = -ENOMEM;</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">          1 :         int ret = -ENOMEM;</span></a>
 <a name="42"><span class="lineNum">      42 </span>            : </a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          2 :         inode_lock(root_inode);</span></a>
-<a name="44"><span class="lineNum">      44 </span><span class="lineCov">          2 :         self = d_alloc_name(s-&gt;s_root, &quot;self&quot;);</span></a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">          2 :         if (self) {</span></a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">          2 :                 struct inode *inode = new_inode(s);</span></a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          2 :                 if (inode) {</span></a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          2 :                         inode-&gt;i_ino = self_inum;</span></a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          2 :                         inode-&gt;i_mtime = inode-&gt;i_atime = inode-&gt;i_ctime = current_time(inode);</span></a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          2 :                         inode-&gt;i_mode = S_IFLNK | S_IRWXUGO;</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          2 :                         inode-&gt;i_uid = GLOBAL_ROOT_UID;</span></a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          2 :                         inode-&gt;i_gid = GLOBAL_ROOT_GID;</span></a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          2 :                         inode-&gt;i_op = &amp;proc_self_inode_operations;</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          2 :                         d_add(self, inode);</span></a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          2 :                         ret = 0;</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          1 :         inode_lock(root_inode);</span></a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineCov">          1 :         self = d_alloc_name(s-&gt;s_root, &quot;self&quot;);</span></a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineCov">          1 :         if (self) {</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">          1 :                 struct inode *inode = new_inode(s);</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          1 :                 if (inode) {</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          1 :                         inode-&gt;i_ino = self_inum;</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          1 :                         inode-&gt;i_mtime = inode-&gt;i_atime = inode-&gt;i_ctime = current_time(inode);</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          1 :                         inode-&gt;i_mode = S_IFLNK | S_IRWXUGO;</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          1 :                         inode-&gt;i_uid = GLOBAL_ROOT_UID;</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">          1 :                         inode-&gt;i_gid = GLOBAL_ROOT_GID;</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          1 :                         inode-&gt;i_op = &amp;proc_self_inode_operations;</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          1 :                         d_add(self, inode);</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          1 :                         ret = 0;</span></a>
 <a name="56"><span class="lineNum">      56 </span>            :                 } else {</a>
 <a name="57"><span class="lineNum">      57 </span><span class="lineNoCov">          0 :                         dput(self);</span></a>
 <a name="58"><span class="lineNum">      58 </span>            :                 }</a>
 <a name="59"><span class="lineNum">      59 </span>            :         }</a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          2 :         inode_unlock(root_inode);</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          1 :         inode_unlock(root_inode);</span></a>
 <a name="61"><span class="lineNum">      61 </span>            : </a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          2 :         if (ret)</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          1 :         if (ret)</span></a>
 <a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :                 pr_err(&quot;proc_fill_super: can't allocate /proc/self\n&quot;);</span></a>
 <a name="64"><span class="lineNum">      64 </span>            :         else</a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          2 :                 fs_info-&gt;proc_self = self;</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          1 :                 fs_info-&gt;proc_self = self;</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : </a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          2 :         return ret;</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          1 :         return ret;</span></a>
 <a name="68"><span class="lineNum">      68 </span>            : }</a>
 <a name="69"><span class="lineNum">      69 </span>            : </a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          2 : void __init proc_self_init(void)</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          1 : void __init proc_self_init(void)</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : {</a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          2 :         proc_alloc_inum(&amp;self_inum);</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          2 : }</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          1 :         proc_alloc_inum(&amp;self_inum);</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          1 : }</span></a>
 </pre>
       </td>
     </tr>

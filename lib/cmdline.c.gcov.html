@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -209,13 +209,13 @@
 <a name="147"><span class="lineNum">     147 </span>            :  *      potentially suffixed with K, M, G, T, P, E.</a>
 <a name="148"><span class="lineNum">     148 </span>            :  */</a>
 <a name="149"><span class="lineNum">     149 </span>            : </a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">         10 : unsigned long long memparse(const char *ptr, char **retptr)</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">          5 : unsigned long long memparse(const char *ptr, char **retptr)</span></a>
 <a name="151"><span class="lineNum">     151 </span>            : {</a>
 <a name="152"><span class="lineNum">     152 </span>            :         char *endptr;   /* local pointer to end of parsed string */</a>
 <a name="153"><span class="lineNum">     153 </span>            : </a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineCov">         10 :         unsigned long long ret = simple_strtoull(ptr, &amp;endptr, 0);</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">          5 :         unsigned long long ret = simple_strtoull(ptr, &amp;endptr, 0);</span></a>
 <a name="155"><span class="lineNum">     155 </span>            : </a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">         10 :         switch (*endptr) {</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">          5 :         switch (*endptr) {</span></a>
 <a name="157"><span class="lineNum">     157 </span>            :         case 'E':</a>
 <a name="158"><span class="lineNum">     158 </span>            :         case 'e':</a>
 <a name="159"><span class="lineNum">     159 </span><span class="lineNoCov">          0 :                 ret &lt;&lt;= 10;</span></a>
@@ -230,25 +230,25 @@
 <a name="168"><span class="lineNum">     168 </span>            :                 fallthrough;</a>
 <a name="169"><span class="lineNum">     169 </span>            :         case 'G':</a>
 <a name="170"><span class="lineNum">     170 </span>            :         case 'g':</a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">         10 :                 ret &lt;&lt;= 10;</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">          5 :                 ret &lt;&lt;= 10;</span></a>
 <a name="172"><span class="lineNum">     172 </span>            :                 fallthrough;</a>
 <a name="173"><span class="lineNum">     173 </span>            :         case 'M':</a>
 <a name="174"><span class="lineNum">     174 </span>            :         case 'm':</a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineCov">         10 :                 ret &lt;&lt;= 10;</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">          5 :                 ret &lt;&lt;= 10;</span></a>
 <a name="176"><span class="lineNum">     176 </span>            :                 fallthrough;</a>
 <a name="177"><span class="lineNum">     177 </span>            :         case 'K':</a>
 <a name="178"><span class="lineNum">     178 </span>            :         case 'k':</a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">         10 :                 ret &lt;&lt;= 10;</span></a>
-<a name="180"><span class="lineNum">     180 </span><span class="lineCov">         10 :                 endptr++;</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          5 :                 ret &lt;&lt;= 10;</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">          5 :                 endptr++;</span></a>
 <a name="181"><span class="lineNum">     181 </span>            :                 fallthrough;</a>
 <a name="182"><span class="lineNum">     182 </span>            :         default:</a>
 <a name="183"><span class="lineNum">     183 </span>            :                 break;</a>
 <a name="184"><span class="lineNum">     184 </span>            :         }</a>
 <a name="185"><span class="lineNum">     185 </span>            : </a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineCov">         10 :         if (retptr)</span></a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">         10 :                 *retptr = endptr;</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          5 :         if (retptr)</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">          5 :                 *retptr = endptr;</span></a>
 <a name="188"><span class="lineNum">     188 </span>            : </a>
-<a name="189"><span class="lineNum">     189 </span><span class="lineCov">         10 :         return ret;</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineCov">          5 :         return ret;</span></a>
 <a name="190"><span class="lineNum">     190 </span>            : }</a>
 <a name="191"><span class="lineNum">     191 </span>            : EXPORT_SYMBOL(memparse);</a>
 <a name="192"><span class="lineNum">     192 </span>            : </a>
@@ -262,9 +262,9 @@
 <a name="200"><span class="lineNum">     200 </span>            :  *</a>
 <a name="201"><span class="lineNum">     201 </span>            :  *      Return true if there's such option in the string, or return false.</a>
 <a name="202"><span class="lineNum">     202 </span>            :  */</a>
-<a name="203"><span class="lineNum">     203 </span><span class="lineCov">          2 : bool parse_option_str(const char *str, const char *option)</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineCov">          1 : bool parse_option_str(const char *str, const char *option)</span></a>
 <a name="204"><span class="lineNum">     204 </span>            : {</a>
-<a name="205"><span class="lineNum">     205 </span><span class="lineCov">          4 :         while (*str) {</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineCov">          2 :         while (*str) {</span></a>
 <a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 :                 if (!strncmp(str, option, strlen(option))) {</span></a>
 <a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 :                         str += strlen(option);</span></a>
 <a name="208"><span class="lineNum">     208 </span><span class="lineNoCov">          0 :                         if (!*str || *str == ',')</span></a>
@@ -286,53 +286,53 @@
 <a name="224"><span class="lineNum">     224 </span>            :  * You can use &quot; around spaces, but can't escape &quot;.</a>
 <a name="225"><span class="lineNum">     225 </span>            :  * Hyphens and underscores equivalent in parameter names.</a>
 <a name="226"><span class="lineNum">     226 </span>            :  */</a>
-<a name="227"><span class="lineNum">     227 </span><span class="lineCov">         80 : char *next_arg(char *args, char **param, char **val)</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">         40 : char *next_arg(char *args, char **param, char **val)</span></a>
 <a name="228"><span class="lineNum">     228 </span>            : {</a>
-<a name="229"><span class="lineNum">     229 </span><span class="lineCov">         80 :         unsigned int i, equals = 0;</span></a>
-<a name="230"><span class="lineNum">     230 </span><span class="lineCov">         80 :         int in_quote = 0, quoted = 0;</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineCov">         40 :         unsigned int i, equals = 0;</span></a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineCov">         40 :         int in_quote = 0, quoted = 0;</span></a>
 <a name="231"><span class="lineNum">     231 </span>            : </a>
-<a name="232"><span class="lineNum">     232 </span><span class="lineCov">         80 :         if (*args == '&quot;') {</span></a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineCov">         40 :         if (*args == '&quot;') {</span></a>
 <a name="233"><span class="lineNum">     233 </span><span class="lineNoCov">          0 :                 args++;</span></a>
 <a name="234"><span class="lineNum">     234 </span><span class="lineNoCov">          0 :                 in_quote = 1;</span></a>
 <a name="235"><span class="lineNum">     235 </span><span class="lineNoCov">          0 :                 quoted = 1;</span></a>
 <a name="236"><span class="lineNum">     236 </span>            :         }</a>
 <a name="237"><span class="lineNum">     237 </span>            : </a>
-<a name="238"><span class="lineNum">     238 </span><span class="lineCov">        980 :         for (i = 0; args[i]; i++) {</span></a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineCov">        960 :                 if (isspace(args[i]) &amp;&amp; !in_quote)</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">        490 :         for (i = 0; args[i]; i++) {</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">        480 :                 if (isspace(args[i]) &amp;&amp; !in_quote)</span></a>
 <a name="240"><span class="lineNum">     240 </span>            :                         break;</a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineCov">        900 :                 if (equals == 0) {</span></a>
-<a name="242"><span class="lineNum">     242 </span><span class="lineCov">        640 :                         if (args[i] == '=')</span></a>
-<a name="243"><span class="lineNum">     243 </span><span class="lineCov">         80 :                                 equals = i;</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">        450 :                 if (equals == 0) {</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineCov">        320 :                         if (args[i] == '=')</span></a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineCov">         40 :                                 equals = i;</span></a>
 <a name="244"><span class="lineNum">     244 </span>            :                 }</a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineCov">        900 :                 if (args[i] == '&quot;')</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">        450 :                 if (args[i] == '&quot;')</span></a>
 <a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 :                         in_quote = !in_quote;</span></a>
 <a name="247"><span class="lineNum">     247 </span>            :         }</a>
 <a name="248"><span class="lineNum">     248 </span>            : </a>
-<a name="249"><span class="lineNum">     249 </span><span class="lineCov">         80 :         *param = args;</span></a>
-<a name="250"><span class="lineNum">     250 </span><span class="lineCov">         80 :         if (!equals)</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineCov">         40 :         *param = args;</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineCov">         40 :         if (!equals)</span></a>
 <a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 :                 *val = NULL;</span></a>
 <a name="252"><span class="lineNum">     252 </span>            :         else {</a>
-<a name="253"><span class="lineNum">     253 </span><span class="lineCov">         80 :                 args[equals] = '\0';</span></a>
-<a name="254"><span class="lineNum">     254 </span><span class="lineCov">         80 :                 *val = args + equals + 1;</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineCov">         40 :                 args[equals] = '\0';</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">         40 :                 *val = args + equals + 1;</span></a>
 <a name="255"><span class="lineNum">     255 </span>            : </a>
 <a name="256"><span class="lineNum">     256 </span>            :                 /* Don't include quotes in value. */</a>
-<a name="257"><span class="lineNum">     257 </span><span class="lineCov">         80 :                 if (**val == '&quot;') {</span></a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineCov">         40 :                 if (**val == '&quot;') {</span></a>
 <a name="258"><span class="lineNum">     258 </span><span class="lineNoCov">          0 :                         (*val)++;</span></a>
 <a name="259"><span class="lineNum">     259 </span><span class="lineNoCov">          0 :                         if (args[i-1] == '&quot;')</span></a>
 <a name="260"><span class="lineNum">     260 </span><span class="lineNoCov">          0 :                                 args[i-1] = '\0';</span></a>
 <a name="261"><span class="lineNum">     261 </span>            :                 }</a>
 <a name="262"><span class="lineNum">     262 </span>            :         }</a>
-<a name="263"><span class="lineNum">     263 </span><span class="lineCov">         80 :         if (quoted &amp;&amp; args[i-1] == '&quot;')</span></a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineCov">         40 :         if (quoted &amp;&amp; args[i-1] == '&quot;')</span></a>
 <a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 :                 args[i-1] = '\0';</span></a>
 <a name="265"><span class="lineNum">     265 </span>            : </a>
-<a name="266"><span class="lineNum">     266 </span><span class="lineCov">         80 :         if (args[i]) {</span></a>
-<a name="267"><span class="lineNum">     267 </span><span class="lineCov">         60 :                 args[i] = '\0';</span></a>
-<a name="268"><span class="lineNum">     268 </span><span class="lineCov">         60 :                 args += i + 1;</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineCov">         40 :         if (args[i]) {</span></a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineCov">         30 :                 args[i] = '\0';</span></a>
+<a name="268"><span class="lineNum">     268 </span><span class="lineCov">         30 :                 args += i + 1;</span></a>
 <a name="269"><span class="lineNum">     269 </span>            :         } else</a>
 <a name="270"><span class="lineNum">     270 </span>            :                 args += i;</a>
 <a name="271"><span class="lineNum">     271 </span>            : </a>
 <a name="272"><span class="lineNum">     272 </span>            :         /* Chew up trailing spaces. */</a>
-<a name="273"><span class="lineNum">     273 </span><span class="lineCov">         80 :         return skip_spaces(args);</span></a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineCov">         40 :         return skip_spaces(args);</span></a>
 <a name="274"><span class="lineNum">     274 </span>            : }</a>
 <a name="275"><span class="lineNum">     275 </span>            : EXPORT_SYMBOL(next_arg);</a>
 </pre>

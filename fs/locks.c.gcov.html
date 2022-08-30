@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -175,10 +175,10 @@
 <a name="113"><span class="lineNum">     113 </span>            :         {}</a>
 <a name="114"><span class="lineNum">     114 </span>            : };</a>
 <a name="115"><span class="lineNum">     115 </span>            : </a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">          2 : static int __init init_fs_locks_sysctls(void)</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">          1 : static int __init init_fs_locks_sysctls(void)</span></a>
 <a name="117"><span class="lineNum">     117 </span>            : {</a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">          2 :         register_sysctl_init(&quot;fs&quot;, locks_sysctls);</span></a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">          1 :         register_sysctl_init(&quot;fs&quot;, locks_sysctls);</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="120"><span class="lineNum">     120 </span>            : }</a>
 <a name="121"><span class="lineNum">     121 </span>            : early_initcall(init_fs_locks_sysctls);</a>
 <a name="122"><span class="lineNum">     122 </span>            : #endif /* CONFIG_SYSCTL */</a>
@@ -1922,7 +1922,7 @@
 <a name="1860"><span class="lineNum">    1860 </span>            : static inline void</a>
 <a name="1861"><span class="lineNum">    1861 </span>            : lease_notifier_chain_init(void)</a>
 <a name="1862"><span class="lineNum">    1862 </span>            : {</a>
-<a name="1863"><span class="lineNum">    1863 </span><span class="lineCov">          2 :         srcu_init_notifier_head(&amp;lease_notifier_chain);</span></a>
+<a name="1863"><span class="lineNum">    1863 </span><span class="lineCov">          1 :         srcu_init_notifier_head(&amp;lease_notifier_chain);</span></a>
 <a name="1864"><span class="lineNum">    1864 </span>            : }</a>
 <a name="1865"><span class="lineNum">    1865 </span>            : </a>
 <a name="1866"><span class="lineNum">    1866 </span>            : static inline void</a>
@@ -2910,34 +2910,34 @@
 <a name="2848"><span class="lineNum">    2848 </span>            :         .show   = locks_show,</a>
 <a name="2849"><span class="lineNum">    2849 </span>            : };</a>
 <a name="2850"><span class="lineNum">    2850 </span>            : </a>
-<a name="2851"><span class="lineNum">    2851 </span><span class="lineCov">          2 : static int __init proc_locks_init(void)</span></a>
+<a name="2851"><span class="lineNum">    2851 </span><span class="lineCov">          1 : static int __init proc_locks_init(void)</span></a>
 <a name="2852"><span class="lineNum">    2852 </span>            : {</a>
-<a name="2853"><span class="lineNum">    2853 </span><span class="lineCov">          2 :         proc_create_seq_private(&quot;locks&quot;, 0, NULL, &amp;locks_seq_operations,</span></a>
+<a name="2853"><span class="lineNum">    2853 </span><span class="lineCov">          1 :         proc_create_seq_private(&quot;locks&quot;, 0, NULL, &amp;locks_seq_operations,</span></a>
 <a name="2854"><span class="lineNum">    2854 </span>            :                         sizeof(struct locks_iterator), NULL);</a>
-<a name="2855"><span class="lineNum">    2855 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="2855"><span class="lineNum">    2855 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="2856"><span class="lineNum">    2856 </span>            : }</a>
 <a name="2857"><span class="lineNum">    2857 </span>            : fs_initcall(proc_locks_init);</a>
 <a name="2858"><span class="lineNum">    2858 </span>            : #endif</a>
 <a name="2859"><span class="lineNum">    2859 </span>            : </a>
-<a name="2860"><span class="lineNum">    2860 </span><span class="lineCov">          2 : static int __init filelock_init(void)</span></a>
+<a name="2860"><span class="lineNum">    2860 </span><span class="lineCov">          1 : static int __init filelock_init(void)</span></a>
 <a name="2861"><span class="lineNum">    2861 </span>            : {</a>
 <a name="2862"><span class="lineNum">    2862 </span>            :         int i;</a>
 <a name="2863"><span class="lineNum">    2863 </span>            : </a>
-<a name="2864"><span class="lineNum">    2864 </span><span class="lineCov">          2 :         flctx_cache = kmem_cache_create(&quot;file_lock_ctx&quot;,</span></a>
+<a name="2864"><span class="lineNum">    2864 </span><span class="lineCov">          1 :         flctx_cache = kmem_cache_create(&quot;file_lock_ctx&quot;,</span></a>
 <a name="2865"><span class="lineNum">    2865 </span>            :                         sizeof(struct file_lock_context), 0, SLAB_PANIC, NULL);</a>
 <a name="2866"><span class="lineNum">    2866 </span>            : </a>
-<a name="2867"><span class="lineNum">    2867 </span><span class="lineCov">          2 :         filelock_cache = kmem_cache_create(&quot;file_lock_cache&quot;,</span></a>
+<a name="2867"><span class="lineNum">    2867 </span><span class="lineCov">          1 :         filelock_cache = kmem_cache_create(&quot;file_lock_cache&quot;,</span></a>
 <a name="2868"><span class="lineNum">    2868 </span>            :                         sizeof(struct file_lock), 0, SLAB_PANIC, NULL);</a>
 <a name="2869"><span class="lineNum">    2869 </span>            : </a>
-<a name="2870"><span class="lineNum">    2870 </span><span class="lineCov">          4 :         for_each_possible_cpu(i) {</span></a>
-<a name="2871"><span class="lineNum">    2871 </span><span class="lineCov">          2 :                 struct file_lock_list_struct *fll = per_cpu_ptr(&amp;file_lock_list, i);</span></a>
+<a name="2870"><span class="lineNum">    2870 </span><span class="lineCov">          2 :         for_each_possible_cpu(i) {</span></a>
+<a name="2871"><span class="lineNum">    2871 </span><span class="lineCov">          1 :                 struct file_lock_list_struct *fll = per_cpu_ptr(&amp;file_lock_list, i);</span></a>
 <a name="2872"><span class="lineNum">    2872 </span>            : </a>
-<a name="2873"><span class="lineNum">    2873 </span><span class="lineCov">          2 :                 spin_lock_init(&amp;fll-&gt;lock);</span></a>
-<a name="2874"><span class="lineNum">    2874 </span><span class="lineCov">          2 :                 INIT_HLIST_HEAD(&amp;fll-&gt;hlist);</span></a>
+<a name="2873"><span class="lineNum">    2873 </span><span class="lineCov">          1 :                 spin_lock_init(&amp;fll-&gt;lock);</span></a>
+<a name="2874"><span class="lineNum">    2874 </span><span class="lineCov">          1 :                 INIT_HLIST_HEAD(&amp;fll-&gt;hlist);</span></a>
 <a name="2875"><span class="lineNum">    2875 </span>            :         }</a>
 <a name="2876"><span class="lineNum">    2876 </span>            : </a>
 <a name="2877"><span class="lineNum">    2877 </span>            :         lease_notifier_chain_init();</a>
-<a name="2878"><span class="lineNum">    2878 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="2878"><span class="lineNum">    2878 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="2879"><span class="lineNum">    2879 </span>            : }</a>
 <a name="2880"><span class="lineNum">    2880 </span>            : core_initcall(filelock_init);</a>
 </pre>

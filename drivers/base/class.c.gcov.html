@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">10</td>
@@ -124,12 +124,12 @@
 <a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 :         kfree(cp);</span></a>
 <a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="64"><span class="lineNum">      64 </span>            : </a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         26 : static const struct kobj_ns_type_operations *class_child_ns_type(struct kobject *kobj)</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">         13 : static const struct kobj_ns_type_operations *class_child_ns_type(struct kobject *kobj)</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : {</a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">         26 :         struct subsys_private *cp = to_subsys_private(kobj);</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         26 :         struct class *class = cp-&gt;class;</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">         13 :         struct subsys_private *cp = to_subsys_private(kobj);</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         13 :         struct class *class = cp-&gt;class;</span></a>
 <a name="69"><span class="lineNum">      69 </span>            : </a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">         26 :         return class-&gt;ns_type;</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">         13 :         return class-&gt;ns_type;</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : }</a>
 <a name="72"><span class="lineNum">      72 </span>            : </a>
 <a name="73"><span class="lineNum">      73 </span>            : static const struct sysfs_ops class_sysfs_ops = {</a>
@@ -147,17 +147,17 @@
 <a name="85"><span class="lineNum">      85 </span>            : static struct kset *class_kset;</a>
 <a name="86"><span class="lineNum">      86 </span>            : </a>
 <a name="87"><span class="lineNum">      87 </span>            : </a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">          2 : int class_create_file_ns(struct class *cls, const struct class_attribute *attr,</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">          1 : int class_create_file_ns(struct class *cls, const struct class_attribute *attr,</span></a>
 <a name="89"><span class="lineNum">      89 </span>            :                          const void *ns)</a>
 <a name="90"><span class="lineNum">      90 </span>            : {</a>
 <a name="91"><span class="lineNum">      91 </span>            :         int error;</a>
 <a name="92"><span class="lineNum">      92 </span>            : </a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineCov">          2 :         if (cls)</span></a>
-<a name="94"><span class="lineNum">      94 </span><span class="lineCov">          2 :                 error = sysfs_create_file_ns(&amp;cls-&gt;p-&gt;subsys.kobj,</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">          1 :         if (cls)</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineCov">          1 :                 error = sysfs_create_file_ns(&amp;cls-&gt;p-&gt;subsys.kobj,</span></a>
 <a name="95"><span class="lineNum">      95 </span>            :                                              &amp;attr-&gt;attr, ns);</a>
 <a name="96"><span class="lineNum">      96 </span>            :         else</a>
 <a name="97"><span class="lineNum">      97 </span>            :                 error = -EINVAL;</a>
-<a name="98"><span class="lineNum">      98 </span><span class="lineCov">          2 :         return error;</span></a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineCov">          1 :         return error;</span></a>
 <a name="99"><span class="lineNum">      99 </span>            : }</a>
 <a name="100"><span class="lineNum">     100 </span>            : </a>
 <a name="101"><span class="lineNum">     101 </span><span class="lineNoCov">          0 : void class_remove_file_ns(struct class *cls, const struct class_attribute *attr,</span></a>
@@ -169,29 +169,29 @@
 <a name="107"><span class="lineNum">     107 </span>            : </a>
 <a name="108"><span class="lineNum">     108 </span>            : static struct class *class_get(struct class *cls)</a>
 <a name="109"><span class="lineNum">     109 </span>            : {</a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineCov">         26 :         if (cls)</span></a>
-<a name="111"><span class="lineNum">     111 </span><span class="lineCov">         28 :                 kset_get(&amp;cls-&gt;p-&gt;subsys);</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">         13 :         if (cls)</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">         14 :                 kset_get(&amp;cls-&gt;p-&gt;subsys);</span></a>
 <a name="112"><span class="lineNum">     112 </span>            :         return cls;</a>
 <a name="113"><span class="lineNum">     113 </span>            : }</a>
 <a name="114"><span class="lineNum">     114 </span>            : </a>
 <a name="115"><span class="lineNum">     115 </span>            : static void class_put(struct class *cls)</a>
 <a name="116"><span class="lineNum">     116 </span>            : {</a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineCov">         26 :         if (cls)</span></a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">         26 :                 kset_put(&amp;cls-&gt;p-&gt;subsys);</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">         13 :         if (cls)</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">         13 :                 kset_put(&amp;cls-&gt;p-&gt;subsys);</span></a>
 <a name="119"><span class="lineNum">     119 </span>            : }</a>
 <a name="120"><span class="lineNum">     120 </span>            : </a>
 <a name="121"><span class="lineNum">     121 </span>            : static struct device *klist_class_to_dev(struct klist_node *n)</a>
 <a name="122"><span class="lineNum">     122 </span>            : {</a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">       1052 :         struct device_private *p = to_device_private_class(n);</span></a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">       1052 :         return p-&gt;device;</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        526 :         struct device_private *p = to_device_private_class(n);</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        526 :         return p-&gt;device;</span></a>
 <a name="125"><span class="lineNum">     125 </span>            : }</a>
 <a name="126"><span class="lineNum">     126 </span>            : </a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineCov">       1052 : static void klist_class_dev_get(struct klist_node *n)</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineCov">        526 : static void klist_class_dev_get(struct klist_node *n)</span></a>
 <a name="128"><span class="lineNum">     128 </span>            : {</a>
-<a name="129"><span class="lineNum">     129 </span><span class="lineCov">       1052 :         struct device *dev = klist_class_to_dev(n);</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">        526 :         struct device *dev = klist_class_to_dev(n);</span></a>
 <a name="130"><span class="lineNum">     130 </span>            : </a>
-<a name="131"><span class="lineNum">     131 </span><span class="lineCov">       1052 :         get_device(dev);</span></a>
-<a name="132"><span class="lineNum">     132 </span><span class="lineCov">       1052 : }</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineCov">        526 :         get_device(dev);</span></a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineCov">        526 : }</span></a>
 <a name="133"><span class="lineNum">     133 </span>            : </a>
 <a name="134"><span class="lineNum">     134 </span><span class="lineNoCov">          0 : static void klist_class_dev_put(struct klist_node *n)</span></a>
 <a name="135"><span class="lineNum">     135 </span>            : {</a>
@@ -203,7 +203,7 @@
 <a name="141"><span class="lineNum">     141 </span>            : static int class_add_groups(struct class *cls,</a>
 <a name="142"><span class="lineNum">     142 </span>            :                             const struct attribute_group **groups)</a>
 <a name="143"><span class="lineNum">     143 </span>            : {</a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineCov">         26 :         return sysfs_create_groups(&amp;cls-&gt;p-&gt;subsys.kobj, groups);</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineCov">         13 :         return sysfs_create_groups(&amp;cls-&gt;p-&gt;subsys.kobj, groups);</span></a>
 <a name="145"><span class="lineNum">     145 </span>            : }</a>
 <a name="146"><span class="lineNum">     146 </span>            : </a>
 <a name="147"><span class="lineNum">     147 </span>            : static void class_remove_groups(struct class *cls,</a>
@@ -212,47 +212,47 @@
 <a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 :         return sysfs_remove_groups(&amp;cls-&gt;p-&gt;subsys.kobj, groups);</span></a>
 <a name="151"><span class="lineNum">     151 </span>            : }</a>
 <a name="152"><span class="lineNum">     152 </span>            : </a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineCov">         26 : int __class_register(struct class *cls, struct lock_class_key *key)</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">         13 : int __class_register(struct class *cls, struct lock_class_key *key)</span></a>
 <a name="154"><span class="lineNum">     154 </span>            : {</a>
 <a name="155"><span class="lineNum">     155 </span>            :         struct subsys_private *cp;</a>
 <a name="156"><span class="lineNum">     156 </span>            :         int error;</a>
 <a name="157"><span class="lineNum">     157 </span>            : </a>
 <a name="158"><span class="lineNum">     158 </span>            :         pr_debug(&quot;device class '%s': registering\n&quot;, cls-&gt;name);</a>
 <a name="159"><span class="lineNum">     159 </span>            : </a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">         26 :         cp = kzalloc(sizeof(*cp), GFP_KERNEL);</span></a>
-<a name="161"><span class="lineNum">     161 </span><span class="lineCov">         26 :         if (!cp)</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">         13 :         cp = kzalloc(sizeof(*cp), GFP_KERNEL);</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineCov">         13 :         if (!cp)</span></a>
 <a name="162"><span class="lineNum">     162 </span>            :                 return -ENOMEM;</a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">         26 :         klist_init(&amp;cp-&gt;klist_devices, klist_class_dev_get, klist_class_dev_put);</span></a>
-<a name="164"><span class="lineNum">     164 </span><span class="lineCov">         52 :         INIT_LIST_HEAD(&amp;cp-&gt;interfaces);</span></a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">         26 :         kset_init(&amp;cp-&gt;glue_dirs);</span></a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">         26 :         __mutex_init(&amp;cp-&gt;mutex, &quot;subsys mutex&quot;, key);</span></a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">         26 :         error = kobject_set_name(&amp;cp-&gt;subsys.kobj, &quot;%s&quot;, cls-&gt;name);</span></a>
-<a name="168"><span class="lineNum">     168 </span><span class="lineCov">         26 :         if (error) {</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">         13 :         klist_init(&amp;cp-&gt;klist_devices, klist_class_dev_get, klist_class_dev_put);</span></a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineCov">         26 :         INIT_LIST_HEAD(&amp;cp-&gt;interfaces);</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">         13 :         kset_init(&amp;cp-&gt;glue_dirs);</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">         13 :         __mutex_init(&amp;cp-&gt;mutex, &quot;subsys mutex&quot;, key);</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">         13 :         error = kobject_set_name(&amp;cp-&gt;subsys.kobj, &quot;%s&quot;, cls-&gt;name);</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">         13 :         if (error) {</span></a>
 <a name="169"><span class="lineNum">     169 </span><span class="lineNoCov">          0 :                 kfree(cp);</span></a>
 <a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 :                 return error;</span></a>
 <a name="171"><span class="lineNum">     171 </span>            :         }</a>
 <a name="172"><span class="lineNum">     172 </span>            : </a>
 <a name="173"><span class="lineNum">     173 </span>            :         /* set the default /sys/dev directory for devices of this class */</a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">         26 :         if (!cls-&gt;dev_kobj)</span></a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineCov">         24 :                 cls-&gt;dev_kobj = sysfs_dev_char_kobj;</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">         13 :         if (!cls-&gt;dev_kobj)</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">         12 :                 cls-&gt;dev_kobj = sysfs_dev_char_kobj;</span></a>
 <a name="176"><span class="lineNum">     176 </span>            : </a>
 <a name="177"><span class="lineNum">     177 </span>            : #if defined(CONFIG_BLOCK)</a>
 <a name="178"><span class="lineNum">     178 </span>            :         /* let the block class directory show up in the root of sysfs */</a>
 <a name="179"><span class="lineNum">     179 </span>            :         if (!sysfs_deprecated || cls != &amp;block_class)</a>
-<a name="180"><span class="lineNum">     180 </span><span class="lineCov">         26 :                 cp-&gt;subsys.kobj.kset = class_kset;</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">         13 :                 cp-&gt;subsys.kobj.kset = class_kset;</span></a>
 <a name="181"><span class="lineNum">     181 </span>            : #else</a>
 <a name="182"><span class="lineNum">     182 </span>            :         cp-&gt;subsys.kobj.kset = class_kset;</a>
 <a name="183"><span class="lineNum">     183 </span>            : #endif</a>
-<a name="184"><span class="lineNum">     184 </span><span class="lineCov">         26 :         cp-&gt;subsys.kobj.ktype = &amp;class_ktype;</span></a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineCov">         26 :         cp-&gt;class = cls;</span></a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineCov">         26 :         cls-&gt;p = cp;</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">         13 :         cp-&gt;subsys.kobj.ktype = &amp;class_ktype;</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineCov">         13 :         cp-&gt;class = cls;</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">         13 :         cls-&gt;p = cp;</span></a>
 <a name="187"><span class="lineNum">     187 </span>            : </a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineCov">         26 :         error = kset_register(&amp;cp-&gt;subsys);</span></a>
-<a name="189"><span class="lineNum">     189 </span><span class="lineCov">         26 :         if (error) {</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineCov">         13 :         error = kset_register(&amp;cp-&gt;subsys);</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineCov">         13 :         if (error) {</span></a>
 <a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :                 kfree(cp);</span></a>
 <a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :                 return error;</span></a>
 <a name="192"><span class="lineNum">     192 </span>            :         }</a>
-<a name="193"><span class="lineNum">     193 </span><span class="lineCov">         78 :         error = class_add_groups(class_get(cls), cls-&gt;class_groups);</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineCov">         39 :         error = class_add_groups(class_get(cls), cls-&gt;class_groups);</span></a>
 <a name="194"><span class="lineNum">     194 </span>            :         class_put(cls);</a>
 <a name="195"><span class="lineNum">     195 </span>            :         return error;</a>
 <a name="196"><span class="lineNum">     196 </span>            : }</a>
@@ -285,24 +285,24 @@
 <a name="223"><span class="lineNum">     223 </span>            :  * Note, the pointer created here is to be destroyed when finished by</a>
 <a name="224"><span class="lineNum">     224 </span>            :  * making a call to class_destroy().</a>
 <a name="225"><span class="lineNum">     225 </span>            :  */</a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">         16 : struct class *__class_create(struct module *owner, const char *name,</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">          8 : struct class *__class_create(struct module *owner, const char *name,</span></a>
 <a name="227"><span class="lineNum">     227 </span>            :                              struct lock_class_key *key)</a>
 <a name="228"><span class="lineNum">     228 </span>            : {</a>
 <a name="229"><span class="lineNum">     229 </span>            :         struct class *cls;</a>
 <a name="230"><span class="lineNum">     230 </span>            :         int retval;</a>
 <a name="231"><span class="lineNum">     231 </span>            : </a>
-<a name="232"><span class="lineNum">     232 </span><span class="lineCov">         16 :         cls = kzalloc(sizeof(*cls), GFP_KERNEL);</span></a>
-<a name="233"><span class="lineNum">     233 </span><span class="lineCov">         16 :         if (!cls) {</span></a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineCov">          8 :         cls = kzalloc(sizeof(*cls), GFP_KERNEL);</span></a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineCov">          8 :         if (!cls) {</span></a>
 <a name="234"><span class="lineNum">     234 </span>            :                 retval = -ENOMEM;</a>
 <a name="235"><span class="lineNum">     235 </span>            :                 goto error;</a>
 <a name="236"><span class="lineNum">     236 </span>            :         }</a>
 <a name="237"><span class="lineNum">     237 </span>            : </a>
-<a name="238"><span class="lineNum">     238 </span><span class="lineCov">         16 :         cls-&gt;name = name;</span></a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineCov">         16 :         cls-&gt;owner = owner;</span></a>
-<a name="240"><span class="lineNum">     240 </span><span class="lineCov">         16 :         cls-&gt;class_release = class_create_release;</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">          8 :         cls-&gt;name = name;</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">          8 :         cls-&gt;owner = owner;</span></a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineCov">          8 :         cls-&gt;class_release = class_create_release;</span></a>
 <a name="241"><span class="lineNum">     241 </span>            : </a>
-<a name="242"><span class="lineNum">     242 </span><span class="lineCov">         16 :         retval = __class_register(cls, key);</span></a>
-<a name="243"><span class="lineNum">     243 </span><span class="lineCov">         16 :         if (retval)</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineCov">          8 :         retval = __class_register(cls, key);</span></a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineCov">          8 :         if (retval)</span></a>
 <a name="244"><span class="lineNum">     244 </span>            :                 goto error;</a>
 <a name="245"><span class="lineNum">     245 </span>            : </a>
 <a name="246"><span class="lineNum">     246 </span>            :         return cls;</a>
@@ -343,12 +343,12 @@
 <a name="281"><span class="lineNum">     281 </span><span class="lineNoCov">          0 : void class_dev_iter_init(struct class_dev_iter *iter, struct class *class,</span></a>
 <a name="282"><span class="lineNum">     282 </span>            :                          struct device *start, const struct device_type *type)</a>
 <a name="283"><span class="lineNum">     283 </span>            : {</a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          4 :         struct klist_node *start_knode = NULL;</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          2 :         struct klist_node *start_knode = NULL;</span></a>
 <a name="285"><span class="lineNum">     285 </span>            : </a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          2 :         if (start)</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          1 :         if (start)</span></a>
 <a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :                 start_knode = &amp;start-&gt;p-&gt;knode_class;</span></a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          4 :         klist_iter_init_node(&amp;class-&gt;p-&gt;klist_devices, &amp;iter-&gt;ki, start_knode);</span></a>
-<a name="289"><span class="lineNum">     289 </span><span class="lineCov">          4 :         iter-&gt;type = type;</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          2 :         klist_iter_init_node(&amp;class-&gt;p-&gt;klist_devices, &amp;iter-&gt;ki, start_knode);</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineCov">          2 :         iter-&gt;type = type;</span></a>
 <a name="290"><span class="lineNum">     290 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="291"><span class="lineNum">     291 </span>            : EXPORT_SYMBOL_GPL(class_dev_iter_init);</a>
 <a name="292"><span class="lineNum">     292 </span>            : </a>
@@ -364,14 +364,14 @@
 <a name="302"><span class="lineNum">     302 </span>            :  * free to do whatever it wants to do with the device including</a>
 <a name="303"><span class="lineNum">     303 </span>            :  * calling back into class code.</a>
 <a name="304"><span class="lineNum">     304 </span>            :  */</a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          4 : struct device *class_dev_iter_next(struct class_dev_iter *iter)</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          2 : struct device *class_dev_iter_next(struct class_dev_iter *iter)</span></a>
 <a name="306"><span class="lineNum">     306 </span>            : {</a>
 <a name="307"><span class="lineNum">     307 </span>            :         struct klist_node *knode;</a>
 <a name="308"><span class="lineNum">     308 </span>            :         struct device *dev;</a>
 <a name="309"><span class="lineNum">     309 </span>            : </a>
 <a name="310"><span class="lineNum">     310 </span>            :         while (1) {</a>
-<a name="311"><span class="lineNum">     311 </span><span class="lineCov">          4 :                 knode = klist_next(&amp;iter-&gt;ki);</span></a>
-<a name="312"><span class="lineNum">     312 </span><span class="lineCov">          4 :                 if (!knode)</span></a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineCov">          2 :                 knode = klist_next(&amp;iter-&gt;ki);</span></a>
+<a name="312"><span class="lineNum">     312 </span><span class="lineCov">          2 :                 if (!knode)</span></a>
 <a name="313"><span class="lineNum">     313 </span>            :                         return NULL;</a>
 <a name="314"><span class="lineNum">     314 </span><span class="lineNoCov">          0 :                 dev = klist_class_to_dev(knode);</span></a>
 <a name="315"><span class="lineNum">     315 </span><span class="lineNoCov">          0 :                 if (!iter-&gt;type || iter-&gt;type == dev-&gt;type)</span></a>
@@ -389,7 +389,7 @@
 <a name="327"><span class="lineNum">     327 </span>            :  */</a>
 <a name="328"><span class="lineNum">     328 </span><span class="lineNoCov">          0 : void class_dev_iter_exit(struct class_dev_iter *iter)</span></a>
 <a name="329"><span class="lineNum">     329 </span>            : {</a>
-<a name="330"><span class="lineNum">     330 </span><span class="lineCov">          4 :         klist_iter_exit(&amp;iter-&gt;ki);</span></a>
+<a name="330"><span class="lineNum">     330 </span><span class="lineCov">          2 :         klist_iter_exit(&amp;iter-&gt;ki);</span></a>
 <a name="331"><span class="lineNum">     331 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="332"><span class="lineNum">     332 </span>            : EXPORT_SYMBOL_GPL(class_dev_iter_exit);</a>
 <a name="333"><span class="lineNum">     333 </span>            : </a>
@@ -411,30 +411,30 @@
 <a name="349"><span class="lineNum">     349 </span>            :  * @fn is allowed to do anything including calling back into class</a>
 <a name="350"><span class="lineNum">     350 </span>            :  * code.  There's no locking restriction.</a>
 <a name="351"><span class="lineNum">     351 </span>            :  */</a>
-<a name="352"><span class="lineNum">     352 </span><span class="lineCov">          2 : int class_for_each_device(struct class *class, struct device *start,</span></a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineCov">          1 : int class_for_each_device(struct class *class, struct device *start,</span></a>
 <a name="353"><span class="lineNum">     353 </span>            :                           void *data, int (*fn)(struct device *, void *))</a>
 <a name="354"><span class="lineNum">     354 </span>            : {</a>
 <a name="355"><span class="lineNum">     355 </span>            :         struct class_dev_iter iter;</a>
 <a name="356"><span class="lineNum">     356 </span>            :         struct device *dev;</a>
-<a name="357"><span class="lineNum">     357 </span><span class="lineCov">          2 :         int error = 0;</span></a>
+<a name="357"><span class="lineNum">     357 </span><span class="lineCov">          1 :         int error = 0;</span></a>
 <a name="358"><span class="lineNum">     358 </span>            : </a>
-<a name="359"><span class="lineNum">     359 </span><span class="lineCov">          2 :         if (!class)</span></a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineCov">          1 :         if (!class)</span></a>
 <a name="360"><span class="lineNum">     360 </span>            :                 return -EINVAL;</a>
-<a name="361"><span class="lineNum">     361 </span><span class="lineCov">          2 :         if (!class-&gt;p) {</span></a>
+<a name="361"><span class="lineNum">     361 </span><span class="lineCov">          1 :         if (!class-&gt;p) {</span></a>
 <a name="362"><span class="lineNum">     362 </span><span class="lineNoCov">          0 :                 WARN(1, &quot;%s called for class '%s' before it was initialized&quot;,</span></a>
 <a name="363"><span class="lineNum">     363 </span>            :                      __func__, class-&gt;name);</a>
 <a name="364"><span class="lineNum">     364 </span><span class="lineNoCov">          0 :                 return -EINVAL;</span></a>
 <a name="365"><span class="lineNum">     365 </span>            :         }</a>
 <a name="366"><span class="lineNum">     366 </span>            : </a>
 <a name="367"><span class="lineNum">     367 </span>            :         class_dev_iter_init(&amp;iter, class, start, NULL);</a>
-<a name="368"><span class="lineNum">     368 </span><span class="lineCov">          2 :         while ((dev = class_dev_iter_next(&amp;iter))) {</span></a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineCov">          1 :         while ((dev = class_dev_iter_next(&amp;iter))) {</span></a>
 <a name="369"><span class="lineNum">     369 </span><span class="lineNoCov">          0 :                 error = fn(dev, data);</span></a>
 <a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 :                 if (error)</span></a>
 <a name="371"><span class="lineNum">     371 </span>            :                         break;</a>
 <a name="372"><span class="lineNum">     372 </span>            :         }</a>
-<a name="373"><span class="lineNum">     373 </span><span class="lineCov">          2 :         class_dev_iter_exit(&amp;iter);</span></a>
+<a name="373"><span class="lineNum">     373 </span><span class="lineCov">          1 :         class_dev_iter_exit(&amp;iter);</span></a>
 <a name="374"><span class="lineNum">     374 </span>            : </a>
-<a name="375"><span class="lineNum">     375 </span><span class="lineCov">          2 :         return error;</span></a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineCov">          1 :         return error;</span></a>
 <a name="376"><span class="lineNum">     376 </span>            : }</a>
 <a name="377"><span class="lineNum">     377 </span>            : EXPORT_SYMBOL_GPL(class_for_each_device);</a>
 <a name="378"><span class="lineNum">     378 </span>            : </a>
@@ -486,30 +486,30 @@
 <a name="424"><span class="lineNum">     424 </span>            : }</a>
 <a name="425"><span class="lineNum">     425 </span>            : EXPORT_SYMBOL_GPL(class_find_device);</a>
 <a name="426"><span class="lineNum">     426 </span>            : </a>
-<a name="427"><span class="lineNum">     427 </span><span class="lineCov">          2 : int class_interface_register(struct class_interface *class_intf)</span></a>
+<a name="427"><span class="lineNum">     427 </span><span class="lineCov">          1 : int class_interface_register(struct class_interface *class_intf)</span></a>
 <a name="428"><span class="lineNum">     428 </span>            : {</a>
 <a name="429"><span class="lineNum">     429 </span>            :         struct class *parent;</a>
 <a name="430"><span class="lineNum">     430 </span>            :         struct class_dev_iter iter;</a>
 <a name="431"><span class="lineNum">     431 </span>            :         struct device *dev;</a>
 <a name="432"><span class="lineNum">     432 </span>            : </a>
-<a name="433"><span class="lineNum">     433 </span><span class="lineCov">          2 :         if (!class_intf || !class_intf-&gt;class)</span></a>
+<a name="433"><span class="lineNum">     433 </span><span class="lineCov">          1 :         if (!class_intf || !class_intf-&gt;class)</span></a>
 <a name="434"><span class="lineNum">     434 </span>            :                 return -ENODEV;</a>
 <a name="435"><span class="lineNum">     435 </span>            : </a>
-<a name="436"><span class="lineNum">     436 </span><span class="lineCov">          4 :         parent = class_get(class_intf-&gt;class);</span></a>
+<a name="436"><span class="lineNum">     436 </span><span class="lineCov">          2 :         parent = class_get(class_intf-&gt;class);</span></a>
 <a name="437"><span class="lineNum">     437 </span>            :         if (!parent)</a>
 <a name="438"><span class="lineNum">     438 </span>            :                 return -EINVAL;</a>
 <a name="439"><span class="lineNum">     439 </span>            : </a>
-<a name="440"><span class="lineNum">     440 </span><span class="lineCov">          2 :         mutex_lock(&amp;parent-&gt;p-&gt;mutex);</span></a>
-<a name="441"><span class="lineNum">     441 </span><span class="lineCov">          4 :         list_add_tail(&amp;class_intf-&gt;node, &amp;parent-&gt;p-&gt;interfaces);</span></a>
-<a name="442"><span class="lineNum">     442 </span><span class="lineCov">          2 :         if (class_intf-&gt;add_dev) {</span></a>
+<a name="440"><span class="lineNum">     440 </span><span class="lineCov">          1 :         mutex_lock(&amp;parent-&gt;p-&gt;mutex);</span></a>
+<a name="441"><span class="lineNum">     441 </span><span class="lineCov">          2 :         list_add_tail(&amp;class_intf-&gt;node, &amp;parent-&gt;p-&gt;interfaces);</span></a>
+<a name="442"><span class="lineNum">     442 </span><span class="lineCov">          1 :         if (class_intf-&gt;add_dev) {</span></a>
 <a name="443"><span class="lineNum">     443 </span>            :                 class_dev_iter_init(&amp;iter, parent, NULL, NULL);</a>
-<a name="444"><span class="lineNum">     444 </span><span class="lineCov">          2 :                 while ((dev = class_dev_iter_next(&amp;iter)))</span></a>
+<a name="444"><span class="lineNum">     444 </span><span class="lineCov">          1 :                 while ((dev = class_dev_iter_next(&amp;iter)))</span></a>
 <a name="445"><span class="lineNum">     445 </span><span class="lineNoCov">          0 :                         class_intf-&gt;add_dev(dev, class_intf);</span></a>
 <a name="446"><span class="lineNum">     446 </span>            :                 class_dev_iter_exit(&amp;iter);</a>
 <a name="447"><span class="lineNum">     447 </span>            :         }</a>
-<a name="448"><span class="lineNum">     448 </span><span class="lineCov">          2 :         mutex_unlock(&amp;parent-&gt;p-&gt;mutex);</span></a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineCov">          1 :         mutex_unlock(&amp;parent-&gt;p-&gt;mutex);</span></a>
 <a name="449"><span class="lineNum">     449 </span>            : </a>
-<a name="450"><span class="lineNum">     450 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="450"><span class="lineNum">     450 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="451"><span class="lineNum">     451 </span>            : }</a>
 <a name="452"><span class="lineNum">     452 </span>            : </a>
 <a name="453"><span class="lineNum">     453 </span><span class="lineNoCov">          0 : void class_interface_unregister(struct class_interface *class_intf)</span></a>
@@ -556,15 +556,15 @@
 <a name="494"><span class="lineNum">     494 </span>            :  * Compatibility class are meant as a temporary user-space compatibility</a>
 <a name="495"><span class="lineNum">     495 </span>            :  * workaround when converting a family of class devices to a bus devices.</a>
 <a name="496"><span class="lineNum">     496 </span>            :  */</a>
-<a name="497"><span class="lineNum">     497 </span><span class="lineCov">          2 : struct class_compat *class_compat_register(const char *name)</span></a>
+<a name="497"><span class="lineNum">     497 </span><span class="lineCov">          1 : struct class_compat *class_compat_register(const char *name)</span></a>
 <a name="498"><span class="lineNum">     498 </span>            : {</a>
 <a name="499"><span class="lineNum">     499 </span>            :         struct class_compat *cls;</a>
 <a name="500"><span class="lineNum">     500 </span>            : </a>
-<a name="501"><span class="lineNum">     501 </span><span class="lineCov">          2 :         cls = kmalloc(sizeof(struct class_compat), GFP_KERNEL);</span></a>
-<a name="502"><span class="lineNum">     502 </span><span class="lineCov">          2 :         if (!cls)</span></a>
+<a name="501"><span class="lineNum">     501 </span><span class="lineCov">          1 :         cls = kmalloc(sizeof(struct class_compat), GFP_KERNEL);</span></a>
+<a name="502"><span class="lineNum">     502 </span><span class="lineCov">          1 :         if (!cls)</span></a>
 <a name="503"><span class="lineNum">     503 </span>            :                 return NULL;</a>
-<a name="504"><span class="lineNum">     504 </span><span class="lineCov">          2 :         cls-&gt;kobj = kobject_create_and_add(name, &amp;class_kset-&gt;kobj);</span></a>
-<a name="505"><span class="lineNum">     505 </span><span class="lineCov">          2 :         if (!cls-&gt;kobj) {</span></a>
+<a name="504"><span class="lineNum">     504 </span><span class="lineCov">          1 :         cls-&gt;kobj = kobject_create_and_add(name, &amp;class_kset-&gt;kobj);</span></a>
+<a name="505"><span class="lineNum">     505 </span><span class="lineCov">          1 :         if (!cls-&gt;kobj) {</span></a>
 <a name="506"><span class="lineNum">     506 </span><span class="lineNoCov">          0 :                 kfree(cls);</span></a>
 <a name="507"><span class="lineNum">     507 </span><span class="lineNoCov">          0 :                 return NULL;</span></a>
 <a name="508"><span class="lineNum">     508 </span>            :         }</a>
@@ -632,12 +632,12 @@
 <a name="570"><span class="lineNum">     570 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="571"><span class="lineNum">     571 </span>            : EXPORT_SYMBOL_GPL(class_compat_remove_link);</a>
 <a name="572"><span class="lineNum">     572 </span>            : </a>
-<a name="573"><span class="lineNum">     573 </span><span class="lineCov">          2 : int __init classes_init(void)</span></a>
+<a name="573"><span class="lineNum">     573 </span><span class="lineCov">          1 : int __init classes_init(void)</span></a>
 <a name="574"><span class="lineNum">     574 </span>            : {</a>
-<a name="575"><span class="lineNum">     575 </span><span class="lineCov">          2 :         class_kset = kset_create_and_add(&quot;class&quot;, NULL, NULL);</span></a>
-<a name="576"><span class="lineNum">     576 </span><span class="lineCov">          2 :         if (!class_kset)</span></a>
+<a name="575"><span class="lineNum">     575 </span><span class="lineCov">          1 :         class_kset = kset_create_and_add(&quot;class&quot;, NULL, NULL);</span></a>
+<a name="576"><span class="lineNum">     576 </span><span class="lineCov">          1 :         if (!class_kset)</span></a>
 <a name="577"><span class="lineNum">     577 </span>            :                 return -ENOMEM;</a>
-<a name="578"><span class="lineNum">     578 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="578"><span class="lineNum">     578 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="579"><span class="lineNum">     579 </span>            : }</a>
 <a name="580"><span class="lineNum">     580 </span>            : </a>
 <a name="581"><span class="lineNum">     581 </span>            : EXPORT_SYMBOL_GPL(class_create_file_ns);</a>

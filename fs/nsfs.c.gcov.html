@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -343,14 +343,14 @@
 <a name="281"><span class="lineNum">     281 </span>            :         .show_path = nsfs_show_path,</a>
 <a name="282"><span class="lineNum">     282 </span>            : };</a>
 <a name="283"><span class="lineNum">     283 </span>            : </a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          2 : static int nsfs_init_fs_context(struct fs_context *fc)</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          1 : static int nsfs_init_fs_context(struct fs_context *fc)</span></a>
 <a name="285"><span class="lineNum">     285 </span>            : {</a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          2 :         struct pseudo_fs_context *ctx = init_pseudo(fc, NSFS_MAGIC);</span></a>
-<a name="287"><span class="lineNum">     287 </span><span class="lineCov">          2 :         if (!ctx)</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          1 :         struct pseudo_fs_context *ctx = init_pseudo(fc, NSFS_MAGIC);</span></a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineCov">          1 :         if (!ctx)</span></a>
 <a name="288"><span class="lineNum">     288 </span>            :                 return -ENOMEM;</a>
-<a name="289"><span class="lineNum">     289 </span><span class="lineCov">          2 :         ctx-&gt;ops = &amp;nsfs_ops;</span></a>
-<a name="290"><span class="lineNum">     290 </span><span class="lineCov">          2 :         ctx-&gt;dops = &amp;ns_dentry_operations;</span></a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineCov">          1 :         ctx-&gt;ops = &amp;nsfs_ops;</span></a>
+<a name="290"><span class="lineNum">     290 </span><span class="lineCov">          1 :         ctx-&gt;dops = &amp;ns_dentry_operations;</span></a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="292"><span class="lineNum">     292 </span>            : }</a>
 <a name="293"><span class="lineNum">     293 </span>            : </a>
 <a name="294"><span class="lineNum">     294 </span>            : static struct file_system_type nsfs = {</a>
@@ -359,13 +359,13 @@
 <a name="297"><span class="lineNum">     297 </span>            :         .kill_sb = kill_anon_super,</a>
 <a name="298"><span class="lineNum">     298 </span>            : };</a>
 <a name="299"><span class="lineNum">     299 </span>            : </a>
-<a name="300"><span class="lineNum">     300 </span><span class="lineCov">          2 : void __init nsfs_init(void)</span></a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineCov">          1 : void __init nsfs_init(void)</span></a>
 <a name="301"><span class="lineNum">     301 </span>            : {</a>
-<a name="302"><span class="lineNum">     302 </span><span class="lineCov">          2 :         nsfs_mnt = kern_mount(&amp;nsfs);</span></a>
-<a name="303"><span class="lineNum">     303 </span><span class="lineCov">          4 :         if (IS_ERR(nsfs_mnt))</span></a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineCov">          1 :         nsfs_mnt = kern_mount(&amp;nsfs);</span></a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineCov">          2 :         if (IS_ERR(nsfs_mnt))</span></a>
 <a name="304"><span class="lineNum">     304 </span><span class="lineNoCov">          0 :                 panic(&quot;can't set nsfs up\n&quot;);</span></a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          2 :         nsfs_mnt-&gt;mnt_sb-&gt;s_flags &amp;= ~SB_NOUSER;</span></a>
-<a name="306"><span class="lineNum">     306 </span><span class="lineCov">          2 : }</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          1 :         nsfs_mnt-&gt;mnt_sb-&gt;s_flags &amp;= ~SB_NOUSER;</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineCov">          1 : }</span></a>
 </pre>
       </td>
     </tr>

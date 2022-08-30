@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -1324,10 +1324,10 @@
 <a name="1262"><span class="lineNum">    1262 </span>            :  * Internal function to wake up a interrupt thread and wait until it is</a>
 <a name="1263"><span class="lineNum">    1263 </span>            :  * ready.</a>
 <a name="1264"><span class="lineNum">    1264 </span>            :  */</a>
-<a name="1265"><span class="lineNum">    1265 </span><span class="lineCov">          8 : static void wake_up_and_wait_for_irq_thread_ready(struct irq_desc *desc,</span></a>
+<a name="1265"><span class="lineNum">    1265 </span><span class="lineCov">          4 : static void wake_up_and_wait_for_irq_thread_ready(struct irq_desc *desc,</span></a>
 <a name="1266"><span class="lineNum">    1266 </span>            :                                                   struct irqaction *action)</a>
 <a name="1267"><span class="lineNum">    1267 </span>            : {</a>
-<a name="1268"><span class="lineNum">    1268 </span><span class="lineCov">          8 :         if (!action || !action-&gt;thread)</span></a>
+<a name="1268"><span class="lineNum">    1268 </span><span class="lineCov">          4 :         if (!action || !action-&gt;thread)</span></a>
 <a name="1269"><span class="lineNum">    1269 </span>            :                 return;</a>
 <a name="1270"><span class="lineNum">    1270 </span>            : </a>
 <a name="1271"><span class="lineNum">    1271 </span><span class="lineNoCov">          0 :         wake_up_process(action-&gt;thread);</span></a>
@@ -1451,10 +1451,10 @@
 <a name="1389"><span class="lineNum">    1389 </span>            : </a>
 <a name="1390"><span class="lineNum">    1390 </span>            : static int irq_request_resources(struct irq_desc *desc)</a>
 <a name="1391"><span class="lineNum">    1391 </span>            : {</a>
-<a name="1392"><span class="lineNum">    1392 </span><span class="lineCov">          4 :         struct irq_data *d = &amp;desc-&gt;irq_data;</span></a>
-<a name="1393"><span class="lineNum">    1393 </span><span class="lineCov">          4 :         struct irq_chip *c = d-&gt;chip;</span></a>
+<a name="1392"><span class="lineNum">    1392 </span><span class="lineCov">          2 :         struct irq_data *d = &amp;desc-&gt;irq_data;</span></a>
+<a name="1393"><span class="lineNum">    1393 </span><span class="lineCov">          2 :         struct irq_chip *c = d-&gt;chip;</span></a>
 <a name="1394"><span class="lineNum">    1394 </span>            : </a>
-<a name="1395"><span class="lineNum">    1395 </span><span class="lineCov">          4 :         return c-&gt;irq_request_resources ? c-&gt;irq_request_resources(d) : 0;</span></a>
+<a name="1395"><span class="lineNum">    1395 </span><span class="lineCov">          2 :         return c-&gt;irq_request_resources ? c-&gt;irq_request_resources(d) : 0;</span></a>
 <a name="1396"><span class="lineNum">    1396 </span>            : }</a>
 <a name="1397"><span class="lineNum">    1397 </span>            : </a>
 <a name="1398"><span class="lineNum">    1398 </span>            : static void irq_release_resources(struct irq_desc *desc)</a>
@@ -1549,35 +1549,35 @@
 <a name="1487"><span class="lineNum">    1487 </span>            :  * request/free_irq().</a>
 <a name="1488"><span class="lineNum">    1488 </span>            :  */</a>
 <a name="1489"><span class="lineNum">    1489 </span>            : static int</a>
-<a name="1490"><span class="lineNum">    1490 </span><span class="lineCov">          4 : __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)</span></a>
+<a name="1490"><span class="lineNum">    1490 </span><span class="lineCov">          2 : __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)</span></a>
 <a name="1491"><span class="lineNum">    1491 </span>            : {</a>
 <a name="1492"><span class="lineNum">    1492 </span>            :         struct irqaction *old, **old_ptr;</a>
-<a name="1493"><span class="lineNum">    1493 </span><span class="lineCov">          4 :         unsigned long flags, thread_mask = 0;</span></a>
-<a name="1494"><span class="lineNum">    1494 </span><span class="lineCov">          4 :         int ret, nested, shared = 0;</span></a>
+<a name="1493"><span class="lineNum">    1493 </span><span class="lineCov">          2 :         unsigned long flags, thread_mask = 0;</span></a>
+<a name="1494"><span class="lineNum">    1494 </span><span class="lineCov">          2 :         int ret, nested, shared = 0;</span></a>
 <a name="1495"><span class="lineNum">    1495 </span>            : </a>
-<a name="1496"><span class="lineNum">    1496 </span><span class="lineCov">          4 :         if (!desc)</span></a>
+<a name="1496"><span class="lineNum">    1496 </span><span class="lineCov">          2 :         if (!desc)</span></a>
 <a name="1497"><span class="lineNum">    1497 </span>            :                 return -EINVAL;</a>
 <a name="1498"><span class="lineNum">    1498 </span>            : </a>
-<a name="1499"><span class="lineNum">    1499 </span><span class="lineCov">          4 :         if (desc-&gt;irq_data.chip == &amp;no_irq_chip)</span></a>
+<a name="1499"><span class="lineNum">    1499 </span><span class="lineCov">          2 :         if (desc-&gt;irq_data.chip == &amp;no_irq_chip)</span></a>
 <a name="1500"><span class="lineNum">    1500 </span>            :                 return -ENOSYS;</a>
-<a name="1501"><span class="lineNum">    1501 </span><span class="lineCov">          4 :         if (!try_module_get(desc-&gt;owner))</span></a>
+<a name="1501"><span class="lineNum">    1501 </span><span class="lineCov">          2 :         if (!try_module_get(desc-&gt;owner))</span></a>
 <a name="1502"><span class="lineNum">    1502 </span>            :                 return -ENODEV;</a>
 <a name="1503"><span class="lineNum">    1503 </span>            : </a>
-<a name="1504"><span class="lineNum">    1504 </span><span class="lineCov">          4 :         new-&gt;irq = irq;</span></a>
+<a name="1504"><span class="lineNum">    1504 </span><span class="lineCov">          2 :         new-&gt;irq = irq;</span></a>
 <a name="1505"><span class="lineNum">    1505 </span>            : </a>
 <a name="1506"><span class="lineNum">    1506 </span>            :         /*</a>
 <a name="1507"><span class="lineNum">    1507 </span>            :          * If the trigger type is not specified by the caller,</a>
 <a name="1508"><span class="lineNum">    1508 </span>            :          * then use the default for this interrupt.</a>
 <a name="1509"><span class="lineNum">    1509 </span>            :          */</a>
-<a name="1510"><span class="lineNum">    1510 </span><span class="lineCov">          4 :         if (!(new-&gt;flags &amp; IRQF_TRIGGER_MASK))</span></a>
-<a name="1511"><span class="lineNum">    1511 </span><span class="lineCov">          8 :                 new-&gt;flags |= irqd_get_trigger_type(&amp;desc-&gt;irq_data);</span></a>
+<a name="1510"><span class="lineNum">    1510 </span><span class="lineCov">          2 :         if (!(new-&gt;flags &amp; IRQF_TRIGGER_MASK))</span></a>
+<a name="1511"><span class="lineNum">    1511 </span><span class="lineCov">          4 :                 new-&gt;flags |= irqd_get_trigger_type(&amp;desc-&gt;irq_data);</span></a>
 <a name="1512"><span class="lineNum">    1512 </span>            : </a>
 <a name="1513"><span class="lineNum">    1513 </span>            :         /*</a>
 <a name="1514"><span class="lineNum">    1514 </span>            :          * Check whether the interrupt nests into another interrupt</a>
 <a name="1515"><span class="lineNum">    1515 </span>            :          * thread.</a>
 <a name="1516"><span class="lineNum">    1516 </span>            :          */</a>
-<a name="1517"><span class="lineNum">    1517 </span><span class="lineCov">          8 :         nested = irq_settings_is_nested_thread(desc);</span></a>
-<a name="1518"><span class="lineNum">    1518 </span><span class="lineCov">          4 :         if (nested) {</span></a>
+<a name="1517"><span class="lineNum">    1517 </span><span class="lineCov">          4 :         nested = irq_settings_is_nested_thread(desc);</span></a>
+<a name="1518"><span class="lineNum">    1518 </span><span class="lineCov">          2 :         if (nested) {</span></a>
 <a name="1519"><span class="lineNum">    1519 </span><span class="lineNoCov">          0 :                 if (!new-&gt;thread_fn) {</span></a>
 <a name="1520"><span class="lineNum">    1520 </span>            :                         ret = -EINVAL;</a>
 <a name="1521"><span class="lineNum">    1521 </span>            :                         goto out_mput;</a>
@@ -1601,7 +1601,7 @@
 <a name="1539"><span class="lineNum">    1539 </span>            :          * and the interrupt does not nest into another interrupt</a>
 <a name="1540"><span class="lineNum">    1540 </span>            :          * thread.</a>
 <a name="1541"><span class="lineNum">    1541 </span>            :          */</a>
-<a name="1542"><span class="lineNum">    1542 </span><span class="lineCov">          4 :         if (new-&gt;thread_fn &amp;&amp; !nested) {</span></a>
+<a name="1542"><span class="lineNum">    1542 </span><span class="lineCov">          2 :         if (new-&gt;thread_fn &amp;&amp; !nested) {</span></a>
 <a name="1543"><span class="lineNum">    1543 </span><span class="lineNoCov">          0 :                 ret = setup_irq_thread(new, irq, false);</span></a>
 <a name="1544"><span class="lineNum">    1544 </span><span class="lineNoCov">          0 :                 if (ret)</span></a>
 <a name="1545"><span class="lineNum">    1545 </span>            :                         goto out_mput;</a>
@@ -1621,7 +1621,7 @@
 <a name="1559"><span class="lineNum">    1559 </span>            :          * chip flags, so we can avoid the unmask dance at the end of</a>
 <a name="1560"><span class="lineNum">    1560 </span>            :          * the threaded handler for those.</a>
 <a name="1561"><span class="lineNum">    1561 </span>            :          */</a>
-<a name="1562"><span class="lineNum">    1562 </span><span class="lineCov">          4 :         if (desc-&gt;irq_data.chip-&gt;flags &amp; IRQCHIP_ONESHOT_SAFE)</span></a>
+<a name="1562"><span class="lineNum">    1562 </span><span class="lineCov">          2 :         if (desc-&gt;irq_data.chip-&gt;flags &amp; IRQCHIP_ONESHOT_SAFE)</span></a>
 <a name="1563"><span class="lineNum">    1563 </span><span class="lineNoCov">          0 :                 new-&gt;flags &amp;= ~IRQF_ONESHOT;</span></a>
 <a name="1564"><span class="lineNum">    1564 </span>            : </a>
 <a name="1565"><span class="lineNum">    1565 </span>            :         /*</a>
@@ -1631,19 +1631,19 @@
 <a name="1569"><span class="lineNum">    1569 </span>            :          * a recycled oneshot thread_mask bit while it's still in use by</a>
 <a name="1570"><span class="lineNum">    1570 </span>            :          * its previous owner.</a>
 <a name="1571"><span class="lineNum">    1571 </span>            :          */</a>
-<a name="1572"><span class="lineNum">    1572 </span><span class="lineCov">          4 :         mutex_lock(&amp;desc-&gt;request_mutex);</span></a>
+<a name="1572"><span class="lineNum">    1572 </span><span class="lineCov">          2 :         mutex_lock(&amp;desc-&gt;request_mutex);</span></a>
 <a name="1573"><span class="lineNum">    1573 </span>            : </a>
 <a name="1574"><span class="lineNum">    1574 </span>            :         /*</a>
 <a name="1575"><span class="lineNum">    1575 </span>            :          * Acquire bus lock as the irq_request_resources() callback below</a>
 <a name="1576"><span class="lineNum">    1576 </span>            :          * might rely on the serialization or the magic power management</a>
 <a name="1577"><span class="lineNum">    1577 </span>            :          * functions which are abusing the irq_bus_lock() callback,</a>
 <a name="1578"><span class="lineNum">    1578 </span>            :          */</a>
-<a name="1579"><span class="lineNum">    1579 </span><span class="lineCov">          4 :         chip_bus_lock(desc);</span></a>
+<a name="1579"><span class="lineNum">    1579 </span><span class="lineCov">          2 :         chip_bus_lock(desc);</span></a>
 <a name="1580"><span class="lineNum">    1580 </span>            : </a>
 <a name="1581"><span class="lineNum">    1581 </span>            :         /* First installed action requests resources. */</a>
-<a name="1582"><span class="lineNum">    1582 </span><span class="lineCov">          4 :         if (!desc-&gt;action) {</span></a>
-<a name="1583"><span class="lineNum">    1583 </span><span class="lineCov">          4 :                 ret = irq_request_resources(desc);</span></a>
-<a name="1584"><span class="lineNum">    1584 </span><span class="lineCov">          4 :                 if (ret) {</span></a>
+<a name="1582"><span class="lineNum">    1582 </span><span class="lineCov">          2 :         if (!desc-&gt;action) {</span></a>
+<a name="1583"><span class="lineNum">    1583 </span><span class="lineCov">          2 :                 ret = irq_request_resources(desc);</span></a>
+<a name="1584"><span class="lineNum">    1584 </span><span class="lineCov">          2 :                 if (ret) {</span></a>
 <a name="1585"><span class="lineNum">    1585 </span><span class="lineNoCov">          0 :                         pr_err(&quot;Failed to request resources for %s (irq %d) on irqchip %s\n&quot;,</span></a>
 <a name="1586"><span class="lineNum">    1586 </span>            :                                new-&gt;name, irq, desc-&gt;irq_data.chip-&gt;name);</a>
 <a name="1587"><span class="lineNum">    1587 </span><span class="lineNoCov">          0 :                         goto out_bus_unlock;</span></a>
@@ -1656,10 +1656,10 @@
 <a name="1594"><span class="lineNum">    1594 </span>            :          * management calls which are not serialized via</a>
 <a name="1595"><span class="lineNum">    1595 </span>            :          * desc-&gt;request_mutex or the optional bus lock.</a>
 <a name="1596"><span class="lineNum">    1596 </span>            :          */</a>
-<a name="1597"><span class="lineNum">    1597 </span><span class="lineCov">          4 :         raw_spin_lock_irqsave(&amp;desc-&gt;lock, flags);</span></a>
-<a name="1598"><span class="lineNum">    1598 </span><span class="lineCov">          4 :         old_ptr = &amp;desc-&gt;action;</span></a>
-<a name="1599"><span class="lineNum">    1599 </span><span class="lineCov">          4 :         old = *old_ptr;</span></a>
-<a name="1600"><span class="lineNum">    1600 </span><span class="lineCov">          4 :         if (old) {</span></a>
+<a name="1597"><span class="lineNum">    1597 </span><span class="lineCov">          2 :         raw_spin_lock_irqsave(&amp;desc-&gt;lock, flags);</span></a>
+<a name="1598"><span class="lineNum">    1598 </span><span class="lineCov">          2 :         old_ptr = &amp;desc-&gt;action;</span></a>
+<a name="1599"><span class="lineNum">    1599 </span><span class="lineCov">          2 :         old = *old_ptr;</span></a>
+<a name="1600"><span class="lineNum">    1600 </span><span class="lineCov">          2 :         if (old) {</span></a>
 <a name="1601"><span class="lineNum">    1601 </span>            :                 /*</a>
 <a name="1602"><span class="lineNum">    1602 </span>            :                  * Can't share interrupts unless both agree to and are</a>
 <a name="1603"><span class="lineNum">    1603 </span>            :                  * the same type (level, edge, polarity). So both flag</a>
@@ -1717,7 +1717,7 @@
 <a name="1655"><span class="lineNum">    1655 </span>            :          * !ONESHOT irqs the thread mask is 0 so we can avoid a</a>
 <a name="1656"><span class="lineNum">    1656 </span>            :          * conditional in irq_wake_thread().</a>
 <a name="1657"><span class="lineNum">    1657 </span>            :          */</a>
-<a name="1658"><span class="lineNum">    1658 </span><span class="lineCov">          4 :         if (new-&gt;flags &amp; IRQF_ONESHOT) {</span></a>
+<a name="1658"><span class="lineNum">    1658 </span><span class="lineCov">          2 :         if (new-&gt;flags &amp; IRQF_ONESHOT) {</span></a>
 <a name="1659"><span class="lineNum">    1659 </span>            :                 /*</a>
 <a name="1660"><span class="lineNum">    1660 </span>            :                  * Unlikely to have 32 resp 64 irqs sharing one line,</a>
 <a name="1661"><span class="lineNum">    1661 </span>            :                  * but who knows.</a>
@@ -1748,7 +1748,7 @@
 <a name="1686"><span class="lineNum">    1686 </span>            :                  */</a>
 <a name="1687"><span class="lineNum">    1687 </span><span class="lineNoCov">          0 :                 new-&gt;thread_mask = 1UL &lt;&lt; ffz(thread_mask);</span></a>
 <a name="1688"><span class="lineNum">    1688 </span>            : </a>
-<a name="1689"><span class="lineNum">    1689 </span><span class="lineCov">          4 :         } else if (new-&gt;handler == irq_default_primary_handler &amp;&amp;</span></a>
+<a name="1689"><span class="lineNum">    1689 </span><span class="lineCov">          2 :         } else if (new-&gt;handler == irq_default_primary_handler &amp;&amp;</span></a>
 <a name="1690"><span class="lineNum">    1690 </span><span class="lineNoCov">          0 :                    !(desc-&gt;irq_data.chip-&gt;flags &amp; IRQCHIP_ONESHOT_SAFE)) {</span></a>
 <a name="1691"><span class="lineNum">    1691 </span>            :                 /*</a>
 <a name="1692"><span class="lineNum">    1692 </span>            :                  * The interrupt was requested with handler = NULL, so</a>
@@ -1771,9 +1771,9 @@
 <a name="1709"><span class="lineNum">    1709 </span><span class="lineNoCov">          0 :                 goto out_unlock;</span></a>
 <a name="1710"><span class="lineNum">    1710 </span>            :         }</a>
 <a name="1711"><span class="lineNum">    1711 </span>            : </a>
-<a name="1712"><span class="lineNum">    1712 </span><span class="lineCov">          4 :         if (!shared) {</span></a>
+<a name="1712"><span class="lineNum">    1712 </span><span class="lineCov">          2 :         if (!shared) {</span></a>
 <a name="1713"><span class="lineNum">    1713 </span>            :                 /* Setup the type (level, edge polarity) if configured: */</a>
-<a name="1714"><span class="lineNum">    1714 </span><span class="lineCov">          4 :                 if (new-&gt;flags &amp; IRQF_TRIGGER_MASK) {</span></a>
+<a name="1714"><span class="lineNum">    1714 </span><span class="lineCov">          2 :                 if (new-&gt;flags &amp; IRQF_TRIGGER_MASK) {</span></a>
 <a name="1715"><span class="lineNum">    1715 </span><span class="lineNoCov">          0 :                         ret = __irq_set_trigger(desc,</span></a>
 <a name="1716"><span class="lineNum">    1716 </span>            :                                                 new-&gt;flags &amp; IRQF_TRIGGER_MASK);</a>
 <a name="1717"><span class="lineNum">    1717 </span>            : </a>
@@ -1792,36 +1792,36 @@
 <a name="1730"><span class="lineNum">    1730 </span>            :                  * fails. Interrupts which are in managed shutdown mode</a>
 <a name="1731"><span class="lineNum">    1731 </span>            :                  * will simply ignore that activation request.</a>
 <a name="1732"><span class="lineNum">    1732 </span>            :                  */</a>
-<a name="1733"><span class="lineNum">    1733 </span><span class="lineCov">          4 :                 ret = irq_activate(desc);</span></a>
-<a name="1734"><span class="lineNum">    1734 </span><span class="lineCov">          4 :                 if (ret)</span></a>
+<a name="1733"><span class="lineNum">    1733 </span><span class="lineCov">          2 :                 ret = irq_activate(desc);</span></a>
+<a name="1734"><span class="lineNum">    1734 </span><span class="lineCov">          2 :                 if (ret)</span></a>
 <a name="1735"><span class="lineNum">    1735 </span>            :                         goto out_unlock;</a>
 <a name="1736"><span class="lineNum">    1736 </span>            : </a>
-<a name="1737"><span class="lineNum">    1737 </span><span class="lineCov">          4 :                 desc-&gt;istate &amp;= ~(IRQS_AUTODETECT | IRQS_SPURIOUS_DISABLED | \</span></a>
+<a name="1737"><span class="lineNum">    1737 </span><span class="lineCov">          2 :                 desc-&gt;istate &amp;= ~(IRQS_AUTODETECT | IRQS_SPURIOUS_DISABLED | \</span></a>
 <a name="1738"><span class="lineNum">    1738 </span>            :                                   IRQS_ONESHOT | IRQS_WAITING);</a>
-<a name="1739"><span class="lineNum">    1739 </span><span class="lineCov">          8 :                 irqd_clear(&amp;desc-&gt;irq_data, IRQD_IRQ_INPROGRESS);</span></a>
+<a name="1739"><span class="lineNum">    1739 </span><span class="lineCov">          4 :                 irqd_clear(&amp;desc-&gt;irq_data, IRQD_IRQ_INPROGRESS);</span></a>
 <a name="1740"><span class="lineNum">    1740 </span>            : </a>
-<a name="1741"><span class="lineNum">    1741 </span><span class="lineCov">          4 :                 if (new-&gt;flags &amp; IRQF_PERCPU) {</span></a>
+<a name="1741"><span class="lineNum">    1741 </span><span class="lineCov">          2 :                 if (new-&gt;flags &amp; IRQF_PERCPU) {</span></a>
 <a name="1742"><span class="lineNum">    1742 </span><span class="lineNoCov">          0 :                         irqd_set(&amp;desc-&gt;irq_data, IRQD_PER_CPU);</span></a>
 <a name="1743"><span class="lineNum">    1743 </span><span class="lineNoCov">          0 :                         irq_settings_set_per_cpu(desc);</span></a>
 <a name="1744"><span class="lineNum">    1744 </span><span class="lineNoCov">          0 :                         if (new-&gt;flags &amp; IRQF_NO_DEBUG)</span></a>
 <a name="1745"><span class="lineNum">    1745 </span><span class="lineNoCov">          0 :                                 irq_settings_set_no_debug(desc);</span></a>
 <a name="1746"><span class="lineNum">    1746 </span>            :                 }</a>
 <a name="1747"><span class="lineNum">    1747 </span>            : </a>
-<a name="1748"><span class="lineNum">    1748 </span><span class="lineCov">          4 :                 if (noirqdebug)</span></a>
+<a name="1748"><span class="lineNum">    1748 </span><span class="lineCov">          2 :                 if (noirqdebug)</span></a>
 <a name="1749"><span class="lineNum">    1749 </span><span class="lineNoCov">          0 :                         irq_settings_set_no_debug(desc);</span></a>
 <a name="1750"><span class="lineNum">    1750 </span>            : </a>
-<a name="1751"><span class="lineNum">    1751 </span><span class="lineCov">          4 :                 if (new-&gt;flags &amp; IRQF_ONESHOT)</span></a>
+<a name="1751"><span class="lineNum">    1751 </span><span class="lineCov">          2 :                 if (new-&gt;flags &amp; IRQF_ONESHOT)</span></a>
 <a name="1752"><span class="lineNum">    1752 </span><span class="lineNoCov">          0 :                         desc-&gt;istate |= IRQS_ONESHOT;</span></a>
 <a name="1753"><span class="lineNum">    1753 </span>            : </a>
 <a name="1754"><span class="lineNum">    1754 </span>            :                 /* Exclude IRQ from balancing if requested */</a>
-<a name="1755"><span class="lineNum">    1755 </span><span class="lineCov">          4 :                 if (new-&gt;flags &amp; IRQF_NOBALANCING) {</span></a>
+<a name="1755"><span class="lineNum">    1755 </span><span class="lineCov">          2 :                 if (new-&gt;flags &amp; IRQF_NOBALANCING) {</span></a>
 <a name="1756"><span class="lineNum">    1756 </span><span class="lineNoCov">          0 :                         irq_settings_set_no_balancing(desc);</span></a>
 <a name="1757"><span class="lineNum">    1757 </span><span class="lineNoCov">          0 :                         irqd_set(&amp;desc-&gt;irq_data, IRQD_NO_BALANCING);</span></a>
 <a name="1758"><span class="lineNum">    1758 </span>            :                 }</a>
 <a name="1759"><span class="lineNum">    1759 </span>            : </a>
-<a name="1760"><span class="lineNum">    1760 </span><span class="lineCov">          8 :                 if (!(new-&gt;flags &amp; IRQF_NO_AUTOEN) &amp;&amp;</span></a>
-<a name="1761"><span class="lineNum">    1761 </span><span class="lineCov">          4 :                     irq_settings_can_autoenable(desc)) {</span></a>
-<a name="1762"><span class="lineNum">    1762 </span><span class="lineCov">          4 :                         irq_startup(desc, IRQ_RESEND, IRQ_START_COND);</span></a>
+<a name="1760"><span class="lineNum">    1760 </span><span class="lineCov">          4 :                 if (!(new-&gt;flags &amp; IRQF_NO_AUTOEN) &amp;&amp;</span></a>
+<a name="1761"><span class="lineNum">    1761 </span><span class="lineCov">          2 :                     irq_settings_can_autoenable(desc)) {</span></a>
+<a name="1762"><span class="lineNum">    1762 </span><span class="lineCov">          2 :                         irq_startup(desc, IRQ_RESEND, IRQ_START_COND);</span></a>
 <a name="1763"><span class="lineNum">    1763 </span>            :                 } else {</a>
 <a name="1764"><span class="lineNum">    1764 </span>            :                         /*</a>
 <a name="1765"><span class="lineNum">    1765 </span>            :                          * Shared interrupts do not go well with disabling</a>
@@ -1844,36 +1844,36 @@
 <a name="1782"><span class="lineNum">    1782 </span>            :                                 irq, omsk, nmsk);</a>
 <a name="1783"><span class="lineNum">    1783 </span>            :         }</a>
 <a name="1784"><span class="lineNum">    1784 </span>            : </a>
-<a name="1785"><span class="lineNum">    1785 </span><span class="lineCov">          4 :         *old_ptr = new;</span></a>
+<a name="1785"><span class="lineNum">    1785 </span><span class="lineCov">          2 :         *old_ptr = new;</span></a>
 <a name="1786"><span class="lineNum">    1786 </span>            : </a>
-<a name="1787"><span class="lineNum">    1787 </span><span class="lineCov">          4 :         irq_pm_install_action(desc, new);</span></a>
+<a name="1787"><span class="lineNum">    1787 </span><span class="lineCov">          2 :         irq_pm_install_action(desc, new);</span></a>
 <a name="1788"><span class="lineNum">    1788 </span>            : </a>
 <a name="1789"><span class="lineNum">    1789 </span>            :         /* Reset broken irq detection when installing new handler */</a>
-<a name="1790"><span class="lineNum">    1790 </span><span class="lineCov">          4 :         desc-&gt;irq_count = 0;</span></a>
-<a name="1791"><span class="lineNum">    1791 </span><span class="lineCov">          4 :         desc-&gt;irqs_unhandled = 0;</span></a>
+<a name="1790"><span class="lineNum">    1790 </span><span class="lineCov">          2 :         desc-&gt;irq_count = 0;</span></a>
+<a name="1791"><span class="lineNum">    1791 </span><span class="lineCov">          2 :         desc-&gt;irqs_unhandled = 0;</span></a>
 <a name="1792"><span class="lineNum">    1792 </span>            : </a>
 <a name="1793"><span class="lineNum">    1793 </span>            :         /*</a>
 <a name="1794"><span class="lineNum">    1794 </span>            :          * Check whether we disabled the irq via the spurious handler</a>
 <a name="1795"><span class="lineNum">    1795 </span>            :          * before. Reenable it and give it another chance.</a>
 <a name="1796"><span class="lineNum">    1796 </span>            :          */</a>
-<a name="1797"><span class="lineNum">    1797 </span><span class="lineCov">          4 :         if (shared &amp;&amp; (desc-&gt;istate &amp; IRQS_SPURIOUS_DISABLED)) {</span></a>
+<a name="1797"><span class="lineNum">    1797 </span><span class="lineCov">          2 :         if (shared &amp;&amp; (desc-&gt;istate &amp; IRQS_SPURIOUS_DISABLED)) {</span></a>
 <a name="1798"><span class="lineNum">    1798 </span><span class="lineNoCov">          0 :                 desc-&gt;istate &amp;= ~IRQS_SPURIOUS_DISABLED;</span></a>
 <a name="1799"><span class="lineNum">    1799 </span><span class="lineNoCov">          0 :                 __enable_irq(desc);</span></a>
 <a name="1800"><span class="lineNum">    1800 </span>            :         }</a>
 <a name="1801"><span class="lineNum">    1801 </span>            : </a>
-<a name="1802"><span class="lineNum">    1802 </span><span class="lineCov">          8 :         raw_spin_unlock_irqrestore(&amp;desc-&gt;lock, flags);</span></a>
-<a name="1803"><span class="lineNum">    1803 </span><span class="lineCov">          4 :         chip_bus_sync_unlock(desc);</span></a>
-<a name="1804"><span class="lineNum">    1804 </span><span class="lineCov">          4 :         mutex_unlock(&amp;desc-&gt;request_mutex);</span></a>
+<a name="1802"><span class="lineNum">    1802 </span><span class="lineCov">          4 :         raw_spin_unlock_irqrestore(&amp;desc-&gt;lock, flags);</span></a>
+<a name="1803"><span class="lineNum">    1803 </span><span class="lineCov">          2 :         chip_bus_sync_unlock(desc);</span></a>
+<a name="1804"><span class="lineNum">    1804 </span><span class="lineCov">          2 :         mutex_unlock(&amp;desc-&gt;request_mutex);</span></a>
 <a name="1805"><span class="lineNum">    1805 </span>            : </a>
-<a name="1806"><span class="lineNum">    1806 </span><span class="lineCov">          4 :         irq_setup_timings(desc, new);</span></a>
+<a name="1806"><span class="lineNum">    1806 </span><span class="lineCov">          2 :         irq_setup_timings(desc, new);</span></a>
 <a name="1807"><span class="lineNum">    1807 </span>            : </a>
-<a name="1808"><span class="lineNum">    1808 </span><span class="lineCov">          4 :         wake_up_and_wait_for_irq_thread_ready(desc, new);</span></a>
-<a name="1809"><span class="lineNum">    1809 </span><span class="lineCov">          4 :         wake_up_and_wait_for_irq_thread_ready(desc, new-&gt;secondary);</span></a>
+<a name="1808"><span class="lineNum">    1808 </span><span class="lineCov">          2 :         wake_up_and_wait_for_irq_thread_ready(desc, new);</span></a>
+<a name="1809"><span class="lineNum">    1809 </span><span class="lineCov">          2 :         wake_up_and_wait_for_irq_thread_ready(desc, new-&gt;secondary);</span></a>
 <a name="1810"><span class="lineNum">    1810 </span>            : </a>
-<a name="1811"><span class="lineNum">    1811 </span><span class="lineCov">          4 :         register_irq_proc(irq, desc);</span></a>
-<a name="1812"><span class="lineNum">    1812 </span><span class="lineCov">          4 :         new-&gt;dir = NULL;</span></a>
-<a name="1813"><span class="lineNum">    1813 </span><span class="lineCov">          4 :         register_handler_proc(irq, new);</span></a>
-<a name="1814"><span class="lineNum">    1814 </span><span class="lineCov">          4 :         return 0;</span></a>
+<a name="1811"><span class="lineNum">    1811 </span><span class="lineCov">          2 :         register_irq_proc(irq, desc);</span></a>
+<a name="1812"><span class="lineNum">    1812 </span><span class="lineCov">          2 :         new-&gt;dir = NULL;</span></a>
+<a name="1813"><span class="lineNum">    1813 </span><span class="lineCov">          2 :         register_handler_proc(irq, new);</span></a>
+<a name="1814"><span class="lineNum">    1814 </span><span class="lineCov">          2 :         return 0;</span></a>
 <a name="1815"><span class="lineNum">    1815 </span>            : </a>
 <a name="1816"><span class="lineNum">    1816 </span>            : mismatch:</a>
 <a name="1817"><span class="lineNum">    1817 </span><span class="lineNoCov">          0 :         if (!(new-&gt;flags &amp; IRQF_PROBE_SHARED)) {</span></a>
@@ -2190,7 +2190,7 @@
 <a name="2128"><span class="lineNum">    2128 </span>            :  *      IRQF_TRIGGER_*          Specify active edge(s) or level</a>
 <a name="2129"><span class="lineNum">    2129 </span>            :  *      IRQF_ONESHOT            Run thread_fn with interrupt line masked</a>
 <a name="2130"><span class="lineNum">    2130 </span>            :  */</a>
-<a name="2131"><span class="lineNum">    2131 </span><span class="lineCov">          4 : int request_threaded_irq(unsigned int irq, irq_handler_t handler,</span></a>
+<a name="2131"><span class="lineNum">    2131 </span><span class="lineCov">          2 : int request_threaded_irq(unsigned int irq, irq_handler_t handler,</span></a>
 <a name="2132"><span class="lineNum">    2132 </span>            :                          irq_handler_t thread_fn, unsigned long irqflags,</a>
 <a name="2133"><span class="lineNum">    2133 </span>            :                          const char *devname, void *dev_id)</a>
 <a name="2134"><span class="lineNum">    2134 </span>            : {</a>
@@ -2198,7 +2198,7 @@
 <a name="2136"><span class="lineNum">    2136 </span>            :         struct irq_desc *desc;</a>
 <a name="2137"><span class="lineNum">    2137 </span>            :         int retval;</a>
 <a name="2138"><span class="lineNum">    2138 </span>            : </a>
-<a name="2139"><span class="lineNum">    2139 </span><span class="lineCov">          4 :         if (irq == IRQ_NOTCONNECTED)</span></a>
+<a name="2139"><span class="lineNum">    2139 </span><span class="lineCov">          2 :         if (irq == IRQ_NOTCONNECTED)</span></a>
 <a name="2140"><span class="lineNum">    2140 </span>            :                 return -ENOTCONN;</a>
 <a name="2141"><span class="lineNum">    2141 </span>            : </a>
 <a name="2142"><span class="lineNum">    2142 </span>            :         /*</a>
@@ -2214,45 +2214,45 @@
 <a name="2152"><span class="lineNum">    2152 </span>            :          * Also IRQF_COND_SUSPEND only makes sense for shared interrupts and</a>
 <a name="2153"><span class="lineNum">    2153 </span>            :          * it cannot be set along with IRQF_NO_SUSPEND.</a>
 <a name="2154"><span class="lineNum">    2154 </span>            :          */</a>
-<a name="2155"><span class="lineNum">    2155 </span><span class="lineCov">          8 :         if (((irqflags &amp; IRQF_SHARED) &amp;&amp; !dev_id) ||</span></a>
-<a name="2156"><span class="lineNum">    2156 </span><span class="lineCov">          8 :             ((irqflags &amp; IRQF_SHARED) &amp;&amp; (irqflags &amp; IRQF_NO_AUTOEN)) ||</span></a>
-<a name="2157"><span class="lineNum">    2157 </span><span class="lineCov">          8 :             (!(irqflags &amp; IRQF_SHARED) &amp;&amp; (irqflags &amp; IRQF_COND_SUSPEND)) ||</span></a>
-<a name="2158"><span class="lineNum">    2158 </span><span class="lineCov">          4 :             ((irqflags &amp; IRQF_NO_SUSPEND) &amp;&amp; (irqflags &amp; IRQF_COND_SUSPEND)))</span></a>
+<a name="2155"><span class="lineNum">    2155 </span><span class="lineCov">          4 :         if (((irqflags &amp; IRQF_SHARED) &amp;&amp; !dev_id) ||</span></a>
+<a name="2156"><span class="lineNum">    2156 </span><span class="lineCov">          4 :             ((irqflags &amp; IRQF_SHARED) &amp;&amp; (irqflags &amp; IRQF_NO_AUTOEN)) ||</span></a>
+<a name="2157"><span class="lineNum">    2157 </span><span class="lineCov">          4 :             (!(irqflags &amp; IRQF_SHARED) &amp;&amp; (irqflags &amp; IRQF_COND_SUSPEND)) ||</span></a>
+<a name="2158"><span class="lineNum">    2158 </span><span class="lineCov">          2 :             ((irqflags &amp; IRQF_NO_SUSPEND) &amp;&amp; (irqflags &amp; IRQF_COND_SUSPEND)))</span></a>
 <a name="2159"><span class="lineNum">    2159 </span>            :                 return -EINVAL;</a>
 <a name="2160"><span class="lineNum">    2160 </span>            : </a>
-<a name="2161"><span class="lineNum">    2161 </span><span class="lineCov">          4 :         desc = irq_to_desc(irq);</span></a>
-<a name="2162"><span class="lineNum">    2162 </span><span class="lineCov">          4 :         if (!desc)</span></a>
+<a name="2161"><span class="lineNum">    2161 </span><span class="lineCov">          2 :         desc = irq_to_desc(irq);</span></a>
+<a name="2162"><span class="lineNum">    2162 </span><span class="lineCov">          2 :         if (!desc)</span></a>
 <a name="2163"><span class="lineNum">    2163 </span>            :                 return -EINVAL;</a>
 <a name="2164"><span class="lineNum">    2164 </span>            : </a>
-<a name="2165"><span class="lineNum">    2165 </span><span class="lineCov">         12 :         if (!irq_settings_can_request(desc) ||</span></a>
-<a name="2166"><span class="lineNum">    2166 </span><span class="lineCov">          8 :             WARN_ON(irq_settings_is_per_cpu_devid(desc)))</span></a>
+<a name="2165"><span class="lineNum">    2165 </span><span class="lineCov">          6 :         if (!irq_settings_can_request(desc) ||</span></a>
+<a name="2166"><span class="lineNum">    2166 </span><span class="lineCov">          4 :             WARN_ON(irq_settings_is_per_cpu_devid(desc)))</span></a>
 <a name="2167"><span class="lineNum">    2167 </span>            :                 return -EINVAL;</a>
 <a name="2168"><span class="lineNum">    2168 </span>            : </a>
-<a name="2169"><span class="lineNum">    2169 </span><span class="lineCov">          4 :         if (!handler) {</span></a>
+<a name="2169"><span class="lineNum">    2169 </span><span class="lineCov">          2 :         if (!handler) {</span></a>
 <a name="2170"><span class="lineNum">    2170 </span><span class="lineNoCov">          0 :                 if (!thread_fn)</span></a>
 <a name="2171"><span class="lineNum">    2171 </span>            :                         return -EINVAL;</a>
 <a name="2172"><span class="lineNum">    2172 </span>            :                 handler = irq_default_primary_handler;</a>
 <a name="2173"><span class="lineNum">    2173 </span>            :         }</a>
 <a name="2174"><span class="lineNum">    2174 </span>            : </a>
-<a name="2175"><span class="lineNum">    2175 </span><span class="lineCov">          4 :         action = kzalloc(sizeof(struct irqaction), GFP_KERNEL);</span></a>
-<a name="2176"><span class="lineNum">    2176 </span><span class="lineCov">          4 :         if (!action)</span></a>
+<a name="2175"><span class="lineNum">    2175 </span><span class="lineCov">          2 :         action = kzalloc(sizeof(struct irqaction), GFP_KERNEL);</span></a>
+<a name="2176"><span class="lineNum">    2176 </span><span class="lineCov">          2 :         if (!action)</span></a>
 <a name="2177"><span class="lineNum">    2177 </span>            :                 return -ENOMEM;</a>
 <a name="2178"><span class="lineNum">    2178 </span>            : </a>
-<a name="2179"><span class="lineNum">    2179 </span><span class="lineCov">          4 :         action-&gt;handler = handler;</span></a>
-<a name="2180"><span class="lineNum">    2180 </span><span class="lineCov">          4 :         action-&gt;thread_fn = thread_fn;</span></a>
-<a name="2181"><span class="lineNum">    2181 </span><span class="lineCov">          4 :         action-&gt;flags = irqflags;</span></a>
-<a name="2182"><span class="lineNum">    2182 </span><span class="lineCov">          4 :         action-&gt;name = devname;</span></a>
-<a name="2183"><span class="lineNum">    2183 </span><span class="lineCov">          4 :         action-&gt;dev_id = dev_id;</span></a>
+<a name="2179"><span class="lineNum">    2179 </span><span class="lineCov">          2 :         action-&gt;handler = handler;</span></a>
+<a name="2180"><span class="lineNum">    2180 </span><span class="lineCov">          2 :         action-&gt;thread_fn = thread_fn;</span></a>
+<a name="2181"><span class="lineNum">    2181 </span><span class="lineCov">          2 :         action-&gt;flags = irqflags;</span></a>
+<a name="2182"><span class="lineNum">    2182 </span><span class="lineCov">          2 :         action-&gt;name = devname;</span></a>
+<a name="2183"><span class="lineNum">    2183 </span><span class="lineCov">          2 :         action-&gt;dev_id = dev_id;</span></a>
 <a name="2184"><span class="lineNum">    2184 </span>            : </a>
-<a name="2185"><span class="lineNum">    2185 </span><span class="lineCov">          4 :         retval = irq_chip_pm_get(&amp;desc-&gt;irq_data);</span></a>
-<a name="2186"><span class="lineNum">    2186 </span><span class="lineCov">          4 :         if (retval &lt; 0) {</span></a>
+<a name="2185"><span class="lineNum">    2185 </span><span class="lineCov">          2 :         retval = irq_chip_pm_get(&amp;desc-&gt;irq_data);</span></a>
+<a name="2186"><span class="lineNum">    2186 </span><span class="lineCov">          2 :         if (retval &lt; 0) {</span></a>
 <a name="2187"><span class="lineNum">    2187 </span><span class="lineNoCov">          0 :                 kfree(action);</span></a>
 <a name="2188"><span class="lineNum">    2188 </span><span class="lineNoCov">          0 :                 return retval;</span></a>
 <a name="2189"><span class="lineNum">    2189 </span>            :         }</a>
 <a name="2190"><span class="lineNum">    2190 </span>            : </a>
-<a name="2191"><span class="lineNum">    2191 </span><span class="lineCov">          4 :         retval = __setup_irq(irq, desc, action);</span></a>
+<a name="2191"><span class="lineNum">    2191 </span><span class="lineCov">          2 :         retval = __setup_irq(irq, desc, action);</span></a>
 <a name="2192"><span class="lineNum">    2192 </span>            : </a>
-<a name="2193"><span class="lineNum">    2193 </span><span class="lineCov">          4 :         if (retval) {</span></a>
+<a name="2193"><span class="lineNum">    2193 </span><span class="lineCov">          2 :         if (retval) {</span></a>
 <a name="2194"><span class="lineNum">    2194 </span><span class="lineNoCov">          0 :                 irq_chip_pm_put(&amp;desc-&gt;irq_data);</span></a>
 <a name="2195"><span class="lineNum">    2195 </span><span class="lineNoCov">          0 :                 kfree(action-&gt;secondary);</span></a>
 <a name="2196"><span class="lineNum">    2196 </span><span class="lineNoCov">          0 :                 kfree(action);</span></a>

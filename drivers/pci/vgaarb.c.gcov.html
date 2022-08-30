@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -1601,27 +1601,27 @@
 <a name="1539"><span class="lineNum">    1539 </span>            :         MISC_DYNAMIC_MINOR, &quot;vga_arbiter&quot;, &amp;vga_arb_device_fops</a>
 <a name="1540"><span class="lineNum">    1540 </span>            : };</a>
 <a name="1541"><span class="lineNum">    1541 </span>            : </a>
-<a name="1542"><span class="lineNum">    1542 </span><span class="lineCov">          2 : static int __init vga_arb_device_init(void)</span></a>
+<a name="1542"><span class="lineNum">    1542 </span><span class="lineCov">          1 : static int __init vga_arb_device_init(void)</span></a>
 <a name="1543"><span class="lineNum">    1543 </span>            : {</a>
 <a name="1544"><span class="lineNum">    1544 </span>            :         int rc;</a>
 <a name="1545"><span class="lineNum">    1545 </span>            :         struct pci_dev *pdev;</a>
 <a name="1546"><span class="lineNum">    1546 </span>            : </a>
-<a name="1547"><span class="lineNum">    1547 </span><span class="lineCov">          2 :         rc = misc_register(&amp;vga_arb_device);</span></a>
-<a name="1548"><span class="lineNum">    1548 </span><span class="lineCov">          2 :         if (rc &lt; 0)</span></a>
+<a name="1547"><span class="lineNum">    1547 </span><span class="lineCov">          1 :         rc = misc_register(&amp;vga_arb_device);</span></a>
+<a name="1548"><span class="lineNum">    1548 </span><span class="lineCov">          1 :         if (rc &lt; 0)</span></a>
 <a name="1549"><span class="lineNum">    1549 </span><span class="lineNoCov">          0 :                 pr_err(&quot;error %d registering device\n&quot;, rc);</span></a>
 <a name="1550"><span class="lineNum">    1550 </span>            : </a>
-<a name="1551"><span class="lineNum">    1551 </span><span class="lineCov">          2 :         bus_register_notifier(&amp;pci_bus_type, &amp;pci_notifier);</span></a>
+<a name="1551"><span class="lineNum">    1551 </span><span class="lineCov">          1 :         bus_register_notifier(&amp;pci_bus_type, &amp;pci_notifier);</span></a>
 <a name="1552"><span class="lineNum">    1552 </span>            : </a>
 <a name="1553"><span class="lineNum">    1553 </span>            :         /* We add all PCI devices satisfying VGA class in the arbiter by</a>
 <a name="1554"><span class="lineNum">    1554 </span>            :          * default */</a>
-<a name="1555"><span class="lineNum">    1555 </span><span class="lineCov">          2 :         pdev = NULL;</span></a>
-<a name="1556"><span class="lineNum">    1556 </span><span class="lineCov">          4 :         while ((pdev =</span></a>
+<a name="1555"><span class="lineNum">    1555 </span><span class="lineCov">          1 :         pdev = NULL;</span></a>
+<a name="1556"><span class="lineNum">    1556 </span><span class="lineCov">          2 :         while ((pdev =</span></a>
 <a name="1557"><span class="lineNum">    1557 </span>            :                 pci_get_subsys(PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,</a>
 <a name="1558"><span class="lineNum">    1558 </span>            :                                PCI_ANY_ID, pdev)) != NULL)</a>
 <a name="1559"><span class="lineNum">    1559 </span><span class="lineNoCov">          0 :                 vga_arbiter_add_pci_device(pdev);</span></a>
 <a name="1560"><span class="lineNum">    1560 </span>            : </a>
-<a name="1561"><span class="lineNum">    1561 </span><span class="lineCov">          2 :         pr_info(&quot;loaded\n&quot;);</span></a>
-<a name="1562"><span class="lineNum">    1562 </span><span class="lineCov">          2 :         return rc;</span></a>
+<a name="1561"><span class="lineNum">    1561 </span><span class="lineCov">          1 :         pr_info(&quot;loaded\n&quot;);</span></a>
+<a name="1562"><span class="lineNum">    1562 </span><span class="lineCov">          1 :         return rc;</span></a>
 <a name="1563"><span class="lineNum">    1563 </span>            : }</a>
 <a name="1564"><span class="lineNum">    1564 </span>            : subsys_initcall_sync(vga_arb_device_init);</a>
 </pre>

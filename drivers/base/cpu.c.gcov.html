@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -418,42 +418,42 @@
 <a name="356"><span class="lineNum">     356 </span>            :  *</a>
 <a name="357"><span class="lineNum">     357 </span>            :  * Initialize and register the CPU device.</a>
 <a name="358"><span class="lineNum">     358 </span>            :  */</a>
-<a name="359"><span class="lineNum">     359 </span><span class="lineCov">          2 : int register_cpu(struct cpu *cpu, int num)</span></a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineCov">          1 : int register_cpu(struct cpu *cpu, int num)</span></a>
 <a name="360"><span class="lineNum">     360 </span>            : {</a>
 <a name="361"><span class="lineNum">     361 </span>            :         int error;</a>
 <a name="362"><span class="lineNum">     362 </span>            : </a>
-<a name="363"><span class="lineNum">     363 </span><span class="lineCov">          2 :         cpu-&gt;node_id = cpu_to_node(num);</span></a>
-<a name="364"><span class="lineNum">     364 </span><span class="lineCov">          2 :         memset(&amp;cpu-&gt;dev, 0x00, sizeof(struct device));</span></a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineCov">          2 :         cpu-&gt;dev.id = num;</span></a>
-<a name="366"><span class="lineNum">     366 </span><span class="lineCov">          2 :         cpu-&gt;dev.bus = &amp;cpu_subsys;</span></a>
-<a name="367"><span class="lineNum">     367 </span><span class="lineCov">          2 :         cpu-&gt;dev.release = cpu_device_release;</span></a>
-<a name="368"><span class="lineNum">     368 </span><span class="lineCov">          2 :         cpu-&gt;dev.offline_disabled = !cpu-&gt;hotpluggable;</span></a>
-<a name="369"><span class="lineNum">     369 </span><span class="lineCov">          2 :         cpu-&gt;dev.offline = !cpu_online(num);</span></a>
-<a name="370"><span class="lineNum">     370 </span><span class="lineCov">          2 :         cpu-&gt;dev.of_node = of_get_cpu_node(num, NULL);</span></a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineCov">          1 :         cpu-&gt;node_id = cpu_to_node(num);</span></a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineCov">          1 :         memset(&amp;cpu-&gt;dev, 0x00, sizeof(struct device));</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineCov">          1 :         cpu-&gt;dev.id = num;</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineCov">          1 :         cpu-&gt;dev.bus = &amp;cpu_subsys;</span></a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineCov">          1 :         cpu-&gt;dev.release = cpu_device_release;</span></a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineCov">          1 :         cpu-&gt;dev.offline_disabled = !cpu-&gt;hotpluggable;</span></a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineCov">          1 :         cpu-&gt;dev.offline = !cpu_online(num);</span></a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineCov">          1 :         cpu-&gt;dev.of_node = of_get_cpu_node(num, NULL);</span></a>
 <a name="371"><span class="lineNum">     371 </span>            : #ifdef CONFIG_GENERIC_CPU_AUTOPROBE</a>
 <a name="372"><span class="lineNum">     372 </span>            :         cpu-&gt;dev.bus-&gt;uevent = cpu_uevent;</a>
 <a name="373"><span class="lineNum">     373 </span>            : #endif</a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineCov">          2 :         cpu-&gt;dev.groups = common_cpu_attr_groups;</span></a>
-<a name="375"><span class="lineNum">     375 </span><span class="lineCov">          2 :         if (cpu-&gt;hotpluggable)</span></a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineCov">          1 :         cpu-&gt;dev.groups = common_cpu_attr_groups;</span></a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineCov">          1 :         if (cpu-&gt;hotpluggable)</span></a>
 <a name="376"><span class="lineNum">     376 </span><span class="lineNoCov">          0 :                 cpu-&gt;dev.groups = hotplugable_cpu_attr_groups;</span></a>
-<a name="377"><span class="lineNum">     377 </span><span class="lineCov">          2 :         error = device_register(&amp;cpu-&gt;dev);</span></a>
-<a name="378"><span class="lineNum">     378 </span><span class="lineCov">          2 :         if (error) {</span></a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineCov">          1 :         error = device_register(&amp;cpu-&gt;dev);</span></a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineCov">          1 :         if (error) {</span></a>
 <a name="379"><span class="lineNum">     379 </span><span class="lineNoCov">          0 :                 put_device(&amp;cpu-&gt;dev);</span></a>
 <a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 :                 return error;</span></a>
 <a name="381"><span class="lineNum">     381 </span>            :         }</a>
 <a name="382"><span class="lineNum">     382 </span>            : </a>
-<a name="383"><span class="lineNum">     383 </span><span class="lineCov">          2 :         per_cpu(cpu_sys_devices, num) = &amp;cpu-&gt;dev;</span></a>
-<a name="384"><span class="lineNum">     384 </span><span class="lineCov">          2 :         register_cpu_under_node(num, cpu_to_node(num));</span></a>
-<a name="385"><span class="lineNum">     385 </span><span class="lineCov">          2 :         dev_pm_qos_expose_latency_limit(&amp;cpu-&gt;dev,</span></a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineCov">          1 :         per_cpu(cpu_sys_devices, num) = &amp;cpu-&gt;dev;</span></a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineCov">          1 :         register_cpu_under_node(num, cpu_to_node(num));</span></a>
+<a name="385"><span class="lineNum">     385 </span><span class="lineCov">          1 :         dev_pm_qos_expose_latency_limit(&amp;cpu-&gt;dev,</span></a>
 <a name="386"><span class="lineNum">     386 </span>            :                                         PM_QOS_RESUME_LATENCY_NO_CONSTRAINT);</a>
 <a name="387"><span class="lineNum">     387 </span>            : </a>
-<a name="388"><span class="lineNum">     388 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="388"><span class="lineNum">     388 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="389"><span class="lineNum">     389 </span>            : }</a>
 <a name="390"><span class="lineNum">     390 </span>            : </a>
-<a name="391"><span class="lineNum">     391 </span><span class="lineCov">          2 : struct device *get_cpu_device(unsigned int cpu)</span></a>
+<a name="391"><span class="lineNum">     391 </span><span class="lineCov">          1 : struct device *get_cpu_device(unsigned int cpu)</span></a>
 <a name="392"><span class="lineNum">     392 </span>            : {</a>
-<a name="393"><span class="lineNum">     393 </span><span class="lineCov">          2 :         if (cpu &lt; nr_cpu_ids &amp;&amp; cpu_possible(cpu))</span></a>
-<a name="394"><span class="lineNum">     394 </span><span class="lineCov">          2 :                 return per_cpu(cpu_sys_devices, cpu);</span></a>
+<a name="393"><span class="lineNum">     393 </span><span class="lineCov">          1 :         if (cpu &lt; nr_cpu_ids &amp;&amp; cpu_possible(cpu))</span></a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineCov">          1 :                 return per_cpu(cpu_sys_devices, cpu);</span></a>
 <a name="395"><span class="lineNum">     395 </span>            :         else</a>
 <a name="396"><span class="lineNum">     396 </span>            :                 return NULL;</a>
 <a name="397"><span class="lineNum">     397 </span>            : }</a>
@@ -557,17 +557,17 @@
 <a name="495"><span class="lineNum">     495 </span>            : static DEFINE_PER_CPU(struct cpu, cpu_devices);</a>
 <a name="496"><span class="lineNum">     496 </span>            : #endif</a>
 <a name="497"><span class="lineNum">     497 </span>            : </a>
-<a name="498"><span class="lineNum">     498 </span><span class="lineCov">          2 : static void __init cpu_dev_register_generic(void)</span></a>
+<a name="498"><span class="lineNum">     498 </span><span class="lineCov">          1 : static void __init cpu_dev_register_generic(void)</span></a>
 <a name="499"><span class="lineNum">     499 </span>            : {</a>
 <a name="500"><span class="lineNum">     500 </span>            : #ifdef CONFIG_GENERIC_CPU_DEVICES</a>
 <a name="501"><span class="lineNum">     501 </span>            :         int i;</a>
 <a name="502"><span class="lineNum">     502 </span>            : </a>
-<a name="503"><span class="lineNum">     503 </span><span class="lineCov">          4 :         for_each_possible_cpu(i) {</span></a>
-<a name="504"><span class="lineNum">     504 </span><span class="lineCov">          2 :                 if (register_cpu(&amp;per_cpu(cpu_devices, i), i))</span></a>
+<a name="503"><span class="lineNum">     503 </span><span class="lineCov">          2 :         for_each_possible_cpu(i) {</span></a>
+<a name="504"><span class="lineNum">     504 </span><span class="lineCov">          1 :                 if (register_cpu(&amp;per_cpu(cpu_devices, i), i))</span></a>
 <a name="505"><span class="lineNum">     505 </span><span class="lineNoCov">          0 :                         panic(&quot;Failed to register CPU device&quot;);</span></a>
 <a name="506"><span class="lineNum">     506 </span>            :         }</a>
 <a name="507"><span class="lineNum">     507 </span>            : #endif</a>
-<a name="508"><span class="lineNum">     508 </span><span class="lineCov">          2 : }</span></a>
+<a name="508"><span class="lineNum">     508 </span><span class="lineCov">          1 : }</span></a>
 <a name="509"><span class="lineNum">     509 </span>            : </a>
 <a name="510"><span class="lineNum">     510 </span>            : #ifdef CONFIG_GENERIC_CPU_VULNERABILITIES</a>
 <a name="511"><span class="lineNum">     511 </span>            : </a>
@@ -665,14 +665,14 @@
 <a name="603"><span class="lineNum">     603 </span>            : static inline void cpu_register_vulnerabilities(void) { }</a>
 <a name="604"><span class="lineNum">     604 </span>            : #endif</a>
 <a name="605"><span class="lineNum">     605 </span>            : </a>
-<a name="606"><span class="lineNum">     606 </span><span class="lineCov">          2 : void __init cpu_dev_init(void)</span></a>
+<a name="606"><span class="lineNum">     606 </span><span class="lineCov">          1 : void __init cpu_dev_init(void)</span></a>
 <a name="607"><span class="lineNum">     607 </span>            : {</a>
-<a name="608"><span class="lineNum">     608 </span><span class="lineCov">          2 :         if (subsys_system_register(&amp;cpu_subsys, cpu_root_attr_groups))</span></a>
+<a name="608"><span class="lineNum">     608 </span><span class="lineCov">          1 :         if (subsys_system_register(&amp;cpu_subsys, cpu_root_attr_groups))</span></a>
 <a name="609"><span class="lineNum">     609 </span><span class="lineNoCov">          0 :                 panic(&quot;Failed to register CPU subsystem&quot;);</span></a>
 <a name="610"><span class="lineNum">     610 </span>            : </a>
-<a name="611"><span class="lineNum">     611 </span><span class="lineCov">          2 :         cpu_dev_register_generic();</span></a>
+<a name="611"><span class="lineNum">     611 </span><span class="lineCov">          1 :         cpu_dev_register_generic();</span></a>
 <a name="612"><span class="lineNum">     612 </span>            :         cpu_register_vulnerabilities();</a>
-<a name="613"><span class="lineNum">     613 </span><span class="lineCov">          2 : }</span></a>
+<a name="613"><span class="lineNum">     613 </span><span class="lineCov">          1 : }</span></a>
 </pre>
       </td>
     </tr>

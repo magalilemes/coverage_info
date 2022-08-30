@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -188,7 +188,7 @@
 <a name="126"><span class="lineNum">     126 </span>            :  */</a>
 <a name="127"><span class="lineNum">     127 </span>            : static inline int waitqueue_active(struct wait_queue_head *wq_head)</a>
 <a name="128"><span class="lineNum">     128 </span>            : {</a>
-<a name="129"><span class="lineNum">     129 </span><span class="lineCov">       1204 :         return !list_empty(&amp;wq_head-&gt;head);</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">        740 :         return !list_empty(&amp;wq_head-&gt;head);</span></a>
 <a name="130"><span class="lineNum">     130 </span>            : }</a>
 <a name="131"><span class="lineNum">     131 </span>            : </a>
 <a name="132"><span class="lineNum">     132 </span>            : /**</a>
@@ -232,15 +232,15 @@
 <a name="170"><span class="lineNum">     170 </span>            : </a>
 <a name="171"><span class="lineNum">     171 </span>            : static inline void __add_wait_queue(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry)</a>
 <a name="172"><span class="lineNum">     172 </span>            : {</a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          6 :         struct list_head *head = &amp;wq_head-&gt;head;</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          3 :         struct list_head *head = &amp;wq_head-&gt;head;</span></a>
 <a name="174"><span class="lineNum">     174 </span>            :         struct wait_queue_entry *wq;</a>
 <a name="175"><span class="lineNum">     175 </span>            : </a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineCov">          6 :         list_for_each_entry(wq, &amp;wq_head-&gt;head, entry) {</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">          3 :         list_for_each_entry(wq, &amp;wq_head-&gt;head, entry) {</span></a>
 <a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 :                 if (!(wq-&gt;flags &amp; WQ_FLAG_PRIORITY))</span></a>
 <a name="178"><span class="lineNum">     178 </span>            :                         break;</a>
 <a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 :                 head = &amp;wq-&gt;entry;</span></a>
 <a name="180"><span class="lineNum">     180 </span>            :         }</a>
-<a name="181"><span class="lineNum">     181 </span><span class="lineCov">         12 :         list_add(&amp;wq_entry-&gt;entry, head);</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">          6 :         list_add(&amp;wq_entry-&gt;entry, head);</span></a>
 <a name="182"><span class="lineNum">     182 </span>            : }</a>
 <a name="183"><span class="lineNum">     183 </span>            : </a>
 <a name="184"><span class="lineNum">     184 </span>            : /*</a>
@@ -329,7 +329,7 @@
 <a name="267"><span class="lineNum">     267 </span>            :          * However, rcu_read_lock() is required to be held in such cases, so we</a>
 <a name="268"><span class="lineNum">     268 </span>            :          * can safely proceed with an RCU-delayed free.</a>
 <a name="269"><span class="lineNum">     269 </span>            :          */</a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineCov">        128 :         if (waitqueue_active(wq_head))</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineCov">         93 :         if (waitqueue_active(wq_head))</span></a>
 <a name="271"><span class="lineNum">     271 </span><span class="lineNoCov">          0 :                 __wake_up_pollfree(wq_head);</span></a>
 <a name="272"><span class="lineNum">     272 </span>            : }</a>
 <a name="273"><span class="lineNum">     273 </span>            : </a>

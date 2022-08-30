@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -113,11 +113,11 @@
 <a name="51"><span class="lineNum">      51 </span>            :                                      struct swnode, fwnode) : NULL;     \</a>
 <a name="52"><span class="lineNum">      52 </span>            :         })</a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">       1072 : static inline struct swnode *dev_to_swnode(struct device *dev)</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        536 : static inline struct swnode *dev_to_swnode(struct device *dev)</span></a>
 <a name="55"><span class="lineNum">      55 </span>            : {</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">       1072 :         struct fwnode_handle *fwnode = dev_fwnode(dev);</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        536 :         struct fwnode_handle *fwnode = dev_fwnode(dev);</span></a>
 <a name="57"><span class="lineNum">      57 </span>            : </a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">       1072 :         if (!fwnode)</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">        536 :         if (!fwnode)</span></a>
 <a name="59"><span class="lineNum">      59 </span>            :                 return NULL;</a>
 <a name="60"><span class="lineNum">      60 </span>            : </a>
 <a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 :         if (!is_software_node(fwnode))</span></a>
@@ -1179,13 +1179,13 @@
 <a name="1117"><span class="lineNum">    1117 </span>            : }</a>
 <a name="1118"><span class="lineNum">    1118 </span>            : EXPORT_SYMBOL_GPL(device_create_managed_software_node);</a>
 <a name="1119"><span class="lineNum">    1119 </span>            : </a>
-<a name="1120"><span class="lineNum">    1120 </span><span class="lineCov">       1072 : void software_node_notify(struct device *dev)</span></a>
+<a name="1120"><span class="lineNum">    1120 </span><span class="lineCov">        536 : void software_node_notify(struct device *dev)</span></a>
 <a name="1121"><span class="lineNum">    1121 </span>            : {</a>
 <a name="1122"><span class="lineNum">    1122 </span>            :         struct swnode *swnode;</a>
 <a name="1123"><span class="lineNum">    1123 </span>            :         int ret;</a>
 <a name="1124"><span class="lineNum">    1124 </span>            : </a>
-<a name="1125"><span class="lineNum">    1125 </span><span class="lineCov">       1072 :         swnode = dev_to_swnode(dev);</span></a>
-<a name="1126"><span class="lineNum">    1126 </span><span class="lineCov">       1072 :         if (!swnode)</span></a>
+<a name="1125"><span class="lineNum">    1125 </span><span class="lineCov">        536 :         swnode = dev_to_swnode(dev);</span></a>
+<a name="1126"><span class="lineNum">    1126 </span><span class="lineCov">        536 :         if (!swnode)</span></a>
 <a name="1127"><span class="lineNum">    1127 </span>            :                 return;</a>
 <a name="1128"><span class="lineNum">    1128 </span>            : </a>
 <a name="1129"><span class="lineNum">    1129 </span><span class="lineNoCov">          0 :         ret = sysfs_create_link(&amp;dev-&gt;kobj, &amp;swnode-&gt;kobj, &quot;software_node&quot;);</span></a>
@@ -1219,12 +1219,12 @@
 <a name="1157"><span class="lineNum">    1157 </span>            :         }</a>
 <a name="1158"><span class="lineNum">    1158 </span>            : }</a>
 <a name="1159"><span class="lineNum">    1159 </span>            : </a>
-<a name="1160"><span class="lineNum">    1160 </span><span class="lineCov">          2 : static int __init software_node_init(void)</span></a>
+<a name="1160"><span class="lineNum">    1160 </span><span class="lineCov">          1 : static int __init software_node_init(void)</span></a>
 <a name="1161"><span class="lineNum">    1161 </span>            : {</a>
-<a name="1162"><span class="lineNum">    1162 </span><span class="lineCov">          2 :         swnode_kset = kset_create_and_add(&quot;software_nodes&quot;, NULL, kernel_kobj);</span></a>
-<a name="1163"><span class="lineNum">    1163 </span><span class="lineCov">          2 :         if (!swnode_kset)</span></a>
+<a name="1162"><span class="lineNum">    1162 </span><span class="lineCov">          1 :         swnode_kset = kset_create_and_add(&quot;software_nodes&quot;, NULL, kernel_kobj);</span></a>
+<a name="1163"><span class="lineNum">    1163 </span><span class="lineCov">          1 :         if (!swnode_kset)</span></a>
 <a name="1164"><span class="lineNum">    1164 </span>            :                 return -ENOMEM;</a>
-<a name="1165"><span class="lineNum">    1165 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="1165"><span class="lineNum">    1165 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="1166"><span class="lineNum">    1166 </span>            : }</a>
 <a name="1167"><span class="lineNum">    1167 </span>            : postcore_initcall(software_node_init);</a>
 <a name="1168"><span class="lineNum">    1168 </span>            : </a>

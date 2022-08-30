@@ -32,16 +32,16 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">113</td>
+            <td class="headerCovTableEntry">108</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntry">15</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -246,197 +246,189 @@
 <a name="184"><span class="lineNum">     184 </span><span class="lineNoCov">          0 :         REG_UPDATE(OTG_V_SYNC_A_CNTL, OTG_V_SYNC_MODE, 0);</span></a>
 <a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="186"><span class="lineNum">     186 </span>            : </a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 : void optc3_set_vrr_m_const(struct timing_generator *optc,</span></a>
-<a name="188"><span class="lineNum">     188 </span>            :                 double vtotal_avg)</a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 : void optc3_set_odm_bypass(struct timing_generator *optc,</span></a>
+<a name="188"><span class="lineNum">     188 </span>            :                 const struct dc_crtc_timing *dc_crtc_timing)</a>
 <a name="189"><span class="lineNum">     189 </span>            : {</a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :         DC_FP_START();</span></a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :         optc3_fpu_set_vrr_m_const(optc, vtotal_avg);</span></a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 :         DC_FP_END();</span></a>
-<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="194"><span class="lineNum">     194 </span>            : </a>
-<a name="195"><span class="lineNum">     195 </span><span class="lineNoCov">          0 : void optc3_set_odm_bypass(struct timing_generator *optc,</span></a>
-<a name="196"><span class="lineNum">     196 </span>            :                 const struct dc_crtc_timing *dc_crtc_timing)</a>
-<a name="197"><span class="lineNum">     197 </span>            : {</a>
-<a name="198"><span class="lineNum">     198 </span><span class="lineNoCov">          0 :         struct optc *optc1 = DCN10TG_FROM_TG(optc);</span></a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :         enum h_timing_div_mode h_div = H_TIMING_NO_DIV;</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :         struct optc *optc1 = DCN10TG_FROM_TG(optc);</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :         enum h_timing_div_mode h_div = H_TIMING_NO_DIV;</span></a>
+<a name="192"><span class="lineNum">     192 </span>            : </a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :         REG_SET_5(OPTC_DATA_SOURCE_SELECT, 0,</span></a>
+<a name="194"><span class="lineNum">     194 </span>            :                         OPTC_NUM_OF_INPUT_SEGMENT, 0,</a>
+<a name="195"><span class="lineNum">     195 </span>            :                         OPTC_SEG0_SRC_SEL, optc-&gt;inst,</a>
+<a name="196"><span class="lineNum">     196 </span>            :                         OPTC_SEG1_SRC_SEL, 0xf,</a>
+<a name="197"><span class="lineNum">     197 </span>            :                         OPTC_SEG2_SRC_SEL, 0xf,</a>
+<a name="198"><span class="lineNum">     198 </span>            :                         OPTC_SEG3_SRC_SEL, 0xf</a>
+<a name="199"><span class="lineNum">     199 </span>            :                         );</a>
 <a name="200"><span class="lineNum">     200 </span>            : </a>
-<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 :         REG_SET_5(OPTC_DATA_SOURCE_SELECT, 0,</span></a>
-<a name="202"><span class="lineNum">     202 </span>            :                         OPTC_NUM_OF_INPUT_SEGMENT, 0,</a>
-<a name="203"><span class="lineNum">     203 </span>            :                         OPTC_SEG0_SRC_SEL, optc-&gt;inst,</a>
-<a name="204"><span class="lineNum">     204 </span>            :                         OPTC_SEG1_SRC_SEL, 0xf,</a>
-<a name="205"><span class="lineNum">     205 </span>            :                         OPTC_SEG2_SRC_SEL, 0xf,</a>
-<a name="206"><span class="lineNum">     206 </span>            :                         OPTC_SEG3_SRC_SEL, 0xf</a>
-<a name="207"><span class="lineNum">     207 </span>            :                         );</a>
-<a name="208"><span class="lineNum">     208 </span>            : </a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineNoCov">          0 :         h_div = optc1_is_two_pixels_per_containter(dc_crtc_timing);</span></a>
-<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 :         REG_SET(OTG_H_TIMING_CNTL, 0,</span></a>
-<a name="211"><span class="lineNum">     211 </span>            :                         OTG_H_TIMING_DIV_MODE, h_div);</a>
-<a name="212"><span class="lineNum">     212 </span>            : </a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineNoCov">          0 :         REG_SET(OPTC_MEMORY_CONFIG, 0,</span></a>
-<a name="214"><span class="lineNum">     214 </span>            :                         OPTC_MEM_SEL, 0);</a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineNoCov">          0 :         optc1-&gt;opp_count = 1;</span></a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 :         h_div = optc1_is_two_pixels_per_containter(dc_crtc_timing);</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 :         REG_SET(OTG_H_TIMING_CNTL, 0,</span></a>
+<a name="203"><span class="lineNum">     203 </span>            :                         OTG_H_TIMING_DIV_MODE, h_div);</a>
+<a name="204"><span class="lineNum">     204 </span>            : </a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 :         REG_SET(OPTC_MEMORY_CONFIG, 0,</span></a>
+<a name="206"><span class="lineNum">     206 </span>            :                         OPTC_MEM_SEL, 0);</a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 :         optc1-&gt;opp_count = 1;</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="209"><span class="lineNum">     209 </span>            : </a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 : static void optc3_set_odm_combine(struct timing_generator *optc, int *opp_id, int opp_cnt,</span></a>
+<a name="211"><span class="lineNum">     211 </span>            :                 struct dc_crtc_timing *timing)</a>
+<a name="212"><span class="lineNum">     212 </span>            : {</a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineNoCov">          0 :         struct optc *optc1 = DCN10TG_FROM_TG(optc);</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineNoCov">          0 :         int mpcc_hactive = (timing-&gt;h_addressable + timing-&gt;h_border_left + timing-&gt;h_border_right)</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineNoCov">          0 :                         / opp_cnt;</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineNoCov">          0 :         uint32_t memory_mask = 0;</span></a>
 <a name="217"><span class="lineNum">     217 </span>            : </a>
-<a name="218"><span class="lineNum">     218 </span><span class="lineNoCov">          0 : static void optc3_set_odm_combine(struct timing_generator *optc, int *opp_id, int opp_cnt,</span></a>
-<a name="219"><span class="lineNum">     219 </span>            :                 struct dc_crtc_timing *timing)</a>
-<a name="220"><span class="lineNum">     220 </span>            : {</a>
-<a name="221"><span class="lineNum">     221 </span><span class="lineNoCov">          0 :         struct optc *optc1 = DCN10TG_FROM_TG(optc);</span></a>
-<a name="222"><span class="lineNum">     222 </span><span class="lineNoCov">          0 :         int mpcc_hactive = (timing-&gt;h_addressable + timing-&gt;h_border_left + timing-&gt;h_border_right)</span></a>
-<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 :                         / opp_cnt;</span></a>
-<a name="224"><span class="lineNum">     224 </span><span class="lineNoCov">          0 :         uint32_t memory_mask = 0;</span></a>
+<a name="218"><span class="lineNum">     218 </span>            :         /* TODO: In pseudocode but does not affect maximus, delete comment if we dont need on asic</a>
+<a name="219"><span class="lineNum">     219 </span>            :          * REG_SET(OTG_GLOBAL_CONTROL2, 0, GLOBAL_UPDATE_LOCK_EN, 1);</a>
+<a name="220"><span class="lineNum">     220 </span>            :          * Program OTG register MASTER_UPDATE_LOCK_DB_X/Y to the position before DP frame start</a>
+<a name="221"><span class="lineNum">     221 </span>            :          * REG_SET_2(OTG_GLOBAL_CONTROL1, 0,</a>
+<a name="222"><span class="lineNum">     222 </span>            :          *              MASTER_UPDATE_LOCK_DB_X, 160,</a>
+<a name="223"><span class="lineNum">     223 </span>            :          *              MASTER_UPDATE_LOCK_DB_Y, 240);</a>
+<a name="224"><span class="lineNum">     224 </span>            :          */</a>
 <a name="225"><span class="lineNum">     225 </span>            : </a>
-<a name="226"><span class="lineNum">     226 </span>            :         /* TODO: In pseudocode but does not affect maximus, delete comment if we dont need on asic</a>
-<a name="227"><span class="lineNum">     227 </span>            :          * REG_SET(OTG_GLOBAL_CONTROL2, 0, GLOBAL_UPDATE_LOCK_EN, 1);</a>
-<a name="228"><span class="lineNum">     228 </span>            :          * Program OTG register MASTER_UPDATE_LOCK_DB_X/Y to the position before DP frame start</a>
-<a name="229"><span class="lineNum">     229 </span>            :          * REG_SET_2(OTG_GLOBAL_CONTROL1, 0,</a>
-<a name="230"><span class="lineNum">     230 </span>            :          *              MASTER_UPDATE_LOCK_DB_X, 160,</a>
-<a name="231"><span class="lineNum">     231 </span>            :          *              MASTER_UPDATE_LOCK_DB_Y, 240);</a>
-<a name="232"><span class="lineNum">     232 </span>            :          */</a>
-<a name="233"><span class="lineNum">     233 </span>            : </a>
-<a name="234"><span class="lineNum">     234 </span><span class="lineNoCov">          0 :         ASSERT(opp_cnt == 2 || opp_cnt == 4);</span></a>
-<a name="235"><span class="lineNum">     235 </span>            : </a>
-<a name="236"><span class="lineNum">     236 </span>            :         /* 2 pieces of memory required for up to 5120 displays, 4 for up to 8192,</a>
-<a name="237"><span class="lineNum">     237 </span>            :          * however, for ODM combine we can simplify by always using 4.</a>
-<a name="238"><span class="lineNum">     238 </span>            :          */</a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineNoCov">          0 :         if (opp_cnt == 2) {</span></a>
-<a name="240"><span class="lineNum">     240 </span>            :                 /* To make sure there's no memory overlap, each instance &quot;reserves&quot; 2</a>
-<a name="241"><span class="lineNum">     241 </span>            :                  * memories and they are uniquely combined here.</a>
-<a name="242"><span class="lineNum">     242 </span>            :                  */</a>
-<a name="243"><span class="lineNum">     243 </span><span class="lineNoCov">          0 :                 memory_mask = 0x3 &lt;&lt; (opp_id[0] * 2) | 0x3 &lt;&lt; (opp_id[1] * 2);</span></a>
-<a name="244"><span class="lineNum">     244 </span><span class="lineNoCov">          0 :         } else if (opp_cnt == 4) {</span></a>
-<a name="245"><span class="lineNum">     245 </span>            :                 /* To make sure there's no memory overlap, each instance &quot;reserves&quot; 1</a>
-<a name="246"><span class="lineNum">     246 </span>            :                  * memory and they are uniquely combined here.</a>
-<a name="247"><span class="lineNum">     247 </span>            :                  */</a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 :                 memory_mask = 0x1 &lt;&lt; (opp_id[0] * 2) | 0x1 &lt;&lt; (opp_id[1] * 2) | 0x1 &lt;&lt; (opp_id[2] * 2) | 0x1 &lt;&lt; (opp_id[3] * 2);</span></a>
-<a name="249"><span class="lineNum">     249 </span>            :         }</a>
-<a name="250"><span class="lineNum">     250 </span>            : </a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 :         if (REG(OPTC_MEMORY_CONFIG))</span></a>
-<a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 :                 REG_SET(OPTC_MEMORY_CONFIG, 0,</span></a>
-<a name="253"><span class="lineNum">     253 </span>            :                         OPTC_MEM_SEL, memory_mask);</a>
-<a name="254"><span class="lineNum">     254 </span>            : </a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineNoCov">          0 :         if (opp_cnt == 2) {</span></a>
-<a name="256"><span class="lineNum">     256 </span><span class="lineNoCov">          0 :                 REG_SET_3(OPTC_DATA_SOURCE_SELECT, 0,</span></a>
-<a name="257"><span class="lineNum">     257 </span>            :                                 OPTC_NUM_OF_INPUT_SEGMENT, 1,</a>
-<a name="258"><span class="lineNum">     258 </span>            :                                 OPTC_SEG0_SRC_SEL, opp_id[0],</a>
-<a name="259"><span class="lineNum">     259 </span>            :                                 OPTC_SEG1_SRC_SEL, opp_id[1]);</a>
-<a name="260"><span class="lineNum">     260 </span><span class="lineNoCov">          0 :         } else if (opp_cnt == 4) {</span></a>
-<a name="261"><span class="lineNum">     261 </span><span class="lineNoCov">          0 :                 REG_SET_5(OPTC_DATA_SOURCE_SELECT, 0,</span></a>
-<a name="262"><span class="lineNum">     262 </span>            :                                 OPTC_NUM_OF_INPUT_SEGMENT, 3,</a>
-<a name="263"><span class="lineNum">     263 </span>            :                                 OPTC_SEG0_SRC_SEL, opp_id[0],</a>
-<a name="264"><span class="lineNum">     264 </span>            :                                 OPTC_SEG1_SRC_SEL, opp_id[1],</a>
-<a name="265"><span class="lineNum">     265 </span>            :                                 OPTC_SEG2_SRC_SEL, opp_id[2],</a>
-<a name="266"><span class="lineNum">     266 </span>            :                                 OPTC_SEG3_SRC_SEL, opp_id[3]);</a>
-<a name="267"><span class="lineNum">     267 </span>            :         }</a>
-<a name="268"><span class="lineNum">     268 </span>            : </a>
-<a name="269"><span class="lineNum">     269 </span><span class="lineNoCov">          0 :         REG_UPDATE(OPTC_WIDTH_CONTROL,</span></a>
-<a name="270"><span class="lineNum">     270 </span>            :                         OPTC_SEGMENT_WIDTH, mpcc_hactive);</a>
-<a name="271"><span class="lineNum">     271 </span>            : </a>
-<a name="272"><span class="lineNum">     272 </span><span class="lineNoCov">          0 :         REG_SET(OTG_H_TIMING_CNTL, 0, OTG_H_TIMING_DIV_MODE, opp_cnt - 1);</span></a>
-<a name="273"><span class="lineNum">     273 </span><span class="lineNoCov">          0 :         optc1-&gt;opp_count = opp_cnt;</span></a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="275"><span class="lineNum">     275 </span>            : </a>
-<a name="276"><span class="lineNum">     276 </span>            : /**</a>
-<a name="277"><span class="lineNum">     277 </span>            :  * optc3_set_timing_double_buffer() - DRR double buffering control</a>
-<a name="278"><span class="lineNum">     278 </span>            :  *</a>
-<a name="279"><span class="lineNum">     279 </span>            :  * Sets double buffer point for V_TOTAL, H_TOTAL, VTOTAL_MIN,</a>
-<a name="280"><span class="lineNum">     280 </span>            :  * VTOTAL_MAX, VTOTAL_MIN_SEL and VTOTAL_MAX_SEL registers.</a>
-<a name="281"><span class="lineNum">     281 </span>            :  *</a>
-<a name="282"><span class="lineNum">     282 </span>            :  * Options: any time,  start of frame, dp start of frame (range timing)</a>
-<a name="283"><span class="lineNum">     283 </span>            :  */</a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineNoCov">          0 : static void optc3_set_timing_double_buffer(struct timing_generator *optc, bool enable)</span></a>
-<a name="285"><span class="lineNum">     285 </span>            : {</a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineNoCov">          0 :         struct optc *optc1 = DCN10TG_FROM_TG(optc);</span></a>
-<a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :         uint32_t mode = enable ? 2 : 0;</span></a>
-<a name="288"><span class="lineNum">     288 </span>            : </a>
-<a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 :         REG_UPDATE(OTG_DOUBLE_BUFFER_CONTROL,</span></a>
-<a name="290"><span class="lineNum">     290 </span>            :                    OTG_DRR_TIMING_DBUF_UPDATE_MODE, mode);</a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="292"><span class="lineNum">     292 </span>            : </a>
-<a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 : void optc3_set_vtotal_min_max(struct timing_generator *optc, int vtotal_min, int vtotal_max)</span></a>
-<a name="294"><span class="lineNum">     294 </span>            : {</a>
-<a name="295"><span class="lineNum">     295 </span><span class="lineNoCov">          0 :         optc1_set_vtotal_min_max(optc, vtotal_min, vtotal_max);</span></a>
-<a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="297"><span class="lineNum">     297 </span>            : </a>
-<a name="298"><span class="lineNum">     298 </span><span class="lineNoCov">          0 : void optc3_tg_init(struct timing_generator *optc)</span></a>
-<a name="299"><span class="lineNum">     299 </span>            : {</a>
-<a name="300"><span class="lineNum">     300 </span><span class="lineNoCov">          0 :         optc3_set_timing_double_buffer(optc, true);</span></a>
-<a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 :         optc1_clear_optc_underflow(optc);</span></a>
-<a name="302"><span class="lineNum">     302 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="303"><span class="lineNum">     303 </span>            : </a>
-<a name="304"><span class="lineNum">     304 </span>            : static struct timing_generator_funcs dcn30_tg_funcs = {</a>
-<a name="305"><span class="lineNum">     305 </span>            :                 .validate_timing = optc1_validate_timing,</a>
-<a name="306"><span class="lineNum">     306 </span>            :                 .program_timing = optc1_program_timing,</a>
-<a name="307"><span class="lineNum">     307 </span>            :                 .setup_vertical_interrupt0 = optc1_setup_vertical_interrupt0,</a>
-<a name="308"><span class="lineNum">     308 </span>            :                 .setup_vertical_interrupt1 = optc1_setup_vertical_interrupt1,</a>
-<a name="309"><span class="lineNum">     309 </span>            :                 .setup_vertical_interrupt2 = optc1_setup_vertical_interrupt2,</a>
-<a name="310"><span class="lineNum">     310 </span>            :                 .program_global_sync = optc1_program_global_sync,</a>
-<a name="311"><span class="lineNum">     311 </span>            :                 .enable_crtc = optc2_enable_crtc,</a>
-<a name="312"><span class="lineNum">     312 </span>            :                 .disable_crtc = optc1_disable_crtc,</a>
-<a name="313"><span class="lineNum">     313 </span>            :                 /* used by enable_timing_synchronization. Not need for FPGA */</a>
-<a name="314"><span class="lineNum">     314 </span>            :                 .is_counter_moving = optc1_is_counter_moving,</a>
-<a name="315"><span class="lineNum">     315 </span>            :                 .get_position = optc1_get_position,</a>
-<a name="316"><span class="lineNum">     316 </span>            :                 .get_frame_count = optc1_get_vblank_counter,</a>
-<a name="317"><span class="lineNum">     317 </span>            :                 .get_scanoutpos = optc1_get_crtc_scanoutpos,</a>
-<a name="318"><span class="lineNum">     318 </span>            :                 .get_otg_active_size = optc1_get_otg_active_size,</a>
-<a name="319"><span class="lineNum">     319 </span>            :                 .set_early_control = optc1_set_early_control,</a>
-<a name="320"><span class="lineNum">     320 </span>            :                 /* used by enable_timing_synchronization. Not need for FPGA */</a>
-<a name="321"><span class="lineNum">     321 </span>            :                 .wait_for_state = optc1_wait_for_state,</a>
-<a name="322"><span class="lineNum">     322 </span>            :                 .set_blank_color = optc3_program_blank_color,</a>
-<a name="323"><span class="lineNum">     323 </span>            :                 .did_triggered_reset_occur = optc1_did_triggered_reset_occur,</a>
-<a name="324"><span class="lineNum">     324 </span>            :                 .triplebuffer_lock = optc3_triplebuffer_lock,</a>
-<a name="325"><span class="lineNum">     325 </span>            :                 .triplebuffer_unlock = optc2_triplebuffer_unlock,</a>
-<a name="326"><span class="lineNum">     326 </span>            :                 .enable_reset_trigger = optc1_enable_reset_trigger,</a>
-<a name="327"><span class="lineNum">     327 </span>            :                 .enable_crtc_reset = optc1_enable_crtc_reset,</a>
-<a name="328"><span class="lineNum">     328 </span>            :                 .disable_reset_trigger = optc1_disable_reset_trigger,</a>
-<a name="329"><span class="lineNum">     329 </span>            :                 .lock = optc3_lock,</a>
-<a name="330"><span class="lineNum">     330 </span>            :                 .is_locked = optc1_is_locked,</a>
-<a name="331"><span class="lineNum">     331 </span>            :                 .unlock = optc1_unlock,</a>
-<a name="332"><span class="lineNum">     332 </span>            :                 .lock_doublebuffer_enable = optc3_lock_doublebuffer_enable,</a>
-<a name="333"><span class="lineNum">     333 </span>            :                 .lock_doublebuffer_disable = optc3_lock_doublebuffer_disable,</a>
-<a name="334"><span class="lineNum">     334 </span>            :                 .enable_optc_clock = optc1_enable_optc_clock,</a>
-<a name="335"><span class="lineNum">     335 </span>            :                 .set_drr = optc1_set_drr,</a>
-<a name="336"><span class="lineNum">     336 </span>            :                 .get_last_used_drr_vtotal = optc2_get_last_used_drr_vtotal,</a>
-<a name="337"><span class="lineNum">     337 </span>            :                 .set_static_screen_control = optc1_set_static_screen_control,</a>
-<a name="338"><span class="lineNum">     338 </span>            :                 .program_stereo = optc1_program_stereo,</a>
-<a name="339"><span class="lineNum">     339 </span>            :                 .is_stereo_left_eye = optc1_is_stereo_left_eye,</a>
-<a name="340"><span class="lineNum">     340 </span>            :                 .tg_init = optc3_tg_init,</a>
-<a name="341"><span class="lineNum">     341 </span>            :                 .is_tg_enabled = optc1_is_tg_enabled,</a>
-<a name="342"><span class="lineNum">     342 </span>            :                 .is_optc_underflow_occurred = optc1_is_optc_underflow_occurred,</a>
-<a name="343"><span class="lineNum">     343 </span>            :                 .clear_optc_underflow = optc1_clear_optc_underflow,</a>
-<a name="344"><span class="lineNum">     344 </span>            :                 .setup_global_swap_lock = NULL,</a>
-<a name="345"><span class="lineNum">     345 </span>            :                 .get_crc = optc1_get_crc,</a>
-<a name="346"><span class="lineNum">     346 </span>            :                 .configure_crc = optc2_configure_crc,</a>
-<a name="347"><span class="lineNum">     347 </span>            :                 .set_dsc_config = optc3_set_dsc_config,</a>
-<a name="348"><span class="lineNum">     348 </span>            :                 .get_dsc_status = optc2_get_dsc_status,</a>
-<a name="349"><span class="lineNum">     349 </span>            :                 .set_dwb_source = NULL,</a>
-<a name="350"><span class="lineNum">     350 </span>            :                 .set_odm_bypass = optc3_set_odm_bypass,</a>
-<a name="351"><span class="lineNum">     351 </span>            :                 .set_odm_combine = optc3_set_odm_combine,</a>
-<a name="352"><span class="lineNum">     352 </span>            :                 .get_optc_source = optc2_get_optc_source,</a>
-<a name="353"><span class="lineNum">     353 </span>            :                 .set_out_mux = optc3_set_out_mux,</a>
-<a name="354"><span class="lineNum">     354 </span>            :                 .set_drr_trigger_window = optc3_set_drr_trigger_window,</a>
-<a name="355"><span class="lineNum">     355 </span>            :                 .set_vtotal_change_limit = optc3_set_vtotal_change_limit,</a>
-<a name="356"><span class="lineNum">     356 </span>            :                 .set_gsl = optc2_set_gsl,</a>
-<a name="357"><span class="lineNum">     357 </span>            :                 .set_gsl_source_select = optc2_set_gsl_source_select,</a>
-<a name="358"><span class="lineNum">     358 </span>            :                 .set_vtg_params = optc1_set_vtg_params,</a>
-<a name="359"><span class="lineNum">     359 </span>            :                 .program_manual_trigger = optc2_program_manual_trigger,</a>
-<a name="360"><span class="lineNum">     360 </span>            :                 .setup_manual_trigger = optc2_setup_manual_trigger,</a>
-<a name="361"><span class="lineNum">     361 </span>            :                 .get_hw_timing = optc1_get_hw_timing,</a>
-<a name="362"><span class="lineNum">     362 </span>            : };</a>
-<a name="363"><span class="lineNum">     363 </span>            : </a>
-<a name="364"><span class="lineNum">     364 </span><span class="lineNoCov">          0 : void dcn30_timing_generator_init(struct optc *optc1)</span></a>
-<a name="365"><span class="lineNum">     365 </span>            : {</a>
-<a name="366"><span class="lineNum">     366 </span><span class="lineNoCov">          0 :         optc1-&gt;base.funcs = &amp;dcn30_tg_funcs;</span></a>
-<a name="367"><span class="lineNum">     367 </span>            : </a>
-<a name="368"><span class="lineNum">     368 </span><span class="lineNoCov">          0 :         optc1-&gt;max_h_total = optc1-&gt;tg_mask-&gt;OTG_H_TOTAL + 1;</span></a>
-<a name="369"><span class="lineNum">     369 </span><span class="lineNoCov">          0 :         optc1-&gt;max_v_total = optc1-&gt;tg_mask-&gt;OTG_V_TOTAL + 1;</span></a>
-<a name="370"><span class="lineNum">     370 </span>            : </a>
-<a name="371"><span class="lineNum">     371 </span><span class="lineNoCov">          0 :         optc1-&gt;min_h_blank = 32;</span></a>
-<a name="372"><span class="lineNum">     372 </span><span class="lineNoCov">          0 :         optc1-&gt;min_v_blank = 3;</span></a>
-<a name="373"><span class="lineNum">     373 </span><span class="lineNoCov">          0 :         optc1-&gt;min_v_blank_interlace = 5;</span></a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 :         optc1-&gt;min_h_sync_width = 4;</span></a>
-<a name="375"><span class="lineNum">     375 </span><span class="lineNoCov">          0 :         optc1-&gt;min_v_sync_width = 1;</span></a>
-<a name="376"><span class="lineNum">     376 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="377"><span class="lineNum">     377 </span>            : </a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineNoCov">          0 :         ASSERT(opp_cnt == 2 || opp_cnt == 4);</span></a>
+<a name="227"><span class="lineNum">     227 </span>            : </a>
+<a name="228"><span class="lineNum">     228 </span>            :         /* 2 pieces of memory required for up to 5120 displays, 4 for up to 8192,</a>
+<a name="229"><span class="lineNum">     229 </span>            :          * however, for ODM combine we can simplify by always using 4.</a>
+<a name="230"><span class="lineNum">     230 </span>            :          */</a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineNoCov">          0 :         if (opp_cnt == 2) {</span></a>
+<a name="232"><span class="lineNum">     232 </span>            :                 /* To make sure there's no memory overlap, each instance &quot;reserves&quot; 2</a>
+<a name="233"><span class="lineNum">     233 </span>            :                  * memories and they are uniquely combined here.</a>
+<a name="234"><span class="lineNum">     234 </span>            :                  */</a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineNoCov">          0 :                 memory_mask = 0x3 &lt;&lt; (opp_id[0] * 2) | 0x3 &lt;&lt; (opp_id[1] * 2);</span></a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineNoCov">          0 :         } else if (opp_cnt == 4) {</span></a>
+<a name="237"><span class="lineNum">     237 </span>            :                 /* To make sure there's no memory overlap, each instance &quot;reserves&quot; 1</a>
+<a name="238"><span class="lineNum">     238 </span>            :                  * memory and they are uniquely combined here.</a>
+<a name="239"><span class="lineNum">     239 </span>            :                  */</a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 :                 memory_mask = 0x1 &lt;&lt; (opp_id[0] * 2) | 0x1 &lt;&lt; (opp_id[1] * 2) | 0x1 &lt;&lt; (opp_id[2] * 2) | 0x1 &lt;&lt; (opp_id[3] * 2);</span></a>
+<a name="241"><span class="lineNum">     241 </span>            :         }</a>
+<a name="242"><span class="lineNum">     242 </span>            : </a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineNoCov">          0 :         if (REG(OPTC_MEMORY_CONFIG))</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineNoCov">          0 :                 REG_SET(OPTC_MEMORY_CONFIG, 0,</span></a>
+<a name="245"><span class="lineNum">     245 </span>            :                         OPTC_MEM_SEL, memory_mask);</a>
+<a name="246"><span class="lineNum">     246 </span>            : </a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 :         if (opp_cnt == 2) {</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 :                 REG_SET_3(OPTC_DATA_SOURCE_SELECT, 0,</span></a>
+<a name="249"><span class="lineNum">     249 </span>            :                                 OPTC_NUM_OF_INPUT_SEGMENT, 1,</a>
+<a name="250"><span class="lineNum">     250 </span>            :                                 OPTC_SEG0_SRC_SEL, opp_id[0],</a>
+<a name="251"><span class="lineNum">     251 </span>            :                                 OPTC_SEG1_SRC_SEL, opp_id[1]);</a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 :         } else if (opp_cnt == 4) {</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 :                 REG_SET_5(OPTC_DATA_SOURCE_SELECT, 0,</span></a>
+<a name="254"><span class="lineNum">     254 </span>            :                                 OPTC_NUM_OF_INPUT_SEGMENT, 3,</a>
+<a name="255"><span class="lineNum">     255 </span>            :                                 OPTC_SEG0_SRC_SEL, opp_id[0],</a>
+<a name="256"><span class="lineNum">     256 </span>            :                                 OPTC_SEG1_SRC_SEL, opp_id[1],</a>
+<a name="257"><span class="lineNum">     257 </span>            :                                 OPTC_SEG2_SRC_SEL, opp_id[2],</a>
+<a name="258"><span class="lineNum">     258 </span>            :                                 OPTC_SEG3_SRC_SEL, opp_id[3]);</a>
+<a name="259"><span class="lineNum">     259 </span>            :         }</a>
+<a name="260"><span class="lineNum">     260 </span>            : </a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineNoCov">          0 :         REG_UPDATE(OPTC_WIDTH_CONTROL,</span></a>
+<a name="262"><span class="lineNum">     262 </span>            :                         OPTC_SEGMENT_WIDTH, mpcc_hactive);</a>
+<a name="263"><span class="lineNum">     263 </span>            : </a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 :         REG_SET(OTG_H_TIMING_CNTL, 0, OTG_H_TIMING_DIV_MODE, opp_cnt - 1);</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineNoCov">          0 :         optc1-&gt;opp_count = opp_cnt;</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="267"><span class="lineNum">     267 </span>            : </a>
+<a name="268"><span class="lineNum">     268 </span>            : /**</a>
+<a name="269"><span class="lineNum">     269 </span>            :  * optc3_set_timing_double_buffer() - DRR double buffering control</a>
+<a name="270"><span class="lineNum">     270 </span>            :  *</a>
+<a name="271"><span class="lineNum">     271 </span>            :  * Sets double buffer point for V_TOTAL, H_TOTAL, VTOTAL_MIN,</a>
+<a name="272"><span class="lineNum">     272 </span>            :  * VTOTAL_MAX, VTOTAL_MIN_SEL and VTOTAL_MAX_SEL registers.</a>
+<a name="273"><span class="lineNum">     273 </span>            :  *</a>
+<a name="274"><span class="lineNum">     274 </span>            :  * Options: any time,  start of frame, dp start of frame (range timing)</a>
+<a name="275"><span class="lineNum">     275 </span>            :  */</a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 : static void optc3_set_timing_double_buffer(struct timing_generator *optc, bool enable)</span></a>
+<a name="277"><span class="lineNum">     277 </span>            : {</a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineNoCov">          0 :         struct optc *optc1 = DCN10TG_FROM_TG(optc);</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineNoCov">          0 :         uint32_t mode = enable ? 2 : 0;</span></a>
+<a name="280"><span class="lineNum">     280 </span>            : </a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineNoCov">          0 :         REG_UPDATE(OTG_DOUBLE_BUFFER_CONTROL,</span></a>
+<a name="282"><span class="lineNum">     282 </span>            :                    OTG_DRR_TIMING_DBUF_UPDATE_MODE, mode);</a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="284"><span class="lineNum">     284 </span>            : </a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 : void optc3_set_vtotal_min_max(struct timing_generator *optc, int vtotal_min, int vtotal_max)</span></a>
+<a name="286"><span class="lineNum">     286 </span>            : {</a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :         optc1_set_vtotal_min_max(optc, vtotal_min, vtotal_max);</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="289"><span class="lineNum">     289 </span>            : </a>
+<a name="290"><span class="lineNum">     290 </span><span class="lineNoCov">          0 : void optc3_tg_init(struct timing_generator *optc)</span></a>
+<a name="291"><span class="lineNum">     291 </span>            : {</a>
+<a name="292"><span class="lineNum">     292 </span><span class="lineNoCov">          0 :         optc3_set_timing_double_buffer(optc, true);</span></a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 :         optc1_clear_optc_underflow(optc);</span></a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="295"><span class="lineNum">     295 </span>            : </a>
+<a name="296"><span class="lineNum">     296 </span>            : static struct timing_generator_funcs dcn30_tg_funcs = {</a>
+<a name="297"><span class="lineNum">     297 </span>            :                 .validate_timing = optc1_validate_timing,</a>
+<a name="298"><span class="lineNum">     298 </span>            :                 .program_timing = optc1_program_timing,</a>
+<a name="299"><span class="lineNum">     299 </span>            :                 .setup_vertical_interrupt0 = optc1_setup_vertical_interrupt0,</a>
+<a name="300"><span class="lineNum">     300 </span>            :                 .setup_vertical_interrupt1 = optc1_setup_vertical_interrupt1,</a>
+<a name="301"><span class="lineNum">     301 </span>            :                 .setup_vertical_interrupt2 = optc1_setup_vertical_interrupt2,</a>
+<a name="302"><span class="lineNum">     302 </span>            :                 .program_global_sync = optc1_program_global_sync,</a>
+<a name="303"><span class="lineNum">     303 </span>            :                 .enable_crtc = optc2_enable_crtc,</a>
+<a name="304"><span class="lineNum">     304 </span>            :                 .disable_crtc = optc1_disable_crtc,</a>
+<a name="305"><span class="lineNum">     305 </span>            :                 /* used by enable_timing_synchronization. Not need for FPGA */</a>
+<a name="306"><span class="lineNum">     306 </span>            :                 .is_counter_moving = optc1_is_counter_moving,</a>
+<a name="307"><span class="lineNum">     307 </span>            :                 .get_position = optc1_get_position,</a>
+<a name="308"><span class="lineNum">     308 </span>            :                 .get_frame_count = optc1_get_vblank_counter,</a>
+<a name="309"><span class="lineNum">     309 </span>            :                 .get_scanoutpos = optc1_get_crtc_scanoutpos,</a>
+<a name="310"><span class="lineNum">     310 </span>            :                 .get_otg_active_size = optc1_get_otg_active_size,</a>
+<a name="311"><span class="lineNum">     311 </span>            :                 .set_early_control = optc1_set_early_control,</a>
+<a name="312"><span class="lineNum">     312 </span>            :                 /* used by enable_timing_synchronization. Not need for FPGA */</a>
+<a name="313"><span class="lineNum">     313 </span>            :                 .wait_for_state = optc1_wait_for_state,</a>
+<a name="314"><span class="lineNum">     314 </span>            :                 .set_blank_color = optc3_program_blank_color,</a>
+<a name="315"><span class="lineNum">     315 </span>            :                 .did_triggered_reset_occur = optc1_did_triggered_reset_occur,</a>
+<a name="316"><span class="lineNum">     316 </span>            :                 .triplebuffer_lock = optc3_triplebuffer_lock,</a>
+<a name="317"><span class="lineNum">     317 </span>            :                 .triplebuffer_unlock = optc2_triplebuffer_unlock,</a>
+<a name="318"><span class="lineNum">     318 </span>            :                 .enable_reset_trigger = optc1_enable_reset_trigger,</a>
+<a name="319"><span class="lineNum">     319 </span>            :                 .enable_crtc_reset = optc1_enable_crtc_reset,</a>
+<a name="320"><span class="lineNum">     320 </span>            :                 .disable_reset_trigger = optc1_disable_reset_trigger,</a>
+<a name="321"><span class="lineNum">     321 </span>            :                 .lock = optc3_lock,</a>
+<a name="322"><span class="lineNum">     322 </span>            :                 .is_locked = optc1_is_locked,</a>
+<a name="323"><span class="lineNum">     323 </span>            :                 .unlock = optc1_unlock,</a>
+<a name="324"><span class="lineNum">     324 </span>            :                 .lock_doublebuffer_enable = optc3_lock_doublebuffer_enable,</a>
+<a name="325"><span class="lineNum">     325 </span>            :                 .lock_doublebuffer_disable = optc3_lock_doublebuffer_disable,</a>
+<a name="326"><span class="lineNum">     326 </span>            :                 .enable_optc_clock = optc1_enable_optc_clock,</a>
+<a name="327"><span class="lineNum">     327 </span>            :                 .set_drr = optc1_set_drr,</a>
+<a name="328"><span class="lineNum">     328 </span>            :                 .get_last_used_drr_vtotal = optc2_get_last_used_drr_vtotal,</a>
+<a name="329"><span class="lineNum">     329 </span>            :                 .set_static_screen_control = optc1_set_static_screen_control,</a>
+<a name="330"><span class="lineNum">     330 </span>            :                 .program_stereo = optc1_program_stereo,</a>
+<a name="331"><span class="lineNum">     331 </span>            :                 .is_stereo_left_eye = optc1_is_stereo_left_eye,</a>
+<a name="332"><span class="lineNum">     332 </span>            :                 .tg_init = optc3_tg_init,</a>
+<a name="333"><span class="lineNum">     333 </span>            :                 .is_tg_enabled = optc1_is_tg_enabled,</a>
+<a name="334"><span class="lineNum">     334 </span>            :                 .is_optc_underflow_occurred = optc1_is_optc_underflow_occurred,</a>
+<a name="335"><span class="lineNum">     335 </span>            :                 .clear_optc_underflow = optc1_clear_optc_underflow,</a>
+<a name="336"><span class="lineNum">     336 </span>            :                 .setup_global_swap_lock = NULL,</a>
+<a name="337"><span class="lineNum">     337 </span>            :                 .get_crc = optc1_get_crc,</a>
+<a name="338"><span class="lineNum">     338 </span>            :                 .configure_crc = optc2_configure_crc,</a>
+<a name="339"><span class="lineNum">     339 </span>            :                 .set_dsc_config = optc3_set_dsc_config,</a>
+<a name="340"><span class="lineNum">     340 </span>            :                 .get_dsc_status = optc2_get_dsc_status,</a>
+<a name="341"><span class="lineNum">     341 </span>            :                 .set_dwb_source = NULL,</a>
+<a name="342"><span class="lineNum">     342 </span>            :                 .set_odm_bypass = optc3_set_odm_bypass,</a>
+<a name="343"><span class="lineNum">     343 </span>            :                 .set_odm_combine = optc3_set_odm_combine,</a>
+<a name="344"><span class="lineNum">     344 </span>            :                 .get_optc_source = optc2_get_optc_source,</a>
+<a name="345"><span class="lineNum">     345 </span>            :                 .set_out_mux = optc3_set_out_mux,</a>
+<a name="346"><span class="lineNum">     346 </span>            :                 .set_drr_trigger_window = optc3_set_drr_trigger_window,</a>
+<a name="347"><span class="lineNum">     347 </span>            :                 .set_vtotal_change_limit = optc3_set_vtotal_change_limit,</a>
+<a name="348"><span class="lineNum">     348 </span>            :                 .set_gsl = optc2_set_gsl,</a>
+<a name="349"><span class="lineNum">     349 </span>            :                 .set_gsl_source_select = optc2_set_gsl_source_select,</a>
+<a name="350"><span class="lineNum">     350 </span>            :                 .set_vtg_params = optc1_set_vtg_params,</a>
+<a name="351"><span class="lineNum">     351 </span>            :                 .program_manual_trigger = optc2_program_manual_trigger,</a>
+<a name="352"><span class="lineNum">     352 </span>            :                 .setup_manual_trigger = optc2_setup_manual_trigger,</a>
+<a name="353"><span class="lineNum">     353 </span>            :                 .get_hw_timing = optc1_get_hw_timing,</a>
+<a name="354"><span class="lineNum">     354 </span>            : };</a>
+<a name="355"><span class="lineNum">     355 </span>            : </a>
+<a name="356"><span class="lineNum">     356 </span><span class="lineNoCov">          0 : void dcn30_timing_generator_init(struct optc *optc1)</span></a>
+<a name="357"><span class="lineNum">     357 </span>            : {</a>
+<a name="358"><span class="lineNum">     358 </span><span class="lineNoCov">          0 :         optc1-&gt;base.funcs = &amp;dcn30_tg_funcs;</span></a>
+<a name="359"><span class="lineNum">     359 </span>            : </a>
+<a name="360"><span class="lineNum">     360 </span><span class="lineNoCov">          0 :         optc1-&gt;max_h_total = optc1-&gt;tg_mask-&gt;OTG_H_TOTAL + 1;</span></a>
+<a name="361"><span class="lineNum">     361 </span><span class="lineNoCov">          0 :         optc1-&gt;max_v_total = optc1-&gt;tg_mask-&gt;OTG_V_TOTAL + 1;</span></a>
+<a name="362"><span class="lineNum">     362 </span>            : </a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineNoCov">          0 :         optc1-&gt;min_h_blank = 32;</span></a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineNoCov">          0 :         optc1-&gt;min_v_blank = 3;</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineNoCov">          0 :         optc1-&gt;min_v_blank_interlace = 5;</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineNoCov">          0 :         optc1-&gt;min_h_sync_width = 4;</span></a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineNoCov">          0 :         optc1-&gt;min_v_sync_width = 1;</span></a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="369"><span class="lineNum">     369 </span>            : </a>
 </pre>
       </td>
     </tr>

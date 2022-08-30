@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">21</td>
@@ -164,7 +164,7 @@
 <a name="102"><span class="lineNum">     102 </span>            : </a>
 <a name="103"><span class="lineNum">     103 </span>            : static inline struct hlist_bl_head *d_hash(unsigned int hash)</a>
 <a name="104"><span class="lineNum">     104 </span>            : {</a>
-<a name="105"><span class="lineNum">     105 </span><span class="lineCov">         18 :         return dentry_hashtable + (hash &gt;&gt; d_hash_shift);</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">          9 :         return dentry_hashtable + (hash &gt;&gt; d_hash_shift);</span></a>
 <a name="106"><span class="lineNum">     106 </span>            : }</a>
 <a name="107"><span class="lineNum">     107 </span>            : </a>
 <a name="108"><span class="lineNum">     108 </span>            : #define IN_LOOKUP_SHIFT 10</a>
@@ -256,10 +256,10 @@
 <a name="194"><span class="lineNum">     194 </span>            :         { }</a>
 <a name="195"><span class="lineNum">     195 </span>            : };</a>
 <a name="196"><span class="lineNum">     196 </span>            : </a>
-<a name="197"><span class="lineNum">     197 </span><span class="lineCov">          2 : static int __init init_fs_dcache_sysctls(void)</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineCov">          1 : static int __init init_fs_dcache_sysctls(void)</span></a>
 <a name="198"><span class="lineNum">     198 </span>            : {</a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineCov">          2 :         register_sysctl_init(&quot;fs&quot;, fs_dcache_sysctls);</span></a>
-<a name="200"><span class="lineNum">     200 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">          1 :         register_sysctl_init(&quot;fs&quot;, fs_dcache_sysctls);</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="201"><span class="lineNum">     201 </span>            : }</a>
 <a name="202"><span class="lineNum">     202 </span>            : fs_initcall(init_fs_dcache_sysctls);</a>
 <a name="203"><span class="lineNum">     203 </span>            : #endif</a>
@@ -280,14 +280,14 @@
 <a name="218"><span class="lineNum">     218 </span>            :  * In contrast, 'ct' and 'tcount' can be from a pathname, and do</a>
 <a name="219"><span class="lineNum">     219 </span>            :  * need the careful unaligned handling.</a>
 <a name="220"><span class="lineNum">     220 </span>            :  */</a>
-<a name="221"><span class="lineNum">     221 </span><span class="lineCov">          2 : static inline int dentry_string_cmp(const unsigned char *cs, const unsigned char *ct, unsigned tcount)</span></a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineCov">          1 : static inline int dentry_string_cmp(const unsigned char *cs, const unsigned char *ct, unsigned tcount)</span></a>
 <a name="222"><span class="lineNum">     222 </span>            : {</a>
 <a name="223"><span class="lineNum">     223 </span>            :         unsigned long a,b,mask;</a>
 <a name="224"><span class="lineNum">     224 </span>            : </a>
 <a name="225"><span class="lineNum">     225 </span>            :         for (;;) {</a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">          2 :                 a = read_word_at_a_time(cs);</span></a>
-<a name="227"><span class="lineNum">     227 </span><span class="lineCov">          2 :                 b = load_unaligned_zeropad(ct);</span></a>
-<a name="228"><span class="lineNum">     228 </span><span class="lineCov">          2 :                 if (tcount &lt; sizeof(unsigned long))</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">          1 :                 a = read_word_at_a_time(cs);</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">          1 :                 b = load_unaligned_zeropad(ct);</span></a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineCov">          1 :                 if (tcount &lt; sizeof(unsigned long))</span></a>
 <a name="229"><span class="lineNum">     229 </span>            :                         break;</a>
 <a name="230"><span class="lineNum">     230 </span><span class="lineNoCov">          0 :                 if (unlikely(a != b))</span></a>
 <a name="231"><span class="lineNum">     231 </span>            :                         return 1;</a>
@@ -297,8 +297,8 @@
 <a name="235"><span class="lineNum">     235 </span><span class="lineNoCov">          0 :                 if (!tcount)</span></a>
 <a name="236"><span class="lineNum">     236 </span>            :                         return 0;</a>
 <a name="237"><span class="lineNum">     237 </span>            :         }</a>
-<a name="238"><span class="lineNum">     238 </span><span class="lineCov">          2 :         mask = bytemask_from_count(tcount);</span></a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineCov">          2 :         return unlikely(!!((a ^ b) &amp; mask));</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">          1 :         mask = bytemask_from_count(tcount);</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">          1 :         return unlikely(!!((a ^ b) &amp; mask));</span></a>
 <a name="240"><span class="lineNum">     240 </span>            : }</a>
 <a name="241"><span class="lineNum">     241 </span>            : </a>
 <a name="242"><span class="lineNum">     242 </span>            : #else</a>
@@ -335,9 +335,9 @@
 <a name="273"><span class="lineNum">     273 </span>            :          * early because the data cannot match (there can</a>
 <a name="274"><span class="lineNum">     274 </span>            :          * be no NUL in the ct/tcount data)</a>
 <a name="275"><span class="lineNum">     275 </span>            :          */</a>
-<a name="276"><span class="lineNum">     276 </span><span class="lineCov">          2 :         const unsigned char *cs = READ_ONCE(dentry-&gt;d_name.name);</span></a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineCov">          1 :         const unsigned char *cs = READ_ONCE(dentry-&gt;d_name.name);</span></a>
 <a name="277"><span class="lineNum">     277 </span>            : </a>
-<a name="278"><span class="lineNum">     278 </span><span class="lineCov">          2 :         return dentry_string_cmp(cs, ct, tcount);</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineCov">          1 :         return dentry_string_cmp(cs, ct, tcount);</span></a>
 <a name="279"><span class="lineNum">     279 </span>            : }</a>
 <a name="280"><span class="lineNum">     280 </span>            : </a>
 <a name="281"><span class="lineNum">     281 </span>            : struct external_name {</a>
@@ -404,11 +404,11 @@
 <a name="342"><span class="lineNum">     342 </span>            : {</a>
 <a name="343"><span class="lineNum">     343 </span>            :         unsigned flags;</a>
 <a name="344"><span class="lineNum">     344 </span>            : </a>
-<a name="345"><span class="lineNum">     345 </span><span class="lineCov">         30 :         dentry-&gt;d_inode = inode;</span></a>
-<a name="346"><span class="lineNum">     346 </span><span class="lineCov">         30 :         flags = READ_ONCE(dentry-&gt;d_flags);</span></a>
-<a name="347"><span class="lineNum">     347 </span><span class="lineCov">         30 :         flags &amp;= ~(DCACHE_ENTRY_TYPE | DCACHE_FALLTHRU);</span></a>
-<a name="348"><span class="lineNum">     348 </span><span class="lineCov">         30 :         flags |= type_flags;</span></a>
-<a name="349"><span class="lineNum">     349 </span><span class="lineCov">         30 :         smp_store_release(&amp;dentry-&gt;d_flags, flags);</span></a>
+<a name="345"><span class="lineNum">     345 </span><span class="lineCov">         15 :         dentry-&gt;d_inode = inode;</span></a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineCov">         15 :         flags = READ_ONCE(dentry-&gt;d_flags);</span></a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineCov">         15 :         flags &amp;= ~(DCACHE_ENTRY_TYPE | DCACHE_FALLTHRU);</span></a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineCov">         15 :         flags |= type_flags;</span></a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineCov">         15 :         smp_store_release(&amp;dentry-&gt;d_flags, flags);</span></a>
 <a name="350"><span class="lineNum">     350 </span>            : }</a>
 <a name="351"><span class="lineNum">     351 </span>            : </a>
 <a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 : static inline void __d_clear_type_and_inode(struct dentry *dentry)</span></a>
@@ -824,7 +824,7 @@
 <a name="762"><span class="lineNum">     762 </span>            :  * The caller needs to hold the RCU read lock, so that the dentry is</a>
 <a name="763"><span class="lineNum">     763 </span>            :  * guaranteed to stay around even if the refcount goes down to zero!</a>
 <a name="764"><span class="lineNum">     764 </span>            :  */</a>
-<a name="765"><span class="lineNum">     765 </span><span class="lineCov">         32 : static inline bool fast_dput(struct dentry *dentry)</span></a>
+<a name="765"><span class="lineNum">     765 </span><span class="lineCov">         16 : static inline bool fast_dput(struct dentry *dentry)</span></a>
 <a name="766"><span class="lineNum">     766 </span>            : {</a>
 <a name="767"><span class="lineNum">     767 </span>            :         int ret;</a>
 <a name="768"><span class="lineNum">     768 </span>            :         unsigned int d_flags;</a>
@@ -833,26 +833,26 @@
 <a name="771"><span class="lineNum">     771 </span>            :          * If we have a d_op-&gt;d_delete() operation, we sould not</a>
 <a name="772"><span class="lineNum">     772 </span>            :          * let the dentry count go to zero, so use &quot;put_or_lock&quot;.</a>
 <a name="773"><span class="lineNum">     773 </span>            :          */</a>
-<a name="774"><span class="lineNum">     774 </span><span class="lineCov">         32 :         if (unlikely(dentry-&gt;d_flags &amp; DCACHE_OP_DELETE))</span></a>
-<a name="775"><span class="lineNum">     775 </span><span class="lineCov">          8 :                 return lockref_put_or_lock(&amp;dentry-&gt;d_lockref);</span></a>
+<a name="774"><span class="lineNum">     774 </span><span class="lineCov">         16 :         if (unlikely(dentry-&gt;d_flags &amp; DCACHE_OP_DELETE))</span></a>
+<a name="775"><span class="lineNum">     775 </span><span class="lineCov">          4 :                 return lockref_put_or_lock(&amp;dentry-&gt;d_lockref);</span></a>
 <a name="776"><span class="lineNum">     776 </span>            : </a>
 <a name="777"><span class="lineNum">     777 </span>            :         /*</a>
 <a name="778"><span class="lineNum">     778 </span>            :          * .. otherwise, we can try to just decrement the</a>
 <a name="779"><span class="lineNum">     779 </span>            :          * lockref optimistically.</a>
 <a name="780"><span class="lineNum">     780 </span>            :          */</a>
-<a name="781"><span class="lineNum">     781 </span><span class="lineCov">         24 :         ret = lockref_put_return(&amp;dentry-&gt;d_lockref);</span></a>
+<a name="781"><span class="lineNum">     781 </span><span class="lineCov">         12 :         ret = lockref_put_return(&amp;dentry-&gt;d_lockref);</span></a>
 <a name="782"><span class="lineNum">     782 </span>            : </a>
 <a name="783"><span class="lineNum">     783 </span>            :         /*</a>
 <a name="784"><span class="lineNum">     784 </span>            :          * If the lockref_put_return() failed due to the lock being held</a>
 <a name="785"><span class="lineNum">     785 </span>            :          * by somebody else, the fast path has failed. We will need to</a>
 <a name="786"><span class="lineNum">     786 </span>            :          * get the lock, and then check the count again.</a>
 <a name="787"><span class="lineNum">     787 </span>            :          */</a>
-<a name="788"><span class="lineNum">     788 </span><span class="lineCov">         24 :         if (unlikely(ret &lt; 0)) {</span></a>
-<a name="789"><span class="lineNum">     789 </span><span class="lineCov">         48 :                 spin_lock(&amp;dentry-&gt;d_lock);</span></a>
-<a name="790"><span class="lineNum">     790 </span><span class="lineCov">         24 :                 if (dentry-&gt;d_lockref.count &gt; 1) {</span></a>
-<a name="791"><span class="lineNum">     791 </span><span class="lineCov">         24 :                         dentry-&gt;d_lockref.count--;</span></a>
-<a name="792"><span class="lineNum">     792 </span><span class="lineCov">         48 :                         spin_unlock(&amp;dentry-&gt;d_lock);</span></a>
-<a name="793"><span class="lineNum">     793 </span><span class="lineCov">         24 :                         return true;</span></a>
+<a name="788"><span class="lineNum">     788 </span><span class="lineCov">         12 :         if (unlikely(ret &lt; 0)) {</span></a>
+<a name="789"><span class="lineNum">     789 </span><span class="lineCov">         24 :                 spin_lock(&amp;dentry-&gt;d_lock);</span></a>
+<a name="790"><span class="lineNum">     790 </span><span class="lineCov">         12 :                 if (dentry-&gt;d_lockref.count &gt; 1) {</span></a>
+<a name="791"><span class="lineNum">     791 </span><span class="lineCov">         12 :                         dentry-&gt;d_lockref.count--;</span></a>
+<a name="792"><span class="lineNum">     792 </span><span class="lineCov">         24 :                         spin_unlock(&amp;dentry-&gt;d_lock);</span></a>
+<a name="793"><span class="lineNum">     793 </span><span class="lineCov">         12 :                         return true;</span></a>
 <a name="794"><span class="lineNum">     794 </span>            :                 }</a>
 <a name="795"><span class="lineNum">     795 </span>            :                 return false;</a>
 <a name="796"><span class="lineNum">     796 </span>            :         }</a>
@@ -953,13 +953,13 @@
 <a name="891"><span class="lineNum">     891 </span>            :  * releasing its resources. If the parent dentries were scheduled for release</a>
 <a name="892"><span class="lineNum">     892 </span>            :  * they too may now get deleted.</a>
 <a name="893"><span class="lineNum">     893 </span>            :  */</a>
-<a name="894"><span class="lineNum">     894 </span><span class="lineCov">         38 : void dput(struct dentry *dentry)</span></a>
+<a name="894"><span class="lineNum">     894 </span><span class="lineCov">         19 : void dput(struct dentry *dentry)</span></a>
 <a name="895"><span class="lineNum">     895 </span>            : {</a>
-<a name="896"><span class="lineNum">     896 </span><span class="lineCov">         76 :         while (dentry) {</span></a>
+<a name="896"><span class="lineNum">     896 </span><span class="lineCov">         38 :         while (dentry) {</span></a>
 <a name="897"><span class="lineNum">     897 </span>            :                 might_sleep();</a>
 <a name="898"><span class="lineNum">     898 </span>            : </a>
 <a name="899"><span class="lineNum">     899 </span>            :                 rcu_read_lock();</a>
-<a name="900"><span class="lineNum">     900 </span><span class="lineCov">         32 :                 if (likely(fast_dput(dentry))) {</span></a>
+<a name="900"><span class="lineNum">     900 </span><span class="lineCov">         16 :                 if (likely(fast_dput(dentry))) {</span></a>
 <a name="901"><span class="lineNum">     901 </span>            :                         rcu_read_unlock();</a>
 <a name="902"><span class="lineNum">     902 </span>            :                         return;</a>
 <a name="903"><span class="lineNum">     903 </span>            :                 }</a>
@@ -1007,7 +1007,7 @@
 <a name="945"><span class="lineNum">     945 </span>            : /* This must be called with d_lock held */</a>
 <a name="946"><span class="lineNum">     946 </span>            : static inline void __dget_dlock(struct dentry *dentry)</a>
 <a name="947"><span class="lineNum">     947 </span>            : {</a>
-<a name="948"><span class="lineNum">     948 </span><span class="lineCov">         10 :         dentry-&gt;d_lockref.count++;</span></a>
+<a name="948"><span class="lineNum">     948 </span><span class="lineCov">          5 :         dentry-&gt;d_lockref.count++;</span></a>
 <a name="949"><span class="lineNum">     949 </span>            : }</a>
 <a name="950"><span class="lineNum">     950 </span>            : </a>
 <a name="951"><span class="lineNum">     951 </span>            : static inline void __dget(struct dentry *dentry)</a>
@@ -1822,15 +1822,15 @@
 <a name="1760"><span class="lineNum">    1760 </span>            :  * copied and the copy passed in may be reused after this call.</a>
 <a name="1761"><span class="lineNum">    1761 </span>            :  */</a>
 <a name="1762"><span class="lineNum">    1762 </span>            :  </a>
-<a name="1763"><span class="lineNum">    1763 </span><span class="lineCov">         30 : static struct dentry *__d_alloc(struct super_block *sb, const struct qstr *name)</span></a>
+<a name="1763"><span class="lineNum">    1763 </span><span class="lineCov">         15 : static struct dentry *__d_alloc(struct super_block *sb, const struct qstr *name)</span></a>
 <a name="1764"><span class="lineNum">    1764 </span>            : {</a>
 <a name="1765"><span class="lineNum">    1765 </span>            :         struct dentry *dentry;</a>
 <a name="1766"><span class="lineNum">    1766 </span>            :         char *dname;</a>
 <a name="1767"><span class="lineNum">    1767 </span>            :         int err;</a>
 <a name="1768"><span class="lineNum">    1768 </span>            : </a>
-<a name="1769"><span class="lineNum">    1769 </span><span class="lineCov">         30 :         dentry = kmem_cache_alloc_lru(dentry_cache, &amp;sb-&gt;s_dentry_lru,</span></a>
+<a name="1769"><span class="lineNum">    1769 </span><span class="lineCov">         15 :         dentry = kmem_cache_alloc_lru(dentry_cache, &amp;sb-&gt;s_dentry_lru,</span></a>
 <a name="1770"><span class="lineNum">    1770 </span>            :                                       GFP_KERNEL);</a>
-<a name="1771"><span class="lineNum">    1771 </span><span class="lineCov">         30 :         if (!dentry)</span></a>
+<a name="1771"><span class="lineNum">    1771 </span><span class="lineCov">         15 :         if (!dentry)</span></a>
 <a name="1772"><span class="lineNum">    1772 </span>            :                 return NULL;</a>
 <a name="1773"><span class="lineNum">    1773 </span>            : </a>
 <a name="1774"><span class="lineNum">    1774 </span>            :         /*</a>
@@ -1839,11 +1839,11 @@
 <a name="1777"><span class="lineNum">    1777 </span>            :          * will still always have a NUL at the end, even if we might</a>
 <a name="1778"><span class="lineNum">    1778 </span>            :          * be overwriting an internal NUL character</a>
 <a name="1779"><span class="lineNum">    1779 </span>            :          */</a>
-<a name="1780"><span class="lineNum">    1780 </span><span class="lineCov">         30 :         dentry-&gt;d_iname[DNAME_INLINE_LEN-1] = 0;</span></a>
-<a name="1781"><span class="lineNum">    1781 </span><span class="lineCov">         30 :         if (unlikely(!name)) {</span></a>
-<a name="1782"><span class="lineNum">    1782 </span><span class="lineCov">         20 :                 name = &amp;slash_name;</span></a>
-<a name="1783"><span class="lineNum">    1783 </span><span class="lineCov">         20 :                 dname = dentry-&gt;d_iname;</span></a>
-<a name="1784"><span class="lineNum">    1784 </span><span class="lineCov">         10 :         } else if (name-&gt;len &gt; DNAME_INLINE_LEN-1) {</span></a>
+<a name="1780"><span class="lineNum">    1780 </span><span class="lineCov">         15 :         dentry-&gt;d_iname[DNAME_INLINE_LEN-1] = 0;</span></a>
+<a name="1781"><span class="lineNum">    1781 </span><span class="lineCov">         15 :         if (unlikely(!name)) {</span></a>
+<a name="1782"><span class="lineNum">    1782 </span><span class="lineCov">         10 :                 name = &amp;slash_name;</span></a>
+<a name="1783"><span class="lineNum">    1783 </span><span class="lineCov">         10 :                 dname = dentry-&gt;d_iname;</span></a>
+<a name="1784"><span class="lineNum">    1784 </span><span class="lineCov">          5 :         } else if (name-&gt;len &gt; DNAME_INLINE_LEN-1) {</span></a>
 <a name="1785"><span class="lineNum">    1785 </span><span class="lineNoCov">          0 :                 size_t size = offsetof(struct external_name, name[1]);</span></a>
 <a name="1786"><span class="lineNum">    1786 </span><span class="lineNoCov">          0 :                 struct external_name *p = kmalloc(size + name-&gt;len,</span></a>
 <a name="1787"><span class="lineNum">    1787 </span>            :                                                   GFP_KERNEL_ACCOUNT |</a>
@@ -1855,34 +1855,34 @@
 <a name="1793"><span class="lineNum">    1793 </span><span class="lineNoCov">          0 :                 atomic_set(&amp;p-&gt;u.count, 1);</span></a>
 <a name="1794"><span class="lineNum">    1794 </span><span class="lineNoCov">          0 :                 dname = p-&gt;name;</span></a>
 <a name="1795"><span class="lineNum">    1795 </span>            :         } else  {</a>
-<a name="1796"><span class="lineNum">    1796 </span><span class="lineCov">         10 :                 dname = dentry-&gt;d_iname;</span></a>
+<a name="1796"><span class="lineNum">    1796 </span><span class="lineCov">          5 :                 dname = dentry-&gt;d_iname;</span></a>
 <a name="1797"><span class="lineNum">    1797 </span>            :         }       </a>
 <a name="1798"><span class="lineNum">    1798 </span>            : </a>
-<a name="1799"><span class="lineNum">    1799 </span><span class="lineCov">         30 :         dentry-&gt;d_name.len = name-&gt;len;</span></a>
-<a name="1800"><span class="lineNum">    1800 </span><span class="lineCov">         30 :         dentry-&gt;d_name.hash = name-&gt;hash;</span></a>
-<a name="1801"><span class="lineNum">    1801 </span><span class="lineCov">         30 :         memcpy(dname, name-&gt;name, name-&gt;len);</span></a>
-<a name="1802"><span class="lineNum">    1802 </span><span class="lineCov">         30 :         dname[name-&gt;len] = 0;</span></a>
+<a name="1799"><span class="lineNum">    1799 </span><span class="lineCov">         15 :         dentry-&gt;d_name.len = name-&gt;len;</span></a>
+<a name="1800"><span class="lineNum">    1800 </span><span class="lineCov">         15 :         dentry-&gt;d_name.hash = name-&gt;hash;</span></a>
+<a name="1801"><span class="lineNum">    1801 </span><span class="lineCov">         15 :         memcpy(dname, name-&gt;name, name-&gt;len);</span></a>
+<a name="1802"><span class="lineNum">    1802 </span><span class="lineCov">         15 :         dname[name-&gt;len] = 0;</span></a>
 <a name="1803"><span class="lineNum">    1803 </span>            : </a>
 <a name="1804"><span class="lineNum">    1804 </span>            :         /* Make sure we always see the terminating NUL character */</a>
-<a name="1805"><span class="lineNum">    1805 </span><span class="lineCov">         30 :         smp_store_release(&amp;dentry-&gt;d_name.name, dname); /* ^^^ */</span></a>
+<a name="1805"><span class="lineNum">    1805 </span><span class="lineCov">         15 :         smp_store_release(&amp;dentry-&gt;d_name.name, dname); /* ^^^ */</span></a>
 <a name="1806"><span class="lineNum">    1806 </span>            : </a>
-<a name="1807"><span class="lineNum">    1807 </span><span class="lineCov">         30 :         dentry-&gt;d_lockref.count = 1;</span></a>
-<a name="1808"><span class="lineNum">    1808 </span><span class="lineCov">         30 :         dentry-&gt;d_flags = 0;</span></a>
-<a name="1809"><span class="lineNum">    1809 </span><span class="lineCov">         30 :         spin_lock_init(&amp;dentry-&gt;d_lock);</span></a>
-<a name="1810"><span class="lineNum">    1810 </span><span class="lineCov">         60 :         seqcount_spinlock_init(&amp;dentry-&gt;d_seq, &amp;dentry-&gt;d_lock);</span></a>
-<a name="1811"><span class="lineNum">    1811 </span><span class="lineCov">         30 :         dentry-&gt;d_inode = NULL;</span></a>
-<a name="1812"><span class="lineNum">    1812 </span><span class="lineCov">         30 :         dentry-&gt;d_parent = dentry;</span></a>
-<a name="1813"><span class="lineNum">    1813 </span><span class="lineCov">         30 :         dentry-&gt;d_sb = sb;</span></a>
-<a name="1814"><span class="lineNum">    1814 </span><span class="lineCov">         30 :         dentry-&gt;d_op = NULL;</span></a>
-<a name="1815"><span class="lineNum">    1815 </span><span class="lineCov">         30 :         dentry-&gt;d_fsdata = NULL;</span></a>
-<a name="1816"><span class="lineNum">    1816 </span><span class="lineCov">         60 :         INIT_HLIST_BL_NODE(&amp;dentry-&gt;d_hash);</span></a>
-<a name="1817"><span class="lineNum">    1817 </span><span class="lineCov">         60 :         INIT_LIST_HEAD(&amp;dentry-&gt;d_lru);</span></a>
-<a name="1818"><span class="lineNum">    1818 </span><span class="lineCov">         60 :         INIT_LIST_HEAD(&amp;dentry-&gt;d_subdirs);</span></a>
-<a name="1819"><span class="lineNum">    1819 </span><span class="lineCov">         60 :         INIT_HLIST_NODE(&amp;dentry-&gt;d_u.d_alias);</span></a>
-<a name="1820"><span class="lineNum">    1820 </span><span class="lineCov">         60 :         INIT_LIST_HEAD(&amp;dentry-&gt;d_child);</span></a>
-<a name="1821"><span class="lineNum">    1821 </span><span class="lineCov">         30 :         d_set_d_op(dentry, dentry-&gt;d_sb-&gt;s_d_op);</span></a>
+<a name="1807"><span class="lineNum">    1807 </span><span class="lineCov">         15 :         dentry-&gt;d_lockref.count = 1;</span></a>
+<a name="1808"><span class="lineNum">    1808 </span><span class="lineCov">         15 :         dentry-&gt;d_flags = 0;</span></a>
+<a name="1809"><span class="lineNum">    1809 </span><span class="lineCov">         15 :         spin_lock_init(&amp;dentry-&gt;d_lock);</span></a>
+<a name="1810"><span class="lineNum">    1810 </span><span class="lineCov">         30 :         seqcount_spinlock_init(&amp;dentry-&gt;d_seq, &amp;dentry-&gt;d_lock);</span></a>
+<a name="1811"><span class="lineNum">    1811 </span><span class="lineCov">         15 :         dentry-&gt;d_inode = NULL;</span></a>
+<a name="1812"><span class="lineNum">    1812 </span><span class="lineCov">         15 :         dentry-&gt;d_parent = dentry;</span></a>
+<a name="1813"><span class="lineNum">    1813 </span><span class="lineCov">         15 :         dentry-&gt;d_sb = sb;</span></a>
+<a name="1814"><span class="lineNum">    1814 </span><span class="lineCov">         15 :         dentry-&gt;d_op = NULL;</span></a>
+<a name="1815"><span class="lineNum">    1815 </span><span class="lineCov">         15 :         dentry-&gt;d_fsdata = NULL;</span></a>
+<a name="1816"><span class="lineNum">    1816 </span><span class="lineCov">         30 :         INIT_HLIST_BL_NODE(&amp;dentry-&gt;d_hash);</span></a>
+<a name="1817"><span class="lineNum">    1817 </span><span class="lineCov">         30 :         INIT_LIST_HEAD(&amp;dentry-&gt;d_lru);</span></a>
+<a name="1818"><span class="lineNum">    1818 </span><span class="lineCov">         30 :         INIT_LIST_HEAD(&amp;dentry-&gt;d_subdirs);</span></a>
+<a name="1819"><span class="lineNum">    1819 </span><span class="lineCov">         30 :         INIT_HLIST_NODE(&amp;dentry-&gt;d_u.d_alias);</span></a>
+<a name="1820"><span class="lineNum">    1820 </span><span class="lineCov">         30 :         INIT_LIST_HEAD(&amp;dentry-&gt;d_child);</span></a>
+<a name="1821"><span class="lineNum">    1821 </span><span class="lineCov">         15 :         d_set_d_op(dentry, dentry-&gt;d_sb-&gt;s_d_op);</span></a>
 <a name="1822"><span class="lineNum">    1822 </span>            : </a>
-<a name="1823"><span class="lineNum">    1823 </span><span class="lineCov">         30 :         if (dentry-&gt;d_op &amp;&amp; dentry-&gt;d_op-&gt;d_init) {</span></a>
+<a name="1823"><span class="lineNum">    1823 </span><span class="lineCov">         15 :         if (dentry-&gt;d_op &amp;&amp; dentry-&gt;d_op-&gt;d_init) {</span></a>
 <a name="1824"><span class="lineNum">    1824 </span><span class="lineNoCov">          0 :                 err = dentry-&gt;d_op-&gt;d_init(dentry);</span></a>
 <a name="1825"><span class="lineNum">    1825 </span><span class="lineNoCov">          0 :                 if (err) {</span></a>
 <a name="1826"><span class="lineNum">    1826 </span><span class="lineNoCov">          0 :                         if (dname_external(dentry))</span></a>
@@ -1892,9 +1892,9 @@
 <a name="1830"><span class="lineNum">    1830 </span>            :                 }</a>
 <a name="1831"><span class="lineNum">    1831 </span>            :         }</a>
 <a name="1832"><span class="lineNum">    1832 </span>            : </a>
-<a name="1833"><span class="lineNum">    1833 </span><span class="lineCov">         90 :         this_cpu_inc(nr_dentry);</span></a>
+<a name="1833"><span class="lineNum">    1833 </span><span class="lineCov">         45 :         this_cpu_inc(nr_dentry);</span></a>
 <a name="1834"><span class="lineNum">    1834 </span>            : </a>
-<a name="1835"><span class="lineNum">    1835 </span><span class="lineCov">         30 :         return dentry;</span></a>
+<a name="1835"><span class="lineNum">    1835 </span><span class="lineCov">         15 :         return dentry;</span></a>
 <a name="1836"><span class="lineNum">    1836 </span>            : }</a>
 <a name="1837"><span class="lineNum">    1837 </span>            : </a>
 <a name="1838"><span class="lineNum">    1838 </span>            : /**</a>
@@ -1906,28 +1906,28 @@
 <a name="1844"><span class="lineNum">    1844 </span>            :  * available. On a success the dentry is returned. The name passed in is</a>
 <a name="1845"><span class="lineNum">    1845 </span>            :  * copied and the copy passed in may be reused after this call.</a>
 <a name="1846"><span class="lineNum">    1846 </span>            :  */</a>
-<a name="1847"><span class="lineNum">    1847 </span><span class="lineCov">         10 : struct dentry *d_alloc(struct dentry * parent, const struct qstr *name)</span></a>
+<a name="1847"><span class="lineNum">    1847 </span><span class="lineCov">          5 : struct dentry *d_alloc(struct dentry * parent, const struct qstr *name)</span></a>
 <a name="1848"><span class="lineNum">    1848 </span>            : {</a>
-<a name="1849"><span class="lineNum">    1849 </span><span class="lineCov">         10 :         struct dentry *dentry = __d_alloc(parent-&gt;d_sb, name);</span></a>
-<a name="1850"><span class="lineNum">    1850 </span><span class="lineCov">         10 :         if (!dentry)</span></a>
+<a name="1849"><span class="lineNum">    1849 </span><span class="lineCov">          5 :         struct dentry *dentry = __d_alloc(parent-&gt;d_sb, name);</span></a>
+<a name="1850"><span class="lineNum">    1850 </span><span class="lineCov">          5 :         if (!dentry)</span></a>
 <a name="1851"><span class="lineNum">    1851 </span>            :                 return NULL;</a>
-<a name="1852"><span class="lineNum">    1852 </span><span class="lineCov">         20 :         spin_lock(&amp;parent-&gt;d_lock);</span></a>
+<a name="1852"><span class="lineNum">    1852 </span><span class="lineCov">         10 :         spin_lock(&amp;parent-&gt;d_lock);</span></a>
 <a name="1853"><span class="lineNum">    1853 </span>            :         /*</a>
 <a name="1854"><span class="lineNum">    1854 </span>            :          * don't need child lock because it is not subject</a>
 <a name="1855"><span class="lineNum">    1855 </span>            :          * to concurrency here</a>
 <a name="1856"><span class="lineNum">    1856 </span>            :          */</a>
-<a name="1857"><span class="lineNum">    1857 </span><span class="lineCov">         10 :         __dget_dlock(parent);</span></a>
-<a name="1858"><span class="lineNum">    1858 </span><span class="lineCov">         10 :         dentry-&gt;d_parent = parent;</span></a>
-<a name="1859"><span class="lineNum">    1859 </span><span class="lineCov">         20 :         list_add(&amp;dentry-&gt;d_child, &amp;parent-&gt;d_subdirs);</span></a>
-<a name="1860"><span class="lineNum">    1860 </span><span class="lineCov">         20 :         spin_unlock(&amp;parent-&gt;d_lock);</span></a>
+<a name="1857"><span class="lineNum">    1857 </span><span class="lineCov">          5 :         __dget_dlock(parent);</span></a>
+<a name="1858"><span class="lineNum">    1858 </span><span class="lineCov">          5 :         dentry-&gt;d_parent = parent;</span></a>
+<a name="1859"><span class="lineNum">    1859 </span><span class="lineCov">         10 :         list_add(&amp;dentry-&gt;d_child, &amp;parent-&gt;d_subdirs);</span></a>
+<a name="1860"><span class="lineNum">    1860 </span><span class="lineCov">         10 :         spin_unlock(&amp;parent-&gt;d_lock);</span></a>
 <a name="1861"><span class="lineNum">    1861 </span>            : </a>
-<a name="1862"><span class="lineNum">    1862 </span><span class="lineCov">         10 :         return dentry;</span></a>
+<a name="1862"><span class="lineNum">    1862 </span><span class="lineCov">          5 :         return dentry;</span></a>
 <a name="1863"><span class="lineNum">    1863 </span>            : }</a>
 <a name="1864"><span class="lineNum">    1864 </span>            : EXPORT_SYMBOL(d_alloc);</a>
 <a name="1865"><span class="lineNum">    1865 </span>            : </a>
 <a name="1866"><span class="lineNum">    1866 </span><span class="lineNoCov">          0 : struct dentry *d_alloc_anon(struct super_block *sb)</span></a>
 <a name="1867"><span class="lineNum">    1867 </span>            : {</a>
-<a name="1868"><span class="lineNum">    1868 </span><span class="lineCov">         20 :         return __d_alloc(sb, NULL);</span></a>
+<a name="1868"><span class="lineNum">    1868 </span><span class="lineCov">         10 :         return __d_alloc(sb, NULL);</span></a>
 <a name="1869"><span class="lineNum">    1869 </span>            : }</a>
 <a name="1870"><span class="lineNum">    1870 </span>            : EXPORT_SYMBOL(d_alloc_anon);</a>
 <a name="1871"><span class="lineNum">    1871 </span>            : </a>
@@ -1964,41 +1964,41 @@
 <a name="1902"><span class="lineNum">    1902 </span><span class="lineNoCov">          0 :         return dentry;</span></a>
 <a name="1903"><span class="lineNum">    1903 </span>            : }</a>
 <a name="1904"><span class="lineNum">    1904 </span>            : </a>
-<a name="1905"><span class="lineNum">    1905 </span><span class="lineCov">          4 : struct dentry *d_alloc_name(struct dentry *parent, const char *name)</span></a>
+<a name="1905"><span class="lineNum">    1905 </span><span class="lineCov">          2 : struct dentry *d_alloc_name(struct dentry *parent, const char *name)</span></a>
 <a name="1906"><span class="lineNum">    1906 </span>            : {</a>
 <a name="1907"><span class="lineNum">    1907 </span>            :         struct qstr q;</a>
 <a name="1908"><span class="lineNum">    1908 </span>            : </a>
-<a name="1909"><span class="lineNum">    1909 </span><span class="lineCov">          4 :         q.name = name;</span></a>
-<a name="1910"><span class="lineNum">    1910 </span><span class="lineCov">          4 :         q.hash_len = hashlen_string(parent, name);</span></a>
-<a name="1911"><span class="lineNum">    1911 </span><span class="lineCov">          4 :         return d_alloc(parent, &amp;q);</span></a>
+<a name="1909"><span class="lineNum">    1909 </span><span class="lineCov">          2 :         q.name = name;</span></a>
+<a name="1910"><span class="lineNum">    1910 </span><span class="lineCov">          2 :         q.hash_len = hashlen_string(parent, name);</span></a>
+<a name="1911"><span class="lineNum">    1911 </span><span class="lineCov">          2 :         return d_alloc(parent, &amp;q);</span></a>
 <a name="1912"><span class="lineNum">    1912 </span>            : }</a>
 <a name="1913"><span class="lineNum">    1913 </span>            : EXPORT_SYMBOL(d_alloc_name);</a>
 <a name="1914"><span class="lineNum">    1914 </span>            : </a>
-<a name="1915"><span class="lineNum">    1915 </span><span class="lineCov">         36 : void d_set_d_op(struct dentry *dentry, const struct dentry_operations *op)</span></a>
+<a name="1915"><span class="lineNum">    1915 </span><span class="lineCov">         18 : void d_set_d_op(struct dentry *dentry, const struct dentry_operations *op)</span></a>
 <a name="1916"><span class="lineNum">    1916 </span>            : {</a>
-<a name="1917"><span class="lineNum">    1917 </span><span class="lineCov">         36 :         WARN_ON_ONCE(dentry-&gt;d_op);</span></a>
-<a name="1918"><span class="lineNum">    1918 </span><span class="lineCov">         36 :         WARN_ON_ONCE(dentry-&gt;d_flags &amp; (DCACHE_OP_HASH   |</span></a>
+<a name="1917"><span class="lineNum">    1917 </span><span class="lineCov">         18 :         WARN_ON_ONCE(dentry-&gt;d_op);</span></a>
+<a name="1918"><span class="lineNum">    1918 </span><span class="lineCov">         18 :         WARN_ON_ONCE(dentry-&gt;d_flags &amp; (DCACHE_OP_HASH   |</span></a>
 <a name="1919"><span class="lineNum">    1919 </span>            :                                 DCACHE_OP_COMPARE       |</a>
 <a name="1920"><span class="lineNum">    1920 </span>            :                                 DCACHE_OP_REVALIDATE    |</a>
 <a name="1921"><span class="lineNum">    1921 </span>            :                                 DCACHE_OP_WEAK_REVALIDATE       |</a>
 <a name="1922"><span class="lineNum">    1922 </span>            :                                 DCACHE_OP_DELETE        |</a>
 <a name="1923"><span class="lineNum">    1923 </span>            :                                 DCACHE_OP_REAL));</a>
-<a name="1924"><span class="lineNum">    1924 </span><span class="lineCov">         36 :         dentry-&gt;d_op = op;</span></a>
-<a name="1925"><span class="lineNum">    1925 </span><span class="lineCov">         36 :         if (!op)</span></a>
+<a name="1924"><span class="lineNum">    1924 </span><span class="lineCov">         18 :         dentry-&gt;d_op = op;</span></a>
+<a name="1925"><span class="lineNum">    1925 </span><span class="lineCov">         18 :         if (!op)</span></a>
 <a name="1926"><span class="lineNum">    1926 </span>            :                 return;</a>
-<a name="1927"><span class="lineNum">    1927 </span><span class="lineCov">          6 :         if (op-&gt;d_hash)</span></a>
+<a name="1927"><span class="lineNum">    1927 </span><span class="lineCov">          3 :         if (op-&gt;d_hash)</span></a>
 <a name="1928"><span class="lineNum">    1928 </span><span class="lineNoCov">          0 :                 dentry-&gt;d_flags |= DCACHE_OP_HASH;</span></a>
-<a name="1929"><span class="lineNum">    1929 </span><span class="lineCov">          6 :         if (op-&gt;d_compare)</span></a>
+<a name="1929"><span class="lineNum">    1929 </span><span class="lineCov">          3 :         if (op-&gt;d_compare)</span></a>
 <a name="1930"><span class="lineNum">    1930 </span><span class="lineNoCov">          0 :                 dentry-&gt;d_flags |= DCACHE_OP_COMPARE;</span></a>
-<a name="1931"><span class="lineNum">    1931 </span><span class="lineCov">          6 :         if (op-&gt;d_revalidate)</span></a>
+<a name="1931"><span class="lineNum">    1931 </span><span class="lineCov">          3 :         if (op-&gt;d_revalidate)</span></a>
 <a name="1932"><span class="lineNum">    1932 </span><span class="lineNoCov">          0 :                 dentry-&gt;d_flags |= DCACHE_OP_REVALIDATE;</span></a>
-<a name="1933"><span class="lineNum">    1933 </span><span class="lineCov">          6 :         if (op-&gt;d_weak_revalidate)</span></a>
+<a name="1933"><span class="lineNum">    1933 </span><span class="lineCov">          3 :         if (op-&gt;d_weak_revalidate)</span></a>
 <a name="1934"><span class="lineNum">    1934 </span><span class="lineNoCov">          0 :                 dentry-&gt;d_flags |= DCACHE_OP_WEAK_REVALIDATE;</span></a>
-<a name="1935"><span class="lineNum">    1935 </span><span class="lineCov">          6 :         if (op-&gt;d_delete)</span></a>
-<a name="1936"><span class="lineNum">    1936 </span><span class="lineCov">          6 :                 dentry-&gt;d_flags |= DCACHE_OP_DELETE;</span></a>
-<a name="1937"><span class="lineNum">    1937 </span><span class="lineCov">          6 :         if (op-&gt;d_prune)</span></a>
+<a name="1935"><span class="lineNum">    1935 </span><span class="lineCov">          3 :         if (op-&gt;d_delete)</span></a>
+<a name="1936"><span class="lineNum">    1936 </span><span class="lineCov">          3 :                 dentry-&gt;d_flags |= DCACHE_OP_DELETE;</span></a>
+<a name="1937"><span class="lineNum">    1937 </span><span class="lineCov">          3 :         if (op-&gt;d_prune)</span></a>
 <a name="1938"><span class="lineNum">    1938 </span><span class="lineNoCov">          0 :                 dentry-&gt;d_flags |= DCACHE_OP_PRUNE;</span></a>
-<a name="1939"><span class="lineNum">    1939 </span><span class="lineCov">          6 :         if (op-&gt;d_real)</span></a>
+<a name="1939"><span class="lineNum">    1939 </span><span class="lineCov">          3 :         if (op-&gt;d_real)</span></a>
 <a name="1940"><span class="lineNum">    1940 </span><span class="lineNoCov">          0 :                 dentry-&gt;d_flags |= DCACHE_OP_REAL;</span></a>
 <a name="1941"><span class="lineNum">    1941 </span>            : </a>
 <a name="1942"><span class="lineNum">    1942 </span>            : }</a>
@@ -2020,59 +2020,59 @@
 <a name="1958"><span class="lineNum">    1958 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="1959"><span class="lineNum">    1959 </span>            : EXPORT_SYMBOL(d_set_fallthru);</a>
 <a name="1960"><span class="lineNum">    1960 </span>            : </a>
-<a name="1961"><span class="lineNum">    1961 </span><span class="lineCov">         30 : static unsigned d_flags_for_inode(struct inode *inode)</span></a>
+<a name="1961"><span class="lineNum">    1961 </span><span class="lineCov">         15 : static unsigned d_flags_for_inode(struct inode *inode)</span></a>
 <a name="1962"><span class="lineNum">    1962 </span>            : {</a>
-<a name="1963"><span class="lineNum">    1963 </span><span class="lineCov">         30 :         unsigned add_flags = DCACHE_REGULAR_TYPE;</span></a>
+<a name="1963"><span class="lineNum">    1963 </span><span class="lineCov">         15 :         unsigned add_flags = DCACHE_REGULAR_TYPE;</span></a>
 <a name="1964"><span class="lineNum">    1964 </span>            : </a>
-<a name="1965"><span class="lineNum">    1965 </span><span class="lineCov">         30 :         if (!inode)</span></a>
+<a name="1965"><span class="lineNum">    1965 </span><span class="lineCov">         15 :         if (!inode)</span></a>
 <a name="1966"><span class="lineNum">    1966 </span>            :                 return DCACHE_MISS_TYPE;</a>
 <a name="1967"><span class="lineNum">    1967 </span>            : </a>
-<a name="1968"><span class="lineNum">    1968 </span><span class="lineCov">         30 :         if (S_ISDIR(inode-&gt;i_mode)) {</span></a>
-<a name="1969"><span class="lineNum">    1969 </span><span class="lineCov">         24 :                 add_flags = DCACHE_DIRECTORY_TYPE;</span></a>
-<a name="1970"><span class="lineNum">    1970 </span><span class="lineCov">         24 :                 if (unlikely(!(inode-&gt;i_opflags &amp; IOP_LOOKUP))) {</span></a>
-<a name="1971"><span class="lineNum">    1971 </span><span class="lineCov">         24 :                         if (unlikely(!inode-&gt;i_op-&gt;lookup))</span></a>
+<a name="1968"><span class="lineNum">    1968 </span><span class="lineCov">         15 :         if (S_ISDIR(inode-&gt;i_mode)) {</span></a>
+<a name="1969"><span class="lineNum">    1969 </span><span class="lineCov">         12 :                 add_flags = DCACHE_DIRECTORY_TYPE;</span></a>
+<a name="1970"><span class="lineNum">    1970 </span><span class="lineCov">         12 :                 if (unlikely(!(inode-&gt;i_opflags &amp; IOP_LOOKUP))) {</span></a>
+<a name="1971"><span class="lineNum">    1971 </span><span class="lineCov">         12 :                         if (unlikely(!inode-&gt;i_op-&gt;lookup))</span></a>
 <a name="1972"><span class="lineNum">    1972 </span>            :                                 add_flags = DCACHE_AUTODIR_TYPE;</a>
 <a name="1973"><span class="lineNum">    1973 </span>            :                         else</a>
-<a name="1974"><span class="lineNum">    1974 </span><span class="lineCov">          8 :                                 inode-&gt;i_opflags |= IOP_LOOKUP;</span></a>
+<a name="1974"><span class="lineNum">    1974 </span><span class="lineCov">          4 :                                 inode-&gt;i_opflags |= IOP_LOOKUP;</span></a>
 <a name="1975"><span class="lineNum">    1975 </span>            :                 }</a>
 <a name="1976"><span class="lineNum">    1976 </span>            :                 goto type_determined;</a>
 <a name="1977"><span class="lineNum">    1977 </span>            :         }</a>
 <a name="1978"><span class="lineNum">    1978 </span>            : </a>
-<a name="1979"><span class="lineNum">    1979 </span><span class="lineCov">          6 :         if (unlikely(!(inode-&gt;i_opflags &amp; IOP_NOFOLLOW))) {</span></a>
-<a name="1980"><span class="lineNum">    1980 </span><span class="lineCov">          6 :                 if (unlikely(inode-&gt;i_op-&gt;get_link)) {</span></a>
+<a name="1979"><span class="lineNum">    1979 </span><span class="lineCov">          3 :         if (unlikely(!(inode-&gt;i_opflags &amp; IOP_NOFOLLOW))) {</span></a>
+<a name="1980"><span class="lineNum">    1980 </span><span class="lineCov">          3 :                 if (unlikely(inode-&gt;i_op-&gt;get_link)) {</span></a>
 <a name="1981"><span class="lineNum">    1981 </span>            :                         add_flags = DCACHE_SYMLINK_TYPE;</a>
 <a name="1982"><span class="lineNum">    1982 </span>            :                         goto type_determined;</a>
 <a name="1983"><span class="lineNum">    1983 </span>            :                 }</a>
-<a name="1984"><span class="lineNum">    1984 </span><span class="lineCov">          2 :                 inode-&gt;i_opflags |= IOP_NOFOLLOW;</span></a>
+<a name="1984"><span class="lineNum">    1984 </span><span class="lineCov">          1 :                 inode-&gt;i_opflags |= IOP_NOFOLLOW;</span></a>
 <a name="1985"><span class="lineNum">    1985 </span>            :         }</a>
 <a name="1986"><span class="lineNum">    1986 </span>            : </a>
-<a name="1987"><span class="lineNum">    1987 </span><span class="lineCov">          2 :         if (unlikely(!S_ISREG(inode-&gt;i_mode)))</span></a>
-<a name="1988"><span class="lineNum">    1988 </span><span class="lineCov">          2 :                 add_flags = DCACHE_SPECIAL_TYPE;</span></a>
+<a name="1987"><span class="lineNum">    1987 </span><span class="lineCov">          1 :         if (unlikely(!S_ISREG(inode-&gt;i_mode)))</span></a>
+<a name="1988"><span class="lineNum">    1988 </span><span class="lineCov">          1 :                 add_flags = DCACHE_SPECIAL_TYPE;</span></a>
 <a name="1989"><span class="lineNum">    1989 </span>            : </a>
 <a name="1990"><span class="lineNum">    1990 </span>            : type_determined:</a>
-<a name="1991"><span class="lineNum">    1991 </span><span class="lineCov">         30 :         if (unlikely(IS_AUTOMOUNT(inode)))</span></a>
+<a name="1991"><span class="lineNum">    1991 </span><span class="lineCov">         15 :         if (unlikely(IS_AUTOMOUNT(inode)))</span></a>
 <a name="1992"><span class="lineNum">    1992 </span><span class="lineNoCov">          0 :                 add_flags |= DCACHE_NEED_AUTOMOUNT;</span></a>
 <a name="1993"><span class="lineNum">    1993 </span>            :         return add_flags;</a>
 <a name="1994"><span class="lineNum">    1994 </span>            : }</a>
 <a name="1995"><span class="lineNum">    1995 </span>            : </a>
-<a name="1996"><span class="lineNum">    1996 </span><span class="lineCov">         26 : static void __d_instantiate(struct dentry *dentry, struct inode *inode)</span></a>
+<a name="1996"><span class="lineNum">    1996 </span><span class="lineCov">         13 : static void __d_instantiate(struct dentry *dentry, struct inode *inode)</span></a>
 <a name="1997"><span class="lineNum">    1997 </span>            : {</a>
-<a name="1998"><span class="lineNum">    1998 </span><span class="lineCov">         26 :         unsigned add_flags = d_flags_for_inode(inode);</span></a>
-<a name="1999"><span class="lineNum">    1999 </span><span class="lineCov">         52 :         WARN_ON(d_in_lookup(dentry));</span></a>
+<a name="1998"><span class="lineNum">    1998 </span><span class="lineCov">         13 :         unsigned add_flags = d_flags_for_inode(inode);</span></a>
+<a name="1999"><span class="lineNum">    1999 </span><span class="lineCov">         26 :         WARN_ON(d_in_lookup(dentry));</span></a>
 <a name="2000"><span class="lineNum">    2000 </span>            : </a>
-<a name="2001"><span class="lineNum">    2001 </span><span class="lineCov">         52 :         spin_lock(&amp;dentry-&gt;d_lock);</span></a>
+<a name="2001"><span class="lineNum">    2001 </span><span class="lineCov">         26 :         spin_lock(&amp;dentry-&gt;d_lock);</span></a>
 <a name="2002"><span class="lineNum">    2002 </span>            :         /*</a>
 <a name="2003"><span class="lineNum">    2003 </span>            :          * Decrement negative dentry count if it was in the LRU list.</a>
 <a name="2004"><span class="lineNum">    2004 </span>            :          */</a>
-<a name="2005"><span class="lineNum">    2005 </span><span class="lineCov">         26 :         if (dentry-&gt;d_flags &amp; DCACHE_LRU_LIST)</span></a>
+<a name="2005"><span class="lineNum">    2005 </span><span class="lineCov">         13 :         if (dentry-&gt;d_flags &amp; DCACHE_LRU_LIST)</span></a>
 <a name="2006"><span class="lineNum">    2006 </span><span class="lineNoCov">          0 :                 this_cpu_dec(nr_dentry_negative);</span></a>
-<a name="2007"><span class="lineNum">    2007 </span><span class="lineCov">         52 :         hlist_add_head(&amp;dentry-&gt;d_u.d_alias, &amp;inode-&gt;i_dentry);</span></a>
-<a name="2008"><span class="lineNum">    2008 </span><span class="lineCov">         78 :         raw_write_seqcount_begin(&amp;dentry-&gt;d_seq);</span></a>
-<a name="2009"><span class="lineNum">    2009 </span><span class="lineCov">         26 :         __d_set_inode_and_type(dentry, inode, add_flags);</span></a>
-<a name="2010"><span class="lineNum">    2010 </span><span class="lineCov">         52 :         raw_write_seqcount_end(&amp;dentry-&gt;d_seq);</span></a>
-<a name="2011"><span class="lineNum">    2011 </span><span class="lineCov">         26 :         fsnotify_update_flags(dentry);</span></a>
-<a name="2012"><span class="lineNum">    2012 </span><span class="lineCov">         52 :         spin_unlock(&amp;dentry-&gt;d_lock);</span></a>
-<a name="2013"><span class="lineNum">    2013 </span><span class="lineCov">         26 : }</span></a>
+<a name="2007"><span class="lineNum">    2007 </span><span class="lineCov">         26 :         hlist_add_head(&amp;dentry-&gt;d_u.d_alias, &amp;inode-&gt;i_dentry);</span></a>
+<a name="2008"><span class="lineNum">    2008 </span><span class="lineCov">         39 :         raw_write_seqcount_begin(&amp;dentry-&gt;d_seq);</span></a>
+<a name="2009"><span class="lineNum">    2009 </span><span class="lineCov">         13 :         __d_set_inode_and_type(dentry, inode, add_flags);</span></a>
+<a name="2010"><span class="lineNum">    2010 </span><span class="lineCov">         26 :         raw_write_seqcount_end(&amp;dentry-&gt;d_seq);</span></a>
+<a name="2011"><span class="lineNum">    2011 </span><span class="lineCov">         13 :         fsnotify_update_flags(dentry);</span></a>
+<a name="2012"><span class="lineNum">    2012 </span><span class="lineCov">         26 :         spin_unlock(&amp;dentry-&gt;d_lock);</span></a>
+<a name="2013"><span class="lineNum">    2013 </span><span class="lineCov">         13 : }</span></a>
 <a name="2014"><span class="lineNum">    2014 </span>            : </a>
 <a name="2015"><span class="lineNum">    2015 </span>            : /**</a>
 <a name="2016"><span class="lineNum">    2016 </span>            :  * d_instantiate - fill in inode information for a dentry</a>
@@ -2089,16 +2089,16 @@
 <a name="2027"><span class="lineNum">    2027 </span>            :  * in use by the dcache.</a>
 <a name="2028"><span class="lineNum">    2028 </span>            :  */</a>
 <a name="2029"><span class="lineNum">    2029 </span>            :  </a>
-<a name="2030"><span class="lineNum">    2030 </span><span class="lineCov">         26 : void d_instantiate(struct dentry *entry, struct inode * inode)</span></a>
+<a name="2030"><span class="lineNum">    2030 </span><span class="lineCov">         13 : void d_instantiate(struct dentry *entry, struct inode * inode)</span></a>
 <a name="2031"><span class="lineNum">    2031 </span>            : {</a>
-<a name="2032"><span class="lineNum">    2032 </span><span class="lineCov">         26 :         BUG_ON(!hlist_unhashed(&amp;entry-&gt;d_u.d_alias));</span></a>
-<a name="2033"><span class="lineNum">    2033 </span><span class="lineCov">         26 :         if (inode) {</span></a>
-<a name="2034"><span class="lineNum">    2034 </span><span class="lineCov">         26 :                 security_d_instantiate(entry, inode);</span></a>
-<a name="2035"><span class="lineNum">    2035 </span><span class="lineCov">         52 :                 spin_lock(&amp;inode-&gt;i_lock);</span></a>
-<a name="2036"><span class="lineNum">    2036 </span><span class="lineCov">         26 :                 __d_instantiate(entry, inode);</span></a>
-<a name="2037"><span class="lineNum">    2037 </span><span class="lineCov">         26 :                 spin_unlock(&amp;inode-&gt;i_lock);</span></a>
+<a name="2032"><span class="lineNum">    2032 </span><span class="lineCov">         13 :         BUG_ON(!hlist_unhashed(&amp;entry-&gt;d_u.d_alias));</span></a>
+<a name="2033"><span class="lineNum">    2033 </span><span class="lineCov">         13 :         if (inode) {</span></a>
+<a name="2034"><span class="lineNum">    2034 </span><span class="lineCov">         13 :                 security_d_instantiate(entry, inode);</span></a>
+<a name="2035"><span class="lineNum">    2035 </span><span class="lineCov">         26 :                 spin_lock(&amp;inode-&gt;i_lock);</span></a>
+<a name="2036"><span class="lineNum">    2036 </span><span class="lineCov">         13 :                 __d_instantiate(entry, inode);</span></a>
+<a name="2037"><span class="lineNum">    2037 </span><span class="lineCov">         13 :                 spin_unlock(&amp;inode-&gt;i_lock);</span></a>
 <a name="2038"><span class="lineNum">    2038 </span>            :         }</a>
-<a name="2039"><span class="lineNum">    2039 </span><span class="lineCov">         26 : }</span></a>
+<a name="2039"><span class="lineNum">    2039 </span><span class="lineCov">         13 : }</span></a>
 <a name="2040"><span class="lineNum">    2040 </span>            : EXPORT_SYMBOL(d_instantiate);</a>
 <a name="2041"><span class="lineNum">    2041 </span>            : </a>
 <a name="2042"><span class="lineNum">    2042 </span>            : /*</a>
@@ -2123,18 +2123,18 @@
 <a name="2061"><span class="lineNum">    2061 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="2062"><span class="lineNum">    2062 </span>            : EXPORT_SYMBOL(d_instantiate_new);</a>
 <a name="2063"><span class="lineNum">    2063 </span>            : </a>
-<a name="2064"><span class="lineNum">    2064 </span><span class="lineCov">         20 : struct dentry *d_make_root(struct inode *root_inode)</span></a>
+<a name="2064"><span class="lineNum">    2064 </span><span class="lineCov">         10 : struct dentry *d_make_root(struct inode *root_inode)</span></a>
 <a name="2065"><span class="lineNum">    2065 </span>            : {</a>
-<a name="2066"><span class="lineNum">    2066 </span><span class="lineCov">         20 :         struct dentry *res = NULL;</span></a>
+<a name="2066"><span class="lineNum">    2066 </span><span class="lineCov">         10 :         struct dentry *res = NULL;</span></a>
 <a name="2067"><span class="lineNum">    2067 </span>            : </a>
-<a name="2068"><span class="lineNum">    2068 </span><span class="lineCov">         20 :         if (root_inode) {</span></a>
-<a name="2069"><span class="lineNum">    2069 </span><span class="lineCov">         40 :                 res = d_alloc_anon(root_inode-&gt;i_sb);</span></a>
-<a name="2070"><span class="lineNum">    2070 </span><span class="lineCov">         20 :                 if (res)</span></a>
-<a name="2071"><span class="lineNum">    2071 </span><span class="lineCov">         20 :                         d_instantiate(res, root_inode);</span></a>
+<a name="2068"><span class="lineNum">    2068 </span><span class="lineCov">         10 :         if (root_inode) {</span></a>
+<a name="2069"><span class="lineNum">    2069 </span><span class="lineCov">         20 :                 res = d_alloc_anon(root_inode-&gt;i_sb);</span></a>
+<a name="2070"><span class="lineNum">    2070 </span><span class="lineCov">         10 :                 if (res)</span></a>
+<a name="2071"><span class="lineNum">    2071 </span><span class="lineCov">         10 :                         d_instantiate(res, root_inode);</span></a>
 <a name="2072"><span class="lineNum">    2072 </span>            :                 else</a>
 <a name="2073"><span class="lineNum">    2073 </span><span class="lineNoCov">          0 :                         iput(root_inode);</span></a>
 <a name="2074"><span class="lineNum">    2074 </span>            :         }</a>
-<a name="2075"><span class="lineNum">    2075 </span><span class="lineCov">         20 :         return res;</span></a>
+<a name="2075"><span class="lineNum">    2075 </span><span class="lineCov">         10 :         return res;</span></a>
 <a name="2076"><span class="lineNum">    2076 </span>            : }</a>
 <a name="2077"><span class="lineNum">    2077 </span>            : EXPORT_SYMBOL(d_make_root);</a>
 <a name="2078"><span class="lineNum">    2078 </span>            : </a>
@@ -2353,13 +2353,13 @@
 <a name="2291"><span class="lineNum">    2291 </span>            :  * NOTE! The caller *has* to check the resulting dentry against the sequence</a>
 <a name="2292"><span class="lineNum">    2292 </span>            :  * number we've returned before using any of the resulting dentry state!</a>
 <a name="2293"><span class="lineNum">    2293 </span>            :  */</a>
-<a name="2294"><span class="lineNum">    2294 </span><span class="lineCov">          2 : struct dentry *__d_lookup_rcu(const struct dentry *parent,</span></a>
+<a name="2294"><span class="lineNum">    2294 </span><span class="lineCov">          1 : struct dentry *__d_lookup_rcu(const struct dentry *parent,</span></a>
 <a name="2295"><span class="lineNum">    2295 </span>            :                                 const struct qstr *name,</a>
 <a name="2296"><span class="lineNum">    2296 </span>            :                                 unsigned *seqp)</a>
 <a name="2297"><span class="lineNum">    2297 </span>            : {</a>
-<a name="2298"><span class="lineNum">    2298 </span><span class="lineCov">          2 :         u64 hashlen = name-&gt;hash_len;</span></a>
-<a name="2299"><span class="lineNum">    2299 </span><span class="lineCov">          2 :         const unsigned char *str = name-&gt;name;</span></a>
-<a name="2300"><span class="lineNum">    2300 </span><span class="lineCov">          4 :         struct hlist_bl_head *b = d_hash(hashlen_hash(hashlen));</span></a>
+<a name="2298"><span class="lineNum">    2298 </span><span class="lineCov">          1 :         u64 hashlen = name-&gt;hash_len;</span></a>
+<a name="2299"><span class="lineNum">    2299 </span><span class="lineCov">          1 :         const unsigned char *str = name-&gt;name;</span></a>
+<a name="2300"><span class="lineNum">    2300 </span><span class="lineCov">          2 :         struct hlist_bl_head *b = d_hash(hashlen_hash(hashlen));</span></a>
 <a name="2301"><span class="lineNum">    2301 </span>            :         struct hlist_bl_node *node;</a>
 <a name="2302"><span class="lineNum">    2302 </span>            :         struct dentry *dentry;</a>
 <a name="2303"><span class="lineNum">    2303 </span>            : </a>
@@ -2383,7 +2383,7 @@
 <a name="2321"><span class="lineNum">    2321 </span>            :          *</a>
 <a name="2322"><span class="lineNum">    2322 </span>            :          * See Documentation/filesystems/path-lookup.txt for more details.</a>
 <a name="2323"><span class="lineNum">    2323 </span>            :          */</a>
-<a name="2324"><span class="lineNum">    2324 </span><span class="lineCov">          2 :         hlist_bl_for_each_entry_rcu(dentry, node, b, d_hash) {</span></a>
+<a name="2324"><span class="lineNum">    2324 </span><span class="lineCov">          1 :         hlist_bl_for_each_entry_rcu(dentry, node, b, d_hash) {</span></a>
 <a name="2325"><span class="lineNum">    2325 </span>            :                 unsigned seq;</a>
 <a name="2326"><span class="lineNum">    2326 </span>            : </a>
 <a name="2327"><span class="lineNum">    2327 </span>            : seqretry:</a>
@@ -2404,13 +2404,13 @@
 <a name="2342"><span class="lineNum">    2342 </span>            :                  * Note that raw_seqcount_begin still *does* smp_rmb(), so</a>
 <a name="2343"><span class="lineNum">    2343 </span>            :                  * we are still guaranteed NUL-termination of -&gt;d_name.name.</a>
 <a name="2344"><span class="lineNum">    2344 </span>            :                  */</a>
-<a name="2345"><span class="lineNum">    2345 </span><span class="lineCov">          4 :                 seq = raw_seqcount_begin(&amp;dentry-&gt;d_seq);</span></a>
-<a name="2346"><span class="lineNum">    2346 </span><span class="lineCov">          2 :                 if (dentry-&gt;d_parent != parent)</span></a>
+<a name="2345"><span class="lineNum">    2345 </span><span class="lineCov">          2 :                 seq = raw_seqcount_begin(&amp;dentry-&gt;d_seq);</span></a>
+<a name="2346"><span class="lineNum">    2346 </span><span class="lineCov">          1 :                 if (dentry-&gt;d_parent != parent)</span></a>
 <a name="2347"><span class="lineNum">    2347 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="2348"><span class="lineNum">    2348 </span><span class="lineCov">          2 :                 if (d_unhashed(dentry))</span></a>
+<a name="2348"><span class="lineNum">    2348 </span><span class="lineCov">          1 :                 if (d_unhashed(dentry))</span></a>
 <a name="2349"><span class="lineNum">    2349 </span><span class="lineNoCov">          0 :                         continue;</span></a>
 <a name="2350"><span class="lineNum">    2350 </span>            : </a>
-<a name="2351"><span class="lineNum">    2351 </span><span class="lineCov">          2 :                 if (unlikely(parent-&gt;d_flags &amp; DCACHE_OP_COMPARE)) {</span></a>
+<a name="2351"><span class="lineNum">    2351 </span><span class="lineCov">          1 :                 if (unlikely(parent-&gt;d_flags &amp; DCACHE_OP_COMPARE)) {</span></a>
 <a name="2352"><span class="lineNum">    2352 </span>            :                         int tlen;</a>
 <a name="2353"><span class="lineNum">    2353 </span>            :                         const char *tname;</a>
 <a name="2354"><span class="lineNum">    2354 </span><span class="lineNoCov">          0 :                         if (dentry-&gt;d_name.hash != hashlen_hash(hashlen))</span></a>
@@ -2426,13 +2426,13 @@
 <a name="2364"><span class="lineNum">    2364 </span>            :                                                     tlen, tname, name) != 0)</a>
 <a name="2365"><span class="lineNum">    2365 </span><span class="lineNoCov">          0 :                                 continue;</span></a>
 <a name="2366"><span class="lineNum">    2366 </span>            :                 } else {</a>
-<a name="2367"><span class="lineNum">    2367 </span><span class="lineCov">          2 :                         if (dentry-&gt;d_name.hash_len != hashlen)</span></a>
+<a name="2367"><span class="lineNum">    2367 </span><span class="lineCov">          1 :                         if (dentry-&gt;d_name.hash_len != hashlen)</span></a>
 <a name="2368"><span class="lineNum">    2368 </span><span class="lineNoCov">          0 :                                 continue;</span></a>
-<a name="2369"><span class="lineNum">    2369 </span><span class="lineCov">          4 :                         if (dentry_cmp(dentry, str, hashlen_len(hashlen)) != 0)</span></a>
+<a name="2369"><span class="lineNum">    2369 </span><span class="lineCov">          2 :                         if (dentry_cmp(dentry, str, hashlen_len(hashlen)) != 0)</span></a>
 <a name="2370"><span class="lineNum">    2370 </span><span class="lineNoCov">          0 :                                 continue;</span></a>
 <a name="2371"><span class="lineNum">    2371 </span>            :                 }</a>
-<a name="2372"><span class="lineNum">    2372 </span><span class="lineCov">          2 :                 *seqp = seq;</span></a>
-<a name="2373"><span class="lineNum">    2373 </span><span class="lineCov">          2 :                 return dentry;</span></a>
+<a name="2372"><span class="lineNum">    2372 </span><span class="lineCov">          1 :                 *seqp = seq;</span></a>
+<a name="2373"><span class="lineNum">    2373 </span><span class="lineCov">          1 :                 return dentry;</span></a>
 <a name="2374"><span class="lineNum">    2374 </span>            :         }</a>
 <a name="2375"><span class="lineNum">    2375 </span>            :         return NULL;</a>
 <a name="2376"><span class="lineNum">    2376 </span>            : }</a>
@@ -2448,18 +2448,18 @@
 <a name="2386"><span class="lineNum">    2386 </span>            :  * dentry is returned. The caller must use dput to free the entry when it has</a>
 <a name="2387"><span class="lineNum">    2387 </span>            :  * finished using it. %NULL is returned if the dentry does not exist.</a>
 <a name="2388"><span class="lineNum">    2388 </span>            :  */</a>
-<a name="2389"><span class="lineNum">    2389 </span><span class="lineCov">          6 : struct dentry *d_lookup(const struct dentry *parent, const struct qstr *name)</span></a>
+<a name="2389"><span class="lineNum">    2389 </span><span class="lineCov">          3 : struct dentry *d_lookup(const struct dentry *parent, const struct qstr *name)</span></a>
 <a name="2390"><span class="lineNum">    2390 </span>            : {</a>
 <a name="2391"><span class="lineNum">    2391 </span>            :         struct dentry *dentry;</a>
 <a name="2392"><span class="lineNum">    2392 </span>            :         unsigned seq;</a>
 <a name="2393"><span class="lineNum">    2393 </span>            : </a>
 <a name="2394"><span class="lineNum">    2394 </span>            :         do {</a>
-<a name="2395"><span class="lineNum">    2395 </span><span class="lineCov">          6 :                 seq = read_seqbegin(&amp;rename_lock);</span></a>
-<a name="2396"><span class="lineNum">    2396 </span><span class="lineCov">          6 :                 dentry = __d_lookup(parent, name);</span></a>
-<a name="2397"><span class="lineNum">    2397 </span><span class="lineCov">          6 :                 if (dentry)</span></a>
+<a name="2395"><span class="lineNum">    2395 </span><span class="lineCov">          3 :                 seq = read_seqbegin(&amp;rename_lock);</span></a>
+<a name="2396"><span class="lineNum">    2396 </span><span class="lineCov">          3 :                 dentry = __d_lookup(parent, name);</span></a>
+<a name="2397"><span class="lineNum">    2397 </span><span class="lineCov">          3 :                 if (dentry)</span></a>
 <a name="2398"><span class="lineNum">    2398 </span>            :                         break;</a>
-<a name="2399"><span class="lineNum">    2399 </span><span class="lineCov">          6 :         } while (read_seqretry(&amp;rename_lock, seq));</span></a>
-<a name="2400"><span class="lineNum">    2400 </span><span class="lineCov">          6 :         return dentry;</span></a>
+<a name="2399"><span class="lineNum">    2399 </span><span class="lineCov">          3 :         } while (read_seqretry(&amp;rename_lock, seq));</span></a>
+<a name="2400"><span class="lineNum">    2400 </span><span class="lineCov">          3 :         return dentry;</span></a>
 <a name="2401"><span class="lineNum">    2401 </span>            : }</a>
 <a name="2402"><span class="lineNum">    2402 </span>            : EXPORT_SYMBOL(d_lookup);</a>
 <a name="2403"><span class="lineNum">    2403 </span>            : </a>
@@ -2478,12 +2478,12 @@
 <a name="2416"><span class="lineNum">    2416 </span>            :  *</a>
 <a name="2417"><span class="lineNum">    2417 </span>            :  * __d_lookup callers must be commented.</a>
 <a name="2418"><span class="lineNum">    2418 </span>            :  */</a>
-<a name="2419"><span class="lineNum">    2419 </span><span class="lineCov">          6 : struct dentry *__d_lookup(const struct dentry *parent, const struct qstr *name)</span></a>
+<a name="2419"><span class="lineNum">    2419 </span><span class="lineCov">          3 : struct dentry *__d_lookup(const struct dentry *parent, const struct qstr *name)</span></a>
 <a name="2420"><span class="lineNum">    2420 </span>            : {</a>
-<a name="2421"><span class="lineNum">    2421 </span><span class="lineCov">          6 :         unsigned int hash = name-&gt;hash;</span></a>
-<a name="2422"><span class="lineNum">    2422 </span><span class="lineCov">          6 :         struct hlist_bl_head *b = d_hash(hash);</span></a>
+<a name="2421"><span class="lineNum">    2421 </span><span class="lineCov">          3 :         unsigned int hash = name-&gt;hash;</span></a>
+<a name="2422"><span class="lineNum">    2422 </span><span class="lineCov">          3 :         struct hlist_bl_head *b = d_hash(hash);</span></a>
 <a name="2423"><span class="lineNum">    2423 </span>            :         struct hlist_bl_node *node;</a>
-<a name="2424"><span class="lineNum">    2424 </span><span class="lineCov">          6 :         struct dentry *found = NULL;</span></a>
+<a name="2424"><span class="lineNum">    2424 </span><span class="lineCov">          3 :         struct dentry *found = NULL;</span></a>
 <a name="2425"><span class="lineNum">    2425 </span>            :         struct dentry *dentry;</a>
 <a name="2426"><span class="lineNum">    2426 </span>            : </a>
 <a name="2427"><span class="lineNum">    2427 </span>            :         /*</a>
@@ -2508,7 +2508,7 @@
 <a name="2446"><span class="lineNum">    2446 </span>            :          */</a>
 <a name="2447"><span class="lineNum">    2447 </span>            :         rcu_read_lock();</a>
 <a name="2448"><span class="lineNum">    2448 </span>            :         </a>
-<a name="2449"><span class="lineNum">    2449 </span><span class="lineCov">          6 :         hlist_bl_for_each_entry_rcu(dentry, node, b, d_hash) {</span></a>
+<a name="2449"><span class="lineNum">    2449 </span><span class="lineCov">          3 :         hlist_bl_for_each_entry_rcu(dentry, node, b, d_hash) {</span></a>
 <a name="2450"><span class="lineNum">    2450 </span>            : </a>
 <a name="2451"><span class="lineNum">    2451 </span><span class="lineNoCov">          0 :                 if (dentry-&gt;d_name.hash != hash)</span></a>
 <a name="2452"><span class="lineNum">    2452 </span><span class="lineNoCov">          0 :                         continue;</span></a>
@@ -2531,7 +2531,7 @@
 <a name="2469"><span class="lineNum">    2469 </span>            :         }</a>
 <a name="2470"><span class="lineNum">    2470 </span>            :         rcu_read_unlock();</a>
 <a name="2471"><span class="lineNum">    2471 </span>            : </a>
-<a name="2472"><span class="lineNum">    2472 </span><span class="lineCov">          6 :         return found;</span></a>
+<a name="2472"><span class="lineNum">    2472 </span><span class="lineCov">          3 :         return found;</span></a>
 <a name="2473"><span class="lineNum">    2473 </span>            : }</a>
 <a name="2474"><span class="lineNum">    2474 </span>            : </a>
 <a name="2475"><span class="lineNum">    2475 </span>            : /**</a>
@@ -2601,10 +2601,10 @@
 <a name="2539"><span class="lineNum">    2539 </span>            : </a>
 <a name="2540"><span class="lineNum">    2540 </span>            : static void __d_rehash(struct dentry *entry)</a>
 <a name="2541"><span class="lineNum">    2541 </span>            : {</a>
-<a name="2542"><span class="lineNum">    2542 </span><span class="lineCov">         20 :         struct hlist_bl_head *b = d_hash(entry-&gt;d_name.hash);</span></a>
+<a name="2542"><span class="lineNum">    2542 </span><span class="lineCov">         10 :         struct hlist_bl_head *b = d_hash(entry-&gt;d_name.hash);</span></a>
 <a name="2543"><span class="lineNum">    2543 </span>            : </a>
 <a name="2544"><span class="lineNum">    2544 </span>            :         hlist_bl_lock(b);</a>
-<a name="2545"><span class="lineNum">    2545 </span><span class="lineCov">         20 :         hlist_bl_add_head_rcu(&amp;entry-&gt;d_hash, b);</span></a>
+<a name="2545"><span class="lineNum">    2545 </span><span class="lineCov">         10 :         hlist_bl_add_head_rcu(&amp;entry-&gt;d_hash, b);</span></a>
 <a name="2546"><span class="lineNum">    2546 </span>            :         hlist_bl_unlock(b);</a>
 <a name="2547"><span class="lineNum">    2547 </span>            : }</a>
 <a name="2548"><span class="lineNum">    2548 </span>            : </a>
@@ -2780,31 +2780,31 @@
 <a name="2718"><span class="lineNum">    2718 </span>            : </a>
 <a name="2719"><span class="lineNum">    2719 </span>            : /* inode-&gt;i_lock held if inode is non-NULL */</a>
 <a name="2720"><span class="lineNum">    2720 </span>            : </a>
-<a name="2721"><span class="lineNum">    2721 </span><span class="lineCov">         10 : static inline void __d_add(struct dentry *dentry, struct inode *inode)</span></a>
+<a name="2721"><span class="lineNum">    2721 </span><span class="lineCov">          5 : static inline void __d_add(struct dentry *dentry, struct inode *inode)</span></a>
 <a name="2722"><span class="lineNum">    2722 </span>            : {</a>
-<a name="2723"><span class="lineNum">    2723 </span><span class="lineCov">         10 :         struct inode *dir = NULL;</span></a>
+<a name="2723"><span class="lineNum">    2723 </span><span class="lineCov">          5 :         struct inode *dir = NULL;</span></a>
 <a name="2724"><span class="lineNum">    2724 </span>            :         unsigned n;</a>
-<a name="2725"><span class="lineNum">    2725 </span><span class="lineCov">         20 :         spin_lock(&amp;dentry-&gt;d_lock);</span></a>
-<a name="2726"><span class="lineNum">    2726 </span><span class="lineCov">         20 :         if (unlikely(d_in_lookup(dentry))) {</span></a>
+<a name="2725"><span class="lineNum">    2725 </span><span class="lineCov">         10 :         spin_lock(&amp;dentry-&gt;d_lock);</span></a>
+<a name="2726"><span class="lineNum">    2726 </span><span class="lineCov">         10 :         if (unlikely(d_in_lookup(dentry))) {</span></a>
 <a name="2727"><span class="lineNum">    2727 </span><span class="lineNoCov">          0 :                 dir = dentry-&gt;d_parent-&gt;d_inode;</span></a>
 <a name="2728"><span class="lineNum">    2728 </span><span class="lineNoCov">          0 :                 n = start_dir_add(dir);</span></a>
 <a name="2729"><span class="lineNum">    2729 </span><span class="lineNoCov">          0 :                 __d_lookup_done(dentry);</span></a>
 <a name="2730"><span class="lineNum">    2730 </span>            :         }</a>
-<a name="2731"><span class="lineNum">    2731 </span><span class="lineCov">         10 :         if (inode) {</span></a>
-<a name="2732"><span class="lineNum">    2732 </span><span class="lineCov">          4 :                 unsigned add_flags = d_flags_for_inode(inode);</span></a>
-<a name="2733"><span class="lineNum">    2733 </span><span class="lineCov">          8 :                 hlist_add_head(&amp;dentry-&gt;d_u.d_alias, &amp;inode-&gt;i_dentry);</span></a>
-<a name="2734"><span class="lineNum">    2734 </span><span class="lineCov">         12 :                 raw_write_seqcount_begin(&amp;dentry-&gt;d_seq);</span></a>
-<a name="2735"><span class="lineNum">    2735 </span><span class="lineCov">          4 :                 __d_set_inode_and_type(dentry, inode, add_flags);</span></a>
-<a name="2736"><span class="lineNum">    2736 </span><span class="lineCov">          8 :                 raw_write_seqcount_end(&amp;dentry-&gt;d_seq);</span></a>
-<a name="2737"><span class="lineNum">    2737 </span><span class="lineCov">          4 :                 fsnotify_update_flags(dentry);</span></a>
+<a name="2731"><span class="lineNum">    2731 </span><span class="lineCov">          5 :         if (inode) {</span></a>
+<a name="2732"><span class="lineNum">    2732 </span><span class="lineCov">          2 :                 unsigned add_flags = d_flags_for_inode(inode);</span></a>
+<a name="2733"><span class="lineNum">    2733 </span><span class="lineCov">          4 :                 hlist_add_head(&amp;dentry-&gt;d_u.d_alias, &amp;inode-&gt;i_dentry);</span></a>
+<a name="2734"><span class="lineNum">    2734 </span><span class="lineCov">          6 :                 raw_write_seqcount_begin(&amp;dentry-&gt;d_seq);</span></a>
+<a name="2735"><span class="lineNum">    2735 </span><span class="lineCov">          2 :                 __d_set_inode_and_type(dentry, inode, add_flags);</span></a>
+<a name="2736"><span class="lineNum">    2736 </span><span class="lineCov">          4 :                 raw_write_seqcount_end(&amp;dentry-&gt;d_seq);</span></a>
+<a name="2737"><span class="lineNum">    2737 </span><span class="lineCov">          2 :                 fsnotify_update_flags(dentry);</span></a>
 <a name="2738"><span class="lineNum">    2738 </span>            :         }</a>
-<a name="2739"><span class="lineNum">    2739 </span><span class="lineCov">         10 :         __d_rehash(dentry);</span></a>
-<a name="2740"><span class="lineNum">    2740 </span><span class="lineCov">         10 :         if (dir)</span></a>
+<a name="2739"><span class="lineNum">    2739 </span><span class="lineCov">          5 :         __d_rehash(dentry);</span></a>
+<a name="2740"><span class="lineNum">    2740 </span><span class="lineCov">          5 :         if (dir)</span></a>
 <a name="2741"><span class="lineNum">    2741 </span>            :                 end_dir_add(dir, n);</a>
-<a name="2742"><span class="lineNum">    2742 </span><span class="lineCov">         20 :         spin_unlock(&amp;dentry-&gt;d_lock);</span></a>
-<a name="2743"><span class="lineNum">    2743 </span><span class="lineCov">         10 :         if (inode)</span></a>
-<a name="2744"><span class="lineNum">    2744 </span><span class="lineCov">          4 :                 spin_unlock(&amp;inode-&gt;i_lock);</span></a>
-<a name="2745"><span class="lineNum">    2745 </span><span class="lineCov">         10 : }</span></a>
+<a name="2742"><span class="lineNum">    2742 </span><span class="lineCov">         10 :         spin_unlock(&amp;dentry-&gt;d_lock);</span></a>
+<a name="2743"><span class="lineNum">    2743 </span><span class="lineCov">          5 :         if (inode)</span></a>
+<a name="2744"><span class="lineNum">    2744 </span><span class="lineCov">          2 :                 spin_unlock(&amp;inode-&gt;i_lock);</span></a>
+<a name="2745"><span class="lineNum">    2745 </span><span class="lineCov">          5 : }</span></a>
 <a name="2746"><span class="lineNum">    2746 </span>            : </a>
 <a name="2747"><span class="lineNum">    2747 </span>            : /**</a>
 <a name="2748"><span class="lineNum">    2748 </span>            :  * d_add - add dentry to hash queues</a>
@@ -2815,14 +2815,14 @@
 <a name="2753"><span class="lineNum">    2753 </span>            :  * The entry was actually filled in earlier during d_alloc().</a>
 <a name="2754"><span class="lineNum">    2754 </span>            :  */</a>
 <a name="2755"><span class="lineNum">    2755 </span>            : </a>
-<a name="2756"><span class="lineNum">    2756 </span><span class="lineCov">         10 : void d_add(struct dentry *entry, struct inode *inode)</span></a>
+<a name="2756"><span class="lineNum">    2756 </span><span class="lineCov">          5 : void d_add(struct dentry *entry, struct inode *inode)</span></a>
 <a name="2757"><span class="lineNum">    2757 </span>            : {</a>
-<a name="2758"><span class="lineNum">    2758 </span><span class="lineCov">         10 :         if (inode) {</span></a>
-<a name="2759"><span class="lineNum">    2759 </span><span class="lineCov">          4 :                 security_d_instantiate(entry, inode);</span></a>
-<a name="2760"><span class="lineNum">    2760 </span><span class="lineCov">          4 :                 spin_lock(&amp;inode-&gt;i_lock);</span></a>
+<a name="2758"><span class="lineNum">    2758 </span><span class="lineCov">          5 :         if (inode) {</span></a>
+<a name="2759"><span class="lineNum">    2759 </span><span class="lineCov">          2 :                 security_d_instantiate(entry, inode);</span></a>
+<a name="2760"><span class="lineNum">    2760 </span><span class="lineCov">          2 :                 spin_lock(&amp;inode-&gt;i_lock);</span></a>
 <a name="2761"><span class="lineNum">    2761 </span>            :         }</a>
-<a name="2762"><span class="lineNum">    2762 </span><span class="lineCov">         10 :         __d_add(entry, inode);</span></a>
-<a name="2763"><span class="lineNum">    2763 </span><span class="lineCov">         10 : }</span></a>
+<a name="2762"><span class="lineNum">    2762 </span><span class="lineCov">          5 :         __d_add(entry, inode);</span></a>
+<a name="2763"><span class="lineNum">    2763 </span><span class="lineCov">          5 : }</span></a>
 <a name="2764"><span class="lineNum">    2764 </span>            : EXPORT_SYMBOL(d_add);</a>
 <a name="2765"><span class="lineNum">    2765 </span>            : </a>
 <a name="2766"><span class="lineNum">    2766 </span>            : /**</a>
@@ -3281,7 +3281,7 @@
 <a name="3219"><span class="lineNum">    3219 </span>            : }</a>
 <a name="3220"><span class="lineNum">    3220 </span>            : __setup(&quot;dhash_entries=&quot;, set_dhash_entries);</a>
 <a name="3221"><span class="lineNum">    3221 </span>            : </a>
-<a name="3222"><span class="lineNum">    3222 </span><span class="lineCov">          2 : static void __init dcache_init_early(void)</span></a>
+<a name="3222"><span class="lineNum">    3222 </span><span class="lineCov">          1 : static void __init dcache_init_early(void)</span></a>
 <a name="3223"><span class="lineNum">    3223 </span>            : {</a>
 <a name="3224"><span class="lineNum">    3224 </span>            :         /* If hashes are distributed across NUMA nodes, defer</a>
 <a name="3225"><span class="lineNum">    3225 </span>            :          * hash allocation until vmalloc space is available.</a>
@@ -3289,8 +3289,8 @@
 <a name="3227"><span class="lineNum">    3227 </span>            :         if (hashdist)</a>
 <a name="3228"><span class="lineNum">    3228 </span>            :                 return;</a>
 <a name="3229"><span class="lineNum">    3229 </span>            : </a>
-<a name="3230"><span class="lineNum">    3230 </span><span class="lineCov">          2 :         dentry_hashtable =</span></a>
-<a name="3231"><span class="lineNum">    3231 </span><span class="lineCov">          2 :                 alloc_large_system_hash(&quot;Dentry cache&quot;,</span></a>
+<a name="3230"><span class="lineNum">    3230 </span><span class="lineCov">          1 :         dentry_hashtable =</span></a>
+<a name="3231"><span class="lineNum">    3231 </span><span class="lineCov">          1 :                 alloc_large_system_hash(&quot;Dentry cache&quot;,</span></a>
 <a name="3232"><span class="lineNum">    3232 </span>            :                                         sizeof(struct hlist_bl_head),</a>
 <a name="3233"><span class="lineNum">    3233 </span>            :                                         dhash_entries,</a>
 <a name="3234"><span class="lineNum">    3234 </span>            :                                         13,</a>
@@ -3299,17 +3299,17 @@
 <a name="3237"><span class="lineNum">    3237 </span>            :                                         NULL,</a>
 <a name="3238"><span class="lineNum">    3238 </span>            :                                         0,</a>
 <a name="3239"><span class="lineNum">    3239 </span>            :                                         0);</a>
-<a name="3240"><span class="lineNum">    3240 </span><span class="lineCov">          2 :         d_hash_shift = 32 - d_hash_shift;</span></a>
+<a name="3240"><span class="lineNum">    3240 </span><span class="lineCov">          1 :         d_hash_shift = 32 - d_hash_shift;</span></a>
 <a name="3241"><span class="lineNum">    3241 </span>            : }</a>
 <a name="3242"><span class="lineNum">    3242 </span>            : </a>
-<a name="3243"><span class="lineNum">    3243 </span><span class="lineCov">          2 : static void __init dcache_init(void)</span></a>
+<a name="3243"><span class="lineNum">    3243 </span><span class="lineCov">          1 : static void __init dcache_init(void)</span></a>
 <a name="3244"><span class="lineNum">    3244 </span>            : {</a>
 <a name="3245"><span class="lineNum">    3245 </span>            :         /*</a>
 <a name="3246"><span class="lineNum">    3246 </span>            :          * A constructor could be added for stable state like the lists,</a>
 <a name="3247"><span class="lineNum">    3247 </span>            :          * but it is probably not worth it because of the cache nature</a>
 <a name="3248"><span class="lineNum">    3248 </span>            :          * of the dcache.</a>
 <a name="3249"><span class="lineNum">    3249 </span>            :          */</a>
-<a name="3250"><span class="lineNum">    3250 </span><span class="lineCov">          2 :         dentry_cache = KMEM_CACHE_USERCOPY(dentry,</span></a>
+<a name="3250"><span class="lineNum">    3250 </span><span class="lineCov">          1 :         dentry_cache = KMEM_CACHE_USERCOPY(dentry,</span></a>
 <a name="3251"><span class="lineNum">    3251 </span>            :                 SLAB_RECLAIM_ACCOUNT|SLAB_PANIC|SLAB_MEM_SPREAD|SLAB_ACCOUNT,</a>
 <a name="3252"><span class="lineNum">    3252 </span>            :                 d_iname);</a>
 <a name="3253"><span class="lineNum">    3253 </span>            : </a>
@@ -3334,30 +3334,30 @@
 <a name="3272"><span class="lineNum">    3272 </span>            : struct kmem_cache *names_cachep __read_mostly;</a>
 <a name="3273"><span class="lineNum">    3273 </span>            : EXPORT_SYMBOL(names_cachep);</a>
 <a name="3274"><span class="lineNum">    3274 </span>            : </a>
-<a name="3275"><span class="lineNum">    3275 </span><span class="lineCov">          2 : void __init vfs_caches_init_early(void)</span></a>
+<a name="3275"><span class="lineNum">    3275 </span><span class="lineCov">          1 : void __init vfs_caches_init_early(void)</span></a>
 <a name="3276"><span class="lineNum">    3276 </span>            : {</a>
 <a name="3277"><span class="lineNum">    3277 </span>            :         int i;</a>
 <a name="3278"><span class="lineNum">    3278 </span>            : </a>
-<a name="3279"><span class="lineNum">    3279 </span><span class="lineCov">       2050 :         for (i = 0; i &lt; ARRAY_SIZE(in_lookup_hashtable); i++)</span></a>
-<a name="3280"><span class="lineNum">    3280 </span><span class="lineCov">       2048 :                 INIT_HLIST_BL_HEAD(&amp;in_lookup_hashtable[i]);</span></a>
+<a name="3279"><span class="lineNum">    3279 </span><span class="lineCov">       1025 :         for (i = 0; i &lt; ARRAY_SIZE(in_lookup_hashtable); i++)</span></a>
+<a name="3280"><span class="lineNum">    3280 </span><span class="lineCov">       1024 :                 INIT_HLIST_BL_HEAD(&amp;in_lookup_hashtable[i]);</span></a>
 <a name="3281"><span class="lineNum">    3281 </span>            : </a>
-<a name="3282"><span class="lineNum">    3282 </span><span class="lineCov">          2 :         dcache_init_early();</span></a>
-<a name="3283"><span class="lineNum">    3283 </span><span class="lineCov">          2 :         inode_init_early();</span></a>
-<a name="3284"><span class="lineNum">    3284 </span><span class="lineCov">          2 : }</span></a>
+<a name="3282"><span class="lineNum">    3282 </span><span class="lineCov">          1 :         dcache_init_early();</span></a>
+<a name="3283"><span class="lineNum">    3283 </span><span class="lineCov">          1 :         inode_init_early();</span></a>
+<a name="3284"><span class="lineNum">    3284 </span><span class="lineCov">          1 : }</span></a>
 <a name="3285"><span class="lineNum">    3285 </span>            : </a>
-<a name="3286"><span class="lineNum">    3286 </span><span class="lineCov">          2 : void __init vfs_caches_init(void)</span></a>
+<a name="3286"><span class="lineNum">    3286 </span><span class="lineCov">          1 : void __init vfs_caches_init(void)</span></a>
 <a name="3287"><span class="lineNum">    3287 </span>            : {</a>
-<a name="3288"><span class="lineNum">    3288 </span><span class="lineCov">          2 :         names_cachep = kmem_cache_create_usercopy(&quot;names_cache&quot;, PATH_MAX, 0,</span></a>
+<a name="3288"><span class="lineNum">    3288 </span><span class="lineCov">          1 :         names_cachep = kmem_cache_create_usercopy(&quot;names_cache&quot;, PATH_MAX, 0,</span></a>
 <a name="3289"><span class="lineNum">    3289 </span>            :                         SLAB_HWCACHE_ALIGN|SLAB_PANIC, 0, PATH_MAX, NULL);</a>
 <a name="3290"><span class="lineNum">    3290 </span>            : </a>
-<a name="3291"><span class="lineNum">    3291 </span><span class="lineCov">          2 :         dcache_init();</span></a>
-<a name="3292"><span class="lineNum">    3292 </span><span class="lineCov">          2 :         inode_init();</span></a>
-<a name="3293"><span class="lineNum">    3293 </span><span class="lineCov">          2 :         files_init();</span></a>
-<a name="3294"><span class="lineNum">    3294 </span><span class="lineCov">          2 :         files_maxfiles_init();</span></a>
-<a name="3295"><span class="lineNum">    3295 </span><span class="lineCov">          2 :         mnt_init();</span></a>
-<a name="3296"><span class="lineNum">    3296 </span><span class="lineCov">          2 :         bdev_cache_init();</span></a>
-<a name="3297"><span class="lineNum">    3297 </span><span class="lineCov">          2 :         chrdev_init();</span></a>
-<a name="3298"><span class="lineNum">    3298 </span><span class="lineCov">          2 : }</span></a>
+<a name="3291"><span class="lineNum">    3291 </span><span class="lineCov">          1 :         dcache_init();</span></a>
+<a name="3292"><span class="lineNum">    3292 </span><span class="lineCov">          1 :         inode_init();</span></a>
+<a name="3293"><span class="lineNum">    3293 </span><span class="lineCov">          1 :         files_init();</span></a>
+<a name="3294"><span class="lineNum">    3294 </span><span class="lineCov">          1 :         files_maxfiles_init();</span></a>
+<a name="3295"><span class="lineNum">    3295 </span><span class="lineCov">          1 :         mnt_init();</span></a>
+<a name="3296"><span class="lineNum">    3296 </span><span class="lineCov">          1 :         bdev_cache_init();</span></a>
+<a name="3297"><span class="lineNum">    3297 </span><span class="lineCov">          1 :         chrdev_init();</span></a>
+<a name="3298"><span class="lineNum">    3298 </span><span class="lineCov">          1 : }</span></a>
 </pre>
       </td>
     </tr>

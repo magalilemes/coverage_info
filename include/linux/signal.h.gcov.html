@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -81,7 +81,7 @@
 <a name="19"><span class="lineNum">      19 </span>            : </a>
 <a name="20"><span class="lineNum">      20 </span>            : static inline void clear_siginfo(kernel_siginfo_t *info)</a>
 <a name="21"><span class="lineNum">      21 </span>            : {</a>
-<a name="22"><span class="lineNum">      22 </span><span class="lineCov">        128 :         memset(info, 0, sizeof(*info));</span></a>
+<a name="22"><span class="lineNum">      22 </span><span class="lineCov">         93 :         memset(info, 0, sizeof(*info));</span></a>
 <a name="23"><span class="lineNum">      23 </span>            : }</a>
 <a name="24"><span class="lineNum">      24 </span>            : </a>
 <a name="25"><span class="lineNum">      25 </span>            : #define SI_EXPANSION_SIZE (sizeof(struct siginfo) - sizeof(struct kernel_siginfo))</a>
@@ -258,7 +258,7 @@
 <a name="196"><span class="lineNum">     196 </span>            :                 break;</a>
 <a name="197"><span class="lineNum">     197 </span>            :         case 2: set-&gt;sig[1] = 0;</a>
 <a name="198"><span class="lineNum">     198 </span>            :                 fallthrough;</a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineCov">        728 :         case 1: set-&gt;sig[0] = 0;</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">        509 :         case 1: set-&gt;sig[0] = 0;</span></a>
 <a name="200"><span class="lineNum">     200 </span>            :                 break;</a>
 <a name="201"><span class="lineNum">     201 </span>            :         }</a>
 <a name="202"><span class="lineNum">     202 </span>            : }</a>
@@ -323,8 +323,8 @@
 <a name="261"><span class="lineNum">     261 </span>            : </a>
 <a name="262"><span class="lineNum">     262 </span>            : static inline void init_sigpending(struct sigpending *sig)</a>
 <a name="263"><span class="lineNum">     263 </span>            : {</a>
-<a name="264"><span class="lineNum">     264 </span><span class="lineCov">        624 :         sigemptyset(&amp;sig-&gt;signal);</span></a>
-<a name="265"><span class="lineNum">     265 </span><span class="lineCov">        624 :         INIT_LIST_HEAD(&amp;sig-&gt;list);</span></a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineCov">        428 :         sigemptyset(&amp;sig-&gt;signal);</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">        428 :         INIT_LIST_HEAD(&amp;sig-&gt;list);</span></a>
 <a name="266"><span class="lineNum">     266 </span>            : }</a>
 <a name="267"><span class="lineNum">     267 </span>            : </a>
 <a name="268"><span class="lineNum">     268 </span>            : extern void flush_sigqueue(struct sigpending *queue);</a>

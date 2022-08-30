@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -186,7 +186,7 @@
 <a name="124"><span class="lineNum">     124 </span>            : </a>
 <a name="125"><span class="lineNum">     125 </span>            : static inline int pte_none(pte_t pte)</a>
 <a name="126"><span class="lineNum">     126 </span>            : {</a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineCov">        120 :         return pte_is_zero(pte);</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineCov">         60 :         return pte_is_zero(pte);</span></a>
 <a name="128"><span class="lineNum">     128 </span>            : }</a>
 <a name="129"><span class="lineNum">     129 </span>            : </a>
 <a name="130"><span class="lineNum">     130 </span>            : /*</a>
@@ -222,7 +222,7 @@
 <a name="160"><span class="lineNum">     160 </span>            : </a>
 <a name="161"><span class="lineNum">     161 </span>            : static inline int pte_newpage(pte_t pte)</a>
 <a name="162"><span class="lineNum">     162 </span>            : {</a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">        120 :         return pte_get_bits(pte, _PAGE_NEWPAGE);</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">         60 :         return pte_get_bits(pte, _PAGE_NEWPAGE);</span></a>
 <a name="164"><span class="lineNum">     164 </span>            : }</a>
 <a name="165"><span class="lineNum">     165 </span>            : </a>
 <a name="166"><span class="lineNum">     166 </span>            : static inline int pte_newprot(pte_t pte)</a>
@@ -238,7 +238,7 @@
 <a name="176"><span class="lineNum">     176 </span>            : </a>
 <a name="177"><span class="lineNum">     177 </span>            : static inline pte_t pte_mknewprot(pte_t pte)</a>
 <a name="178"><span class="lineNum">     178 </span>            : {</a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">        120 :         pte_set_bits(pte, _PAGE_NEWPROT);</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">         60 :         pte_set_bits(pte, _PAGE_NEWPROT);</span></a>
 <a name="180"><span class="lineNum">     180 </span>            :         return(pte);</a>
 <a name="181"><span class="lineNum">     181 </span>            : }</a>
 <a name="182"><span class="lineNum">     182 </span>            : </a>
@@ -301,7 +301,7 @@
 <a name="239"><span class="lineNum">     239 </span>            : </a>
 <a name="240"><span class="lineNum">     240 </span>            : static inline pte_t pte_mknewpage(pte_t pte)</a>
 <a name="241"><span class="lineNum">     241 </span>            : {</a>
-<a name="242"><span class="lineNum">     242 </span><span class="lineCov">        120 :         pte_set_bits(pte, _PAGE_NEWPAGE);</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineCov">         60 :         pte_set_bits(pte, _PAGE_NEWPAGE);</span></a>
 <a name="243"><span class="lineNum">     243 </span>            :         return(pte);</a>
 <a name="244"><span class="lineNum">     244 </span>            : }</a>
 <a name="245"><span class="lineNum">     245 </span>            : </a>
@@ -314,14 +314,14 @@
 <a name="252"><span class="lineNum">     252 </span>            :          * mapped pages.</a>
 <a name="253"><span class="lineNum">     253 </span>            :          */</a>
 <a name="254"><span class="lineNum">     254 </span>            : </a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineCov">        120 :         *pteptr = pte_mknewpage(*pteptr);</span></a>
-<a name="256"><span class="lineNum">     256 </span><span class="lineCov">        240 :         if(pte_present(*pteptr)) *pteptr = pte_mknewprot(*pteptr);</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineCov">         60 :         *pteptr = pte_mknewpage(*pteptr);</span></a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineCov">        120 :         if(pte_present(*pteptr)) *pteptr = pte_mknewprot(*pteptr);</span></a>
 <a name="257"><span class="lineNum">     257 </span>            : }</a>
 <a name="258"><span class="lineNum">     258 </span>            : </a>
 <a name="259"><span class="lineNum">     259 </span>            : static inline void set_pte_at(struct mm_struct *mm, unsigned long addr,</a>
 <a name="260"><span class="lineNum">     260 </span>            :                               pte_t *pteptr, pte_t pteval)</a>
 <a name="261"><span class="lineNum">     261 </span>            : {</a>
-<a name="262"><span class="lineNum">     262 </span><span class="lineCov">        120 :         set_pte(pteptr, pteval);</span></a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineCov">         60 :         set_pte(pteptr, pteval);</span></a>
 <a name="263"><span class="lineNum">     263 </span>            : }</a>
 <a name="264"><span class="lineNum">     264 </span>            : </a>
 <a name="265"><span class="lineNum">     265 </span>            : #define __HAVE_ARCH_PTE_SAME</a>

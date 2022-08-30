@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -304,10 +304,10 @@
 <a name="242"><span class="lineNum">     242 </span>            :         {}</a>
 <a name="243"><span class="lineNum">     243 </span>            : };</a>
 <a name="244"><span class="lineNum">     244 </span>            : </a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineCov">          2 : static void __init aio_sysctl_init(void)</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">          1 : static void __init aio_sysctl_init(void)</span></a>
 <a name="246"><span class="lineNum">     246 </span>            : {</a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineCov">          2 :         register_sysctl_init(&quot;fs&quot;, aio_sysctls);</span></a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineCov">          2 : }</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineCov">          1 :         register_sysctl_init(&quot;fs&quot;, aio_sysctls);</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">          1 : }</span></a>
 <a name="249"><span class="lineNum">     249 </span>            : #else</a>
 <a name="250"><span class="lineNum">     250 </span>            : #define aio_sysctl_init() do { } while (0)</a>
 <a name="251"><span class="lineNum">     251 </span>            : #endif</a>
@@ -338,33 +338,33 @@
 <a name="276"><span class="lineNum">     276 </span>            :         return file;</a>
 <a name="277"><span class="lineNum">     277 </span>            : }</a>
 <a name="278"><span class="lineNum">     278 </span>            : </a>
-<a name="279"><span class="lineNum">     279 </span><span class="lineCov">          2 : static int aio_init_fs_context(struct fs_context *fc)</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineCov">          1 : static int aio_init_fs_context(struct fs_context *fc)</span></a>
 <a name="280"><span class="lineNum">     280 </span>            : {</a>
-<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          2 :         if (!init_pseudo(fc, AIO_RING_MAGIC))</span></a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          1 :         if (!init_pseudo(fc, AIO_RING_MAGIC))</span></a>
 <a name="282"><span class="lineNum">     282 </span>            :                 return -ENOMEM;</a>
-<a name="283"><span class="lineNum">     283 </span><span class="lineCov">          2 :         fc-&gt;s_iflags |= SB_I_NOEXEC;</span></a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineCov">          1 :         fc-&gt;s_iflags |= SB_I_NOEXEC;</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="285"><span class="lineNum">     285 </span>            : }</a>
 <a name="286"><span class="lineNum">     286 </span>            : </a>
 <a name="287"><span class="lineNum">     287 </span>            : /* aio_setup</a>
 <a name="288"><span class="lineNum">     288 </span>            :  *      Creates the slab caches used by the aio routines, panic on</a>
 <a name="289"><span class="lineNum">     289 </span>            :  *      failure as this is done early during the boot sequence.</a>
 <a name="290"><span class="lineNum">     290 </span>            :  */</a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineCov">          2 : static int __init aio_setup(void)</span></a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineCov">          1 : static int __init aio_setup(void)</span></a>
 <a name="292"><span class="lineNum">     292 </span>            : {</a>
 <a name="293"><span class="lineNum">     293 </span>            :         static struct file_system_type aio_fs = {</a>
 <a name="294"><span class="lineNum">     294 </span>            :                 .name           = &quot;aio&quot;,</a>
 <a name="295"><span class="lineNum">     295 </span>            :                 .init_fs_context = aio_init_fs_context,</a>
 <a name="296"><span class="lineNum">     296 </span>            :                 .kill_sb        = kill_anon_super,</a>
 <a name="297"><span class="lineNum">     297 </span>            :         };</a>
-<a name="298"><span class="lineNum">     298 </span><span class="lineCov">          2 :         aio_mnt = kern_mount(&amp;aio_fs);</span></a>
-<a name="299"><span class="lineNum">     299 </span><span class="lineCov">          4 :         if (IS_ERR(aio_mnt))</span></a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineCov">          1 :         aio_mnt = kern_mount(&amp;aio_fs);</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineCov">          2 :         if (IS_ERR(aio_mnt))</span></a>
 <a name="300"><span class="lineNum">     300 </span><span class="lineNoCov">          0 :                 panic(&quot;Failed to create aio fs mount.&quot;);</span></a>
 <a name="301"><span class="lineNum">     301 </span>            : </a>
-<a name="302"><span class="lineNum">     302 </span><span class="lineCov">          2 :         kiocb_cachep = KMEM_CACHE(aio_kiocb, SLAB_HWCACHE_ALIGN|SLAB_PANIC);</span></a>
-<a name="303"><span class="lineNum">     303 </span><span class="lineCov">          2 :         kioctx_cachep = KMEM_CACHE(kioctx,SLAB_HWCACHE_ALIGN|SLAB_PANIC);</span></a>
-<a name="304"><span class="lineNum">     304 </span><span class="lineCov">          2 :         aio_sysctl_init();</span></a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineCov">          1 :         kiocb_cachep = KMEM_CACHE(aio_kiocb, SLAB_HWCACHE_ALIGN|SLAB_PANIC);</span></a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineCov">          1 :         kioctx_cachep = KMEM_CACHE(kioctx,SLAB_HWCACHE_ALIGN|SLAB_PANIC);</span></a>
+<a name="304"><span class="lineNum">     304 </span><span class="lineCov">          1 :         aio_sysctl_init();</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="306"><span class="lineNum">     306 </span>            : }</a>
 <a name="307"><span class="lineNum">     307 </span>            : __initcall(aio_setup);</a>
 <a name="308"><span class="lineNum">     308 </span>            : </a>

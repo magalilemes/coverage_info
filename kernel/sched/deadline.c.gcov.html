@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -522,19 +522,19 @@
 <a name="460"><span class="lineNum">     460 </span><span class="lineNoCov">          0 :         dl_b-&gt;dl_runtime = runtime;</span></a>
 <a name="461"><span class="lineNum">     461 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="462"><span class="lineNum">     462 </span>            : </a>
-<a name="463"><span class="lineNum">     463 </span><span class="lineCov">          2 : void init_dl_bw(struct dl_bw *dl_b)</span></a>
+<a name="463"><span class="lineNum">     463 </span><span class="lineCov">          1 : void init_dl_bw(struct dl_bw *dl_b)</span></a>
 <a name="464"><span class="lineNum">     464 </span>            : {</a>
 <a name="465"><span class="lineNum">     465 </span>            :         raw_spin_lock_init(&amp;dl_b-&gt;lock);</a>
-<a name="466"><span class="lineNum">     466 </span><span class="lineCov">          2 :         if (global_rt_runtime() == RUNTIME_INF)</span></a>
+<a name="466"><span class="lineNum">     466 </span><span class="lineCov">          1 :         if (global_rt_runtime() == RUNTIME_INF)</span></a>
 <a name="467"><span class="lineNum">     467 </span><span class="lineNoCov">          0 :                 dl_b-&gt;bw = -1;</span></a>
 <a name="468"><span class="lineNum">     468 </span>            :         else</a>
-<a name="469"><span class="lineNum">     469 </span><span class="lineCov">          2 :                 dl_b-&gt;bw = to_ratio(global_rt_period(), global_rt_runtime());</span></a>
-<a name="470"><span class="lineNum">     470 </span><span class="lineCov">          2 :         dl_b-&gt;total_bw = 0;</span></a>
-<a name="471"><span class="lineNum">     471 </span><span class="lineCov">          2 : }</span></a>
+<a name="469"><span class="lineNum">     469 </span><span class="lineCov">          1 :                 dl_b-&gt;bw = to_ratio(global_rt_period(), global_rt_runtime());</span></a>
+<a name="470"><span class="lineNum">     470 </span><span class="lineCov">          1 :         dl_b-&gt;total_bw = 0;</span></a>
+<a name="471"><span class="lineNum">     471 </span><span class="lineCov">          1 : }</span></a>
 <a name="472"><span class="lineNum">     472 </span>            : </a>
-<a name="473"><span class="lineNum">     473 </span><span class="lineCov">          2 : void init_dl_rq(struct dl_rq *dl_rq)</span></a>
+<a name="473"><span class="lineNum">     473 </span><span class="lineCov">          1 : void init_dl_rq(struct dl_rq *dl_rq)</span></a>
 <a name="474"><span class="lineNum">     474 </span>            : {</a>
-<a name="475"><span class="lineNum">     475 </span><span class="lineCov">          2 :         dl_rq-&gt;root = RB_ROOT_CACHED;</span></a>
+<a name="475"><span class="lineNum">     475 </span><span class="lineCov">          1 :         dl_rq-&gt;root = RB_ROOT_CACHED;</span></a>
 <a name="476"><span class="lineNum">     476 </span>            : </a>
 <a name="477"><span class="lineNum">     477 </span>            : #ifdef CONFIG_SMP</a>
 <a name="478"><span class="lineNum">     478 </span>            :         /* zero means no -deadline tasks */</a>
@@ -544,13 +544,13 @@
 <a name="482"><span class="lineNum">     482 </span>            :         dl_rq-&gt;overloaded = 0;</a>
 <a name="483"><span class="lineNum">     483 </span>            :         dl_rq-&gt;pushable_dl_tasks_root = RB_ROOT_CACHED;</a>
 <a name="484"><span class="lineNum">     484 </span>            : #else</a>
-<a name="485"><span class="lineNum">     485 </span><span class="lineCov">          2 :         init_dl_bw(&amp;dl_rq-&gt;dl_bw);</span></a>
+<a name="485"><span class="lineNum">     485 </span><span class="lineCov">          1 :         init_dl_bw(&amp;dl_rq-&gt;dl_bw);</span></a>
 <a name="486"><span class="lineNum">     486 </span>            : #endif</a>
 <a name="487"><span class="lineNum">     487 </span>            : </a>
-<a name="488"><span class="lineNum">     488 </span><span class="lineCov">          2 :         dl_rq-&gt;running_bw = 0;</span></a>
-<a name="489"><span class="lineNum">     489 </span><span class="lineCov">          2 :         dl_rq-&gt;this_bw = 0;</span></a>
-<a name="490"><span class="lineNum">     490 </span><span class="lineCov">          2 :         init_dl_rq_bw_ratio(dl_rq);</span></a>
-<a name="491"><span class="lineNum">     491 </span><span class="lineCov">          2 : }</span></a>
+<a name="488"><span class="lineNum">     488 </span><span class="lineCov">          1 :         dl_rq-&gt;running_bw = 0;</span></a>
+<a name="489"><span class="lineNum">     489 </span><span class="lineCov">          1 :         dl_rq-&gt;this_bw = 0;</span></a>
+<a name="490"><span class="lineNum">     490 </span><span class="lineCov">          1 :         init_dl_rq_bw_ratio(dl_rq);</span></a>
+<a name="491"><span class="lineNum">     491 </span><span class="lineCov">          1 : }</span></a>
 <a name="492"><span class="lineNum">     492 </span>            : </a>
 <a name="493"><span class="lineNum">     493 </span>            : #ifdef CONFIG_SMP</a>
 <a name="494"><span class="lineNum">     494 </span>            : </a>
@@ -1235,13 +1235,13 @@
 <a name="1173"><span class="lineNum">    1173 </span><span class="lineNoCov">          0 :         return HRTIMER_NORESTART;</span></a>
 <a name="1174"><span class="lineNum">    1174 </span>            : }</a>
 <a name="1175"><span class="lineNum">    1175 </span>            : </a>
-<a name="1176"><span class="lineNum">    1176 </span><span class="lineCov">        158 : void init_dl_task_timer(struct sched_dl_entity *dl_se)</span></a>
+<a name="1176"><span class="lineNum">    1176 </span><span class="lineCov">        108 : void init_dl_task_timer(struct sched_dl_entity *dl_se)</span></a>
 <a name="1177"><span class="lineNum">    1177 </span>            : {</a>
-<a name="1178"><span class="lineNum">    1178 </span><span class="lineCov">        158 :         struct hrtimer *timer = &amp;dl_se-&gt;dl_timer;</span></a>
+<a name="1178"><span class="lineNum">    1178 </span><span class="lineCov">        108 :         struct hrtimer *timer = &amp;dl_se-&gt;dl_timer;</span></a>
 <a name="1179"><span class="lineNum">    1179 </span>            : </a>
-<a name="1180"><span class="lineNum">    1180 </span><span class="lineCov">        158 :         hrtimer_init(timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_HARD);</span></a>
-<a name="1181"><span class="lineNum">    1181 </span><span class="lineCov">        158 :         timer-&gt;function = dl_task_timer;</span></a>
-<a name="1182"><span class="lineNum">    1182 </span><span class="lineCov">        158 : }</span></a>
+<a name="1180"><span class="lineNum">    1180 </span><span class="lineCov">        108 :         hrtimer_init(timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_HARD);</span></a>
+<a name="1181"><span class="lineNum">    1181 </span><span class="lineCov">        108 :         timer-&gt;function = dl_task_timer;</span></a>
+<a name="1182"><span class="lineNum">    1182 </span><span class="lineCov">        108 : }</span></a>
 <a name="1183"><span class="lineNum">    1183 </span>            : </a>
 <a name="1184"><span class="lineNum">    1184 </span>            : /*</a>
 <a name="1185"><span class="lineNum">    1185 </span>            :  * During the activation, CBS checks if it can reuse the current task's</a>
@@ -1476,13 +1476,13 @@
 <a name="1414"><span class="lineNum">    1414 </span><span class="lineNoCov">          0 :         return HRTIMER_NORESTART;</span></a>
 <a name="1415"><span class="lineNum">    1415 </span>            : }</a>
 <a name="1416"><span class="lineNum">    1416 </span>            : </a>
-<a name="1417"><span class="lineNum">    1417 </span><span class="lineCov">        158 : void init_dl_inactive_task_timer(struct sched_dl_entity *dl_se)</span></a>
+<a name="1417"><span class="lineNum">    1417 </span><span class="lineCov">        108 : void init_dl_inactive_task_timer(struct sched_dl_entity *dl_se)</span></a>
 <a name="1418"><span class="lineNum">    1418 </span>            : {</a>
-<a name="1419"><span class="lineNum">    1419 </span><span class="lineCov">        158 :         struct hrtimer *timer = &amp;dl_se-&gt;inactive_timer;</span></a>
+<a name="1419"><span class="lineNum">    1419 </span><span class="lineCov">        108 :         struct hrtimer *timer = &amp;dl_se-&gt;inactive_timer;</span></a>
 <a name="1420"><span class="lineNum">    1420 </span>            : </a>
-<a name="1421"><span class="lineNum">    1421 </span><span class="lineCov">        158 :         hrtimer_init(timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_HARD);</span></a>
-<a name="1422"><span class="lineNum">    1422 </span><span class="lineCov">        158 :         timer-&gt;function = inactive_task_timer;</span></a>
-<a name="1423"><span class="lineNum">    1423 </span><span class="lineCov">        158 : }</span></a>
+<a name="1421"><span class="lineNum">    1421 </span><span class="lineCov">        108 :         hrtimer_init(timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_HARD);</span></a>
+<a name="1422"><span class="lineNum">    1422 </span><span class="lineCov">        108 :         timer-&gt;function = inactive_task_timer;</span></a>
+<a name="1423"><span class="lineNum">    1423 </span><span class="lineCov">        108 : }</span></a>
 <a name="1424"><span class="lineNum">    1424 </span>            : </a>
 <a name="1425"><span class="lineNum">    1425 </span>            : #define __node_2_dle(node) \</a>
 <a name="1426"><span class="lineNum">    1426 </span>            :         rb_entry((node), struct sched_dl_entity, rb_node)</a>
@@ -2800,18 +2800,18 @@
 <a name="2738"><span class="lineNum">    2738 </span><span class="lineNoCov">          0 :         return ret;</span></a>
 <a name="2739"><span class="lineNum">    2739 </span>            : }</a>
 <a name="2740"><span class="lineNum">    2740 </span>            : </a>
-<a name="2741"><span class="lineNum">    2741 </span><span class="lineCov">          2 : static void init_dl_rq_bw_ratio(struct dl_rq *dl_rq)</span></a>
+<a name="2741"><span class="lineNum">    2741 </span><span class="lineCov">          1 : static void init_dl_rq_bw_ratio(struct dl_rq *dl_rq)</span></a>
 <a name="2742"><span class="lineNum">    2742 </span>            : {</a>
-<a name="2743"><span class="lineNum">    2743 </span><span class="lineCov">          2 :         if (global_rt_runtime() == RUNTIME_INF) {</span></a>
+<a name="2743"><span class="lineNum">    2743 </span><span class="lineCov">          1 :         if (global_rt_runtime() == RUNTIME_INF) {</span></a>
 <a name="2744"><span class="lineNum">    2744 </span><span class="lineNoCov">          0 :                 dl_rq-&gt;bw_ratio = 1 &lt;&lt; RATIO_SHIFT;</span></a>
 <a name="2745"><span class="lineNum">    2745 </span><span class="lineNoCov">          0 :                 dl_rq-&gt;extra_bw = 1 &lt;&lt; BW_SHIFT;</span></a>
 <a name="2746"><span class="lineNum">    2746 </span>            :         } else {</a>
-<a name="2747"><span class="lineNum">    2747 </span><span class="lineCov">          4 :                 dl_rq-&gt;bw_ratio = to_ratio(global_rt_runtime(),</span></a>
-<a name="2748"><span class="lineNum">    2748 </span><span class="lineCov">          2 :                           global_rt_period()) &gt;&gt; (BW_SHIFT - RATIO_SHIFT);</span></a>
-<a name="2749"><span class="lineNum">    2749 </span><span class="lineCov">          2 :                 dl_rq-&gt;extra_bw = to_ratio(global_rt_period(),</span></a>
+<a name="2747"><span class="lineNum">    2747 </span><span class="lineCov">          2 :                 dl_rq-&gt;bw_ratio = to_ratio(global_rt_runtime(),</span></a>
+<a name="2748"><span class="lineNum">    2748 </span><span class="lineCov">          1 :                           global_rt_period()) &gt;&gt; (BW_SHIFT - RATIO_SHIFT);</span></a>
+<a name="2749"><span class="lineNum">    2749 </span><span class="lineCov">          1 :                 dl_rq-&gt;extra_bw = to_ratio(global_rt_period(),</span></a>
 <a name="2750"><span class="lineNum">    2750 </span>            :                                                     global_rt_runtime());</a>
 <a name="2751"><span class="lineNum">    2751 </span>            :         }</a>
-<a name="2752"><span class="lineNum">    2752 </span><span class="lineCov">          2 : }</span></a>
+<a name="2752"><span class="lineNum">    2752 </span><span class="lineCov">          1 : }</span></a>
 <a name="2753"><span class="lineNum">    2753 </span>            : </a>
 <a name="2754"><span class="lineNum">    2754 </span><span class="lineNoCov">          0 : void sched_dl_do_global(void)</span></a>
 <a name="2755"><span class="lineNum">    2755 </span>            : {</a>
@@ -3007,26 +3007,26 @@
 <a name="2945"><span class="lineNum">    2945 </span>            : /*</a>
 <a name="2946"><span class="lineNum">    2946 </span>            :  * This function clears the sched_dl_entity static params.</a>
 <a name="2947"><span class="lineNum">    2947 </span>            :  */</a>
-<a name="2948"><span class="lineNum">    2948 </span><span class="lineCov">        158 : void __dl_clear_params(struct task_struct *p)</span></a>
+<a name="2948"><span class="lineNum">    2948 </span><span class="lineCov">        108 : void __dl_clear_params(struct task_struct *p)</span></a>
 <a name="2949"><span class="lineNum">    2949 </span>            : {</a>
-<a name="2950"><span class="lineNum">    2950 </span><span class="lineCov">        158 :         struct sched_dl_entity *dl_se = &amp;p-&gt;dl;</span></a>
+<a name="2950"><span class="lineNum">    2950 </span><span class="lineCov">        108 :         struct sched_dl_entity *dl_se = &amp;p-&gt;dl;</span></a>
 <a name="2951"><span class="lineNum">    2951 </span>            : </a>
-<a name="2952"><span class="lineNum">    2952 </span><span class="lineCov">        158 :         dl_se-&gt;dl_runtime            = 0;</span></a>
-<a name="2953"><span class="lineNum">    2953 </span><span class="lineCov">        158 :         dl_se-&gt;dl_deadline           = 0;</span></a>
-<a name="2954"><span class="lineNum">    2954 </span><span class="lineCov">        158 :         dl_se-&gt;dl_period             = 0;</span></a>
-<a name="2955"><span class="lineNum">    2955 </span><span class="lineCov">        158 :         dl_se-&gt;flags                 = 0;</span></a>
-<a name="2956"><span class="lineNum">    2956 </span><span class="lineCov">        158 :         dl_se-&gt;dl_bw                 = 0;</span></a>
-<a name="2957"><span class="lineNum">    2957 </span><span class="lineCov">        158 :         dl_se-&gt;dl_density            = 0;</span></a>
+<a name="2952"><span class="lineNum">    2952 </span><span class="lineCov">        108 :         dl_se-&gt;dl_runtime            = 0;</span></a>
+<a name="2953"><span class="lineNum">    2953 </span><span class="lineCov">        108 :         dl_se-&gt;dl_deadline           = 0;</span></a>
+<a name="2954"><span class="lineNum">    2954 </span><span class="lineCov">        108 :         dl_se-&gt;dl_period             = 0;</span></a>
+<a name="2955"><span class="lineNum">    2955 </span><span class="lineCov">        108 :         dl_se-&gt;flags                 = 0;</span></a>
+<a name="2956"><span class="lineNum">    2956 </span><span class="lineCov">        108 :         dl_se-&gt;dl_bw                 = 0;</span></a>
+<a name="2957"><span class="lineNum">    2957 </span><span class="lineCov">        108 :         dl_se-&gt;dl_density            = 0;</span></a>
 <a name="2958"><span class="lineNum">    2958 </span>            : </a>
-<a name="2959"><span class="lineNum">    2959 </span><span class="lineCov">        158 :         dl_se-&gt;dl_throttled          = 0;</span></a>
-<a name="2960"><span class="lineNum">    2960 </span><span class="lineCov">        158 :         dl_se-&gt;dl_yielded            = 0;</span></a>
-<a name="2961"><span class="lineNum">    2961 </span><span class="lineCov">        158 :         dl_se-&gt;dl_non_contending     = 0;</span></a>
-<a name="2962"><span class="lineNum">    2962 </span><span class="lineCov">        158 :         dl_se-&gt;dl_overrun            = 0;</span></a>
+<a name="2959"><span class="lineNum">    2959 </span><span class="lineCov">        108 :         dl_se-&gt;dl_throttled          = 0;</span></a>
+<a name="2960"><span class="lineNum">    2960 </span><span class="lineCov">        108 :         dl_se-&gt;dl_yielded            = 0;</span></a>
+<a name="2961"><span class="lineNum">    2961 </span><span class="lineCov">        108 :         dl_se-&gt;dl_non_contending     = 0;</span></a>
+<a name="2962"><span class="lineNum">    2962 </span><span class="lineCov">        108 :         dl_se-&gt;dl_overrun            = 0;</span></a>
 <a name="2963"><span class="lineNum">    2963 </span>            : </a>
 <a name="2964"><span class="lineNum">    2964 </span>            : #ifdef CONFIG_RT_MUTEXES</a>
-<a name="2965"><span class="lineNum">    2965 </span><span class="lineCov">        158 :         dl_se-&gt;pi_se                 = dl_se;</span></a>
+<a name="2965"><span class="lineNum">    2965 </span><span class="lineCov">        108 :         dl_se-&gt;pi_se                 = dl_se;</span></a>
 <a name="2966"><span class="lineNum">    2966 </span>            : #endif</a>
-<a name="2967"><span class="lineNum">    2967 </span><span class="lineCov">        158 : }</span></a>
+<a name="2967"><span class="lineNum">    2967 </span><span class="lineCov">        108 : }</span></a>
 <a name="2968"><span class="lineNum">    2968 </span>            : </a>
 <a name="2969"><span class="lineNum">    2969 </span><span class="lineNoCov">          0 : bool dl_param_changed(struct task_struct *p, const struct sched_attr *attr)</span></a>
 <a name="2970"><span class="lineNum">    2970 </span>            : {</a>

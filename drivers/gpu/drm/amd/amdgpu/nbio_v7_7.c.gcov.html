@@ -32,16 +32,16 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">79</td>
+            <td class="headerCovTableEntry">109</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntry">19</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -309,24 +309,102 @@
 <a name="247"><span class="lineNum">     247 </span>            : </a>
 <a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="249"><span class="lineNum">     249 </span>            : </a>
-<a name="250"><span class="lineNum">     250 </span>            : const struct amdgpu_nbio_funcs nbio_v7_7_funcs = {</a>
-<a name="251"><span class="lineNum">     251 </span>            :         .get_hdp_flush_req_offset = nbio_v7_7_get_hdp_flush_req_offset,</a>
-<a name="252"><span class="lineNum">     252 </span>            :         .get_hdp_flush_done_offset = nbio_v7_7_get_hdp_flush_done_offset,</a>
-<a name="253"><span class="lineNum">     253 </span>            :         .get_pcie_index_offset = nbio_v7_7_get_pcie_index_offset,</a>
-<a name="254"><span class="lineNum">     254 </span>            :         .get_pcie_data_offset = nbio_v7_7_get_pcie_data_offset,</a>
-<a name="255"><span class="lineNum">     255 </span>            :         .get_pcie_port_index_offset = nbio_v7_7_get_pcie_port_index_offset,</a>
-<a name="256"><span class="lineNum">     256 </span>            :         .get_pcie_port_data_offset = nbio_v7_7_get_pcie_port_data_offset,</a>
-<a name="257"><span class="lineNum">     257 </span>            :         .get_rev_id = nbio_v7_7_get_rev_id,</a>
-<a name="258"><span class="lineNum">     258 </span>            :         .mc_access_enable = nbio_v7_7_mc_access_enable,</a>
-<a name="259"><span class="lineNum">     259 </span>            :         .get_memsize = nbio_v7_7_get_memsize,</a>
-<a name="260"><span class="lineNum">     260 </span>            :         .sdma_doorbell_range = nbio_v7_7_sdma_doorbell_range,</a>
-<a name="261"><span class="lineNum">     261 </span>            :         .vcn_doorbell_range = nbio_v7_7_vcn_doorbell_range,</a>
-<a name="262"><span class="lineNum">     262 </span>            :         .enable_doorbell_aperture = nbio_v7_7_enable_doorbell_aperture,</a>
-<a name="263"><span class="lineNum">     263 </span>            :         .enable_doorbell_selfring_aperture = nbio_v7_7_enable_doorbell_selfring_aperture,</a>
-<a name="264"><span class="lineNum">     264 </span>            :         .ih_doorbell_range = nbio_v7_7_ih_doorbell_range,</a>
-<a name="265"><span class="lineNum">     265 </span>            :         .ih_control = nbio_v7_7_ih_control,</a>
-<a name="266"><span class="lineNum">     266 </span>            :         .init_registers = nbio_v7_7_init_registers,</a>
-<a name="267"><span class="lineNum">     267 </span>            : };</a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 : static void nbio_v7_7_update_medium_grain_clock_gating(struct amdgpu_device *adev,</span></a>
+<a name="251"><span class="lineNum">     251 </span>            :                                                        bool enable)</a>
+<a name="252"><span class="lineNum">     252 </span>            : {</a>
+<a name="253"><span class="lineNum">     253 </span>            :         uint32_t def, data;</a>
+<a name="254"><span class="lineNum">     254 </span>            : </a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineNoCov">          0 :         if (enable &amp;&amp; !(adev-&gt;cg_flags &amp; AMD_CG_SUPPORT_BIF_MGCG))</span></a>
+<a name="256"><span class="lineNum">     256 </span>            :                 return;</a>
+<a name="257"><span class="lineNum">     257 </span>            : </a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineNoCov">          0 :         def = data = RREG32_SOC15(NBIO, 0, regBIF0_CPM_CONTROL);</span></a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineNoCov">          0 :         if (enable) {</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineNoCov">          0 :                 data |= (BIF0_CPM_CONTROL__LCLK_DYN_GATE_ENABLE_MASK |</span></a>
+<a name="261"><span class="lineNum">     261 </span>            :                          BIF0_CPM_CONTROL__TXCLK_DYN_GATE_ENABLE_MASK |</a>
+<a name="262"><span class="lineNum">     262 </span>            :                          BIF0_CPM_CONTROL__TXCLK_LCNT_GATE_ENABLE_MASK |</a>
+<a name="263"><span class="lineNum">     263 </span>            :                          BIF0_CPM_CONTROL__TXCLK_REGS_GATE_ENABLE_MASK |</a>
+<a name="264"><span class="lineNum">     264 </span>            :                          BIF0_CPM_CONTROL__TXCLK_PRBS_GATE_ENABLE_MASK |</a>
+<a name="265"><span class="lineNum">     265 </span>            :                          BIF0_CPM_CONTROL__REFCLK_REGS_GATE_ENABLE_MASK);</a>
+<a name="266"><span class="lineNum">     266 </span>            :         } else {</a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 :                 data &amp;= ~(BIF0_CPM_CONTROL__LCLK_DYN_GATE_ENABLE_MASK |</span></a>
+<a name="268"><span class="lineNum">     268 </span>            :                           BIF0_CPM_CONTROL__TXCLK_DYN_GATE_ENABLE_MASK |</a>
+<a name="269"><span class="lineNum">     269 </span>            :                           BIF0_CPM_CONTROL__TXCLK_LCNT_GATE_ENABLE_MASK |</a>
+<a name="270"><span class="lineNum">     270 </span>            :                           BIF0_CPM_CONTROL__TXCLK_REGS_GATE_ENABLE_MASK |</a>
+<a name="271"><span class="lineNum">     271 </span>            :                           BIF0_CPM_CONTROL__TXCLK_PRBS_GATE_ENABLE_MASK |</a>
+<a name="272"><span class="lineNum">     272 </span>            :                           BIF0_CPM_CONTROL__REFCLK_REGS_GATE_ENABLE_MASK);</a>
+<a name="273"><span class="lineNum">     273 </span>            :         }</a>
+<a name="274"><span class="lineNum">     274 </span>            : </a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(NBIO, 0, regBIF0_CPM_CONTROL, data);</span></a>
+<a name="277"><span class="lineNum">     277 </span>            : }</a>
+<a name="278"><span class="lineNum">     278 </span>            : </a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineNoCov">          0 : static void nbio_v7_7_update_medium_grain_light_sleep(struct amdgpu_device *adev,</span></a>
+<a name="280"><span class="lineNum">     280 </span>            :                                                       bool enable)</a>
+<a name="281"><span class="lineNum">     281 </span>            : {</a>
+<a name="282"><span class="lineNum">     282 </span>            :         uint32_t def, data;</a>
+<a name="283"><span class="lineNum">     283 </span>            : </a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineNoCov">          0 :         if (enable &amp;&amp; !(adev-&gt;cg_flags &amp; AMD_CG_SUPPORT_BIF_LS))</span></a>
+<a name="285"><span class="lineNum">     285 </span>            :                 return;</a>
+<a name="286"><span class="lineNum">     286 </span>            : </a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :         def = data = RREG32_SOC15(NBIO, 0, regBIF0_PCIE_CNTL2);</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 :         if (enable)</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 :                 data |= BIF0_PCIE_CNTL2__SLV_MEM_LS_EN_MASK;</span></a>
+<a name="290"><span class="lineNum">     290 </span>            :         else</a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 :                 data &amp;= ~BIF0_PCIE_CNTL2__SLV_MEM_LS_EN_MASK;</span></a>
+<a name="292"><span class="lineNum">     292 </span>            : </a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(NBIO, 0, regBIF0_PCIE_CNTL2, data);</span></a>
+<a name="295"><span class="lineNum">     295 </span>            : </a>
+<a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 :         def = data = RREG32_SOC15(NBIO, 0, regBIF0_PCIE_TX_POWER_CTRL_1);</span></a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineNoCov">          0 :         if (enable) {</span></a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineNoCov">          0 :                 data |= (BIF0_PCIE_TX_POWER_CTRL_1__MST_MEM_LS_EN_MASK |</span></a>
+<a name="299"><span class="lineNum">     299 </span>            :                         BIF0_PCIE_TX_POWER_CTRL_1__REPLAY_MEM_LS_EN_MASK);</a>
+<a name="300"><span class="lineNum">     300 </span>            :         } else {</a>
+<a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 :                 data &amp;= ~(BIF0_PCIE_TX_POWER_CTRL_1__MST_MEM_LS_EN_MASK |</span></a>
+<a name="302"><span class="lineNum">     302 </span>            :                         BIF0_PCIE_TX_POWER_CTRL_1__REPLAY_MEM_LS_EN_MASK);</a>
+<a name="303"><span class="lineNum">     303 </span>            :         }</a>
+<a name="304"><span class="lineNum">     304 </span>            : </a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(NBIO, 0, regBIF0_PCIE_TX_POWER_CTRL_1, data);</span></a>
+<a name="307"><span class="lineNum">     307 </span>            : }</a>
+<a name="308"><span class="lineNum">     308 </span>            : </a>
+<a name="309"><span class="lineNum">     309 </span><span class="lineNoCov">          0 : static void nbio_v7_7_get_clockgating_state(struct amdgpu_device *adev,</span></a>
+<a name="310"><span class="lineNum">     310 </span>            :                                             u64 *flags)</a>
+<a name="311"><span class="lineNum">     311 </span>            : {</a>
+<a name="312"><span class="lineNum">     312 </span>            :         uint32_t data;</a>
+<a name="313"><span class="lineNum">     313 </span>            : </a>
+<a name="314"><span class="lineNum">     314 </span>            :         /* AMD_CG_SUPPORT_BIF_MGCG */</a>
+<a name="315"><span class="lineNum">     315 </span><span class="lineNoCov">          0 :         data = RREG32_SOC15(NBIO, 0, regBIF0_CPM_CONTROL);</span></a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineNoCov">          0 :         if (data &amp; BIF0_CPM_CONTROL__LCLK_DYN_GATE_ENABLE_MASK)</span></a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineNoCov">          0 :                 *flags |= AMD_CG_SUPPORT_BIF_MGCG;</span></a>
+<a name="318"><span class="lineNum">     318 </span>            : </a>
+<a name="319"><span class="lineNum">     319 </span>            :         /* AMD_CG_SUPPORT_BIF_LS */</a>
+<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 :         data = RREG32_SOC15(NBIO, 0, regBIF0_PCIE_CNTL2);</span></a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineNoCov">          0 :         if (data &amp; BIF0_PCIE_CNTL2__SLV_MEM_LS_EN_MASK)</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 :                 *flags |= AMD_CG_SUPPORT_BIF_LS;</span></a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="324"><span class="lineNum">     324 </span>            : </a>
+<a name="325"><span class="lineNum">     325 </span>            : const struct amdgpu_nbio_funcs nbio_v7_7_funcs = {</a>
+<a name="326"><span class="lineNum">     326 </span>            :         .get_hdp_flush_req_offset = nbio_v7_7_get_hdp_flush_req_offset,</a>
+<a name="327"><span class="lineNum">     327 </span>            :         .get_hdp_flush_done_offset = nbio_v7_7_get_hdp_flush_done_offset,</a>
+<a name="328"><span class="lineNum">     328 </span>            :         .get_pcie_index_offset = nbio_v7_7_get_pcie_index_offset,</a>
+<a name="329"><span class="lineNum">     329 </span>            :         .get_pcie_data_offset = nbio_v7_7_get_pcie_data_offset,</a>
+<a name="330"><span class="lineNum">     330 </span>            :         .get_pcie_port_index_offset = nbio_v7_7_get_pcie_port_index_offset,</a>
+<a name="331"><span class="lineNum">     331 </span>            :         .get_pcie_port_data_offset = nbio_v7_7_get_pcie_port_data_offset,</a>
+<a name="332"><span class="lineNum">     332 </span>            :         .get_rev_id = nbio_v7_7_get_rev_id,</a>
+<a name="333"><span class="lineNum">     333 </span>            :         .mc_access_enable = nbio_v7_7_mc_access_enable,</a>
+<a name="334"><span class="lineNum">     334 </span>            :         .get_memsize = nbio_v7_7_get_memsize,</a>
+<a name="335"><span class="lineNum">     335 </span>            :         .sdma_doorbell_range = nbio_v7_7_sdma_doorbell_range,</a>
+<a name="336"><span class="lineNum">     336 </span>            :         .vcn_doorbell_range = nbio_v7_7_vcn_doorbell_range,</a>
+<a name="337"><span class="lineNum">     337 </span>            :         .enable_doorbell_aperture = nbio_v7_7_enable_doorbell_aperture,</a>
+<a name="338"><span class="lineNum">     338 </span>            :         .enable_doorbell_selfring_aperture = nbio_v7_7_enable_doorbell_selfring_aperture,</a>
+<a name="339"><span class="lineNum">     339 </span>            :         .ih_doorbell_range = nbio_v7_7_ih_doorbell_range,</a>
+<a name="340"><span class="lineNum">     340 </span>            :         .update_medium_grain_clock_gating = nbio_v7_7_update_medium_grain_clock_gating,</a>
+<a name="341"><span class="lineNum">     341 </span>            :         .update_medium_grain_light_sleep = nbio_v7_7_update_medium_grain_light_sleep,</a>
+<a name="342"><span class="lineNum">     342 </span>            :         .get_clockgating_state = nbio_v7_7_get_clockgating_state,</a>
+<a name="343"><span class="lineNum">     343 </span>            :         .ih_control = nbio_v7_7_ih_control,</a>
+<a name="344"><span class="lineNum">     344 </span>            :         .init_registers = nbio_v7_7_init_registers,</a>
+<a name="345"><span class="lineNum">     345 </span>            : };</a>
 </pre>
       </td>
     </tr>

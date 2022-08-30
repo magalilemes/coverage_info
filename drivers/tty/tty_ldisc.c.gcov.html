@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -117,19 +117,19 @@
 <a name="55"><span class="lineNum">      55 </span>            :  *</a>
 <a name="56"><span class="lineNum">      56 </span>            :  * Locking: takes %tty_ldiscs_lock to guard against ldisc races</a>
 <a name="57"><span class="lineNum">      57 </span>            :  */</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          6 : int tty_register_ldisc(struct tty_ldisc_ops *new_ldisc)</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          3 : int tty_register_ldisc(struct tty_ldisc_ops *new_ldisc)</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : {</a>
 <a name="60"><span class="lineNum">      60 </span>            :         unsigned long flags;</a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          6 :         int ret = 0;</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          3 :         int ret = 0;</span></a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          6 :         if (new_ldisc-&gt;num &lt; N_TTY || new_ldisc-&gt;num &gt;= NR_LDISCS)</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          3 :         if (new_ldisc-&gt;num &lt; N_TTY || new_ldisc-&gt;num &gt;= NR_LDISCS)</span></a>
 <a name="64"><span class="lineNum">      64 </span>            :                 return -EINVAL;</a>
 <a name="65"><span class="lineNum">      65 </span>            : </a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          6 :         raw_spin_lock_irqsave(&amp;tty_ldiscs_lock, flags);</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          6 :         tty_ldiscs[new_ldisc-&gt;num] = new_ldisc;</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         12 :         raw_spin_unlock_irqrestore(&amp;tty_ldiscs_lock, flags);</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          3 :         raw_spin_lock_irqsave(&amp;tty_ldiscs_lock, flags);</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          3 :         tty_ldiscs[new_ldisc-&gt;num] = new_ldisc;</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          6 :         raw_spin_unlock_irqrestore(&amp;tty_ldiscs_lock, flags);</span></a>
 <a name="69"><span class="lineNum">      69 </span>            : </a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          6 :         return ret;</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          3 :         return ret;</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : }</a>
 <a name="72"><span class="lineNum">      72 </span>            : EXPORT_SYMBOL(tty_register_ldisc);</a>
 <a name="73"><span class="lineNum">      73 </span>            : </a>
@@ -911,10 +911,10 @@
 <a name="849"><span class="lineNum">     849 </span>            :         { }</a>
 <a name="850"><span class="lineNum">     850 </span>            : };</a>
 <a name="851"><span class="lineNum">     851 </span>            : </a>
-<a name="852"><span class="lineNum">     852 </span><span class="lineCov">          2 : void tty_sysctl_init(void)</span></a>
+<a name="852"><span class="lineNum">     852 </span><span class="lineCov">          1 : void tty_sysctl_init(void)</span></a>
 <a name="853"><span class="lineNum">     853 </span>            : {</a>
-<a name="854"><span class="lineNum">     854 </span><span class="lineCov">          2 :         register_sysctl_table(tty_root_table);</span></a>
-<a name="855"><span class="lineNum">     855 </span><span class="lineCov">          2 : }</span></a>
+<a name="854"><span class="lineNum">     854 </span><span class="lineCov">          1 :         register_sysctl_table(tty_root_table);</span></a>
+<a name="855"><span class="lineNum">     855 </span><span class="lineCov">          1 : }</span></a>
 </pre>
       </td>
     </tr>

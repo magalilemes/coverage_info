@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -121,13 +121,13 @@
 <a name="59"><span class="lineNum">      59 </span>            : #endif</a>
 <a name="60"><span class="lineNum">      60 </span>            : static inline u32 __hash_32_generic(u32 val)</a>
 <a name="61"><span class="lineNum">      61 </span>            : {</a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">      33158 :         return val * GOLDEN_RATIO_32;</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          3 :         return val * GOLDEN_RATIO_32;</span></a>
 <a name="63"><span class="lineNum">      63 </span>            : }</a>
 <a name="64"><span class="lineNum">      64 </span>            : </a>
 <a name="65"><span class="lineNum">      65 </span>            : static inline u32 hash_32(u32 val, unsigned int bits)</a>
 <a name="66"><span class="lineNum">      66 </span>            : {</a>
 <a name="67"><span class="lineNum">      67 </span>            :         /* High bits are more random, so use them. */</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">    1060872 :         return __hash_32(val) &gt;&gt; (32 - bits);</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          4 :         return __hash_32(val) &gt;&gt; (32 - bits);</span></a>
 <a name="69"><span class="lineNum">      69 </span>            : }</a>
 <a name="70"><span class="lineNum">      70 </span>            : </a>
 <a name="71"><span class="lineNum">      71 </span>            : #ifndef HAVE_ARCH_HASH_64</a>
@@ -137,7 +137,7 @@
 <a name="75"><span class="lineNum">      75 </span>            : {</a>
 <a name="76"><span class="lineNum">      76 </span>            : #if BITS_PER_LONG == 64</a>
 <a name="77"><span class="lineNum">      77 </span>            :         /* 64x64-bit multiply is efficient on all 64-bit processors */</a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineCov">    1088884 :         return val * GOLDEN_RATIO_64 &gt;&gt; (64 - bits);</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">      14010 :         return val * GOLDEN_RATIO_64 &gt;&gt; (64 - bits);</span></a>
 <a name="79"><span class="lineNum">      79 </span>            : #else</a>
 <a name="80"><span class="lineNum">      80 </span>            :         /* Hash 64 bits using only 32x32-bit multiply. */</a>
 <a name="81"><span class="lineNum">      81 </span>            :         return hash_32((u32)val ^ __hash_32(val &gt;&gt; 32), bits);</a>

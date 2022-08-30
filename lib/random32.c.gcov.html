@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -422,17 +422,17 @@
 <a name="360"><span class="lineNum">     360 </span>            :  *   Second, since the last combining operation was xor, continue the</a>
 <a name="361"><span class="lineNum">     361 </span>            :  *   pattern of alternating xor/add for a tiny bit of extra non-linearity.</a>
 <a name="362"><span class="lineNum">     362 </span>            :  */</a>
-<a name="363"><span class="lineNum">     363 </span><span class="lineCov">         10 : static inline u32 siprand_u32(struct siprand_state *s)</span></a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineCov">          5 : static inline u32 siprand_u32(struct siprand_state *s)</span></a>
 <a name="364"><span class="lineNum">     364 </span>            : {</a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineCov">         10 :         unsigned long v0 = s-&gt;v0, v1 = s-&gt;v1, v2 = s-&gt;v2, v3 = s-&gt;v3;</span></a>
-<a name="366"><span class="lineNum">     366 </span><span class="lineCov">         10 :         unsigned long n = raw_cpu_read(net_rand_noise);</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineCov">          5 :         unsigned long v0 = s-&gt;v0, v1 = s-&gt;v1, v2 = s-&gt;v2, v3 = s-&gt;v3;</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineCov">          5 :         unsigned long n = raw_cpu_read(net_rand_noise);</span></a>
 <a name="367"><span class="lineNum">     367 </span>            : </a>
-<a name="368"><span class="lineNum">     368 </span><span class="lineCov">         10 :         v3 ^= n;</span></a>
-<a name="369"><span class="lineNum">     369 </span><span class="lineCov">         70 :         PRND_SIPROUND(v0, v1, v2, v3);</span></a>
-<a name="370"><span class="lineNum">     370 </span><span class="lineCov">         70 :         PRND_SIPROUND(v0, v1, v2, v3);</span></a>
-<a name="371"><span class="lineNum">     371 </span><span class="lineCov">         10 :         v0 ^= n;</span></a>
-<a name="372"><span class="lineNum">     372 </span><span class="lineCov">         10 :         s-&gt;v0 = v0;  s-&gt;v1 = v1;  s-&gt;v2 = v2;  s-&gt;v3 = v3;</span></a>
-<a name="373"><span class="lineNum">     373 </span><span class="lineCov">         10 :         return v1 + v3;</span></a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineCov">          5 :         v3 ^= n;</span></a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineCov">         35 :         PRND_SIPROUND(v0, v1, v2, v3);</span></a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineCov">         35 :         PRND_SIPROUND(v0, v1, v2, v3);</span></a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineCov">          5 :         v0 ^= n;</span></a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineCov">          5 :         s-&gt;v0 = v0;  s-&gt;v1 = v1;  s-&gt;v2 = v2;  s-&gt;v3 = v3;</span></a>
+<a name="373"><span class="lineNum">     373 </span><span class="lineCov">          5 :         return v1 + v3;</span></a>
 <a name="374"><span class="lineNum">     374 </span>            : }</a>
 <a name="375"><span class="lineNum">     375 </span>            : </a>
 <a name="376"><span class="lineNum">     376 </span>            : </a>
@@ -443,13 +443,13 @@
 <a name="381"><span class="lineNum">     381 </span>            :  *      algorithm suitable for simulation. This algorithm is NOT</a>
 <a name="382"><span class="lineNum">     382 </span>            :  *      considered safe for cryptographic use.</a>
 <a name="383"><span class="lineNum">     383 </span>            :  */</a>
-<a name="384"><span class="lineNum">     384 </span><span class="lineCov">          2 : u32 prandom_u32(void)</span></a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineCov">          1 : u32 prandom_u32(void)</span></a>
 <a name="385"><span class="lineNum">     385 </span>            : {</a>
-<a name="386"><span class="lineNum">     386 </span><span class="lineCov">          2 :         struct siprand_state *state = get_cpu_ptr(&amp;net_rand_state);</span></a>
-<a name="387"><span class="lineNum">     387 </span><span class="lineCov">          2 :         u32 res = siprand_u32(state);</span></a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineCov">          1 :         struct siprand_state *state = get_cpu_ptr(&amp;net_rand_state);</span></a>
+<a name="387"><span class="lineNum">     387 </span><span class="lineCov">          1 :         u32 res = siprand_u32(state);</span></a>
 <a name="388"><span class="lineNum">     388 </span>            : </a>
-<a name="389"><span class="lineNum">     389 </span><span class="lineCov">          2 :         put_cpu_ptr(&amp;net_rand_state);</span></a>
-<a name="390"><span class="lineNum">     390 </span><span class="lineCov">          2 :         return res;</span></a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineCov">          1 :         put_cpu_ptr(&amp;net_rand_state);</span></a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineCov">          1 :         return res;</span></a>
 <a name="391"><span class="lineNum">     391 </span>            : }</a>
 <a name="392"><span class="lineNum">     392 </span>            : EXPORT_SYMBOL(prandom_u32);</a>
 <a name="393"><span class="lineNum">     393 </span>            : </a>
@@ -458,18 +458,18 @@
 <a name="396"><span class="lineNum">     396 </span>            :  *      @buf: where to copy the pseudo-random bytes to</a>
 <a name="397"><span class="lineNum">     397 </span>            :  *      @bytes: the requested number of bytes</a>
 <a name="398"><span class="lineNum">     398 </span>            :  */</a>
-<a name="399"><span class="lineNum">     399 </span><span class="lineCov">          2 : void prandom_bytes(void *buf, size_t bytes)</span></a>
+<a name="399"><span class="lineNum">     399 </span><span class="lineCov">          1 : void prandom_bytes(void *buf, size_t bytes)</span></a>
 <a name="400"><span class="lineNum">     400 </span>            : {</a>
-<a name="401"><span class="lineNum">     401 </span><span class="lineCov">          2 :         struct siprand_state *state = get_cpu_ptr(&amp;net_rand_state);</span></a>
-<a name="402"><span class="lineNum">     402 </span><span class="lineCov">          2 :         u8 *ptr = buf;</span></a>
+<a name="401"><span class="lineNum">     401 </span><span class="lineCov">          1 :         struct siprand_state *state = get_cpu_ptr(&amp;net_rand_state);</span></a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineCov">          1 :         u8 *ptr = buf;</span></a>
 <a name="403"><span class="lineNum">     403 </span>            : </a>
-<a name="404"><span class="lineNum">     404 </span><span class="lineCov">         12 :         while (bytes &gt;= sizeof(u32)) {</span></a>
-<a name="405"><span class="lineNum">     405 </span><span class="lineCov">          8 :                 put_unaligned(siprand_u32(state), (u32 *)ptr);</span></a>
-<a name="406"><span class="lineNum">     406 </span><span class="lineCov">          8 :                 ptr += sizeof(u32);</span></a>
-<a name="407"><span class="lineNum">     407 </span><span class="lineCov">          8 :                 bytes -= sizeof(u32);</span></a>
+<a name="404"><span class="lineNum">     404 </span><span class="lineCov">          6 :         while (bytes &gt;= sizeof(u32)) {</span></a>
+<a name="405"><span class="lineNum">     405 </span><span class="lineCov">          4 :                 put_unaligned(siprand_u32(state), (u32 *)ptr);</span></a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineCov">          4 :                 ptr += sizeof(u32);</span></a>
+<a name="407"><span class="lineNum">     407 </span><span class="lineCov">          4 :                 bytes -= sizeof(u32);</span></a>
 <a name="408"><span class="lineNum">     408 </span>            :         }</a>
 <a name="409"><span class="lineNum">     409 </span>            : </a>
-<a name="410"><span class="lineNum">     410 </span><span class="lineCov">          2 :         if (bytes &gt; 0) {</span></a>
+<a name="410"><span class="lineNum">     410 </span><span class="lineCov">          1 :         if (bytes &gt; 0) {</span></a>
 <a name="411"><span class="lineNum">     411 </span><span class="lineNoCov">          0 :                 u32 rem = siprand_u32(state);</span></a>
 <a name="412"><span class="lineNum">     412 </span>            : </a>
 <a name="413"><span class="lineNum">     413 </span>            :                 do {</a>
@@ -477,8 +477,8 @@
 <a name="415"><span class="lineNum">     415 </span><span class="lineNoCov">          0 :                         rem &gt;&gt;= BITS_PER_BYTE;</span></a>
 <a name="416"><span class="lineNum">     416 </span><span class="lineNoCov">          0 :                 } while (--bytes &gt; 0);</span></a>
 <a name="417"><span class="lineNum">     417 </span>            :         }</a>
-<a name="418"><span class="lineNum">     418 </span><span class="lineCov">          2 :         put_cpu_ptr(&amp;net_rand_state);</span></a>
-<a name="419"><span class="lineNum">     419 </span><span class="lineCov">          2 : }</span></a>
+<a name="418"><span class="lineNum">     418 </span><span class="lineCov">          1 :         put_cpu_ptr(&amp;net_rand_state);</span></a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineCov">          1 : }</span></a>
 <a name="420"><span class="lineNum">     420 </span>            : EXPORT_SYMBOL(prandom_bytes);</a>
 <a name="421"><span class="lineNum">     421 </span>            : </a>
 <a name="422"><span class="lineNum">     422 </span>            : /**</a>
@@ -520,32 +520,32 @@
 <a name="458"><span class="lineNum">     458 </span>            :  *      Generate some initially weak seeding values to allow</a>
 <a name="459"><span class="lineNum">     459 </span>            :  *      the prandom_u32() engine to be started.</a>
 <a name="460"><span class="lineNum">     460 </span>            :  */</a>
-<a name="461"><span class="lineNum">     461 </span><span class="lineCov">          2 : static int __init prandom_init_early(void)</span></a>
+<a name="461"><span class="lineNum">     461 </span><span class="lineCov">          1 : static int __init prandom_init_early(void)</span></a>
 <a name="462"><span class="lineNum">     462 </span>            : {</a>
 <a name="463"><span class="lineNum">     463 </span>            :         int i;</a>
 <a name="464"><span class="lineNum">     464 </span>            :         unsigned long v0, v1, v2, v3;</a>
 <a name="465"><span class="lineNum">     465 </span>            : </a>
-<a name="466"><span class="lineNum">     466 </span><span class="lineCov">          2 :         if (!arch_get_random_long(&amp;v0))</span></a>
-<a name="467"><span class="lineNum">     467 </span><span class="lineCov">          2 :                 v0 = jiffies;</span></a>
-<a name="468"><span class="lineNum">     468 </span><span class="lineCov">          2 :         if (!arch_get_random_long(&amp;v1))</span></a>
-<a name="469"><span class="lineNum">     469 </span><span class="lineCov">          2 :                 v1 = random_get_entropy();</span></a>
-<a name="470"><span class="lineNum">     470 </span><span class="lineCov">          2 :         v2 = v0 ^ PRND_K0;</span></a>
-<a name="471"><span class="lineNum">     471 </span><span class="lineCov">          2 :         v3 = v1 ^ PRND_K1;</span></a>
+<a name="466"><span class="lineNum">     466 </span><span class="lineCov">          1 :         if (!arch_get_random_long(&amp;v0))</span></a>
+<a name="467"><span class="lineNum">     467 </span><span class="lineCov">          1 :                 v0 = jiffies;</span></a>
+<a name="468"><span class="lineNum">     468 </span><span class="lineCov">          1 :         if (!arch_get_random_long(&amp;v1))</span></a>
+<a name="469"><span class="lineNum">     469 </span><span class="lineCov">          1 :                 v1 = random_get_entropy();</span></a>
+<a name="470"><span class="lineNum">     470 </span><span class="lineCov">          1 :         v2 = v0 ^ PRND_K0;</span></a>
+<a name="471"><span class="lineNum">     471 </span><span class="lineCov">          1 :         v3 = v1 ^ PRND_K1;</span></a>
 <a name="472"><span class="lineNum">     472 </span>            : </a>
-<a name="473"><span class="lineNum">     473 </span><span class="lineCov">          4 :         for_each_possible_cpu(i) {</span></a>
+<a name="473"><span class="lineNum">     473 </span><span class="lineCov">          2 :         for_each_possible_cpu(i) {</span></a>
 <a name="474"><span class="lineNum">     474 </span>            :                 struct siprand_state *state;</a>
 <a name="475"><span class="lineNum">     475 </span>            : </a>
-<a name="476"><span class="lineNum">     476 </span><span class="lineCov">          2 :                 v3 ^= i;</span></a>
-<a name="477"><span class="lineNum">     477 </span><span class="lineCov">         14 :                 PRND_SIPROUND(v0, v1, v2, v3);</span></a>
-<a name="478"><span class="lineNum">     478 </span><span class="lineCov">         14 :                 PRND_SIPROUND(v0, v1, v2, v3);</span></a>
-<a name="479"><span class="lineNum">     479 </span><span class="lineCov">          2 :                 v0 ^= i;</span></a>
+<a name="476"><span class="lineNum">     476 </span><span class="lineCov">          1 :                 v3 ^= i;</span></a>
+<a name="477"><span class="lineNum">     477 </span><span class="lineCov">          7 :                 PRND_SIPROUND(v0, v1, v2, v3);</span></a>
+<a name="478"><span class="lineNum">     478 </span><span class="lineCov">          7 :                 PRND_SIPROUND(v0, v1, v2, v3);</span></a>
+<a name="479"><span class="lineNum">     479 </span><span class="lineCov">          1 :                 v0 ^= i;</span></a>
 <a name="480"><span class="lineNum">     480 </span>            : </a>
-<a name="481"><span class="lineNum">     481 </span><span class="lineCov">          2 :                 state = per_cpu_ptr(&amp;net_rand_state, i);</span></a>
-<a name="482"><span class="lineNum">     482 </span><span class="lineCov">          2 :                 state-&gt;v0 = v0;  state-&gt;v1 = v1;</span></a>
-<a name="483"><span class="lineNum">     483 </span><span class="lineCov">          2 :                 state-&gt;v2 = v2;  state-&gt;v3 = v3;</span></a>
+<a name="481"><span class="lineNum">     481 </span><span class="lineCov">          1 :                 state = per_cpu_ptr(&amp;net_rand_state, i);</span></a>
+<a name="482"><span class="lineNum">     482 </span><span class="lineCov">          1 :                 state-&gt;v0 = v0;  state-&gt;v1 = v1;</span></a>
+<a name="483"><span class="lineNum">     483 </span><span class="lineCov">          1 :                 state-&gt;v2 = v2;  state-&gt;v3 = v3;</span></a>
 <a name="484"><span class="lineNum">     484 </span>            :         }</a>
 <a name="485"><span class="lineNum">     485 </span>            : </a>
-<a name="486"><span class="lineNum">     486 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="486"><span class="lineNum">     486 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="487"><span class="lineNum">     487 </span>            : }</a>
 <a name="488"><span class="lineNum">     488 </span>            : core_initcall(prandom_init_early);</a>
 <a name="489"><span class="lineNum">     489 </span>            : </a>
@@ -679,18 +679,18 @@
 <a name="617"><span class="lineNum">     617 </span>            :  * Start periodic full reseeding as soon as strong</a>
 <a name="618"><span class="lineNum">     618 </span>            :  * random numbers are available.</a>
 <a name="619"><span class="lineNum">     619 </span>            :  */</a>
-<a name="620"><span class="lineNum">     620 </span><span class="lineCov">          2 : static int __init prandom_init_late(void)</span></a>
+<a name="620"><span class="lineNum">     620 </span><span class="lineCov">          1 : static int __init prandom_init_late(void)</span></a>
 <a name="621"><span class="lineNum">     621 </span>            : {</a>
 <a name="622"><span class="lineNum">     622 </span>            :         static struct notifier_block random_ready = {</a>
 <a name="623"><span class="lineNum">     623 </span>            :                 .notifier_call = prandom_timer_start</a>
 <a name="624"><span class="lineNum">     624 </span>            :         };</a>
-<a name="625"><span class="lineNum">     625 </span><span class="lineCov">          2 :         int ret = register_random_ready_notifier(&amp;random_ready);</span></a>
+<a name="625"><span class="lineNum">     625 </span><span class="lineCov">          1 :         int ret = register_random_ready_notifier(&amp;random_ready);</span></a>
 <a name="626"><span class="lineNum">     626 </span>            : </a>
-<a name="627"><span class="lineNum">     627 </span><span class="lineCov">          2 :         if (ret == -EALREADY) {</span></a>
+<a name="627"><span class="lineNum">     627 </span><span class="lineCov">          1 :         if (ret == -EALREADY) {</span></a>
 <a name="628"><span class="lineNum">     628 </span><span class="lineNoCov">          0 :                 prandom_timer_start(&amp;random_ready, 0, NULL);</span></a>
 <a name="629"><span class="lineNum">     629 </span><span class="lineNoCov">          0 :                 ret = 0;</span></a>
 <a name="630"><span class="lineNum">     630 </span>            :         }</a>
-<a name="631"><span class="lineNum">     631 </span><span class="lineCov">          2 :         return ret;</span></a>
+<a name="631"><span class="lineNum">     631 </span><span class="lineCov">          1 :         return ret;</span></a>
 <a name="632"><span class="lineNum">     632 </span>            : }</a>
 <a name="633"><span class="lineNum">     633 </span>            : late_initcall(prandom_init_late);</a>
 </pre>

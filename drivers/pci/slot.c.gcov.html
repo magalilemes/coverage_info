@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -426,14 +426,14 @@
 <a name="364"><span class="lineNum">     364 </span>            : EXPORT_SYMBOL_GPL(pci_hp_remove_module_link);</a>
 <a name="365"><span class="lineNum">     365 </span>            : #endif</a>
 <a name="366"><span class="lineNum">     366 </span>            : </a>
-<a name="367"><span class="lineNum">     367 </span><span class="lineCov">          2 : static int pci_slot_init(void)</span></a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineCov">          1 : static int pci_slot_init(void)</span></a>
 <a name="368"><span class="lineNum">     368 </span>            : {</a>
 <a name="369"><span class="lineNum">     369 </span>            :         struct kset *pci_bus_kset;</a>
 <a name="370"><span class="lineNum">     370 </span>            : </a>
-<a name="371"><span class="lineNum">     371 </span><span class="lineCov">          2 :         pci_bus_kset = bus_get_kset(&amp;pci_bus_type);</span></a>
-<a name="372"><span class="lineNum">     372 </span><span class="lineCov">          2 :         pci_slots_kset = kset_create_and_add(&quot;slots&quot;, NULL,</span></a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineCov">          1 :         pci_bus_kset = bus_get_kset(&amp;pci_bus_type);</span></a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineCov">          1 :         pci_slots_kset = kset_create_and_add(&quot;slots&quot;, NULL,</span></a>
 <a name="373"><span class="lineNum">     373 </span>            :                                                 &amp;pci_bus_kset-&gt;kobj);</a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineCov">          2 :         if (!pci_slots_kset) {</span></a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineCov">          1 :         if (!pci_slots_kset) {</span></a>
 <a name="375"><span class="lineNum">     375 </span><span class="lineNoCov">          0 :                 pr_err(&quot;PCI: Slot initialization failure\n&quot;);</span></a>
 <a name="376"><span class="lineNum">     376 </span><span class="lineNoCov">          0 :                 return -ENOMEM;</span></a>
 <a name="377"><span class="lineNum">     377 </span>            :         }</a>

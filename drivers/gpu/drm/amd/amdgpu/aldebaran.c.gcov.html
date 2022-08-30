@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">168</td>
+            <td class="headerCovTableEntry">162</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -210,299 +210,282 @@
 <a name="148"><span class="lineNum">     148 </span>            :                               struct amdgpu_reset_context *reset_context)</a>
 <a name="149"><span class="lineNum">     149 </span>            : {</a>
 <a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)reset_ctl-&gt;handle;</span></a>
-<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 :         struct amdgpu_device *tmp_adev = NULL;</span></a>
-<a name="152"><span class="lineNum">     152 </span>            :         struct list_head reset_device_list;</a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 :         struct list_head *reset_device_list = reset_context-&gt;reset_device_list;</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineNoCov">          0 :         struct amdgpu_device *tmp_adev = NULL;</span></a>
 <a name="153"><span class="lineNum">     153 </span><span class="lineNoCov">          0 :         int r = 0;</span></a>
 <a name="154"><span class="lineNum">     154 </span>            : </a>
 <a name="155"><span class="lineNum">     155 </span>            :         dev_dbg(adev-&gt;dev, &quot;aldebaran perform hw reset\n&quot;);</a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 :         if (adev-&gt;ip_versions[MP1_HWIP][0] == IP_VERSION(13, 0, 2) &amp;&amp;</span></a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :             reset_context-&gt;hive == NULL) {</span></a>
-<a name="158"><span class="lineNum">     158 </span>            :                 /* Wrong context, return error */</a>
-<a name="159"><span class="lineNum">     159 </span>            :                 return -EINVAL;</a>
-<a name="160"><span class="lineNum">     160 </span>            :         }</a>
-<a name="161"><span class="lineNum">     161 </span>            : </a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineNoCov">          0 :         INIT_LIST_HEAD(&amp;reset_device_list);</span></a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineNoCov">          0 :         if (reset_context-&gt;hive) {</span></a>
-<a name="164"><span class="lineNum">     164 </span><span class="lineNoCov">          0 :                 list_for_each_entry (tmp_adev,</span></a>
-<a name="165"><span class="lineNum">     165 </span>            :                                      &amp;reset_context-&gt;hive-&gt;device_list,</a>
-<a name="166"><span class="lineNum">     166 </span>            :                                      gmc.xgmi.head)</a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 :                         list_add_tail(&amp;tmp_adev-&gt;reset_list,</span></a>
-<a name="168"><span class="lineNum">     168 </span>            :                                       &amp;reset_device_list);</a>
-<a name="169"><span class="lineNum">     169 </span>            :         } else {</a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 :                 list_add_tail(&amp;reset_context-&gt;reset_req_dev-&gt;reset_list,</span></a>
-<a name="171"><span class="lineNum">     171 </span>            :                               &amp;reset_device_list);</a>
-<a name="172"><span class="lineNum">     172 </span>            :         }</a>
-<a name="173"><span class="lineNum">     173 </span>            : </a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 :         list_for_each_entry (tmp_adev, &amp;reset_device_list, reset_list) {</span></a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineNoCov">          0 :                 mutex_lock(&amp;tmp_adev-&gt;reset_cntl-&gt;reset_lock);</span></a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineNoCov">          0 :                 tmp_adev-&gt;reset_cntl-&gt;active_reset = AMD_RESET_METHOD_MODE2;</span></a>
-<a name="177"><span class="lineNum">     177 </span>            :         }</a>
-<a name="178"><span class="lineNum">     178 </span>            :         /*</a>
-<a name="179"><span class="lineNum">     179 </span>            :          * Mode2 reset doesn't need any sync between nodes in XGMI hive, instead launch</a>
-<a name="180"><span class="lineNum">     180 </span>            :          * them together so that they can be completed asynchronously on multiple nodes</a>
-<a name="181"><span class="lineNum">     181 </span>            :          */</a>
-<a name="182"><span class="lineNum">     182 </span><span class="lineNoCov">          0 :         list_for_each_entry (tmp_adev, &amp;reset_device_list, reset_list) {</span></a>
-<a name="183"><span class="lineNum">     183 </span>            :                 /* For XGMI run all resets in parallel to speed up the process */</a>
-<a name="184"><span class="lineNum">     184 </span><span class="lineNoCov">          0 :                 if (tmp_adev-&gt;gmc.xgmi.num_physical_nodes &gt; 1) {</span></a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 :                         if (!queue_work(system_unbound_wq,</span></a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :                                         &amp;tmp_adev-&gt;reset_cntl-&gt;reset_work))</span></a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 :                                 r = -EALREADY;</span></a>
-<a name="188"><span class="lineNum">     188 </span>            :                 } else</a>
-<a name="189"><span class="lineNum">     189 </span><span class="lineNoCov">          0 :                         r = aldebaran_mode2_reset(tmp_adev);</span></a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :                 if (r) {</span></a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :                         dev_err(tmp_adev-&gt;dev,</span></a>
-<a name="192"><span class="lineNum">     192 </span>            :                                 &quot;ASIC reset failed with error, %d for drm dev, %s&quot;,</a>
-<a name="193"><span class="lineNum">     193 </span>            :                                 r, adev_to_drm(tmp_adev)-&gt;unique);</a>
-<a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 :                         break;</span></a>
-<a name="195"><span class="lineNum">     195 </span>            :                 }</a>
-<a name="196"><span class="lineNum">     196 </span>            :         }</a>
-<a name="197"><span class="lineNum">     197 </span>            : </a>
-<a name="198"><span class="lineNum">     198 </span>            :         /* For XGMI wait for all resets to complete before proceed */</a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :         if (!r) {</span></a>
-<a name="200"><span class="lineNum">     200 </span><span class="lineNoCov">          0 :                 list_for_each_entry (tmp_adev, &amp;reset_device_list, reset_list) {</span></a>
-<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 :                         if (tmp_adev-&gt;gmc.xgmi.num_physical_nodes &gt; 1) {</span></a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 :                                 flush_work(&amp;tmp_adev-&gt;reset_cntl-&gt;reset_work);</span></a>
-<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 :                                 r = tmp_adev-&gt;asic_reset_res;</span></a>
-<a name="204"><span class="lineNum">     204 </span><span class="lineNoCov">          0 :                                 if (r)</span></a>
-<a name="205"><span class="lineNum">     205 </span>            :                                         break;</a>
-<a name="206"><span class="lineNum">     206 </span>            :                         }</a>
-<a name="207"><span class="lineNum">     207 </span>            :                 }</a>
-<a name="208"><span class="lineNum">     208 </span>            :         }</a>
+<a name="156"><span class="lineNum">     156 </span>            : </a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :         if (reset_device_list == NULL)</span></a>
+<a name="158"><span class="lineNum">     158 </span>            :                 return -EINVAL;</a>
+<a name="159"><span class="lineNum">     159 </span>            : </a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineNoCov">          0 :         if (adev-&gt;ip_versions[MP1_HWIP][0] == IP_VERSION(13, 0, 2) &amp;&amp;</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineNoCov">          0 :             reset_context-&gt;hive == NULL) {</span></a>
+<a name="162"><span class="lineNum">     162 </span>            :                 /* Wrong context, return error */</a>
+<a name="163"><span class="lineNum">     163 </span>            :                 return -EINVAL;</a>
+<a name="164"><span class="lineNum">     164 </span>            :         }</a>
+<a name="165"><span class="lineNum">     165 </span>            : </a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 :         list_for_each_entry(tmp_adev, reset_device_list, reset_list) {</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 :                 mutex_lock(&amp;tmp_adev-&gt;reset_cntl-&gt;reset_lock);</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineNoCov">          0 :                 tmp_adev-&gt;reset_cntl-&gt;active_reset = AMD_RESET_METHOD_MODE2;</span></a>
+<a name="169"><span class="lineNum">     169 </span>            :         }</a>
+<a name="170"><span class="lineNum">     170 </span>            :         /*</a>
+<a name="171"><span class="lineNum">     171 </span>            :          * Mode2 reset doesn't need any sync between nodes in XGMI hive, instead launch</a>
+<a name="172"><span class="lineNum">     172 </span>            :          * them together so that they can be completed asynchronously on multiple nodes</a>
+<a name="173"><span class="lineNum">     173 </span>            :          */</a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 :         list_for_each_entry(tmp_adev, reset_device_list, reset_list) {</span></a>
+<a name="175"><span class="lineNum">     175 </span>            :                 /* For XGMI run all resets in parallel to speed up the process */</a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineNoCov">          0 :                 if (tmp_adev-&gt;gmc.xgmi.num_physical_nodes &gt; 1) {</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 :                         if (!queue_work(system_unbound_wq,</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineNoCov">          0 :                                         &amp;tmp_adev-&gt;reset_cntl-&gt;reset_work))</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 :                                 r = -EALREADY;</span></a>
+<a name="180"><span class="lineNum">     180 </span>            :                 } else</a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 :                         r = aldebaran_mode2_reset(tmp_adev);</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineNoCov">          0 :                 if (r) {</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineNoCov">          0 :                         dev_err(tmp_adev-&gt;dev,</span></a>
+<a name="184"><span class="lineNum">     184 </span>            :                                 &quot;ASIC reset failed with error, %d for drm dev, %s&quot;,</a>
+<a name="185"><span class="lineNum">     185 </span>            :                                 r, adev_to_drm(tmp_adev)-&gt;unique);</a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :                         break;</span></a>
+<a name="187"><span class="lineNum">     187 </span>            :                 }</a>
+<a name="188"><span class="lineNum">     188 </span>            :         }</a>
+<a name="189"><span class="lineNum">     189 </span>            : </a>
+<a name="190"><span class="lineNum">     190 </span>            :         /* For XGMI wait for all resets to complete before proceed */</a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :         if (!r) {</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 :                 list_for_each_entry(tmp_adev, reset_device_list, reset_list) {</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :                         if (tmp_adev-&gt;gmc.xgmi.num_physical_nodes &gt; 1) {</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 :                                 flush_work(&amp;tmp_adev-&gt;reset_cntl-&gt;reset_work);</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineNoCov">          0 :                                 r = tmp_adev-&gt;asic_reset_res;</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :                                 if (r)</span></a>
+<a name="197"><span class="lineNum">     197 </span>            :                                         break;</a>
+<a name="198"><span class="lineNum">     198 </span>            :                         }</a>
+<a name="199"><span class="lineNum">     199 </span>            :                 }</a>
+<a name="200"><span class="lineNum">     200 </span>            :         }</a>
+<a name="201"><span class="lineNum">     201 </span>            : </a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 :         list_for_each_entry(tmp_adev, reset_device_list, reset_list) {</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 :                 mutex_unlock(&amp;tmp_adev-&gt;reset_cntl-&gt;reset_lock);</span></a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineNoCov">          0 :                 tmp_adev-&gt;reset_cntl-&gt;active_reset = AMD_RESET_METHOD_NONE;</span></a>
+<a name="205"><span class="lineNum">     205 </span>            :         }</a>
+<a name="206"><span class="lineNum">     206 </span>            : </a>
+<a name="207"><span class="lineNum">     207 </span>            :         return r;</a>
+<a name="208"><span class="lineNum">     208 </span>            : }</a>
 <a name="209"><span class="lineNum">     209 </span>            : </a>
-<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 :         list_for_each_entry (tmp_adev, &amp;reset_device_list, reset_list) {</span></a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineNoCov">          0 :                 mutex_unlock(&amp;tmp_adev-&gt;reset_cntl-&gt;reset_lock);</span></a>
-<a name="212"><span class="lineNum">     212 </span><span class="lineNoCov">          0 :                 tmp_adev-&gt;reset_cntl-&gt;active_reset = AMD_RESET_METHOD_NONE;</span></a>
-<a name="213"><span class="lineNum">     213 </span>            :         }</a>
-<a name="214"><span class="lineNum">     214 </span>            : </a>
-<a name="215"><span class="lineNum">     215 </span>            :         return r;</a>
-<a name="216"><span class="lineNum">     216 </span>            : }</a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 : static int aldebaran_mode2_restore_ip(struct amdgpu_device *adev)</span></a>
+<a name="211"><span class="lineNum">     211 </span>            : {</a>
+<a name="212"><span class="lineNum">     212 </span>            :         struct amdgpu_firmware_info *ucode_list[AMDGPU_UCODE_ID_MAXIMUM];</a>
+<a name="213"><span class="lineNum">     213 </span>            :         struct amdgpu_firmware_info *ucode;</a>
+<a name="214"><span class="lineNum">     214 </span>            :         struct amdgpu_ip_block *cmn_block;</a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineNoCov">          0 :         int ucode_count = 0;</span></a>
+<a name="216"><span class="lineNum">     216 </span>            :         int i, r;</a>
 <a name="217"><span class="lineNum">     217 </span>            : </a>
-<a name="218"><span class="lineNum">     218 </span><span class="lineNoCov">          0 : static int aldebaran_mode2_restore_ip(struct amdgpu_device *adev)</span></a>
-<a name="219"><span class="lineNum">     219 </span>            : {</a>
-<a name="220"><span class="lineNum">     220 </span>            :         struct amdgpu_firmware_info *ucode_list[AMDGPU_UCODE_ID_MAXIMUM];</a>
-<a name="221"><span class="lineNum">     221 </span>            :         struct amdgpu_firmware_info *ucode;</a>
-<a name="222"><span class="lineNum">     222 </span>            :         struct amdgpu_ip_block *cmn_block;</a>
-<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 :         int ucode_count = 0;</span></a>
-<a name="224"><span class="lineNum">     224 </span>            :         int i, r;</a>
-<a name="225"><span class="lineNum">     225 </span>            : </a>
-<a name="226"><span class="lineNum">     226 </span>            :         dev_dbg(adev-&gt;dev, &quot;Reloading ucodes after reset\n&quot;);</a>
-<a name="227"><span class="lineNum">     227 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;firmware.max_ucodes; i++) {</span></a>
-<a name="228"><span class="lineNum">     228 </span><span class="lineNoCov">          0 :                 ucode = &amp;adev-&gt;firmware.ucode[i];</span></a>
-<a name="229"><span class="lineNum">     229 </span><span class="lineNoCov">          0 :                 if (!ucode-&gt;fw)</span></a>
-<a name="230"><span class="lineNum">     230 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="231"><span class="lineNum">     231 </span><span class="lineNoCov">          0 :                 switch (ucode-&gt;ucode_id) {</span></a>
-<a name="232"><span class="lineNum">     232 </span>            :                 case AMDGPU_UCODE_ID_SDMA0:</a>
-<a name="233"><span class="lineNum">     233 </span>            :                 case AMDGPU_UCODE_ID_SDMA1:</a>
-<a name="234"><span class="lineNum">     234 </span>            :                 case AMDGPU_UCODE_ID_SDMA2:</a>
-<a name="235"><span class="lineNum">     235 </span>            :                 case AMDGPU_UCODE_ID_SDMA3:</a>
-<a name="236"><span class="lineNum">     236 </span>            :                 case AMDGPU_UCODE_ID_SDMA4:</a>
-<a name="237"><span class="lineNum">     237 </span>            :                 case AMDGPU_UCODE_ID_SDMA5:</a>
-<a name="238"><span class="lineNum">     238 </span>            :                 case AMDGPU_UCODE_ID_SDMA6:</a>
-<a name="239"><span class="lineNum">     239 </span>            :                 case AMDGPU_UCODE_ID_SDMA7:</a>
-<a name="240"><span class="lineNum">     240 </span>            :                 case AMDGPU_UCODE_ID_CP_MEC1:</a>
-<a name="241"><span class="lineNum">     241 </span>            :                 case AMDGPU_UCODE_ID_CP_MEC1_JT:</a>
-<a name="242"><span class="lineNum">     242 </span>            :                 case AMDGPU_UCODE_ID_RLC_RESTORE_LIST_CNTL:</a>
-<a name="243"><span class="lineNum">     243 </span>            :                 case AMDGPU_UCODE_ID_RLC_RESTORE_LIST_GPM_MEM:</a>
-<a name="244"><span class="lineNum">     244 </span>            :                 case AMDGPU_UCODE_ID_RLC_RESTORE_LIST_SRM_MEM:</a>
-<a name="245"><span class="lineNum">     245 </span>            :                 case AMDGPU_UCODE_ID_RLC_G:</a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 :                         ucode_list[ucode_count++] = ucode;</span></a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 :                         break;</span></a>
-<a name="248"><span class="lineNum">     248 </span>            :                 default:</a>
-<a name="249"><span class="lineNum">     249 </span>            :                         break;</a>
-<a name="250"><span class="lineNum">     250 </span>            :                 }</a>
+<a name="218"><span class="lineNum">     218 </span>            :         dev_dbg(adev-&gt;dev, &quot;Reloading ucodes after reset\n&quot;);</a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;firmware.max_ucodes; i++) {</span></a>
+<a name="220"><span class="lineNum">     220 </span><span class="lineNoCov">          0 :                 ucode = &amp;adev-&gt;firmware.ucode[i];</span></a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineNoCov">          0 :                 if (!ucode-&gt;fw)</span></a>
+<a name="222"><span class="lineNum">     222 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 :                 switch (ucode-&gt;ucode_id) {</span></a>
+<a name="224"><span class="lineNum">     224 </span>            :                 case AMDGPU_UCODE_ID_SDMA0:</a>
+<a name="225"><span class="lineNum">     225 </span>            :                 case AMDGPU_UCODE_ID_SDMA1:</a>
+<a name="226"><span class="lineNum">     226 </span>            :                 case AMDGPU_UCODE_ID_SDMA2:</a>
+<a name="227"><span class="lineNum">     227 </span>            :                 case AMDGPU_UCODE_ID_SDMA3:</a>
+<a name="228"><span class="lineNum">     228 </span>            :                 case AMDGPU_UCODE_ID_SDMA4:</a>
+<a name="229"><span class="lineNum">     229 </span>            :                 case AMDGPU_UCODE_ID_SDMA5:</a>
+<a name="230"><span class="lineNum">     230 </span>            :                 case AMDGPU_UCODE_ID_SDMA6:</a>
+<a name="231"><span class="lineNum">     231 </span>            :                 case AMDGPU_UCODE_ID_SDMA7:</a>
+<a name="232"><span class="lineNum">     232 </span>            :                 case AMDGPU_UCODE_ID_CP_MEC1:</a>
+<a name="233"><span class="lineNum">     233 </span>            :                 case AMDGPU_UCODE_ID_CP_MEC1_JT:</a>
+<a name="234"><span class="lineNum">     234 </span>            :                 case AMDGPU_UCODE_ID_RLC_RESTORE_LIST_CNTL:</a>
+<a name="235"><span class="lineNum">     235 </span>            :                 case AMDGPU_UCODE_ID_RLC_RESTORE_LIST_GPM_MEM:</a>
+<a name="236"><span class="lineNum">     236 </span>            :                 case AMDGPU_UCODE_ID_RLC_RESTORE_LIST_SRM_MEM:</a>
+<a name="237"><span class="lineNum">     237 </span>            :                 case AMDGPU_UCODE_ID_RLC_G:</a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineNoCov">          0 :                         ucode_list[ucode_count++] = ucode;</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineNoCov">          0 :                         break;</span></a>
+<a name="240"><span class="lineNum">     240 </span>            :                 default:</a>
+<a name="241"><span class="lineNum">     241 </span>            :                         break;</a>
+<a name="242"><span class="lineNum">     242 </span>            :                 }</a>
+<a name="243"><span class="lineNum">     243 </span>            :         }</a>
+<a name="244"><span class="lineNum">     244 </span>            : </a>
+<a name="245"><span class="lineNum">     245 </span>            :         /* Reinit NBIF block */</a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 :         cmn_block =</span></a>
+<a name="247"><span class="lineNum">     247 </span>            :                 amdgpu_device_ip_get_ip_block(adev, AMD_IP_BLOCK_TYPE_COMMON);</a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 :         if (unlikely(!cmn_block)) {</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev, &quot;Failed to get BIF handle\n&quot;);</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 :                 return -EINVAL;</span></a>
 <a name="251"><span class="lineNum">     251 </span>            :         }</a>
-<a name="252"><span class="lineNum">     252 </span>            : </a>
-<a name="253"><span class="lineNum">     253 </span>            :         /* Reinit NBIF block */</a>
-<a name="254"><span class="lineNum">     254 </span><span class="lineNoCov">          0 :         cmn_block =</span></a>
-<a name="255"><span class="lineNum">     255 </span>            :                 amdgpu_device_ip_get_ip_block(adev, AMD_IP_BLOCK_TYPE_COMMON);</a>
-<a name="256"><span class="lineNum">     256 </span><span class="lineNoCov">          0 :         if (unlikely(!cmn_block)) {</span></a>
-<a name="257"><span class="lineNum">     257 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev, &quot;Failed to get BIF handle\n&quot;);</span></a>
-<a name="258"><span class="lineNum">     258 </span><span class="lineNoCov">          0 :                 return -EINVAL;</span></a>
-<a name="259"><span class="lineNum">     259 </span>            :         }</a>
-<a name="260"><span class="lineNum">     260 </span><span class="lineNoCov">          0 :         r = cmn_block-&gt;version-&gt;funcs-&gt;resume(adev);</span></a>
-<a name="261"><span class="lineNum">     261 </span><span class="lineNoCov">          0 :         if (r)</span></a>
-<a name="262"><span class="lineNum">     262 </span>            :                 return r;</a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 :         r = cmn_block-&gt;version-&gt;funcs-&gt;resume(adev);</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 :         if (r)</span></a>
+<a name="254"><span class="lineNum">     254 </span>            :                 return r;</a>
+<a name="255"><span class="lineNum">     255 </span>            : </a>
+<a name="256"><span class="lineNum">     256 </span>            :         /* Reinit GFXHUB */</a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineNoCov">          0 :         adev-&gt;gfxhub.funcs-&gt;init(adev);</span></a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineNoCov">          0 :         r = adev-&gt;gfxhub.funcs-&gt;gart_enable(adev);</span></a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineNoCov">          0 :         if (r) {</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev, &quot;GFXHUB gart reenable failed after reset\n&quot;);</span></a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineNoCov">          0 :                 return r;</span></a>
+<a name="262"><span class="lineNum">     262 </span>            :         }</a>
 <a name="263"><span class="lineNum">     263 </span>            : </a>
-<a name="264"><span class="lineNum">     264 </span>            :         /* Reinit GFXHUB */</a>
-<a name="265"><span class="lineNum">     265 </span><span class="lineNoCov">          0 :         adev-&gt;gfxhub.funcs-&gt;init(adev);</span></a>
-<a name="266"><span class="lineNum">     266 </span><span class="lineNoCov">          0 :         r = adev-&gt;gfxhub.funcs-&gt;gart_enable(adev);</span></a>
-<a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 :         if (r) {</span></a>
-<a name="268"><span class="lineNum">     268 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev, &quot;GFXHUB gart reenable failed after reset\n&quot;);</span></a>
-<a name="269"><span class="lineNum">     269 </span><span class="lineNoCov">          0 :                 return r;</span></a>
-<a name="270"><span class="lineNum">     270 </span>            :         }</a>
-<a name="271"><span class="lineNum">     271 </span>            : </a>
-<a name="272"><span class="lineNum">     272 </span>            :         /* Reload GFX firmware */</a>
-<a name="273"><span class="lineNum">     273 </span><span class="lineNoCov">          0 :         r = psp_load_fw_list(&amp;adev-&gt;psp, ucode_list, ucode_count);</span></a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineNoCov">          0 :         if (r) {</span></a>
-<a name="275"><span class="lineNum">     275 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev, &quot;GFX ucode load failed after reset\n&quot;);</span></a>
-<a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 :                 return r;</span></a>
-<a name="277"><span class="lineNum">     277 </span>            :         }</a>
-<a name="278"><span class="lineNum">     278 </span>            : </a>
-<a name="279"><span class="lineNum">     279 </span>            :         /* Resume RLC, FW needs RLC alive to complete reset process */</a>
-<a name="280"><span class="lineNum">     280 </span><span class="lineNoCov">          0 :         adev-&gt;gfx.rlc.funcs-&gt;resume(adev);</span></a>
+<a name="264"><span class="lineNum">     264 </span>            :         /* Reload GFX firmware */</a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineNoCov">          0 :         r = psp_load_fw_list(&amp;adev-&gt;psp, ucode_list, ucode_count);</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineNoCov">          0 :         if (r) {</span></a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev, &quot;GFX ucode load failed after reset\n&quot;);</span></a>
+<a name="268"><span class="lineNum">     268 </span><span class="lineNoCov">          0 :                 return r;</span></a>
+<a name="269"><span class="lineNum">     269 </span>            :         }</a>
+<a name="270"><span class="lineNum">     270 </span>            : </a>
+<a name="271"><span class="lineNum">     271 </span>            :         /* Resume RLC, FW needs RLC alive to complete reset process */</a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineNoCov">          0 :         adev-&gt;gfx.rlc.funcs-&gt;resume(adev);</span></a>
+<a name="273"><span class="lineNum">     273 </span>            : </a>
+<a name="274"><span class="lineNum">     274 </span>            :         /* Wait for FW reset event complete */</a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineNoCov">          0 :         r = amdgpu_dpm_wait_for_event(adev, SMU_EVENT_RESET_COMPLETE, 0);</span></a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 :         if (r) {</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev,</span></a>
+<a name="278"><span class="lineNum">     278 </span>            :                         &quot;Failed to get response from firmware after reset\n&quot;);</a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineNoCov">          0 :                 return r;</span></a>
+<a name="280"><span class="lineNum">     280 </span>            :         }</a>
 <a name="281"><span class="lineNum">     281 </span>            : </a>
-<a name="282"><span class="lineNum">     282 </span>            :         /* Wait for FW reset event complete */</a>
-<a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 :         r = amdgpu_dpm_wait_for_event(adev, SMU_EVENT_RESET_COMPLETE, 0);</span></a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineNoCov">          0 :         if (r) {</span></a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev,</span></a>
-<a name="286"><span class="lineNum">     286 </span>            :                         &quot;Failed to get response from firmware after reset\n&quot;);</a>
-<a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :                 return r;</span></a>
-<a name="288"><span class="lineNum">     288 </span>            :         }</a>
-<a name="289"><span class="lineNum">     289 </span>            : </a>
-<a name="290"><span class="lineNum">     290 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;num_ip_blocks; i++) {</span></a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 :                 if (!(adev-&gt;ip_blocks[i].version-&gt;type ==</span></a>
-<a name="292"><span class="lineNum">     292 </span>            :                               AMD_IP_BLOCK_TYPE_GFX ||</a>
-<a name="293"><span class="lineNum">     293 </span>            :                       adev-&gt;ip_blocks[i].version-&gt;type ==</a>
-<a name="294"><span class="lineNum">     294 </span>            :                               AMD_IP_BLOCK_TYPE_SDMA))</a>
-<a name="295"><span class="lineNum">     295 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 :                 r = adev-&gt;ip_blocks[i].version-&gt;funcs-&gt;resume(adev);</span></a>
-<a name="297"><span class="lineNum">     297 </span><span class="lineNoCov">          0 :                 if (r) {</span></a>
-<a name="298"><span class="lineNum">     298 </span><span class="lineNoCov">          0 :                         dev_err(adev-&gt;dev,</span></a>
-<a name="299"><span class="lineNum">     299 </span>            :                                 &quot;resume of IP block &lt;%s&gt; failed %d\n&quot;,</a>
-<a name="300"><span class="lineNum">     300 </span>            :                                 adev-&gt;ip_blocks[i].version-&gt;funcs-&gt;name, r);</a>
-<a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 :                         return r;</span></a>
-<a name="302"><span class="lineNum">     302 </span>            :                 }</a>
-<a name="303"><span class="lineNum">     303 </span>            : </a>
-<a name="304"><span class="lineNum">     304 </span><span class="lineNoCov">          0 :                 adev-&gt;ip_blocks[i].status.hw = true;</span></a>
-<a name="305"><span class="lineNum">     305 </span>            :         }</a>
-<a name="306"><span class="lineNum">     306 </span>            : </a>
-<a name="307"><span class="lineNum">     307 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;num_ip_blocks; i++) {</span></a>
-<a name="308"><span class="lineNum">     308 </span><span class="lineNoCov">          0 :                 if (!(adev-&gt;ip_blocks[i].version-&gt;type ==</span></a>
-<a name="309"><span class="lineNum">     309 </span>            :                               AMD_IP_BLOCK_TYPE_GFX ||</a>
-<a name="310"><span class="lineNum">     310 </span>            :                       adev-&gt;ip_blocks[i].version-&gt;type ==</a>
-<a name="311"><span class="lineNum">     311 </span>            :                               AMD_IP_BLOCK_TYPE_SDMA ||</a>
-<a name="312"><span class="lineNum">     312 </span>            :                       adev-&gt;ip_blocks[i].version-&gt;type ==</a>
-<a name="313"><span class="lineNum">     313 </span>            :                               AMD_IP_BLOCK_TYPE_COMMON))</a>
-<a name="314"><span class="lineNum">     314 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="315"><span class="lineNum">     315 </span>            : </a>
-<a name="316"><span class="lineNum">     316 </span><span class="lineNoCov">          0 :                 if (adev-&gt;ip_blocks[i].version-&gt;funcs-&gt;late_init) {</span></a>
-<a name="317"><span class="lineNum">     317 </span><span class="lineNoCov">          0 :                         r = adev-&gt;ip_blocks[i].version-&gt;funcs-&gt;late_init(</span></a>
-<a name="318"><span class="lineNum">     318 </span>            :                                 (void *)adev);</a>
-<a name="319"><span class="lineNum">     319 </span><span class="lineNoCov">          0 :                         if (r) {</span></a>
-<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 :                                 dev_err(adev-&gt;dev,</span></a>
-<a name="321"><span class="lineNum">     321 </span>            :                                         &quot;late_init of IP block &lt;%s&gt; failed %d after reset\n&quot;,</a>
-<a name="322"><span class="lineNum">     322 </span>            :                                         adev-&gt;ip_blocks[i].version-&gt;funcs-&gt;name,</a>
-<a name="323"><span class="lineNum">     323 </span>            :                                         r);</a>
-<a name="324"><span class="lineNum">     324 </span><span class="lineNoCov">          0 :                                 return r;</span></a>
-<a name="325"><span class="lineNum">     325 </span>            :                         }</a>
-<a name="326"><span class="lineNum">     326 </span>            :                 }</a>
-<a name="327"><span class="lineNum">     327 </span><span class="lineNoCov">          0 :                 adev-&gt;ip_blocks[i].status.late_initialized = true;</span></a>
-<a name="328"><span class="lineNum">     328 </span>            :         }</a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;num_ip_blocks; i++) {</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 :                 if (!(adev-&gt;ip_blocks[i].version-&gt;type ==</span></a>
+<a name="284"><span class="lineNum">     284 </span>            :                               AMD_IP_BLOCK_TYPE_GFX ||</a>
+<a name="285"><span class="lineNum">     285 </span>            :                       adev-&gt;ip_blocks[i].version-&gt;type ==</a>
+<a name="286"><span class="lineNum">     286 </span>            :                               AMD_IP_BLOCK_TYPE_SDMA))</a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 :                 r = adev-&gt;ip_blocks[i].version-&gt;funcs-&gt;resume(adev);</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 :                 if (r) {</span></a>
+<a name="290"><span class="lineNum">     290 </span><span class="lineNoCov">          0 :                         dev_err(adev-&gt;dev,</span></a>
+<a name="291"><span class="lineNum">     291 </span>            :                                 &quot;resume of IP block &lt;%s&gt; failed %d\n&quot;,</a>
+<a name="292"><span class="lineNum">     292 </span>            :                                 adev-&gt;ip_blocks[i].version-&gt;funcs-&gt;name, r);</a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 :                         return r;</span></a>
+<a name="294"><span class="lineNum">     294 </span>            :                 }</a>
+<a name="295"><span class="lineNum">     295 </span>            : </a>
+<a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 :                 adev-&gt;ip_blocks[i].status.hw = true;</span></a>
+<a name="297"><span class="lineNum">     297 </span>            :         }</a>
+<a name="298"><span class="lineNum">     298 </span>            : </a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;num_ip_blocks; i++) {</span></a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineNoCov">          0 :                 if (!(adev-&gt;ip_blocks[i].version-&gt;type ==</span></a>
+<a name="301"><span class="lineNum">     301 </span>            :                               AMD_IP_BLOCK_TYPE_GFX ||</a>
+<a name="302"><span class="lineNum">     302 </span>            :                       adev-&gt;ip_blocks[i].version-&gt;type ==</a>
+<a name="303"><span class="lineNum">     303 </span>            :                               AMD_IP_BLOCK_TYPE_SDMA ||</a>
+<a name="304"><span class="lineNum">     304 </span>            :                       adev-&gt;ip_blocks[i].version-&gt;type ==</a>
+<a name="305"><span class="lineNum">     305 </span>            :                               AMD_IP_BLOCK_TYPE_COMMON))</a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="307"><span class="lineNum">     307 </span>            : </a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineNoCov">          0 :                 if (adev-&gt;ip_blocks[i].version-&gt;funcs-&gt;late_init) {</span></a>
+<a name="309"><span class="lineNum">     309 </span><span class="lineNoCov">          0 :                         r = adev-&gt;ip_blocks[i].version-&gt;funcs-&gt;late_init(</span></a>
+<a name="310"><span class="lineNum">     310 </span>            :                                 (void *)adev);</a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineNoCov">          0 :                         if (r) {</span></a>
+<a name="312"><span class="lineNum">     312 </span><span class="lineNoCov">          0 :                                 dev_err(adev-&gt;dev,</span></a>
+<a name="313"><span class="lineNum">     313 </span>            :                                         &quot;late_init of IP block &lt;%s&gt; failed %d after reset\n&quot;,</a>
+<a name="314"><span class="lineNum">     314 </span>            :                                         adev-&gt;ip_blocks[i].version-&gt;funcs-&gt;name,</a>
+<a name="315"><span class="lineNum">     315 </span>            :                                         r);</a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineNoCov">          0 :                                 return r;</span></a>
+<a name="317"><span class="lineNum">     317 </span>            :                         }</a>
+<a name="318"><span class="lineNum">     318 </span>            :                 }</a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineNoCov">          0 :                 adev-&gt;ip_blocks[i].status.late_initialized = true;</span></a>
+<a name="320"><span class="lineNum">     320 </span>            :         }</a>
+<a name="321"><span class="lineNum">     321 </span>            : </a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 :         amdgpu_ras_set_error_query_ready(adev, true);</span></a>
+<a name="323"><span class="lineNum">     323 </span>            : </a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineNoCov">          0 :         amdgpu_device_set_cg_state(adev, AMD_CG_STATE_GATE);</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineNoCov">          0 :         amdgpu_device_set_pg_state(adev, AMD_PG_STATE_GATE);</span></a>
+<a name="326"><span class="lineNum">     326 </span>            : </a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineNoCov">          0 :         return r;</span></a>
+<a name="328"><span class="lineNum">     328 </span>            : }</a>
 <a name="329"><span class="lineNum">     329 </span>            : </a>
-<a name="330"><span class="lineNum">     330 </span><span class="lineNoCov">          0 :         amdgpu_ras_set_error_query_ready(adev, true);</span></a>
-<a name="331"><span class="lineNum">     331 </span>            : </a>
-<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 :         amdgpu_device_set_cg_state(adev, AMD_CG_STATE_GATE);</span></a>
-<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 :         amdgpu_device_set_pg_state(adev, AMD_PG_STATE_GATE);</span></a>
-<a name="334"><span class="lineNum">     334 </span>            : </a>
-<a name="335"><span class="lineNum">     335 </span><span class="lineNoCov">          0 :         return r;</span></a>
-<a name="336"><span class="lineNum">     336 </span>            : }</a>
+<a name="330"><span class="lineNum">     330 </span>            : static int</a>
+<a name="331"><span class="lineNum">     331 </span><span class="lineNoCov">          0 : aldebaran_mode2_restore_hwcontext(struct amdgpu_reset_control *reset_ctl,</span></a>
+<a name="332"><span class="lineNum">     332 </span>            :                                   struct amdgpu_reset_context *reset_context)</a>
+<a name="333"><span class="lineNum">     333 </span>            : {</a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineNoCov">          0 :         struct list_head *reset_device_list = reset_context-&gt;reset_device_list;</span></a>
+<a name="335"><span class="lineNum">     335 </span><span class="lineNoCov">          0 :         struct amdgpu_device *tmp_adev = NULL;</span></a>
+<a name="336"><span class="lineNum">     336 </span>            :         int r;</a>
 <a name="337"><span class="lineNum">     337 </span>            : </a>
-<a name="338"><span class="lineNum">     338 </span>            : static int</a>
-<a name="339"><span class="lineNum">     339 </span><span class="lineNoCov">          0 : aldebaran_mode2_restore_hwcontext(struct amdgpu_reset_control *reset_ctl,</span></a>
-<a name="340"><span class="lineNum">     340 </span>            :                                   struct amdgpu_reset_context *reset_context)</a>
-<a name="341"><span class="lineNum">     341 </span>            : {</a>
-<a name="342"><span class="lineNum">     342 </span><span class="lineNoCov">          0 :         struct amdgpu_device *tmp_adev = NULL;</span></a>
-<a name="343"><span class="lineNum">     343 </span>            :         struct list_head reset_device_list;</a>
-<a name="344"><span class="lineNum">     344 </span>            :         int r;</a>
-<a name="345"><span class="lineNum">     345 </span>            : </a>
-<a name="346"><span class="lineNum">     346 </span><span class="lineNoCov">          0 :         if (reset_context-&gt;reset_req_dev-&gt;ip_versions[MP1_HWIP][0] ==</span></a>
-<a name="347"><span class="lineNum">     347 </span><span class="lineNoCov">          0 :                     IP_VERSION(13, 0, 2) &amp;&amp;</span></a>
-<a name="348"><span class="lineNum">     348 </span><span class="lineNoCov">          0 :             reset_context-&gt;hive == NULL) {</span></a>
-<a name="349"><span class="lineNum">     349 </span>            :                 /* Wrong context, return error */</a>
-<a name="350"><span class="lineNum">     350 </span>            :                 return -EINVAL;</a>
-<a name="351"><span class="lineNum">     351 </span>            :         }</a>
-<a name="352"><span class="lineNum">     352 </span>            : </a>
-<a name="353"><span class="lineNum">     353 </span><span class="lineNoCov">          0 :         INIT_LIST_HEAD(&amp;reset_device_list);</span></a>
-<a name="354"><span class="lineNum">     354 </span><span class="lineNoCov">          0 :         if (reset_context-&gt;hive) {</span></a>
-<a name="355"><span class="lineNum">     355 </span><span class="lineNoCov">          0 :                 list_for_each_entry (tmp_adev,</span></a>
-<a name="356"><span class="lineNum">     356 </span>            :                                      &amp;reset_context-&gt;hive-&gt;device_list,</a>
-<a name="357"><span class="lineNum">     357 </span>            :                                      gmc.xgmi.head)</a>
-<a name="358"><span class="lineNum">     358 </span><span class="lineNoCov">          0 :                         list_add_tail(&amp;tmp_adev-&gt;reset_list,</span></a>
-<a name="359"><span class="lineNum">     359 </span>            :                                       &amp;reset_device_list);</a>
-<a name="360"><span class="lineNum">     360 </span>            :         } else {</a>
-<a name="361"><span class="lineNum">     361 </span><span class="lineNoCov">          0 :                 list_add_tail(&amp;reset_context-&gt;reset_req_dev-&gt;reset_list,</span></a>
-<a name="362"><span class="lineNum">     362 </span>            :                               &amp;reset_device_list);</a>
-<a name="363"><span class="lineNum">     363 </span>            :         }</a>
-<a name="364"><span class="lineNum">     364 </span>            : </a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineNoCov">          0 :         list_for_each_entry (tmp_adev, &amp;reset_device_list, reset_list) {</span></a>
-<a name="366"><span class="lineNum">     366 </span><span class="lineNoCov">          0 :                 dev_info(tmp_adev-&gt;dev,</span></a>
-<a name="367"><span class="lineNum">     367 </span>            :                          &quot;GPU reset succeeded, trying to resume\n&quot;);</a>
-<a name="368"><span class="lineNum">     368 </span><span class="lineNoCov">          0 :                 r = aldebaran_mode2_restore_ip(tmp_adev);</span></a>
-<a name="369"><span class="lineNum">     369 </span><span class="lineNoCov">          0 :                 if (r)</span></a>
-<a name="370"><span class="lineNum">     370 </span>            :                         goto end;</a>
-<a name="371"><span class="lineNum">     371 </span>            : </a>
-<a name="372"><span class="lineNum">     372 </span>            :                 /*</a>
-<a name="373"><span class="lineNum">     373 </span>            :                  * Add this ASIC as tracked as reset was already</a>
-<a name="374"><span class="lineNum">     374 </span>            :                  * complete successfully.</a>
-<a name="375"><span class="lineNum">     375 </span>            :                  */</a>
-<a name="376"><span class="lineNum">     376 </span><span class="lineNoCov">          0 :                 amdgpu_register_gpu_instance(tmp_adev);</span></a>
-<a name="377"><span class="lineNum">     377 </span>            : </a>
-<a name="378"><span class="lineNum">     378 </span>            :                 /* Resume RAS */</a>
-<a name="379"><span class="lineNum">     379 </span><span class="lineNoCov">          0 :                 amdgpu_ras_resume(tmp_adev);</span></a>
-<a name="380"><span class="lineNum">     380 </span>            : </a>
-<a name="381"><span class="lineNum">     381 </span>            :                 /* Update PSP FW topology after reset */</a>
-<a name="382"><span class="lineNum">     382 </span><span class="lineNoCov">          0 :                 if (reset_context-&gt;hive &amp;&amp;</span></a>
-<a name="383"><span class="lineNum">     383 </span><span class="lineNoCov">          0 :                     tmp_adev-&gt;gmc.xgmi.num_physical_nodes &gt; 1)</span></a>
-<a name="384"><span class="lineNum">     384 </span><span class="lineNoCov">          0 :                         r = amdgpu_xgmi_update_topology(reset_context-&gt;hive,</span></a>
-<a name="385"><span class="lineNum">     385 </span>            :                                                         tmp_adev);</a>
-<a name="386"><span class="lineNum">     386 </span>            : </a>
-<a name="387"><span class="lineNum">     387 </span><span class="lineNoCov">          0 :                 if (!r) {</span></a>
-<a name="388"><span class="lineNum">     388 </span><span class="lineNoCov">          0 :                         amdgpu_irq_gpu_reset_resume_helper(tmp_adev);</span></a>
-<a name="389"><span class="lineNum">     389 </span>            : </a>
-<a name="390"><span class="lineNum">     390 </span><span class="lineNoCov">          0 :                         r = amdgpu_ib_ring_tests(tmp_adev);</span></a>
-<a name="391"><span class="lineNum">     391 </span><span class="lineNoCov">          0 :                         if (r) {</span></a>
-<a name="392"><span class="lineNum">     392 </span><span class="lineNoCov">          0 :                                 dev_err(tmp_adev-&gt;dev,</span></a>
-<a name="393"><span class="lineNum">     393 </span>            :                                         &quot;ib ring test failed (%d).\n&quot;, r);</a>
-<a name="394"><span class="lineNum">     394 </span><span class="lineNoCov">          0 :                                 r = -EAGAIN;</span></a>
-<a name="395"><span class="lineNum">     395 </span><span class="lineNoCov">          0 :                                 tmp_adev-&gt;asic_reset_res = r;</span></a>
-<a name="396"><span class="lineNum">     396 </span><span class="lineNoCov">          0 :                                 goto end;</span></a>
-<a name="397"><span class="lineNum">     397 </span>            :                         }</a>
-<a name="398"><span class="lineNum">     398 </span>            :                 }</a>
-<a name="399"><span class="lineNum">     399 </span>            :         }</a>
-<a name="400"><span class="lineNum">     400 </span>            : </a>
-<a name="401"><span class="lineNum">     401 </span>            : end:</a>
-<a name="402"><span class="lineNum">     402 </span>            :         return r;</a>
-<a name="403"><span class="lineNum">     403 </span>            : }</a>
-<a name="404"><span class="lineNum">     404 </span>            : </a>
-<a name="405"><span class="lineNum">     405 </span>            : static struct amdgpu_reset_handler aldebaran_mode2_handler = {</a>
-<a name="406"><span class="lineNum">     406 </span>            :         .reset_method           = AMD_RESET_METHOD_MODE2,</a>
-<a name="407"><span class="lineNum">     407 </span>            :         .prepare_env            = NULL,</a>
-<a name="408"><span class="lineNum">     408 </span>            :         .prepare_hwcontext      = aldebaran_mode2_prepare_hwcontext,</a>
-<a name="409"><span class="lineNum">     409 </span>            :         .perform_reset          = aldebaran_mode2_perform_reset,</a>
-<a name="410"><span class="lineNum">     410 </span>            :         .restore_hwcontext      = aldebaran_mode2_restore_hwcontext,</a>
-<a name="411"><span class="lineNum">     411 </span>            :         .restore_env            = NULL,</a>
-<a name="412"><span class="lineNum">     412 </span>            :         .do_reset               = aldebaran_mode2_reset,</a>
-<a name="413"><span class="lineNum">     413 </span>            : };</a>
-<a name="414"><span class="lineNum">     414 </span>            : </a>
-<a name="415"><span class="lineNum">     415 </span><span class="lineNoCov">          0 : int aldebaran_reset_init(struct amdgpu_device *adev)</span></a>
-<a name="416"><span class="lineNum">     416 </span>            : {</a>
-<a name="417"><span class="lineNum">     417 </span>            :         struct amdgpu_reset_control *reset_ctl;</a>
-<a name="418"><span class="lineNum">     418 </span>            : </a>
-<a name="419"><span class="lineNum">     419 </span><span class="lineNoCov">          0 :         reset_ctl = kzalloc(sizeof(*reset_ctl), GFP_KERNEL);</span></a>
-<a name="420"><span class="lineNum">     420 </span><span class="lineNoCov">          0 :         if (!reset_ctl)</span></a>
-<a name="421"><span class="lineNum">     421 </span>            :                 return -ENOMEM;</a>
-<a name="422"><span class="lineNum">     422 </span>            : </a>
-<a name="423"><span class="lineNum">     423 </span><span class="lineNoCov">          0 :         reset_ctl-&gt;handle = adev;</span></a>
-<a name="424"><span class="lineNum">     424 </span><span class="lineNoCov">          0 :         reset_ctl-&gt;async_reset = aldebaran_async_reset;</span></a>
-<a name="425"><span class="lineNum">     425 </span><span class="lineNoCov">          0 :         reset_ctl-&gt;active_reset = AMD_RESET_METHOD_NONE;</span></a>
-<a name="426"><span class="lineNum">     426 </span><span class="lineNoCov">          0 :         reset_ctl-&gt;get_reset_handler = aldebaran_get_reset_handler;</span></a>
-<a name="427"><span class="lineNum">     427 </span>            : </a>
-<a name="428"><span class="lineNum">     428 </span><span class="lineNoCov">          0 :         INIT_LIST_HEAD(&amp;reset_ctl-&gt;reset_handlers);</span></a>
-<a name="429"><span class="lineNum">     429 </span><span class="lineNoCov">          0 :         INIT_WORK(&amp;reset_ctl-&gt;reset_work, reset_ctl-&gt;async_reset);</span></a>
-<a name="430"><span class="lineNum">     430 </span>            :         /* Only mode2 is handled through reset control now */</a>
-<a name="431"><span class="lineNum">     431 </span><span class="lineNoCov">          0 :         amdgpu_reset_add_handler(reset_ctl, &amp;aldebaran_mode2_handler);</span></a>
-<a name="432"><span class="lineNum">     432 </span>            : </a>
-<a name="433"><span class="lineNum">     433 </span><span class="lineNoCov">          0 :         adev-&gt;reset_cntl = reset_ctl;</span></a>
-<a name="434"><span class="lineNum">     434 </span>            : </a>
-<a name="435"><span class="lineNum">     435 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="436"><span class="lineNum">     436 </span>            : }</a>
-<a name="437"><span class="lineNum">     437 </span>            : </a>
-<a name="438"><span class="lineNum">     438 </span><span class="lineNoCov">          0 : int aldebaran_reset_fini(struct amdgpu_device *adev)</span></a>
-<a name="439"><span class="lineNum">     439 </span>            : {</a>
-<a name="440"><span class="lineNum">     440 </span><span class="lineNoCov">          0 :         kfree(adev-&gt;reset_cntl);</span></a>
-<a name="441"><span class="lineNum">     441 </span><span class="lineNoCov">          0 :         adev-&gt;reset_cntl = NULL;</span></a>
-<a name="442"><span class="lineNum">     442 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="443"><span class="lineNum">     443 </span>            : }</a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineNoCov">          0 :         if (reset_device_list == NULL)</span></a>
+<a name="339"><span class="lineNum">     339 </span>            :                 return -EINVAL;</a>
+<a name="340"><span class="lineNum">     340 </span>            : </a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineNoCov">          0 :         if (reset_context-&gt;reset_req_dev-&gt;ip_versions[MP1_HWIP][0] ==</span></a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineNoCov">          0 :                     IP_VERSION(13, 0, 2) &amp;&amp;</span></a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineNoCov">          0 :             reset_context-&gt;hive == NULL) {</span></a>
+<a name="344"><span class="lineNum">     344 </span>            :                 /* Wrong context, return error */</a>
+<a name="345"><span class="lineNum">     345 </span>            :                 return -EINVAL;</a>
+<a name="346"><span class="lineNum">     346 </span>            :         }</a>
+<a name="347"><span class="lineNum">     347 </span>            : </a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineNoCov">          0 :         list_for_each_entry(tmp_adev, reset_device_list, reset_list) {</span></a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineNoCov">          0 :                 dev_info(tmp_adev-&gt;dev,</span></a>
+<a name="350"><span class="lineNum">     350 </span>            :                          &quot;GPU reset succeeded, trying to resume\n&quot;);</a>
+<a name="351"><span class="lineNum">     351 </span><span class="lineNoCov">          0 :                 r = aldebaran_mode2_restore_ip(tmp_adev);</span></a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 :                 if (r)</span></a>
+<a name="353"><span class="lineNum">     353 </span>            :                         goto end;</a>
+<a name="354"><span class="lineNum">     354 </span>            : </a>
+<a name="355"><span class="lineNum">     355 </span>            :                 /*</a>
+<a name="356"><span class="lineNum">     356 </span>            :                  * Add this ASIC as tracked as reset was already</a>
+<a name="357"><span class="lineNum">     357 </span>            :                  * complete successfully.</a>
+<a name="358"><span class="lineNum">     358 </span>            :                  */</a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineNoCov">          0 :                 amdgpu_register_gpu_instance(tmp_adev);</span></a>
+<a name="360"><span class="lineNum">     360 </span>            : </a>
+<a name="361"><span class="lineNum">     361 </span>            :                 /* Resume RAS */</a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineNoCov">          0 :                 amdgpu_ras_resume(tmp_adev);</span></a>
+<a name="363"><span class="lineNum">     363 </span>            : </a>
+<a name="364"><span class="lineNum">     364 </span>            :                 /* Update PSP FW topology after reset */</a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineNoCov">          0 :                 if (reset_context-&gt;hive &amp;&amp;</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineNoCov">          0 :                     tmp_adev-&gt;gmc.xgmi.num_physical_nodes &gt; 1)</span></a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineNoCov">          0 :                         r = amdgpu_xgmi_update_topology(reset_context-&gt;hive,</span></a>
+<a name="368"><span class="lineNum">     368 </span>            :                                                         tmp_adev);</a>
+<a name="369"><span class="lineNum">     369 </span>            : </a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 :                 if (!r) {</span></a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineNoCov">          0 :                         amdgpu_irq_gpu_reset_resume_helper(tmp_adev);</span></a>
+<a name="372"><span class="lineNum">     372 </span>            : </a>
+<a name="373"><span class="lineNum">     373 </span><span class="lineNoCov">          0 :                         r = amdgpu_ib_ring_tests(tmp_adev);</span></a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 :                         if (r) {</span></a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineNoCov">          0 :                                 dev_err(tmp_adev-&gt;dev,</span></a>
+<a name="376"><span class="lineNum">     376 </span>            :                                         &quot;ib ring test failed (%d).\n&quot;, r);</a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineNoCov">          0 :                                 r = -EAGAIN;</span></a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineNoCov">          0 :                                 tmp_adev-&gt;asic_reset_res = r;</span></a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineNoCov">          0 :                                 goto end;</span></a>
+<a name="380"><span class="lineNum">     380 </span>            :                         }</a>
+<a name="381"><span class="lineNum">     381 </span>            :                 }</a>
+<a name="382"><span class="lineNum">     382 </span>            :         }</a>
+<a name="383"><span class="lineNum">     383 </span>            : </a>
+<a name="384"><span class="lineNum">     384 </span>            : end:</a>
+<a name="385"><span class="lineNum">     385 </span>            :         return r;</a>
+<a name="386"><span class="lineNum">     386 </span>            : }</a>
+<a name="387"><span class="lineNum">     387 </span>            : </a>
+<a name="388"><span class="lineNum">     388 </span>            : static struct amdgpu_reset_handler aldebaran_mode2_handler = {</a>
+<a name="389"><span class="lineNum">     389 </span>            :         .reset_method           = AMD_RESET_METHOD_MODE2,</a>
+<a name="390"><span class="lineNum">     390 </span>            :         .prepare_env            = NULL,</a>
+<a name="391"><span class="lineNum">     391 </span>            :         .prepare_hwcontext      = aldebaran_mode2_prepare_hwcontext,</a>
+<a name="392"><span class="lineNum">     392 </span>            :         .perform_reset          = aldebaran_mode2_perform_reset,</a>
+<a name="393"><span class="lineNum">     393 </span>            :         .restore_hwcontext      = aldebaran_mode2_restore_hwcontext,</a>
+<a name="394"><span class="lineNum">     394 </span>            :         .restore_env            = NULL,</a>
+<a name="395"><span class="lineNum">     395 </span>            :         .do_reset               = aldebaran_mode2_reset,</a>
+<a name="396"><span class="lineNum">     396 </span>            : };</a>
+<a name="397"><span class="lineNum">     397 </span>            : </a>
+<a name="398"><span class="lineNum">     398 </span><span class="lineNoCov">          0 : int aldebaran_reset_init(struct amdgpu_device *adev)</span></a>
+<a name="399"><span class="lineNum">     399 </span>            : {</a>
+<a name="400"><span class="lineNum">     400 </span>            :         struct amdgpu_reset_control *reset_ctl;</a>
+<a name="401"><span class="lineNum">     401 </span>            : </a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineNoCov">          0 :         reset_ctl = kzalloc(sizeof(*reset_ctl), GFP_KERNEL);</span></a>
+<a name="403"><span class="lineNum">     403 </span><span class="lineNoCov">          0 :         if (!reset_ctl)</span></a>
+<a name="404"><span class="lineNum">     404 </span>            :                 return -ENOMEM;</a>
+<a name="405"><span class="lineNum">     405 </span>            : </a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineNoCov">          0 :         reset_ctl-&gt;handle = adev;</span></a>
+<a name="407"><span class="lineNum">     407 </span><span class="lineNoCov">          0 :         reset_ctl-&gt;async_reset = aldebaran_async_reset;</span></a>
+<a name="408"><span class="lineNum">     408 </span><span class="lineNoCov">          0 :         reset_ctl-&gt;active_reset = AMD_RESET_METHOD_NONE;</span></a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineNoCov">          0 :         reset_ctl-&gt;get_reset_handler = aldebaran_get_reset_handler;</span></a>
+<a name="410"><span class="lineNum">     410 </span>            : </a>
+<a name="411"><span class="lineNum">     411 </span><span class="lineNoCov">          0 :         INIT_LIST_HEAD(&amp;reset_ctl-&gt;reset_handlers);</span></a>
+<a name="412"><span class="lineNum">     412 </span><span class="lineNoCov">          0 :         INIT_WORK(&amp;reset_ctl-&gt;reset_work, reset_ctl-&gt;async_reset);</span></a>
+<a name="413"><span class="lineNum">     413 </span>            :         /* Only mode2 is handled through reset control now */</a>
+<a name="414"><span class="lineNum">     414 </span><span class="lineNoCov">          0 :         amdgpu_reset_add_handler(reset_ctl, &amp;aldebaran_mode2_handler);</span></a>
+<a name="415"><span class="lineNum">     415 </span>            : </a>
+<a name="416"><span class="lineNum">     416 </span><span class="lineNoCov">          0 :         adev-&gt;reset_cntl = reset_ctl;</span></a>
+<a name="417"><span class="lineNum">     417 </span>            : </a>
+<a name="418"><span class="lineNum">     418 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="419"><span class="lineNum">     419 </span>            : }</a>
+<a name="420"><span class="lineNum">     420 </span>            : </a>
+<a name="421"><span class="lineNum">     421 </span><span class="lineNoCov">          0 : int aldebaran_reset_fini(struct amdgpu_device *adev)</span></a>
+<a name="422"><span class="lineNum">     422 </span>            : {</a>
+<a name="423"><span class="lineNum">     423 </span><span class="lineNoCov">          0 :         kfree(adev-&gt;reset_cntl);</span></a>
+<a name="424"><span class="lineNum">     424 </span><span class="lineNoCov">          0 :         adev-&gt;reset_cntl = NULL;</span></a>
+<a name="425"><span class="lineNum">     425 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="426"><span class="lineNum">     426 </span>            : }</a>
 </pre>
       </td>
     </tr>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -2608,18 +2608,18 @@
 <a name="2546"><span class="lineNum">    2546 </span>            :         .attrs = numa_attrs,</a>
 <a name="2547"><span class="lineNum">    2547 </span>            : };</a>
 <a name="2548"><span class="lineNum">    2548 </span>            : </a>
-<a name="2549"><span class="lineNum">    2549 </span><span class="lineCov">          2 : static int __init numa_init_sysfs(void)</span></a>
+<a name="2549"><span class="lineNum">    2549 </span><span class="lineCov">          1 : static int __init numa_init_sysfs(void)</span></a>
 <a name="2550"><span class="lineNum">    2550 </span>            : {</a>
 <a name="2551"><span class="lineNum">    2551 </span>            :         int err;</a>
 <a name="2552"><span class="lineNum">    2552 </span>            :         struct kobject *numa_kobj;</a>
 <a name="2553"><span class="lineNum">    2553 </span>            : </a>
-<a name="2554"><span class="lineNum">    2554 </span><span class="lineCov">          2 :         numa_kobj = kobject_create_and_add(&quot;numa&quot;, mm_kobj);</span></a>
-<a name="2555"><span class="lineNum">    2555 </span><span class="lineCov">          2 :         if (!numa_kobj) {</span></a>
+<a name="2554"><span class="lineNum">    2554 </span><span class="lineCov">          1 :         numa_kobj = kobject_create_and_add(&quot;numa&quot;, mm_kobj);</span></a>
+<a name="2555"><span class="lineNum">    2555 </span><span class="lineCov">          1 :         if (!numa_kobj) {</span></a>
 <a name="2556"><span class="lineNum">    2556 </span><span class="lineNoCov">          0 :                 pr_err(&quot;failed to create numa kobject\n&quot;);</span></a>
 <a name="2557"><span class="lineNum">    2557 </span><span class="lineNoCov">          0 :                 return -ENOMEM;</span></a>
 <a name="2558"><span class="lineNum">    2558 </span>            :         }</a>
-<a name="2559"><span class="lineNum">    2559 </span><span class="lineCov">          2 :         err = sysfs_create_group(numa_kobj, &amp;numa_attr_group);</span></a>
-<a name="2560"><span class="lineNum">    2560 </span><span class="lineCov">          2 :         if (err) {</span></a>
+<a name="2559"><span class="lineNum">    2559 </span><span class="lineCov">          1 :         err = sysfs_create_group(numa_kobj, &amp;numa_attr_group);</span></a>
+<a name="2560"><span class="lineNum">    2560 </span><span class="lineCov">          1 :         if (err) {</span></a>
 <a name="2561"><span class="lineNum">    2561 </span><span class="lineNoCov">          0 :                 pr_err(&quot;failed to register numa group\n&quot;);</span></a>
 <a name="2562"><span class="lineNum">    2562 </span>            :                 goto delete_obj;</a>
 <a name="2563"><span class="lineNum">    2563 </span>            :         }</a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -1066,9 +1066,9 @@
 <a name="1004"><span class="lineNum">    1004 </span>            : static inline void exit_pi_state_list(struct task_struct *curr) { }</a>
 <a name="1005"><span class="lineNum">    1005 </span>            : #endif</a>
 <a name="1006"><span class="lineNum">    1006 </span>            : </a>
-<a name="1007"><span class="lineNum">    1007 </span><span class="lineCov">        128 : static void futex_cleanup(struct task_struct *tsk)</span></a>
+<a name="1007"><span class="lineNum">    1007 </span><span class="lineCov">         93 : static void futex_cleanup(struct task_struct *tsk)</span></a>
 <a name="1008"><span class="lineNum">    1008 </span>            : {</a>
-<a name="1009"><span class="lineNum">    1009 </span><span class="lineCov">        128 :         if (unlikely(tsk-&gt;robust_list)) {</span></a>
+<a name="1009"><span class="lineNum">    1009 </span><span class="lineCov">         93 :         if (unlikely(tsk-&gt;robust_list)) {</span></a>
 <a name="1010"><span class="lineNum">    1010 </span><span class="lineNoCov">          0 :                 exit_robust_list(tsk);</span></a>
 <a name="1011"><span class="lineNum">    1011 </span><span class="lineNoCov">          0 :                 tsk-&gt;robust_list = NULL;</span></a>
 <a name="1012"><span class="lineNum">    1012 </span>            :         }</a>
@@ -1080,9 +1080,9 @@
 <a name="1018"><span class="lineNum">    1018 </span>            :         }</a>
 <a name="1019"><span class="lineNum">    1019 </span>            : #endif</a>
 <a name="1020"><span class="lineNum">    1020 </span>            : </a>
-<a name="1021"><span class="lineNum">    1021 </span><span class="lineCov">        256 :         if (unlikely(!list_empty(&amp;tsk-&gt;pi_state_list)))</span></a>
+<a name="1021"><span class="lineNum">    1021 </span><span class="lineCov">        186 :         if (unlikely(!list_empty(&amp;tsk-&gt;pi_state_list)))</span></a>
 <a name="1022"><span class="lineNum">    1022 </span><span class="lineNoCov">          0 :                 exit_pi_state_list(tsk);</span></a>
-<a name="1023"><span class="lineNum">    1023 </span><span class="lineCov">        128 : }</span></a>
+<a name="1023"><span class="lineNum">    1023 </span><span class="lineCov">         93 : }</span></a>
 <a name="1024"><span class="lineNum">    1024 </span>            : </a>
 <a name="1025"><span class="lineNum">    1025 </span>            : /**</a>
 <a name="1026"><span class="lineNum">    1026 </span>            :  * futex_exit_recursive - Set the tasks futex state to FUTEX_STATE_DEAD</a>
@@ -1117,7 +1117,7 @@
 <a name="1055"><span class="lineNum">    1055 </span>            :          * tsk-&gt;futex_exit_mutex when it observes FUTEX_STATE_EXITING in</a>
 <a name="1056"><span class="lineNum">    1056 </span>            :          * attach_to_pi_owner().</a>
 <a name="1057"><span class="lineNum">    1057 </span>            :          */</a>
-<a name="1058"><span class="lineNum">    1058 </span><span class="lineCov">        128 :         mutex_lock(&amp;tsk-&gt;futex_exit_mutex);</span></a>
+<a name="1058"><span class="lineNum">    1058 </span><span class="lineCov">         93 :         mutex_lock(&amp;tsk-&gt;futex_exit_mutex);</span></a>
 <a name="1059"><span class="lineNum">    1059 </span>            : </a>
 <a name="1060"><span class="lineNum">    1060 </span>            :         /*</a>
 <a name="1061"><span class="lineNum">    1061 </span>            :          * Switch the state to FUTEX_STATE_EXITING under tsk-&gt;pi_lock.</a>
@@ -1130,9 +1130,9 @@
 <a name="1068"><span class="lineNum">    1068 </span>            :          * the state change under tsk-&gt;pi_lock by a concurrent waiter must</a>
 <a name="1069"><span class="lineNum">    1069 </span>            :          * be observed in exit_pi_state_list().</a>
 <a name="1070"><span class="lineNum">    1070 </span>            :          */</a>
-<a name="1071"><span class="lineNum">    1071 </span><span class="lineCov">        128 :         raw_spin_lock_irq(&amp;tsk-&gt;pi_lock);</span></a>
-<a name="1072"><span class="lineNum">    1072 </span><span class="lineCov">        128 :         tsk-&gt;futex_state = FUTEX_STATE_EXITING;</span></a>
-<a name="1073"><span class="lineNum">    1073 </span><span class="lineCov">        128 :         raw_spin_unlock_irq(&amp;tsk-&gt;pi_lock);</span></a>
+<a name="1071"><span class="lineNum">    1071 </span><span class="lineCov">         93 :         raw_spin_lock_irq(&amp;tsk-&gt;pi_lock);</span></a>
+<a name="1072"><span class="lineNum">    1072 </span><span class="lineCov">         93 :         tsk-&gt;futex_state = FUTEX_STATE_EXITING;</span></a>
+<a name="1073"><span class="lineNum">    1073 </span><span class="lineCov">         93 :         raw_spin_unlock_irq(&amp;tsk-&gt;pi_lock);</span></a>
 <a name="1074"><span class="lineNum">    1074 </span>            : }</a>
 <a name="1075"><span class="lineNum">    1075 </span>            : </a>
 <a name="1076"><span class="lineNum">    1076 </span>            : static void futex_cleanup_end(struct task_struct *tsk, int state)</a>
@@ -1141,12 +1141,12 @@
 <a name="1079"><span class="lineNum">    1079 </span>            :          * Lockless store. The only side effect is that an observer might</a>
 <a name="1080"><span class="lineNum">    1080 </span>            :          * take another loop until it becomes visible.</a>
 <a name="1081"><span class="lineNum">    1081 </span>            :          */</a>
-<a name="1082"><span class="lineNum">    1082 </span><span class="lineCov">        128 :         tsk-&gt;futex_state = state;</span></a>
+<a name="1082"><span class="lineNum">    1082 </span><span class="lineCov">         93 :         tsk-&gt;futex_state = state;</span></a>
 <a name="1083"><span class="lineNum">    1083 </span>            :         /*</a>
 <a name="1084"><span class="lineNum">    1084 </span>            :          * Drop the exit protection. This unblocks waiters which observed</a>
 <a name="1085"><span class="lineNum">    1085 </span>            :          * FUTEX_STATE_EXITING to reevaluate the state.</a>
 <a name="1086"><span class="lineNum">    1086 </span>            :          */</a>
-<a name="1087"><span class="lineNum">    1087 </span><span class="lineCov">        128 :         mutex_unlock(&amp;tsk-&gt;futex_exit_mutex);</span></a>
+<a name="1087"><span class="lineNum">    1087 </span><span class="lineCov">         93 :         mutex_unlock(&amp;tsk-&gt;futex_exit_mutex);</span></a>
 <a name="1088"><span class="lineNum">    1088 </span>            : }</a>
 <a name="1089"><span class="lineNum">    1089 </span>            : </a>
 <a name="1090"><span class="lineNum">    1090 </span><span class="lineNoCov">          0 : void futex_exec_release(struct task_struct *tsk)</span></a>
@@ -1167,14 +1167,14 @@
 <a name="1105"><span class="lineNum">    1105 </span><span class="lineNoCov">          0 :         futex_cleanup_end(tsk, FUTEX_STATE_OK);</span></a>
 <a name="1106"><span class="lineNum">    1106 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="1107"><span class="lineNum">    1107 </span>            : </a>
-<a name="1108"><span class="lineNum">    1108 </span><span class="lineCov">        128 : void futex_exit_release(struct task_struct *tsk)</span></a>
+<a name="1108"><span class="lineNum">    1108 </span><span class="lineCov">         93 : void futex_exit_release(struct task_struct *tsk)</span></a>
 <a name="1109"><span class="lineNum">    1109 </span>            : {</a>
-<a name="1110"><span class="lineNum">    1110 </span><span class="lineCov">        128 :         futex_cleanup_begin(tsk);</span></a>
-<a name="1111"><span class="lineNum">    1111 </span><span class="lineCov">        128 :         futex_cleanup(tsk);</span></a>
-<a name="1112"><span class="lineNum">    1112 </span><span class="lineCov">        128 :         futex_cleanup_end(tsk, FUTEX_STATE_DEAD);</span></a>
-<a name="1113"><span class="lineNum">    1113 </span><span class="lineCov">        128 : }</span></a>
+<a name="1110"><span class="lineNum">    1110 </span><span class="lineCov">         93 :         futex_cleanup_begin(tsk);</span></a>
+<a name="1111"><span class="lineNum">    1111 </span><span class="lineCov">         93 :         futex_cleanup(tsk);</span></a>
+<a name="1112"><span class="lineNum">    1112 </span><span class="lineCov">         93 :         futex_cleanup_end(tsk, FUTEX_STATE_DEAD);</span></a>
+<a name="1113"><span class="lineNum">    1113 </span><span class="lineCov">         93 : }</span></a>
 <a name="1114"><span class="lineNum">    1114 </span>            : </a>
-<a name="1115"><span class="lineNum">    1115 </span><span class="lineCov">          2 : static int __init futex_init(void)</span></a>
+<a name="1115"><span class="lineNum">    1115 </span><span class="lineCov">          1 : static int __init futex_init(void)</span></a>
 <a name="1116"><span class="lineNum">    1116 </span>            : {</a>
 <a name="1117"><span class="lineNum">    1117 </span>            :         unsigned int futex_shift;</a>
 <a name="1118"><span class="lineNum">    1118 </span>            :         unsigned long i;</a>
@@ -1182,23 +1182,23 @@
 <a name="1120"><span class="lineNum">    1120 </span>            : #if CONFIG_BASE_SMALL</a>
 <a name="1121"><span class="lineNum">    1121 </span>            :         futex_hashsize = 16;</a>
 <a name="1122"><span class="lineNum">    1122 </span>            : #else</a>
-<a name="1123"><span class="lineNum">    1123 </span><span class="lineCov">          2 :         futex_hashsize = roundup_pow_of_two(256 * num_possible_cpus());</span></a>
+<a name="1123"><span class="lineNum">    1123 </span><span class="lineCov">          1 :         futex_hashsize = roundup_pow_of_two(256 * num_possible_cpus());</span></a>
 <a name="1124"><span class="lineNum">    1124 </span>            : #endif</a>
 <a name="1125"><span class="lineNum">    1125 </span>            : </a>
-<a name="1126"><span class="lineNum">    1126 </span><span class="lineCov">          2 :         futex_queues = alloc_large_system_hash(&quot;futex&quot;, sizeof(*futex_queues),</span></a>
+<a name="1126"><span class="lineNum">    1126 </span><span class="lineCov">          1 :         futex_queues = alloc_large_system_hash(&quot;futex&quot;, sizeof(*futex_queues),</span></a>
 <a name="1127"><span class="lineNum">    1127 </span>            :                                                futex_hashsize, 0,</a>
 <a name="1128"><span class="lineNum">    1128 </span>            :                                                futex_hashsize &lt; 256 ? HASH_SMALL : 0,</a>
 <a name="1129"><span class="lineNum">    1129 </span>            :                                                &amp;futex_shift, NULL,</a>
 <a name="1130"><span class="lineNum">    1130 </span>            :                                                futex_hashsize, futex_hashsize);</a>
-<a name="1131"><span class="lineNum">    1131 </span><span class="lineCov">          2 :         futex_hashsize = 1UL &lt;&lt; futex_shift;</span></a>
+<a name="1131"><span class="lineNum">    1131 </span><span class="lineCov">          1 :         futex_hashsize = 1UL &lt;&lt; futex_shift;</span></a>
 <a name="1132"><span class="lineNum">    1132 </span>            : </a>
-<a name="1133"><span class="lineNum">    1133 </span><span class="lineCov">        514 :         for (i = 0; i &lt; futex_hashsize; i++) {</span></a>
-<a name="1134"><span class="lineNum">    1134 </span><span class="lineCov">       1024 :                 atomic_set(&amp;futex_queues[i].waiters, 0);</span></a>
-<a name="1135"><span class="lineNum">    1135 </span><span class="lineCov">       1024 :                 plist_head_init(&amp;futex_queues[i].chain);</span></a>
-<a name="1136"><span class="lineNum">    1136 </span><span class="lineCov">        512 :                 spin_lock_init(&amp;futex_queues[i].lock);</span></a>
+<a name="1133"><span class="lineNum">    1133 </span><span class="lineCov">        257 :         for (i = 0; i &lt; futex_hashsize; i++) {</span></a>
+<a name="1134"><span class="lineNum">    1134 </span><span class="lineCov">        512 :                 atomic_set(&amp;futex_queues[i].waiters, 0);</span></a>
+<a name="1135"><span class="lineNum">    1135 </span><span class="lineCov">        512 :                 plist_head_init(&amp;futex_queues[i].chain);</span></a>
+<a name="1136"><span class="lineNum">    1136 </span><span class="lineCov">        256 :                 spin_lock_init(&amp;futex_queues[i].lock);</span></a>
 <a name="1137"><span class="lineNum">    1137 </span>            :         }</a>
 <a name="1138"><span class="lineNum">    1138 </span>            : </a>
-<a name="1139"><span class="lineNum">    1139 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="1139"><span class="lineNum">    1139 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="1140"><span class="lineNum">    1140 </span>            : }</a>
 <a name="1141"><span class="lineNum">    1141 </span>            : core_initcall(futex_init);</a>
 </pre>

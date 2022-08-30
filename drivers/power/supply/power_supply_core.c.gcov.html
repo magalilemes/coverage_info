@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -1611,17 +1611,17 @@
 <a name="1549"><span class="lineNum">    1549 </span>            : }</a>
 <a name="1550"><span class="lineNum">    1550 </span>            : EXPORT_SYMBOL_GPL(power_supply_get_drvdata);</a>
 <a name="1551"><span class="lineNum">    1551 </span>            : </a>
-<a name="1552"><span class="lineNum">    1552 </span><span class="lineCov">          2 : static int __init power_supply_class_init(void)</span></a>
+<a name="1552"><span class="lineNum">    1552 </span><span class="lineCov">          1 : static int __init power_supply_class_init(void)</span></a>
 <a name="1553"><span class="lineNum">    1553 </span>            : {</a>
-<a name="1554"><span class="lineNum">    1554 </span><span class="lineCov">          2 :         power_supply_class = class_create(THIS_MODULE, &quot;power_supply&quot;);</span></a>
+<a name="1554"><span class="lineNum">    1554 </span><span class="lineCov">          1 :         power_supply_class = class_create(THIS_MODULE, &quot;power_supply&quot;);</span></a>
 <a name="1555"><span class="lineNum">    1555 </span>            : </a>
-<a name="1556"><span class="lineNum">    1556 </span><span class="lineCov">          4 :         if (IS_ERR(power_supply_class))</span></a>
+<a name="1556"><span class="lineNum">    1556 </span><span class="lineCov">          2 :         if (IS_ERR(power_supply_class))</span></a>
 <a name="1557"><span class="lineNum">    1557 </span><span class="lineNoCov">          0 :                 return PTR_ERR(power_supply_class);</span></a>
 <a name="1558"><span class="lineNum">    1558 </span>            : </a>
-<a name="1559"><span class="lineNum">    1559 </span><span class="lineCov">          2 :         power_supply_class-&gt;dev_uevent = power_supply_uevent;</span></a>
-<a name="1560"><span class="lineNum">    1560 </span><span class="lineCov">          2 :         power_supply_init_attrs(&amp;power_supply_dev_type);</span></a>
+<a name="1559"><span class="lineNum">    1559 </span><span class="lineCov">          1 :         power_supply_class-&gt;dev_uevent = power_supply_uevent;</span></a>
+<a name="1560"><span class="lineNum">    1560 </span><span class="lineCov">          1 :         power_supply_init_attrs(&amp;power_supply_dev_type);</span></a>
 <a name="1561"><span class="lineNum">    1561 </span>            : </a>
-<a name="1562"><span class="lineNum">    1562 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="1562"><span class="lineNum">    1562 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="1563"><span class="lineNum">    1563 </span>            : }</a>
 <a name="1564"><span class="lineNum">    1564 </span>            : </a>
 <a name="1565"><span class="lineNum">    1565 </span><span class="lineNoCov">          0 : static void __exit power_supply_class_exit(void)</span></a>

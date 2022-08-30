@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -167,26 +167,26 @@
 <a name="105"><span class="lineNum">     105 </span>            : {</a>
 <a name="106"><span class="lineNum">     106 </span>            :         int cpu;</a>
 <a name="107"><span class="lineNum">     107 </span>            : </a>
-<a name="108"><span class="lineNum">     108 </span><span class="lineCov">        256 :         desc-&gt;irq_common_data.handler_data = NULL;</span></a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        256 :         desc-&gt;irq_common_data.msi_desc = NULL;</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineCov">        128 :         desc-&gt;irq_common_data.handler_data = NULL;</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        128 :         desc-&gt;irq_common_data.msi_desc = NULL;</span></a>
 <a name="110"><span class="lineNum">     110 </span>            : </a>
-<a name="111"><span class="lineNum">     111 </span><span class="lineCov">        256 :         desc-&gt;irq_data.common = &amp;desc-&gt;irq_common_data;</span></a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineCov">        256 :         desc-&gt;irq_data.irq = irq;</span></a>
-<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        256 :         desc-&gt;irq_data.chip = &amp;no_irq_chip;</span></a>
-<a name="114"><span class="lineNum">     114 </span><span class="lineCov">        256 :         desc-&gt;irq_data.chip_data = NULL;</span></a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        512 :         irq_settings_clr_and_set(desc, ~0, _IRQ_DEFAULT_INIT_FLAGS);</span></a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">        512 :         irqd_set(&amp;desc-&gt;irq_data, IRQD_IRQ_DISABLED);</span></a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineCov">        512 :         irqd_set(&amp;desc-&gt;irq_data, IRQD_IRQ_MASKED);</span></a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">        256 :         desc-&gt;handle_irq = handle_bad_irq;</span></a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineCov">        256 :         desc-&gt;depth = 1;</span></a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">        256 :         desc-&gt;irq_count = 0;</span></a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        256 :         desc-&gt;irqs_unhandled = 0;</span></a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        256 :         desc-&gt;tot_count = 0;</span></a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        256 :         desc-&gt;name = NULL;</span></a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        256 :         desc-&gt;owner = owner;</span></a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineCov">        512 :         for_each_possible_cpu(cpu)</span></a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineCov">        256 :                 *per_cpu_ptr(desc-&gt;kstat_irqs, cpu) = 0;</span></a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineCov">        256 :         desc_smp_init(desc, node, affinity);</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">        128 :         desc-&gt;irq_data.common = &amp;desc-&gt;irq_common_data;</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">        128 :         desc-&gt;irq_data.irq = irq;</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        128 :         desc-&gt;irq_data.chip = &amp;no_irq_chip;</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineCov">        128 :         desc-&gt;irq_data.chip_data = NULL;</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        256 :         irq_settings_clr_and_set(desc, ~0, _IRQ_DEFAULT_INIT_FLAGS);</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">        256 :         irqd_set(&amp;desc-&gt;irq_data, IRQD_IRQ_DISABLED);</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">        256 :         irqd_set(&amp;desc-&gt;irq_data, IRQD_IRQ_MASKED);</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">        128 :         desc-&gt;handle_irq = handle_bad_irq;</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">        128 :         desc-&gt;depth = 1;</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">        128 :         desc-&gt;irq_count = 0;</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        128 :         desc-&gt;irqs_unhandled = 0;</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        128 :         desc-&gt;tot_count = 0;</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        128 :         desc-&gt;name = NULL;</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        128 :         desc-&gt;owner = owner;</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">        256 :         for_each_possible_cpu(cpu)</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">        128 :                 *per_cpu_ptr(desc-&gt;kstat_irqs, cpu) = 0;</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineCov">        128 :         desc_smp_init(desc, node, affinity);</span></a>
 <a name="128"><span class="lineNum">     128 </span>            : }</a>
 <a name="129"><span class="lineNum">     129 </span>            : </a>
 <a name="130"><span class="lineNum">     130 </span>            : int nr_irqs = NR_IRQS;</a>
@@ -620,33 +620,33 @@
 <a name="558"><span class="lineNum">     558 </span>            :         }</a>
 <a name="559"><span class="lineNum">     559 </span>            : };</a>
 <a name="560"><span class="lineNum">     560 </span>            : </a>
-<a name="561"><span class="lineNum">     561 </span><span class="lineCov">          2 : int __init early_irq_init(void)</span></a>
+<a name="561"><span class="lineNum">     561 </span><span class="lineCov">          1 : int __init early_irq_init(void)</span></a>
 <a name="562"><span class="lineNum">     562 </span>            : {</a>
-<a name="563"><span class="lineNum">     563 </span><span class="lineCov">          2 :         int count, i, node = first_online_node;</span></a>
+<a name="563"><span class="lineNum">     563 </span><span class="lineCov">          1 :         int count, i, node = first_online_node;</span></a>
 <a name="564"><span class="lineNum">     564 </span>            :         struct irq_desc *desc;</a>
 <a name="565"><span class="lineNum">     565 </span>            : </a>
 <a name="566"><span class="lineNum">     566 </span>            :         init_irq_default_affinity();</a>
 <a name="567"><span class="lineNum">     567 </span>            : </a>
-<a name="568"><span class="lineNum">     568 </span><span class="lineCov">          2 :         printk(KERN_INFO &quot;NR_IRQS: %d\n&quot;, NR_IRQS);</span></a>
+<a name="568"><span class="lineNum">     568 </span><span class="lineCov">          1 :         printk(KERN_INFO &quot;NR_IRQS: %d\n&quot;, NR_IRQS);</span></a>
 <a name="569"><span class="lineNum">     569 </span>            : </a>
-<a name="570"><span class="lineNum">     570 </span><span class="lineCov">          2 :         desc = irq_desc;</span></a>
-<a name="571"><span class="lineNum">     571 </span><span class="lineCov">          2 :         count = ARRAY_SIZE(irq_desc);</span></a>
+<a name="570"><span class="lineNum">     570 </span><span class="lineCov">          1 :         desc = irq_desc;</span></a>
+<a name="571"><span class="lineNum">     571 </span><span class="lineCov">          1 :         count = ARRAY_SIZE(irq_desc);</span></a>
 <a name="572"><span class="lineNum">     572 </span>            : </a>
-<a name="573"><span class="lineNum">     573 </span><span class="lineCov">        258 :         for (i = 0; i &lt; count; i++) {</span></a>
-<a name="574"><span class="lineNum">     574 </span><span class="lineCov">        256 :                 desc[i].kstat_irqs = alloc_percpu(unsigned int);</span></a>
-<a name="575"><span class="lineNum">     575 </span><span class="lineCov">        256 :                 alloc_masks(&amp;desc[i], node);</span></a>
+<a name="573"><span class="lineNum">     573 </span><span class="lineCov">        129 :         for (i = 0; i &lt; count; i++) {</span></a>
+<a name="574"><span class="lineNum">     574 </span><span class="lineCov">        128 :                 desc[i].kstat_irqs = alloc_percpu(unsigned int);</span></a>
+<a name="575"><span class="lineNum">     575 </span><span class="lineCov">        128 :                 alloc_masks(&amp;desc[i], node);</span></a>
 <a name="576"><span class="lineNum">     576 </span>            :                 raw_spin_lock_init(&amp;desc[i].lock);</a>
 <a name="577"><span class="lineNum">     577 </span>            :                 lockdep_set_class(&amp;desc[i].lock, &amp;irq_desc_lock_class);</a>
-<a name="578"><span class="lineNum">     578 </span><span class="lineCov">        256 :                 mutex_init(&amp;desc[i].request_mutex);</span></a>
-<a name="579"><span class="lineNum">     579 </span><span class="lineCov">        256 :                 init_waitqueue_head(&amp;desc[i].wait_for_threads);</span></a>
-<a name="580"><span class="lineNum">     580 </span><span class="lineCov">        512 :                 desc_set_defaults(i, &amp;desc[i], node, NULL, NULL);</span></a>
+<a name="578"><span class="lineNum">     578 </span><span class="lineCov">        128 :                 mutex_init(&amp;desc[i].request_mutex);</span></a>
+<a name="579"><span class="lineNum">     579 </span><span class="lineCov">        128 :                 init_waitqueue_head(&amp;desc[i].wait_for_threads);</span></a>
+<a name="580"><span class="lineNum">     580 </span><span class="lineCov">        256 :                 desc_set_defaults(i, &amp;desc[i], node, NULL, NULL);</span></a>
 <a name="581"><span class="lineNum">     581 </span>            :         }</a>
-<a name="582"><span class="lineNum">     582 </span><span class="lineCov">          2 :         return arch_early_irq_init();</span></a>
+<a name="582"><span class="lineNum">     582 </span><span class="lineCov">          1 :         return arch_early_irq_init();</span></a>
 <a name="583"><span class="lineNum">     583 </span>            : }</a>
 <a name="584"><span class="lineNum">     584 </span>            : </a>
-<a name="585"><span class="lineNum">     585 </span><span class="lineCov">        268 : struct irq_desc *irq_to_desc(unsigned int irq)</span></a>
+<a name="585"><span class="lineNum">     585 </span><span class="lineCov">        134 : struct irq_desc *irq_to_desc(unsigned int irq)</span></a>
 <a name="586"><span class="lineNum">     586 </span>            : {</a>
-<a name="587"><span class="lineNum">     587 </span><span class="lineCov">        541 :         return (irq &lt; NR_IRQS) ? irq_desc + irq : NULL;</span></a>
+<a name="587"><span class="lineNum">     587 </span><span class="lineCov">        271 :         return (irq &lt; NR_IRQS) ? irq_desc + irq : NULL;</span></a>
 <a name="588"><span class="lineNum">     588 </span>            : }</a>
 <a name="589"><span class="lineNum">     589 </span>            : EXPORT_SYMBOL(irq_to_desc);</a>
 <a name="590"><span class="lineNum">     590 </span>            : </a>
@@ -680,12 +680,12 @@
 <a name="618"><span class="lineNum">     618 </span>            :         return -ENOMEM;</a>
 <a name="619"><span class="lineNum">     619 </span>            : }</a>
 <a name="620"><span class="lineNum">     620 </span>            : </a>
-<a name="621"><span class="lineNum">     621 </span><span class="lineCov">        128 : void irq_mark_irq(unsigned int irq)</span></a>
+<a name="621"><span class="lineNum">     621 </span><span class="lineCov">         64 : void irq_mark_irq(unsigned int irq)</span></a>
 <a name="622"><span class="lineNum">     622 </span>            : {</a>
-<a name="623"><span class="lineNum">     623 </span><span class="lineCov">        128 :         mutex_lock(&amp;sparse_irq_lock);</span></a>
-<a name="624"><span class="lineNum">     624 </span><span class="lineCov">        128 :         bitmap_set(allocated_irqs, irq, 1);</span></a>
-<a name="625"><span class="lineNum">     625 </span><span class="lineCov">        128 :         mutex_unlock(&amp;sparse_irq_lock);</span></a>
-<a name="626"><span class="lineNum">     626 </span><span class="lineCov">        128 : }</span></a>
+<a name="623"><span class="lineNum">     623 </span><span class="lineCov">         64 :         mutex_lock(&amp;sparse_irq_lock);</span></a>
+<a name="624"><span class="lineNum">     624 </span><span class="lineCov">         64 :         bitmap_set(allocated_irqs, irq, 1);</span></a>
+<a name="625"><span class="lineNum">     625 </span><span class="lineCov">         64 :         mutex_unlock(&amp;sparse_irq_lock);</span></a>
+<a name="626"><span class="lineNum">     626 </span><span class="lineCov">         64 : }</span></a>
 <a name="627"><span class="lineNum">     627 </span>            : </a>
 <a name="628"><span class="lineNum">     628 </span>            : #ifdef CONFIG_GENERIC_IRQ_LEGACY</a>
 <a name="629"><span class="lineNum">     629 </span>            : void irq_init_desc(unsigned int irq)</a>
@@ -700,14 +700,14 @@
 <a name="638"><span class="lineNum">     638 </span>            : {</a>
 <a name="639"><span class="lineNum">     639 </span>            :         struct irq_data *data;</a>
 <a name="640"><span class="lineNum">     640 </span>            : </a>
-<a name="641"><span class="lineNum">     641 </span><span class="lineCov">         17 :         if (!desc)</span></a>
+<a name="641"><span class="lineNum">     641 </span><span class="lineCov">          9 :         if (!desc)</span></a>
 <a name="642"><span class="lineNum">     642 </span>            :                 return -EINVAL;</a>
 <a name="643"><span class="lineNum">     643 </span>            : </a>
-<a name="644"><span class="lineNum">     644 </span><span class="lineCov">         17 :         data = irq_desc_get_irq_data(desc);</span></a>
-<a name="645"><span class="lineNum">     645 </span><span class="lineCov">         17 :         if (WARN_ON_ONCE(!in_hardirq() &amp;&amp; handle_enforce_irqctx(data)))</span></a>
+<a name="644"><span class="lineNum">     644 </span><span class="lineCov">          9 :         data = irq_desc_get_irq_data(desc);</span></a>
+<a name="645"><span class="lineNum">     645 </span><span class="lineCov">          9 :         if (WARN_ON_ONCE(!in_hardirq() &amp;&amp; handle_enforce_irqctx(data)))</span></a>
 <a name="646"><span class="lineNum">     646 </span>            :                 return -EPERM;</a>
 <a name="647"><span class="lineNum">     647 </span>            : </a>
-<a name="648"><span class="lineNum">     648 </span><span class="lineCov">         17 :         generic_handle_irq_desc(desc);</span></a>
+<a name="648"><span class="lineNum">     648 </span><span class="lineCov">          9 :         generic_handle_irq_desc(desc);</span></a>
 <a name="649"><span class="lineNum">     649 </span><span class="lineNoCov">          0 :         return 0;</span></a>
 <a name="650"><span class="lineNum">     650 </span>            : }</a>
 <a name="651"><span class="lineNum">     651 </span>            : </a>
@@ -720,9 +720,9 @@
 <a name="658"><span class="lineNum">     658 </span>            :  *              This function must be called from an IRQ context with irq regs</a>
 <a name="659"><span class="lineNum">     659 </span>            :  *              initialized.</a>
 <a name="660"><span class="lineNum">     660 </span>            :   */</a>
-<a name="661"><span class="lineNum">     661 </span><span class="lineCov">         17 : int generic_handle_irq(unsigned int irq)</span></a>
+<a name="661"><span class="lineNum">     661 </span><span class="lineCov">          9 : int generic_handle_irq(unsigned int irq)</span></a>
 <a name="662"><span class="lineNum">     662 </span>            : {</a>
-<a name="663"><span class="lineNum">     663 </span><span class="lineCov">         34 :         return handle_irq_desc(irq_to_desc(irq));</span></a>
+<a name="663"><span class="lineNum">     663 </span><span class="lineCov">         18 :         return handle_irq_desc(irq_to_desc(irq));</span></a>
 <a name="664"><span class="lineNum">     664 </span>            : }</a>
 <a name="665"><span class="lineNum">     665 </span>            : EXPORT_SYMBOL_GPL(generic_handle_irq);</a>
 <a name="666"><span class="lineNum">     666 </span>            : </a>
@@ -875,13 +875,13 @@
 <a name="813"><span class="lineNum">     813 </span>            : }</a>
 <a name="814"><span class="lineNum">     814 </span>            : </a>
 <a name="815"><span class="lineNum">     815 </span>            : struct irq_desc *</a>
-<a name="816"><span class="lineNum">     816 </span><span class="lineCov">        256 : __irq_get_desc_lock(unsigned int irq, unsigned long *flags, bool bus,</span></a>
+<a name="816"><span class="lineNum">     816 </span><span class="lineCov">        128 : __irq_get_desc_lock(unsigned int irq, unsigned long *flags, bool bus,</span></a>
 <a name="817"><span class="lineNum">     817 </span>            :                     unsigned int check)</a>
 <a name="818"><span class="lineNum">     818 </span>            : {</a>
-<a name="819"><span class="lineNum">     819 </span><span class="lineCov">        256 :         struct irq_desc *desc = irq_to_desc(irq);</span></a>
+<a name="819"><span class="lineNum">     819 </span><span class="lineCov">        128 :         struct irq_desc *desc = irq_to_desc(irq);</span></a>
 <a name="820"><span class="lineNum">     820 </span>            : </a>
-<a name="821"><span class="lineNum">     821 </span><span class="lineCov">        256 :         if (desc) {</span></a>
-<a name="822"><span class="lineNum">     822 </span><span class="lineCov">        256 :                 if (check &amp; _IRQ_DESC_CHECK) {</span></a>
+<a name="821"><span class="lineNum">     821 </span><span class="lineCov">        128 :         if (desc) {</span></a>
+<a name="822"><span class="lineNum">     822 </span><span class="lineCov">        128 :                 if (check &amp; _IRQ_DESC_CHECK) {</span></a>
 <a name="823"><span class="lineNum">     823 </span><span class="lineNoCov">          0 :                         if ((check &amp; _IRQ_DESC_PERCPU) &amp;&amp;</span></a>
 <a name="824"><span class="lineNum">     824 </span>            :                             !irq_settings_is_per_cpu_devid(desc))</a>
 <a name="825"><span class="lineNum">     825 </span>            :                                 return NULL;</a>
@@ -891,20 +891,20 @@
 <a name="829"><span class="lineNum">     829 </span>            :                                 return NULL;</a>
 <a name="830"><span class="lineNum">     830 </span>            :                 }</a>
 <a name="831"><span class="lineNum">     831 </span>            : </a>
-<a name="832"><span class="lineNum">     832 </span><span class="lineCov">        256 :                 if (bus)</span></a>
+<a name="832"><span class="lineNum">     832 </span><span class="lineCov">        128 :                 if (bus)</span></a>
 <a name="833"><span class="lineNum">     833 </span>            :                         chip_bus_lock(desc);</a>
-<a name="834"><span class="lineNum">     834 </span><span class="lineCov">        256 :                 raw_spin_lock_irqsave(&amp;desc-&gt;lock, *flags);</span></a>
+<a name="834"><span class="lineNum">     834 </span><span class="lineCov">        128 :                 raw_spin_lock_irqsave(&amp;desc-&gt;lock, *flags);</span></a>
 <a name="835"><span class="lineNum">     835 </span>            :         }</a>
 <a name="836"><span class="lineNum">     836 </span>            :         return desc;</a>
 <a name="837"><span class="lineNum">     837 </span>            : }</a>
 <a name="838"><span class="lineNum">     838 </span>            : </a>
-<a name="839"><span class="lineNum">     839 </span><span class="lineCov">        256 : void __irq_put_desc_unlock(struct irq_desc *desc, unsigned long flags, bool bus)</span></a>
+<a name="839"><span class="lineNum">     839 </span><span class="lineCov">        128 : void __irq_put_desc_unlock(struct irq_desc *desc, unsigned long flags, bool bus)</span></a>
 <a name="840"><span class="lineNum">     840 </span>            :         __releases(&amp;desc-&gt;lock)</a>
 <a name="841"><span class="lineNum">     841 </span>            : {</a>
-<a name="842"><span class="lineNum">     842 </span><span class="lineCov">        512 :         raw_spin_unlock_irqrestore(&amp;desc-&gt;lock, flags);</span></a>
-<a name="843"><span class="lineNum">     843 </span><span class="lineCov">        256 :         if (bus)</span></a>
+<a name="842"><span class="lineNum">     842 </span><span class="lineCov">        256 :         raw_spin_unlock_irqrestore(&amp;desc-&gt;lock, flags);</span></a>
+<a name="843"><span class="lineNum">     843 </span><span class="lineCov">        128 :         if (bus)</span></a>
 <a name="844"><span class="lineNum">     844 </span>            :                 chip_bus_sync_unlock(desc);</a>
-<a name="845"><span class="lineNum">     845 </span><span class="lineCov">        256 : }</span></a>
+<a name="845"><span class="lineNum">     845 </span><span class="lineCov">        128 : }</span></a>
 <a name="846"><span class="lineNum">     846 </span>            : </a>
 <a name="847"><span class="lineNum">     847 </span><span class="lineNoCov">          0 : int irq_set_percpu_devid_partition(unsigned int irq,</span></a>
 <a name="848"><span class="lineNum">     848 </span>            :                                    const struct cpumask *affinity)</a>

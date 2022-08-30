@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -326,87 +326,113 @@
 <a name="264"><span class="lineNum">     264 </span>            :         u64 mall_size;</a>
 <a name="265"><span class="lineNum">     265 </span>            :         /* number of UMC instances */</a>
 <a name="266"><span class="lineNum">     266 </span>            :         int num_umc;</a>
-<a name="267"><span class="lineNum">     267 </span>            : };</a>
-<a name="268"><span class="lineNum">     268 </span>            : </a>
-<a name="269"><span class="lineNum">     269 </span>            : #define amdgpu_gmc_flush_gpu_tlb(adev, vmid, vmhub, type) ((adev)-&gt;gmc.gmc_funcs-&gt;flush_gpu_tlb((adev), (vmid), (vmhub), (type)))</a>
-<a name="270"><span class="lineNum">     270 </span>            : #define amdgpu_gmc_flush_gpu_tlb_pasid(adev, pasid, type, allhub) \</a>
-<a name="271"><span class="lineNum">     271 </span>            :         ((adev)-&gt;gmc.gmc_funcs-&gt;flush_gpu_tlb_pasid \</a>
-<a name="272"><span class="lineNum">     272 </span>            :         ((adev), (pasid), (type), (allhub)))</a>
-<a name="273"><span class="lineNum">     273 </span>            : #define amdgpu_gmc_emit_flush_gpu_tlb(r, vmid, addr) (r)-&gt;adev-&gt;gmc.gmc_funcs-&gt;emit_flush_gpu_tlb((r), (vmid), (addr))</a>
-<a name="274"><span class="lineNum">     274 </span>            : #define amdgpu_gmc_emit_pasid_mapping(r, vmid, pasid) (r)-&gt;adev-&gt;gmc.gmc_funcs-&gt;emit_pasid_mapping((r), (vmid), (pasid))</a>
-<a name="275"><span class="lineNum">     275 </span>            : #define amdgpu_gmc_map_mtype(adev, flags) (adev)-&gt;gmc.gmc_funcs-&gt;map_mtype((adev),(flags))</a>
-<a name="276"><span class="lineNum">     276 </span>            : #define amdgpu_gmc_get_vm_pde(adev, level, dst, flags) (adev)-&gt;gmc.gmc_funcs-&gt;get_vm_pde((adev), (level), (dst), (flags))</a>
-<a name="277"><span class="lineNum">     277 </span>            : #define amdgpu_gmc_get_vm_pte(adev, mapping, flags) (adev)-&gt;gmc.gmc_funcs-&gt;get_vm_pte((adev), (mapping), (flags))</a>
-<a name="278"><span class="lineNum">     278 </span>            : #define amdgpu_gmc_get_vbios_fb_size(adev) (adev)-&gt;gmc.gmc_funcs-&gt;get_vbios_fb_size((adev))</a>
-<a name="279"><span class="lineNum">     279 </span>            : </a>
-<a name="280"><span class="lineNum">     280 </span>            : /**</a>
-<a name="281"><span class="lineNum">     281 </span>            :  * amdgpu_gmc_vram_full_visible - Check if full VRAM is visible through the BAR</a>
-<a name="282"><span class="lineNum">     282 </span>            :  *</a>
-<a name="283"><span class="lineNum">     283 </span>            :  * @adev: amdgpu_device pointer</a>
-<a name="284"><span class="lineNum">     284 </span>            :  *</a>
-<a name="285"><span class="lineNum">     285 </span>            :  * Returns:</a>
-<a name="286"><span class="lineNum">     286 </span>            :  * True if full VRAM is visible through the BAR</a>
-<a name="287"><span class="lineNum">     287 </span>            :  */</a>
-<a name="288"><span class="lineNum">     288 </span>            : static inline bool amdgpu_gmc_vram_full_visible(struct amdgpu_gmc *gmc)</a>
-<a name="289"><span class="lineNum">     289 </span>            : {</a>
-<a name="290"><span class="lineNum">     290 </span><span class="lineNoCov">          0 :         WARN_ON(gmc-&gt;real_vram_size &lt; gmc-&gt;visible_vram_size);</span></a>
-<a name="291"><span class="lineNum">     291 </span>            : </a>
-<a name="292"><span class="lineNum">     292 </span><span class="lineNoCov">          0 :         return (gmc-&gt;real_vram_size == gmc-&gt;visible_vram_size);</span></a>
-<a name="293"><span class="lineNum">     293 </span>            : }</a>
+<a name="267"><span class="lineNum">     267 </span>            :         /* mode2 save restore */</a>
+<a name="268"><span class="lineNum">     268 </span>            :         u64 VM_L2_CNTL;</a>
+<a name="269"><span class="lineNum">     269 </span>            :         u64 VM_L2_CNTL2;</a>
+<a name="270"><span class="lineNum">     270 </span>            :         u64 VM_DUMMY_PAGE_FAULT_CNTL;</a>
+<a name="271"><span class="lineNum">     271 </span>            :         u64 VM_DUMMY_PAGE_FAULT_ADDR_LO32;</a>
+<a name="272"><span class="lineNum">     272 </span>            :         u64 VM_DUMMY_PAGE_FAULT_ADDR_HI32;</a>
+<a name="273"><span class="lineNum">     273 </span>            :         u64 VM_L2_PROTECTION_FAULT_CNTL;</a>
+<a name="274"><span class="lineNum">     274 </span>            :         u64 VM_L2_PROTECTION_FAULT_CNTL2;</a>
+<a name="275"><span class="lineNum">     275 </span>            :         u64 VM_L2_PROTECTION_FAULT_MM_CNTL3;</a>
+<a name="276"><span class="lineNum">     276 </span>            :         u64 VM_L2_PROTECTION_FAULT_MM_CNTL4;</a>
+<a name="277"><span class="lineNum">     277 </span>            :         u64 VM_L2_PROTECTION_FAULT_ADDR_LO32;</a>
+<a name="278"><span class="lineNum">     278 </span>            :         u64 VM_L2_PROTECTION_FAULT_ADDR_HI32;</a>
+<a name="279"><span class="lineNum">     279 </span>            :         u64 VM_DEBUG;</a>
+<a name="280"><span class="lineNum">     280 </span>            :         u64 VM_L2_MM_GROUP_RT_CLASSES;</a>
+<a name="281"><span class="lineNum">     281 </span>            :         u64 VM_L2_BANK_SELECT_RESERVED_CID;</a>
+<a name="282"><span class="lineNum">     282 </span>            :         u64 VM_L2_BANK_SELECT_RESERVED_CID2;</a>
+<a name="283"><span class="lineNum">     283 </span>            :         u64 VM_L2_CACHE_PARITY_CNTL;</a>
+<a name="284"><span class="lineNum">     284 </span>            :         u64 VM_L2_IH_LOG_CNTL;</a>
+<a name="285"><span class="lineNum">     285 </span>            :         u64 VM_CONTEXT_CNTL[16];</a>
+<a name="286"><span class="lineNum">     286 </span>            :         u64 VM_CONTEXT_PAGE_TABLE_BASE_ADDR_LO32[16];</a>
+<a name="287"><span class="lineNum">     287 </span>            :         u64 VM_CONTEXT_PAGE_TABLE_BASE_ADDR_HI32[16];</a>
+<a name="288"><span class="lineNum">     288 </span>            :         u64 VM_CONTEXT_PAGE_TABLE_START_ADDR_LO32[16];</a>
+<a name="289"><span class="lineNum">     289 </span>            :         u64 VM_CONTEXT_PAGE_TABLE_START_ADDR_HI32[16];</a>
+<a name="290"><span class="lineNum">     290 </span>            :         u64 VM_CONTEXT_PAGE_TABLE_END_ADDR_LO32[16];</a>
+<a name="291"><span class="lineNum">     291 </span>            :         u64 VM_CONTEXT_PAGE_TABLE_END_ADDR_HI32[16];</a>
+<a name="292"><span class="lineNum">     292 </span>            :         u64 MC_VM_MX_L1_TLB_CNTL;</a>
+<a name="293"><span class="lineNum">     293 </span>            : };</a>
 <a name="294"><span class="lineNum">     294 </span>            : </a>
-<a name="295"><span class="lineNum">     295 </span>            : /**</a>
-<a name="296"><span class="lineNum">     296 </span>            :  * amdgpu_gmc_sign_extend - sign extend the given gmc address</a>
-<a name="297"><span class="lineNum">     297 </span>            :  *</a>
-<a name="298"><span class="lineNum">     298 </span>            :  * @addr: address to extend</a>
-<a name="299"><span class="lineNum">     299 </span>            :  */</a>
-<a name="300"><span class="lineNum">     300 </span>            : static inline uint64_t amdgpu_gmc_sign_extend(uint64_t addr)</a>
-<a name="301"><span class="lineNum">     301 </span>            : {</a>
-<a name="302"><span class="lineNum">     302 </span><span class="lineNoCov">          0 :         if (addr &gt;= AMDGPU_GMC_HOLE_START)</span></a>
-<a name="303"><span class="lineNum">     303 </span><span class="lineNoCov">          0 :                 addr |= AMDGPU_GMC_HOLE_END;</span></a>
-<a name="304"><span class="lineNum">     304 </span>            : </a>
-<a name="305"><span class="lineNum">     305 </span>            :         return addr;</a>
-<a name="306"><span class="lineNum">     306 </span>            : }</a>
-<a name="307"><span class="lineNum">     307 </span>            : </a>
-<a name="308"><span class="lineNum">     308 </span>            : int amdgpu_gmc_pdb0_alloc(struct amdgpu_device *adev);</a>
-<a name="309"><span class="lineNum">     309 </span>            : void amdgpu_gmc_get_pde_for_bo(struct amdgpu_bo *bo, int level,</a>
-<a name="310"><span class="lineNum">     310 </span>            :                                uint64_t *addr, uint64_t *flags);</a>
-<a name="311"><span class="lineNum">     311 </span>            : int amdgpu_gmc_set_pte_pde(struct amdgpu_device *adev, void *cpu_pt_addr,</a>
-<a name="312"><span class="lineNum">     312 </span>            :                                 uint32_t gpu_page_idx, uint64_t addr,</a>
-<a name="313"><span class="lineNum">     313 </span>            :                                 uint64_t flags);</a>
-<a name="314"><span class="lineNum">     314 </span>            : uint64_t amdgpu_gmc_pd_addr(struct amdgpu_bo *bo);</a>
-<a name="315"><span class="lineNum">     315 </span>            : uint64_t amdgpu_gmc_agp_addr(struct ttm_buffer_object *bo);</a>
-<a name="316"><span class="lineNum">     316 </span>            : void amdgpu_gmc_sysvm_location(struct amdgpu_device *adev, struct amdgpu_gmc *mc);</a>
-<a name="317"><span class="lineNum">     317 </span>            : void amdgpu_gmc_vram_location(struct amdgpu_device *adev, struct amdgpu_gmc *mc,</a>
-<a name="318"><span class="lineNum">     318 </span>            :                               u64 base);</a>
-<a name="319"><span class="lineNum">     319 </span>            : void amdgpu_gmc_gart_location(struct amdgpu_device *adev,</a>
-<a name="320"><span class="lineNum">     320 </span>            :                               struct amdgpu_gmc *mc);</a>
-<a name="321"><span class="lineNum">     321 </span>            : void amdgpu_gmc_agp_location(struct amdgpu_device *adev,</a>
-<a name="322"><span class="lineNum">     322 </span>            :                              struct amdgpu_gmc *mc);</a>
-<a name="323"><span class="lineNum">     323 </span>            : bool amdgpu_gmc_filter_faults(struct amdgpu_device *adev,</a>
-<a name="324"><span class="lineNum">     324 </span>            :                               struct amdgpu_ih_ring *ih, uint64_t addr,</a>
-<a name="325"><span class="lineNum">     325 </span>            :                               uint16_t pasid, uint64_t timestamp);</a>
-<a name="326"><span class="lineNum">     326 </span>            : void amdgpu_gmc_filter_faults_remove(struct amdgpu_device *adev, uint64_t addr,</a>
-<a name="327"><span class="lineNum">     327 </span>            :                                      uint16_t pasid);</a>
-<a name="328"><span class="lineNum">     328 </span>            : int amdgpu_gmc_ras_early_init(struct amdgpu_device *adev);</a>
-<a name="329"><span class="lineNum">     329 </span>            : int amdgpu_gmc_ras_late_init(struct amdgpu_device *adev);</a>
-<a name="330"><span class="lineNum">     330 </span>            : void amdgpu_gmc_ras_fini(struct amdgpu_device *adev);</a>
-<a name="331"><span class="lineNum">     331 </span>            : int amdgpu_gmc_allocate_vm_inv_eng(struct amdgpu_device *adev);</a>
-<a name="332"><span class="lineNum">     332 </span>            : </a>
-<a name="333"><span class="lineNum">     333 </span>            : extern void amdgpu_gmc_tmz_set(struct amdgpu_device *adev);</a>
-<a name="334"><span class="lineNum">     334 </span>            : extern void amdgpu_gmc_noretry_set(struct amdgpu_device *adev);</a>
-<a name="335"><span class="lineNum">     335 </span>            : </a>
-<a name="336"><span class="lineNum">     336 </span>            : extern void</a>
-<a name="337"><span class="lineNum">     337 </span>            : amdgpu_gmc_set_vm_fault_masks(struct amdgpu_device *adev, int hub_type,</a>
-<a name="338"><span class="lineNum">     338 </span>            :                               bool enable);</a>
-<a name="339"><span class="lineNum">     339 </span>            : </a>
-<a name="340"><span class="lineNum">     340 </span>            : void amdgpu_gmc_get_vbios_allocations(struct amdgpu_device *adev);</a>
-<a name="341"><span class="lineNum">     341 </span>            : </a>
-<a name="342"><span class="lineNum">     342 </span>            : void amdgpu_gmc_init_pdb0(struct amdgpu_device *adev);</a>
-<a name="343"><span class="lineNum">     343 </span>            : uint64_t amdgpu_gmc_vram_mc2pa(struct amdgpu_device *adev, uint64_t mc_addr);</a>
-<a name="344"><span class="lineNum">     344 </span>            : uint64_t amdgpu_gmc_vram_pa(struct amdgpu_device *adev, struct amdgpu_bo *bo);</a>
-<a name="345"><span class="lineNum">     345 </span>            : uint64_t amdgpu_gmc_vram_cpu_pa(struct amdgpu_device *adev, struct amdgpu_bo *bo);</a>
-<a name="346"><span class="lineNum">     346 </span>            : int amdgpu_gmc_vram_checking(struct amdgpu_device *adev);</a>
-<a name="347"><span class="lineNum">     347 </span>            : #endif</a>
+<a name="295"><span class="lineNum">     295 </span>            : #define amdgpu_gmc_flush_gpu_tlb(adev, vmid, vmhub, type) ((adev)-&gt;gmc.gmc_funcs-&gt;flush_gpu_tlb((adev), (vmid), (vmhub), (type)))</a>
+<a name="296"><span class="lineNum">     296 </span>            : #define amdgpu_gmc_flush_gpu_tlb_pasid(adev, pasid, type, allhub) \</a>
+<a name="297"><span class="lineNum">     297 </span>            :         ((adev)-&gt;gmc.gmc_funcs-&gt;flush_gpu_tlb_pasid \</a>
+<a name="298"><span class="lineNum">     298 </span>            :         ((adev), (pasid), (type), (allhub)))</a>
+<a name="299"><span class="lineNum">     299 </span>            : #define amdgpu_gmc_emit_flush_gpu_tlb(r, vmid, addr) (r)-&gt;adev-&gt;gmc.gmc_funcs-&gt;emit_flush_gpu_tlb((r), (vmid), (addr))</a>
+<a name="300"><span class="lineNum">     300 </span>            : #define amdgpu_gmc_emit_pasid_mapping(r, vmid, pasid) (r)-&gt;adev-&gt;gmc.gmc_funcs-&gt;emit_pasid_mapping((r), (vmid), (pasid))</a>
+<a name="301"><span class="lineNum">     301 </span>            : #define amdgpu_gmc_map_mtype(adev, flags) (adev)-&gt;gmc.gmc_funcs-&gt;map_mtype((adev),(flags))</a>
+<a name="302"><span class="lineNum">     302 </span>            : #define amdgpu_gmc_get_vm_pde(adev, level, dst, flags) (adev)-&gt;gmc.gmc_funcs-&gt;get_vm_pde((adev), (level), (dst), (flags))</a>
+<a name="303"><span class="lineNum">     303 </span>            : #define amdgpu_gmc_get_vm_pte(adev, mapping, flags) (adev)-&gt;gmc.gmc_funcs-&gt;get_vm_pte((adev), (mapping), (flags))</a>
+<a name="304"><span class="lineNum">     304 </span>            : #define amdgpu_gmc_get_vbios_fb_size(adev) (adev)-&gt;gmc.gmc_funcs-&gt;get_vbios_fb_size((adev))</a>
+<a name="305"><span class="lineNum">     305 </span>            : </a>
+<a name="306"><span class="lineNum">     306 </span>            : /**</a>
+<a name="307"><span class="lineNum">     307 </span>            :  * amdgpu_gmc_vram_full_visible - Check if full VRAM is visible through the BAR</a>
+<a name="308"><span class="lineNum">     308 </span>            :  *</a>
+<a name="309"><span class="lineNum">     309 </span>            :  * @adev: amdgpu_device pointer</a>
+<a name="310"><span class="lineNum">     310 </span>            :  *</a>
+<a name="311"><span class="lineNum">     311 </span>            :  * Returns:</a>
+<a name="312"><span class="lineNum">     312 </span>            :  * True if full VRAM is visible through the BAR</a>
+<a name="313"><span class="lineNum">     313 </span>            :  */</a>
+<a name="314"><span class="lineNum">     314 </span>            : static inline bool amdgpu_gmc_vram_full_visible(struct amdgpu_gmc *gmc)</a>
+<a name="315"><span class="lineNum">     315 </span>            : {</a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineNoCov">          0 :         WARN_ON(gmc-&gt;real_vram_size &lt; gmc-&gt;visible_vram_size);</span></a>
+<a name="317"><span class="lineNum">     317 </span>            : </a>
+<a name="318"><span class="lineNum">     318 </span><span class="lineNoCov">          0 :         return (gmc-&gt;real_vram_size == gmc-&gt;visible_vram_size);</span></a>
+<a name="319"><span class="lineNum">     319 </span>            : }</a>
+<a name="320"><span class="lineNum">     320 </span>            : </a>
+<a name="321"><span class="lineNum">     321 </span>            : /**</a>
+<a name="322"><span class="lineNum">     322 </span>            :  * amdgpu_gmc_sign_extend - sign extend the given gmc address</a>
+<a name="323"><span class="lineNum">     323 </span>            :  *</a>
+<a name="324"><span class="lineNum">     324 </span>            :  * @addr: address to extend</a>
+<a name="325"><span class="lineNum">     325 </span>            :  */</a>
+<a name="326"><span class="lineNum">     326 </span>            : static inline uint64_t amdgpu_gmc_sign_extend(uint64_t addr)</a>
+<a name="327"><span class="lineNum">     327 </span>            : {</a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineNoCov">          0 :         if (addr &gt;= AMDGPU_GMC_HOLE_START)</span></a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 :                 addr |= AMDGPU_GMC_HOLE_END;</span></a>
+<a name="330"><span class="lineNum">     330 </span>            : </a>
+<a name="331"><span class="lineNum">     331 </span>            :         return addr;</a>
+<a name="332"><span class="lineNum">     332 </span>            : }</a>
+<a name="333"><span class="lineNum">     333 </span>            : </a>
+<a name="334"><span class="lineNum">     334 </span>            : int amdgpu_gmc_pdb0_alloc(struct amdgpu_device *adev);</a>
+<a name="335"><span class="lineNum">     335 </span>            : void amdgpu_gmc_get_pde_for_bo(struct amdgpu_bo *bo, int level,</a>
+<a name="336"><span class="lineNum">     336 </span>            :                                uint64_t *addr, uint64_t *flags);</a>
+<a name="337"><span class="lineNum">     337 </span>            : int amdgpu_gmc_set_pte_pde(struct amdgpu_device *adev, void *cpu_pt_addr,</a>
+<a name="338"><span class="lineNum">     338 </span>            :                                 uint32_t gpu_page_idx, uint64_t addr,</a>
+<a name="339"><span class="lineNum">     339 </span>            :                                 uint64_t flags);</a>
+<a name="340"><span class="lineNum">     340 </span>            : uint64_t amdgpu_gmc_pd_addr(struct amdgpu_bo *bo);</a>
+<a name="341"><span class="lineNum">     341 </span>            : uint64_t amdgpu_gmc_agp_addr(struct ttm_buffer_object *bo);</a>
+<a name="342"><span class="lineNum">     342 </span>            : void amdgpu_gmc_sysvm_location(struct amdgpu_device *adev, struct amdgpu_gmc *mc);</a>
+<a name="343"><span class="lineNum">     343 </span>            : void amdgpu_gmc_vram_location(struct amdgpu_device *adev, struct amdgpu_gmc *mc,</a>
+<a name="344"><span class="lineNum">     344 </span>            :                               u64 base);</a>
+<a name="345"><span class="lineNum">     345 </span>            : void amdgpu_gmc_gart_location(struct amdgpu_device *adev,</a>
+<a name="346"><span class="lineNum">     346 </span>            :                               struct amdgpu_gmc *mc);</a>
+<a name="347"><span class="lineNum">     347 </span>            : void amdgpu_gmc_agp_location(struct amdgpu_device *adev,</a>
+<a name="348"><span class="lineNum">     348 </span>            :                              struct amdgpu_gmc *mc);</a>
+<a name="349"><span class="lineNum">     349 </span>            : bool amdgpu_gmc_filter_faults(struct amdgpu_device *adev,</a>
+<a name="350"><span class="lineNum">     350 </span>            :                               struct amdgpu_ih_ring *ih, uint64_t addr,</a>
+<a name="351"><span class="lineNum">     351 </span>            :                               uint16_t pasid, uint64_t timestamp);</a>
+<a name="352"><span class="lineNum">     352 </span>            : void amdgpu_gmc_filter_faults_remove(struct amdgpu_device *adev, uint64_t addr,</a>
+<a name="353"><span class="lineNum">     353 </span>            :                                      uint16_t pasid);</a>
+<a name="354"><span class="lineNum">     354 </span>            : int amdgpu_gmc_ras_early_init(struct amdgpu_device *adev);</a>
+<a name="355"><span class="lineNum">     355 </span>            : int amdgpu_gmc_ras_late_init(struct amdgpu_device *adev);</a>
+<a name="356"><span class="lineNum">     356 </span>            : void amdgpu_gmc_ras_fini(struct amdgpu_device *adev);</a>
+<a name="357"><span class="lineNum">     357 </span>            : int amdgpu_gmc_allocate_vm_inv_eng(struct amdgpu_device *adev);</a>
+<a name="358"><span class="lineNum">     358 </span>            : </a>
+<a name="359"><span class="lineNum">     359 </span>            : extern void amdgpu_gmc_tmz_set(struct amdgpu_device *adev);</a>
+<a name="360"><span class="lineNum">     360 </span>            : extern void amdgpu_gmc_noretry_set(struct amdgpu_device *adev);</a>
+<a name="361"><span class="lineNum">     361 </span>            : </a>
+<a name="362"><span class="lineNum">     362 </span>            : extern void</a>
+<a name="363"><span class="lineNum">     363 </span>            : amdgpu_gmc_set_vm_fault_masks(struct amdgpu_device *adev, int hub_type,</a>
+<a name="364"><span class="lineNum">     364 </span>            :                               bool enable);</a>
+<a name="365"><span class="lineNum">     365 </span>            : </a>
+<a name="366"><span class="lineNum">     366 </span>            : void amdgpu_gmc_get_vbios_allocations(struct amdgpu_device *adev);</a>
+<a name="367"><span class="lineNum">     367 </span>            : </a>
+<a name="368"><span class="lineNum">     368 </span>            : void amdgpu_gmc_init_pdb0(struct amdgpu_device *adev);</a>
+<a name="369"><span class="lineNum">     369 </span>            : uint64_t amdgpu_gmc_vram_mc2pa(struct amdgpu_device *adev, uint64_t mc_addr);</a>
+<a name="370"><span class="lineNum">     370 </span>            : uint64_t amdgpu_gmc_vram_pa(struct amdgpu_device *adev, struct amdgpu_bo *bo);</a>
+<a name="371"><span class="lineNum">     371 </span>            : uint64_t amdgpu_gmc_vram_cpu_pa(struct amdgpu_device *adev, struct amdgpu_bo *bo);</a>
+<a name="372"><span class="lineNum">     372 </span>            : int amdgpu_gmc_vram_checking(struct amdgpu_device *adev);</a>
+<a name="373"><span class="lineNum">     373 </span>            : #endif</a>
 </pre>
       </td>
     </tr>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -104,7 +104,7 @@
 <a name="42"><span class="lineNum">      42 </span>            : </a>
 <a name="43"><span class="lineNum">      43 </span>            : static __always_inline unsigned long hweight_long(unsigned long w)</a>
 <a name="44"><span class="lineNum">      44 </span>            : {</a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">          8 :         return sizeof(w) == 4 ? hweight32(w) : hweight64((__u64)w);</span></a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineCov">          4 :         return sizeof(w) == 4 ? hweight32(w) : hweight64((__u64)w);</span></a>
 <a name="46"><span class="lineNum">      46 </span>            : }</a>
 <a name="47"><span class="lineNum">      47 </span>            : </a>
 <a name="48"><span class="lineNum">      48 </span>            : /**</a>
@@ -114,7 +114,7 @@
 <a name="52"><span class="lineNum">      52 </span>            :  */</a>
 <a name="53"><span class="lineNum">      53 </span>            : static inline __u64 rol64(__u64 word, unsigned int shift)</a>
 <a name="54"><span class="lineNum">      54 </span>            : {</a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        437 :         return (word &lt;&lt; (shift &amp; 63)) | (word &gt;&gt; ((-shift) &amp; 63));</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        227 :         return (word &lt;&lt; (shift &amp; 63)) | (word &gt;&gt; ((-shift) &amp; 63));</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : }</a>
 <a name="57"><span class="lineNum">      57 </span>            : </a>
 <a name="58"><span class="lineNum">      58 </span>            : /**</a>
@@ -134,7 +134,7 @@
 <a name="72"><span class="lineNum">      72 </span>            :  */</a>
 <a name="73"><span class="lineNum">      73 </span>            : static inline __u32 rol32(__u32 word, unsigned int shift)</a>
 <a name="74"><span class="lineNum">      74 </span>            : {</a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">       2004 :         return (word &lt;&lt; (shift &amp; 31)) | (word &gt;&gt; ((-shift) &amp; 31));</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">       1002 :         return (word &lt;&lt; (shift &amp; 31)) | (word &gt;&gt; ((-shift) &amp; 31));</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : }</a>
 <a name="77"><span class="lineNum">      77 </span>            : </a>
 <a name="78"><span class="lineNum">      78 </span>            : /**</a>
@@ -144,7 +144,7 @@
 <a name="82"><span class="lineNum">      82 </span>            :  */</a>
 <a name="83"><span class="lineNum">      83 </span>            : static inline __u32 ror32(__u32 word, unsigned int shift)</a>
 <a name="84"><span class="lineNum">      84 </span>            : {</a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">    1198720 :         return (word &gt;&gt; (shift &amp; 31)) | (word &lt;&lt; ((-shift) &amp; 31));</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">     612160 :         return (word &gt;&gt; (shift &amp; 31)) | (word &lt;&lt; ((-shift) &amp; 31));</span></a>
 <a name="86"><span class="lineNum">      86 </span>            : }</a>
 <a name="87"><span class="lineNum">      87 </span>            : </a>
 <a name="88"><span class="lineNum">      88 </span>            : /**</a>
@@ -215,7 +215,7 @@
 <a name="153"><span class="lineNum">     153 </span>            : {</a>
 <a name="154"><span class="lineNum">     154 </span>            :         if (sizeof(l) == 4)</a>
 <a name="155"><span class="lineNum">     155 </span>            :                 return fls(l);</a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">         20 :         return fls64(l);</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">         10 :         return fls64(l);</span></a>
 <a name="157"><span class="lineNum">     157 </span>            : }</a>
 <a name="158"><span class="lineNum">     158 </span>            : </a>
 <a name="159"><span class="lineNum">     159 </span>            : static inline int get_count_order(unsigned int count)</a>

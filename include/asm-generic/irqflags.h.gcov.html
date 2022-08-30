@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -88,8 +88,8 @@
 <a name="26"><span class="lineNum">      26 </span>            : static inline unsigned long arch_local_irq_save(void)</a>
 <a name="27"><span class="lineNum">      27 </span>            : {</a>
 <a name="28"><span class="lineNum">      28 </span>            :         unsigned long flags;</a>
-<a name="29"><span class="lineNum">      29 </span><span class="lineCov">      65853 :         flags = arch_local_save_flags();</span></a>
-<a name="30"><span class="lineNum">      30 </span><span class="lineCov">      65853 :         arch_local_irq_restore(ARCH_IRQ_DISABLED);</span></a>
+<a name="29"><span class="lineNum">      29 </span><span class="lineCov">      36000 :         flags = arch_local_save_flags();</span></a>
+<a name="30"><span class="lineNum">      30 </span><span class="lineCov">      36000 :         arch_local_irq_restore(ARCH_IRQ_DISABLED);</span></a>
 <a name="31"><span class="lineNum">      31 </span>            :         return flags;</a>
 <a name="32"><span class="lineNum">      32 </span>            : }</a>
 <a name="33"><span class="lineNum">      33 </span>            : #endif</a>
@@ -98,7 +98,7 @@
 <a name="36"><span class="lineNum">      36 </span>            : #ifndef arch_irqs_disabled_flags</a>
 <a name="37"><span class="lineNum">      37 </span>            : static inline int arch_irqs_disabled_flags(unsigned long flags)</a>
 <a name="38"><span class="lineNum">      38 </span>            : {</a>
-<a name="39"><span class="lineNum">      39 </span><span class="lineCov">         80 :         return flags == ARCH_IRQ_DISABLED;</span></a>
+<a name="39"><span class="lineNum">      39 </span><span class="lineCov">         40 :         return flags == ARCH_IRQ_DISABLED;</span></a>
 <a name="40"><span class="lineNum">      40 </span>            : }</a>
 <a name="41"><span class="lineNum">      41 </span>            : #endif</a>
 <a name="42"><span class="lineNum">      42 </span>            : </a>

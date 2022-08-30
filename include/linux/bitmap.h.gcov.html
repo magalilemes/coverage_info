@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -303,15 +303,15 @@
 <a name="241"><span class="lineNum">     241 </span>            : </a>
 <a name="242"><span class="lineNum">     242 </span>            : static inline void bitmap_fill(unsigned long *dst, unsigned int nbits)</a>
 <a name="243"><span class="lineNum">     243 </span>            : {</a>
-<a name="244"><span class="lineNum">     244 </span><span class="lineCov">        542 :         unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);</span></a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineCov">        542 :         memset(dst, 0xff, len);</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineCov">        329 :         unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">        329 :         memset(dst, 0xff, len);</span></a>
 <a name="246"><span class="lineNum">     246 </span>            : }</a>
 <a name="247"><span class="lineNum">     247 </span>            : </a>
 <a name="248"><span class="lineNum">     248 </span>            : static inline void bitmap_copy(unsigned long *dst, const unsigned long *src,</a>
 <a name="249"><span class="lineNum">     249 </span>            :                         unsigned int nbits)</a>
 <a name="250"><span class="lineNum">     250 </span>            : {</a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineCov">         70 :         unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);</span></a>
-<a name="252"><span class="lineNum">     252 </span><span class="lineCov">         70 :         memcpy(dst, src, len);</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineCov">         35 :         unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineCov">         35 :         memcpy(dst, src, len);</span></a>
 <a name="253"><span class="lineNum">     253 </span>            : }</a>
 <a name="254"><span class="lineNum">     254 </span>            : </a>
 <a name="255"><span class="lineNum">     255 </span>            : /*</a>
@@ -347,7 +347,7 @@
 <a name="285"><span class="lineNum">     285 </span>            :                         const unsigned long *src2, unsigned int nbits)</a>
 <a name="286"><span class="lineNum">     286 </span>            : {</a>
 <a name="287"><span class="lineNum">     287 </span>            :         if (small_const_nbits(nbits))</a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">         14 :                 return (*dst = *src1 &amp; *src2 &amp; BITMAP_LAST_WORD_MASK(nbits)) != 0;</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          7 :                 return (*dst = *src1 &amp; *src2 &amp; BITMAP_LAST_WORD_MASK(nbits)) != 0;</span></a>
 <a name="289"><span class="lineNum">     289 </span>            :         return __bitmap_and(dst, src1, src2, nbits);</a>
 <a name="290"><span class="lineNum">     290 </span>            : }</a>
 <a name="291"><span class="lineNum">     291 </span>            : </a>
@@ -393,11 +393,11 @@
 <a name="331"><span class="lineNum">     331 </span>            : #endif</a>
 <a name="332"><span class="lineNum">     332 </span>            : #define BITMAP_MEM_MASK (BITMAP_MEM_ALIGNMENT - 1)</a>
 <a name="333"><span class="lineNum">     333 </span>            : </a>
-<a name="334"><span class="lineNum">     334 </span><span class="lineCov">          8 : static inline int bitmap_equal(const unsigned long *src1,</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineCov">          4 : static inline int bitmap_equal(const unsigned long *src1,</span></a>
 <a name="335"><span class="lineNum">     335 </span>            :                         const unsigned long *src2, unsigned int nbits)</a>
 <a name="336"><span class="lineNum">     336 </span>            : {</a>
-<a name="337"><span class="lineNum">     337 </span><span class="lineCov">          8 :         if (small_const_nbits(nbits))</span></a>
-<a name="338"><span class="lineNum">     338 </span><span class="lineCov">          8 :                 return !((*src1 ^ *src2) &amp; BITMAP_LAST_WORD_MASK(nbits));</span></a>
+<a name="337"><span class="lineNum">     337 </span><span class="lineCov">          4 :         if (small_const_nbits(nbits))</span></a>
+<a name="338"><span class="lineNum">     338 </span><span class="lineCov">          4 :                 return !((*src1 ^ *src2) &amp; BITMAP_LAST_WORD_MASK(nbits));</span></a>
 <a name="339"><span class="lineNum">     339 </span><span class="lineNoCov">          0 :         if (__builtin_constant_p(nbits &amp; BITMAP_MEM_MASK) &amp;&amp;</span></a>
 <a name="340"><span class="lineNum">     340 </span>            :             IS_ALIGNED(nbits, BITMAP_MEM_ALIGNMENT))</a>
 <a name="341"><span class="lineNum">     341 </span><span class="lineNoCov">          0 :                 return !memcmp(src1, src2, nbits / 8);</span></a>
@@ -442,10 +442,10 @@
 <a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 :                 return __bitmap_subset(src1, src2, nbits);</span></a>
 <a name="381"><span class="lineNum">     381 </span>            : }</a>
 <a name="382"><span class="lineNum">     382 </span>            : </a>
-<a name="383"><span class="lineNum">     383 </span><span class="lineCov">        134 : static inline bool bitmap_empty(const unsigned long *src, unsigned nbits)</span></a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineCov">         67 : static inline bool bitmap_empty(const unsigned long *src, unsigned nbits)</span></a>
 <a name="384"><span class="lineNum">     384 </span>            : {</a>
-<a name="385"><span class="lineNum">     385 </span><span class="lineCov">        134 :         if (small_const_nbits(nbits))</span></a>
-<a name="386"><span class="lineNum">     386 </span><span class="lineCov">        144 :                 return ! (*src &amp; BITMAP_LAST_WORD_MASK(nbits));</span></a>
+<a name="385"><span class="lineNum">     385 </span><span class="lineCov">         67 :         if (small_const_nbits(nbits))</span></a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineCov">         72 :                 return ! (*src &amp; BITMAP_LAST_WORD_MASK(nbits));</span></a>
 <a name="387"><span class="lineNum">     387 </span>            : </a>
 <a name="388"><span class="lineNum">     388 </span><span class="lineNoCov">          0 :         return find_first_bit(src, nbits) == nbits;</span></a>
 <a name="389"><span class="lineNum">     389 </span>            : }</a>
@@ -455,42 +455,42 @@
 <a name="393"><span class="lineNum">     393 </span>            :         if (small_const_nbits(nbits))</a>
 <a name="394"><span class="lineNum">     394 </span>            :                 return ! (~(*src) &amp; BITMAP_LAST_WORD_MASK(nbits));</a>
 <a name="395"><span class="lineNum">     395 </span>            : </a>
-<a name="396"><span class="lineNum">     396 </span><span class="lineCov">        238 :         return find_first_zero_bit(src, nbits) == nbits;</span></a>
+<a name="396"><span class="lineNum">     396 </span><span class="lineCov">        119 :         return find_first_zero_bit(src, nbits) == nbits;</span></a>
 <a name="397"><span class="lineNum">     397 </span>            : }</a>
 <a name="398"><span class="lineNum">     398 </span>            : </a>
 <a name="399"><span class="lineNum">     399 </span>            : static __always_inline int bitmap_weight(const unsigned long *src, unsigned int nbits)</a>
 <a name="400"><span class="lineNum">     400 </span>            : {</a>
-<a name="401"><span class="lineNum">     401 </span><span class="lineCov">          2 :         if (small_const_nbits(nbits))</span></a>
-<a name="402"><span class="lineNum">     402 </span><span class="lineCov">         16 :                 return hweight_long(*src &amp; BITMAP_LAST_WORD_MASK(nbits));</span></a>
+<a name="401"><span class="lineNum">     401 </span><span class="lineCov">          1 :         if (small_const_nbits(nbits))</span></a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineCov">          8 :                 return hweight_long(*src &amp; BITMAP_LAST_WORD_MASK(nbits));</span></a>
 <a name="403"><span class="lineNum">     403 </span><span class="lineNoCov">          0 :         return __bitmap_weight(src, nbits);</span></a>
 <a name="404"><span class="lineNum">     404 </span>            : }</a>
 <a name="405"><span class="lineNum">     405 </span>            : </a>
 <a name="406"><span class="lineNum">     406 </span>            : static __always_inline void bitmap_set(unsigned long *map, unsigned int start,</a>
 <a name="407"><span class="lineNum">     407 </span>            :                 unsigned int nbits)</a>
 <a name="408"><span class="lineNum">     408 </span>            : {</a>
-<a name="409"><span class="lineNum">     409 </span><span class="lineCov">        476 :         if (__builtin_constant_p(nbits) &amp;&amp; nbits == 1)</span></a>
-<a name="410"><span class="lineNum">     410 </span><span class="lineCov">        128 :                 __set_bit(start, map);</span></a>
-<a name="411"><span class="lineNum">     411 </span><span class="lineCov">        476 :         else if (__builtin_constant_p(start &amp; BITMAP_MEM_MASK) &amp;&amp;</span></a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineCov">        238 :         if (__builtin_constant_p(nbits) &amp;&amp; nbits == 1)</span></a>
+<a name="410"><span class="lineNum">     410 </span><span class="lineCov">         64 :                 __set_bit(start, map);</span></a>
+<a name="411"><span class="lineNum">     411 </span><span class="lineCov">        238 :         else if (__builtin_constant_p(start &amp; BITMAP_MEM_MASK) &amp;&amp;</span></a>
 <a name="412"><span class="lineNum">     412 </span><span class="lineNoCov">          0 :                  IS_ALIGNED(start, BITMAP_MEM_ALIGNMENT) &amp;&amp;</span></a>
 <a name="413"><span class="lineNum">     413 </span><span class="lineNoCov">          0 :                  __builtin_constant_p(nbits &amp; BITMAP_MEM_MASK) &amp;&amp;</span></a>
 <a name="414"><span class="lineNum">     414 </span>            :                  IS_ALIGNED(nbits, BITMAP_MEM_ALIGNMENT))</a>
 <a name="415"><span class="lineNum">     415 </span><span class="lineNoCov">          0 :                 memset((char *)map + start / 8, 0xff, nbits / 8);</span></a>
 <a name="416"><span class="lineNum">     416 </span>            :         else</a>
-<a name="417"><span class="lineNum">     417 </span><span class="lineCov">        476 :                 __bitmap_set(map, start, nbits);</span></a>
+<a name="417"><span class="lineNum">     417 </span><span class="lineCov">        238 :                 __bitmap_set(map, start, nbits);</span></a>
 <a name="418"><span class="lineNum">     418 </span>            : }</a>
 <a name="419"><span class="lineNum">     419 </span>            : </a>
 <a name="420"><span class="lineNum">     420 </span>            : static __always_inline void bitmap_clear(unsigned long *map, unsigned int start,</a>
 <a name="421"><span class="lineNum">     421 </span>            :                 unsigned int nbits)</a>
 <a name="422"><span class="lineNum">     422 </span>            : {</a>
-<a name="423"><span class="lineNum">     423 </span><span class="lineCov">        476 :         if (__builtin_constant_p(nbits) &amp;&amp; nbits == 1)</span></a>
+<a name="423"><span class="lineNum">     423 </span><span class="lineCov">        238 :         if (__builtin_constant_p(nbits) &amp;&amp; nbits == 1)</span></a>
 <a name="424"><span class="lineNum">     424 </span><span class="lineNoCov">          0 :                 __clear_bit(start, map);</span></a>
-<a name="425"><span class="lineNum">     425 </span><span class="lineCov">        476 :         else if (__builtin_constant_p(start &amp; BITMAP_MEM_MASK) &amp;&amp;</span></a>
+<a name="425"><span class="lineNum">     425 </span><span class="lineCov">        238 :         else if (__builtin_constant_p(start &amp; BITMAP_MEM_MASK) &amp;&amp;</span></a>
 <a name="426"><span class="lineNum">     426 </span><span class="lineNoCov">          0 :                  IS_ALIGNED(start, BITMAP_MEM_ALIGNMENT) &amp;&amp;</span></a>
 <a name="427"><span class="lineNum">     427 </span><span class="lineNoCov">          0 :                  __builtin_constant_p(nbits &amp; BITMAP_MEM_MASK) &amp;&amp;</span></a>
 <a name="428"><span class="lineNum">     428 </span>            :                  IS_ALIGNED(nbits, BITMAP_MEM_ALIGNMENT))</a>
 <a name="429"><span class="lineNum">     429 </span><span class="lineNoCov">          0 :                 memset((char *)map + start / 8, 0, nbits / 8);</span></a>
 <a name="430"><span class="lineNum">     430 </span>            :         else</a>
-<a name="431"><span class="lineNum">     431 </span><span class="lineCov">        476 :                 __bitmap_clear(map, start, nbits);</span></a>
+<a name="431"><span class="lineNum">     431 </span><span class="lineCov">        238 :                 __bitmap_clear(map, start, nbits);</span></a>
 <a name="432"><span class="lineNum">     432 </span>            : }</a>
 <a name="433"><span class="lineNum">     433 </span>            : </a>
 <a name="434"><span class="lineNum">     434 </span>            : static inline void bitmap_shift_right(unsigned long *dst, const unsigned long *src,</a>

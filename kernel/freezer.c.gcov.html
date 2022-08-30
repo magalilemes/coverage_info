@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -220,7 +220,7 @@
 <a name="158"><span class="lineNum">     158 </span>            :  *</a>
 <a name="159"><span class="lineNum">     159 </span>            :  * Mark %current freezable and enter refrigerator if necessary.</a>
 <a name="160"><span class="lineNum">     160 </span>            :  */</a>
-<a name="161"><span class="lineNum">     161 </span><span class="lineCov">          6 : bool set_freezable(void)</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineCov">          3 : bool set_freezable(void)</span></a>
 <a name="162"><span class="lineNum">     162 </span>            : {</a>
 <a name="163"><span class="lineNum">     163 </span>            :         might_sleep();</a>
 <a name="164"><span class="lineNum">     164 </span>            : </a>
@@ -229,11 +229,11 @@
 <a name="167"><span class="lineNum">     167 </span>            :          * freezer notices that we aren't frozen yet or the freezing</a>
 <a name="168"><span class="lineNum">     168 </span>            :          * condition is visible to try_to_freeze() below.</a>
 <a name="169"><span class="lineNum">     169 </span>            :          */</a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">          6 :         spin_lock_irq(&amp;freezer_lock);</span></a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">          6 :         current-&gt;flags &amp;= ~PF_NOFREEZE;</span></a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">          6 :         spin_unlock_irq(&amp;freezer_lock);</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">          3 :         spin_lock_irq(&amp;freezer_lock);</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">          3 :         current-&gt;flags &amp;= ~PF_NOFREEZE;</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">          3 :         spin_unlock_irq(&amp;freezer_lock);</span></a>
 <a name="173"><span class="lineNum">     173 </span>            : </a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">          6 :         return try_to_freeze();</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">          3 :         return try_to_freeze();</span></a>
 <a name="175"><span class="lineNum">     175 </span>            : }</a>
 <a name="176"><span class="lineNum">     176 </span>            : EXPORT_SYMBOL(set_freezable);</a>
 </pre>

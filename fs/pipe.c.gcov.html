@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -1478,14 +1478,14 @@
 <a name="1416"><span class="lineNum">    1416 </span>            :  * d_name - pipe: will go nicely and kill the special-casing in procfs.</a>
 <a name="1417"><span class="lineNum">    1417 </span>            :  */</a>
 <a name="1418"><span class="lineNum">    1418 </span>            : </a>
-<a name="1419"><span class="lineNum">    1419 </span><span class="lineCov">          2 : static int pipefs_init_fs_context(struct fs_context *fc)</span></a>
+<a name="1419"><span class="lineNum">    1419 </span><span class="lineCov">          1 : static int pipefs_init_fs_context(struct fs_context *fc)</span></a>
 <a name="1420"><span class="lineNum">    1420 </span>            : {</a>
-<a name="1421"><span class="lineNum">    1421 </span><span class="lineCov">          2 :         struct pseudo_fs_context *ctx = init_pseudo(fc, PIPEFS_MAGIC);</span></a>
-<a name="1422"><span class="lineNum">    1422 </span><span class="lineCov">          2 :         if (!ctx)</span></a>
+<a name="1421"><span class="lineNum">    1421 </span><span class="lineCov">          1 :         struct pseudo_fs_context *ctx = init_pseudo(fc, PIPEFS_MAGIC);</span></a>
+<a name="1422"><span class="lineNum">    1422 </span><span class="lineCov">          1 :         if (!ctx)</span></a>
 <a name="1423"><span class="lineNum">    1423 </span>            :                 return -ENOMEM;</a>
-<a name="1424"><span class="lineNum">    1424 </span><span class="lineCov">          2 :         ctx-&gt;ops = &amp;pipefs_ops;</span></a>
-<a name="1425"><span class="lineNum">    1425 </span><span class="lineCov">          2 :         ctx-&gt;dops = &amp;pipefs_dentry_operations;</span></a>
-<a name="1426"><span class="lineNum">    1426 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="1424"><span class="lineNum">    1424 </span><span class="lineCov">          1 :         ctx-&gt;ops = &amp;pipefs_ops;</span></a>
+<a name="1425"><span class="lineNum">    1425 </span><span class="lineCov">          1 :         ctx-&gt;dops = &amp;pipefs_dentry_operations;</span></a>
+<a name="1426"><span class="lineNum">    1426 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="1427"><span class="lineNum">    1427 </span>            : }</a>
 <a name="1428"><span class="lineNum">    1428 </span>            : </a>
 <a name="1429"><span class="lineNum">    1429 </span>            : static struct file_system_type pipe_fs_type = {</a>
@@ -1548,21 +1548,21 @@
 <a name="1486"><span class="lineNum">    1486 </span>            : };</a>
 <a name="1487"><span class="lineNum">    1487 </span>            : #endif</a>
 <a name="1488"><span class="lineNum">    1488 </span>            : </a>
-<a name="1489"><span class="lineNum">    1489 </span><span class="lineCov">          2 : static int __init init_pipe_fs(void)</span></a>
+<a name="1489"><span class="lineNum">    1489 </span><span class="lineCov">          1 : static int __init init_pipe_fs(void)</span></a>
 <a name="1490"><span class="lineNum">    1490 </span>            : {</a>
-<a name="1491"><span class="lineNum">    1491 </span><span class="lineCov">          2 :         int err = register_filesystem(&amp;pipe_fs_type);</span></a>
+<a name="1491"><span class="lineNum">    1491 </span><span class="lineCov">          1 :         int err = register_filesystem(&amp;pipe_fs_type);</span></a>
 <a name="1492"><span class="lineNum">    1492 </span>            : </a>
-<a name="1493"><span class="lineNum">    1493 </span><span class="lineCov">          2 :         if (!err) {</span></a>
-<a name="1494"><span class="lineNum">    1494 </span><span class="lineCov">          2 :                 pipe_mnt = kern_mount(&amp;pipe_fs_type);</span></a>
-<a name="1495"><span class="lineNum">    1495 </span><span class="lineCov">          4 :                 if (IS_ERR(pipe_mnt)) {</span></a>
+<a name="1493"><span class="lineNum">    1493 </span><span class="lineCov">          1 :         if (!err) {</span></a>
+<a name="1494"><span class="lineNum">    1494 </span><span class="lineCov">          1 :                 pipe_mnt = kern_mount(&amp;pipe_fs_type);</span></a>
+<a name="1495"><span class="lineNum">    1495 </span><span class="lineCov">          2 :                 if (IS_ERR(pipe_mnt)) {</span></a>
 <a name="1496"><span class="lineNum">    1496 </span><span class="lineNoCov">          0 :                         err = PTR_ERR(pipe_mnt);</span></a>
 <a name="1497"><span class="lineNum">    1497 </span><span class="lineNoCov">          0 :                         unregister_filesystem(&amp;pipe_fs_type);</span></a>
 <a name="1498"><span class="lineNum">    1498 </span>            :                 }</a>
 <a name="1499"><span class="lineNum">    1499 </span>            :         }</a>
 <a name="1500"><span class="lineNum">    1500 </span>            : #ifdef CONFIG_SYSCTL</a>
-<a name="1501"><span class="lineNum">    1501 </span><span class="lineCov">          2 :         register_sysctl_init(&quot;fs&quot;, fs_pipe_sysctls);</span></a>
+<a name="1501"><span class="lineNum">    1501 </span><span class="lineCov">          1 :         register_sysctl_init(&quot;fs&quot;, fs_pipe_sysctls);</span></a>
 <a name="1502"><span class="lineNum">    1502 </span>            : #endif</a>
-<a name="1503"><span class="lineNum">    1503 </span><span class="lineCov">          2 :         return err;</span></a>
+<a name="1503"><span class="lineNum">    1503 </span><span class="lineCov">          1 :         return err;</span></a>
 <a name="1504"><span class="lineNum">    1504 </span>            : }</a>
 <a name="1505"><span class="lineNum">    1505 </span>            : </a>
 <a name="1506"><span class="lineNum">    1506 </span>            : fs_initcall(init_pipe_fs);</a>

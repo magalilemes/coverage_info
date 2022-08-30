@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -1231,12 +1231,12 @@
 <a name="1169"><span class="lineNum">    1169 </span>            : static __always_inline int</a>
 <a name="1170"><span class="lineNum">    1170 </span>            : arch_atomic_fetch_add_unless(atomic_t *v, int a, int u)</a>
 <a name="1171"><span class="lineNum">    1171 </span>            : {</a>
-<a name="1172"><span class="lineNum">    1172 </span><span class="lineCov">       1218 :         int c = arch_atomic_read(v);</span></a>
+<a name="1172"><span class="lineNum">    1172 </span><span class="lineCov">        638 :         int c = arch_atomic_read(v);</span></a>
 <a name="1173"><span class="lineNum">    1173 </span>            : </a>
 <a name="1174"><span class="lineNum">    1174 </span>            :         do {</a>
-<a name="1175"><span class="lineNum">    1175 </span><span class="lineCov">       1218 :                 if (unlikely(c == u))</span></a>
+<a name="1175"><span class="lineNum">    1175 </span><span class="lineCov">        638 :                 if (unlikely(c == u))</span></a>
 <a name="1176"><span class="lineNum">    1176 </span>            :                         break;</a>
-<a name="1177"><span class="lineNum">    1177 </span><span class="lineCov">       2436 :         } while (!arch_atomic_try_cmpxchg(v, &amp;c, c + a));</span></a>
+<a name="1177"><span class="lineNum">    1177 </span><span class="lineCov">       1276 :         } while (!arch_atomic_try_cmpxchg(v, &amp;c, c + a));</span></a>
 <a name="1178"><span class="lineNum">    1178 </span>            : </a>
 <a name="1179"><span class="lineNum">    1179 </span>            :         return c;</a>
 <a name="1180"><span class="lineNum">    1180 </span>            : }</a>
@@ -1256,7 +1256,7 @@
 <a name="1194"><span class="lineNum">    1194 </span>            : static __always_inline bool</a>
 <a name="1195"><span class="lineNum">    1195 </span>            : arch_atomic_add_unless(atomic_t *v, int a, int u)</a>
 <a name="1196"><span class="lineNum">    1196 </span>            : {</a>
-<a name="1197"><span class="lineNum">    1197 </span><span class="lineCov">       1218 :         return arch_atomic_fetch_add_unless(v, a, u) != u;</span></a>
+<a name="1197"><span class="lineNum">    1197 </span><span class="lineCov">        638 :         return arch_atomic_fetch_add_unless(v, a, u) != u;</span></a>
 <a name="1198"><span class="lineNum">    1198 </span>            : }</a>
 <a name="1199"><span class="lineNum">    1199 </span>            : #define arch_atomic_add_unless arch_atomic_add_unless</a>
 <a name="1200"><span class="lineNum">    1200 </span>            : #endif</a>

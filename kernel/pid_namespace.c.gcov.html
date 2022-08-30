@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -211,18 +211,18 @@
 <a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 :         return create_pid_namespace(user_ns, old_ns);</span></a>
 <a name="150"><span class="lineNum">     150 </span>            : }</a>
 <a name="151"><span class="lineNum">     151 </span>            : </a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineCov">        128 : void put_pid_ns(struct pid_namespace *ns)</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">         93 : void put_pid_ns(struct pid_namespace *ns)</span></a>
 <a name="153"><span class="lineNum">     153 </span>            : {</a>
 <a name="154"><span class="lineNum">     154 </span>            :         struct pid_namespace *parent;</a>
 <a name="155"><span class="lineNum">     155 </span>            : </a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">        256 :         while (ns != &amp;init_pid_ns) {</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">        186 :         while (ns != &amp;init_pid_ns) {</span></a>
 <a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :                 parent = ns-&gt;parent;</span></a>
 <a name="158"><span class="lineNum">     158 </span><span class="lineNoCov">          0 :                 if (!refcount_dec_and_test(&amp;ns-&gt;ns.count))</span></a>
 <a name="159"><span class="lineNum">     159 </span>            :                         break;</a>
 <a name="160"><span class="lineNum">     160 </span><span class="lineNoCov">          0 :                 destroy_pid_namespace(ns);</span></a>
 <a name="161"><span class="lineNum">     161 </span><span class="lineNoCov">          0 :                 ns = parent;</span></a>
 <a name="162"><span class="lineNum">     162 </span>            :         }</a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">        128 : }</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">         93 : }</span></a>
 <a name="164"><span class="lineNum">     164 </span>            : EXPORT_SYMBOL_GPL(put_pid_ns);</a>
 <a name="165"><span class="lineNum">     165 </span>            : </a>
 <a name="166"><span class="lineNum">     166 </span><span class="lineNoCov">          0 : void zap_pid_ns_processes(struct pid_namespace *pid_ns)</span></a>
@@ -510,14 +510,14 @@
 <a name="448"><span class="lineNum">     448 </span>            :         .get_parent     = pidns_get_parent,</a>
 <a name="449"><span class="lineNum">     449 </span>            : };</a>
 <a name="450"><span class="lineNum">     450 </span>            : </a>
-<a name="451"><span class="lineNum">     451 </span><span class="lineCov">          2 : static __init int pid_namespaces_init(void)</span></a>
+<a name="451"><span class="lineNum">     451 </span><span class="lineCov">          1 : static __init int pid_namespaces_init(void)</span></a>
 <a name="452"><span class="lineNum">     452 </span>            : {</a>
-<a name="453"><span class="lineNum">     453 </span><span class="lineCov">          2 :         pid_ns_cachep = KMEM_CACHE(pid_namespace, SLAB_PANIC | SLAB_ACCOUNT);</span></a>
+<a name="453"><span class="lineNum">     453 </span><span class="lineCov">          1 :         pid_ns_cachep = KMEM_CACHE(pid_namespace, SLAB_PANIC | SLAB_ACCOUNT);</span></a>
 <a name="454"><span class="lineNum">     454 </span>            : </a>
 <a name="455"><span class="lineNum">     455 </span>            : #ifdef CONFIG_CHECKPOINT_RESTORE</a>
 <a name="456"><span class="lineNum">     456 </span>            :         register_sysctl_paths(kern_path, pid_ns_ctl_table);</a>
 <a name="457"><span class="lineNum">     457 </span>            : #endif</a>
-<a name="458"><span class="lineNum">     458 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="458"><span class="lineNum">     458 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="459"><span class="lineNum">     459 </span>            : }</a>
 <a name="460"><span class="lineNum">     460 </span>            : </a>
 <a name="461"><span class="lineNum">     461 </span>            : __initcall(pid_namespaces_init);</a>

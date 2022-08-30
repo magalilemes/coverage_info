@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -173,16 +173,16 @@
 <a name="111"><span class="lineNum">     111 </span>            :         .hangup                 = line_hangup,</a>
 <a name="112"><span class="lineNum">     112 </span>            : };</a>
 <a name="113"><span class="lineNum">     113 </span>            : </a>
-<a name="114"><span class="lineNum">     114 </span><span class="lineCov">        464 : static void uml_console_write(struct console *console, const char *string,</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineCov">        272 : static void uml_console_write(struct console *console, const char *string,</span></a>
 <a name="115"><span class="lineNum">     115 </span>            :                               unsigned len)</a>
 <a name="116"><span class="lineNum">     116 </span>            : {</a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineCov">        464 :         struct line *line = &amp;vts[console-&gt;index];</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">        272 :         struct line *line = &amp;vts[console-&gt;index];</span></a>
 <a name="118"><span class="lineNum">     118 </span>            :         unsigned long flags;</a>
 <a name="119"><span class="lineNum">     119 </span>            : </a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">        464 :         spin_lock_irqsave(&amp;line-&gt;lock, flags);</span></a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        464 :         console_write_chan(line-&gt;chan_out, string, len);</span></a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        928 :         spin_unlock_irqrestore(&amp;line-&gt;lock, flags);</span></a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        464 : }</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">        272 :         spin_lock_irqsave(&amp;line-&gt;lock, flags);</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        272 :         console_write_chan(line-&gt;chan_out, string, len);</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        544 :         spin_unlock_irqrestore(&amp;line-&gt;lock, flags);</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        272 : }</span></a>
 <a name="124"><span class="lineNum">     124 </span>            : </a>
 <a name="125"><span class="lineNum">     125 </span><span class="lineNoCov">          0 : static struct tty_driver *uml_console_device(struct console *c, int *index)</span></a>
 <a name="126"><span class="lineNum">     126 </span>            : {</a>
@@ -190,11 +190,11 @@
 <a name="128"><span class="lineNum">     128 </span><span class="lineNoCov">          0 :         return driver.driver;</span></a>
 <a name="129"><span class="lineNum">     129 </span>            : }</a>
 <a name="130"><span class="lineNum">     130 </span>            : </a>
-<a name="131"><span class="lineNum">     131 </span><span class="lineCov">          2 : static int uml_console_setup(struct console *co, char *options)</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineCov">          1 : static int uml_console_setup(struct console *co, char *options)</span></a>
 <a name="132"><span class="lineNum">     132 </span>            : {</a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">          2 :         struct line *line = &amp;vts[co-&gt;index];</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">          1 :         struct line *line = &amp;vts[co-&gt;index];</span></a>
 <a name="134"><span class="lineNum">     134 </span>            : </a>
-<a name="135"><span class="lineNum">     135 </span><span class="lineCov">          2 :         return console_open_chan(line, co);</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineCov">          1 :         return console_open_chan(line, co);</span></a>
 <a name="136"><span class="lineNum">     136 </span>            : }</a>
 <a name="137"><span class="lineNum">     137 </span>            : </a>
 <a name="138"><span class="lineNum">     138 </span>            : /* No locking for register_console call - relies on single-threaded initcalls */</a>
@@ -207,52 +207,52 @@
 <a name="145"><span class="lineNum">     145 </span>            :         .index          = -1,</a>
 <a name="146"><span class="lineNum">     146 </span>            : };</a>
 <a name="147"><span class="lineNum">     147 </span>            : </a>
-<a name="148"><span class="lineNum">     148 </span><span class="lineCov">          2 : static int stdio_init(void)</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineCov">          1 : static int stdio_init(void)</span></a>
 <a name="149"><span class="lineNum">     149 </span>            : {</a>
 <a name="150"><span class="lineNum">     150 </span>            :         char *new_title;</a>
 <a name="151"><span class="lineNum">     151 </span>            :         int err;</a>
 <a name="152"><span class="lineNum">     152 </span>            :         int i;</a>
 <a name="153"><span class="lineNum">     153 </span>            : </a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineCov">          2 :         err = register_lines(&amp;driver, &amp;console_ops, vts,</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">          1 :         err = register_lines(&amp;driver, &amp;console_ops, vts,</span></a>
 <a name="155"><span class="lineNum">     155 </span>            :                                         ARRAY_SIZE(vts));</a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">          2 :         if (err)</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">          1 :         if (err)</span></a>
 <a name="157"><span class="lineNum">     157 </span>            :                 return err;</a>
 <a name="158"><span class="lineNum">     158 </span>            : </a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">          2 :         printk(KERN_INFO &quot;Initialized stdio console driver\n&quot;);</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">          1 :         printk(KERN_INFO &quot;Initialized stdio console driver\n&quot;);</span></a>
 <a name="160"><span class="lineNum">     160 </span>            : </a>
-<a name="161"><span class="lineNum">     161 </span><span class="lineCov">          2 :         new_title = add_xterm_umid(opts.xterm_title);</span></a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineCov">          2 :         if(new_title != NULL)</span></a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">          2 :                 opts.xterm_title = new_title;</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineCov">          1 :         new_title = add_xterm_umid(opts.xterm_title);</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineCov">          1 :         if(new_title != NULL)</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">          1 :                 opts.xterm_title = new_title;</span></a>
 <a name="164"><span class="lineNum">     164 </span>            : </a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">         32 :         for (i = 0; i &lt; MAX_TTYS; i++) {</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">         16 :         for (i = 0; i &lt; MAX_TTYS; i++) {</span></a>
 <a name="166"><span class="lineNum">     166 </span>            :                 char *error;</a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">         32 :                 char *s = vt_conf[i];</span></a>
-<a name="168"><span class="lineNum">     168 </span><span class="lineCov">         32 :                 if (!s)</span></a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineCov">         32 :                         s = def_conf;</span></a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">         32 :                 if (!s)</span></a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">         32 :                         s = i ? CONFIG_CON_CHAN : CONFIG_CON_ZERO_CHAN;</span></a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">         32 :                 if (setup_one_line(vts, i, s, &amp;opts, &amp;error))</span></a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineCov">         30 :                         printk(KERN_ERR &quot;setup_one_line failed for &quot;</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">         16 :                 char *s = vt_conf[i];</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">         16 :                 if (!s)</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">         16 :                         s = def_conf;</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">         16 :                 if (!s)</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">         16 :                         s = i ? CONFIG_CON_CHAN : CONFIG_CON_ZERO_CHAN;</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">         16 :                 if (setup_one_line(vts, i, s, &amp;opts, &amp;error))</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">         15 :                         printk(KERN_ERR &quot;setup_one_line failed for &quot;</span></a>
 <a name="174"><span class="lineNum">     174 </span>            :                                &quot;device %d : %s\n&quot;, i, error);</a>
 <a name="175"><span class="lineNum">     175 </span>            :         }</a>
 <a name="176"><span class="lineNum">     176 </span>            : </a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          2 :         con_init_done = 1;</span></a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">          2 :         register_console(&amp;stdiocons);</span></a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          1 :         con_init_done = 1;</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">          1 :         register_console(&amp;stdiocons);</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="180"><span class="lineNum">     180 </span>            : }</a>
 <a name="181"><span class="lineNum">     181 </span>            : late_initcall(stdio_init);</a>
 <a name="182"><span class="lineNum">     182 </span>            : </a>
-<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          2 : static void console_exit(void)</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          1 : static void console_exit(void)</span></a>
 <a name="184"><span class="lineNum">     184 </span>            : {</a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineCov">          2 :         if (!con_init_done)</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineCov">          1 :         if (!con_init_done)</span></a>
 <a name="186"><span class="lineNum">     186 </span>            :                 return;</a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">          2 :         close_lines(vts, ARRAY_SIZE(vts));</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">          1 :         close_lines(vts, ARRAY_SIZE(vts));</span></a>
 <a name="188"><span class="lineNum">     188 </span>            : }</a>
 <a name="189"><span class="lineNum">     189 </span>            : __uml_exitcall(console_exit);</a>
 <a name="190"><span class="lineNum">     190 </span>            : </a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          2 : static int console_chan_setup(char *str)</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          1 : static int console_chan_setup(char *str)</span></a>
 <a name="192"><span class="lineNum">     192 </span>            : {</a>
-<a name="193"><span class="lineNum">     193 </span><span class="lineCov">          2 :         if (!strncmp(str, &quot;sole=&quot;, 5))        /* console= option specifies tty */</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineCov">          1 :         if (!strncmp(str, &quot;sole=&quot;, 5))        /* console= option specifies tty */</span></a>
 <a name="194"><span class="lineNum">     194 </span>            :                 return 0;</a>
 <a name="195"><span class="lineNum">     195 </span>            : </a>
 <a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :         line_setup(vt_conf, MAX_TTYS, &amp;def_conf, str, &quot;console&quot;);</span></a>

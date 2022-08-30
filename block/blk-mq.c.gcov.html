@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -4816,23 +4816,23 @@
 <a name="4754"><span class="lineNum">    4754 </span>            :         }</a>
 <a name="4755"><span class="lineNum">    4755 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="4756"><span class="lineNum">    4756 </span>            : </a>
-<a name="4757"><span class="lineNum">    4757 </span><span class="lineCov">          2 : static int __init blk_mq_init(void)</span></a>
+<a name="4757"><span class="lineNum">    4757 </span><span class="lineCov">          1 : static int __init blk_mq_init(void)</span></a>
 <a name="4758"><span class="lineNum">    4758 </span>            : {</a>
 <a name="4759"><span class="lineNum">    4759 </span>            :         int i;</a>
 <a name="4760"><span class="lineNum">    4760 </span>            : </a>
-<a name="4761"><span class="lineNum">    4761 </span><span class="lineCov">          4 :         for_each_possible_cpu(i)</span></a>
-<a name="4762"><span class="lineNum">    4762 </span><span class="lineCov">          4 :                 init_llist_head(&amp;per_cpu(blk_cpu_done, i));</span></a>
-<a name="4763"><span class="lineNum">    4763 </span><span class="lineCov">          2 :         open_softirq(BLOCK_SOFTIRQ, blk_done_softirq);</span></a>
+<a name="4761"><span class="lineNum">    4761 </span><span class="lineCov">          2 :         for_each_possible_cpu(i)</span></a>
+<a name="4762"><span class="lineNum">    4762 </span><span class="lineCov">          2 :                 init_llist_head(&amp;per_cpu(blk_cpu_done, i));</span></a>
+<a name="4763"><span class="lineNum">    4763 </span><span class="lineCov">          1 :         open_softirq(BLOCK_SOFTIRQ, blk_done_softirq);</span></a>
 <a name="4764"><span class="lineNum">    4764 </span>            : </a>
-<a name="4765"><span class="lineNum">    4765 </span><span class="lineCov">          2 :         cpuhp_setup_state_nocalls(CPUHP_BLOCK_SOFTIRQ_DEAD,</span></a>
+<a name="4765"><span class="lineNum">    4765 </span><span class="lineCov">          1 :         cpuhp_setup_state_nocalls(CPUHP_BLOCK_SOFTIRQ_DEAD,</span></a>
 <a name="4766"><span class="lineNum">    4766 </span>            :                                   &quot;block/softirq:dead&quot;, NULL,</a>
 <a name="4767"><span class="lineNum">    4767 </span>            :                                   blk_softirq_cpu_dead);</a>
-<a name="4768"><span class="lineNum">    4768 </span><span class="lineCov">          2 :         cpuhp_setup_state_multi(CPUHP_BLK_MQ_DEAD, &quot;block/mq:dead&quot;, NULL,</span></a>
+<a name="4768"><span class="lineNum">    4768 </span><span class="lineCov">          1 :         cpuhp_setup_state_multi(CPUHP_BLK_MQ_DEAD, &quot;block/mq:dead&quot;, NULL,</span></a>
 <a name="4769"><span class="lineNum">    4769 </span>            :                                 blk_mq_hctx_notify_dead);</a>
-<a name="4770"><span class="lineNum">    4770 </span><span class="lineCov">          2 :         cpuhp_setup_state_multi(CPUHP_AP_BLK_MQ_ONLINE, &quot;block/mq:online&quot;,</span></a>
+<a name="4770"><span class="lineNum">    4770 </span><span class="lineCov">          1 :         cpuhp_setup_state_multi(CPUHP_AP_BLK_MQ_ONLINE, &quot;block/mq:online&quot;,</span></a>
 <a name="4771"><span class="lineNum">    4771 </span>            :                                 blk_mq_hctx_notify_online,</a>
 <a name="4772"><span class="lineNum">    4772 </span>            :                                 blk_mq_hctx_notify_offline);</a>
-<a name="4773"><span class="lineNum">    4773 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="4773"><span class="lineNum">    4773 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="4774"><span class="lineNum">    4774 </span>            : }</a>
 <a name="4775"><span class="lineNum">    4775 </span>            : subsys_initcall(blk_mq_init);</a>
 </pre>

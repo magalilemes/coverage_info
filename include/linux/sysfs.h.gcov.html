@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -666,13 +666,13 @@
 <a name="604"><span class="lineNum">     604 </span>            : static inline int __must_check sysfs_create_file(struct kobject *kobj,</a>
 <a name="605"><span class="lineNum">     605 </span>            :                                                  const struct attribute *attr)</a>
 <a name="606"><span class="lineNum">     606 </span>            : {</a>
-<a name="607"><span class="lineNum">     607 </span><span class="lineCov">       2308 :         return sysfs_create_file_ns(kobj, attr, NULL);</span></a>
+<a name="607"><span class="lineNum">     607 </span><span class="lineCov">       1154 :         return sysfs_create_file_ns(kobj, attr, NULL);</span></a>
 <a name="608"><span class="lineNum">     608 </span>            : }</a>
 <a name="609"><span class="lineNum">     609 </span>            : </a>
 <a name="610"><span class="lineNum">     610 </span>            : static inline void sysfs_remove_file(struct kobject *kobj,</a>
 <a name="611"><span class="lineNum">     611 </span>            :                                      const struct attribute *attr)</a>
 <a name="612"><span class="lineNum">     612 </span>            : {</a>
-<a name="613"><span class="lineNum">     613 </span><span class="lineCov">          6 :         sysfs_remove_file_ns(kobj, attr, NULL);</span></a>
+<a name="613"><span class="lineNum">     613 </span><span class="lineCov">          3 :         sysfs_remove_file_ns(kobj, attr, NULL);</span></a>
 <a name="614"><span class="lineNum">     614 </span>            : }</a>
 <a name="615"><span class="lineNum">     615 </span>            : </a>
 <a name="616"><span class="lineNum">     616 </span>            : static inline int sysfs_rename_link(struct kobject *kobj, struct kobject *target,</a>
@@ -694,13 +694,13 @@
 <a name="632"><span class="lineNum">     632 </span>            : </a>
 <a name="633"><span class="lineNum">     633 </span>            : static inline struct kernfs_node *sysfs_get(struct kernfs_node *kn)</a>
 <a name="634"><span class="lineNum">     634 </span>            : {</a>
-<a name="635"><span class="lineNum">     635 </span><span class="lineCov">       1422 :         kernfs_get(kn);</span></a>
+<a name="635"><span class="lineNum">     635 </span><span class="lineCov">        711 :         kernfs_get(kn);</span></a>
 <a name="636"><span class="lineNum">     636 </span>            :         return kn;</a>
 <a name="637"><span class="lineNum">     637 </span>            : }</a>
 <a name="638"><span class="lineNum">     638 </span>            : </a>
 <a name="639"><span class="lineNum">     639 </span>            : static inline void sysfs_put(struct kernfs_node *kn)</a>
 <a name="640"><span class="lineNum">     640 </span>            : {</a>
-<a name="641"><span class="lineNum">     641 </span><span class="lineCov">          2 :         kernfs_put(kn);</span></a>
+<a name="641"><span class="lineNum">     641 </span><span class="lineCov">          1 :         kernfs_put(kn);</span></a>
 <a name="642"><span class="lineNum">     642 </span>            : }</a>
 <a name="643"><span class="lineNum">     643 </span>            : </a>
 <a name="644"><span class="lineNum">     644 </span>            : #endif /* _SYSFS_H_ */</a>

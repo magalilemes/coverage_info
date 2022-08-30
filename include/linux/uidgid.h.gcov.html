@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -122,7 +122,7 @@
 <a name="60"><span class="lineNum">      60 </span>            : </a>
 <a name="61"><span class="lineNum">      61 </span>            : static inline bool uid_eq(kuid_t left, kuid_t right)</a>
 <a name="62"><span class="lineNum">      62 </span>            : {</a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">         14 :         return __kuid_val(left) == __kuid_val(right);</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          7 :         return __kuid_val(left) == __kuid_val(right);</span></a>
 <a name="64"><span class="lineNum">      64 </span>            : }</a>
 <a name="65"><span class="lineNum">      65 </span>            : </a>
 <a name="66"><span class="lineNum">      66 </span>            : static inline bool gid_eq(kgid_t left, kgid_t right)</a>
@@ -224,8 +224,8 @@
 <a name="162"><span class="lineNum">     162 </span>            : </a>
 <a name="163"><span class="lineNum">     163 </span>            : static inline uid_t from_kuid_munged(struct user_namespace *to, kuid_t kuid)</a>
 <a name="164"><span class="lineNum">     164 </span>            : {</a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">        128 :         uid_t uid = from_kuid(to, kuid);</span></a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">        128 :         if (uid == (uid_t)-1)</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">         93 :         uid_t uid = from_kuid(to, kuid);</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">         93 :         if (uid == (uid_t)-1)</span></a>
 <a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 :                 uid = overflowuid;</span></a>
 <a name="168"><span class="lineNum">     168 </span>            :         return uid;</a>
 <a name="169"><span class="lineNum">     169 </span>            : }</a>

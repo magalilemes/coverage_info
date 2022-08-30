@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -166,58 +166,59 @@
 <a name="104"><span class="lineNum">     104 </span>            :         .commit_subvp_config = dcn32_commit_subvp_config,</a>
 <a name="105"><span class="lineNum">     105 </span>            :         .subvp_pipe_control_lock = dcn32_subvp_pipe_control_lock,</a>
 <a name="106"><span class="lineNum">     106 </span>            :         .update_visual_confirm_color = dcn20_update_visual_confirm_color,</a>
-<a name="107"><span class="lineNum">     107 </span>            : };</a>
-<a name="108"><span class="lineNum">     108 </span>            : </a>
-<a name="109"><span class="lineNum">     109 </span>            : static const struct hwseq_private_funcs dcn32_private_funcs = {</a>
-<a name="110"><span class="lineNum">     110 </span>            :         .init_pipes = dcn10_init_pipes,</a>
-<a name="111"><span class="lineNum">     111 </span>            :         .update_plane_addr = dcn20_update_plane_addr,</a>
-<a name="112"><span class="lineNum">     112 </span>            :         .plane_atomic_disconnect = dcn10_plane_atomic_disconnect,</a>
-<a name="113"><span class="lineNum">     113 </span>            :         .update_mpcc = dcn20_update_mpcc,</a>
-<a name="114"><span class="lineNum">     114 </span>            :         .set_input_transfer_func = dcn32_set_input_transfer_func,</a>
-<a name="115"><span class="lineNum">     115 </span>            :         .set_output_transfer_func = dcn32_set_output_transfer_func,</a>
-<a name="116"><span class="lineNum">     116 </span>            :         .power_down = dce110_power_down,</a>
-<a name="117"><span class="lineNum">     117 </span>            :         .enable_display_power_gating = dcn10_dummy_display_power_gating,</a>
-<a name="118"><span class="lineNum">     118 </span>            :         .blank_pixel_data = dcn20_blank_pixel_data,</a>
-<a name="119"><span class="lineNum">     119 </span>            :         .reset_hw_ctx_wrap = dcn20_reset_hw_ctx_wrap,</a>
-<a name="120"><span class="lineNum">     120 </span>            :         .enable_stream_timing = dcn20_enable_stream_timing,</a>
-<a name="121"><span class="lineNum">     121 </span>            :         .edp_backlight_control = dce110_edp_backlight_control,</a>
-<a name="122"><span class="lineNum">     122 </span>            :         .disable_stream_gating = dcn20_disable_stream_gating,</a>
-<a name="123"><span class="lineNum">     123 </span>            :         .enable_stream_gating = dcn20_enable_stream_gating,</a>
-<a name="124"><span class="lineNum">     124 </span>            :         .setup_vupdate_interrupt = dcn20_setup_vupdate_interrupt,</a>
-<a name="125"><span class="lineNum">     125 </span>            :         .did_underflow_occur = dcn10_did_underflow_occur,</a>
-<a name="126"><span class="lineNum">     126 </span>            :         .init_blank = dcn20_init_blank,</a>
-<a name="127"><span class="lineNum">     127 </span>            :         .disable_vga = dcn20_disable_vga,</a>
-<a name="128"><span class="lineNum">     128 </span>            :         .bios_golden_init = dcn10_bios_golden_init,</a>
-<a name="129"><span class="lineNum">     129 </span>            :         .plane_atomic_disable = dcn20_plane_atomic_disable,</a>
-<a name="130"><span class="lineNum">     130 </span>            :         .plane_atomic_power_down = dcn10_plane_atomic_power_down,</a>
-<a name="131"><span class="lineNum">     131 </span>            :         .enable_power_gating_plane = dcn32_enable_power_gating_plane,</a>
-<a name="132"><span class="lineNum">     132 </span>            :         .hubp_pg_control = dcn32_hubp_pg_control,</a>
-<a name="133"><span class="lineNum">     133 </span>            :         .program_all_writeback_pipes_in_tree = dcn30_program_all_writeback_pipes_in_tree,</a>
-<a name="134"><span class="lineNum">     134 </span>            :         .update_odm = dcn32_update_odm,</a>
-<a name="135"><span class="lineNum">     135 </span>            :         .dsc_pg_control = dcn32_dsc_pg_control,</a>
-<a name="136"><span class="lineNum">     136 </span>            :         .set_hdr_multiplier = dcn10_set_hdr_multiplier,</a>
-<a name="137"><span class="lineNum">     137 </span>            :         .verify_allow_pstate_change_high = dcn10_verify_allow_pstate_change_high,</a>
-<a name="138"><span class="lineNum">     138 </span>            :         .wait_for_blank_complete = dcn20_wait_for_blank_complete,</a>
-<a name="139"><span class="lineNum">     139 </span>            :         .dccg_init = dcn20_dccg_init,</a>
-<a name="140"><span class="lineNum">     140 </span>            :         .set_mcm_luts = dcn32_set_mcm_luts,</a>
-<a name="141"><span class="lineNum">     141 </span>            :         .program_mall_pipe_config = dcn32_program_mall_pipe_config,</a>
-<a name="142"><span class="lineNum">     142 </span>            :         .subvp_update_force_pstate = dcn32_subvp_update_force_pstate,</a>
-<a name="143"><span class="lineNum">     143 </span>            :         .update_mall_sel = dcn32_update_mall_sel,</a>
-<a name="144"><span class="lineNum">     144 </span>            :         .calculate_dccg_k1_k2_values = dcn32_calculate_dccg_k1_k2_values,</a>
-<a name="145"><span class="lineNum">     145 </span>            :         .set_pixels_per_cycle = dcn32_set_pixels_per_cycle,</a>
-<a name="146"><span class="lineNum">     146 </span>            :         .is_dp_dig_pixel_rate_div_policy = dcn32_is_dp_dig_pixel_rate_div_policy,</a>
-<a name="147"><span class="lineNum">     147 </span>            : };</a>
-<a name="148"><span class="lineNum">     148 </span>            : </a>
-<a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 : void dcn32_hw_sequencer_init_functions(struct dc *dc)</span></a>
-<a name="150"><span class="lineNum">     150 </span>            : {</a>
-<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 :         dc-&gt;hwss = dcn32_funcs;</span></a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineNoCov">          0 :         dc-&gt;hwseq-&gt;funcs = dcn32_private_funcs;</span></a>
-<a name="153"><span class="lineNum">     153 </span>            : </a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineNoCov">          0 :         if (IS_FPGA_MAXIMUS_DC(dc-&gt;ctx-&gt;dce_environment)) {</span></a>
-<a name="155"><span class="lineNum">     155 </span><span class="lineNoCov">          0 :                 dc-&gt;hwss.init_hw = dcn20_fpga_init_hw;</span></a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 :                 dc-&gt;hwseq-&gt;funcs.init_pipes = NULL;</span></a>
-<a name="157"><span class="lineNum">     157 </span>            :         }</a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="107"><span class="lineNum">     107 </span>            :         .update_phy_state = dcn32_update_phy_state,</a>
+<a name="108"><span class="lineNum">     108 </span>            : };</a>
+<a name="109"><span class="lineNum">     109 </span>            : </a>
+<a name="110"><span class="lineNum">     110 </span>            : static const struct hwseq_private_funcs dcn32_private_funcs = {</a>
+<a name="111"><span class="lineNum">     111 </span>            :         .init_pipes = dcn10_init_pipes,</a>
+<a name="112"><span class="lineNum">     112 </span>            :         .update_plane_addr = dcn20_update_plane_addr,</a>
+<a name="113"><span class="lineNum">     113 </span>            :         .plane_atomic_disconnect = dcn10_plane_atomic_disconnect,</a>
+<a name="114"><span class="lineNum">     114 </span>            :         .update_mpcc = dcn20_update_mpcc,</a>
+<a name="115"><span class="lineNum">     115 </span>            :         .set_input_transfer_func = dcn32_set_input_transfer_func,</a>
+<a name="116"><span class="lineNum">     116 </span>            :         .set_output_transfer_func = dcn32_set_output_transfer_func,</a>
+<a name="117"><span class="lineNum">     117 </span>            :         .power_down = dce110_power_down,</a>
+<a name="118"><span class="lineNum">     118 </span>            :         .enable_display_power_gating = dcn10_dummy_display_power_gating,</a>
+<a name="119"><span class="lineNum">     119 </span>            :         .blank_pixel_data = dcn20_blank_pixel_data,</a>
+<a name="120"><span class="lineNum">     120 </span>            :         .reset_hw_ctx_wrap = dcn20_reset_hw_ctx_wrap,</a>
+<a name="121"><span class="lineNum">     121 </span>            :         .enable_stream_timing = dcn20_enable_stream_timing,</a>
+<a name="122"><span class="lineNum">     122 </span>            :         .edp_backlight_control = dce110_edp_backlight_control,</a>
+<a name="123"><span class="lineNum">     123 </span>            :         .disable_stream_gating = dcn20_disable_stream_gating,</a>
+<a name="124"><span class="lineNum">     124 </span>            :         .enable_stream_gating = dcn20_enable_stream_gating,</a>
+<a name="125"><span class="lineNum">     125 </span>            :         .setup_vupdate_interrupt = dcn20_setup_vupdate_interrupt,</a>
+<a name="126"><span class="lineNum">     126 </span>            :         .did_underflow_occur = dcn10_did_underflow_occur,</a>
+<a name="127"><span class="lineNum">     127 </span>            :         .init_blank = dcn20_init_blank,</a>
+<a name="128"><span class="lineNum">     128 </span>            :         .disable_vga = dcn20_disable_vga,</a>
+<a name="129"><span class="lineNum">     129 </span>            :         .bios_golden_init = dcn10_bios_golden_init,</a>
+<a name="130"><span class="lineNum">     130 </span>            :         .plane_atomic_disable = dcn20_plane_atomic_disable,</a>
+<a name="131"><span class="lineNum">     131 </span>            :         .plane_atomic_power_down = dcn10_plane_atomic_power_down,</a>
+<a name="132"><span class="lineNum">     132 </span>            :         .enable_power_gating_plane = dcn32_enable_power_gating_plane,</a>
+<a name="133"><span class="lineNum">     133 </span>            :         .hubp_pg_control = dcn32_hubp_pg_control,</a>
+<a name="134"><span class="lineNum">     134 </span>            :         .program_all_writeback_pipes_in_tree = dcn30_program_all_writeback_pipes_in_tree,</a>
+<a name="135"><span class="lineNum">     135 </span>            :         .update_odm = dcn32_update_odm,</a>
+<a name="136"><span class="lineNum">     136 </span>            :         .dsc_pg_control = dcn32_dsc_pg_control,</a>
+<a name="137"><span class="lineNum">     137 </span>            :         .set_hdr_multiplier = dcn10_set_hdr_multiplier,</a>
+<a name="138"><span class="lineNum">     138 </span>            :         .verify_allow_pstate_change_high = dcn10_verify_allow_pstate_change_high,</a>
+<a name="139"><span class="lineNum">     139 </span>            :         .wait_for_blank_complete = dcn20_wait_for_blank_complete,</a>
+<a name="140"><span class="lineNum">     140 </span>            :         .dccg_init = dcn20_dccg_init,</a>
+<a name="141"><span class="lineNum">     141 </span>            :         .set_mcm_luts = dcn32_set_mcm_luts,</a>
+<a name="142"><span class="lineNum">     142 </span>            :         .program_mall_pipe_config = dcn32_program_mall_pipe_config,</a>
+<a name="143"><span class="lineNum">     143 </span>            :         .subvp_update_force_pstate = dcn32_subvp_update_force_pstate,</a>
+<a name="144"><span class="lineNum">     144 </span>            :         .update_mall_sel = dcn32_update_mall_sel,</a>
+<a name="145"><span class="lineNum">     145 </span>            :         .calculate_dccg_k1_k2_values = dcn32_calculate_dccg_k1_k2_values,</a>
+<a name="146"><span class="lineNum">     146 </span>            :         .set_pixels_per_cycle = dcn32_set_pixels_per_cycle,</a>
+<a name="147"><span class="lineNum">     147 </span>            :         .is_dp_dig_pixel_rate_div_policy = dcn32_is_dp_dig_pixel_rate_div_policy,</a>
+<a name="148"><span class="lineNum">     148 </span>            : };</a>
+<a name="149"><span class="lineNum">     149 </span>            : </a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 : void dcn32_hw_sequencer_init_functions(struct dc *dc)</span></a>
+<a name="151"><span class="lineNum">     151 </span>            : {</a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineNoCov">          0 :         dc-&gt;hwss = dcn32_funcs;</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineNoCov">          0 :         dc-&gt;hwseq-&gt;funcs = dcn32_private_funcs;</span></a>
+<a name="154"><span class="lineNum">     154 </span>            : </a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineNoCov">          0 :         if (IS_FPGA_MAXIMUS_DC(dc-&gt;ctx-&gt;dce_environment)) {</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 :                 dc-&gt;hwss.init_hw = dcn20_fpga_init_hw;</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :                 dc-&gt;hwseq-&gt;funcs.init_pipes = NULL;</span></a>
+<a name="158"><span class="lineNum">     158 </span>            :         }</a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineNoCov">          0 : }</span></a>
 </pre>
       </td>
     </tr>

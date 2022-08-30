@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">21</td>
@@ -126,12 +126,12 @@
 <a name="64"><span class="lineNum">      64 </span>            : </a>
 <a name="65"><span class="lineNum">      65 </span>            : static inline struct radix_tree_node *entry_to_node(void *ptr)</a>
 <a name="66"><span class="lineNum">      66 </span>            : {</a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">      96174 :         return (void *)((unsigned long)ptr &amp; ~RADIX_TREE_INTERNAL_NODE);</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">      48551 :         return (void *)((unsigned long)ptr &amp; ~RADIX_TREE_INTERNAL_NODE);</span></a>
 <a name="68"><span class="lineNum">      68 </span>            : }</a>
 <a name="69"><span class="lineNum">      69 </span>            : </a>
 <a name="70"><span class="lineNum">      70 </span>            : static inline void *node_to_entry(void *ptr)</a>
 <a name="71"><span class="lineNum">      71 </span>            : {</a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">      27736 :         return (void *)((unsigned long)ptr | RADIX_TREE_INTERNAL_NODE);</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">      14013 :         return (void *)((unsigned long)ptr | RADIX_TREE_INTERNAL_NODE);</span></a>
 <a name="73"><span class="lineNum">      73 </span>            : }</a>
 <a name="74"><span class="lineNum">      74 </span>            : </a>
 <a name="75"><span class="lineNum">      75 </span>            : #define RADIX_TREE_RETRY        XA_RETRY_ENTRY</a>
@@ -139,16 +139,16 @@
 <a name="77"><span class="lineNum">      77 </span>            : static inline unsigned long</a>
 <a name="78"><span class="lineNum">      78 </span>            : get_slot_offset(const struct radix_tree_node *parent, void __rcu **slot)</a>
 <a name="79"><span class="lineNum">      79 </span>            : {</a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">      27196 :         return parent ? slot - parent-&gt;slots : 0;</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">      13685 :         return parent ? slot - parent-&gt;slots : 0;</span></a>
 <a name="81"><span class="lineNum">      81 </span>            : }</a>
 <a name="82"><span class="lineNum">      82 </span>            : </a>
 <a name="83"><span class="lineNum">      83 </span>            : static unsigned int radix_tree_descend(const struct radix_tree_node *parent,</a>
 <a name="84"><span class="lineNum">      84 </span>            :                         struct radix_tree_node **nodep, unsigned long index)</a>
 <a name="85"><span class="lineNum">      85 </span>            : {</a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">      68024 :         unsigned int offset = (index &gt;&gt; parent-&gt;shift) &amp; RADIX_TREE_MAP_MASK;</span></a>
-<a name="87"><span class="lineNum">      87 </span><span class="lineCov">      68024 :         void __rcu **entry = rcu_dereference_raw(parent-&gt;slots[offset]);</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">      34244 :         unsigned int offset = (index &gt;&gt; parent-&gt;shift) &amp; RADIX_TREE_MAP_MASK;</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineCov">      34244 :         void __rcu **entry = rcu_dereference_raw(parent-&gt;slots[offset]);</span></a>
 <a name="88"><span class="lineNum">      88 </span>            : </a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">      68024 :         *nodep = (void *)entry;</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">      34244 :         *nodep = (void *)entry;</span></a>
 <a name="90"><span class="lineNum">      90 </span>            :         return offset;</a>
 <a name="91"><span class="lineNum">      91 </span>            : }</a>
 <a name="92"><span class="lineNum">      92 </span>            : </a>
@@ -160,19 +160,19 @@
 <a name="98"><span class="lineNum">      98 </span>            : static inline void tag_set(struct radix_tree_node *node, unsigned int tag,</a>
 <a name="99"><span class="lineNum">      99 </span>            :                 int offset)</a>
 <a name="100"><span class="lineNum">     100 </span>            : {</a>
-<a name="101"><span class="lineNum">     101 </span><span class="lineCov">       9560 :         __set_bit(offset, node-&gt;tags[tag]);</span></a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineCov">       4838 :         __set_bit(offset, node-&gt;tags[tag]);</span></a>
 <a name="102"><span class="lineNum">     102 </span>            : }</a>
 <a name="103"><span class="lineNum">     103 </span>            : </a>
 <a name="104"><span class="lineNum">     104 </span>            : static inline void tag_clear(struct radix_tree_node *node, unsigned int tag,</a>
 <a name="105"><span class="lineNum">     105 </span>            :                 int offset)</a>
 <a name="106"><span class="lineNum">     106 </span>            : {</a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">      45060 :         __clear_bit(offset, node-&gt;tags[tag]);</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">      22588 :         __clear_bit(offset, node-&gt;tags[tag]);</span></a>
 <a name="108"><span class="lineNum">     108 </span>            : }</a>
 <a name="109"><span class="lineNum">     109 </span>            : </a>
 <a name="110"><span class="lineNum">     110 </span>            : static inline int tag_get(const struct radix_tree_node *node, unsigned int tag,</a>
 <a name="111"><span class="lineNum">     111 </span>            :                 int offset)</a>
 <a name="112"><span class="lineNum">     112 </span>            : {</a>
-<a name="113"><span class="lineNum">     113 </span><span class="lineCov">     203182 :         return test_bit(offset, node-&gt;tags[tag]);</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">     102113 :         return test_bit(offset, node-&gt;tags[tag]);</span></a>
 <a name="114"><span class="lineNum">     114 </span>            : }</a>
 <a name="115"><span class="lineNum">     115 </span>            : </a>
 <a name="116"><span class="lineNum">     116 </span>            : static inline void root_tag_set(struct radix_tree_root *root, unsigned tag)</a>
@@ -192,7 +192,7 @@
 <a name="130"><span class="lineNum">     130 </span>            : </a>
 <a name="131"><span class="lineNum">     131 </span>            : static inline int root_tag_get(const struct radix_tree_root *root, unsigned tag)</a>
 <a name="132"><span class="lineNum">     132 </span>            : {</a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">      22554 :         return (__force int)root-&gt;xa_flags &amp; (1 &lt;&lt; (tag + ROOT_TAG_SHIFT));</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">      11364 :         return (__force int)root-&gt;xa_flags &amp; (1 &lt;&lt; (tag + ROOT_TAG_SHIFT));</span></a>
 <a name="134"><span class="lineNum">     134 </span>            : }</a>
 <a name="135"><span class="lineNum">     135 </span>            : </a>
 <a name="136"><span class="lineNum">     136 </span>            : static inline unsigned root_tags_get(const struct radix_tree_root *root)</a>
@@ -202,7 +202,7 @@
 <a name="140"><span class="lineNum">     140 </span>            : </a>
 <a name="141"><span class="lineNum">     141 </span>            : static inline bool is_idr(const struct radix_tree_root *root)</a>
 <a name="142"><span class="lineNum">     142 </span>            : {</a>
-<a name="143"><span class="lineNum">     143 </span><span class="lineCov">      27266 :         return !!(root-&gt;xa_flags &amp; ROOT_IS_IDR);</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineCov">      13778 :         return !!(root-&gt;xa_flags &amp; ROOT_IS_IDR);</span></a>
 <a name="144"><span class="lineNum">     144 </span>            : }</a>
 <a name="145"><span class="lineNum">     145 </span>            : </a>
 <a name="146"><span class="lineNum">     146 </span>            : /*</a>
@@ -213,8 +213,8 @@
 <a name="151"><span class="lineNum">     151 </span>            :                                                         unsigned int tag)</a>
 <a name="152"><span class="lineNum">     152 </span>            : {</a>
 <a name="153"><span class="lineNum">     153 </span>            :         unsigned idx;</a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineCov">        268 :         for (idx = 0; idx &lt; RADIX_TREE_TAG_LONGS; idx++) {</span></a>
-<a name="155"><span class="lineNum">     155 </span><span class="lineCov">      22530 :                 if (node-&gt;tags[tag][idx])</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">        134 :         for (idx = 0; idx &lt; RADIX_TREE_TAG_LONGS; idx++) {</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineCov">      11294 :                 if (node-&gt;tags[tag][idx])</span></a>
 <a name="156"><span class="lineNum">     156 </span>            :                         return 1;</a>
 <a name="157"><span class="lineNum">     157 </span>            :         }</a>
 <a name="158"><span class="lineNum">     158 </span>            :         return 0;</a>
@@ -222,7 +222,7 @@
 <a name="160"><span class="lineNum">     160 </span>            : </a>
 <a name="161"><span class="lineNum">     161 </span>            : static inline void all_tag_set(struct radix_tree_node *node, unsigned int tag)</a>
 <a name="162"><span class="lineNum">     162 </span>            : {</a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">       1080 :         bitmap_fill(node-&gt;tags[tag], RADIX_TREE_MAP_SIZE);</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">        656 :         bitmap_fill(node-&gt;tags[tag], RADIX_TREE_MAP_SIZE);</span></a>
 <a name="164"><span class="lineNum">     164 </span>            : }</a>
 <a name="165"><span class="lineNum">     165 </span>            : </a>
 <a name="166"><span class="lineNum">     166 </span>            : /**</a>
@@ -240,15 +240,15 @@
 <a name="178"><span class="lineNum">     178 </span>            : radix_tree_find_next_bit(struct radix_tree_node *node, unsigned int tag,</a>
 <a name="179"><span class="lineNum">     179 </span>            :                          unsigned long offset)</a>
 <a name="180"><span class="lineNum">     180 </span>            : {</a>
-<a name="181"><span class="lineNum">     181 </span><span class="lineCov">          4 :         const unsigned long *addr = node-&gt;tags[tag];</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">          2 :         const unsigned long *addr = node-&gt;tags[tag];</span></a>
 <a name="182"><span class="lineNum">     182 </span>            : </a>
-<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          4 :         if (offset &lt; RADIX_TREE_MAP_SIZE) {</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          2 :         if (offset &lt; RADIX_TREE_MAP_SIZE) {</span></a>
 <a name="184"><span class="lineNum">     184 </span>            :                 unsigned long tmp;</a>
 <a name="185"><span class="lineNum">     185 </span>            : </a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          4 :                 addr += offset / BITS_PER_LONG;</span></a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">          4 :                 tmp = *addr &gt;&gt; (offset % BITS_PER_LONG);</span></a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineCov">          4 :                 if (tmp)</span></a>
-<a name="189"><span class="lineNum">     189 </span><span class="lineCov">          4 :                         return __ffs(tmp) + offset;</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          2 :                 addr += offset / BITS_PER_LONG;</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">          2 :                 tmp = *addr &gt;&gt; (offset % BITS_PER_LONG);</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineCov">          2 :                 if (tmp)</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineCov">          2 :                         return __ffs(tmp) + offset;</span></a>
 <a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :                 offset = (offset + BITS_PER_LONG) &amp; ~(BITS_PER_LONG - 1);</span></a>
 <a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :                 while (offset &lt; RADIX_TREE_MAP_SIZE) {</span></a>
 <a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 :                         tmp = *++addr;</span></a>
@@ -262,7 +262,7 @@
 <a name="200"><span class="lineNum">     200 </span>            : </a>
 <a name="201"><span class="lineNum">     201 </span>            : static unsigned int iter_offset(const struct radix_tree_iter *iter)</a>
 <a name="202"><span class="lineNum">     202 </span>            : {</a>
-<a name="203"><span class="lineNum">     203 </span><span class="lineCov">      22262 :         return iter-&gt;index &amp; RADIX_TREE_MAP_MASK;</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineCov">      11160 :         return iter-&gt;index &amp; RADIX_TREE_MAP_MASK;</span></a>
 <a name="204"><span class="lineNum">     204 </span>            : }</a>
 <a name="205"><span class="lineNum">     205 </span>            : </a>
 <a name="206"><span class="lineNum">     206 </span>            : /*</a>
@@ -270,19 +270,19 @@
 <a name="208"><span class="lineNum">     208 </span>            :  */</a>
 <a name="209"><span class="lineNum">     209 </span>            : static inline unsigned long shift_maxindex(unsigned int shift)</a>
 <a name="210"><span class="lineNum">     210 </span>            : {</a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineCov">      49660 :         return (RADIX_TREE_MAP_SIZE &lt;&lt; shift) - 1;</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineCov">      25004 :         return (RADIX_TREE_MAP_SIZE &lt;&lt; shift) - 1;</span></a>
 <a name="212"><span class="lineNum">     212 </span>            : }</a>
 <a name="213"><span class="lineNum">     213 </span>            : </a>
 <a name="214"><span class="lineNum">     214 </span>            : static inline unsigned long node_maxindex(const struct radix_tree_node *node)</a>
 <a name="215"><span class="lineNum">     215 </span>            : {</a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineCov">      99244 :         return shift_maxindex(node-&gt;shift);</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineCov">      49912 :         return shift_maxindex(node-&gt;shift);</span></a>
 <a name="217"><span class="lineNum">     217 </span>            : }</a>
 <a name="218"><span class="lineNum">     218 </span>            : </a>
 <a name="219"><span class="lineNum">     219 </span>            : static unsigned long next_index(unsigned long index,</a>
 <a name="220"><span class="lineNum">     220 </span>            :                                 const struct radix_tree_node *node,</a>
 <a name="221"><span class="lineNum">     221 </span>            :                                 unsigned long offset)</a>
 <a name="222"><span class="lineNum">     222 </span>            : {</a>
-<a name="223"><span class="lineNum">     223 </span><span class="lineCov">          8 :         return (index &amp; ~node_maxindex(node)) + (offset &lt;&lt; node-&gt;shift);</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineCov">          4 :         return (index &amp; ~node_maxindex(node)) + (offset &lt;&lt; node-&gt;shift);</span></a>
 <a name="224"><span class="lineNum">     224 </span>            : }</a>
 <a name="225"><span class="lineNum">     225 </span>            : </a>
 <a name="226"><span class="lineNum">     226 </span>            : /*</a>
@@ -290,19 +290,19 @@
 <a name="228"><span class="lineNum">     228 </span>            :  * that the caller has pinned this thread of control to the current CPU.</a>
 <a name="229"><span class="lineNum">     229 </span>            :  */</a>
 <a name="230"><span class="lineNum">     230 </span>            : static struct radix_tree_node *</a>
-<a name="231"><span class="lineNum">     231 </span><span class="lineCov">        540 : radix_tree_node_alloc(gfp_t gfp_mask, struct radix_tree_node *parent,</span></a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineCov">        328 : radix_tree_node_alloc(gfp_t gfp_mask, struct radix_tree_node *parent,</span></a>
 <a name="232"><span class="lineNum">     232 </span>            :                         struct radix_tree_root *root,</a>
 <a name="233"><span class="lineNum">     233 </span>            :                         unsigned int shift, unsigned int offset,</a>
 <a name="234"><span class="lineNum">     234 </span>            :                         unsigned int count, unsigned int nr_values)</a>
 <a name="235"><span class="lineNum">     235 </span>            : {</a>
-<a name="236"><span class="lineNum">     236 </span><span class="lineCov">        540 :         struct radix_tree_node *ret = NULL;</span></a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineCov">        328 :         struct radix_tree_node *ret = NULL;</span></a>
 <a name="237"><span class="lineNum">     237 </span>            : </a>
 <a name="238"><span class="lineNum">     238 </span>            :         /*</a>
 <a name="239"><span class="lineNum">     239 </span>            :          * Preload code isn't irq safe and it doesn't make sense to use</a>
 <a name="240"><span class="lineNum">     240 </span>            :          * preloading during an interrupt anyway as all the allocations have</a>
 <a name="241"><span class="lineNum">     241 </span>            :          * to be atomic. So just do normal allocation when in interrupt.</a>
 <a name="242"><span class="lineNum">     242 </span>            :          */</a>
-<a name="243"><span class="lineNum">     243 </span><span class="lineCov">       1078 :         if (!gfpflags_allow_blocking(gfp_mask) &amp;&amp; !in_interrupt()) {</span></a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineCov">        655 :         if (!gfpflags_allow_blocking(gfp_mask) &amp;&amp; !in_interrupt()) {</span></a>
 <a name="244"><span class="lineNum">     244 </span>            :                 struct radix_tree_preload *rtp;</a>
 <a name="245"><span class="lineNum">     245 </span>            : </a>
 <a name="246"><span class="lineNum">     246 </span>            :                 /*</a>
@@ -310,9 +310,9 @@
 <a name="248"><span class="lineNum">     248 </span>            :                  * cache first for the new node to get accounted to the memory</a>
 <a name="249"><span class="lineNum">     249 </span>            :                  * cgroup.</a>
 <a name="250"><span class="lineNum">     250 </span>            :                  */</a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineCov">        538 :                 ret = kmem_cache_alloc(radix_tree_node_cachep,</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineCov">        327 :                 ret = kmem_cache_alloc(radix_tree_node_cachep,</span></a>
 <a name="252"><span class="lineNum">     252 </span>            :                                        gfp_mask | __GFP_NOWARN);</a>
-<a name="253"><span class="lineNum">     253 </span><span class="lineCov">        538 :                 if (ret)</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineCov">        327 :                 if (ret)</span></a>
 <a name="254"><span class="lineNum">     254 </span>            :                         goto out;</a>
 <a name="255"><span class="lineNum">     255 </span>            : </a>
 <a name="256"><span class="lineNum">     256 </span>            :                 /*</a>
@@ -333,41 +333,41 @@
 <a name="271"><span class="lineNum">     271 </span>            :                 kmemleak_update_trace(ret);</a>
 <a name="272"><span class="lineNum">     272 </span>            :                 goto out;</a>
 <a name="273"><span class="lineNum">     273 </span>            :         }</a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineCov">          2 :         ret = kmem_cache_alloc(radix_tree_node_cachep, gfp_mask);</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineCov">          1 :         ret = kmem_cache_alloc(radix_tree_node_cachep, gfp_mask);</span></a>
 <a name="275"><span class="lineNum">     275 </span>            : out:</a>
-<a name="276"><span class="lineNum">     276 </span><span class="lineCov">        540 :         BUG_ON(radix_tree_is_internal_node(ret));</span></a>
-<a name="277"><span class="lineNum">     277 </span><span class="lineCov">        540 :         if (ret) {</span></a>
-<a name="278"><span class="lineNum">     278 </span><span class="lineCov">        540 :                 ret-&gt;shift = shift;</span></a>
-<a name="279"><span class="lineNum">     279 </span><span class="lineCov">        540 :                 ret-&gt;offset = offset;</span></a>
-<a name="280"><span class="lineNum">     280 </span><span class="lineCov">        540 :                 ret-&gt;count = count;</span></a>
-<a name="281"><span class="lineNum">     281 </span><span class="lineCov">        540 :                 ret-&gt;nr_values = nr_values;</span></a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineCov">        540 :                 ret-&gt;parent = parent;</span></a>
-<a name="283"><span class="lineNum">     283 </span><span class="lineCov">        540 :                 ret-&gt;array = root;</span></a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineCov">        328 :         BUG_ON(radix_tree_is_internal_node(ret));</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineCov">        328 :         if (ret) {</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineCov">        328 :                 ret-&gt;shift = shift;</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineCov">        328 :                 ret-&gt;offset = offset;</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineCov">        328 :                 ret-&gt;count = count;</span></a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineCov">        328 :                 ret-&gt;nr_values = nr_values;</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineCov">        328 :                 ret-&gt;parent = parent;</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineCov">        328 :                 ret-&gt;array = root;</span></a>
 <a name="284"><span class="lineNum">     284 </span>            :         }</a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineCov">        540 :         return ret;</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">        328 :         return ret;</span></a>
 <a name="286"><span class="lineNum">     286 </span>            : }</a>
 <a name="287"><span class="lineNum">     287 </span>            : </a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">        244 : void radix_tree_node_rcu_free(struct rcu_head *head)</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">        180 : void radix_tree_node_rcu_free(struct rcu_head *head)</span></a>
 <a name="289"><span class="lineNum">     289 </span>            : {</a>
-<a name="290"><span class="lineNum">     290 </span><span class="lineCov">        244 :         struct radix_tree_node *node =</span></a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineCov">        244 :                         container_of(head, struct radix_tree_node, rcu_head);</span></a>
+<a name="290"><span class="lineNum">     290 </span><span class="lineCov">        180 :         struct radix_tree_node *node =</span></a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineCov">        180 :                         container_of(head, struct radix_tree_node, rcu_head);</span></a>
 <a name="292"><span class="lineNum">     292 </span>            : </a>
 <a name="293"><span class="lineNum">     293 </span>            :         /*</a>
 <a name="294"><span class="lineNum">     294 </span>            :          * Must only free zeroed nodes into the slab.  We can be left with</a>
 <a name="295"><span class="lineNum">     295 </span>            :          * non-NULL entries by radix_tree_free_nodes, so clear the entries</a>
 <a name="296"><span class="lineNum">     296 </span>            :          * and tags here.</a>
 <a name="297"><span class="lineNum">     297 </span>            :          */</a>
-<a name="298"><span class="lineNum">     298 </span><span class="lineCov">        244 :         memset(node-&gt;slots, 0, sizeof(node-&gt;slots));</span></a>
-<a name="299"><span class="lineNum">     299 </span><span class="lineCov">        244 :         memset(node-&gt;tags, 0, sizeof(node-&gt;tags));</span></a>
-<a name="300"><span class="lineNum">     300 </span><span class="lineCov">        488 :         INIT_LIST_HEAD(&amp;node-&gt;private_list);</span></a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineCov">        180 :         memset(node-&gt;slots, 0, sizeof(node-&gt;slots));</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineCov">        180 :         memset(node-&gt;tags, 0, sizeof(node-&gt;tags));</span></a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineCov">        360 :         INIT_LIST_HEAD(&amp;node-&gt;private_list);</span></a>
 <a name="301"><span class="lineNum">     301 </span>            : </a>
-<a name="302"><span class="lineNum">     302 </span><span class="lineCov">        244 :         kmem_cache_free(radix_tree_node_cachep, node);</span></a>
-<a name="303"><span class="lineNum">     303 </span><span class="lineCov">        244 : }</span></a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineCov">        180 :         kmem_cache_free(radix_tree_node_cachep, node);</span></a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineCov">        180 : }</span></a>
 <a name="304"><span class="lineNum">     304 </span>            : </a>
 <a name="305"><span class="lineNum">     305 </span>            : static inline void</a>
 <a name="306"><span class="lineNum">     306 </span>            : radix_tree_node_free(struct radix_tree_node *node)</a>
 <a name="307"><span class="lineNum">     307 </span>            : {</a>
-<a name="308"><span class="lineNum">     308 </span><span class="lineCov">        248 :         call_rcu(&amp;node-&gt;rcu_head, radix_tree_node_rcu_free);</span></a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineCov">        182 :         call_rcu(&amp;node-&gt;rcu_head, radix_tree_node_rcu_free);</span></a>
 <a name="309"><span class="lineNum">     309 </span>            : }</a>
 <a name="310"><span class="lineNum">     310 </span>            : </a>
 <a name="311"><span class="lineNum">     311 </span>            : /*</a>
@@ -379,38 +379,38 @@
 <a name="317"><span class="lineNum">     317 </span>            :  * To make use of this facility, the radix tree must be initialised without</a>
 <a name="318"><span class="lineNum">     318 </span>            :  * __GFP_DIRECT_RECLAIM being passed to INIT_RADIX_TREE().</a>
 <a name="319"><span class="lineNum">     319 </span>            :  */</a>
-<a name="320"><span class="lineNum">     320 </span><span class="lineCov">      22256 : static __must_check int __radix_tree_preload(gfp_t gfp_mask, unsigned nr)</span></a>
+<a name="320"><span class="lineNum">     320 </span><span class="lineCov">      11157 : static __must_check int __radix_tree_preload(gfp_t gfp_mask, unsigned nr)</span></a>
 <a name="321"><span class="lineNum">     321 </span>            : {</a>
 <a name="322"><span class="lineNum">     322 </span>            :         struct radix_tree_preload *rtp;</a>
 <a name="323"><span class="lineNum">     323 </span>            :         struct radix_tree_node *node;</a>
-<a name="324"><span class="lineNum">     324 </span><span class="lineCov">      22256 :         int ret = -ENOMEM;</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineCov">      11157 :         int ret = -ENOMEM;</span></a>
 <a name="325"><span class="lineNum">     325 </span>            : </a>
 <a name="326"><span class="lineNum">     326 </span>            :         /*</a>
 <a name="327"><span class="lineNum">     327 </span>            :          * Nodes preloaded by one cgroup can be used by another cgroup, so</a>
 <a name="328"><span class="lineNum">     328 </span>            :          * they should never be accounted to any particular memory cgroup.</a>
 <a name="329"><span class="lineNum">     329 </span>            :          */</a>
-<a name="330"><span class="lineNum">     330 </span><span class="lineCov">      22256 :         gfp_mask &amp;= ~__GFP_ACCOUNT;</span></a>
+<a name="330"><span class="lineNum">     330 </span><span class="lineCov">      11157 :         gfp_mask &amp;= ~__GFP_ACCOUNT;</span></a>
 <a name="331"><span class="lineNum">     331 </span>            : </a>
-<a name="332"><span class="lineNum">     332 </span><span class="lineCov">      22256 :         local_lock(&amp;radix_tree_preloads.lock);</span></a>
-<a name="333"><span class="lineNum">     333 </span><span class="lineCov">      22256 :         rtp = this_cpu_ptr(&amp;radix_tree_preloads);</span></a>
-<a name="334"><span class="lineNum">     334 </span><span class="lineCov">      44534 :         while (rtp-&gt;nr &lt; nr) {</span></a>
-<a name="335"><span class="lineNum">     335 </span><span class="lineCov">         22 :                 local_unlock(&amp;radix_tree_preloads.lock);</span></a>
-<a name="336"><span class="lineNum">     336 </span><span class="lineCov">         22 :                 node = kmem_cache_alloc(radix_tree_node_cachep, gfp_mask);</span></a>
-<a name="337"><span class="lineNum">     337 </span><span class="lineCov">         22 :                 if (node == NULL)</span></a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineCov">      11157 :         local_lock(&amp;radix_tree_preloads.lock);</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineCov">      11157 :         rtp = this_cpu_ptr(&amp;radix_tree_preloads);</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineCov">      22325 :         while (rtp-&gt;nr &lt; nr) {</span></a>
+<a name="335"><span class="lineNum">     335 </span><span class="lineCov">         11 :                 local_unlock(&amp;radix_tree_preloads.lock);</span></a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineCov">         11 :                 node = kmem_cache_alloc(radix_tree_node_cachep, gfp_mask);</span></a>
+<a name="337"><span class="lineNum">     337 </span><span class="lineCov">         11 :                 if (node == NULL)</span></a>
 <a name="338"><span class="lineNum">     338 </span>            :                         goto out;</a>
-<a name="339"><span class="lineNum">     339 </span><span class="lineCov">         22 :                 local_lock(&amp;radix_tree_preloads.lock);</span></a>
-<a name="340"><span class="lineNum">     340 </span><span class="lineCov">         22 :                 rtp = this_cpu_ptr(&amp;radix_tree_preloads);</span></a>
-<a name="341"><span class="lineNum">     341 </span><span class="lineCov">         22 :                 if (rtp-&gt;nr &lt; nr) {</span></a>
-<a name="342"><span class="lineNum">     342 </span><span class="lineCov">         22 :                         node-&gt;parent = rtp-&gt;nodes;</span></a>
-<a name="343"><span class="lineNum">     343 </span><span class="lineCov">         22 :                         rtp-&gt;nodes = node;</span></a>
-<a name="344"><span class="lineNum">     344 </span><span class="lineCov">         22 :                         rtp-&gt;nr++;</span></a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineCov">         11 :                 local_lock(&amp;radix_tree_preloads.lock);</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineCov">         11 :                 rtp = this_cpu_ptr(&amp;radix_tree_preloads);</span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineCov">         11 :                 if (rtp-&gt;nr &lt; nr) {</span></a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineCov">         11 :                         node-&gt;parent = rtp-&gt;nodes;</span></a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineCov">         11 :                         rtp-&gt;nodes = node;</span></a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineCov">         11 :                         rtp-&gt;nr++;</span></a>
 <a name="345"><span class="lineNum">     345 </span>            :                 } else {</a>
 <a name="346"><span class="lineNum">     346 </span><span class="lineNoCov">          0 :                         kmem_cache_free(radix_tree_node_cachep, node);</span></a>
 <a name="347"><span class="lineNum">     347 </span>            :                 }</a>
 <a name="348"><span class="lineNum">     348 </span>            :         }</a>
 <a name="349"><span class="lineNum">     349 </span>            :         ret = 0;</a>
 <a name="350"><span class="lineNum">     350 </span>            : out:</a>
-<a name="351"><span class="lineNum">     351 </span><span class="lineCov">      22256 :         return ret;</span></a>
+<a name="351"><span class="lineNum">     351 </span><span class="lineCov">      11157 :         return ret;</span></a>
 <a name="352"><span class="lineNum">     352 </span>            : }</a>
 <a name="353"><span class="lineNum">     353 </span>            : </a>
 <a name="354"><span class="lineNum">     354 </span>            : /*</a>
@@ -448,14 +448,14 @@
 <a name="386"><span class="lineNum">     386 </span>            : static unsigned radix_tree_load_root(const struct radix_tree_root *root,</a>
 <a name="387"><span class="lineNum">     387 </span>            :                 struct radix_tree_node **nodep, unsigned long *maxindex)</a>
 <a name="388"><span class="lineNum">     388 </span>            : {</a>
-<a name="389"><span class="lineNum">     389 </span><span class="lineCov">      27362 :         struct radix_tree_node *node = rcu_dereference_raw(root-&gt;xa_head);</span></a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineCov">      13797 :         struct radix_tree_node *node = rcu_dereference_raw(root-&gt;xa_head);</span></a>
 <a name="390"><span class="lineNum">     390 </span>            : </a>
-<a name="391"><span class="lineNum">     391 </span><span class="lineCov">      27362 :         *nodep = node;</span></a>
+<a name="391"><span class="lineNum">     391 </span><span class="lineCov">      13797 :         *nodep = node;</span></a>
 <a name="392"><span class="lineNum">     392 </span>            : </a>
-<a name="393"><span class="lineNum">     393 </span><span class="lineCov">      27362 :         if (likely(radix_tree_is_internal_node(node))) {</span></a>
-<a name="394"><span class="lineNum">     394 </span><span class="lineCov">      27356 :                 node = entry_to_node(node);</span></a>
-<a name="395"><span class="lineNum">     395 </span><span class="lineCov">      27356 :                 *maxindex = node_maxindex(node);</span></a>
-<a name="396"><span class="lineNum">     396 </span><span class="lineCov">      22256 :                 return node-&gt;shift + RADIX_TREE_MAP_SHIFT;</span></a>
+<a name="393"><span class="lineNum">     393 </span><span class="lineCov">      13797 :         if (likely(radix_tree_is_internal_node(node))) {</span></a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineCov">      13794 :                 node = entry_to_node(node);</span></a>
+<a name="395"><span class="lineNum">     395 </span><span class="lineCov">      13794 :                 *maxindex = node_maxindex(node);</span></a>
+<a name="396"><span class="lineNum">     396 </span><span class="lineCov">      11157 :                 return node-&gt;shift + RADIX_TREE_MAP_SHIFT;</span></a>
 <a name="397"><span class="lineNum">     397 </span>            :         }</a>
 <a name="398"><span class="lineNum">     398 </span>            : </a>
 <a name="399"><span class="lineNum">     399 </span>            :         *maxindex = 0;</a>
@@ -465,7 +465,7 @@
 <a name="403"><span class="lineNum">     403 </span>            : /*</a>
 <a name="404"><span class="lineNum">     404 </span>            :  *      Extend a radix tree so it can store key @index.</a>
 <a name="405"><span class="lineNum">     405 </span>            :  */</a>
-<a name="406"><span class="lineNum">     406 </span><span class="lineCov">         38 : static int radix_tree_extend(struct radix_tree_root *root, gfp_t gfp,</span></a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineCov">         48 : static int radix_tree_extend(struct radix_tree_root *root, gfp_t gfp,</span></a>
 <a name="407"><span class="lineNum">     407 </span>            :                                 unsigned long index, unsigned int shift)</a>
 <a name="408"><span class="lineNum">     408 </span>            : {</a>
 <a name="409"><span class="lineNum">     409 </span>            :         void *entry;</a>
@@ -473,23 +473,23 @@
 <a name="411"><span class="lineNum">     411 </span>            :         int tag;</a>
 <a name="412"><span class="lineNum">     412 </span>            : </a>
 <a name="413"><span class="lineNum">     413 </span>            :         /* Figure out what the shift should be.  */</a>
-<a name="414"><span class="lineNum">     414 </span><span class="lineCov">         38 :         maxshift = shift;</span></a>
-<a name="415"><span class="lineNum">     415 </span><span class="lineCov">         76 :         while (index &gt; shift_maxindex(maxshift))</span></a>
+<a name="414"><span class="lineNum">     414 </span><span class="lineCov">         48 :         maxshift = shift;</span></a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineCov">         96 :         while (index &gt; shift_maxindex(maxshift))</span></a>
 <a name="416"><span class="lineNum">     416 </span><span class="lineNoCov">          0 :                 maxshift += RADIX_TREE_MAP_SHIFT;</span></a>
 <a name="417"><span class="lineNum">     417 </span>            : </a>
-<a name="418"><span class="lineNum">     418 </span><span class="lineCov">         38 :         entry = rcu_dereference_raw(root-&gt;xa_head);</span></a>
-<a name="419"><span class="lineNum">     419 </span><span class="lineCov">         46 :         if (!entry &amp;&amp; (!is_idr(root) || root_tag_get(root, IDR_FREE)))</span></a>
+<a name="418"><span class="lineNum">     418 </span><span class="lineCov">         48 :         entry = rcu_dereference_raw(root-&gt;xa_head);</span></a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineCov">         52 :         if (!entry &amp;&amp; (!is_idr(root) || root_tag_get(root, IDR_FREE)))</span></a>
 <a name="420"><span class="lineNum">     420 </span>            :                 goto out;</a>
 <a name="421"><span class="lineNum">     421 </span>            : </a>
 <a name="422"><span class="lineNum">     422 </span>            :         do {</a>
-<a name="423"><span class="lineNum">     423 </span><span class="lineCov">         34 :                 struct radix_tree_node *node = radix_tree_node_alloc(gfp, NULL,</span></a>
+<a name="423"><span class="lineNum">     423 </span><span class="lineCov">         46 :                 struct radix_tree_node *node = radix_tree_node_alloc(gfp, NULL,</span></a>
 <a name="424"><span class="lineNum">     424 </span>            :                                                         root, shift, 0, 1, 0);</a>
-<a name="425"><span class="lineNum">     425 </span><span class="lineCov">         34 :                 if (!node)</span></a>
+<a name="425"><span class="lineNum">     425 </span><span class="lineCov">         46 :                 if (!node)</span></a>
 <a name="426"><span class="lineNum">     426 </span>            :                         return -ENOMEM;</a>
 <a name="427"><span class="lineNum">     427 </span>            : </a>
-<a name="428"><span class="lineNum">     428 </span><span class="lineCov">         68 :                 if (is_idr(root)) {</span></a>
-<a name="429"><span class="lineNum">     429 </span><span class="lineCov">         34 :                         all_tag_set(node, IDR_FREE);</span></a>
-<a name="430"><span class="lineNum">     430 </span><span class="lineCov">         68 :                         if (!root_tag_get(root, IDR_FREE)) {</span></a>
+<a name="428"><span class="lineNum">     428 </span><span class="lineCov">         92 :                 if (is_idr(root)) {</span></a>
+<a name="429"><span class="lineNum">     429 </span><span class="lineCov">         46 :                         all_tag_set(node, IDR_FREE);</span></a>
+<a name="430"><span class="lineNum">     430 </span><span class="lineCov">         92 :                         if (!root_tag_get(root, IDR_FREE)) {</span></a>
 <a name="431"><span class="lineNum">     431 </span><span class="lineNoCov">          0 :                                 tag_clear(node, IDR_FREE, 0);</span></a>
 <a name="432"><span class="lineNum">     432 </span><span class="lineNoCov">          0 :                                 root_tag_set(root, IDR_FREE);</span></a>
 <a name="433"><span class="lineNum">     433 </span>            :                         }</a>
@@ -501,9 +501,9 @@
 <a name="439"><span class="lineNum">     439 </span>            :                         }</a>
 <a name="440"><span class="lineNum">     440 </span>            :                 }</a>
 <a name="441"><span class="lineNum">     441 </span>            : </a>
-<a name="442"><span class="lineNum">     442 </span><span class="lineCov">         34 :                 BUG_ON(shift &gt; BITS_PER_LONG);</span></a>
-<a name="443"><span class="lineNum">     443 </span><span class="lineCov">         34 :                 if (radix_tree_is_internal_node(entry)) {</span></a>
-<a name="444"><span class="lineNum">     444 </span><span class="lineCov">         34 :                         entry_to_node(entry)-&gt;parent = node;</span></a>
+<a name="442"><span class="lineNum">     442 </span><span class="lineCov">         46 :                 BUG_ON(shift &gt; BITS_PER_LONG);</span></a>
+<a name="443"><span class="lineNum">     443 </span><span class="lineCov">         46 :                 if (radix_tree_is_internal_node(entry)) {</span></a>
+<a name="444"><span class="lineNum">     444 </span><span class="lineCov">         46 :                         entry_to_node(entry)-&gt;parent = node;</span></a>
 <a name="445"><span class="lineNum">     445 </span><span class="lineNoCov">          0 :                 } else if (xa_is_value(entry)) {</span></a>
 <a name="446"><span class="lineNum">     446 </span>            :                         /* Moving a value entry root-&gt;xa_head to a node */</a>
 <a name="447"><span class="lineNum">     447 </span><span class="lineNoCov">          0 :                         node-&gt;nr_values = 1;</span></a>
@@ -512,39 +512,39 @@
 <a name="450"><span class="lineNum">     450 </span>            :                  * entry was already in the radix tree, so we do not need</a>
 <a name="451"><span class="lineNum">     451 </span>            :                  * rcu_assign_pointer here</a>
 <a name="452"><span class="lineNum">     452 </span>            :                  */</a>
-<a name="453"><span class="lineNum">     453 </span><span class="lineCov">         34 :                 node-&gt;slots[0] = (void __rcu *)entry;</span></a>
-<a name="454"><span class="lineNum">     454 </span><span class="lineCov">         34 :                 entry = node_to_entry(node);</span></a>
-<a name="455"><span class="lineNum">     455 </span><span class="lineCov">         34 :                 rcu_assign_pointer(root-&gt;xa_head, entry);</span></a>
-<a name="456"><span class="lineNum">     456 </span><span class="lineCov">         34 :                 shift += RADIX_TREE_MAP_SHIFT;</span></a>
-<a name="457"><span class="lineNum">     457 </span><span class="lineCov">         34 :         } while (shift &lt;= maxshift);</span></a>
+<a name="453"><span class="lineNum">     453 </span><span class="lineCov">         46 :                 node-&gt;slots[0] = (void __rcu *)entry;</span></a>
+<a name="454"><span class="lineNum">     454 </span><span class="lineCov">         46 :                 entry = node_to_entry(node);</span></a>
+<a name="455"><span class="lineNum">     455 </span><span class="lineCov">         46 :                 rcu_assign_pointer(root-&gt;xa_head, entry);</span></a>
+<a name="456"><span class="lineNum">     456 </span><span class="lineCov">         46 :                 shift += RADIX_TREE_MAP_SHIFT;</span></a>
+<a name="457"><span class="lineNum">     457 </span><span class="lineCov">         46 :         } while (shift &lt;= maxshift);</span></a>
 <a name="458"><span class="lineNum">     458 </span>            : out:</a>
-<a name="459"><span class="lineNum">     459 </span><span class="lineCov">         38 :         return maxshift + RADIX_TREE_MAP_SHIFT;</span></a>
+<a name="459"><span class="lineNum">     459 </span><span class="lineCov">         48 :         return maxshift + RADIX_TREE_MAP_SHIFT;</span></a>
 <a name="460"><span class="lineNum">     460 </span>            : }</a>
 <a name="461"><span class="lineNum">     461 </span>            : </a>
 <a name="462"><span class="lineNum">     462 </span>            : /**</a>
 <a name="463"><span class="lineNum">     463 </span>            :  *      radix_tree_shrink    -    shrink radix tree to minimum height</a>
 <a name="464"><span class="lineNum">     464 </span>            :  *      @root:          radix tree root</a>
 <a name="465"><span class="lineNum">     465 </span>            :  */</a>
-<a name="466"><span class="lineNum">     466 </span><span class="lineCov">        700 : static inline bool radix_tree_shrink(struct radix_tree_root *root)</span></a>
+<a name="466"><span class="lineNum">     466 </span><span class="lineCov">        379 : static inline bool radix_tree_shrink(struct radix_tree_root *root)</span></a>
 <a name="467"><span class="lineNum">     467 </span>            : {</a>
-<a name="468"><span class="lineNum">     468 </span><span class="lineCov">        700 :         bool shrunk = false;</span></a>
+<a name="468"><span class="lineNum">     468 </span><span class="lineCov">        379 :         bool shrunk = false;</span></a>
 <a name="469"><span class="lineNum">     469 </span>            : </a>
-<a name="470"><span class="lineNum">     470 </span><span class="lineCov">         30 :         for (;;) {</span></a>
-<a name="471"><span class="lineNum">     471 </span><span class="lineCov">        730 :                 struct radix_tree_node *node = rcu_dereference_raw(root-&gt;xa_head);</span></a>
+<a name="470"><span class="lineNum">     470 </span><span class="lineCov">         44 :         for (;;) {</span></a>
+<a name="471"><span class="lineNum">     471 </span><span class="lineCov">        423 :                 struct radix_tree_node *node = rcu_dereference_raw(root-&gt;xa_head);</span></a>
 <a name="472"><span class="lineNum">     472 </span>            :                 struct radix_tree_node *child;</a>
 <a name="473"><span class="lineNum">     473 </span>            : </a>
-<a name="474"><span class="lineNum">     474 </span><span class="lineCov">        730 :                 if (!radix_tree_is_internal_node(node))</span></a>
+<a name="474"><span class="lineNum">     474 </span><span class="lineCov">        423 :                 if (!radix_tree_is_internal_node(node))</span></a>
 <a name="475"><span class="lineNum">     475 </span>            :                         break;</a>
-<a name="476"><span class="lineNum">     476 </span><span class="lineCov">        730 :                 node = entry_to_node(node);</span></a>
+<a name="476"><span class="lineNum">     476 </span><span class="lineCov">        423 :                 node = entry_to_node(node);</span></a>
 <a name="477"><span class="lineNum">     477 </span>            : </a>
 <a name="478"><span class="lineNum">     478 </span>            :                 /*</a>
 <a name="479"><span class="lineNum">     479 </span>            :                  * The candidate node has more than one child, or its child</a>
 <a name="480"><span class="lineNum">     480 </span>            :                  * is not at the leftmost slot, we cannot shrink.</a>
 <a name="481"><span class="lineNum">     481 </span>            :                  */</a>
-<a name="482"><span class="lineNum">     482 </span><span class="lineCov">        730 :                 if (node-&gt;count != 1)</span></a>
+<a name="482"><span class="lineNum">     482 </span><span class="lineCov">        423 :                 if (node-&gt;count != 1)</span></a>
 <a name="483"><span class="lineNum">     483 </span>            :                         break;</a>
-<a name="484"><span class="lineNum">     484 </span><span class="lineCov">         38 :                 child = rcu_dereference_raw(node-&gt;slots[0]);</span></a>
-<a name="485"><span class="lineNum">     485 </span><span class="lineCov">         38 :                 if (!child)</span></a>
+<a name="484"><span class="lineNum">     484 </span><span class="lineCov">         48 :                 child = rcu_dereference_raw(node-&gt;slots[0]);</span></a>
+<a name="485"><span class="lineNum">     485 </span><span class="lineCov">         48 :                 if (!child)</span></a>
 <a name="486"><span class="lineNum">     486 </span>            :                         break;</a>
 <a name="487"><span class="lineNum">     487 </span>            : </a>
 <a name="488"><span class="lineNum">     488 </span>            :                 /*</a>
@@ -552,11 +552,11 @@
 <a name="490"><span class="lineNum">     490 </span>            :                  * case somebody calls idr_replace() with a pointer that</a>
 <a name="491"><span class="lineNum">     491 </span>            :                  * appears to be an internal entry</a>
 <a name="492"><span class="lineNum">     492 </span>            :                  */</a>
-<a name="493"><span class="lineNum">     493 </span><span class="lineCov">         34 :                 if (!node-&gt;shift &amp;&amp; is_idr(root))</span></a>
+<a name="493"><span class="lineNum">     493 </span><span class="lineCov">         46 :                 if (!node-&gt;shift &amp;&amp; is_idr(root))</span></a>
 <a name="494"><span class="lineNum">     494 </span>            :                         break;</a>
 <a name="495"><span class="lineNum">     495 </span>            : </a>
-<a name="496"><span class="lineNum">     496 </span><span class="lineCov">         30 :                 if (radix_tree_is_internal_node(child))</span></a>
-<a name="497"><span class="lineNum">     497 </span><span class="lineCov">         30 :                         entry_to_node(child)-&gt;parent = NULL;</span></a>
+<a name="496"><span class="lineNum">     496 </span><span class="lineCov">         44 :                 if (radix_tree_is_internal_node(child))</span></a>
+<a name="497"><span class="lineNum">     497 </span><span class="lineCov">         44 :                         entry_to_node(child)-&gt;parent = NULL;</span></a>
 <a name="498"><span class="lineNum">     498 </span>            : </a>
 <a name="499"><span class="lineNum">     499 </span>            :                 /*</a>
 <a name="500"><span class="lineNum">     500 </span>            :                  * We don't need rcu_assign_pointer(), since we are simply</a>
@@ -565,8 +565,8 @@
 <a name="503"><span class="lineNum">     503 </span>            :                  * (node-&gt;slots[0]), it will be safe to dereference the new</a>
 <a name="504"><span class="lineNum">     504 </span>            :                  * one (root-&gt;xa_head) as far as dependent read barriers go.</a>
 <a name="505"><span class="lineNum">     505 </span>            :                  */</a>
-<a name="506"><span class="lineNum">     506 </span><span class="lineCov">         30 :                 root-&gt;xa_head = (void __rcu *)child;</span></a>
-<a name="507"><span class="lineNum">     507 </span><span class="lineCov">         90 :                 if (is_idr(root) &amp;&amp; !tag_get(node, IDR_FREE, 0))</span></a>
+<a name="506"><span class="lineNum">     506 </span><span class="lineCov">         44 :                 root-&gt;xa_head = (void __rcu *)child;</span></a>
+<a name="507"><span class="lineNum">     507 </span><span class="lineCov">        132 :                 if (is_idr(root) &amp;&amp; !tag_get(node, IDR_FREE, 0))</span></a>
 <a name="508"><span class="lineNum">     508 </span><span class="lineNoCov">          0 :                         root_tag_clear(root, IDR_FREE);</span></a>
 <a name="509"><span class="lineNum">     509 </span>            : </a>
 <a name="510"><span class="lineNum">     510 </span>            :                 /*</a>
@@ -587,38 +587,38 @@
 <a name="525"><span class="lineNum">     525 </span>            :                  * also results in a stale slot). So tag the slot as indirect</a>
 <a name="526"><span class="lineNum">     526 </span>            :                  * to force callers to retry.</a>
 <a name="527"><span class="lineNum">     527 </span>            :                  */</a>
-<a name="528"><span class="lineNum">     528 </span><span class="lineCov">         30 :                 node-&gt;count = 0;</span></a>
-<a name="529"><span class="lineNum">     529 </span><span class="lineCov">         30 :                 if (!radix_tree_is_internal_node(child)) {</span></a>
+<a name="528"><span class="lineNum">     528 </span><span class="lineCov">         44 :                 node-&gt;count = 0;</span></a>
+<a name="529"><span class="lineNum">     529 </span><span class="lineCov">         44 :                 if (!radix_tree_is_internal_node(child)) {</span></a>
 <a name="530"><span class="lineNum">     530 </span><span class="lineNoCov">          0 :                         node-&gt;slots[0] = (void __rcu *)RADIX_TREE_RETRY;</span></a>
 <a name="531"><span class="lineNum">     531 </span>            :                 }</a>
 <a name="532"><span class="lineNum">     532 </span>            : </a>
-<a name="533"><span class="lineNum">     533 </span><span class="lineCov">         60 :                 WARN_ON_ONCE(!list_empty(&amp;node-&gt;private_list));</span></a>
-<a name="534"><span class="lineNum">     534 </span><span class="lineCov">         30 :                 radix_tree_node_free(node);</span></a>
-<a name="535"><span class="lineNum">     535 </span><span class="lineCov">         30 :                 shrunk = true;</span></a>
+<a name="533"><span class="lineNum">     533 </span><span class="lineCov">         88 :                 WARN_ON_ONCE(!list_empty(&amp;node-&gt;private_list));</span></a>
+<a name="534"><span class="lineNum">     534 </span><span class="lineCov">         44 :                 radix_tree_node_free(node);</span></a>
+<a name="535"><span class="lineNum">     535 </span><span class="lineCov">         44 :                 shrunk = true;</span></a>
 <a name="536"><span class="lineNum">     536 </span>            :         }</a>
 <a name="537"><span class="lineNum">     537 </span>            : </a>
-<a name="538"><span class="lineNum">     538 </span><span class="lineCov">        700 :         return shrunk;</span></a>
+<a name="538"><span class="lineNum">     538 </span><span class="lineCov">        379 :         return shrunk;</span></a>
 <a name="539"><span class="lineNum">     539 </span>            : }</a>
 <a name="540"><span class="lineNum">     540 </span>            : </a>
-<a name="541"><span class="lineNum">     541 </span><span class="lineCov">      27196 : static bool delete_node(struct radix_tree_root *root,</span></a>
+<a name="541"><span class="lineNum">     541 </span><span class="lineCov">      13685 : static bool delete_node(struct radix_tree_root *root,</span></a>
 <a name="542"><span class="lineNum">     542 </span>            :                         struct radix_tree_node *node)</a>
 <a name="543"><span class="lineNum">     543 </span>            : {</a>
-<a name="544"><span class="lineNum">     544 </span><span class="lineCov">      27196 :         bool deleted = false;</span></a>
+<a name="544"><span class="lineNum">     544 </span><span class="lineCov">      13685 :         bool deleted = false;</span></a>
 <a name="545"><span class="lineNum">     545 </span>            : </a>
 <a name="546"><span class="lineNum">     546 </span>            :         do {</a>
 <a name="547"><span class="lineNum">     547 </span>            :                 struct radix_tree_node *parent;</a>
 <a name="548"><span class="lineNum">     548 </span>            : </a>
-<a name="549"><span class="lineNum">     549 </span><span class="lineCov">      27414 :                 if (node-&gt;count) {</span></a>
-<a name="550"><span class="lineNum">     550 </span><span class="lineCov">      54392 :                         if (node_to_entry(node) ==</span></a>
-<a name="551"><span class="lineNum">     551 </span><span class="lineCov">      27196 :                                         rcu_dereference_raw(root-&gt;xa_head))</span></a>
-<a name="552"><span class="lineNum">     552 </span><span class="lineCov">        700 :                                 deleted |= radix_tree_shrink(root);</span></a>
+<a name="549"><span class="lineNum">     549 </span><span class="lineCov">      13823 :                 if (node-&gt;count) {</span></a>
+<a name="550"><span class="lineNum">     550 </span><span class="lineCov">      27370 :                         if (node_to_entry(node) ==</span></a>
+<a name="551"><span class="lineNum">     551 </span><span class="lineCov">      13685 :                                         rcu_dereference_raw(root-&gt;xa_head))</span></a>
+<a name="552"><span class="lineNum">     552 </span><span class="lineCov">        379 :                                 deleted |= radix_tree_shrink(root);</span></a>
 <a name="553"><span class="lineNum">     553 </span>            :                         return deleted;</a>
 <a name="554"><span class="lineNum">     554 </span>            :                 }</a>
 <a name="555"><span class="lineNum">     555 </span>            : </a>
-<a name="556"><span class="lineNum">     556 </span><span class="lineCov">        218 :                 parent = node-&gt;parent;</span></a>
-<a name="557"><span class="lineNum">     557 </span><span class="lineCov">        218 :                 if (parent) {</span></a>
-<a name="558"><span class="lineNum">     558 </span><span class="lineCov">        218 :                         parent-&gt;slots[node-&gt;offset] = NULL;</span></a>
-<a name="559"><span class="lineNum">     559 </span><span class="lineCov">        218 :                         parent-&gt;count--;</span></a>
+<a name="556"><span class="lineNum">     556 </span><span class="lineCov">        138 :                 parent = node-&gt;parent;</span></a>
+<a name="557"><span class="lineNum">     557 </span><span class="lineCov">        138 :                 if (parent) {</span></a>
+<a name="558"><span class="lineNum">     558 </span><span class="lineCov">        138 :                         parent-&gt;slots[node-&gt;offset] = NULL;</span></a>
+<a name="559"><span class="lineNum">     559 </span><span class="lineCov">        138 :                         parent-&gt;count--;</span></a>
 <a name="560"><span class="lineNum">     560 </span>            :                 } else {</a>
 <a name="561"><span class="lineNum">     561 </span>            :                         /*</a>
 <a name="562"><span class="lineNum">     562 </span>            :                          * Shouldn't the tags already have all been cleared</a>
@@ -629,12 +629,12 @@
 <a name="567"><span class="lineNum">     567 </span><span class="lineNoCov">          0 :                         root-&gt;xa_head = NULL;</span></a>
 <a name="568"><span class="lineNum">     568 </span>            :                 }</a>
 <a name="569"><span class="lineNum">     569 </span>            : </a>
-<a name="570"><span class="lineNum">     570 </span><span class="lineCov">        436 :                 WARN_ON_ONCE(!list_empty(&amp;node-&gt;private_list));</span></a>
-<a name="571"><span class="lineNum">     571 </span><span class="lineCov">        218 :                 radix_tree_node_free(node);</span></a>
-<a name="572"><span class="lineNum">     572 </span><span class="lineCov">        218 :                 deleted = true;</span></a>
+<a name="570"><span class="lineNum">     570 </span><span class="lineCov">        276 :                 WARN_ON_ONCE(!list_empty(&amp;node-&gt;private_list));</span></a>
+<a name="571"><span class="lineNum">     571 </span><span class="lineCov">        138 :                 radix_tree_node_free(node);</span></a>
+<a name="572"><span class="lineNum">     572 </span><span class="lineCov">        138 :                 deleted = true;</span></a>
 <a name="573"><span class="lineNum">     573 </span>            : </a>
-<a name="574"><span class="lineNum">     574 </span><span class="lineCov">        218 :                 node = parent;</span></a>
-<a name="575"><span class="lineNum">     575 </span><span class="lineCov">        218 :         } while (node);</span></a>
+<a name="574"><span class="lineNum">     574 </span><span class="lineCov">        138 :                 node = parent;</span></a>
+<a name="575"><span class="lineNum">     575 </span><span class="lineCov">        138 :         } while (node);</span></a>
 <a name="576"><span class="lineNum">     576 </span>            : </a>
 <a name="577"><span class="lineNum">     577 </span>            :         return deleted;</a>
 <a name="578"><span class="lineNum">     578 </span>            : }</a>
@@ -804,7 +804,7 @@
 <a name="742"><span class="lineNum">     742 </span>            :  *      allocated and @root-&gt;xa_head is used as a direct slot instead of</a>
 <a name="743"><span class="lineNum">     743 </span>            :  *      pointing to a node, in which case *@nodep will be NULL.</a>
 <a name="744"><span class="lineNum">     744 </span>            :  */</a>
-<a name="745"><span class="lineNum">     745 </span><span class="lineCov">       4944 : void *__radix_tree_lookup(const struct radix_tree_root *root,</span></a>
+<a name="745"><span class="lineNum">     745 </span><span class="lineCov">       2530 : void *__radix_tree_lookup(const struct radix_tree_root *root,</span></a>
 <a name="746"><span class="lineNum">     746 </span>            :                           unsigned long index, struct radix_tree_node **nodep,</a>
 <a name="747"><span class="lineNum">     747 </span>            :                           void __rcu ***slotp)</a>
 <a name="748"><span class="lineNum">     748 </span>            : {</a>
@@ -813,28 +813,28 @@
 <a name="751"><span class="lineNum">     751 </span>            :         void __rcu **slot;</a>
 <a name="752"><span class="lineNum">     752 </span>            : </a>
 <a name="753"><span class="lineNum">     753 </span>            :  restart:</a>
-<a name="754"><span class="lineNum">     754 </span><span class="lineCov">       4944 :         parent = NULL;</span></a>
-<a name="755"><span class="lineNum">     755 </span><span class="lineCov">       4944 :         slot = (void __rcu **)&amp;root-&gt;xa_head;</span></a>
-<a name="756"><span class="lineNum">     756 </span><span class="lineCov">       4944 :         radix_tree_load_root(root, &amp;node, &amp;maxindex);</span></a>
-<a name="757"><span class="lineNum">     757 </span><span class="lineCov">       4944 :         if (index &gt; maxindex)</span></a>
+<a name="754"><span class="lineNum">     754 </span><span class="lineCov">       2530 :         parent = NULL;</span></a>
+<a name="755"><span class="lineNum">     755 </span><span class="lineCov">       2530 :         slot = (void __rcu **)&amp;root-&gt;xa_head;</span></a>
+<a name="756"><span class="lineNum">     756 </span><span class="lineCov">       2530 :         radix_tree_load_root(root, &amp;node, &amp;maxindex);</span></a>
+<a name="757"><span class="lineNum">     757 </span><span class="lineCov">       2530 :         if (index &gt; maxindex)</span></a>
 <a name="758"><span class="lineNum">     758 </span>            :                 return NULL;</a>
 <a name="759"><span class="lineNum">     759 </span>            : </a>
-<a name="760"><span class="lineNum">     760 </span><span class="lineCov">      19324 :         while (radix_tree_is_internal_node(node)) {</span></a>
+<a name="760"><span class="lineNum">     760 </span><span class="lineCov">       9894 :         while (radix_tree_is_internal_node(node)) {</span></a>
 <a name="761"><span class="lineNum">     761 </span>            :                 unsigned offset;</a>
 <a name="762"><span class="lineNum">     762 </span>            : </a>
-<a name="763"><span class="lineNum">     763 </span><span class="lineCov">      19324 :                 parent = entry_to_node(node);</span></a>
-<a name="764"><span class="lineNum">     764 </span><span class="lineCov">       9662 :                 offset = radix_tree_descend(parent, &amp;node, index);</span></a>
-<a name="765"><span class="lineNum">     765 </span><span class="lineCov">       9662 :                 slot = parent-&gt;slots + offset;</span></a>
-<a name="766"><span class="lineNum">     766 </span><span class="lineCov">       9662 :                 if (node == RADIX_TREE_RETRY)</span></a>
+<a name="763"><span class="lineNum">     763 </span><span class="lineCov">       9894 :                 parent = entry_to_node(node);</span></a>
+<a name="764"><span class="lineNum">     764 </span><span class="lineCov">       4947 :                 offset = radix_tree_descend(parent, &amp;node, index);</span></a>
+<a name="765"><span class="lineNum">     765 </span><span class="lineCov">       4947 :                 slot = parent-&gt;slots + offset;</span></a>
+<a name="766"><span class="lineNum">     766 </span><span class="lineCov">       4947 :                 if (node == RADIX_TREE_RETRY)</span></a>
 <a name="767"><span class="lineNum">     767 </span>            :                         goto restart;</a>
-<a name="768"><span class="lineNum">     768 </span><span class="lineCov">       9662 :                 if (parent-&gt;shift == 0)</span></a>
+<a name="768"><span class="lineNum">     768 </span><span class="lineCov">       4947 :                 if (parent-&gt;shift == 0)</span></a>
 <a name="769"><span class="lineNum">     769 </span>            :                         break;</a>
 <a name="770"><span class="lineNum">     770 </span>            :         }</a>
 <a name="771"><span class="lineNum">     771 </span>            : </a>
-<a name="772"><span class="lineNum">     772 </span><span class="lineCov">       4944 :         if (nodep)</span></a>
-<a name="773"><span class="lineNum">     773 </span><span class="lineCov">       4934 :                 *nodep = parent;</span></a>
-<a name="774"><span class="lineNum">     774 </span><span class="lineCov">       4944 :         if (slotp)</span></a>
-<a name="775"><span class="lineNum">     775 </span><span class="lineCov">       4934 :                 *slotp = slot;</span></a>
+<a name="772"><span class="lineNum">     772 </span><span class="lineCov">       2530 :         if (nodep)</span></a>
+<a name="773"><span class="lineNum">     773 </span><span class="lineCov">       2525 :                 *nodep = parent;</span></a>
+<a name="774"><span class="lineNum">     774 </span><span class="lineCov">       2530 :         if (slotp)</span></a>
+<a name="775"><span class="lineNum">     775 </span><span class="lineCov">       2525 :                 *slotp = slot;</span></a>
 <a name="776"><span class="lineNum">     776 </span>            :         return node;</a>
 <a name="777"><span class="lineNum">     777 </span>            : }</a>
 <a name="778"><span class="lineNum">     778 </span>            : </a>
@@ -874,29 +874,29 @@
 <a name="812"><span class="lineNum">     812 </span>            :  *      them safely). No RCU barriers are required to access or modify the</a>
 <a name="813"><span class="lineNum">     813 </span>            :  *      returned item, however.</a>
 <a name="814"><span class="lineNum">     814 </span>            :  */</a>
-<a name="815"><span class="lineNum">     815 </span><span class="lineCov">         10 : void *radix_tree_lookup(const struct radix_tree_root *root, unsigned long index)</span></a>
+<a name="815"><span class="lineNum">     815 </span><span class="lineCov">          5 : void *radix_tree_lookup(const struct radix_tree_root *root, unsigned long index)</span></a>
 <a name="816"><span class="lineNum">     816 </span>            : {</a>
-<a name="817"><span class="lineNum">     817 </span><span class="lineCov">         10 :         return __radix_tree_lookup(root, index, NULL, NULL);</span></a>
+<a name="817"><span class="lineNum">     817 </span><span class="lineCov">          5 :         return __radix_tree_lookup(root, index, NULL, NULL);</span></a>
 <a name="818"><span class="lineNum">     818 </span>            : }</a>
 <a name="819"><span class="lineNum">     819 </span>            : EXPORT_SYMBOL(radix_tree_lookup);</a>
 <a name="820"><span class="lineNum">     820 </span>            : </a>
 <a name="821"><span class="lineNum">     821 </span>            : static void replace_slot(void __rcu **slot, void *item,</a>
 <a name="822"><span class="lineNum">     822 </span>            :                 struct radix_tree_node *node, int count, int values)</a>
 <a name="823"><span class="lineNum">     823 </span>            : {</a>
-<a name="824"><span class="lineNum">     824 </span><span class="lineCov">      27196 :         if (node &amp;&amp; (count || values)) {</span></a>
-<a name="825"><span class="lineNum">     825 </span><span class="lineCov">      27040 :                 node-&gt;count += count;</span></a>
-<a name="826"><span class="lineNum">     826 </span><span class="lineCov">      27040 :                 node-&gt;nr_values += values;</span></a>
+<a name="824"><span class="lineNum">     824 </span><span class="lineCov">      13685 :         if (node &amp;&amp; (count || values)) {</span></a>
+<a name="825"><span class="lineNum">     825 </span><span class="lineCov">      13578 :                 node-&gt;count += count;</span></a>
+<a name="826"><span class="lineNum">     826 </span><span class="lineCov">      13578 :                 node-&gt;nr_values += values;</span></a>
 <a name="827"><span class="lineNum">     827 </span>            :         }</a>
 <a name="828"><span class="lineNum">     828 </span>            : </a>
-<a name="829"><span class="lineNum">     829 </span><span class="lineCov">      27196 :         rcu_assign_pointer(*slot, item);</span></a>
+<a name="829"><span class="lineNum">     829 </span><span class="lineCov">      13685 :         rcu_assign_pointer(*slot, item);</span></a>
 <a name="830"><span class="lineNum">     830 </span>            : }</a>
 <a name="831"><span class="lineNum">     831 </span>            : </a>
 <a name="832"><span class="lineNum">     832 </span>            : static bool node_tag_get(const struct radix_tree_root *root,</a>
 <a name="833"><span class="lineNum">     833 </span>            :                                 const struct radix_tree_node *node,</a>
 <a name="834"><span class="lineNum">     834 </span>            :                                 unsigned int tag, unsigned int offset)</a>
 <a name="835"><span class="lineNum">     835 </span>            : {</a>
-<a name="836"><span class="lineNum">     836 </span><span class="lineCov">      22418 :         if (node)</span></a>
-<a name="837"><span class="lineNum">     837 </span><span class="lineCov">      22418 :                 return tag_get(node, tag, offset);</span></a>
+<a name="836"><span class="lineNum">     836 </span><span class="lineCov">      11267 :         if (node)</span></a>
+<a name="837"><span class="lineNum">     837 </span><span class="lineCov">      11267 :                 return tag_get(node, tag, offset);</span></a>
 <a name="838"><span class="lineNum">     838 </span><span class="lineNoCov">          0 :         return root_tag_get(root, tag);</span></a>
 <a name="839"><span class="lineNum">     839 </span>            : }</a>
 <a name="840"><span class="lineNum">     840 </span>            : </a>
@@ -907,16 +907,16 @@
 <a name="845"><span class="lineNum">     845 </span>            :  * have empty bits, but it only stores NULL in slots when they're being</a>
 <a name="846"><span class="lineNum">     846 </span>            :  * deleted.</a>
 <a name="847"><span class="lineNum">     847 </span>            :  */</a>
-<a name="848"><span class="lineNum">     848 </span><span class="lineCov">      22418 : static int calculate_count(struct radix_tree_root *root,</span></a>
+<a name="848"><span class="lineNum">     848 </span><span class="lineCov">      11267 : static int calculate_count(struct radix_tree_root *root,</span></a>
 <a name="849"><span class="lineNum">     849 </span>            :                                 struct radix_tree_node *node, void __rcu **slot,</a>
 <a name="850"><span class="lineNum">     850 </span>            :                                 void *item, void *old)</a>
 <a name="851"><span class="lineNum">     851 </span>            : {</a>
-<a name="852"><span class="lineNum">     852 </span><span class="lineCov">      44836 :         if (is_idr(root)) {</span></a>
-<a name="853"><span class="lineNum">     853 </span><span class="lineCov">      22418 :                 unsigned offset = get_slot_offset(node, slot);</span></a>
-<a name="854"><span class="lineNum">     854 </span><span class="lineCov">      22418 :                 bool free = node_tag_get(root, node, IDR_FREE, offset);</span></a>
-<a name="855"><span class="lineNum">     855 </span><span class="lineCov">      22418 :                 if (!free)</span></a>
+<a name="852"><span class="lineNum">     852 </span><span class="lineCov">      22534 :         if (is_idr(root)) {</span></a>
+<a name="853"><span class="lineNum">     853 </span><span class="lineCov">      11267 :                 unsigned offset = get_slot_offset(node, slot);</span></a>
+<a name="854"><span class="lineNum">     854 </span><span class="lineCov">      11267 :                 bool free = node_tag_get(root, node, IDR_FREE, offset);</span></a>
+<a name="855"><span class="lineNum">     855 </span><span class="lineCov">      11267 :                 if (!free)</span></a>
 <a name="856"><span class="lineNum">     856 </span>            :                         return 0;</a>
-<a name="857"><span class="lineNum">     857 </span><span class="lineCov">      22262 :                 if (!old)</span></a>
+<a name="857"><span class="lineNum">     857 </span><span class="lineCov">      11160 :                 if (!old)</span></a>
 <a name="858"><span class="lineNum">     858 </span>            :                         return 1;</a>
 <a name="859"><span class="lineNum">     859 </span>            :         }</a>
 <a name="860"><span class="lineNum">     860 </span><span class="lineNoCov">          0 :         return !!item - !!old;</span></a>
@@ -932,27 +932,27 @@
 <a name="870"><span class="lineNum">     870 </span>            :  * For use with __radix_tree_lookup().  Caller must hold tree write locked</a>
 <a name="871"><span class="lineNum">     871 </span>            :  * across slot lookup and replacement.</a>
 <a name="872"><span class="lineNum">     872 </span>            :  */</a>
-<a name="873"><span class="lineNum">     873 </span><span class="lineCov">      22418 : void __radix_tree_replace(struct radix_tree_root *root,</span></a>
+<a name="873"><span class="lineNum">     873 </span><span class="lineCov">      11267 : void __radix_tree_replace(struct radix_tree_root *root,</span></a>
 <a name="874"><span class="lineNum">     874 </span>            :                           struct radix_tree_node *node,</a>
 <a name="875"><span class="lineNum">     875 </span>            :                           void __rcu **slot, void *item)</a>
 <a name="876"><span class="lineNum">     876 </span>            : {</a>
-<a name="877"><span class="lineNum">     877 </span><span class="lineCov">      22418 :         void *old = rcu_dereference_raw(*slot);</span></a>
-<a name="878"><span class="lineNum">     878 </span><span class="lineCov">      44836 :         int values = !!xa_is_value(item) - !!xa_is_value(old);</span></a>
-<a name="879"><span class="lineNum">     879 </span><span class="lineCov">      22418 :         int count = calculate_count(root, node, slot, item, old);</span></a>
+<a name="877"><span class="lineNum">     877 </span><span class="lineCov">      11267 :         void *old = rcu_dereference_raw(*slot);</span></a>
+<a name="878"><span class="lineNum">     878 </span><span class="lineCov">      22534 :         int values = !!xa_is_value(item) - !!xa_is_value(old);</span></a>
+<a name="879"><span class="lineNum">     879 </span><span class="lineCov">      11267 :         int count = calculate_count(root, node, slot, item, old);</span></a>
 <a name="880"><span class="lineNum">     880 </span>            : </a>
 <a name="881"><span class="lineNum">     881 </span>            :         /*</a>
 <a name="882"><span class="lineNum">     882 </span>            :          * This function supports replacing value entries and</a>
 <a name="883"><span class="lineNum">     883 </span>            :          * deleting entries, but that needs accounting against the</a>
 <a name="884"><span class="lineNum">     884 </span>            :          * node unless the slot is root-&gt;xa_head.</a>
 <a name="885"><span class="lineNum">     885 </span>            :          */</a>
-<a name="886"><span class="lineNum">     886 </span><span class="lineCov">      22418 :         WARN_ON_ONCE(!node &amp;&amp; (slot != (void __rcu **)&amp;root-&gt;xa_head) &amp;&amp;</span></a>
+<a name="886"><span class="lineNum">     886 </span><span class="lineCov">      11267 :         WARN_ON_ONCE(!node &amp;&amp; (slot != (void __rcu **)&amp;root-&gt;xa_head) &amp;&amp;</span></a>
 <a name="887"><span class="lineNum">     887 </span>            :                         (count || values));</a>
-<a name="888"><span class="lineNum">     888 </span><span class="lineCov">      22418 :         replace_slot(slot, item, node, count, values);</span></a>
+<a name="888"><span class="lineNum">     888 </span><span class="lineCov">      11267 :         replace_slot(slot, item, node, count, values);</span></a>
 <a name="889"><span class="lineNum">     889 </span>            : </a>
-<a name="890"><span class="lineNum">     890 </span><span class="lineCov">      22418 :         if (!node)</span></a>
+<a name="890"><span class="lineNum">     890 </span><span class="lineCov">      11267 :         if (!node)</span></a>
 <a name="891"><span class="lineNum">     891 </span>            :                 return;</a>
 <a name="892"><span class="lineNum">     892 </span>            : </a>
-<a name="893"><span class="lineNum">     893 </span><span class="lineCov">      22418 :         delete_node(root, node);</span></a>
+<a name="893"><span class="lineNum">     893 </span><span class="lineCov">      11267 :         delete_node(root, node);</span></a>
 <a name="894"><span class="lineNum">     894 </span>            : }</a>
 <a name="895"><span class="lineNum">     895 </span>            : </a>
 <a name="896"><span class="lineNum">     896 </span>            : /**</a>
@@ -988,26 +988,26 @@
 <a name="926"><span class="lineNum">     926 </span>            :  * For use with radix_tree_for_each_slot().</a>
 <a name="927"><span class="lineNum">     927 </span>            :  * Caller must hold tree write locked.</a>
 <a name="928"><span class="lineNum">     928 </span>            :  */</a>
-<a name="929"><span class="lineNum">     929 </span><span class="lineCov">      22262 : void radix_tree_iter_replace(struct radix_tree_root *root,</span></a>
+<a name="929"><span class="lineNum">     929 </span><span class="lineCov">      11160 : void radix_tree_iter_replace(struct radix_tree_root *root,</span></a>
 <a name="930"><span class="lineNum">     930 </span>            :                                 const struct radix_tree_iter *iter,</a>
 <a name="931"><span class="lineNum">     931 </span>            :                                 void __rcu **slot, void *item)</a>
 <a name="932"><span class="lineNum">     932 </span>            : {</a>
-<a name="933"><span class="lineNum">     933 </span><span class="lineCov">      22262 :         __radix_tree_replace(root, iter-&gt;node, slot, item);</span></a>
-<a name="934"><span class="lineNum">     934 </span><span class="lineCov">      22262 : }</span></a>
+<a name="933"><span class="lineNum">     933 </span><span class="lineCov">      11160 :         __radix_tree_replace(root, iter-&gt;node, slot, item);</span></a>
+<a name="934"><span class="lineNum">     934 </span><span class="lineCov">      11160 : }</span></a>
 <a name="935"><span class="lineNum">     935 </span>            : </a>
-<a name="936"><span class="lineNum">     936 </span><span class="lineCov">       4778 : static void node_tag_set(struct radix_tree_root *root,</span></a>
+<a name="936"><span class="lineNum">     936 </span><span class="lineCov">       2418 : static void node_tag_set(struct radix_tree_root *root,</span></a>
 <a name="937"><span class="lineNum">     937 </span>            :                                 struct radix_tree_node *node,</a>
 <a name="938"><span class="lineNum">     938 </span>            :                                 unsigned int tag, unsigned int offset)</a>
 <a name="939"><span class="lineNum">     939 </span>            : {</a>
-<a name="940"><span class="lineNum">     940 </span><span class="lineCov">      14336 :         while (node) {</span></a>
-<a name="941"><span class="lineNum">     941 </span><span class="lineCov">      18920 :                 if (tag_get(node, tag, offset))</span></a>
+<a name="940"><span class="lineNum">     940 </span><span class="lineCov">       7255 :         while (node) {</span></a>
+<a name="941"><span class="lineNum">     941 </span><span class="lineCov">       9576 :                 if (tag_get(node, tag, offset))</span></a>
 <a name="942"><span class="lineNum">     942 </span>            :                         return;</a>
-<a name="943"><span class="lineNum">     943 </span><span class="lineCov">       9560 :                 tag_set(node, tag, offset);</span></a>
-<a name="944"><span class="lineNum">     944 </span><span class="lineCov">       4780 :                 offset = node-&gt;offset;</span></a>
-<a name="945"><span class="lineNum">     945 </span><span class="lineCov">       4780 :                 node = node-&gt;parent;</span></a>
+<a name="943"><span class="lineNum">     943 </span><span class="lineCov">       4838 :                 tag_set(node, tag, offset);</span></a>
+<a name="944"><span class="lineNum">     944 </span><span class="lineCov">       2419 :                 offset = node-&gt;offset;</span></a>
+<a name="945"><span class="lineNum">     945 </span><span class="lineCov">       2419 :                 node = node-&gt;parent;</span></a>
 <a name="946"><span class="lineNum">     946 </span>            :         }</a>
 <a name="947"><span class="lineNum">     947 </span>            : </a>
-<a name="948"><span class="lineNum">     948 </span><span class="lineCov">        196 :         if (!root_tag_get(root, tag))</span></a>
+<a name="948"><span class="lineNum">     948 </span><span class="lineCov">         98 :         if (!root_tag_get(root, tag))</span></a>
 <a name="949"><span class="lineNum">     949 </span><span class="lineNoCov">          0 :                 root_tag_set(root, tag);</span></a>
 <a name="950"><span class="lineNum">     950 </span>            : }</a>
 <a name="951"><span class="lineNum">     951 </span>            : </a>
@@ -1052,19 +1052,19 @@
 <a name="990"><span class="lineNum">     990 </span>            : }</a>
 <a name="991"><span class="lineNum">     991 </span>            : EXPORT_SYMBOL(radix_tree_tag_set);</a>
 <a name="992"><span class="lineNum">     992 </span>            : </a>
-<a name="993"><span class="lineNum">     993 </span><span class="lineCov">      22262 : static void node_tag_clear(struct radix_tree_root *root,</span></a>
+<a name="993"><span class="lineNum">     993 </span><span class="lineCov">      11160 : static void node_tag_clear(struct radix_tree_root *root,</span></a>
 <a name="994"><span class="lineNum">     994 </span>            :                                 struct radix_tree_node *node,</a>
 <a name="995"><span class="lineNum">     995 </span>            :                                 unsigned int tag, unsigned int offset)</a>
 <a name="996"><span class="lineNum">     996 </span>            : {</a>
-<a name="997"><span class="lineNum">     997 </span><span class="lineCov">      44792 :         while (node) {</span></a>
-<a name="998"><span class="lineNum">     998 </span><span class="lineCov">      45060 :                 if (!tag_get(node, tag, offset))</span></a>
+<a name="997"><span class="lineNum">     997 </span><span class="lineCov">      22454 :         while (node) {</span></a>
+<a name="998"><span class="lineNum">     998 </span><span class="lineCov">      22588 :                 if (!tag_get(node, tag, offset))</span></a>
 <a name="999"><span class="lineNum">     999 </span>            :                         return;</a>
-<a name="1000"><span class="lineNum">    1000 </span><span class="lineCov">      22530 :                 tag_clear(node, tag, offset);</span></a>
-<a name="1001"><span class="lineNum">    1001 </span><span class="lineCov">      22530 :                 if (any_tag_set(node, tag))</span></a>
+<a name="1000"><span class="lineNum">    1000 </span><span class="lineCov">      11294 :                 tag_clear(node, tag, offset);</span></a>
+<a name="1001"><span class="lineNum">    1001 </span><span class="lineCov">      11294 :                 if (any_tag_set(node, tag))</span></a>
 <a name="1002"><span class="lineNum">    1002 </span>            :                         return;</a>
 <a name="1003"><span class="lineNum">    1003 </span>            : </a>
-<a name="1004"><span class="lineNum">    1004 </span><span class="lineCov">        268 :                 offset = node-&gt;offset;</span></a>
-<a name="1005"><span class="lineNum">    1005 </span><span class="lineCov">        268 :                 node = node-&gt;parent;</span></a>
+<a name="1004"><span class="lineNum">    1004 </span><span class="lineCov">        134 :                 offset = node-&gt;offset;</span></a>
+<a name="1005"><span class="lineNum">    1005 </span><span class="lineCov">        134 :                 node = node-&gt;parent;</span></a>
 <a name="1006"><span class="lineNum">    1006 </span>            :         }</a>
 <a name="1007"><span class="lineNum">    1007 </span>            : </a>
 <a name="1008"><span class="lineNum">    1008 </span>            :         /* clear the root's tag bit */</a>
@@ -1117,11 +1117,11 @@
 <a name="1055"><span class="lineNum">    1055 </span>            :   * @iter: iterator state</a>
 <a name="1056"><span class="lineNum">    1056 </span>            :   * @tag: tag to clear</a>
 <a name="1057"><span class="lineNum">    1057 </span>            :   */</a>
-<a name="1058"><span class="lineNum">    1058 </span><span class="lineCov">      22262 : void radix_tree_iter_tag_clear(struct radix_tree_root *root,</span></a>
+<a name="1058"><span class="lineNum">    1058 </span><span class="lineCov">      11160 : void radix_tree_iter_tag_clear(struct radix_tree_root *root,</span></a>
 <a name="1059"><span class="lineNum">    1059 </span>            :                         const struct radix_tree_iter *iter, unsigned int tag)</a>
 <a name="1060"><span class="lineNum">    1060 </span>            : {</a>
-<a name="1061"><span class="lineNum">    1061 </span><span class="lineCov">      44524 :         node_tag_clear(root, iter-&gt;node, tag, iter_offset(iter));</span></a>
-<a name="1062"><span class="lineNum">    1062 </span><span class="lineCov">      22262 : }</span></a>
+<a name="1061"><span class="lineNum">    1061 </span><span class="lineCov">      22320 :         node_tag_clear(root, iter-&gt;node, tag, iter_offset(iter));</span></a>
+<a name="1062"><span class="lineNum">    1062 </span><span class="lineCov">      11160 : }</span></a>
 <a name="1063"><span class="lineNum">    1063 </span>            : </a>
 <a name="1064"><span class="lineNum">    1064 </span>            : /**</a>
 <a name="1065"><span class="lineNum">    1065 </span>            :  * radix_tree_tag_get - get a tag on a radix tree node</a>
@@ -1138,28 +1138,28 @@
 <a name="1076"><span class="lineNum">    1076 </span>            :  * the RCU lock is held, unless tag modification and node deletion are excluded</a>
 <a name="1077"><span class="lineNum">    1077 </span>            :  * from concurrency.</a>
 <a name="1078"><span class="lineNum">    1078 </span>            :  */</a>
-<a name="1079"><span class="lineNum">    1079 </span><span class="lineCov">        156 : int radix_tree_tag_get(const struct radix_tree_root *root,</span></a>
+<a name="1079"><span class="lineNum">    1079 </span><span class="lineCov">        107 : int radix_tree_tag_get(const struct radix_tree_root *root,</span></a>
 <a name="1080"><span class="lineNum">    1080 </span>            :                         unsigned long index, unsigned int tag)</a>
 <a name="1081"><span class="lineNum">    1081 </span>            : {</a>
 <a name="1082"><span class="lineNum">    1082 </span>            :         struct radix_tree_node *node, *parent;</a>
 <a name="1083"><span class="lineNum">    1083 </span>            :         unsigned long maxindex;</a>
 <a name="1084"><span class="lineNum">    1084 </span>            : </a>
-<a name="1085"><span class="lineNum">    1085 </span><span class="lineCov">        312 :         if (!root_tag_get(root, tag))</span></a>
+<a name="1085"><span class="lineNum">    1085 </span><span class="lineCov">        214 :         if (!root_tag_get(root, tag))</span></a>
 <a name="1086"><span class="lineNum">    1086 </span>            :                 return 0;</a>
 <a name="1087"><span class="lineNum">    1087 </span>            : </a>
-<a name="1088"><span class="lineNum">    1088 </span><span class="lineCov">        156 :         radix_tree_load_root(root, &amp;node, &amp;maxindex);</span></a>
-<a name="1089"><span class="lineNum">    1089 </span><span class="lineCov">        156 :         if (index &gt; maxindex)</span></a>
+<a name="1088"><span class="lineNum">    1088 </span><span class="lineCov">        107 :         radix_tree_load_root(root, &amp;node, &amp;maxindex);</span></a>
+<a name="1089"><span class="lineNum">    1089 </span><span class="lineCov">        107 :         if (index &gt; maxindex)</span></a>
 <a name="1090"><span class="lineNum">    1090 </span>            :                 return 0;</a>
 <a name="1091"><span class="lineNum">    1091 </span>            : </a>
-<a name="1092"><span class="lineNum">    1092 </span><span class="lineCov">        372 :         while (radix_tree_is_internal_node(node)) {</span></a>
+<a name="1092"><span class="lineNum">    1092 </span><span class="lineCov">        302 :         while (radix_tree_is_internal_node(node)) {</span></a>
 <a name="1093"><span class="lineNum">    1093 </span>            :                 unsigned offset;</a>
 <a name="1094"><span class="lineNum">    1094 </span>            : </a>
-<a name="1095"><span class="lineNum">    1095 </span><span class="lineCov">        372 :                 parent = entry_to_node(node);</span></a>
-<a name="1096"><span class="lineNum">    1096 </span><span class="lineCov">        186 :                 offset = radix_tree_descend(parent, &amp;node, index);</span></a>
+<a name="1095"><span class="lineNum">    1095 </span><span class="lineCov">        302 :                 parent = entry_to_node(node);</span></a>
+<a name="1096"><span class="lineNum">    1096 </span><span class="lineCov">        151 :                 offset = radix_tree_descend(parent, &amp;node, index);</span></a>
 <a name="1097"><span class="lineNum">    1097 </span>            : </a>
-<a name="1098"><span class="lineNum">    1098 </span><span class="lineCov">        372 :                 if (!tag_get(parent, tag, offset))</span></a>
+<a name="1098"><span class="lineNum">    1098 </span><span class="lineCov">        302 :                 if (!tag_get(parent, tag, offset))</span></a>
 <a name="1099"><span class="lineNum">    1099 </span>            :                         return 0;</a>
-<a name="1100"><span class="lineNum">    1100 </span><span class="lineCov">         30 :                 if (node == RADIX_TREE_RETRY)</span></a>
+<a name="1100"><span class="lineNum">    1100 </span><span class="lineCov">         44 :                 if (node == RADIX_TREE_RETRY)</span></a>
 <a name="1101"><span class="lineNum">    1101 </span>            :                         break;</a>
 <a name="1102"><span class="lineNum">    1102 </span>            :         }</a>
 <a name="1103"><span class="lineNum">    1103 </span>            : </a>
@@ -1172,15 +1172,15 @@
 <a name="1110"><span class="lineNum">    1110 </span>            :                                 struct radix_tree_node *node, unsigned offset,</a>
 <a name="1111"><span class="lineNum">    1111 </span>            :                                 unsigned tag)</a>
 <a name="1112"><span class="lineNum">    1112 </span>            : {</a>
-<a name="1113"><span class="lineNum">    1113 </span><span class="lineCov">      22262 :         unsigned tag_long = offset / BITS_PER_LONG;</span></a>
-<a name="1114"><span class="lineNum">    1114 </span><span class="lineCov">      22262 :         unsigned tag_bit  = offset % BITS_PER_LONG;</span></a>
+<a name="1113"><span class="lineNum">    1113 </span><span class="lineCov">      11160 :         unsigned tag_long = offset / BITS_PER_LONG;</span></a>
+<a name="1114"><span class="lineNum">    1114 </span><span class="lineCov">      11160 :         unsigned tag_bit  = offset % BITS_PER_LONG;</span></a>
 <a name="1115"><span class="lineNum">    1115 </span>            : </a>
-<a name="1116"><span class="lineNum">    1116 </span><span class="lineCov">      22262 :         if (!node) {</span></a>
+<a name="1116"><span class="lineNum">    1116 </span><span class="lineCov">      11160 :         if (!node) {</span></a>
 <a name="1117"><span class="lineNum">    1117 </span><span class="lineNoCov">          0 :                 iter-&gt;tags = 1;</span></a>
 <a name="1118"><span class="lineNum">    1118 </span>            :                 return;</a>
 <a name="1119"><span class="lineNum">    1119 </span>            :         }</a>
 <a name="1120"><span class="lineNum">    1120 </span>            : </a>
-<a name="1121"><span class="lineNum">    1121 </span><span class="lineCov">      22262 :         iter-&gt;tags = node-&gt;tags[tag][tag_long] &gt;&gt; tag_bit;</span></a>
+<a name="1121"><span class="lineNum">    1121 </span><span class="lineCov">      11160 :         iter-&gt;tags = node-&gt;tags[tag][tag_long] &gt;&gt; tag_bit;</span></a>
 <a name="1122"><span class="lineNum">    1122 </span>            : </a>
 <a name="1123"><span class="lineNum">    1123 </span>            :         /* This never happens if RADIX_TREE_TAG_LONGS == 1 */</a>
 <a name="1124"><span class="lineNum">    1124 </span>            :         if (tag_long &lt; RADIX_TREE_TAG_LONGS - 1) {</a>
@@ -1422,22 +1422,22 @@
 <a name="1360"><span class="lineNum">    1360 </span>            : }</a>
 <a name="1361"><span class="lineNum">    1361 </span>            : EXPORT_SYMBOL(radix_tree_gang_lookup_tag_slot);</a>
 <a name="1362"><span class="lineNum">    1362 </span>            : </a>
-<a name="1363"><span class="lineNum">    1363 </span><span class="lineCov">       4778 : static bool __radix_tree_delete(struct radix_tree_root *root,</span></a>
+<a name="1363"><span class="lineNum">    1363 </span><span class="lineCov">       2418 : static bool __radix_tree_delete(struct radix_tree_root *root,</span></a>
 <a name="1364"><span class="lineNum">    1364 </span>            :                                 struct radix_tree_node *node, void __rcu **slot)</a>
 <a name="1365"><span class="lineNum">    1365 </span>            : {</a>
-<a name="1366"><span class="lineNum">    1366 </span><span class="lineCov">       4778 :         void *old = rcu_dereference_raw(*slot);</span></a>
-<a name="1367"><span class="lineNum">    1367 </span><span class="lineCov">       4778 :         int values = xa_is_value(old) ? -1 : 0;</span></a>
-<a name="1368"><span class="lineNum">    1368 </span><span class="lineCov">       4778 :         unsigned offset = get_slot_offset(node, slot);</span></a>
+<a name="1366"><span class="lineNum">    1366 </span><span class="lineCov">       2418 :         void *old = rcu_dereference_raw(*slot);</span></a>
+<a name="1367"><span class="lineNum">    1367 </span><span class="lineCov">       2418 :         int values = xa_is_value(old) ? -1 : 0;</span></a>
+<a name="1368"><span class="lineNum">    1368 </span><span class="lineCov">       2418 :         unsigned offset = get_slot_offset(node, slot);</span></a>
 <a name="1369"><span class="lineNum">    1369 </span>            :         int tag;</a>
 <a name="1370"><span class="lineNum">    1370 </span>            : </a>
-<a name="1371"><span class="lineNum">    1371 </span><span class="lineCov">       9556 :         if (is_idr(root))</span></a>
-<a name="1372"><span class="lineNum">    1372 </span><span class="lineCov">       4778 :                 node_tag_set(root, node, IDR_FREE, offset);</span></a>
+<a name="1371"><span class="lineNum">    1371 </span><span class="lineCov">       4836 :         if (is_idr(root))</span></a>
+<a name="1372"><span class="lineNum">    1372 </span><span class="lineCov">       2418 :                 node_tag_set(root, node, IDR_FREE, offset);</span></a>
 <a name="1373"><span class="lineNum">    1373 </span>            :         else</a>
 <a name="1374"><span class="lineNum">    1374 </span><span class="lineNoCov">          0 :                 for (tag = 0; tag &lt; RADIX_TREE_MAX_TAGS; tag++)</span></a>
 <a name="1375"><span class="lineNum">    1375 </span><span class="lineNoCov">          0 :                         node_tag_clear(root, node, tag, offset);</span></a>
 <a name="1376"><span class="lineNum">    1376 </span>            : </a>
-<a name="1377"><span class="lineNum">    1377 </span><span class="lineCov">       4778 :         replace_slot(slot, NULL, node, -1, values);</span></a>
-<a name="1378"><span class="lineNum">    1378 </span><span class="lineCov">       4778 :         return node &amp;&amp; delete_node(root, node);</span></a>
+<a name="1377"><span class="lineNum">    1377 </span><span class="lineCov">       2418 :         replace_slot(slot, NULL, node, -1, values);</span></a>
+<a name="1378"><span class="lineNum">    1378 </span><span class="lineCov">       2418 :         return node &amp;&amp; delete_node(root, node);</span></a>
 <a name="1379"><span class="lineNum">    1379 </span>            : }</a>
 <a name="1380"><span class="lineNum">    1380 </span>            : </a>
 <a name="1381"><span class="lineNum">    1381 </span>            : /**</a>
@@ -1471,26 +1471,26 @@
 <a name="1409"><span class="lineNum">    1409 </span>            :  * Return: the deleted entry, or %NULL if it was not present</a>
 <a name="1410"><span class="lineNum">    1410 </span>            :  * or the entry at the given @index was not @item.</a>
 <a name="1411"><span class="lineNum">    1411 </span>            :  */</a>
-<a name="1412"><span class="lineNum">    1412 </span><span class="lineCov">       4778 : void *radix_tree_delete_item(struct radix_tree_root *root,</span></a>
+<a name="1412"><span class="lineNum">    1412 </span><span class="lineCov">       2418 : void *radix_tree_delete_item(struct radix_tree_root *root,</span></a>
 <a name="1413"><span class="lineNum">    1413 </span>            :                              unsigned long index, void *item)</a>
 <a name="1414"><span class="lineNum">    1414 </span>            : {</a>
-<a name="1415"><span class="lineNum">    1415 </span><span class="lineCov">       4778 :         struct radix_tree_node *node = NULL;</span></a>
-<a name="1416"><span class="lineNum">    1416 </span><span class="lineCov">       4778 :         void __rcu **slot = NULL;</span></a>
+<a name="1415"><span class="lineNum">    1415 </span><span class="lineCov">       2418 :         struct radix_tree_node *node = NULL;</span></a>
+<a name="1416"><span class="lineNum">    1416 </span><span class="lineCov">       2418 :         void __rcu **slot = NULL;</span></a>
 <a name="1417"><span class="lineNum">    1417 </span>            :         void *entry;</a>
 <a name="1418"><span class="lineNum">    1418 </span>            : </a>
-<a name="1419"><span class="lineNum">    1419 </span><span class="lineCov">       4778 :         entry = __radix_tree_lookup(root, index, &amp;node, &amp;slot);</span></a>
-<a name="1420"><span class="lineNum">    1420 </span><span class="lineCov">       4778 :         if (!slot)</span></a>
+<a name="1419"><span class="lineNum">    1419 </span><span class="lineCov">       2418 :         entry = __radix_tree_lookup(root, index, &amp;node, &amp;slot);</span></a>
+<a name="1420"><span class="lineNum">    1420 </span><span class="lineCov">       2418 :         if (!slot)</span></a>
 <a name="1421"><span class="lineNum">    1421 </span>            :                 return NULL;</a>
-<a name="1422"><span class="lineNum">    1422 </span><span class="lineCov">       4778 :         if (!entry &amp;&amp; (!is_idr(root) || node_tag_get(root, node, IDR_FREE,</span></a>
+<a name="1422"><span class="lineNum">    1422 </span><span class="lineCov">       2418 :         if (!entry &amp;&amp; (!is_idr(root) || node_tag_get(root, node, IDR_FREE,</span></a>
 <a name="1423"><span class="lineNum">    1423 </span><span class="lineNoCov">          0 :                                                 get_slot_offset(node, slot))))</span></a>
 <a name="1424"><span class="lineNum">    1424 </span>            :                 return NULL;</a>
 <a name="1425"><span class="lineNum">    1425 </span>            : </a>
-<a name="1426"><span class="lineNum">    1426 </span><span class="lineCov">       4778 :         if (item &amp;&amp; entry != item)</span></a>
+<a name="1426"><span class="lineNum">    1426 </span><span class="lineCov">       2418 :         if (item &amp;&amp; entry != item)</span></a>
 <a name="1427"><span class="lineNum">    1427 </span>            :                 return NULL;</a>
 <a name="1428"><span class="lineNum">    1428 </span>            : </a>
-<a name="1429"><span class="lineNum">    1429 </span><span class="lineCov">       4778 :         __radix_tree_delete(root, node, slot);</span></a>
+<a name="1429"><span class="lineNum">    1429 </span><span class="lineCov">       2418 :         __radix_tree_delete(root, node, slot);</span></a>
 <a name="1430"><span class="lineNum">    1430 </span>            : </a>
-<a name="1431"><span class="lineNum">    1431 </span><span class="lineCov">       4778 :         return entry;</span></a>
+<a name="1431"><span class="lineNum">    1431 </span><span class="lineCov">       2418 :         return entry;</span></a>
 <a name="1432"><span class="lineNum">    1432 </span>            : }</a>
 <a name="1433"><span class="lineNum">    1433 </span>            : EXPORT_SYMBOL(radix_tree_delete_item);</a>
 <a name="1434"><span class="lineNum">    1434 </span>            : </a>
@@ -1516,7 +1516,7 @@
 <a name="1454"><span class="lineNum">    1454 </span>            :  */</a>
 <a name="1455"><span class="lineNum">    1455 </span><span class="lineNoCov">          0 : int radix_tree_tagged(const struct radix_tree_root *root, unsigned int tag)</span></a>
 <a name="1456"><span class="lineNum">    1456 </span>            : {</a>
-<a name="1457"><span class="lineNum">    1457 </span><span class="lineCov">      44524 :         return root_tag_get(root, tag);</span></a>
+<a name="1457"><span class="lineNum">    1457 </span><span class="lineCov">      22320 :         return root_tag_get(root, tag);</span></a>
 <a name="1458"><span class="lineNum">    1458 </span>            : }</a>
 <a name="1459"><span class="lineNum">    1459 </span>            : EXPORT_SYMBOL(radix_tree_tagged);</a>
 <a name="1460"><span class="lineNum">    1460 </span>            : </a>
@@ -1527,81 +1527,81 @@
 <a name="1465"><span class="lineNum">    1465 </span>            :  * Preallocate memory to use for the next call to idr_alloc().  This function</a>
 <a name="1466"><span class="lineNum">    1466 </span>            :  * returns with preemption disabled.  It will be enabled by idr_preload_end().</a>
 <a name="1467"><span class="lineNum">    1467 </span>            :  */</a>
-<a name="1468"><span class="lineNum">    1468 </span><span class="lineCov">      22256 : void idr_preload(gfp_t gfp_mask)</span></a>
+<a name="1468"><span class="lineNum">    1468 </span><span class="lineCov">      11157 : void idr_preload(gfp_t gfp_mask)</span></a>
 <a name="1469"><span class="lineNum">    1469 </span>            : {</a>
-<a name="1470"><span class="lineNum">    1470 </span><span class="lineCov">      22256 :         if (__radix_tree_preload(gfp_mask, IDR_PRELOAD_SIZE))</span></a>
+<a name="1470"><span class="lineNum">    1470 </span><span class="lineCov">      11157 :         if (__radix_tree_preload(gfp_mask, IDR_PRELOAD_SIZE))</span></a>
 <a name="1471"><span class="lineNum">    1471 </span><span class="lineNoCov">          0 :                 local_lock(&amp;radix_tree_preloads.lock);</span></a>
-<a name="1472"><span class="lineNum">    1472 </span><span class="lineCov">      22256 : }</span></a>
+<a name="1472"><span class="lineNum">    1472 </span><span class="lineCov">      11157 : }</span></a>
 <a name="1473"><span class="lineNum">    1473 </span>            : EXPORT_SYMBOL(idr_preload);</a>
 <a name="1474"><span class="lineNum">    1474 </span>            : </a>
-<a name="1475"><span class="lineNum">    1475 </span><span class="lineCov">      22262 : void __rcu **idr_get_free(struct radix_tree_root *root,</span></a>
+<a name="1475"><span class="lineNum">    1475 </span><span class="lineCov">      11160 : void __rcu **idr_get_free(struct radix_tree_root *root,</span></a>
 <a name="1476"><span class="lineNum">    1476 </span>            :                               struct radix_tree_iter *iter, gfp_t gfp,</a>
 <a name="1477"><span class="lineNum">    1477 </span>            :                               unsigned long max)</a>
 <a name="1478"><span class="lineNum">    1478 </span>            : {</a>
-<a name="1479"><span class="lineNum">    1479 </span><span class="lineCov">      22262 :         struct radix_tree_node *node = NULL, *child;</span></a>
-<a name="1480"><span class="lineNum">    1480 </span><span class="lineCov">      22262 :         void __rcu **slot = (void __rcu **)&amp;root-&gt;xa_head;</span></a>
-<a name="1481"><span class="lineNum">    1481 </span><span class="lineCov">      22262 :         unsigned long maxindex, start = iter-&gt;next_index;</span></a>
-<a name="1482"><span class="lineNum">    1482 </span><span class="lineCov">      22262 :         unsigned int shift, offset = 0;</span></a>
+<a name="1479"><span class="lineNum">    1479 </span><span class="lineCov">      11160 :         struct radix_tree_node *node = NULL, *child;</span></a>
+<a name="1480"><span class="lineNum">    1480 </span><span class="lineCov">      11160 :         void __rcu **slot = (void __rcu **)&amp;root-&gt;xa_head;</span></a>
+<a name="1481"><span class="lineNum">    1481 </span><span class="lineCov">      11160 :         unsigned long maxindex, start = iter-&gt;next_index;</span></a>
+<a name="1482"><span class="lineNum">    1482 </span><span class="lineCov">      11160 :         unsigned int shift, offset = 0;</span></a>
 <a name="1483"><span class="lineNum">    1483 </span>            : </a>
 <a name="1484"><span class="lineNum">    1484 </span>            :  grow:</a>
-<a name="1485"><span class="lineNum">    1485 </span><span class="lineCov">      22262 :         shift = radix_tree_load_root(root, &amp;child, &amp;maxindex);</span></a>
-<a name="1486"><span class="lineNum">    1486 </span><span class="lineCov">      22262 :         if (!radix_tree_tagged(root, IDR_FREE))</span></a>
+<a name="1485"><span class="lineNum">    1485 </span><span class="lineCov">      11160 :         shift = radix_tree_load_root(root, &amp;child, &amp;maxindex);</span></a>
+<a name="1486"><span class="lineNum">    1486 </span><span class="lineCov">      11160 :         if (!radix_tree_tagged(root, IDR_FREE))</span></a>
 <a name="1487"><span class="lineNum">    1487 </span><span class="lineNoCov">          0 :                 start = max(start, maxindex + 1);</span></a>
-<a name="1488"><span class="lineNum">    1488 </span><span class="lineCov">      22262 :         if (start &gt; max)</span></a>
+<a name="1488"><span class="lineNum">    1488 </span><span class="lineCov">      11160 :         if (start &gt; max)</span></a>
 <a name="1489"><span class="lineNum">    1489 </span>            :                 return ERR_PTR(-ENOSPC);</a>
 <a name="1490"><span class="lineNum">    1490 </span>            : </a>
-<a name="1491"><span class="lineNum">    1491 </span><span class="lineCov">      22262 :         if (start &gt; maxindex) {</span></a>
-<a name="1492"><span class="lineNum">    1492 </span><span class="lineCov">         38 :                 int error = radix_tree_extend(root, gfp, start, shift);</span></a>
-<a name="1493"><span class="lineNum">    1493 </span><span class="lineCov">         38 :                 if (error &lt; 0)</span></a>
+<a name="1491"><span class="lineNum">    1491 </span><span class="lineCov">      11160 :         if (start &gt; maxindex) {</span></a>
+<a name="1492"><span class="lineNum">    1492 </span><span class="lineCov">         48 :                 int error = radix_tree_extend(root, gfp, start, shift);</span></a>
+<a name="1493"><span class="lineNum">    1493 </span><span class="lineCov">         48 :                 if (error &lt; 0)</span></a>
 <a name="1494"><span class="lineNum">    1494 </span><span class="lineNoCov">          0 :                         return ERR_PTR(error);</span></a>
-<a name="1495"><span class="lineNum">    1495 </span><span class="lineCov">         38 :                 shift = error;</span></a>
-<a name="1496"><span class="lineNum">    1496 </span><span class="lineCov">         38 :                 child = rcu_dereference_raw(root-&gt;xa_head);</span></a>
+<a name="1495"><span class="lineNum">    1495 </span><span class="lineCov">         48 :                 shift = error;</span></a>
+<a name="1496"><span class="lineNum">    1496 </span><span class="lineCov">         48 :                 child = rcu_dereference_raw(root-&gt;xa_head);</span></a>
 <a name="1497"><span class="lineNum">    1497 </span>            :         }</a>
-<a name="1498"><span class="lineNum">    1498 </span><span class="lineCov">      22262 :         if (start == 0 &amp;&amp; shift == 0)</span></a>
-<a name="1499"><span class="lineNum">    1499 </span><span class="lineCov">          2 :                 shift = RADIX_TREE_MAP_SHIFT;</span></a>
+<a name="1498"><span class="lineNum">    1498 </span><span class="lineCov">      11160 :         if (start == 0 &amp;&amp; shift == 0)</span></a>
+<a name="1499"><span class="lineNum">    1499 </span><span class="lineCov">          1 :                 shift = RADIX_TREE_MAP_SHIFT;</span></a>
 <a name="1500"><span class="lineNum">    1500 </span>            : </a>
-<a name="1501"><span class="lineNum">    1501 </span><span class="lineCov">      80438 :         while (shift) {</span></a>
-<a name="1502"><span class="lineNum">    1502 </span><span class="lineCov">      58176 :                 shift -= RADIX_TREE_MAP_SHIFT;</span></a>
-<a name="1503"><span class="lineNum">    1503 </span><span class="lineCov">      58176 :                 if (child == NULL) {</span></a>
+<a name="1501"><span class="lineNum">    1501 </span><span class="lineCov">      40306 :         while (shift) {</span></a>
+<a name="1502"><span class="lineNum">    1502 </span><span class="lineCov">      29146 :                 shift -= RADIX_TREE_MAP_SHIFT;</span></a>
+<a name="1503"><span class="lineNum">    1503 </span><span class="lineCov">      29146 :                 if (child == NULL) {</span></a>
 <a name="1504"><span class="lineNum">    1504 </span>            :                         /* Have to add a child node.  */</a>
-<a name="1505"><span class="lineNum">    1505 </span><span class="lineCov">        506 :                         child = radix_tree_node_alloc(gfp, node, root, shift,</span></a>
+<a name="1505"><span class="lineNum">    1505 </span><span class="lineCov">        282 :                         child = radix_tree_node_alloc(gfp, node, root, shift,</span></a>
 <a name="1506"><span class="lineNum">    1506 </span>            :                                                         offset, 0, 0);</a>
-<a name="1507"><span class="lineNum">    1507 </span><span class="lineCov">        506 :                         if (!child)</span></a>
+<a name="1507"><span class="lineNum">    1507 </span><span class="lineCov">        282 :                         if (!child)</span></a>
 <a name="1508"><span class="lineNum">    1508 </span>            :                                 return ERR_PTR(-ENOMEM);</a>
-<a name="1509"><span class="lineNum">    1509 </span><span class="lineCov">       1012 :                         all_tag_set(child, IDR_FREE);</span></a>
-<a name="1510"><span class="lineNum">    1510 </span><span class="lineCov">       1012 :                         rcu_assign_pointer(*slot, node_to_entry(child));</span></a>
-<a name="1511"><span class="lineNum">    1511 </span><span class="lineCov">        506 :                         if (node)</span></a>
-<a name="1512"><span class="lineNum">    1512 </span><span class="lineCov">        500 :                                 node-&gt;count++;</span></a>
-<a name="1513"><span class="lineNum">    1513 </span><span class="lineCov">     115340 :                 } else if (!radix_tree_is_internal_node(child))</span></a>
+<a name="1509"><span class="lineNum">    1509 </span><span class="lineCov">        564 :                         all_tag_set(child, IDR_FREE);</span></a>
+<a name="1510"><span class="lineNum">    1510 </span><span class="lineCov">        564 :                         rcu_assign_pointer(*slot, node_to_entry(child));</span></a>
+<a name="1511"><span class="lineNum">    1511 </span><span class="lineCov">        282 :                         if (node)</span></a>
+<a name="1512"><span class="lineNum">    1512 </span><span class="lineCov">        279 :                                 node-&gt;count++;</span></a>
+<a name="1513"><span class="lineNum">    1513 </span><span class="lineCov">      57728 :                 } else if (!radix_tree_is_internal_node(child))</span></a>
 <a name="1514"><span class="lineNum">    1514 </span>            :                         break;</a>
 <a name="1515"><span class="lineNum">    1515 </span>            : </a>
-<a name="1516"><span class="lineNum">    1516 </span><span class="lineCov">     116352 :                 node = entry_to_node(child);</span></a>
-<a name="1517"><span class="lineNum">    1517 </span><span class="lineCov">      58176 :                 offset = radix_tree_descend(node, &amp;child, start);</span></a>
-<a name="1518"><span class="lineNum">    1518 </span><span class="lineCov">     116352 :                 if (!tag_get(node, IDR_FREE, offset)) {</span></a>
-<a name="1519"><span class="lineNum">    1519 </span><span class="lineCov">          8 :                         offset = radix_tree_find_next_bit(node, IDR_FREE,</span></a>
-<a name="1520"><span class="lineNum">    1520 </span><span class="lineCov">          4 :                                                         offset + 1);</span></a>
-<a name="1521"><span class="lineNum">    1521 </span><span class="lineCov">          8 :                         start = next_index(start, node, offset);</span></a>
-<a name="1522"><span class="lineNum">    1522 </span><span class="lineCov">          4 :                         if (start &gt; max || start == 0)</span></a>
+<a name="1516"><span class="lineNum">    1516 </span><span class="lineCov">      58292 :                 node = entry_to_node(child);</span></a>
+<a name="1517"><span class="lineNum">    1517 </span><span class="lineCov">      29146 :                 offset = radix_tree_descend(node, &amp;child, start);</span></a>
+<a name="1518"><span class="lineNum">    1518 </span><span class="lineCov">      58292 :                 if (!tag_get(node, IDR_FREE, offset)) {</span></a>
+<a name="1519"><span class="lineNum">    1519 </span><span class="lineCov">          4 :                         offset = radix_tree_find_next_bit(node, IDR_FREE,</span></a>
+<a name="1520"><span class="lineNum">    1520 </span><span class="lineCov">          2 :                                                         offset + 1);</span></a>
+<a name="1521"><span class="lineNum">    1521 </span><span class="lineCov">          4 :                         start = next_index(start, node, offset);</span></a>
+<a name="1522"><span class="lineNum">    1522 </span><span class="lineCov">          2 :                         if (start &gt; max || start == 0)</span></a>
 <a name="1523"><span class="lineNum">    1523 </span>            :                                 return ERR_PTR(-ENOSPC);</a>
-<a name="1524"><span class="lineNum">    1524 </span><span class="lineCov">          4 :                         while (offset == RADIX_TREE_MAP_SIZE) {</span></a>
+<a name="1524"><span class="lineNum">    1524 </span><span class="lineCov">          2 :                         while (offset == RADIX_TREE_MAP_SIZE) {</span></a>
 <a name="1525"><span class="lineNum">    1525 </span><span class="lineNoCov">          0 :                                 offset = node-&gt;offset + 1;</span></a>
 <a name="1526"><span class="lineNum">    1526 </span><span class="lineNoCov">          0 :                                 node = node-&gt;parent;</span></a>
 <a name="1527"><span class="lineNum">    1527 </span><span class="lineNoCov">          0 :                                 if (!node)</span></a>
 <a name="1528"><span class="lineNum">    1528 </span>            :                                         goto grow;</a>
 <a name="1529"><span class="lineNum">    1529 </span><span class="lineNoCov">          0 :                                 shift = node-&gt;shift;</span></a>
 <a name="1530"><span class="lineNum">    1530 </span>            :                         }</a>
-<a name="1531"><span class="lineNum">    1531 </span><span class="lineCov">          4 :                         child = rcu_dereference_raw(node-&gt;slots[offset]);</span></a>
+<a name="1531"><span class="lineNum">    1531 </span><span class="lineCov">          2 :                         child = rcu_dereference_raw(node-&gt;slots[offset]);</span></a>
 <a name="1532"><span class="lineNum">    1532 </span>            :                 }</a>
-<a name="1533"><span class="lineNum">    1533 </span><span class="lineCov">      58176 :                 slot = &amp;node-&gt;slots[offset];</span></a>
+<a name="1533"><span class="lineNum">    1533 </span><span class="lineCov">      29146 :                 slot = &amp;node-&gt;slots[offset];</span></a>
 <a name="1534"><span class="lineNum">    1534 </span>            :         }</a>
 <a name="1535"><span class="lineNum">    1535 </span>            : </a>
-<a name="1536"><span class="lineNum">    1536 </span><span class="lineCov">      22262 :         iter-&gt;index = start;</span></a>
-<a name="1537"><span class="lineNum">    1537 </span><span class="lineCov">      22262 :         if (node)</span></a>
-<a name="1538"><span class="lineNum">    1538 </span><span class="lineCov">      44524 :                 iter-&gt;next_index = 1 + min(max, (start | node_maxindex(node)));</span></a>
+<a name="1536"><span class="lineNum">    1536 </span><span class="lineCov">      11160 :         iter-&gt;index = start;</span></a>
+<a name="1537"><span class="lineNum">    1537 </span><span class="lineCov">      11160 :         if (node)</span></a>
+<a name="1538"><span class="lineNum">    1538 </span><span class="lineCov">      22320 :                 iter-&gt;next_index = 1 + min(max, (start | node_maxindex(node)));</span></a>
 <a name="1539"><span class="lineNum">    1539 </span>            :         else</a>
 <a name="1540"><span class="lineNum">    1540 </span><span class="lineNoCov">          0 :                 iter-&gt;next_index = 1;</span></a>
-<a name="1541"><span class="lineNum">    1541 </span><span class="lineCov">      22262 :         iter-&gt;node = node;</span></a>
-<a name="1542"><span class="lineNum">    1542 </span><span class="lineCov">      22262 :         set_iter_tags(iter, node, offset, IDR_FREE);</span></a>
+<a name="1541"><span class="lineNum">    1541 </span><span class="lineCov">      11160 :         iter-&gt;node = node;</span></a>
+<a name="1542"><span class="lineNum">    1542 </span><span class="lineCov">      11160 :         set_iter_tags(iter, node, offset, IDR_FREE);</span></a>
 <a name="1543"><span class="lineNum">    1543 </span>            : </a>
 <a name="1544"><span class="lineNum">    1544 </span>            :         return slot;</a>
 <a name="1545"><span class="lineNum">    1545 </span>            : }</a>
@@ -1628,13 +1628,13 @@
 <a name="1566"><span class="lineNum">    1566 </span>            : EXPORT_SYMBOL(idr_destroy);</a>
 <a name="1567"><span class="lineNum">    1567 </span>            : </a>
 <a name="1568"><span class="lineNum">    1568 </span>            : static void</a>
-<a name="1569"><span class="lineNum">    1569 </span><span class="lineCov">        420 : radix_tree_node_ctor(void *arg)</span></a>
+<a name="1569"><span class="lineNum">    1569 </span><span class="lineCov">        210 : radix_tree_node_ctor(void *arg)</span></a>
 <a name="1570"><span class="lineNum">    1570 </span>            : {</a>
-<a name="1571"><span class="lineNum">    1571 </span><span class="lineCov">        420 :         struct radix_tree_node *node = arg;</span></a>
+<a name="1571"><span class="lineNum">    1571 </span><span class="lineCov">        210 :         struct radix_tree_node *node = arg;</span></a>
 <a name="1572"><span class="lineNum">    1572 </span>            : </a>
-<a name="1573"><span class="lineNum">    1573 </span><span class="lineCov">        420 :         memset(node, 0, sizeof(*node));</span></a>
-<a name="1574"><span class="lineNum">    1574 </span><span class="lineCov">        840 :         INIT_LIST_HEAD(&amp;node-&gt;private_list);</span></a>
-<a name="1575"><span class="lineNum">    1575 </span><span class="lineCov">        420 : }</span></a>
+<a name="1573"><span class="lineNum">    1573 </span><span class="lineCov">        210 :         memset(node, 0, sizeof(*node));</span></a>
+<a name="1574"><span class="lineNum">    1574 </span><span class="lineCov">        420 :         INIT_LIST_HEAD(&amp;node-&gt;private_list);</span></a>
+<a name="1575"><span class="lineNum">    1575 </span><span class="lineCov">        210 : }</span></a>
 <a name="1576"><span class="lineNum">    1576 </span>            : </a>
 <a name="1577"><span class="lineNum">    1577 </span><span class="lineNoCov">          0 : static int radix_tree_cpu_dead(unsigned int cpu)</span></a>
 <a name="1578"><span class="lineNum">    1578 </span>            : {</a>
@@ -1652,21 +1652,21 @@
 <a name="1590"><span class="lineNum">    1590 </span><span class="lineNoCov">          0 :         return 0;</span></a>
 <a name="1591"><span class="lineNum">    1591 </span>            : }</a>
 <a name="1592"><span class="lineNum">    1592 </span>            : </a>
-<a name="1593"><span class="lineNum">    1593 </span><span class="lineCov">          2 : void __init radix_tree_init(void)</span></a>
+<a name="1593"><span class="lineNum">    1593 </span><span class="lineCov">          1 : void __init radix_tree_init(void)</span></a>
 <a name="1594"><span class="lineNum">    1594 </span>            : {</a>
 <a name="1595"><span class="lineNum">    1595 </span>            :         int ret;</a>
 <a name="1596"><span class="lineNum">    1596 </span>            : </a>
 <a name="1597"><span class="lineNum">    1597 </span>            :         BUILD_BUG_ON(RADIX_TREE_MAX_TAGS + __GFP_BITS_SHIFT &gt; 32);</a>
 <a name="1598"><span class="lineNum">    1598 </span>            :         BUILD_BUG_ON(ROOT_IS_IDR &amp; ~GFP_ZONEMASK);</a>
 <a name="1599"><span class="lineNum">    1599 </span>            :         BUILD_BUG_ON(XA_CHUNK_SIZE &gt; 255);</a>
-<a name="1600"><span class="lineNum">    1600 </span><span class="lineCov">          2 :         radix_tree_node_cachep = kmem_cache_create(&quot;radix_tree_node&quot;,</span></a>
+<a name="1600"><span class="lineNum">    1600 </span><span class="lineCov">          1 :         radix_tree_node_cachep = kmem_cache_create(&quot;radix_tree_node&quot;,</span></a>
 <a name="1601"><span class="lineNum">    1601 </span>            :                         sizeof(struct radix_tree_node), 0,</a>
 <a name="1602"><span class="lineNum">    1602 </span>            :                         SLAB_PANIC | SLAB_RECLAIM_ACCOUNT,</a>
 <a name="1603"><span class="lineNum">    1603 </span>            :                         radix_tree_node_ctor);</a>
-<a name="1604"><span class="lineNum">    1604 </span><span class="lineCov">          2 :         ret = cpuhp_setup_state_nocalls(CPUHP_RADIX_DEAD, &quot;lib/radix:dead&quot;,</span></a>
+<a name="1604"><span class="lineNum">    1604 </span><span class="lineCov">          1 :         ret = cpuhp_setup_state_nocalls(CPUHP_RADIX_DEAD, &quot;lib/radix:dead&quot;,</span></a>
 <a name="1605"><span class="lineNum">    1605 </span>            :                                         NULL, radix_tree_cpu_dead);</a>
-<a name="1606"><span class="lineNum">    1606 </span><span class="lineCov">          2 :         WARN_ON(ret &lt; 0);</span></a>
-<a name="1607"><span class="lineNum">    1607 </span><span class="lineCov">          2 : }</span></a>
+<a name="1606"><span class="lineNum">    1606 </span><span class="lineCov">          1 :         WARN_ON(ret &lt; 0);</span></a>
+<a name="1607"><span class="lineNum">    1607 </span><span class="lineCov">          1 : }</span></a>
 </pre>
       </td>
     </tr>

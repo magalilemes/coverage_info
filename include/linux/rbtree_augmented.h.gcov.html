@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -106,11 +106,11 @@
 <a name="44"><span class="lineNum">      44 </span>            :  * affected subtrees.</a>
 <a name="45"><span class="lineNum">      45 </span>            :  */</a>
 <a name="46"><span class="lineNum">      46 </span>            : static inline void</a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">         32 : rb_insert_augmented(struct rb_node *node, struct rb_root *root,</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">         16 : rb_insert_augmented(struct rb_node *node, struct rb_root *root,</span></a>
 <a name="48"><span class="lineNum">      48 </span>            :                     const struct rb_augment_callbacks *augment)</a>
 <a name="49"><span class="lineNum">      49 </span>            : {</a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">         32 :         __rb_insert_augmented(node, root, augment-&gt;rotate);</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         32 : }</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">         16 :         __rb_insert_augmented(node, root, augment-&gt;rotate);</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         16 : }</span></a>
 <a name="52"><span class="lineNum">      52 </span>            : </a>
 <a name="53"><span class="lineNum">      53 </span>            : static inline void</a>
 <a name="54"><span class="lineNum">      54 </span>            : rb_insert_augmented_cached(struct rb_node *node,</a>
@@ -218,26 +218,26 @@
 <a name="156"><span class="lineNum">     156 </span>            : </a>
 <a name="157"><span class="lineNum">     157 </span>            : static inline void rb_set_parent(struct rb_node *rb, struct rb_node *p)</a>
 <a name="158"><span class="lineNum">     158 </span>            : {</a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">       3794 :         rb-&gt;__rb_parent_color = rb_color(rb) | (unsigned long)p;</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">       1897 :         rb-&gt;__rb_parent_color = rb_color(rb) | (unsigned long)p;</span></a>
 <a name="160"><span class="lineNum">     160 </span>            : }</a>
 <a name="161"><span class="lineNum">     161 </span>            : </a>
 <a name="162"><span class="lineNum">     162 </span>            : static inline void rb_set_parent_color(struct rb_node *rb,</a>
 <a name="163"><span class="lineNum">     163 </span>            :                                        struct rb_node *p, int color)</a>
 <a name="164"><span class="lineNum">     164 </span>            : {</a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">      47776 :         rb-&gt;__rb_parent_color = (unsigned long)p | color;</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">      24005 :         rb-&gt;__rb_parent_color = (unsigned long)p | color;</span></a>
 <a name="166"><span class="lineNum">     166 </span>            : }</a>
 <a name="167"><span class="lineNum">     167 </span>            : </a>
 <a name="168"><span class="lineNum">     168 </span>            : static inline void</a>
 <a name="169"><span class="lineNum">     169 </span>            : __rb_change_child(struct rb_node *old, struct rb_node *new,</a>
 <a name="170"><span class="lineNum">     170 </span>            :                   struct rb_node *parent, struct rb_root *root)</a>
 <a name="171"><span class="lineNum">     171 </span>            : {</a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">      13599 :         if (parent) {</span></a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineCov">       8806 :                 if (parent-&gt;rb_left == old)</span></a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">       4466 :                         WRITE_ONCE(parent-&gt;rb_left, new);</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">       6975 :         if (parent) {</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">       4405 :                 if (parent-&gt;rb_left == old)</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">       2235 :                         WRITE_ONCE(parent-&gt;rb_left, new);</span></a>
 <a name="175"><span class="lineNum">     175 </span>            :                 else</a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineCov">       4340 :                         WRITE_ONCE(parent-&gt;rb_right, new);</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">       2170 :                         WRITE_ONCE(parent-&gt;rb_right, new);</span></a>
 <a name="177"><span class="lineNum">     177 </span>            :         } else</a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">       4793 :                 WRITE_ONCE(root-&gt;rb_node, new);</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">       2570 :                 WRITE_ONCE(root-&gt;rb_node, new);</span></a>
 <a name="179"><span class="lineNum">     179 </span>            : }</a>
 <a name="180"><span class="lineNum">     180 </span>            : </a>
 <a name="181"><span class="lineNum">     181 </span>            : static inline void</a>
@@ -260,12 +260,12 @@
 <a name="198"><span class="lineNum">     198 </span>            : __rb_erase_augmented(struct rb_node *node, struct rb_root *root,</a>
 <a name="199"><span class="lineNum">     199 </span>            :                      const struct rb_augment_callbacks *augment)</a>
 <a name="200"><span class="lineNum">     200 </span>            : {</a>
-<a name="201"><span class="lineNum">     201 </span><span class="lineCov">       5540 :         struct rb_node *child = node-&gt;rb_right;</span></a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">       5540 :         struct rb_node *tmp = node-&gt;rb_left;</span></a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineCov">       2943 :         struct rb_node *child = node-&gt;rb_right;</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">       2943 :         struct rb_node *tmp = node-&gt;rb_left;</span></a>
 <a name="203"><span class="lineNum">     203 </span>            :         struct rb_node *parent, *rebalance;</a>
 <a name="204"><span class="lineNum">     204 </span>            :         unsigned long pc;</a>
 <a name="205"><span class="lineNum">     205 </span>            : </a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineCov">       5540 :         if (!tmp) {</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">       2943 :         if (!tmp) {</span></a>
 <a name="207"><span class="lineNum">     207 </span>            :                 /*</a>
 <a name="208"><span class="lineNum">     208 </span>            :                  * Case 1: node to erase has no more than 1 child (easy!)</a>
 <a name="209"><span class="lineNum">     209 </span>            :                  *</a>
@@ -273,27 +273,27 @@
 <a name="211"><span class="lineNum">     211 </span>            :                  * and node must be black due to 4). We adjust colors locally</a>
 <a name="212"><span class="lineNum">     212 </span>            :                  * so as to bypass __rb_erase_color() later on.</a>
 <a name="213"><span class="lineNum">     213 </span>            :                  */</a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineCov">       3082 :                 pc = node-&gt;__rb_parent_color;</span></a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineCov">       3082 :                 parent = __rb_parent(pc);</span></a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineCov">       3082 :                 __rb_change_child(node, child, parent, root);</span></a>
-<a name="217"><span class="lineNum">     217 </span><span class="lineCov">       3082 :                 if (child) {</span></a>
-<a name="218"><span class="lineNum">     218 </span><span class="lineCov">        558 :                         child-&gt;__rb_parent_color = pc;</span></a>
-<a name="219"><span class="lineNum">     219 </span><span class="lineCov">        558 :                         rebalance = NULL;</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">       1714 :                 pc = node-&gt;__rb_parent_color;</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">       1714 :                 parent = __rb_parent(pc);</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineCov">       1714 :                 __rb_change_child(node, child, parent, root);</span></a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineCov">       1714 :                 if (child) {</span></a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineCov">        337 :                         child-&gt;__rb_parent_color = pc;</span></a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineCov">        337 :                         rebalance = NULL;</span></a>
 <a name="220"><span class="lineNum">     220 </span>            :                 } else</a>
-<a name="221"><span class="lineNum">     221 </span><span class="lineCov">       2524 :                         rebalance = __rb_is_black(pc) ? parent : NULL;</span></a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineCov">       1377 :                         rebalance = __rb_is_black(pc) ? parent : NULL;</span></a>
 <a name="222"><span class="lineNum">     222 </span>            :                 tmp = parent;</a>
-<a name="223"><span class="lineNum">     223 </span><span class="lineCov">       2458 :         } else if (!child) {</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineCov">       1229 :         } else if (!child) {</span></a>
 <a name="224"><span class="lineNum">     224 </span>            :                 /* Still case 1, but this time the child is node-&gt;rb_left */</a>
-<a name="225"><span class="lineNum">     225 </span><span class="lineCov">        318 :                 tmp-&gt;__rb_parent_color = pc = node-&gt;__rb_parent_color;</span></a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">        318 :                 parent = __rb_parent(pc);</span></a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">        159 :                 tmp-&gt;__rb_parent_color = pc = node-&gt;__rb_parent_color;</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">        159 :                 parent = __rb_parent(pc);</span></a>
 <a name="227"><span class="lineNum">     227 </span>            :                 __rb_change_child(node, tmp, parent, root);</a>
 <a name="228"><span class="lineNum">     228 </span>            :                 rebalance = NULL;</a>
 <a name="229"><span class="lineNum">     229 </span>            :                 tmp = parent;</a>
 <a name="230"><span class="lineNum">     230 </span>            :         } else {</a>
-<a name="231"><span class="lineNum">     231 </span><span class="lineCov">       2140 :                 struct rb_node *successor = child, *child2;</span></a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineCov">       1070 :                 struct rb_node *successor = child, *child2;</span></a>
 <a name="232"><span class="lineNum">     232 </span>            : </a>
-<a name="233"><span class="lineNum">     233 </span><span class="lineCov">       2140 :                 tmp = child-&gt;rb_left;</span></a>
-<a name="234"><span class="lineNum">     234 </span><span class="lineCov">       2140 :                 if (!tmp) {</span></a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineCov">       1070 :                 tmp = child-&gt;rb_left;</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">       1070 :                 if (!tmp) {</span></a>
 <a name="235"><span class="lineNum">     235 </span>            :                         /*</a>
 <a name="236"><span class="lineNum">     236 </span>            :                          * Case 2: node's successor is its right child</a>
 <a name="237"><span class="lineNum">     237 </span>            :                          *</a>
@@ -303,8 +303,8 @@
 <a name="241"><span class="lineNum">     241 </span>            :                          *        \</a>
 <a name="242"><span class="lineNum">     242 </span>            :                          *        (c)</a>
 <a name="243"><span class="lineNum">     243 </span>            :                          */</a>
-<a name="244"><span class="lineNum">     244 </span><span class="lineCov">        768 :                         parent = successor;</span></a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineCov">        768 :                         child2 = successor-&gt;rb_right;</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineCov">        384 :                         parent = successor;</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">        384 :                         child2 = successor-&gt;rb_right;</span></a>
 <a name="246"><span class="lineNum">     246 </span>            : </a>
 <a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 :                         augment-&gt;copy(node, successor);</span></a>
 <a name="248"><span class="lineNum">     248 </span>            :                 } else {</a>
@@ -323,35 +323,35 @@
 <a name="261"><span class="lineNum">     261 </span>            :                          *    (c)</a>
 <a name="262"><span class="lineNum">     262 </span>            :                          */</a>
 <a name="263"><span class="lineNum">     263 </span>            :                         do {</a>
-<a name="264"><span class="lineNum">     264 </span><span class="lineCov">       2304 :                                 parent = successor;</span></a>
-<a name="265"><span class="lineNum">     265 </span><span class="lineCov">       2304 :                                 successor = tmp;</span></a>
-<a name="266"><span class="lineNum">     266 </span><span class="lineCov">       2304 :                                 tmp = tmp-&gt;rb_left;</span></a>
-<a name="267"><span class="lineNum">     267 </span><span class="lineCov">       2304 :                         } while (tmp);</span></a>
-<a name="268"><span class="lineNum">     268 </span><span class="lineCov">       1372 :                         child2 = successor-&gt;rb_right;</span></a>
-<a name="269"><span class="lineNum">     269 </span><span class="lineCov">       1372 :                         WRITE_ONCE(parent-&gt;rb_left, child2);</span></a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineCov">       1372 :                         WRITE_ONCE(successor-&gt;rb_right, child);</span></a>
-<a name="271"><span class="lineNum">     271 </span><span class="lineCov">       2744 :                         rb_set_parent(child, successor);</span></a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineCov">       1152 :                                 parent = successor;</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">       1152 :                                 successor = tmp;</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineCov">       1152 :                                 tmp = tmp-&gt;rb_left;</span></a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineCov">       1152 :                         } while (tmp);</span></a>
+<a name="268"><span class="lineNum">     268 </span><span class="lineCov">        686 :                         child2 = successor-&gt;rb_right;</span></a>
+<a name="269"><span class="lineNum">     269 </span><span class="lineCov">        686 :                         WRITE_ONCE(parent-&gt;rb_left, child2);</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineCov">        686 :                         WRITE_ONCE(successor-&gt;rb_right, child);</span></a>
+<a name="271"><span class="lineNum">     271 </span><span class="lineCov">       1372 :                         rb_set_parent(child, successor);</span></a>
 <a name="272"><span class="lineNum">     272 </span>            : </a>
 <a name="273"><span class="lineNum">     273 </span><span class="lineNoCov">          0 :                         augment-&gt;copy(node, successor);</span></a>
 <a name="274"><span class="lineNum">     274 </span><span class="lineNoCov">          0 :                         augment-&gt;propagate(parent, successor);</span></a>
 <a name="275"><span class="lineNum">     275 </span>            :                 }</a>
 <a name="276"><span class="lineNum">     276 </span>            : </a>
-<a name="277"><span class="lineNum">     277 </span><span class="lineCov">       2140 :                 tmp = node-&gt;rb_left;</span></a>
-<a name="278"><span class="lineNum">     278 </span><span class="lineCov">       2140 :                 WRITE_ONCE(successor-&gt;rb_left, tmp);</span></a>
-<a name="279"><span class="lineNum">     279 </span><span class="lineCov">       4280 :                 rb_set_parent(tmp, successor);</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineCov">       1070 :                 tmp = node-&gt;rb_left;</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineCov">       1070 :                 WRITE_ONCE(successor-&gt;rb_left, tmp);</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineCov">       2140 :                 rb_set_parent(tmp, successor);</span></a>
 <a name="280"><span class="lineNum">     280 </span>            : </a>
-<a name="281"><span class="lineNum">     281 </span><span class="lineCov">       2140 :                 pc = node-&gt;__rb_parent_color;</span></a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineCov">       2140 :                 tmp = __rb_parent(pc);</span></a>
-<a name="283"><span class="lineNum">     283 </span><span class="lineCov">       2140 :                 __rb_change_child(node, successor, tmp, root);</span></a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineCov">       1070 :                 pc = node-&gt;__rb_parent_color;</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineCov">       1070 :                 tmp = __rb_parent(pc);</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineCov">       1070 :                 __rb_change_child(node, successor, tmp, root);</span></a>
 <a name="284"><span class="lineNum">     284 </span>            : </a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineCov">       2140 :                 if (child2) {</span></a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">        340 :                         rb_set_parent_color(child2, parent, RB_BLACK);</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">       1070 :                 if (child2) {</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">        170 :                         rb_set_parent_color(child2, parent, RB_BLACK);</span></a>
 <a name="287"><span class="lineNum">     287 </span>            :                         rebalance = NULL;</a>
 <a name="288"><span class="lineNum">     288 </span>            :                 } else {</a>
-<a name="289"><span class="lineNum">     289 </span><span class="lineCov">       1800 :                         rebalance = rb_is_black(successor) ? parent : NULL;</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineCov">        900 :                         rebalance = rb_is_black(successor) ? parent : NULL;</span></a>
 <a name="290"><span class="lineNum">     290 </span>            :                 }</a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineCov">       2140 :                 successor-&gt;__rb_parent_color = pc;</span></a>
-<a name="292"><span class="lineNum">     292 </span><span class="lineCov">       2140 :                 tmp = successor;</span></a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineCov">       1070 :                 successor-&gt;__rb_parent_color = pc;</span></a>
+<a name="292"><span class="lineNum">     292 </span><span class="lineCov">       1070 :                 tmp = successor;</span></a>
 <a name="293"><span class="lineNum">     293 </span>            :         }</a>
 <a name="294"><span class="lineNum">     294 </span>            : </a>
 <a name="295"><span class="lineNum">     295 </span><span class="lineNoCov">          0 :         augment-&gt;propagate(tmp, NULL);</span></a>

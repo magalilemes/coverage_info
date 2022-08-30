@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -802,30 +802,30 @@
 <a name="740"><span class="lineNum">     740 </span>            :         .llseek = noop_llseek,</a>
 <a name="741"><span class="lineNum">     741 </span>            : };</a>
 <a name="742"><span class="lineNum">     742 </span>            : </a>
-<a name="743"><span class="lineNum">     743 </span><span class="lineCov">         16 : static char *mem_devnode(struct device *dev, umode_t *mode)</span></a>
+<a name="743"><span class="lineNum">     743 </span><span class="lineCov">          8 : static char *mem_devnode(struct device *dev, umode_t *mode)</span></a>
 <a name="744"><span class="lineNum">     744 </span>            : {</a>
-<a name="745"><span class="lineNum">     745 </span><span class="lineCov">         16 :         if (mode &amp;&amp; devlist[MINOR(dev-&gt;devt)].mode)</span></a>
-<a name="746"><span class="lineNum">     746 </span><span class="lineCov">         12 :                 *mode = devlist[MINOR(dev-&gt;devt)].mode;</span></a>
-<a name="747"><span class="lineNum">     747 </span><span class="lineCov">         16 :         return NULL;</span></a>
+<a name="745"><span class="lineNum">     745 </span><span class="lineCov">          8 :         if (mode &amp;&amp; devlist[MINOR(dev-&gt;devt)].mode)</span></a>
+<a name="746"><span class="lineNum">     746 </span><span class="lineCov">          6 :                 *mode = devlist[MINOR(dev-&gt;devt)].mode;</span></a>
+<a name="747"><span class="lineNum">     747 </span><span class="lineCov">          8 :         return NULL;</span></a>
 <a name="748"><span class="lineNum">     748 </span>            : }</a>
 <a name="749"><span class="lineNum">     749 </span>            : </a>
 <a name="750"><span class="lineNum">     750 </span>            : static struct class *mem_class;</a>
 <a name="751"><span class="lineNum">     751 </span>            : </a>
-<a name="752"><span class="lineNum">     752 </span><span class="lineCov">          2 : static int __init chr_dev_init(void)</span></a>
+<a name="752"><span class="lineNum">     752 </span><span class="lineCov">          1 : static int __init chr_dev_init(void)</span></a>
 <a name="753"><span class="lineNum">     753 </span>            : {</a>
 <a name="754"><span class="lineNum">     754 </span>            :         int minor;</a>
 <a name="755"><span class="lineNum">     755 </span>            : </a>
-<a name="756"><span class="lineNum">     756 </span><span class="lineCov">          2 :         if (register_chrdev(MEM_MAJOR, &quot;mem&quot;, &amp;memory_fops))</span></a>
+<a name="756"><span class="lineNum">     756 </span><span class="lineCov">          1 :         if (register_chrdev(MEM_MAJOR, &quot;mem&quot;, &amp;memory_fops))</span></a>
 <a name="757"><span class="lineNum">     757 </span><span class="lineNoCov">          0 :                 printk(&quot;unable to get major %d for memory devs\n&quot;, MEM_MAJOR);</span></a>
 <a name="758"><span class="lineNum">     758 </span>            : </a>
-<a name="759"><span class="lineNum">     759 </span><span class="lineCov">          2 :         mem_class = class_create(THIS_MODULE, &quot;mem&quot;);</span></a>
-<a name="760"><span class="lineNum">     760 </span><span class="lineCov">          4 :         if (IS_ERR(mem_class))</span></a>
+<a name="759"><span class="lineNum">     759 </span><span class="lineCov">          1 :         mem_class = class_create(THIS_MODULE, &quot;mem&quot;);</span></a>
+<a name="760"><span class="lineNum">     760 </span><span class="lineCov">          2 :         if (IS_ERR(mem_class))</span></a>
 <a name="761"><span class="lineNum">     761 </span><span class="lineNoCov">          0 :                 return PTR_ERR(mem_class);</span></a>
 <a name="762"><span class="lineNum">     762 </span>            : </a>
-<a name="763"><span class="lineNum">     763 </span><span class="lineCov">          2 :         mem_class-&gt;devnode = mem_devnode;</span></a>
-<a name="764"><span class="lineNum">     764 </span><span class="lineCov">         24 :         for (minor = 1; minor &lt; ARRAY_SIZE(devlist); minor++) {</span></a>
-<a name="765"><span class="lineNum">     765 </span><span class="lineCov">         22 :                 if (!devlist[minor].name)</span></a>
-<a name="766"><span class="lineNum">     766 </span><span class="lineCov">          6 :                         continue;</span></a>
+<a name="763"><span class="lineNum">     763 </span><span class="lineCov">          1 :         mem_class-&gt;devnode = mem_devnode;</span></a>
+<a name="764"><span class="lineNum">     764 </span><span class="lineCov">         12 :         for (minor = 1; minor &lt; ARRAY_SIZE(devlist); minor++) {</span></a>
+<a name="765"><span class="lineNum">     765 </span><span class="lineCov">         11 :                 if (!devlist[minor].name)</span></a>
+<a name="766"><span class="lineNum">     766 </span><span class="lineCov">          3 :                         continue;</span></a>
 <a name="767"><span class="lineNum">     767 </span>            : </a>
 <a name="768"><span class="lineNum">     768 </span>            :                 /*</a>
 <a name="769"><span class="lineNum">     769 </span>            :                  * Create /dev/port?</a>
@@ -833,11 +833,11 @@
 <a name="771"><span class="lineNum">     771 </span>            :                 if ((minor == DEVPORT_MINOR) &amp;&amp; !arch_has_dev_port())</a>
 <a name="772"><span class="lineNum">     772 </span>            :                         continue;</a>
 <a name="773"><span class="lineNum">     773 </span>            : </a>
-<a name="774"><span class="lineNum">     774 </span><span class="lineCov">         16 :                 device_create(mem_class, NULL, MKDEV(MEM_MAJOR, minor),</span></a>
+<a name="774"><span class="lineNum">     774 </span><span class="lineCov">          8 :                 device_create(mem_class, NULL, MKDEV(MEM_MAJOR, minor),</span></a>
 <a name="775"><span class="lineNum">     775 </span>            :                               NULL, devlist[minor].name);</a>
 <a name="776"><span class="lineNum">     776 </span>            :         }</a>
 <a name="777"><span class="lineNum">     777 </span>            : </a>
-<a name="778"><span class="lineNum">     778 </span><span class="lineCov">          2 :         return tty_init();</span></a>
+<a name="778"><span class="lineNum">     778 </span><span class="lineCov">          1 :         return tty_init();</span></a>
 <a name="779"><span class="lineNum">     779 </span>            : }</a>
 <a name="780"><span class="lineNum">     780 </span>            : </a>
 <a name="781"><span class="lineNum">     781 </span>            : fs_initcall(chr_dev_init);</a>

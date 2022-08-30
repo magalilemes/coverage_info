@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -102,17 +102,17 @@
 <a name="40"><span class="lineNum">      40 </span>            : #endif</a>
 <a name="41"><span class="lineNum">      41 </span>            : </a>
 <a name="42"><span class="lineNum">      42 </span>            : void</a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">       1876 : __mutex_init(struct mutex *lock, const char *name, struct lock_class_key *key)</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">        996 : __mutex_init(struct mutex *lock, const char *name, struct lock_class_key *key)</span></a>
 <a name="44"><span class="lineNum">      44 </span>            : {</a>
-<a name="45"><span class="lineNum">      45 </span><span class="lineCov">       3752 :         atomic_long_set(&amp;lock-&gt;owner, 0);</span></a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineCov">       1992 :         atomic_long_set(&amp;lock-&gt;owner, 0);</span></a>
 <a name="46"><span class="lineNum">      46 </span>            :         raw_spin_lock_init(&amp;lock-&gt;wait_lock);</a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">       3752 :         INIT_LIST_HEAD(&amp;lock-&gt;wait_list);</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">       1992 :         INIT_LIST_HEAD(&amp;lock-&gt;wait_list);</span></a>
 <a name="48"><span class="lineNum">      48 </span>            : #ifdef CONFIG_MUTEX_SPIN_ON_OWNER</a>
 <a name="49"><span class="lineNum">      49 </span>            :         osq_lock_init(&amp;lock-&gt;osq);</a>
 <a name="50"><span class="lineNum">      50 </span>            : #endif</a>
 <a name="51"><span class="lineNum">      51 </span>            : </a>
 <a name="52"><span class="lineNum">      52 </span>            :         debug_mutex_init(lock, name, key);</a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">       1876 : }</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">        996 : }</span></a>
 <a name="54"><span class="lineNum">      54 </span>            : EXPORT_SYMBOL(__mutex_init);</a>
 <a name="55"><span class="lineNum">      55 </span>            : </a>
 <a name="56"><span class="lineNum">      56 </span>            : /*</a>
@@ -224,10 +224,10 @@
 <a name="162"><span class="lineNum">     162 </span>            :  */</a>
 <a name="163"><span class="lineNum">     163 </span>            : static __always_inline bool __mutex_trylock_fast(struct mutex *lock)</a>
 <a name="164"><span class="lineNum">     164 </span>            : {</a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">       6892 :         unsigned long curr = (unsigned long)current;</span></a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">       6892 :         unsigned long zero = 0UL;</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">       3475 :         unsigned long curr = (unsigned long)current;</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">       3475 :         unsigned long zero = 0UL;</span></a>
 <a name="167"><span class="lineNum">     167 </span>            : </a>
-<a name="168"><span class="lineNum">     168 </span><span class="lineCov">      13784 :         if (atomic_long_try_cmpxchg_acquire(&amp;lock-&gt;owner, &amp;zero, curr))</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">       6950 :         if (atomic_long_try_cmpxchg_acquire(&amp;lock-&gt;owner, &amp;zero, curr))</span></a>
 <a name="169"><span class="lineNum">     169 </span>            :                 return true;</a>
 <a name="170"><span class="lineNum">     170 </span>            : </a>
 <a name="171"><span class="lineNum">     171 </span>            :         return false;</a>
@@ -235,9 +235,9 @@
 <a name="173"><span class="lineNum">     173 </span>            : </a>
 <a name="174"><span class="lineNum">     174 </span>            : static __always_inline bool __mutex_unlock_fast(struct mutex *lock)</a>
 <a name="175"><span class="lineNum">     175 </span>            : {</a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineCov">       6892 :         unsigned long curr = (unsigned long)current;</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">       3475 :         unsigned long curr = (unsigned long)current;</span></a>
 <a name="177"><span class="lineNum">     177 </span>            : </a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">      13784 :         return atomic_long_try_cmpxchg_release(&amp;lock-&gt;owner, &amp;curr, 0UL);</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">       6950 :         return atomic_long_try_cmpxchg_release(&amp;lock-&gt;owner, &amp;curr, 0UL);</span></a>
 <a name="179"><span class="lineNum">     179 </span>            : }</a>
 <a name="180"><span class="lineNum">     180 </span>            : #endif</a>
 <a name="181"><span class="lineNum">     181 </span>            : </a>
@@ -337,13 +337,13 @@
 <a name="275"><span class="lineNum">     275 </span>            :  *</a>
 <a name="276"><span class="lineNum">     276 </span>            :  * This function is similar to (but not equivalent to) down().</a>
 <a name="277"><span class="lineNum">     277 </span>            :  */</a>
-<a name="278"><span class="lineNum">     278 </span><span class="lineCov">       6416 : void __sched mutex_lock(struct mutex *lock)</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineCov">       3237 : void __sched mutex_lock(struct mutex *lock)</span></a>
 <a name="279"><span class="lineNum">     279 </span>            : {</a>
 <a name="280"><span class="lineNum">     280 </span>            :         might_sleep();</a>
 <a name="281"><span class="lineNum">     281 </span>            : </a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineCov">       6416 :         if (!__mutex_trylock_fast(lock))</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineCov">       3237 :         if (!__mutex_trylock_fast(lock))</span></a>
 <a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 :                 __mutex_lock_slowpath(lock);</span></a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineCov">       6416 : }</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineCov">       3237 : }</span></a>
 <a name="285"><span class="lineNum">     285 </span>            : EXPORT_SYMBOL(mutex_lock);</a>
 <a name="286"><span class="lineNum">     286 </span>            : #endif</a>
 <a name="287"><span class="lineNum">     287 </span>            : </a>
@@ -593,10 +593,10 @@
 <a name="531"><span class="lineNum">     531 </span>            :  *</a>
 <a name="532"><span class="lineNum">     532 </span>            :  * This function is similar to (but not equivalent to) up().</a>
 <a name="533"><span class="lineNum">     533 </span>            :  */</a>
-<a name="534"><span class="lineNum">     534 </span><span class="lineCov">       6892 : void __sched mutex_unlock(struct mutex *lock)</span></a>
+<a name="534"><span class="lineNum">     534 </span><span class="lineCov">       3475 : void __sched mutex_unlock(struct mutex *lock)</span></a>
 <a name="535"><span class="lineNum">     535 </span>            : {</a>
 <a name="536"><span class="lineNum">     536 </span>            : #ifndef CONFIG_DEBUG_LOCK_ALLOC</a>
-<a name="537"><span class="lineNum">     537 </span><span class="lineCov">       6892 :         if (__mutex_unlock_fast(lock))</span></a>
+<a name="537"><span class="lineNum">     537 </span><span class="lineCov">       3475 :         if (__mutex_unlock_fast(lock))</span></a>
 <a name="538"><span class="lineNum">     538 </span>            :                 return;</a>
 <a name="539"><span class="lineNum">     539 </span>            : #endif</a>
 <a name="540"><span class="lineNum">     540 </span><span class="lineNoCov">          0 :         __mutex_unlock_slowpath(lock, _RET_IP_);</span></a>
@@ -1046,11 +1046,11 @@
 <a name="984"><span class="lineNum">     984 </span>            :  * Return: 0 if the lock was successfully acquired or %-EINTR if a</a>
 <a name="985"><span class="lineNum">     985 </span>            :  * fatal signal arrived.</a>
 <a name="986"><span class="lineNum">     986 </span>            :  */</a>
-<a name="987"><span class="lineNum">     987 </span><span class="lineCov">        476 : int __sched mutex_lock_killable(struct mutex *lock)</span></a>
+<a name="987"><span class="lineNum">     987 </span><span class="lineCov">        238 : int __sched mutex_lock_killable(struct mutex *lock)</span></a>
 <a name="988"><span class="lineNum">     988 </span>            : {</a>
 <a name="989"><span class="lineNum">     989 </span>            :         might_sleep();</a>
 <a name="990"><span class="lineNum">     990 </span>            : </a>
-<a name="991"><span class="lineNum">     991 </span><span class="lineCov">        476 :         if (__mutex_trylock_fast(lock))</span></a>
+<a name="991"><span class="lineNum">     991 </span><span class="lineCov">        238 :         if (__mutex_trylock_fast(lock))</span></a>
 <a name="992"><span class="lineNum">     992 </span>            :                 return 0;</a>
 <a name="993"><span class="lineNum">     993 </span>            : </a>
 <a name="994"><span class="lineNum">     994 </span><span class="lineNoCov">          0 :         return __mutex_lock_killable_slowpath(lock);</span></a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -1603,7 +1603,7 @@
 <a name="1541"><span class="lineNum">    1541 </span>            : </a>
 <a name="1542"><span class="lineNum">    1542 </span>            : static inline pid_t task_pid_nr_ns(struct task_struct *tsk, struct pid_namespace *ns)</a>
 <a name="1543"><span class="lineNum">    1543 </span>            : {</a>
-<a name="1544"><span class="lineNum">    1544 </span><span class="lineCov">        128 :         return __task_pid_nr_ns(tsk, PIDTYPE_PID, ns);</span></a>
+<a name="1544"><span class="lineNum">    1544 </span><span class="lineCov">         93 :         return __task_pid_nr_ns(tsk, PIDTYPE_PID, ns);</span></a>
 <a name="1545"><span class="lineNum">    1545 </span>            : }</a>
 <a name="1546"><span class="lineNum">    1546 </span>            : </a>
 <a name="1547"><span class="lineNum">    1547 </span>            : static inline pid_t task_pid_vnr(struct task_struct *tsk)</a>
@@ -1740,7 +1740,7 @@
 <a name="1678"><span class="lineNum">    1678 </span>            :  */</a>
 <a name="1679"><span class="lineNum">    1679 </span>            : static inline int is_global_init(struct task_struct *tsk)</a>
 <a name="1680"><span class="lineNum">    1680 </span>            : {</a>
-<a name="1681"><span class="lineNum">    1681 </span><span class="lineCov">        128 :         return task_tgid_nr(tsk) == 1;</span></a>
+<a name="1681"><span class="lineNum">    1681 </span><span class="lineCov">         93 :         return task_tgid_nr(tsk) == 1;</span></a>
 <a name="1682"><span class="lineNum">    1682 </span>            : }</a>
 <a name="1683"><span class="lineNum">    1683 </span>            : </a>
 <a name="1684"><span class="lineNum">    1684 </span>            : extern struct pid *cad_pid;</a>
@@ -1837,7 +1837,7 @@
 <a name="1775"><span class="lineNum">    1775 </span>            :         static inline void task_clear_##func(struct task_struct *p)     \</a>
 <a name="1776"><span class="lineNum">    1776 </span>            :         { clear_bit(PFA_##name, &amp;p-&gt;atomic_flags); }</a>
 <a name="1777"><span class="lineNum">    1777 </span>            : </a>
-<a name="1778"><span class="lineNum">    1778 </span><span class="lineCov">        312 : TASK_PFA_TEST(NO_NEW_PRIVS, no_new_privs)</span></a>
+<a name="1778"><span class="lineNum">    1778 </span><span class="lineCov">        214 : TASK_PFA_TEST(NO_NEW_PRIVS, no_new_privs)</span></a>
 <a name="1779"><span class="lineNum">    1779 </span><span class="lineNoCov">          0 : TASK_PFA_SET(NO_NEW_PRIVS, no_new_privs)</span></a>
 <a name="1780"><span class="lineNum">    1780 </span>            : </a>
 <a name="1781"><span class="lineNum">    1781 </span>            : TASK_PFA_TEST(SPREAD_PAGE, spread_page)</a>
@@ -1869,8 +1869,8 @@
 <a name="1807"><span class="lineNum">    1807 </span>            : static inline void</a>
 <a name="1808"><span class="lineNum">    1808 </span>            : current_restore_flags(unsigned long orig_flags, unsigned long flags)</a>
 <a name="1809"><span class="lineNum">    1809 </span>            : {</a>
-<a name="1810"><span class="lineNum">    1810 </span><span class="lineCov">        128 :         current-&gt;flags &amp;= ~flags;</span></a>
-<a name="1811"><span class="lineNum">    1811 </span><span class="lineCov">        128 :         current-&gt;flags |= orig_flags &amp; flags;</span></a>
+<a name="1810"><span class="lineNum">    1810 </span><span class="lineCov">         93 :         current-&gt;flags &amp;= ~flags;</span></a>
+<a name="1811"><span class="lineNum">    1811 </span><span class="lineCov">         93 :         current-&gt;flags |= orig_flags &amp; flags;</span></a>
 <a name="1812"><span class="lineNum">    1812 </span>            : }</a>
 <a name="1813"><span class="lineNum">    1813 </span>            : </a>
 <a name="1814"><span class="lineNum">    1814 </span>            : extern int cpuset_cpumask_can_shrink(const struct cpumask *cur, const struct cpumask *trial);</a>
@@ -1889,7 +1889,7 @@
 <a name="1827"><span class="lineNum">    1827 </span>            : }</a>
 <a name="1828"><span class="lineNum">    1828 </span>            : static inline int set_cpus_allowed_ptr(struct task_struct *p, const struct cpumask *new_mask)</a>
 <a name="1829"><span class="lineNum">    1829 </span>            : {</a>
-<a name="1830"><span class="lineNum">    1830 </span><span class="lineCov">        162 :         if (!cpumask_test_cpu(0, new_mask))</span></a>
+<a name="1830"><span class="lineNum">    1830 </span><span class="lineCov">        110 :         if (!cpumask_test_cpu(0, new_mask))</span></a>
 <a name="1831"><span class="lineNum">    1831 </span>            :                 return -EINVAL;</a>
 <a name="1832"><span class="lineNum">    1832 </span>            :         return 0;</a>
 <a name="1833"><span class="lineNum">    1833 </span>            : }</a>
@@ -1901,7 +1901,7 @@
 <a name="1839"><span class="lineNum">    1839 </span>            : }</a>
 <a name="1840"><span class="lineNum">    1840 </span>            : static inline void release_user_cpus_ptr(struct task_struct *p)</a>
 <a name="1841"><span class="lineNum">    1841 </span>            : {</a>
-<a name="1842"><span class="lineNum">    1842 </span><span class="lineCov">        126 :         WARN_ON(p-&gt;user_cpus_ptr);</span></a>
+<a name="1842"><span class="lineNum">    1842 </span><span class="lineCov">         92 :         WARN_ON(p-&gt;user_cpus_ptr);</span></a>
 <a name="1843"><span class="lineNum">    1843 </span>            : }</a>
 <a name="1844"><span class="lineNum">    1844 </span>            : </a>
 <a name="1845"><span class="lineNum">    1845 </span>            : static inline int dl_task_check_affinity(struct task_struct *p, const struct cpumask *mask)</a>
@@ -1922,7 +1922,7 @@
 <a name="1860"><span class="lineNum">    1860 </span>            :  */</a>
 <a name="1861"><span class="lineNum">    1861 </span>            : static inline int task_nice(const struct task_struct *p)</a>
 <a name="1862"><span class="lineNum">    1862 </span>            : {</a>
-<a name="1863"><span class="lineNum">    1863 </span><span class="lineCov">        183 :         return PRIO_TO_NICE((p)-&gt;static_prio);</span></a>
+<a name="1863"><span class="lineNum">    1863 </span><span class="lineCov">        121 :         return PRIO_TO_NICE((p)-&gt;static_prio);</span></a>
 <a name="1864"><span class="lineNum">    1864 </span>            : }</a>
 <a name="1865"><span class="lineNum">    1865 </span>            : </a>
 <a name="1866"><span class="lineNum">    1866 </span>            : extern int can_nice(const struct task_struct *p, const int nice);</a>
@@ -1946,7 +1946,7 @@
 <a name="1884"><span class="lineNum">    1884 </span>            :  */</a>
 <a name="1885"><span class="lineNum">    1885 </span>            : static __always_inline bool is_idle_task(const struct task_struct *p)</a>
 <a name="1886"><span class="lineNum">    1886 </span>            : {</a>
-<a name="1887"><span class="lineNum">    1887 </span><span class="lineCov">        647 :         return !!(p-&gt;flags &amp; PF_IDLE);</span></a>
+<a name="1887"><span class="lineNum">    1887 </span><span class="lineCov">        469 :         return !!(p-&gt;flags &amp; PF_IDLE);</span></a>
 <a name="1888"><span class="lineNum">    1888 </span>            : }</a>
 <a name="1889"><span class="lineNum">    1889 </span>            : </a>
 <a name="1890"><span class="lineNum">    1890 </span>            : extern struct task_struct *curr_task(int cpu);</a>
@@ -2009,7 +2009,7 @@
 <a name="1947"><span class="lineNum">    1947 </span>            : </a>
 <a name="1948"><span class="lineNum">    1948 </span>            : static inline void set_task_comm(struct task_struct *tsk, const char *from)</a>
 <a name="1949"><span class="lineNum">    1949 </span>            : {</a>
-<a name="1950"><span class="lineNum">    1950 </span><span class="lineCov">        154 :         __set_task_comm(tsk, from, false);</span></a>
+<a name="1950"><span class="lineNum">    1950 </span><span class="lineCov">        106 :         __set_task_comm(tsk, from, false);</span></a>
 <a name="1951"><span class="lineNum">    1951 </span>            : }</a>
 <a name="1952"><span class="lineNum">    1952 </span>            : </a>
 <a name="1953"><span class="lineNum">    1953 </span>            : extern char *__get_task_comm(char *to, size_t len, struct task_struct *tsk);</a>
@@ -2043,12 +2043,12 @@
 <a name="1981"><span class="lineNum">    1981 </span>            :  */</a>
 <a name="1982"><span class="lineNum">    1982 </span>            : static inline void set_tsk_thread_flag(struct task_struct *tsk, int flag)</a>
 <a name="1983"><span class="lineNum">    1983 </span>            : {</a>
-<a name="1984"><span class="lineNum">    1984 </span><span class="lineCov">        894 :         set_ti_thread_flag(task_thread_info(tsk), flag);</span></a>
+<a name="1984"><span class="lineNum">    1984 </span><span class="lineCov">        618 :         set_ti_thread_flag(task_thread_info(tsk), flag);</span></a>
 <a name="1985"><span class="lineNum">    1985 </span>            : }</a>
 <a name="1986"><span class="lineNum">    1986 </span>            : </a>
 <a name="1987"><span class="lineNum">    1987 </span>            : static inline void clear_tsk_thread_flag(struct task_struct *tsk, int flag)</a>
 <a name="1988"><span class="lineNum">    1988 </span>            : {</a>
-<a name="1989"><span class="lineNum">    1989 </span><span class="lineCov">       2344 :         clear_ti_thread_flag(task_thread_info(tsk), flag);</span></a>
+<a name="1989"><span class="lineNum">    1989 </span><span class="lineCov">       1634 :         clear_ti_thread_flag(task_thread_info(tsk), flag);</span></a>
 <a name="1990"><span class="lineNum">    1990 </span>            : }</a>
 <a name="1991"><span class="lineNum">    1991 </span>            : </a>
 <a name="1992"><span class="lineNum">    1992 </span>            : static inline void update_tsk_thread_flag(struct task_struct *tsk, int flag,</a>
@@ -2069,22 +2069,22 @@
 <a name="2007"><span class="lineNum">    2007 </span>            : </a>
 <a name="2008"><span class="lineNum">    2008 </span>            : static inline int test_tsk_thread_flag(struct task_struct *tsk, int flag)</a>
 <a name="2009"><span class="lineNum">    2009 </span>            : {</a>
-<a name="2010"><span class="lineNum">    2010 </span><span class="lineCov">       7114 :         return test_ti_thread_flag(task_thread_info(tsk), flag);</span></a>
+<a name="2010"><span class="lineNum">    2010 </span><span class="lineCov">       4940 :         return test_ti_thread_flag(task_thread_info(tsk), flag);</span></a>
 <a name="2011"><span class="lineNum">    2011 </span>            : }</a>
 <a name="2012"><span class="lineNum">    2012 </span>            : </a>
 <a name="2013"><span class="lineNum">    2013 </span>            : static inline void set_tsk_need_resched(struct task_struct *tsk)</a>
 <a name="2014"><span class="lineNum">    2014 </span>            : {</a>
-<a name="2015"><span class="lineNum">    2015 </span><span class="lineCov">        582 :         set_tsk_thread_flag(tsk,TIF_NEED_RESCHED);</span></a>
+<a name="2015"><span class="lineNum">    2015 </span><span class="lineCov">        404 :         set_tsk_thread_flag(tsk,TIF_NEED_RESCHED);</span></a>
 <a name="2016"><span class="lineNum">    2016 </span>            : }</a>
 <a name="2017"><span class="lineNum">    2017 </span>            : </a>
 <a name="2018"><span class="lineNum">    2018 </span>            : static inline void clear_tsk_need_resched(struct task_struct *tsk)</a>
 <a name="2019"><span class="lineNum">    2019 </span>            : {</a>
-<a name="2020"><span class="lineNum">    2020 </span><span class="lineCov">       2084 :         clear_tsk_thread_flag(tsk,TIF_NEED_RESCHED);</span></a>
+<a name="2020"><span class="lineNum">    2020 </span><span class="lineCov">       1446 :         clear_tsk_thread_flag(tsk,TIF_NEED_RESCHED);</span></a>
 <a name="2021"><span class="lineNum">    2021 </span>            : }</a>
 <a name="2022"><span class="lineNum">    2022 </span>            : </a>
 <a name="2023"><span class="lineNum">    2023 </span>            : static inline int test_tsk_need_resched(struct task_struct *tsk)</a>
 <a name="2024"><span class="lineNum">    2024 </span>            : {</a>
-<a name="2025"><span class="lineNum">    2025 </span><span class="lineCov">       4110 :         return unlikely(test_tsk_thread_flag(tsk,TIF_NEED_RESCHED));</span></a>
+<a name="2025"><span class="lineNum">    2025 </span><span class="lineCov">       2860 :         return unlikely(test_tsk_thread_flag(tsk,TIF_NEED_RESCHED));</span></a>
 <a name="2026"><span class="lineNum">    2026 </span>            : }</a>
 <a name="2027"><span class="lineNum">    2027 </span>            : </a>
 <a name="2028"><span class="lineNum">    2028 </span>            : /*</a>
@@ -2117,7 +2117,7 @@
 <a name="2055"><span class="lineNum">    2055 </span>            : </a>
 <a name="2056"><span class="lineNum">    2056 </span>            : static inline int _cond_resched(void)</a>
 <a name="2057"><span class="lineNum">    2057 </span>            : {</a>
-<a name="2058"><span class="lineNum">    2058 </span><span class="lineCov">       1418 :         return __cond_resched();</span></a>
+<a name="2058"><span class="lineNum">    2058 </span><span class="lineCov">        747 :         return __cond_resched();</span></a>
 <a name="2059"><span class="lineNum">    2059 </span>            : }</a>
 <a name="2060"><span class="lineNum">    2060 </span>            : </a>
 <a name="2061"><span class="lineNum">    2061 </span>            : #endif /* CONFIG_PREEMPT_DYNAMIC */</a>
@@ -2213,7 +2213,7 @@
 <a name="2151"><span class="lineNum">    2151 </span>            : </a>
 <a name="2152"><span class="lineNum">    2152 </span>            : static __always_inline bool need_resched(void)</a>
 <a name="2153"><span class="lineNum">    2153 </span>            : {</a>
-<a name="2154"><span class="lineNum">    2154 </span><span class="lineCov">       1712 :         return unlikely(tif_need_resched());</span></a>
+<a name="2154"><span class="lineNum">    2154 </span><span class="lineCov">       1202 :         return unlikely(tif_need_resched());</span></a>
 <a name="2155"><span class="lineNum">    2155 </span>            : }</a>
 <a name="2156"><span class="lineNum">    2156 </span>            : </a>
 <a name="2157"><span class="lineNum">    2157 </span>            : /*</a>

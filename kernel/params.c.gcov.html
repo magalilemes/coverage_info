@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">14</td>
@@ -121,51 +121,51 @@
 <a name="59"><span class="lineNum">      59 </span>            : }</a>
 <a name="60"><span class="lineNum">      60 </span>            : </a>
 <a name="61"><span class="lineNum">      61 </span>            : /* Does nothing if parameter wasn't kmalloced above. */</a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          2 : static void maybe_kfree_parameter(void *param)</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          1 : static void maybe_kfree_parameter(void *param)</span></a>
 <a name="63"><span class="lineNum">      63 </span>            : {</a>
 <a name="64"><span class="lineNum">      64 </span>            :         struct kmalloced_param *p;</a>
 <a name="65"><span class="lineNum">      65 </span>            : </a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          2 :         spin_lock(&amp;kmalloced_params_lock);</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          2 :         list_for_each_entry(p, &amp;kmalloced_params, list) {</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          1 :         spin_lock(&amp;kmalloced_params_lock);</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          1 :         list_for_each_entry(p, &amp;kmalloced_params, list) {</span></a>
 <a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :                 if (p-&gt;val == param) {</span></a>
 <a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :                         list_del(&amp;p-&gt;list);</span></a>
 <a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :                         kfree(p);</span></a>
 <a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :                         break;</span></a>
 <a name="72"><span class="lineNum">      72 </span>            :                 }</a>
 <a name="73"><span class="lineNum">      73 </span>            :         }</a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          2 :         spin_unlock(&amp;kmalloced_params_lock);</span></a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          2 : }</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          1 :         spin_unlock(&amp;kmalloced_params_lock);</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          1 : }</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : </a>
 <a name="77"><span class="lineNum">      77 </span>            : static char dash2underscore(char c)</a>
 <a name="78"><span class="lineNum">      78 </span>            : {</a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">      16172 :         if (c == '-')</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">       8086 :         if (c == '-')</span></a>
 <a name="80"><span class="lineNum">      80 </span>            :                 return '_';</a>
 <a name="81"><span class="lineNum">      81 </span>            :         return c;</a>
 <a name="82"><span class="lineNum">      82 </span>            : }</a>
 <a name="83"><span class="lineNum">      83 </span>            : </a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">        260 : bool parameqn(const char *a, const char *b, size_t n)</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">        130 : bool parameqn(const char *a, const char *b, size_t n)</span></a>
 <a name="85"><span class="lineNum">      85 </span>            : {</a>
 <a name="86"><span class="lineNum">      86 </span>            :         size_t i;</a>
 <a name="87"><span class="lineNum">      87 </span>            : </a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">       8110 :         for (i = 0; i &lt; n; i++) {</span></a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">      24258 :                 if (dash2underscore(a[i]) != dash2underscore(b[i]))</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">       4055 :         for (i = 0; i &lt; n; i++) {</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">      12129 :                 if (dash2underscore(a[i]) != dash2underscore(b[i]))</span></a>
 <a name="90"><span class="lineNum">      90 </span>            :                         return false;</a>
 <a name="91"><span class="lineNum">      91 </span>            :         }</a>
 <a name="92"><span class="lineNum">      92 </span>            :         return true;</a>
 <a name="93"><span class="lineNum">      93 </span>            : }</a>
 <a name="94"><span class="lineNum">      94 </span>            : </a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineCov">       7284 : bool parameq(const char *a, const char *b)</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">       3642 : bool parameq(const char *a, const char *b)</span></a>
 <a name="96"><span class="lineNum">      96 </span>            : {</a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineCov">      14568 :         return parameqn(a, b, strlen(a)+1);</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">       7284 :         return parameqn(a, b, strlen(a)+1);</span></a>
 <a name="98"><span class="lineNum">      98 </span>            : }</a>
 <a name="99"><span class="lineNum">      99 </span>            : </a>
-<a name="100"><span class="lineNum">     100 </span><span class="lineCov">          2 : static bool param_check_unsafe(const struct kernel_param *kp)</span></a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineCov">          1 : static bool param_check_unsafe(const struct kernel_param *kp)</span></a>
 <a name="101"><span class="lineNum">     101 </span>            : {</a>
-<a name="102"><span class="lineNum">     102 </span><span class="lineCov">          2 :         if (kp-&gt;flags &amp; KERNEL_PARAM_FL_HWPARAM &amp;&amp;</span></a>
+<a name="102"><span class="lineNum">     102 </span><span class="lineCov">          1 :         if (kp-&gt;flags &amp; KERNEL_PARAM_FL_HWPARAM &amp;&amp;</span></a>
 <a name="103"><span class="lineNum">     103 </span>            :             security_locked_down(LOCKDOWN_MODULE_PARAMETERS))</a>
 <a name="104"><span class="lineNum">     104 </span>            :                 return false;</a>
 <a name="105"><span class="lineNum">     105 </span>            : </a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">          2 :         if (kp-&gt;flags &amp; KERNEL_PARAM_FL_UNSAFE) {</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">          1 :         if (kp-&gt;flags &amp; KERNEL_PARAM_FL_UNSAFE) {</span></a>
 <a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 :                 pr_notice(&quot;Setting dangerous option %s - tainting kernel\n&quot;,</span></a>
 <a name="108"><span class="lineNum">     108 </span>            :                           kp-&gt;name);</a>
 <a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 :                 add_taint(TAINT_USER, LOCKDEP_STILL_OK);</span></a>
@@ -174,7 +174,7 @@
 <a name="112"><span class="lineNum">     112 </span>            :         return true;</a>
 <a name="113"><span class="lineNum">     113 </span>            : }</a>
 <a name="114"><span class="lineNum">     114 </span>            : </a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">         80 : static int parse_one(char *param,</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">         40 : static int parse_one(char *param,</span></a>
 <a name="116"><span class="lineNum">     116 </span>            :                      char *val,</a>
 <a name="117"><span class="lineNum">     117 </span>            :                      const char *doing,</a>
 <a name="118"><span class="lineNum">     118 </span>            :                      const struct kernel_param *params,</a>
@@ -189,30 +189,30 @@
 <a name="127"><span class="lineNum">     127 </span>            :         int err;</a>
 <a name="128"><span class="lineNum">     128 </span>            : </a>
 <a name="129"><span class="lineNum">     129 </span>            :         /* Find parameter */</a>
-<a name="130"><span class="lineNum">     130 </span><span class="lineCov">       7154 :         for (i = 0; i &lt; num_params; i++) {</span></a>
-<a name="131"><span class="lineNum">     131 </span><span class="lineCov">       7092 :                 if (parameq(param, params[i].name)) {</span></a>
-<a name="132"><span class="lineNum">     132 </span><span class="lineCov">         18 :                         if (params[i].level &lt; min_level</span></a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">          2 :                             || params[i].level &gt; max_level)</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineCov">       3577 :         for (i = 0; i &lt; num_params; i++) {</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineCov">       3546 :                 if (parameq(param, params[i].name)) {</span></a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineCov">          9 :                         if (params[i].level &lt; min_level</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">          1 :                             || params[i].level &gt; max_level)</span></a>
 <a name="134"><span class="lineNum">     134 </span>            :                                 return 0;</a>
 <a name="135"><span class="lineNum">     135 </span>            :                         /* No one handled NULL, so do it here. */</a>
-<a name="136"><span class="lineNum">     136 </span><span class="lineCov">          2 :                         if (!val &amp;&amp;</span></a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineCov">          1 :                         if (!val &amp;&amp;</span></a>
 <a name="137"><span class="lineNum">     137 </span><span class="lineNoCov">          0 :                             !(params[i].ops-&gt;flags &amp; KERNEL_PARAM_OPS_FL_NOARG))</span></a>
 <a name="138"><span class="lineNum">     138 </span>            :                                 return -EINVAL;</a>
 <a name="139"><span class="lineNum">     139 </span>            :                         pr_debug(&quot;handling %s with %p\n&quot;, param,</a>
 <a name="140"><span class="lineNum">     140 </span>            :                                 params[i].ops-&gt;set);</a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineCov">          4 :                         kernel_param_lock(params[i].mod);</span></a>
-<a name="142"><span class="lineNum">     142 </span><span class="lineCov">          2 :                         if (param_check_unsafe(&amp;params[i]))</span></a>
-<a name="143"><span class="lineNum">     143 </span><span class="lineCov">          2 :                                 err = params[i].ops-&gt;set(val, &amp;params[i]);</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">          2 :                         kernel_param_lock(params[i].mod);</span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineCov">          1 :                         if (param_check_unsafe(&amp;params[i]))</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineCov">          1 :                                 err = params[i].ops-&gt;set(val, &amp;params[i]);</span></a>
 <a name="144"><span class="lineNum">     144 </span>            :                         else</a>
 <a name="145"><span class="lineNum">     145 </span>            :                                 err = -EPERM;</a>
-<a name="146"><span class="lineNum">     146 </span><span class="lineCov">          4 :                         kernel_param_unlock(params[i].mod);</span></a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineCov">          2 :                         return err;</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineCov">          2 :                         kernel_param_unlock(params[i].mod);</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">          1 :                         return err;</span></a>
 <a name="148"><span class="lineNum">     148 </span>            :                 }</a>
 <a name="149"><span class="lineNum">     149 </span>            :         }</a>
 <a name="150"><span class="lineNum">     150 </span>            : </a>
-<a name="151"><span class="lineNum">     151 </span><span class="lineCov">         62 :         if (handle_unknown) {</span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineCov">         31 :         if (handle_unknown) {</span></a>
 <a name="152"><span class="lineNum">     152 </span>            :                 pr_debug(&quot;doing %s: %s='%s'\n&quot;, doing, param, val);</a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineCov">         62 :                 return handle_unknown(param, val, doing, arg);</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">         31 :                 return handle_unknown(param, val, doing, arg);</span></a>
 <a name="154"><span class="lineNum">     154 </span>            :         }</a>
 <a name="155"><span class="lineNum">     155 </span>            : </a>
 <a name="156"><span class="lineNum">     156 </span>            :         pr_debug(&quot;Unknown argument '%s'\n&quot;, param);</a>
@@ -220,7 +220,7 @@
 <a name="158"><span class="lineNum">     158 </span>            : }</a>
 <a name="159"><span class="lineNum">     159 </span>            : </a>
 <a name="160"><span class="lineNum">     160 </span>            : /* Args looks like &quot;foo=bar,bar2 baz=fuz wiz&quot;. */</a>
-<a name="161"><span class="lineNum">     161 </span><span class="lineCov">         20 : char *parse_args(const char *doing,</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineCov">         10 : char *parse_args(const char *doing,</span></a>
 <a name="162"><span class="lineNum">     162 </span>            :                  char *args,</a>
 <a name="163"><span class="lineNum">     163 </span>            :                  const struct kernel_param *params,</a>
 <a name="164"><span class="lineNum">     164 </span>            :                  unsigned num,</a>
@@ -230,32 +230,32 @@
 <a name="168"><span class="lineNum">     168 </span>            :                  int (*unknown)(char *param, char *val,</a>
 <a name="169"><span class="lineNum">     169 </span>            :                                 const char *doing, void *arg))</a>
 <a name="170"><span class="lineNum">     170 </span>            : {</a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">         20 :         char *param, *val, *err = NULL;</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">         10 :         char *param, *val, *err = NULL;</span></a>
 <a name="172"><span class="lineNum">     172 </span>            : </a>
 <a name="173"><span class="lineNum">     173 </span>            :         /* Chew leading spaces */</a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">         20 :         args = skip_spaces(args);</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">         10 :         args = skip_spaces(args);</span></a>
 <a name="175"><span class="lineNum">     175 </span>            : </a>
 <a name="176"><span class="lineNum">     176 </span>            :         if (*args)</a>
 <a name="177"><span class="lineNum">     177 </span>            :                 pr_debug(&quot;doing %s, parsing ARGS: '%s'\n&quot;, doing, args);</a>
 <a name="178"><span class="lineNum">     178 </span>            : </a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">        100 :         while (*args) {</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">         50 :         while (*args) {</span></a>
 <a name="180"><span class="lineNum">     180 </span>            :                 int ret;</a>
 <a name="181"><span class="lineNum">     181 </span>            :                 int irq_was_disabled;</a>
 <a name="182"><span class="lineNum">     182 </span>            : </a>
-<a name="183"><span class="lineNum">     183 </span><span class="lineCov">         80 :                 args = next_arg(args, &amp;param, &amp;val);</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">         40 :                 args = next_arg(args, &amp;param, &amp;val);</span></a>
 <a name="184"><span class="lineNum">     184 </span>            :                 /* Stop at -- */</a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineCov">         80 :                 if (!val &amp;&amp; strcmp(param, &quot;--&quot;) == 0)</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineCov">         40 :                 if (!val &amp;&amp; strcmp(param, &quot;--&quot;) == 0)</span></a>
 <a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :                         return err ?: args;</span></a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">        160 :                 irq_was_disabled = irqs_disabled();</span></a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineCov">         80 :                 ret = parse_one(param, val, doing, params, num,</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">         80 :                 irq_was_disabled = irqs_disabled();</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineCov">         40 :                 ret = parse_one(param, val, doing, params, num,</span></a>
 <a name="189"><span class="lineNum">     189 </span>            :                                 min_level, max_level, arg, unknown);</a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineCov">         96 :                 if (irq_was_disabled &amp;&amp; !irqs_disabled())</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineCov">         48 :                 if (irq_was_disabled &amp;&amp; !irqs_disabled())</span></a>
 <a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :                         pr_warn(&quot;%s: option '%s' enabled irq's!\n&quot;,</span></a>
 <a name="192"><span class="lineNum">     192 </span>            :                                 doing, param);</a>
 <a name="193"><span class="lineNum">     193 </span>            : </a>
-<a name="194"><span class="lineNum">     194 </span><span class="lineCov">         80 :                 switch (ret) {</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineCov">         40 :                 switch (ret) {</span></a>
 <a name="195"><span class="lineNum">     195 </span>            :                 case 0:</a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineCov">         80 :                         continue;</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineCov">         40 :                         continue;</span></a>
 <a name="197"><span class="lineNum">     197 </span>            :                 case -ENOENT:</a>
 <a name="198"><span class="lineNum">     198 </span><span class="lineNoCov">          0 :                         pr_err(&quot;%s: Unknown parameter `%s'\n&quot;, doing, param);</span></a>
 <a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :                         break;</span></a>
@@ -323,24 +323,24 @@
 <a name="261"><span class="lineNum">     261 </span>            : }</a>
 <a name="262"><span class="lineNum">     262 </span>            : EXPORT_SYMBOL_GPL(param_set_uint_minmax);</a>
 <a name="263"><span class="lineNum">     263 </span>            : </a>
-<a name="264"><span class="lineNum">     264 </span><span class="lineCov">          2 : int param_set_charp(const char *val, const struct kernel_param *kp)</span></a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineCov">          1 : int param_set_charp(const char *val, const struct kernel_param *kp)</span></a>
 <a name="265"><span class="lineNum">     265 </span>            : {</a>
-<a name="266"><span class="lineNum">     266 </span><span class="lineCov">          2 :         if (strlen(val) &gt; 1024) {</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineCov">          1 :         if (strlen(val) &gt; 1024) {</span></a>
 <a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 :                 pr_err(&quot;%s: string parameter too long\n&quot;, kp-&gt;name);</span></a>
 <a name="268"><span class="lineNum">     268 </span><span class="lineNoCov">          0 :                 return -ENOSPC;</span></a>
 <a name="269"><span class="lineNum">     269 </span>            :         }</a>
 <a name="270"><span class="lineNum">     270 </span>            : </a>
-<a name="271"><span class="lineNum">     271 </span><span class="lineCov">          2 :         maybe_kfree_parameter(*(char **)kp-&gt;arg);</span></a>
+<a name="271"><span class="lineNum">     271 </span><span class="lineCov">          1 :         maybe_kfree_parameter(*(char **)kp-&gt;arg);</span></a>
 <a name="272"><span class="lineNum">     272 </span>            : </a>
 <a name="273"><span class="lineNum">     273 </span>            :         /* This is a hack.  We can't kmalloc in early boot, and we</a>
 <a name="274"><span class="lineNum">     274 </span>            :          * don't need to; this mangled commandline is preserved. */</a>
-<a name="275"><span class="lineNum">     275 </span><span class="lineCov">          2 :         if (slab_is_available()) {</span></a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineCov">          1 :         if (slab_is_available()) {</span></a>
 <a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 :                 *(char **)kp-&gt;arg = kmalloc_parameter(strlen(val)+1);</span></a>
 <a name="277"><span class="lineNum">     277 </span><span class="lineNoCov">          0 :                 if (!*(char **)kp-&gt;arg)</span></a>
 <a name="278"><span class="lineNum">     278 </span>            :                         return -ENOMEM;</a>
 <a name="279"><span class="lineNum">     279 </span><span class="lineNoCov">          0 :                 strcpy(*(char **)kp-&gt;arg, val);</span></a>
 <a name="280"><span class="lineNum">     280 </span>            :         } else</a>
-<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          2 :                 *(const char **)kp-&gt;arg = val;</span></a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          1 :                 *(const char **)kp-&gt;arg = val;</span></a>
 <a name="282"><span class="lineNum">     282 </span>            : </a>
 <a name="283"><span class="lineNum">     283 </span>            :         return 0;</a>
 <a name="284"><span class="lineNum">     284 </span>            : }</a>
@@ -663,12 +663,12 @@
 <a name="601"><span class="lineNum">     601 </span>            : #ifdef CONFIG_SYSFS</a>
 <a name="602"><span class="lineNum">     602 </span><span class="lineNoCov">          0 : void kernel_param_lock(struct module *mod)</span></a>
 <a name="603"><span class="lineNum">     603 </span>            : {</a>
-<a name="604"><span class="lineNum">     604 </span><span class="lineCov">          2 :         mutex_lock(KPARAM_MUTEX(mod));</span></a>
+<a name="604"><span class="lineNum">     604 </span><span class="lineCov">          1 :         mutex_lock(KPARAM_MUTEX(mod));</span></a>
 <a name="605"><span class="lineNum">     605 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="606"><span class="lineNum">     606 </span>            : </a>
 <a name="607"><span class="lineNum">     607 </span><span class="lineNoCov">          0 : void kernel_param_unlock(struct module *mod)</span></a>
 <a name="608"><span class="lineNum">     608 </span>            : {</a>
-<a name="609"><span class="lineNum">     609 </span><span class="lineCov">          2 :         mutex_unlock(KPARAM_MUTEX(mod));</span></a>
+<a name="609"><span class="lineNum">     609 </span><span class="lineCov">          1 :         mutex_unlock(KPARAM_MUTEX(mod));</span></a>
 <a name="610"><span class="lineNum">     610 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="611"><span class="lineNum">     611 </span>            : </a>
 <a name="612"><span class="lineNum">     612 </span>            : EXPORT_SYMBOL(kernel_param_lock);</a>
@@ -684,7 +684,7 @@
 <a name="622"><span class="lineNum">     622 </span>            :  * create file in sysfs.  Returns an error on out of memory.  Always cleans up</a>
 <a name="623"><span class="lineNum">     623 </span>            :  * if there's an error.</a>
 <a name="624"><span class="lineNum">     624 </span>            :  */</a>
-<a name="625"><span class="lineNum">     625 </span><span class="lineCov">        228 : static __modinit int add_sysfs_param(struct module_kobject *mk,</span></a>
+<a name="625"><span class="lineNum">     625 </span><span class="lineCov">        114 : static __modinit int add_sysfs_param(struct module_kobject *mk,</span></a>
 <a name="626"><span class="lineNum">     626 </span>            :                                      const struct kernel_param *kp,</a>
 <a name="627"><span class="lineNum">     627 </span>            :                                      const char *name)</a>
 <a name="628"><span class="lineNum">     628 </span>            : {</a>
@@ -693,57 +693,57 @@
 <a name="631"><span class="lineNum">     631 </span>            :         unsigned int i;</a>
 <a name="632"><span class="lineNum">     632 </span>            : </a>
 <a name="633"><span class="lineNum">     633 </span>            :         /* We don't bother calling this with invisible parameters. */</a>
-<a name="634"><span class="lineNum">     634 </span><span class="lineCov">        228 :         BUG_ON(!kp-&gt;perm);</span></a>
+<a name="634"><span class="lineNum">     634 </span><span class="lineCov">        114 :         BUG_ON(!kp-&gt;perm);</span></a>
 <a name="635"><span class="lineNum">     635 </span>            : </a>
-<a name="636"><span class="lineNum">     636 </span><span class="lineCov">        228 :         if (!mk-&gt;mp) {</span></a>
+<a name="636"><span class="lineNum">     636 </span><span class="lineCov">        114 :         if (!mk-&gt;mp) {</span></a>
 <a name="637"><span class="lineNum">     637 </span>            :                 /* First allocation. */</a>
-<a name="638"><span class="lineNum">     638 </span><span class="lineCov">         40 :                 mk-&gt;mp = kzalloc(sizeof(*mk-&gt;mp), GFP_KERNEL);</span></a>
-<a name="639"><span class="lineNum">     639 </span><span class="lineCov">         40 :                 if (!mk-&gt;mp)</span></a>
+<a name="638"><span class="lineNum">     638 </span><span class="lineCov">         20 :                 mk-&gt;mp = kzalloc(sizeof(*mk-&gt;mp), GFP_KERNEL);</span></a>
+<a name="639"><span class="lineNum">     639 </span><span class="lineCov">         20 :                 if (!mk-&gt;mp)</span></a>
 <a name="640"><span class="lineNum">     640 </span>            :                         return -ENOMEM;</a>
-<a name="641"><span class="lineNum">     641 </span><span class="lineCov">         40 :                 mk-&gt;mp-&gt;grp.name = &quot;parameters&quot;;</span></a>
+<a name="641"><span class="lineNum">     641 </span><span class="lineCov">         20 :                 mk-&gt;mp-&gt;grp.name = &quot;parameters&quot;;</span></a>
 <a name="642"><span class="lineNum">     642 </span>            :                 /* NULL-terminated attribute array. */</a>
-<a name="643"><span class="lineNum">     643 </span><span class="lineCov">         40 :                 mk-&gt;mp-&gt;grp.attrs = kzalloc(sizeof(mk-&gt;mp-&gt;grp.attrs[0]),</span></a>
+<a name="643"><span class="lineNum">     643 </span><span class="lineCov">         20 :                 mk-&gt;mp-&gt;grp.attrs = kzalloc(sizeof(mk-&gt;mp-&gt;grp.attrs[0]),</span></a>
 <a name="644"><span class="lineNum">     644 </span>            :                                             GFP_KERNEL);</a>
 <a name="645"><span class="lineNum">     645 </span>            :                 /* Caller will cleanup via free_module_param_attrs */</a>
-<a name="646"><span class="lineNum">     646 </span><span class="lineCov">         40 :                 if (!mk-&gt;mp-&gt;grp.attrs)</span></a>
+<a name="646"><span class="lineNum">     646 </span><span class="lineCov">         20 :                 if (!mk-&gt;mp-&gt;grp.attrs)</span></a>
 <a name="647"><span class="lineNum">     647 </span>            :                         return -ENOMEM;</a>
 <a name="648"><span class="lineNum">     648 </span>            :         }</a>
 <a name="649"><span class="lineNum">     649 </span>            : </a>
 <a name="650"><span class="lineNum">     650 </span>            :         /* Enlarge allocations. */</a>
-<a name="651"><span class="lineNum">     651 </span><span class="lineCov">        228 :         new_mp = krealloc(mk-&gt;mp,</span></a>
+<a name="651"><span class="lineNum">     651 </span><span class="lineCov">        114 :         new_mp = krealloc(mk-&gt;mp,</span></a>
 <a name="652"><span class="lineNum">     652 </span>            :                           sizeof(*mk-&gt;mp) +</a>
-<a name="653"><span class="lineNum">     653 </span><span class="lineCov">        228 :                           sizeof(mk-&gt;mp-&gt;attrs[0]) * (mk-&gt;mp-&gt;num + 1),</span></a>
+<a name="653"><span class="lineNum">     653 </span><span class="lineCov">        114 :                           sizeof(mk-&gt;mp-&gt;attrs[0]) * (mk-&gt;mp-&gt;num + 1),</span></a>
 <a name="654"><span class="lineNum">     654 </span>            :                           GFP_KERNEL);</a>
-<a name="655"><span class="lineNum">     655 </span><span class="lineCov">        228 :         if (!new_mp)</span></a>
+<a name="655"><span class="lineNum">     655 </span><span class="lineCov">        114 :         if (!new_mp)</span></a>
 <a name="656"><span class="lineNum">     656 </span>            :                 return -ENOMEM;</a>
-<a name="657"><span class="lineNum">     657 </span><span class="lineCov">        228 :         mk-&gt;mp = new_mp;</span></a>
+<a name="657"><span class="lineNum">     657 </span><span class="lineCov">        114 :         mk-&gt;mp = new_mp;</span></a>
 <a name="658"><span class="lineNum">     658 </span>            : </a>
 <a name="659"><span class="lineNum">     659 </span>            :         /* Extra pointer for NULL terminator */</a>
-<a name="660"><span class="lineNum">     660 </span><span class="lineCov">        228 :         new_attrs = krealloc(mk-&gt;mp-&gt;grp.attrs,</span></a>
-<a name="661"><span class="lineNum">     661 </span><span class="lineCov">        228 :                              sizeof(mk-&gt;mp-&gt;grp.attrs[0]) * (mk-&gt;mp-&gt;num + 2),</span></a>
+<a name="660"><span class="lineNum">     660 </span><span class="lineCov">        114 :         new_attrs = krealloc(mk-&gt;mp-&gt;grp.attrs,</span></a>
+<a name="661"><span class="lineNum">     661 </span><span class="lineCov">        114 :                              sizeof(mk-&gt;mp-&gt;grp.attrs[0]) * (mk-&gt;mp-&gt;num + 2),</span></a>
 <a name="662"><span class="lineNum">     662 </span>            :                              GFP_KERNEL);</a>
-<a name="663"><span class="lineNum">     663 </span><span class="lineCov">        228 :         if (!new_attrs)</span></a>
+<a name="663"><span class="lineNum">     663 </span><span class="lineCov">        114 :         if (!new_attrs)</span></a>
 <a name="664"><span class="lineNum">     664 </span>            :                 return -ENOMEM;</a>
-<a name="665"><span class="lineNum">     665 </span><span class="lineCov">        228 :         mk-&gt;mp-&gt;grp.attrs = new_attrs;</span></a>
+<a name="665"><span class="lineNum">     665 </span><span class="lineCov">        114 :         mk-&gt;mp-&gt;grp.attrs = new_attrs;</span></a>
 <a name="666"><span class="lineNum">     666 </span>            : </a>
 <a name="667"><span class="lineNum">     667 </span>            :         /* Tack new one on the end. */</a>
-<a name="668"><span class="lineNum">     668 </span><span class="lineCov">        228 :         memset(&amp;mk-&gt;mp-&gt;attrs[mk-&gt;mp-&gt;num], 0, sizeof(mk-&gt;mp-&gt;attrs[0]));</span></a>
+<a name="668"><span class="lineNum">     668 </span><span class="lineCov">        114 :         memset(&amp;mk-&gt;mp-&gt;attrs[mk-&gt;mp-&gt;num], 0, sizeof(mk-&gt;mp-&gt;attrs[0]));</span></a>
 <a name="669"><span class="lineNum">     669 </span>            :         sysfs_attr_init(&amp;mk-&gt;mp-&gt;attrs[mk-&gt;mp-&gt;num].mattr.attr);</a>
-<a name="670"><span class="lineNum">     670 </span><span class="lineCov">        228 :         mk-&gt;mp-&gt;attrs[mk-&gt;mp-&gt;num].param = kp;</span></a>
-<a name="671"><span class="lineNum">     671 </span><span class="lineCov">        228 :         mk-&gt;mp-&gt;attrs[mk-&gt;mp-&gt;num].mattr.show = param_attr_show;</span></a>
+<a name="670"><span class="lineNum">     670 </span><span class="lineCov">        114 :         mk-&gt;mp-&gt;attrs[mk-&gt;mp-&gt;num].param = kp;</span></a>
+<a name="671"><span class="lineNum">     671 </span><span class="lineCov">        114 :         mk-&gt;mp-&gt;attrs[mk-&gt;mp-&gt;num].mattr.show = param_attr_show;</span></a>
 <a name="672"><span class="lineNum">     672 </span>            :         /* Do not allow runtime DAC changes to make param writable. */</a>
-<a name="673"><span class="lineNum">     673 </span><span class="lineCov">        228 :         if ((kp-&gt;perm &amp; (S_IWUSR | S_IWGRP | S_IWOTH)) != 0)</span></a>
-<a name="674"><span class="lineNum">     674 </span><span class="lineCov">        100 :                 mk-&gt;mp-&gt;attrs[mk-&gt;mp-&gt;num].mattr.store = param_attr_store;</span></a>
+<a name="673"><span class="lineNum">     673 </span><span class="lineCov">        114 :         if ((kp-&gt;perm &amp; (S_IWUSR | S_IWGRP | S_IWOTH)) != 0)</span></a>
+<a name="674"><span class="lineNum">     674 </span><span class="lineCov">         50 :                 mk-&gt;mp-&gt;attrs[mk-&gt;mp-&gt;num].mattr.store = param_attr_store;</span></a>
 <a name="675"><span class="lineNum">     675 </span>            :         else</a>
-<a name="676"><span class="lineNum">     676 </span><span class="lineCov">        128 :                 mk-&gt;mp-&gt;attrs[mk-&gt;mp-&gt;num].mattr.store = NULL;</span></a>
-<a name="677"><span class="lineNum">     677 </span><span class="lineCov">        228 :         mk-&gt;mp-&gt;attrs[mk-&gt;mp-&gt;num].mattr.attr.name = (char *)name;</span></a>
-<a name="678"><span class="lineNum">     678 </span><span class="lineCov">        228 :         mk-&gt;mp-&gt;attrs[mk-&gt;mp-&gt;num].mattr.attr.mode = kp-&gt;perm;</span></a>
-<a name="679"><span class="lineNum">     679 </span><span class="lineCov">        228 :         mk-&gt;mp-&gt;num++;</span></a>
+<a name="676"><span class="lineNum">     676 </span><span class="lineCov">         64 :                 mk-&gt;mp-&gt;attrs[mk-&gt;mp-&gt;num].mattr.store = NULL;</span></a>
+<a name="677"><span class="lineNum">     677 </span><span class="lineCov">        114 :         mk-&gt;mp-&gt;attrs[mk-&gt;mp-&gt;num].mattr.attr.name = (char *)name;</span></a>
+<a name="678"><span class="lineNum">     678 </span><span class="lineCov">        114 :         mk-&gt;mp-&gt;attrs[mk-&gt;mp-&gt;num].mattr.attr.mode = kp-&gt;perm;</span></a>
+<a name="679"><span class="lineNum">     679 </span><span class="lineCov">        114 :         mk-&gt;mp-&gt;num++;</span></a>
 <a name="680"><span class="lineNum">     680 </span>            : </a>
 <a name="681"><span class="lineNum">     681 </span>            :         /* Fix up all the pointers, since krealloc can move us */</a>
-<a name="682"><span class="lineNum">     682 </span><span class="lineCov">       4910 :         for (i = 0; i &lt; mk-&gt;mp-&gt;num; i++)</span></a>
-<a name="683"><span class="lineNum">     683 </span><span class="lineCov">       4682 :                 mk-&gt;mp-&gt;grp.attrs[i] = &amp;mk-&gt;mp-&gt;attrs[i].mattr.attr;</span></a>
-<a name="684"><span class="lineNum">     684 </span><span class="lineCov">        228 :         mk-&gt;mp-&gt;grp.attrs[mk-&gt;mp-&gt;num] = NULL;</span></a>
+<a name="682"><span class="lineNum">     682 </span><span class="lineCov">       2455 :         for (i = 0; i &lt; mk-&gt;mp-&gt;num; i++)</span></a>
+<a name="683"><span class="lineNum">     683 </span><span class="lineCov">       2341 :                 mk-&gt;mp-&gt;grp.attrs[i] = &amp;mk-&gt;mp-&gt;attrs[i].mattr.attr;</span></a>
+<a name="684"><span class="lineNum">     684 </span><span class="lineCov">        114 :         mk-&gt;mp-&gt;grp.attrs[mk-&gt;mp-&gt;num] = NULL;</span></a>
 <a name="685"><span class="lineNum">     685 </span>            :         return 0;</a>
 <a name="686"><span class="lineNum">     686 </span>            : }</a>
 <a name="687"><span class="lineNum">     687 </span>            : </a>
@@ -820,28 +820,28 @@
 <a name="758"><span class="lineNum">     758 </span><span class="lineNoCov">          0 :                         params[i].ops-&gt;free(params[i].arg);</span></a>
 <a name="759"><span class="lineNum">     759 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="760"><span class="lineNum">     760 </span>            : </a>
-<a name="761"><span class="lineNum">     761 </span><span class="lineCov">        228 : static struct module_kobject * __init locate_module_kobject(const char *name)</span></a>
+<a name="761"><span class="lineNum">     761 </span><span class="lineCov">        114 : static struct module_kobject * __init locate_module_kobject(const char *name)</span></a>
 <a name="762"><span class="lineNum">     762 </span>            : {</a>
 <a name="763"><span class="lineNum">     763 </span>            :         struct module_kobject *mk;</a>
 <a name="764"><span class="lineNum">     764 </span>            :         struct kobject *kobj;</a>
 <a name="765"><span class="lineNum">     765 </span>            :         int err;</a>
 <a name="766"><span class="lineNum">     766 </span>            : </a>
-<a name="767"><span class="lineNum">     767 </span><span class="lineCov">        228 :         kobj = kset_find_obj(module_kset, name);</span></a>
-<a name="768"><span class="lineNum">     768 </span><span class="lineCov">        228 :         if (kobj) {</span></a>
+<a name="767"><span class="lineNum">     767 </span><span class="lineCov">        114 :         kobj = kset_find_obj(module_kset, name);</span></a>
+<a name="768"><span class="lineNum">     768 </span><span class="lineCov">        114 :         if (kobj) {</span></a>
 <a name="769"><span class="lineNum">     769 </span>            :                 mk = to_module_kobject(kobj);</a>
 <a name="770"><span class="lineNum">     770 </span>            :         } else {</a>
-<a name="771"><span class="lineNum">     771 </span><span class="lineCov">         40 :                 mk = kzalloc(sizeof(struct module_kobject), GFP_KERNEL);</span></a>
-<a name="772"><span class="lineNum">     772 </span><span class="lineCov">         40 :                 BUG_ON(!mk);</span></a>
+<a name="771"><span class="lineNum">     771 </span><span class="lineCov">         20 :                 mk = kzalloc(sizeof(struct module_kobject), GFP_KERNEL);</span></a>
+<a name="772"><span class="lineNum">     772 </span><span class="lineCov">         20 :                 BUG_ON(!mk);</span></a>
 <a name="773"><span class="lineNum">     773 </span>            : </a>
-<a name="774"><span class="lineNum">     774 </span><span class="lineCov">         40 :                 mk-&gt;mod = THIS_MODULE;</span></a>
-<a name="775"><span class="lineNum">     775 </span><span class="lineCov">         40 :                 mk-&gt;kobj.kset = module_kset;</span></a>
-<a name="776"><span class="lineNum">     776 </span><span class="lineCov">         40 :                 err = kobject_init_and_add(&amp;mk-&gt;kobj, &amp;module_ktype, NULL,</span></a>
+<a name="774"><span class="lineNum">     774 </span><span class="lineCov">         20 :                 mk-&gt;mod = THIS_MODULE;</span></a>
+<a name="775"><span class="lineNum">     775 </span><span class="lineCov">         20 :                 mk-&gt;kobj.kset = module_kset;</span></a>
+<a name="776"><span class="lineNum">     776 </span><span class="lineCov">         20 :                 err = kobject_init_and_add(&amp;mk-&gt;kobj, &amp;module_ktype, NULL,</span></a>
 <a name="777"><span class="lineNum">     777 </span>            :                                            &quot;%s&quot;, name);</a>
 <a name="778"><span class="lineNum">     778 </span>            : #ifdef CONFIG_MODULES</a>
 <a name="779"><span class="lineNum">     779 </span>            :                 if (!err)</a>
 <a name="780"><span class="lineNum">     780 </span>            :                         err = sysfs_create_file(&amp;mk-&gt;kobj, &amp;module_uevent.attr);</a>
 <a name="781"><span class="lineNum">     781 </span>            : #endif</a>
-<a name="782"><span class="lineNum">     782 </span><span class="lineCov">         40 :                 if (err) {</span></a>
+<a name="782"><span class="lineNum">     782 </span><span class="lineCov">         20 :                 if (err) {</span></a>
 <a name="783"><span class="lineNum">     783 </span><span class="lineNoCov">          0 :                         kobject_put(&amp;mk-&gt;kobj);</span></a>
 <a name="784"><span class="lineNum">     784 </span><span class="lineNoCov">          0 :                         pr_crit(&quot;Adding module '%s' to sysfs failed (%d), the system may be unstable.\n&quot;,</span></a>
 <a name="785"><span class="lineNum">     785 </span>            :                                 name, err);</a>
@@ -849,34 +849,34 @@
 <a name="787"><span class="lineNum">     787 </span>            :                 }</a>
 <a name="788"><span class="lineNum">     788 </span>            : </a>
 <a name="789"><span class="lineNum">     789 </span>            :                 /* So that we hold reference in both cases. */</a>
-<a name="790"><span class="lineNum">     790 </span><span class="lineCov">         40 :                 kobject_get(&amp;mk-&gt;kobj);</span></a>
+<a name="790"><span class="lineNum">     790 </span><span class="lineCov">         20 :                 kobject_get(&amp;mk-&gt;kobj);</span></a>
 <a name="791"><span class="lineNum">     791 </span>            :         }</a>
 <a name="792"><span class="lineNum">     792 </span>            : </a>
 <a name="793"><span class="lineNum">     793 </span>            :         return mk;</a>
 <a name="794"><span class="lineNum">     794 </span>            : }</a>
 <a name="795"><span class="lineNum">     795 </span>            : </a>
-<a name="796"><span class="lineNum">     796 </span><span class="lineCov">        228 : static void __init kernel_add_sysfs_param(const char *name,</span></a>
+<a name="796"><span class="lineNum">     796 </span><span class="lineCov">        114 : static void __init kernel_add_sysfs_param(const char *name,</span></a>
 <a name="797"><span class="lineNum">     797 </span>            :                                           const struct kernel_param *kparam,</a>
 <a name="798"><span class="lineNum">     798 </span>            :                                           unsigned int name_skip)</a>
 <a name="799"><span class="lineNum">     799 </span>            : {</a>
 <a name="800"><span class="lineNum">     800 </span>            :         struct module_kobject *mk;</a>
 <a name="801"><span class="lineNum">     801 </span>            :         int err;</a>
 <a name="802"><span class="lineNum">     802 </span>            : </a>
-<a name="803"><span class="lineNum">     803 </span><span class="lineCov">        228 :         mk = locate_module_kobject(name);</span></a>
-<a name="804"><span class="lineNum">     804 </span><span class="lineCov">        228 :         if (!mk)</span></a>
+<a name="803"><span class="lineNum">     803 </span><span class="lineCov">        114 :         mk = locate_module_kobject(name);</span></a>
+<a name="804"><span class="lineNum">     804 </span><span class="lineCov">        114 :         if (!mk)</span></a>
 <a name="805"><span class="lineNum">     805 </span>            :                 return;</a>
 <a name="806"><span class="lineNum">     806 </span>            : </a>
 <a name="807"><span class="lineNum">     807 </span>            :         /* We need to remove old parameters before adding more. */</a>
-<a name="808"><span class="lineNum">     808 </span><span class="lineCov">        228 :         if (mk-&gt;mp)</span></a>
-<a name="809"><span class="lineNum">     809 </span><span class="lineCov">        188 :                 sysfs_remove_group(&amp;mk-&gt;kobj, &amp;mk-&gt;mp-&gt;grp);</span></a>
+<a name="808"><span class="lineNum">     808 </span><span class="lineCov">        114 :         if (mk-&gt;mp)</span></a>
+<a name="809"><span class="lineNum">     809 </span><span class="lineCov">         94 :                 sysfs_remove_group(&amp;mk-&gt;kobj, &amp;mk-&gt;mp-&gt;grp);</span></a>
 <a name="810"><span class="lineNum">     810 </span>            : </a>
 <a name="811"><span class="lineNum">     811 </span>            :         /* These should not fail at boot. */</a>
-<a name="812"><span class="lineNum">     812 </span><span class="lineCov">        228 :         err = add_sysfs_param(mk, kparam, kparam-&gt;name + name_skip);</span></a>
-<a name="813"><span class="lineNum">     813 </span><span class="lineCov">        228 :         BUG_ON(err);</span></a>
-<a name="814"><span class="lineNum">     814 </span><span class="lineCov">        228 :         err = sysfs_create_group(&amp;mk-&gt;kobj, &amp;mk-&gt;mp-&gt;grp);</span></a>
-<a name="815"><span class="lineNum">     815 </span><span class="lineCov">        228 :         BUG_ON(err);</span></a>
-<a name="816"><span class="lineNum">     816 </span><span class="lineCov">        228 :         kobject_uevent(&amp;mk-&gt;kobj, KOBJ_ADD);</span></a>
-<a name="817"><span class="lineNum">     817 </span><span class="lineCov">        228 :         kobject_put(&amp;mk-&gt;kobj);</span></a>
+<a name="812"><span class="lineNum">     812 </span><span class="lineCov">        114 :         err = add_sysfs_param(mk, kparam, kparam-&gt;name + name_skip);</span></a>
+<a name="813"><span class="lineNum">     813 </span><span class="lineCov">        114 :         BUG_ON(err);</span></a>
+<a name="814"><span class="lineNum">     814 </span><span class="lineCov">        114 :         err = sysfs_create_group(&amp;mk-&gt;kobj, &amp;mk-&gt;mp-&gt;grp);</span></a>
+<a name="815"><span class="lineNum">     815 </span><span class="lineCov">        114 :         BUG_ON(err);</span></a>
+<a name="816"><span class="lineNum">     816 </span><span class="lineCov">        114 :         kobject_uevent(&amp;mk-&gt;kobj, KOBJ_ADD);</span></a>
+<a name="817"><span class="lineNum">     817 </span><span class="lineCov">        114 :         kobject_put(&amp;mk-&gt;kobj);</span></a>
 <a name="818"><span class="lineNum">     818 </span>            : }</a>
 <a name="819"><span class="lineNum">     819 </span>            : </a>
 <a name="820"><span class="lineNum">     820 </span>            : /*</a>
@@ -889,30 +889,30 @@
 <a name="827"><span class="lineNum">     827 </span>            :  * extract the &quot;module&quot; name for all built-in kernel_param-eters,</a>
 <a name="828"><span class="lineNum">     828 </span>            :  * and for all who have the same, call kernel_add_sysfs_param.</a>
 <a name="829"><span class="lineNum">     829 </span>            :  */</a>
-<a name="830"><span class="lineNum">     830 </span><span class="lineCov">          2 : static void __init param_sysfs_builtin(void)</span></a>
+<a name="830"><span class="lineNum">     830 </span><span class="lineCov">          1 : static void __init param_sysfs_builtin(void)</span></a>
 <a name="831"><span class="lineNum">     831 </span>            : {</a>
 <a name="832"><span class="lineNum">     832 </span>            :         const struct kernel_param *kp;</a>
 <a name="833"><span class="lineNum">     833 </span>            :         unsigned int name_len;</a>
 <a name="834"><span class="lineNum">     834 </span>            :         char modname[MODULE_NAME_LEN];</a>
 <a name="835"><span class="lineNum">     835 </span>            : </a>
-<a name="836"><span class="lineNum">     836 </span><span class="lineCov">        250 :         for (kp = __start___param; kp &lt; __stop___param; kp++) {</span></a>
+<a name="836"><span class="lineNum">     836 </span><span class="lineCov">        125 :         for (kp = __start___param; kp &lt; __stop___param; kp++) {</span></a>
 <a name="837"><span class="lineNum">     837 </span>            :                 char *dot;</a>
 <a name="838"><span class="lineNum">     838 </span>            : </a>
-<a name="839"><span class="lineNum">     839 </span><span class="lineCov">        248 :                 if (kp-&gt;perm == 0)</span></a>
-<a name="840"><span class="lineNum">     840 </span><span class="lineCov">         20 :                         continue;</span></a>
+<a name="839"><span class="lineNum">     839 </span><span class="lineCov">        124 :                 if (kp-&gt;perm == 0)</span></a>
+<a name="840"><span class="lineNum">     840 </span><span class="lineCov">         10 :                         continue;</span></a>
 <a name="841"><span class="lineNum">     841 </span>            : </a>
-<a name="842"><span class="lineNum">     842 </span><span class="lineCov">        228 :                 dot = strchr(kp-&gt;name, '.');</span></a>
-<a name="843"><span class="lineNum">     843 </span><span class="lineCov">        228 :                 if (!dot) {</span></a>
+<a name="842"><span class="lineNum">     842 </span><span class="lineCov">        114 :                 dot = strchr(kp-&gt;name, '.');</span></a>
+<a name="843"><span class="lineNum">     843 </span><span class="lineCov">        114 :                 if (!dot) {</span></a>
 <a name="844"><span class="lineNum">     844 </span>            :                         /* This happens for core_param() */</a>
-<a name="845"><span class="lineNum">     845 </span><span class="lineCov">         16 :                         strcpy(modname, &quot;kernel&quot;);</span></a>
-<a name="846"><span class="lineNum">     846 </span><span class="lineCov">         16 :                         name_len = 0;</span></a>
+<a name="845"><span class="lineNum">     845 </span><span class="lineCov">          8 :                         strcpy(modname, &quot;kernel&quot;);</span></a>
+<a name="846"><span class="lineNum">     846 </span><span class="lineCov">          8 :                         name_len = 0;</span></a>
 <a name="847"><span class="lineNum">     847 </span>            :                 } else {</a>
-<a name="848"><span class="lineNum">     848 </span><span class="lineCov">        212 :                         name_len = dot - kp-&gt;name + 1;</span></a>
-<a name="849"><span class="lineNum">     849 </span><span class="lineCov">        212 :                         strlcpy(modname, kp-&gt;name, name_len);</span></a>
+<a name="848"><span class="lineNum">     848 </span><span class="lineCov">        106 :                         name_len = dot - kp-&gt;name + 1;</span></a>
+<a name="849"><span class="lineNum">     849 </span><span class="lineCov">        106 :                         strlcpy(modname, kp-&gt;name, name_len);</span></a>
 <a name="850"><span class="lineNum">     850 </span>            :                 }</a>
-<a name="851"><span class="lineNum">     851 </span><span class="lineCov">        228 :                 kernel_add_sysfs_param(modname, kp, name_len);</span></a>
+<a name="851"><span class="lineNum">     851 </span><span class="lineCov">        114 :                 kernel_add_sysfs_param(modname, kp, name_len);</span></a>
 <a name="852"><span class="lineNum">     852 </span>            :         }</a>
-<a name="853"><span class="lineNum">     853 </span><span class="lineCov">          2 : }</span></a>
+<a name="853"><span class="lineNum">     853 </span><span class="lineCov">          1 : }</span></a>
 <a name="854"><span class="lineNum">     854 </span>            : </a>
 <a name="855"><span class="lineNum">     855 </span><span class="lineNoCov">          0 : ssize_t __modver_version_show(struct module_attribute *mattr,</span></a>
 <a name="856"><span class="lineNum">     856 </span>            :                               struct module_kobject *mk, char *buf)</a>
@@ -926,13 +926,13 @@
 <a name="864"><span class="lineNum">     864 </span>            : extern const struct module_version_attribute __start___modver[];</a>
 <a name="865"><span class="lineNum">     865 </span>            : extern const struct module_version_attribute __stop___modver[];</a>
 <a name="866"><span class="lineNum">     866 </span>            : </a>
-<a name="867"><span class="lineNum">     867 </span><span class="lineCov">          2 : static void __init version_sysfs_builtin(void)</span></a>
+<a name="867"><span class="lineNum">     867 </span><span class="lineCov">          1 : static void __init version_sysfs_builtin(void)</span></a>
 <a name="868"><span class="lineNum">     868 </span>            : {</a>
 <a name="869"><span class="lineNum">     869 </span>            :         const struct module_version_attribute *vattr;</a>
 <a name="870"><span class="lineNum">     870 </span>            :         struct module_kobject *mk;</a>
 <a name="871"><span class="lineNum">     871 </span>            :         int err;</a>
 <a name="872"><span class="lineNum">     872 </span>            : </a>
-<a name="873"><span class="lineNum">     873 </span><span class="lineCov">          2 :         for (vattr = __start___modver; vattr &lt; __stop___modver; vattr++) {</span></a>
+<a name="873"><span class="lineNum">     873 </span><span class="lineCov">          1 :         for (vattr = __start___modver; vattr &lt; __stop___modver; vattr++) {</span></a>
 <a name="874"><span class="lineNum">     874 </span><span class="lineNoCov">          0 :                 mk = locate_module_kobject(vattr-&gt;module_name);</span></a>
 <a name="875"><span class="lineNum">     875 </span><span class="lineNoCov">          0 :                 if (mk) {</span></a>
 <a name="876"><span class="lineNum">     876 </span><span class="lineNoCov">          0 :                         err = sysfs_create_file(&amp;mk-&gt;kobj, &amp;vattr-&gt;mattr.attr);</span></a>
@@ -941,7 +941,7 @@
 <a name="879"><span class="lineNum">     879 </span><span class="lineNoCov">          0 :                         kobject_put(&amp;mk-&gt;kobj);</span></a>
 <a name="880"><span class="lineNum">     880 </span>            :                 }</a>
 <a name="881"><span class="lineNum">     881 </span>            :         }</a>
-<a name="882"><span class="lineNum">     882 </span><span class="lineCov">          2 : }</span></a>
+<a name="882"><span class="lineNum">     882 </span><span class="lineCov">          1 : }</span></a>
 <a name="883"><span class="lineNum">     883 </span>            : </a>
 <a name="884"><span class="lineNum">     884 </span>            : /* module-related sysfs stuff */</a>
 <a name="885"><span class="lineNum">     885 </span>            : </a>
@@ -988,11 +988,11 @@
 <a name="926"><span class="lineNum">     926 </span>            :         .store = module_attr_store,</a>
 <a name="927"><span class="lineNum">     927 </span>            : };</a>
 <a name="928"><span class="lineNum">     928 </span>            : </a>
-<a name="929"><span class="lineNum">     929 </span><span class="lineCov">        228 : static int uevent_filter(struct kobject *kobj)</span></a>
+<a name="929"><span class="lineNum">     929 </span><span class="lineCov">        114 : static int uevent_filter(struct kobject *kobj)</span></a>
 <a name="930"><span class="lineNum">     930 </span>            : {</a>
-<a name="931"><span class="lineNum">     931 </span><span class="lineCov">        228 :         const struct kobj_type *ktype = get_ktype(kobj);</span></a>
+<a name="931"><span class="lineNum">     931 </span><span class="lineCov">        114 :         const struct kobj_type *ktype = get_ktype(kobj);</span></a>
 <a name="932"><span class="lineNum">     932 </span>            : </a>
-<a name="933"><span class="lineNum">     933 </span><span class="lineCov">        228 :         if (ktype == &amp;module_ktype)</span></a>
+<a name="933"><span class="lineNum">     933 </span><span class="lineCov">        114 :         if (ktype == &amp;module_ktype)</span></a>
 <a name="934"><span class="lineNum">     934 </span>            :                 return 1;</a>
 <a name="935"><span class="lineNum">     935 </span><span class="lineNoCov">          0 :         return 0;</span></a>
 <a name="936"><span class="lineNum">     936 </span>            : }</a>
@@ -1018,20 +1018,20 @@
 <a name="956"><span class="lineNum">     956 </span>            : /*</a>
 <a name="957"><span class="lineNum">     957 </span>            :  * param_sysfs_init - wrapper for built-in params support</a>
 <a name="958"><span class="lineNum">     958 </span>            :  */</a>
-<a name="959"><span class="lineNum">     959 </span><span class="lineCov">          2 : static int __init param_sysfs_init(void)</span></a>
+<a name="959"><span class="lineNum">     959 </span><span class="lineCov">          1 : static int __init param_sysfs_init(void)</span></a>
 <a name="960"><span class="lineNum">     960 </span>            : {</a>
-<a name="961"><span class="lineNum">     961 </span><span class="lineCov">          2 :         module_kset = kset_create_and_add(&quot;module&quot;, &amp;module_uevent_ops, NULL);</span></a>
-<a name="962"><span class="lineNum">     962 </span><span class="lineCov">          2 :         if (!module_kset) {</span></a>
+<a name="961"><span class="lineNum">     961 </span><span class="lineCov">          1 :         module_kset = kset_create_and_add(&quot;module&quot;, &amp;module_uevent_ops, NULL);</span></a>
+<a name="962"><span class="lineNum">     962 </span><span class="lineCov">          1 :         if (!module_kset) {</span></a>
 <a name="963"><span class="lineNum">     963 </span><span class="lineNoCov">          0 :                 printk(KERN_WARNING &quot;%s (%d): error creating kset\n&quot;,</span></a>
 <a name="964"><span class="lineNum">     964 </span>            :                         __FILE__, __LINE__);</a>
 <a name="965"><span class="lineNum">     965 </span><span class="lineNoCov">          0 :                 return -ENOMEM;</span></a>
 <a name="966"><span class="lineNum">     966 </span>            :         }</a>
-<a name="967"><span class="lineNum">     967 </span><span class="lineCov">          2 :         module_sysfs_initialized = 1;</span></a>
+<a name="967"><span class="lineNum">     967 </span><span class="lineCov">          1 :         module_sysfs_initialized = 1;</span></a>
 <a name="968"><span class="lineNum">     968 </span>            : </a>
-<a name="969"><span class="lineNum">     969 </span><span class="lineCov">          2 :         version_sysfs_builtin();</span></a>
-<a name="970"><span class="lineNum">     970 </span><span class="lineCov">          2 :         param_sysfs_builtin();</span></a>
+<a name="969"><span class="lineNum">     969 </span><span class="lineCov">          1 :         version_sysfs_builtin();</span></a>
+<a name="970"><span class="lineNum">     970 </span><span class="lineCov">          1 :         param_sysfs_builtin();</span></a>
 <a name="971"><span class="lineNum">     971 </span>            : </a>
-<a name="972"><span class="lineNum">     972 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="972"><span class="lineNum">     972 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="973"><span class="lineNum">     973 </span>            : }</a>
 <a name="974"><span class="lineNum">     974 </span>            : subsys_initcall(param_sysfs_init);</a>
 <a name="975"><span class="lineNum">     975 </span>            : </a>

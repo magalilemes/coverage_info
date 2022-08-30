@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -106,7 +106,7 @@
 <a name="44"><span class="lineNum">      44 </span>            : static inline int external_pid(void)</a>
 <a name="45"><span class="lineNum">      45 </span>            : {</a>
 <a name="46"><span class="lineNum">      46 </span>            :         /* FIXME: Need to look up userspace_pid by cpu */</a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">        886 :         return userspace_pid[0];</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">        616 :         return userspace_pid[0];</span></a>
 <a name="48"><span class="lineNum">      48 </span>            : }</a>
 <a name="49"><span class="lineNum">      49 </span>            : </a>
 <a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 : int pid_to_processor_id(int pid)</span></a>
@@ -139,21 +139,21 @@
 <a name="77"><span class="lineNum">      77 </span>            : </a>
 <a name="78"><span class="lineNum">      78 </span>            : static inline void set_current(struct task_struct *task)</a>
 <a name="79"><span class="lineNum">      79 </span>            : {</a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">       1772 :         cpu_tasks[task_thread_info(task)-&gt;cpu] = ((struct cpu_task)</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">       1232 :         cpu_tasks[task_thread_info(task)-&gt;cpu] = ((struct cpu_task)</span></a>
 <a name="81"><span class="lineNum">      81 </span>            :                 { external_pid(), task });</a>
 <a name="82"><span class="lineNum">      82 </span>            : }</a>
 <a name="83"><span class="lineNum">      83 </span>            : </a>
 <a name="84"><span class="lineNum">      84 </span>            : extern void arch_switch_to(struct task_struct *to);</a>
 <a name="85"><span class="lineNum">      85 </span>            : </a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        886 : void *__switch_to(struct task_struct *from, struct task_struct *to)</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        616 : void *__switch_to(struct task_struct *from, struct task_struct *to)</span></a>
 <a name="87"><span class="lineNum">      87 </span>            : {</a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">        886 :         to-&gt;thread.prev_sched = from;</span></a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        886 :         set_current(to);</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">        616 :         to-&gt;thread.prev_sched = from;</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        616 :         set_current(to);</span></a>
 <a name="90"><span class="lineNum">      90 </span>            : </a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">        886 :         switch_threads(&amp;from-&gt;thread.switch_buf, &amp;to-&gt;thread.switch_buf);</span></a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineCov">        730 :         arch_switch_to(current);</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">        616 :         switch_threads(&amp;from-&gt;thread.switch_buf, &amp;to-&gt;thread.switch_buf);</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">        509 :         arch_switch_to(current);</span></a>
 <a name="93"><span class="lineNum">      93 </span>            : </a>
-<a name="94"><span class="lineNum">      94 </span><span class="lineCov">        730 :         return current-&gt;thread.prev_sched;</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineCov">        509 :         return current-&gt;thread.prev_sched;</span></a>
 <a name="95"><span class="lineNum">      95 </span>            : }</a>
 <a name="96"><span class="lineNum">      96 </span>            : </a>
 <a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 : void interrupt_end(void)</span></a>
@@ -178,22 +178,22 @@
 <a name="116"><span class="lineNum">     116 </span>            :  * This is called magically, by its address being stuffed in a jmp_buf</a>
 <a name="117"><span class="lineNum">     117 </span>            :  * and being longjmp-d to.</a>
 <a name="118"><span class="lineNum">     118 </span>            :  */</a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineCov">        158 : void new_thread_handler(void)</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">        108 : void new_thread_handler(void)</span></a>
 <a name="120"><span class="lineNum">     120 </span>            : {</a>
 <a name="121"><span class="lineNum">     121 </span>            :         int (*fn)(void *), n;</a>
 <a name="122"><span class="lineNum">     122 </span>            :         void *arg;</a>
 <a name="123"><span class="lineNum">     123 </span>            : </a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        158 :         if (current-&gt;thread.prev_sched != NULL)</span></a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineCov">        156 :                 schedule_tail(current-&gt;thread.prev_sched);</span></a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineCov">        158 :         current-&gt;thread.prev_sched = NULL;</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        108 :         if (current-&gt;thread.prev_sched != NULL)</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">        107 :                 schedule_tail(current-&gt;thread.prev_sched);</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">        108 :         current-&gt;thread.prev_sched = NULL;</span></a>
 <a name="127"><span class="lineNum">     127 </span>            : </a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineCov">        158 :         fn = current-&gt;thread.request.u.thread.proc;</span></a>
-<a name="129"><span class="lineNum">     129 </span><span class="lineCov">        158 :         arg = current-&gt;thread.request.u.thread.arg;</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">        108 :         fn = current-&gt;thread.request.u.thread.proc;</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineCov">        108 :         arg = current-&gt;thread.request.u.thread.arg;</span></a>
 <a name="130"><span class="lineNum">     130 </span>            : </a>
 <a name="131"><span class="lineNum">     131 </span>            :         /*</a>
 <a name="132"><span class="lineNum">     132 </span>            :          * callback returns only if the kernel thread execs a process</a>
 <a name="133"><span class="lineNum">     133 </span>            :          */</a>
-<a name="134"><span class="lineNum">     134 </span><span class="lineCov">        158 :         n = fn(arg);</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineCov">        108 :         n = fn(arg);</span></a>
 <a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 :         userspace(&amp;current-&gt;thread.regs.regs, current_thread_info()-&gt;aux_fp_regs);</span></a>
 <a name="136"><span class="lineNum">     136 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="137"><span class="lineNum">     137 </span>            : </a>
@@ -216,16 +216,16 @@
 <a name="154"><span class="lineNum">     154 </span><span class="lineNoCov">          0 :         userspace(&amp;current-&gt;thread.regs.regs, current_thread_info()-&gt;aux_fp_regs);</span></a>
 <a name="155"><span class="lineNum">     155 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="156"><span class="lineNum">     156 </span>            : </a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">        156 : int copy_thread(unsigned long clone_flags, unsigned long sp,</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">        107 : int copy_thread(unsigned long clone_flags, unsigned long sp,</span></a>
 <a name="158"><span class="lineNum">     158 </span>            :                 unsigned long arg, struct task_struct * p, unsigned long tls)</a>
 <a name="159"><span class="lineNum">     159 </span>            : {</a>
 <a name="160"><span class="lineNum">     160 </span>            :         void (*handler)(void);</a>
-<a name="161"><span class="lineNum">     161 </span><span class="lineCov">        156 :         int kthread = current-&gt;flags &amp; (PF_KTHREAD | PF_IO_WORKER);</span></a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineCov">        156 :         int ret = 0;</span></a>
+<a name="161"><span class="lineNum">     161 </span><span class="lineCov">        107 :         int kthread = current-&gt;flags &amp; (PF_KTHREAD | PF_IO_WORKER);</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineCov">        107 :         int ret = 0;</span></a>
 <a name="163"><span class="lineNum">     163 </span>            : </a>
-<a name="164"><span class="lineNum">     164 </span><span class="lineCov">        156 :         p-&gt;thread = (struct thread_struct) INIT_THREAD;</span></a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineCov">        107 :         p-&gt;thread = (struct thread_struct) INIT_THREAD;</span></a>
 <a name="165"><span class="lineNum">     165 </span>            : </a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">        156 :         if (!kthread) {</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">        107 :         if (!kthread) {</span></a>
 <a name="167"><span class="lineNum">     167 </span><span class="lineNoCov">          0 :                 memcpy(&amp;p-&gt;thread.regs.regs, current_pt_regs(),</span></a>
 <a name="168"><span class="lineNum">     168 </span>            :                        sizeof(p-&gt;thread.regs.regs));</a>
 <a name="169"><span class="lineNum">     169 </span><span class="lineNoCov">          0 :                 PT_REGS_SET_SYSCALL_RETURN(&amp;p-&gt;thread.regs, 0);</span></a>
@@ -236,15 +236,15 @@
 <a name="174"><span class="lineNum">     174 </span>            : </a>
 <a name="175"><span class="lineNum">     175 </span><span class="lineNoCov">          0 :                 arch_copy_thread(&amp;current-&gt;thread.arch, &amp;p-&gt;thread.arch);</span></a>
 <a name="176"><span class="lineNum">     176 </span>            :         } else {</a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">        156 :                 get_safe_registers(p-&gt;thread.regs.regs.gp, p-&gt;thread.regs.regs.fp);</span></a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">        156 :                 p-&gt;thread.request.u.thread.proc = (int (*)(void *))sp;</span></a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">        156 :                 p-&gt;thread.request.u.thread.arg = (void *)arg;</span></a>
-<a name="180"><span class="lineNum">     180 </span><span class="lineCov">        156 :                 handler = new_thread_handler;</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">        107 :                 get_safe_registers(p-&gt;thread.regs.regs.gp, p-&gt;thread.regs.regs.fp);</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">        107 :                 p-&gt;thread.request.u.thread.proc = (int (*)(void *))sp;</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">        107 :                 p-&gt;thread.request.u.thread.arg = (void *)arg;</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">        107 :                 handler = new_thread_handler;</span></a>
 <a name="181"><span class="lineNum">     181 </span>            :         }</a>
 <a name="182"><span class="lineNum">     182 </span>            : </a>
-<a name="183"><span class="lineNum">     183 </span><span class="lineCov">        156 :         new_thread(task_stack_page(p), &amp;p-&gt;thread.switch_buf, handler);</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">        107 :         new_thread(task_stack_page(p), &amp;p-&gt;thread.switch_buf, handler);</span></a>
 <a name="184"><span class="lineNum">     184 </span>            : </a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineCov">        156 :         if (!kthread) {</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineCov">        107 :         if (!kthread) {</span></a>
 <a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :                 clear_flushed_tls(p);</span></a>
 <a name="187"><span class="lineNum">     187 </span>            : </a>
 <a name="188"><span class="lineNum">     188 </span>            :                 /*</a>
@@ -254,17 +254,17 @@
 <a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 :                         ret = arch_set_tls(p, tls);</span></a>
 <a name="193"><span class="lineNum">     193 </span>            :         }</a>
 <a name="194"><span class="lineNum">     194 </span>            : </a>
-<a name="195"><span class="lineNum">     195 </span><span class="lineCov">        156 :         return ret;</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineCov">        107 :         return ret;</span></a>
 <a name="196"><span class="lineNum">     196 </span>            : }</a>
 <a name="197"><span class="lineNum">     197 </span>            : </a>
-<a name="198"><span class="lineNum">     198 </span><span class="lineCov">          2 : void initial_thread_cb(void (*proc)(void *), void *arg)</span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineCov">          1 : void initial_thread_cb(void (*proc)(void *), void *arg)</span></a>
 <a name="199"><span class="lineNum">     199 </span>            : {</a>
-<a name="200"><span class="lineNum">     200 </span><span class="lineCov">          2 :         int save_kmalloc_ok = kmalloc_ok;</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineCov">          1 :         int save_kmalloc_ok = kmalloc_ok;</span></a>
 <a name="201"><span class="lineNum">     201 </span>            : </a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">          2 :         kmalloc_ok = 0;</span></a>
-<a name="203"><span class="lineNum">     203 </span><span class="lineCov">          2 :         initial_thread_cb_skas(proc, arg);</span></a>
-<a name="204"><span class="lineNum">     204 </span><span class="lineCov">          2 :         kmalloc_ok = save_kmalloc_ok;</span></a>
-<a name="205"><span class="lineNum">     205 </span><span class="lineCov">          2 : }</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">          1 :         kmalloc_ok = 0;</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineCov">          1 :         initial_thread_cb_skas(proc, arg);</span></a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineCov">          1 :         kmalloc_ok = save_kmalloc_ok;</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineCov">          1 : }</span></a>
 <a name="206"><span class="lineNum">     206 </span>            : </a>
 <a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 : void um_idle_sleep(void)</span></a>
 <a name="208"><span class="lineNum">     208 </span>            : {</a>
@@ -296,14 +296,14 @@
 <a name="234"><span class="lineNum">     234 </span>            : </a>
 <a name="235"><span class="lineNum">     235 </span>            : extern exitcall_t __uml_exitcall_begin, __uml_exitcall_end;</a>
 <a name="236"><span class="lineNum">     236 </span>            : </a>
-<a name="237"><span class="lineNum">     237 </span><span class="lineCov">          2 : void do_uml_exitcalls(void)</span></a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineCov">          1 : void do_uml_exitcalls(void)</span></a>
 <a name="238"><span class="lineNum">     238 </span>            : {</a>
 <a name="239"><span class="lineNum">     239 </span>            :         exitcall_t *call;</a>
 <a name="240"><span class="lineNum">     240 </span>            : </a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineCov">          2 :         call = &amp;__uml_exitcall_end;</span></a>
-<a name="242"><span class="lineNum">     242 </span><span class="lineCov">         14 :         while (--call &gt;= &amp;__uml_exitcall_begin)</span></a>
-<a name="243"><span class="lineNum">     243 </span><span class="lineCov">         10 :                 (*call)();</span></a>
-<a name="244"><span class="lineNum">     244 </span><span class="lineCov">          2 : }</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">          1 :         call = &amp;__uml_exitcall_end;</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineCov">          7 :         while (--call &gt;= &amp;__uml_exitcall_begin)</span></a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineCov">          5 :                 (*call)();</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineCov">          1 : }</span></a>
 <a name="245"><span class="lineNum">     245 </span>            : </a>
 <a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 : char *uml_strdup(const char *string)</span></a>
 <a name="247"><span class="lineNum">     247 </span>            : {</a>
@@ -329,9 +329,9 @@
 <a name="267"><span class="lineNum">     267 </span>            : static atomic_t using_sysemu = ATOMIC_INIT(0);</a>
 <a name="268"><span class="lineNum">     268 </span>            : int sysemu_supported;</a>
 <a name="269"><span class="lineNum">     269 </span>            : </a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineCov">         10 : void set_using_sysemu(int value)</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineCov">          5 : void set_using_sysemu(int value)</span></a>
 <a name="271"><span class="lineNum">     271 </span>            : {</a>
-<a name="272"><span class="lineNum">     272 </span><span class="lineCov">         10 :         if (value &gt; sysemu_supported)</span></a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineCov">          5 :         if (value &gt; sysemu_supported)</span></a>
 <a name="273"><span class="lineNum">     273 </span>            :                 return;</a>
 <a name="274"><span class="lineNum">     274 </span>            :         atomic_set(&amp;using_sysemu, value);</a>
 <a name="275"><span class="lineNum">     275 </span>            : }</a>
@@ -374,15 +374,15 @@
 <a name="312"><span class="lineNum">     312 </span>            :         .proc_write     = sysemu_proc_write,</a>
 <a name="313"><span class="lineNum">     313 </span>            : };</a>
 <a name="314"><span class="lineNum">     314 </span>            : </a>
-<a name="315"><span class="lineNum">     315 </span><span class="lineCov">          2 : int __init make_proc_sysemu(void)</span></a>
+<a name="315"><span class="lineNum">     315 </span><span class="lineCov">          1 : int __init make_proc_sysemu(void)</span></a>
 <a name="316"><span class="lineNum">     316 </span>            : {</a>
 <a name="317"><span class="lineNum">     317 </span>            :         struct proc_dir_entry *ent;</a>
-<a name="318"><span class="lineNum">     318 </span><span class="lineCov">          2 :         if (!sysemu_supported)</span></a>
+<a name="318"><span class="lineNum">     318 </span><span class="lineCov">          1 :         if (!sysemu_supported)</span></a>
 <a name="319"><span class="lineNum">     319 </span>            :                 return 0;</a>
 <a name="320"><span class="lineNum">     320 </span>            : </a>
-<a name="321"><span class="lineNum">     321 </span><span class="lineCov">          2 :         ent = proc_create(&quot;sysemu&quot;, 0600, NULL, &amp;sysemu_proc_ops);</span></a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineCov">          1 :         ent = proc_create(&quot;sysemu&quot;, 0600, NULL, &amp;sysemu_proc_ops);</span></a>
 <a name="322"><span class="lineNum">     322 </span>            : </a>
-<a name="323"><span class="lineNum">     323 </span><span class="lineCov">          2 :         if (ent == NULL)</span></a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineCov">          1 :         if (ent == NULL)</span></a>
 <a name="324"><span class="lineNum">     324 </span>            :         {</a>
 <a name="325"><span class="lineNum">     325 </span><span class="lineNoCov">          0 :                 printk(KERN_WARNING &quot;Failed to register /proc/sysemu\n&quot;);</span></a>
 <a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 :                 return 0;</span></a>

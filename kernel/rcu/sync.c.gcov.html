@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -80,11 +80,11 @@
 <a name="18"><span class="lineNum">      18 </span>            :  * rcu_sync_init() - Initialize an rcu_sync structure</a>
 <a name="19"><span class="lineNum">      19 </span>            :  * @rsp: Pointer to rcu_sync structure to be initialized</a>
 <a name="20"><span class="lineNum">      20 </span>            :  */</a>
-<a name="21"><span class="lineNum">      21 </span><span class="lineCov">         60 : void rcu_sync_init(struct rcu_sync *rsp)</span></a>
+<a name="21"><span class="lineNum">      21 </span><span class="lineCov">         30 : void rcu_sync_init(struct rcu_sync *rsp)</span></a>
 <a name="22"><span class="lineNum">      22 </span>            : {</a>
-<a name="23"><span class="lineNum">      23 </span><span class="lineCov">         60 :         memset(rsp, 0, sizeof(*rsp));</span></a>
-<a name="24"><span class="lineNum">      24 </span><span class="lineCov">         60 :         init_waitqueue_head(&amp;rsp-&gt;gp_wait);</span></a>
-<a name="25"><span class="lineNum">      25 </span><span class="lineCov">         60 : }</span></a>
+<a name="23"><span class="lineNum">      23 </span><span class="lineCov">         30 :         memset(rsp, 0, sizeof(*rsp));</span></a>
+<a name="24"><span class="lineNum">      24 </span><span class="lineCov">         30 :         init_waitqueue_head(&amp;rsp-&gt;gp_wait);</span></a>
+<a name="25"><span class="lineNum">      25 </span><span class="lineCov">         30 : }</span></a>
 <a name="26"><span class="lineNum">      26 </span>            : </a>
 <a name="27"><span class="lineNum">      27 </span>            : /**</a>
 <a name="28"><span class="lineNum">      28 </span>            :  * rcu_sync_enter_start - Force readers onto slow path for multiple updates</a>

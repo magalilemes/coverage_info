@@ -32,16 +32,16 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">23</td>
+            <td class="headerCovTableEntry">34</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">3</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -162,6 +162,27 @@
 <a name="100"><span class="lineNum">     100 </span><span class="lineNoCov">          0 :                 matrix[i] = (uint16_t)reg_value;</span></a>
 <a name="101"><span class="lineNum">     101 </span>            :         }</a>
 <a name="102"><span class="lineNum">     102 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="103"><span class="lineNum">     103 </span>            : </a>
+<a name="104"><span class="lineNum">     104 </span>            : static uint32_t find_gcd(uint32_t a, uint32_t b)</a>
+<a name="105"><span class="lineNum">     105 </span>            : {</a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 :         uint32_t remainder = 0;</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineNoCov">          0 :         while (b != 0) {</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 :                 remainder = a % b;</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 :                 a = b;</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineNoCov">          0 :                 b = remainder;</span></a>
+<a name="111"><span class="lineNum">     111 </span>            :         }</a>
+<a name="112"><span class="lineNum">     112 </span>            :         return a;</a>
+<a name="113"><span class="lineNum">     113 </span>            : }</a>
+<a name="114"><span class="lineNum">     114 </span>            : </a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineNoCov">          0 : void reduce_fraction(uint32_t num, uint32_t den,</span></a>
+<a name="116"><span class="lineNum">     116 </span>            :                 uint32_t *out_num, uint32_t *out_den)</a>
+<a name="117"><span class="lineNum">     117 </span>            : {</a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineNoCov">          0 :         uint32_t gcd = 0;</span></a>
+<a name="119"><span class="lineNum">     119 </span>            : </a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineNoCov">          0 :         gcd = find_gcd(num, den);</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 :         *out_num = num / gcd;</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 :         *out_den = den / gcd;</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 : }</span></a>
 </pre>
       </td>
     </tr>

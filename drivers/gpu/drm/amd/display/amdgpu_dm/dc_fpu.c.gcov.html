@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -140,12 +140,12 @@
 <a name="78"><span class="lineNum">      78 </span>            :  *</a>
 <a name="79"><span class="lineNum">      79 </span>            :  * Note: Do not call this function directly; always use DC_FP_START().</a>
 <a name="80"><span class="lineNum">      80 </span>            :  */</a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">         17 : void dc_fpu_begin(const char *function_name, const int line)</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">         45 : void dc_fpu_begin(const char *function_name, const int line)</span></a>
 <a name="82"><span class="lineNum">      82 </span>            : {</a>
 <a name="83"><span class="lineNum">      83 </span>            :         int *pcpu;</a>
 <a name="84"><span class="lineNum">      84 </span>            : </a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">         17 :         pcpu = get_cpu_ptr(&amp;fpu_recursion_depth);</span></a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">         17 :         *pcpu += 1;</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">         45 :         pcpu = get_cpu_ptr(&amp;fpu_recursion_depth);</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">         45 :         *pcpu += 1;</span></a>
 <a name="87"><span class="lineNum">      87 </span>            : </a>
 <a name="88"><span class="lineNum">      88 </span>            :         if (*pcpu == 1) {</a>
 <a name="89"><span class="lineNum">      89 </span>            : #if defined(CONFIG_X86)</a>
@@ -164,9 +164,9 @@
 <a name="102"><span class="lineNum">     102 </span>            : #endif</a>
 <a name="103"><span class="lineNum">     103 </span>            :         }</a>
 <a name="104"><span class="lineNum">     104 </span>            : </a>
-<a name="105"><span class="lineNum">     105 </span><span class="lineCov">         17 :         TRACE_DCN_FPU(true, function_name, line, *pcpu);</span></a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">         17 :         put_cpu_ptr(&amp;fpu_recursion_depth);</span></a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">         17 : }</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">         45 :         TRACE_DCN_FPU(true, function_name, line, *pcpu);</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">         45 :         put_cpu_ptr(&amp;fpu_recursion_depth);</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">         45 : }</span></a>
 <a name="108"><span class="lineNum">     108 </span>            : </a>
 <a name="109"><span class="lineNum">     109 </span>            : /**</a>
 <a name="110"><span class="lineNum">     110 </span>            :  * dc_fpu_end - Disable FPU protection</a>
@@ -178,12 +178,12 @@
 <a name="116"><span class="lineNum">     116 </span>            :  *</a>
 <a name="117"><span class="lineNum">     117 </span>            :  * Note: Do not call this function directly; always use DC_FP_END().</a>
 <a name="118"><span class="lineNum">     118 </span>            :  */</a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineCov">         17 : void dc_fpu_end(const char *function_name, const int line)</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">         45 : void dc_fpu_end(const char *function_name, const int line)</span></a>
 <a name="120"><span class="lineNum">     120 </span>            : {</a>
 <a name="121"><span class="lineNum">     121 </span>            :         int *pcpu;</a>
 <a name="122"><span class="lineNum">     122 </span>            : </a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">         17 :         pcpu = get_cpu_ptr(&amp;fpu_recursion_depth);</span></a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         17 :         *pcpu -= 1;</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">         45 :         pcpu = get_cpu_ptr(&amp;fpu_recursion_depth);</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         45 :         *pcpu -= 1;</span></a>
 <a name="125"><span class="lineNum">     125 </span>            :         if (*pcpu &lt;= 0) {</a>
 <a name="126"><span class="lineNum">     126 </span>            : #if defined(CONFIG_X86)</a>
 <a name="127"><span class="lineNum">     127 </span>            :                 kernel_fpu_end();</a>
@@ -201,9 +201,9 @@
 <a name="139"><span class="lineNum">     139 </span>            : #endif</a>
 <a name="140"><span class="lineNum">     140 </span>            :         }</a>
 <a name="141"><span class="lineNum">     141 </span>            : </a>
-<a name="142"><span class="lineNum">     142 </span><span class="lineCov">         17 :         TRACE_DCN_FPU(false, function_name, line, *pcpu);</span></a>
-<a name="143"><span class="lineNum">     143 </span><span class="lineCov">         17 :         put_cpu_ptr(&amp;fpu_recursion_depth);</span></a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineCov">         17 : }</span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineCov">         45 :         TRACE_DCN_FPU(false, function_name, line, *pcpu);</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineCov">         45 :         put_cpu_ptr(&amp;fpu_recursion_depth);</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineCov">         45 : }</span></a>
 </pre>
       </td>
     </tr>

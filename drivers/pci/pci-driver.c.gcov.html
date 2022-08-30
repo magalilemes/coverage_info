@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -1460,22 +1460,22 @@
 <a name="1398"><span class="lineNum">    1398 </span>            :  * If no error occurred, the driver remains registered even if</a>
 <a name="1399"><span class="lineNum">    1399 </span>            :  * no device was claimed during registration.</a>
 <a name="1400"><span class="lineNum">    1400 </span>            :  */</a>
-<a name="1401"><span class="lineNum">    1401 </span><span class="lineCov">          2 : int __pci_register_driver(struct pci_driver *drv, struct module *owner,</span></a>
+<a name="1401"><span class="lineNum">    1401 </span><span class="lineCov">          1 : int __pci_register_driver(struct pci_driver *drv, struct module *owner,</span></a>
 <a name="1402"><span class="lineNum">    1402 </span>            :                           const char *mod_name)</a>
 <a name="1403"><span class="lineNum">    1403 </span>            : {</a>
 <a name="1404"><span class="lineNum">    1404 </span>            :         /* initialize common driver fields */</a>
-<a name="1405"><span class="lineNum">    1405 </span><span class="lineCov">          2 :         drv-&gt;driver.name = drv-&gt;name;</span></a>
-<a name="1406"><span class="lineNum">    1406 </span><span class="lineCov">          2 :         drv-&gt;driver.bus = &amp;pci_bus_type;</span></a>
-<a name="1407"><span class="lineNum">    1407 </span><span class="lineCov">          2 :         drv-&gt;driver.owner = owner;</span></a>
-<a name="1408"><span class="lineNum">    1408 </span><span class="lineCov">          2 :         drv-&gt;driver.mod_name = mod_name;</span></a>
-<a name="1409"><span class="lineNum">    1409 </span><span class="lineCov">          2 :         drv-&gt;driver.groups = drv-&gt;groups;</span></a>
-<a name="1410"><span class="lineNum">    1410 </span><span class="lineCov">          2 :         drv-&gt;driver.dev_groups = drv-&gt;dev_groups;</span></a>
+<a name="1405"><span class="lineNum">    1405 </span><span class="lineCov">          1 :         drv-&gt;driver.name = drv-&gt;name;</span></a>
+<a name="1406"><span class="lineNum">    1406 </span><span class="lineCov">          1 :         drv-&gt;driver.bus = &amp;pci_bus_type;</span></a>
+<a name="1407"><span class="lineNum">    1407 </span><span class="lineCov">          1 :         drv-&gt;driver.owner = owner;</span></a>
+<a name="1408"><span class="lineNum">    1408 </span><span class="lineCov">          1 :         drv-&gt;driver.mod_name = mod_name;</span></a>
+<a name="1409"><span class="lineNum">    1409 </span><span class="lineCov">          1 :         drv-&gt;driver.groups = drv-&gt;groups;</span></a>
+<a name="1410"><span class="lineNum">    1410 </span><span class="lineCov">          1 :         drv-&gt;driver.dev_groups = drv-&gt;dev_groups;</span></a>
 <a name="1411"><span class="lineNum">    1411 </span>            : </a>
-<a name="1412"><span class="lineNum">    1412 </span><span class="lineCov">          2 :         spin_lock_init(&amp;drv-&gt;dynids.lock);</span></a>
-<a name="1413"><span class="lineNum">    1413 </span><span class="lineCov">          4 :         INIT_LIST_HEAD(&amp;drv-&gt;dynids.list);</span></a>
+<a name="1412"><span class="lineNum">    1412 </span><span class="lineCov">          1 :         spin_lock_init(&amp;drv-&gt;dynids.lock);</span></a>
+<a name="1413"><span class="lineNum">    1413 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;drv-&gt;dynids.list);</span></a>
 <a name="1414"><span class="lineNum">    1414 </span>            : </a>
 <a name="1415"><span class="lineNum">    1415 </span>            :         /* register with core */</a>
-<a name="1416"><span class="lineNum">    1416 </span><span class="lineCov">          2 :         return driver_register(&amp;drv-&gt;driver);</span></a>
+<a name="1416"><span class="lineNum">    1416 </span><span class="lineCov">          1 :         return driver_register(&amp;drv-&gt;driver);</span></a>
 <a name="1417"><span class="lineNum">    1417 </span>            : }</a>
 <a name="1418"><span class="lineNum">    1418 </span>            : EXPORT_SYMBOL(__pci_register_driver);</a>
 <a name="1419"><span class="lineNum">    1419 </span>            : </a>
@@ -1574,11 +1574,11 @@
 <a name="1512"><span class="lineNum">    1512 </span>            :  * Must be called when a user of a device is finished with it.  When the last</a>
 <a name="1513"><span class="lineNum">    1513 </span>            :  * user of the device calls this function, the memory of the device is freed.</a>
 <a name="1514"><span class="lineNum">    1514 </span>            :  */</a>
-<a name="1515"><span class="lineNum">    1515 </span><span class="lineCov">          8 : void pci_dev_put(struct pci_dev *dev)</span></a>
+<a name="1515"><span class="lineNum">    1515 </span><span class="lineCov">          4 : void pci_dev_put(struct pci_dev *dev)</span></a>
 <a name="1516"><span class="lineNum">    1516 </span>            : {</a>
-<a name="1517"><span class="lineNum">    1517 </span><span class="lineCov">          8 :         if (dev)</span></a>
+<a name="1517"><span class="lineNum">    1517 </span><span class="lineCov">          4 :         if (dev)</span></a>
 <a name="1518"><span class="lineNum">    1518 </span><span class="lineNoCov">          0 :                 put_device(&amp;dev-&gt;dev);</span></a>
-<a name="1519"><span class="lineNum">    1519 </span><span class="lineCov">          8 : }</span></a>
+<a name="1519"><span class="lineNum">    1519 </span><span class="lineCov">          4 : }</span></a>
 <a name="1520"><span class="lineNum">    1520 </span>            : EXPORT_SYMBOL(pci_dev_put);</a>
 <a name="1521"><span class="lineNum">    1521 </span>            : </a>
 <a name="1522"><span class="lineNum">    1522 </span><span class="lineNoCov">          0 : static int pci_uevent(struct device *dev, struct kobj_uevent_env *env)</span></a>
@@ -1726,12 +1726,12 @@
 <a name="1664"><span class="lineNum">    1664 </span>            : EXPORT_SYMBOL_GPL(pcie_port_bus_type);</a>
 <a name="1665"><span class="lineNum">    1665 </span>            : #endif</a>
 <a name="1666"><span class="lineNum">    1666 </span>            : </a>
-<a name="1667"><span class="lineNum">    1667 </span><span class="lineCov">          2 : static int __init pci_driver_init(void)</span></a>
+<a name="1667"><span class="lineNum">    1667 </span><span class="lineCov">          1 : static int __init pci_driver_init(void)</span></a>
 <a name="1668"><span class="lineNum">    1668 </span>            : {</a>
 <a name="1669"><span class="lineNum">    1669 </span>            :         int ret;</a>
 <a name="1670"><span class="lineNum">    1670 </span>            : </a>
-<a name="1671"><span class="lineNum">    1671 </span><span class="lineCov">          2 :         ret = bus_register(&amp;pci_bus_type);</span></a>
-<a name="1672"><span class="lineNum">    1672 </span><span class="lineCov">          2 :         if (ret)</span></a>
+<a name="1671"><span class="lineNum">    1671 </span><span class="lineCov">          1 :         ret = bus_register(&amp;pci_bus_type);</span></a>
+<a name="1672"><span class="lineNum">    1672 </span><span class="lineCov">          1 :         if (ret)</span></a>
 <a name="1673"><span class="lineNum">    1673 </span>            :                 return ret;</a>
 <a name="1674"><span class="lineNum">    1674 </span>            : </a>
 <a name="1675"><span class="lineNum">    1675 </span>            : #ifdef CONFIG_PCIEPORTBUS</a>
@@ -1739,8 +1739,8 @@
 <a name="1677"><span class="lineNum">    1677 </span>            :         if (ret)</a>
 <a name="1678"><span class="lineNum">    1678 </span>            :                 return ret;</a>
 <a name="1679"><span class="lineNum">    1679 </span>            : #endif</a>
-<a name="1680"><span class="lineNum">    1680 </span><span class="lineCov">          2 :         dma_debug_add_bus(&amp;pci_bus_type);</span></a>
-<a name="1681"><span class="lineNum">    1681 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="1680"><span class="lineNum">    1680 </span><span class="lineCov">          1 :         dma_debug_add_bus(&amp;pci_bus_type);</span></a>
+<a name="1681"><span class="lineNum">    1681 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="1682"><span class="lineNum">    1682 </span>            : }</a>
 <a name="1683"><span class="lineNum">    1683 </span>            : postcore_initcall(pci_driver_init);</a>
 </pre>

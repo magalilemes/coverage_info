@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -95,14 +95,14 @@
 <a name="33"><span class="lineNum">      33 </span>            : u32 __initdata __visible main_extable_sort_needed = 1;</a>
 <a name="34"><span class="lineNum">      34 </span>            : </a>
 <a name="35"><span class="lineNum">      35 </span>            : /* Sort the kernel's built-in exception table */</a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          2 : void __init sort_main_extable(void)</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          1 : void __init sort_main_extable(void)</span></a>
 <a name="37"><span class="lineNum">      37 </span>            : {</a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          2 :         if (main_extable_sort_needed &amp;&amp;</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          1 :         if (main_extable_sort_needed &amp;&amp;</span></a>
 <a name="39"><span class="lineNum">      39 </span>            :             &amp;__stop___ex_table &gt; &amp;__start___ex_table) {</a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">          2 :                 pr_notice(&quot;Sorting __ex_table...\n&quot;);</span></a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">          2 :                 sort_extable(__start___ex_table, __stop___ex_table);</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">          1 :                 pr_notice(&quot;Sorting __ex_table...\n&quot;);</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">          1 :                 sort_extable(__start___ex_table, __stop___ex_table);</span></a>
 <a name="42"><span class="lineNum">      42 </span>            :         }</a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          2 : }</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          1 : }</span></a>
 <a name="44"><span class="lineNum">      44 </span>            : </a>
 <a name="45"><span class="lineNum">      45 </span>            : /* Given an address, look for it in the kernel exception table */</a>
 <a name="46"><span class="lineNum">      46 </span>            : const</a>
@@ -127,18 +127,18 @@
 <a name="65"><span class="lineNum">      65 </span>            : </a>
 <a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 : int notrace core_kernel_text(unsigned long addr)</span></a>
 <a name="67"><span class="lineNum">      67 </span>            : {</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        224 :         if (is_kernel_text(addr))</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        112 :         if (is_kernel_text(addr))</span></a>
 <a name="69"><span class="lineNum">      69 </span>            :                 return 1;</a>
 <a name="70"><span class="lineNum">      70 </span>            : </a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        352 :         if (system_state &lt; SYSTEM_FREEING_INITMEM &amp;&amp;</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        176 :             is_kernel_inittext(addr))</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">        176 :         if (system_state &lt; SYSTEM_FREEING_INITMEM &amp;&amp;</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">         88 :             is_kernel_inittext(addr))</span></a>
 <a name="73"><span class="lineNum">      73 </span>            :                 return 1;</a>
 <a name="74"><span class="lineNum">      74 </span>            :         return 0;</a>
 <a name="75"><span class="lineNum">      75 </span>            : }</a>
 <a name="76"><span class="lineNum">      76 </span>            : </a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        224 : int __kernel_text_address(unsigned long addr)</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">        112 : int __kernel_text_address(unsigned long addr)</span></a>
 <a name="78"><span class="lineNum">      78 </span>            : {</a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        224 :         if (kernel_text_address(addr))</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        112 :         if (kernel_text_address(addr))</span></a>
 <a name="80"><span class="lineNum">      80 </span>            :                 return 1;</a>
 <a name="81"><span class="lineNum">      81 </span>            :         /*</a>
 <a name="82"><span class="lineNum">      82 </span>            :          * There might be init symbols in saved stacktraces.</a>
@@ -148,17 +148,17 @@
 <a name="86"><span class="lineNum">      86 </span>            :          * Since we are after the module-symbols check, there's</a>
 <a name="87"><span class="lineNum">      87 </span>            :          * no danger of address overlap:</a>
 <a name="88"><span class="lineNum">      88 </span>            :          */</a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        170 :         if (is_kernel_inittext(addr))</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">         85 :         if (is_kernel_inittext(addr))</span></a>
 <a name="90"><span class="lineNum">      90 </span>            :                 return 1;</a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">        170 :         return 0;</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">         85 :         return 0;</span></a>
 <a name="92"><span class="lineNum">      92 </span>            : }</a>
 <a name="93"><span class="lineNum">      93 </span>            : </a>
-<a name="94"><span class="lineNum">      94 </span><span class="lineCov">        224 : int kernel_text_address(unsigned long addr)</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineCov">        112 : int kernel_text_address(unsigned long addr)</span></a>
 <a name="95"><span class="lineNum">      95 </span>            : {</a>
 <a name="96"><span class="lineNum">      96 </span>            :         bool no_rcu;</a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineCov">        224 :         int ret = 1;</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">        112 :         int ret = 1;</span></a>
 <a name="98"><span class="lineNum">      98 </span>            : </a>
-<a name="99"><span class="lineNum">      99 </span><span class="lineCov">        224 :         if (core_kernel_text(addr))</span></a>
+<a name="99"><span class="lineNum">      99 </span><span class="lineCov">        112 :         if (core_kernel_text(addr))</span></a>
 <a name="100"><span class="lineNum">     100 </span>            :                 return 1;</a>
 <a name="101"><span class="lineNum">     101 </span>            : </a>
 <a name="102"><span class="lineNum">     102 </span>            :         /*</a>

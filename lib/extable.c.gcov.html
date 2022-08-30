@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -110,24 +110,24 @@
 <a name="48"><span class="lineNum">      48 </span>            :  * This is used both for the kernel exception table and for</a>
 <a name="49"><span class="lineNum">      49 </span>            :  * the exception tables of modules that get loaded.</a>
 <a name="50"><span class="lineNum">      50 </span>            :  */</a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         56 : static int cmp_ex_sort(const void *a, const void *b)</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         28 : static int cmp_ex_sort(const void *a, const void *b)</span></a>
 <a name="52"><span class="lineNum">      52 </span>            : {</a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">         56 :         const struct exception_table_entry *x = a, *y = b;</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">         28 :         const struct exception_table_entry *x = a, *y = b;</span></a>
 <a name="54"><span class="lineNum">      54 </span>            : </a>
 <a name="55"><span class="lineNum">      55 </span>            :         /* avoid overflow */</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         56 :         if (ex_to_insn(x) &gt; ex_to_insn(y))</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         28 :         if (ex_to_insn(x) &gt; ex_to_insn(y))</span></a>
 <a name="57"><span class="lineNum">      57 </span>            :                 return 1;</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">         36 :         if (ex_to_insn(x) &lt; ex_to_insn(y))</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">         18 :         if (ex_to_insn(x) &lt; ex_to_insn(y))</span></a>
 <a name="59"><span class="lineNum">      59 </span>            :                 return -1;</a>
 <a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :         return 0;</span></a>
 <a name="61"><span class="lineNum">      61 </span>            : }</a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          2 : void sort_extable(struct exception_table_entry *start,</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          1 : void sort_extable(struct exception_table_entry *start,</span></a>
 <a name="64"><span class="lineNum">      64 </span>            :                   struct exception_table_entry *finish)</a>
 <a name="65"><span class="lineNum">      65 </span>            : {</a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          2 :         sort(start, finish - start, sizeof(struct exception_table_entry),</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          1 :         sort(start, finish - start, sizeof(struct exception_table_entry),</span></a>
 <a name="67"><span class="lineNum">      67 </span>            :              cmp_ex_sort, swap_ex);</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          2 : }</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          1 : }</span></a>
 <a name="69"><span class="lineNum">      69 </span>            : </a>
 <a name="70"><span class="lineNum">      70 </span>            : #ifdef CONFIG_MODULES</a>
 <a name="71"><span class="lineNum">      71 </span>            : /*</a>

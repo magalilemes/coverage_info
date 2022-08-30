@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -598,59 +598,59 @@
 <a name="536"><span class="lineNum">     536 </span>            :         .remove = pty_remove</a>
 <a name="537"><span class="lineNum">     537 </span>            : };</a>
 <a name="538"><span class="lineNum">     538 </span>            : </a>
-<a name="539"><span class="lineNum">     539 </span><span class="lineCov">          2 : static void __init legacy_pty_init(void)</span></a>
+<a name="539"><span class="lineNum">     539 </span><span class="lineCov">          1 : static void __init legacy_pty_init(void)</span></a>
 <a name="540"><span class="lineNum">     540 </span>            : {</a>
 <a name="541"><span class="lineNum">     541 </span>            :         struct tty_driver *pty_driver, *pty_slave_driver;</a>
 <a name="542"><span class="lineNum">     542 </span>            : </a>
-<a name="543"><span class="lineNum">     543 </span><span class="lineCov">          2 :         if (legacy_count &lt;= 0)</span></a>
+<a name="543"><span class="lineNum">     543 </span><span class="lineCov">          1 :         if (legacy_count &lt;= 0)</span></a>
 <a name="544"><span class="lineNum">     544 </span>            :                 return;</a>
 <a name="545"><span class="lineNum">     545 </span>            : </a>
-<a name="546"><span class="lineNum">     546 </span><span class="lineCov">          2 :         pty_driver = tty_alloc_driver(legacy_count,</span></a>
+<a name="546"><span class="lineNum">     546 </span><span class="lineCov">          1 :         pty_driver = tty_alloc_driver(legacy_count,</span></a>
 <a name="547"><span class="lineNum">     547 </span>            :                         TTY_DRIVER_RESET_TERMIOS |</a>
 <a name="548"><span class="lineNum">     548 </span>            :                         TTY_DRIVER_REAL_RAW |</a>
 <a name="549"><span class="lineNum">     549 </span>            :                         TTY_DRIVER_DYNAMIC_ALLOC);</a>
-<a name="550"><span class="lineNum">     550 </span><span class="lineCov">          2 :         if (IS_ERR(pty_driver))</span></a>
+<a name="550"><span class="lineNum">     550 </span><span class="lineCov">          1 :         if (IS_ERR(pty_driver))</span></a>
 <a name="551"><span class="lineNum">     551 </span><span class="lineNoCov">          0 :                 panic(&quot;Couldn't allocate pty driver&quot;);</span></a>
 <a name="552"><span class="lineNum">     552 </span>            : </a>
-<a name="553"><span class="lineNum">     553 </span><span class="lineCov">          2 :         pty_slave_driver = tty_alloc_driver(legacy_count,</span></a>
+<a name="553"><span class="lineNum">     553 </span><span class="lineCov">          1 :         pty_slave_driver = tty_alloc_driver(legacy_count,</span></a>
 <a name="554"><span class="lineNum">     554 </span>            :                         TTY_DRIVER_RESET_TERMIOS |</a>
 <a name="555"><span class="lineNum">     555 </span>            :                         TTY_DRIVER_REAL_RAW |</a>
 <a name="556"><span class="lineNum">     556 </span>            :                         TTY_DRIVER_DYNAMIC_ALLOC);</a>
-<a name="557"><span class="lineNum">     557 </span><span class="lineCov">          2 :         if (IS_ERR(pty_slave_driver))</span></a>
+<a name="557"><span class="lineNum">     557 </span><span class="lineCov">          1 :         if (IS_ERR(pty_slave_driver))</span></a>
 <a name="558"><span class="lineNum">     558 </span><span class="lineNoCov">          0 :                 panic(&quot;Couldn't allocate pty slave driver&quot;);</span></a>
 <a name="559"><span class="lineNum">     559 </span>            : </a>
-<a name="560"><span class="lineNum">     560 </span><span class="lineCov">          2 :         pty_driver-&gt;driver_name = &quot;pty_master&quot;;</span></a>
-<a name="561"><span class="lineNum">     561 </span><span class="lineCov">          2 :         pty_driver-&gt;name = &quot;pty&quot;;</span></a>
-<a name="562"><span class="lineNum">     562 </span><span class="lineCov">          2 :         pty_driver-&gt;major = PTY_MASTER_MAJOR;</span></a>
-<a name="563"><span class="lineNum">     563 </span><span class="lineCov">          2 :         pty_driver-&gt;minor_start = 0;</span></a>
-<a name="564"><span class="lineNum">     564 </span><span class="lineCov">          2 :         pty_driver-&gt;type = TTY_DRIVER_TYPE_PTY;</span></a>
-<a name="565"><span class="lineNum">     565 </span><span class="lineCov">          2 :         pty_driver-&gt;subtype = PTY_TYPE_MASTER;</span></a>
-<a name="566"><span class="lineNum">     566 </span><span class="lineCov">          2 :         pty_driver-&gt;init_termios = tty_std_termios;</span></a>
-<a name="567"><span class="lineNum">     567 </span><span class="lineCov">          2 :         pty_driver-&gt;init_termios.c_iflag = 0;</span></a>
-<a name="568"><span class="lineNum">     568 </span><span class="lineCov">          2 :         pty_driver-&gt;init_termios.c_oflag = 0;</span></a>
-<a name="569"><span class="lineNum">     569 </span><span class="lineCov">          2 :         pty_driver-&gt;init_termios.c_cflag = B38400 | CS8 | CREAD;</span></a>
-<a name="570"><span class="lineNum">     570 </span><span class="lineCov">          2 :         pty_driver-&gt;init_termios.c_lflag = 0;</span></a>
-<a name="571"><span class="lineNum">     571 </span><span class="lineCov">          2 :         pty_driver-&gt;init_termios.c_ispeed = 38400;</span></a>
-<a name="572"><span class="lineNum">     572 </span><span class="lineCov">          2 :         pty_driver-&gt;init_termios.c_ospeed = 38400;</span></a>
-<a name="573"><span class="lineNum">     573 </span><span class="lineCov">          2 :         pty_driver-&gt;other = pty_slave_driver;</span></a>
-<a name="574"><span class="lineNum">     574 </span><span class="lineCov">          4 :         tty_set_operations(pty_driver, &amp;master_pty_ops_bsd);</span></a>
+<a name="560"><span class="lineNum">     560 </span><span class="lineCov">          1 :         pty_driver-&gt;driver_name = &quot;pty_master&quot;;</span></a>
+<a name="561"><span class="lineNum">     561 </span><span class="lineCov">          1 :         pty_driver-&gt;name = &quot;pty&quot;;</span></a>
+<a name="562"><span class="lineNum">     562 </span><span class="lineCov">          1 :         pty_driver-&gt;major = PTY_MASTER_MAJOR;</span></a>
+<a name="563"><span class="lineNum">     563 </span><span class="lineCov">          1 :         pty_driver-&gt;minor_start = 0;</span></a>
+<a name="564"><span class="lineNum">     564 </span><span class="lineCov">          1 :         pty_driver-&gt;type = TTY_DRIVER_TYPE_PTY;</span></a>
+<a name="565"><span class="lineNum">     565 </span><span class="lineCov">          1 :         pty_driver-&gt;subtype = PTY_TYPE_MASTER;</span></a>
+<a name="566"><span class="lineNum">     566 </span><span class="lineCov">          1 :         pty_driver-&gt;init_termios = tty_std_termios;</span></a>
+<a name="567"><span class="lineNum">     567 </span><span class="lineCov">          1 :         pty_driver-&gt;init_termios.c_iflag = 0;</span></a>
+<a name="568"><span class="lineNum">     568 </span><span class="lineCov">          1 :         pty_driver-&gt;init_termios.c_oflag = 0;</span></a>
+<a name="569"><span class="lineNum">     569 </span><span class="lineCov">          1 :         pty_driver-&gt;init_termios.c_cflag = B38400 | CS8 | CREAD;</span></a>
+<a name="570"><span class="lineNum">     570 </span><span class="lineCov">          1 :         pty_driver-&gt;init_termios.c_lflag = 0;</span></a>
+<a name="571"><span class="lineNum">     571 </span><span class="lineCov">          1 :         pty_driver-&gt;init_termios.c_ispeed = 38400;</span></a>
+<a name="572"><span class="lineNum">     572 </span><span class="lineCov">          1 :         pty_driver-&gt;init_termios.c_ospeed = 38400;</span></a>
+<a name="573"><span class="lineNum">     573 </span><span class="lineCov">          1 :         pty_driver-&gt;other = pty_slave_driver;</span></a>
+<a name="574"><span class="lineNum">     574 </span><span class="lineCov">          2 :         tty_set_operations(pty_driver, &amp;master_pty_ops_bsd);</span></a>
 <a name="575"><span class="lineNum">     575 </span>            : </a>
-<a name="576"><span class="lineNum">     576 </span><span class="lineCov">          2 :         pty_slave_driver-&gt;driver_name = &quot;pty_slave&quot;;</span></a>
-<a name="577"><span class="lineNum">     577 </span><span class="lineCov">          2 :         pty_slave_driver-&gt;name = &quot;ttyp&quot;;</span></a>
-<a name="578"><span class="lineNum">     578 </span><span class="lineCov">          2 :         pty_slave_driver-&gt;major = PTY_SLAVE_MAJOR;</span></a>
-<a name="579"><span class="lineNum">     579 </span><span class="lineCov">          2 :         pty_slave_driver-&gt;minor_start = 0;</span></a>
-<a name="580"><span class="lineNum">     580 </span><span class="lineCov">          2 :         pty_slave_driver-&gt;type = TTY_DRIVER_TYPE_PTY;</span></a>
-<a name="581"><span class="lineNum">     581 </span><span class="lineCov">          2 :         pty_slave_driver-&gt;subtype = PTY_TYPE_SLAVE;</span></a>
-<a name="582"><span class="lineNum">     582 </span><span class="lineCov">          2 :         pty_slave_driver-&gt;init_termios = tty_std_termios;</span></a>
-<a name="583"><span class="lineNum">     583 </span><span class="lineCov">          2 :         pty_slave_driver-&gt;init_termios.c_cflag = B38400 | CS8 | CREAD;</span></a>
-<a name="584"><span class="lineNum">     584 </span><span class="lineCov">          2 :         pty_slave_driver-&gt;init_termios.c_ispeed = 38400;</span></a>
-<a name="585"><span class="lineNum">     585 </span><span class="lineCov">          2 :         pty_slave_driver-&gt;init_termios.c_ospeed = 38400;</span></a>
-<a name="586"><span class="lineNum">     586 </span><span class="lineCov">          2 :         pty_slave_driver-&gt;other = pty_driver;</span></a>
-<a name="587"><span class="lineNum">     587 </span><span class="lineCov">          4 :         tty_set_operations(pty_slave_driver, &amp;slave_pty_ops_bsd);</span></a>
+<a name="576"><span class="lineNum">     576 </span><span class="lineCov">          1 :         pty_slave_driver-&gt;driver_name = &quot;pty_slave&quot;;</span></a>
+<a name="577"><span class="lineNum">     577 </span><span class="lineCov">          1 :         pty_slave_driver-&gt;name = &quot;ttyp&quot;;</span></a>
+<a name="578"><span class="lineNum">     578 </span><span class="lineCov">          1 :         pty_slave_driver-&gt;major = PTY_SLAVE_MAJOR;</span></a>
+<a name="579"><span class="lineNum">     579 </span><span class="lineCov">          1 :         pty_slave_driver-&gt;minor_start = 0;</span></a>
+<a name="580"><span class="lineNum">     580 </span><span class="lineCov">          1 :         pty_slave_driver-&gt;type = TTY_DRIVER_TYPE_PTY;</span></a>
+<a name="581"><span class="lineNum">     581 </span><span class="lineCov">          1 :         pty_slave_driver-&gt;subtype = PTY_TYPE_SLAVE;</span></a>
+<a name="582"><span class="lineNum">     582 </span><span class="lineCov">          1 :         pty_slave_driver-&gt;init_termios = tty_std_termios;</span></a>
+<a name="583"><span class="lineNum">     583 </span><span class="lineCov">          1 :         pty_slave_driver-&gt;init_termios.c_cflag = B38400 | CS8 | CREAD;</span></a>
+<a name="584"><span class="lineNum">     584 </span><span class="lineCov">          1 :         pty_slave_driver-&gt;init_termios.c_ispeed = 38400;</span></a>
+<a name="585"><span class="lineNum">     585 </span><span class="lineCov">          1 :         pty_slave_driver-&gt;init_termios.c_ospeed = 38400;</span></a>
+<a name="586"><span class="lineNum">     586 </span><span class="lineCov">          1 :         pty_slave_driver-&gt;other = pty_driver;</span></a>
+<a name="587"><span class="lineNum">     587 </span><span class="lineCov">          2 :         tty_set_operations(pty_slave_driver, &amp;slave_pty_ops_bsd);</span></a>
 <a name="588"><span class="lineNum">     588 </span>            : </a>
-<a name="589"><span class="lineNum">     589 </span><span class="lineCov">          2 :         if (tty_register_driver(pty_driver))</span></a>
+<a name="589"><span class="lineNum">     589 </span><span class="lineCov">          1 :         if (tty_register_driver(pty_driver))</span></a>
 <a name="590"><span class="lineNum">     590 </span><span class="lineNoCov">          0 :                 panic(&quot;Couldn't register pty driver&quot;);</span></a>
-<a name="591"><span class="lineNum">     591 </span><span class="lineCov">          2 :         if (tty_register_driver(pty_slave_driver))</span></a>
+<a name="591"><span class="lineNum">     591 </span><span class="lineCov">          1 :         if (tty_register_driver(pty_slave_driver))</span></a>
 <a name="592"><span class="lineNum">     592 </span><span class="lineNoCov">          0 :                 panic(&quot;Couldn't register pty slave driver&quot;);</span></a>
 <a name="593"><span class="lineNum">     593 </span>            : }</a>
 <a name="594"><span class="lineNum">     594 </span>            : #else</a>
@@ -942,79 +942,79 @@
 <a name="880"><span class="lineNum">     880 </span>            : </a>
 <a name="881"><span class="lineNum">     881 </span>            : static struct file_operations ptmx_fops __ro_after_init;</a>
 <a name="882"><span class="lineNum">     882 </span>            : </a>
-<a name="883"><span class="lineNum">     883 </span><span class="lineCov">          2 : static void __init unix98_pty_init(void)</span></a>
+<a name="883"><span class="lineNum">     883 </span><span class="lineCov">          1 : static void __init unix98_pty_init(void)</span></a>
 <a name="884"><span class="lineNum">     884 </span>            : {</a>
-<a name="885"><span class="lineNum">     885 </span><span class="lineCov">          2 :         ptm_driver = tty_alloc_driver(NR_UNIX98_PTY_MAX,</span></a>
+<a name="885"><span class="lineNum">     885 </span><span class="lineCov">          1 :         ptm_driver = tty_alloc_driver(NR_UNIX98_PTY_MAX,</span></a>
 <a name="886"><span class="lineNum">     886 </span>            :                         TTY_DRIVER_RESET_TERMIOS |</a>
 <a name="887"><span class="lineNum">     887 </span>            :                         TTY_DRIVER_REAL_RAW |</a>
 <a name="888"><span class="lineNum">     888 </span>            :                         TTY_DRIVER_DYNAMIC_DEV |</a>
 <a name="889"><span class="lineNum">     889 </span>            :                         TTY_DRIVER_DEVPTS_MEM |</a>
 <a name="890"><span class="lineNum">     890 </span>            :                         TTY_DRIVER_DYNAMIC_ALLOC);</a>
-<a name="891"><span class="lineNum">     891 </span><span class="lineCov">          4 :         if (IS_ERR(ptm_driver))</span></a>
+<a name="891"><span class="lineNum">     891 </span><span class="lineCov">          2 :         if (IS_ERR(ptm_driver))</span></a>
 <a name="892"><span class="lineNum">     892 </span><span class="lineNoCov">          0 :                 panic(&quot;Couldn't allocate Unix98 ptm driver&quot;);</span></a>
-<a name="893"><span class="lineNum">     893 </span><span class="lineCov">          2 :         pts_driver = tty_alloc_driver(NR_UNIX98_PTY_MAX,</span></a>
+<a name="893"><span class="lineNum">     893 </span><span class="lineCov">          1 :         pts_driver = tty_alloc_driver(NR_UNIX98_PTY_MAX,</span></a>
 <a name="894"><span class="lineNum">     894 </span>            :                         TTY_DRIVER_RESET_TERMIOS |</a>
 <a name="895"><span class="lineNum">     895 </span>            :                         TTY_DRIVER_REAL_RAW |</a>
 <a name="896"><span class="lineNum">     896 </span>            :                         TTY_DRIVER_DYNAMIC_DEV |</a>
 <a name="897"><span class="lineNum">     897 </span>            :                         TTY_DRIVER_DEVPTS_MEM |</a>
 <a name="898"><span class="lineNum">     898 </span>            :                         TTY_DRIVER_DYNAMIC_ALLOC);</a>
-<a name="899"><span class="lineNum">     899 </span><span class="lineCov">          4 :         if (IS_ERR(pts_driver))</span></a>
+<a name="899"><span class="lineNum">     899 </span><span class="lineCov">          2 :         if (IS_ERR(pts_driver))</span></a>
 <a name="900"><span class="lineNum">     900 </span><span class="lineNoCov">          0 :                 panic(&quot;Couldn't allocate Unix98 pts driver&quot;);</span></a>
 <a name="901"><span class="lineNum">     901 </span>            : </a>
-<a name="902"><span class="lineNum">     902 </span><span class="lineCov">          2 :         ptm_driver-&gt;driver_name = &quot;pty_master&quot;;</span></a>
-<a name="903"><span class="lineNum">     903 </span><span class="lineCov">          2 :         ptm_driver-&gt;name = &quot;ptm&quot;;</span></a>
-<a name="904"><span class="lineNum">     904 </span><span class="lineCov">          2 :         ptm_driver-&gt;major = UNIX98_PTY_MASTER_MAJOR;</span></a>
-<a name="905"><span class="lineNum">     905 </span><span class="lineCov">          2 :         ptm_driver-&gt;minor_start = 0;</span></a>
-<a name="906"><span class="lineNum">     906 </span><span class="lineCov">          2 :         ptm_driver-&gt;type = TTY_DRIVER_TYPE_PTY;</span></a>
-<a name="907"><span class="lineNum">     907 </span><span class="lineCov">          2 :         ptm_driver-&gt;subtype = PTY_TYPE_MASTER;</span></a>
-<a name="908"><span class="lineNum">     908 </span><span class="lineCov">          2 :         ptm_driver-&gt;init_termios = tty_std_termios;</span></a>
-<a name="909"><span class="lineNum">     909 </span><span class="lineCov">          2 :         ptm_driver-&gt;init_termios.c_iflag = 0;</span></a>
-<a name="910"><span class="lineNum">     910 </span><span class="lineCov">          2 :         ptm_driver-&gt;init_termios.c_oflag = 0;</span></a>
-<a name="911"><span class="lineNum">     911 </span><span class="lineCov">          2 :         ptm_driver-&gt;init_termios.c_cflag = B38400 | CS8 | CREAD;</span></a>
-<a name="912"><span class="lineNum">     912 </span><span class="lineCov">          2 :         ptm_driver-&gt;init_termios.c_lflag = 0;</span></a>
-<a name="913"><span class="lineNum">     913 </span><span class="lineCov">          2 :         ptm_driver-&gt;init_termios.c_ispeed = 38400;</span></a>
-<a name="914"><span class="lineNum">     914 </span><span class="lineCov">          2 :         ptm_driver-&gt;init_termios.c_ospeed = 38400;</span></a>
-<a name="915"><span class="lineNum">     915 </span><span class="lineCov">          2 :         ptm_driver-&gt;other = pts_driver;</span></a>
-<a name="916"><span class="lineNum">     916 </span><span class="lineCov">          4 :         tty_set_operations(ptm_driver, &amp;ptm_unix98_ops);</span></a>
+<a name="902"><span class="lineNum">     902 </span><span class="lineCov">          1 :         ptm_driver-&gt;driver_name = &quot;pty_master&quot;;</span></a>
+<a name="903"><span class="lineNum">     903 </span><span class="lineCov">          1 :         ptm_driver-&gt;name = &quot;ptm&quot;;</span></a>
+<a name="904"><span class="lineNum">     904 </span><span class="lineCov">          1 :         ptm_driver-&gt;major = UNIX98_PTY_MASTER_MAJOR;</span></a>
+<a name="905"><span class="lineNum">     905 </span><span class="lineCov">          1 :         ptm_driver-&gt;minor_start = 0;</span></a>
+<a name="906"><span class="lineNum">     906 </span><span class="lineCov">          1 :         ptm_driver-&gt;type = TTY_DRIVER_TYPE_PTY;</span></a>
+<a name="907"><span class="lineNum">     907 </span><span class="lineCov">          1 :         ptm_driver-&gt;subtype = PTY_TYPE_MASTER;</span></a>
+<a name="908"><span class="lineNum">     908 </span><span class="lineCov">          1 :         ptm_driver-&gt;init_termios = tty_std_termios;</span></a>
+<a name="909"><span class="lineNum">     909 </span><span class="lineCov">          1 :         ptm_driver-&gt;init_termios.c_iflag = 0;</span></a>
+<a name="910"><span class="lineNum">     910 </span><span class="lineCov">          1 :         ptm_driver-&gt;init_termios.c_oflag = 0;</span></a>
+<a name="911"><span class="lineNum">     911 </span><span class="lineCov">          1 :         ptm_driver-&gt;init_termios.c_cflag = B38400 | CS8 | CREAD;</span></a>
+<a name="912"><span class="lineNum">     912 </span><span class="lineCov">          1 :         ptm_driver-&gt;init_termios.c_lflag = 0;</span></a>
+<a name="913"><span class="lineNum">     913 </span><span class="lineCov">          1 :         ptm_driver-&gt;init_termios.c_ispeed = 38400;</span></a>
+<a name="914"><span class="lineNum">     914 </span><span class="lineCov">          1 :         ptm_driver-&gt;init_termios.c_ospeed = 38400;</span></a>
+<a name="915"><span class="lineNum">     915 </span><span class="lineCov">          1 :         ptm_driver-&gt;other = pts_driver;</span></a>
+<a name="916"><span class="lineNum">     916 </span><span class="lineCov">          2 :         tty_set_operations(ptm_driver, &amp;ptm_unix98_ops);</span></a>
 <a name="917"><span class="lineNum">     917 </span>            : </a>
-<a name="918"><span class="lineNum">     918 </span><span class="lineCov">          2 :         pts_driver-&gt;driver_name = &quot;pty_slave&quot;;</span></a>
-<a name="919"><span class="lineNum">     919 </span><span class="lineCov">          2 :         pts_driver-&gt;name = &quot;pts&quot;;</span></a>
-<a name="920"><span class="lineNum">     920 </span><span class="lineCov">          2 :         pts_driver-&gt;major = UNIX98_PTY_SLAVE_MAJOR;</span></a>
-<a name="921"><span class="lineNum">     921 </span><span class="lineCov">          2 :         pts_driver-&gt;minor_start = 0;</span></a>
-<a name="922"><span class="lineNum">     922 </span><span class="lineCov">          2 :         pts_driver-&gt;type = TTY_DRIVER_TYPE_PTY;</span></a>
-<a name="923"><span class="lineNum">     923 </span><span class="lineCov">          2 :         pts_driver-&gt;subtype = PTY_TYPE_SLAVE;</span></a>
-<a name="924"><span class="lineNum">     924 </span><span class="lineCov">          2 :         pts_driver-&gt;init_termios = tty_std_termios;</span></a>
-<a name="925"><span class="lineNum">     925 </span><span class="lineCov">          2 :         pts_driver-&gt;init_termios.c_cflag = B38400 | CS8 | CREAD;</span></a>
-<a name="926"><span class="lineNum">     926 </span><span class="lineCov">          2 :         pts_driver-&gt;init_termios.c_ispeed = 38400;</span></a>
-<a name="927"><span class="lineNum">     927 </span><span class="lineCov">          2 :         pts_driver-&gt;init_termios.c_ospeed = 38400;</span></a>
-<a name="928"><span class="lineNum">     928 </span><span class="lineCov">          2 :         pts_driver-&gt;other = ptm_driver;</span></a>
-<a name="929"><span class="lineNum">     929 </span><span class="lineCov">          4 :         tty_set_operations(pts_driver, &amp;pty_unix98_ops);</span></a>
+<a name="918"><span class="lineNum">     918 </span><span class="lineCov">          1 :         pts_driver-&gt;driver_name = &quot;pty_slave&quot;;</span></a>
+<a name="919"><span class="lineNum">     919 </span><span class="lineCov">          1 :         pts_driver-&gt;name = &quot;pts&quot;;</span></a>
+<a name="920"><span class="lineNum">     920 </span><span class="lineCov">          1 :         pts_driver-&gt;major = UNIX98_PTY_SLAVE_MAJOR;</span></a>
+<a name="921"><span class="lineNum">     921 </span><span class="lineCov">          1 :         pts_driver-&gt;minor_start = 0;</span></a>
+<a name="922"><span class="lineNum">     922 </span><span class="lineCov">          1 :         pts_driver-&gt;type = TTY_DRIVER_TYPE_PTY;</span></a>
+<a name="923"><span class="lineNum">     923 </span><span class="lineCov">          1 :         pts_driver-&gt;subtype = PTY_TYPE_SLAVE;</span></a>
+<a name="924"><span class="lineNum">     924 </span><span class="lineCov">          1 :         pts_driver-&gt;init_termios = tty_std_termios;</span></a>
+<a name="925"><span class="lineNum">     925 </span><span class="lineCov">          1 :         pts_driver-&gt;init_termios.c_cflag = B38400 | CS8 | CREAD;</span></a>
+<a name="926"><span class="lineNum">     926 </span><span class="lineCov">          1 :         pts_driver-&gt;init_termios.c_ispeed = 38400;</span></a>
+<a name="927"><span class="lineNum">     927 </span><span class="lineCov">          1 :         pts_driver-&gt;init_termios.c_ospeed = 38400;</span></a>
+<a name="928"><span class="lineNum">     928 </span><span class="lineCov">          1 :         pts_driver-&gt;other = ptm_driver;</span></a>
+<a name="929"><span class="lineNum">     929 </span><span class="lineCov">          2 :         tty_set_operations(pts_driver, &amp;pty_unix98_ops);</span></a>
 <a name="930"><span class="lineNum">     930 </span>            : </a>
-<a name="931"><span class="lineNum">     931 </span><span class="lineCov">          2 :         if (tty_register_driver(ptm_driver))</span></a>
+<a name="931"><span class="lineNum">     931 </span><span class="lineCov">          1 :         if (tty_register_driver(ptm_driver))</span></a>
 <a name="932"><span class="lineNum">     932 </span><span class="lineNoCov">          0 :                 panic(&quot;Couldn't register Unix98 ptm driver&quot;);</span></a>
-<a name="933"><span class="lineNum">     933 </span><span class="lineCov">          2 :         if (tty_register_driver(pts_driver))</span></a>
+<a name="933"><span class="lineNum">     933 </span><span class="lineCov">          1 :         if (tty_register_driver(pts_driver))</span></a>
 <a name="934"><span class="lineNum">     934 </span><span class="lineNoCov">          0 :                 panic(&quot;Couldn't register Unix98 pts driver&quot;);</span></a>
 <a name="935"><span class="lineNum">     935 </span>            : </a>
 <a name="936"><span class="lineNum">     936 </span>            :         /* Now create the /dev/ptmx special device */</a>
-<a name="937"><span class="lineNum">     937 </span><span class="lineCov">          2 :         tty_default_fops(&amp;ptmx_fops);</span></a>
-<a name="938"><span class="lineNum">     938 </span><span class="lineCov">          2 :         ptmx_fops.open = ptmx_open;</span></a>
+<a name="937"><span class="lineNum">     937 </span><span class="lineCov">          1 :         tty_default_fops(&amp;ptmx_fops);</span></a>
+<a name="938"><span class="lineNum">     938 </span><span class="lineCov">          1 :         ptmx_fops.open = ptmx_open;</span></a>
 <a name="939"><span class="lineNum">     939 </span>            : </a>
-<a name="940"><span class="lineNum">     940 </span><span class="lineCov">          2 :         cdev_init(&amp;ptmx_cdev, &amp;ptmx_fops);</span></a>
-<a name="941"><span class="lineNum">     941 </span><span class="lineCov">          4 :         if (cdev_add(&amp;ptmx_cdev, MKDEV(TTYAUX_MAJOR, 2), 1) ||</span></a>
-<a name="942"><span class="lineNum">     942 </span><span class="lineCov">          2 :             register_chrdev_region(MKDEV(TTYAUX_MAJOR, 2), 1, &quot;/dev/ptmx&quot;) &lt; 0)</span></a>
+<a name="940"><span class="lineNum">     940 </span><span class="lineCov">          1 :         cdev_init(&amp;ptmx_cdev, &amp;ptmx_fops);</span></a>
+<a name="941"><span class="lineNum">     941 </span><span class="lineCov">          2 :         if (cdev_add(&amp;ptmx_cdev, MKDEV(TTYAUX_MAJOR, 2), 1) ||</span></a>
+<a name="942"><span class="lineNum">     942 </span><span class="lineCov">          1 :             register_chrdev_region(MKDEV(TTYAUX_MAJOR, 2), 1, &quot;/dev/ptmx&quot;) &lt; 0)</span></a>
 <a name="943"><span class="lineNum">     943 </span><span class="lineNoCov">          0 :                 panic(&quot;Couldn't register /dev/ptmx driver&quot;);</span></a>
-<a name="944"><span class="lineNum">     944 </span><span class="lineCov">          2 :         device_create(tty_class, NULL, MKDEV(TTYAUX_MAJOR, 2), NULL, &quot;ptmx&quot;);</span></a>
-<a name="945"><span class="lineNum">     945 </span><span class="lineCov">          2 : }</span></a>
+<a name="944"><span class="lineNum">     944 </span><span class="lineCov">          1 :         device_create(tty_class, NULL, MKDEV(TTYAUX_MAJOR, 2), NULL, &quot;ptmx&quot;);</span></a>
+<a name="945"><span class="lineNum">     945 </span><span class="lineCov">          1 : }</span></a>
 <a name="946"><span class="lineNum">     946 </span>            : </a>
 <a name="947"><span class="lineNum">     947 </span>            : #else</a>
 <a name="948"><span class="lineNum">     948 </span>            : static inline void unix98_pty_init(void) { }</a>
 <a name="949"><span class="lineNum">     949 </span>            : #endif</a>
 <a name="950"><span class="lineNum">     950 </span>            : </a>
-<a name="951"><span class="lineNum">     951 </span><span class="lineCov">          2 : static int __init pty_init(void)</span></a>
+<a name="951"><span class="lineNum">     951 </span><span class="lineCov">          1 : static int __init pty_init(void)</span></a>
 <a name="952"><span class="lineNum">     952 </span>            : {</a>
-<a name="953"><span class="lineNum">     953 </span><span class="lineCov">          2 :         legacy_pty_init();</span></a>
-<a name="954"><span class="lineNum">     954 </span><span class="lineCov">          2 :         unix98_pty_init();</span></a>
-<a name="955"><span class="lineNum">     955 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="953"><span class="lineNum">     953 </span><span class="lineCov">          1 :         legacy_pty_init();</span></a>
+<a name="954"><span class="lineNum">     954 </span><span class="lineCov">          1 :         unix98_pty_init();</span></a>
+<a name="955"><span class="lineNum">     955 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="956"><span class="lineNum">     956 </span>            : }</a>
 <a name="957"><span class="lineNum">     957 </span>            : device_initcall(pty_init);</a>
 </pre>

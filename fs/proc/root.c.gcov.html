@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -174,14 +174,14 @@
 <a name="112"><span class="lineNum">     112 </span>            :         return 0;</a>
 <a name="113"><span class="lineNum">     113 </span>            : }</a>
 <a name="114"><span class="lineNum">     114 </span>            : </a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">          2 : static int proc_parse_param(struct fs_context *fc, struct fs_parameter *param)</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">          1 : static int proc_parse_param(struct fs_context *fc, struct fs_parameter *param)</span></a>
 <a name="116"><span class="lineNum">     116 </span>            : {</a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineCov">          2 :         struct proc_fs_context *ctx = fc-&gt;fs_private;</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">          1 :         struct proc_fs_context *ctx = fc-&gt;fs_private;</span></a>
 <a name="118"><span class="lineNum">     118 </span>            :         struct fs_parse_result result;</a>
 <a name="119"><span class="lineNum">     119 </span>            :         int opt;</a>
 <a name="120"><span class="lineNum">     120 </span>            : </a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineCov">          2 :         opt = fs_parse(fc, proc_fs_parameters, param, &amp;result);</span></a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">          2 :         if (opt &lt; 0)</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineCov">          1 :         opt = fs_parse(fc, proc_fs_parameters, param, &amp;result);</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">          1 :         if (opt &lt; 0)</span></a>
 <a name="123"><span class="lineNum">     123 </span>            :                 return opt;</a>
 <a name="124"><span class="lineNum">     124 </span>            : </a>
 <a name="125"><span class="lineNum">     125 </span><span class="lineNoCov">          0 :         switch (opt) {</span></a>
@@ -211,68 +211,68 @@
 <a name="149"><span class="lineNum">     149 </span>            :                                struct fs_context *fc,</a>
 <a name="150"><span class="lineNum">     150 </span>            :                                struct user_namespace *user_ns)</a>
 <a name="151"><span class="lineNum">     151 </span>            : {</a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineCov">          2 :         struct proc_fs_context *ctx = fc-&gt;fs_private;</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">          1 :         struct proc_fs_context *ctx = fc-&gt;fs_private;</span></a>
 <a name="153"><span class="lineNum">     153 </span>            : </a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineCov">          2 :         if (ctx-&gt;mask &amp; (1 &lt;&lt; Opt_gid))</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">          1 :         if (ctx-&gt;mask &amp; (1 &lt;&lt; Opt_gid))</span></a>
 <a name="155"><span class="lineNum">     155 </span><span class="lineNoCov">          0 :                 fs_info-&gt;pid_gid = make_kgid(user_ns, ctx-&gt;gid);</span></a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">          2 :         if (ctx-&gt;mask &amp; (1 &lt;&lt; Opt_hidepid))</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">          1 :         if (ctx-&gt;mask &amp; (1 &lt;&lt; Opt_hidepid))</span></a>
 <a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :                 fs_info-&gt;hide_pid = ctx-&gt;hidepid;</span></a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">          2 :         if (ctx-&gt;mask &amp; (1 &lt;&lt; Opt_subset))</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">          1 :         if (ctx-&gt;mask &amp; (1 &lt;&lt; Opt_subset))</span></a>
 <a name="159"><span class="lineNum">     159 </span><span class="lineNoCov">          0 :                 fs_info-&gt;pidonly = ctx-&gt;pidonly;</span></a>
 <a name="160"><span class="lineNum">     160 </span>            : }</a>
 <a name="161"><span class="lineNum">     161 </span>            : </a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineCov">          2 : static int proc_fill_super(struct super_block *s, struct fs_context *fc)</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineCov">          1 : static int proc_fill_super(struct super_block *s, struct fs_context *fc)</span></a>
 <a name="163"><span class="lineNum">     163 </span>            : {</a>
-<a name="164"><span class="lineNum">     164 </span><span class="lineCov">          2 :         struct proc_fs_context *ctx = fc-&gt;fs_private;</span></a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineCov">          1 :         struct proc_fs_context *ctx = fc-&gt;fs_private;</span></a>
 <a name="165"><span class="lineNum">     165 </span>            :         struct inode *root_inode;</a>
 <a name="166"><span class="lineNum">     166 </span>            :         struct proc_fs_info *fs_info;</a>
 <a name="167"><span class="lineNum">     167 </span>            :         int ret;</a>
 <a name="168"><span class="lineNum">     168 </span>            : </a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineCov">          2 :         fs_info = kzalloc(sizeof(*fs_info), GFP_KERNEL);</span></a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">          2 :         if (!fs_info)</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">          1 :         fs_info = kzalloc(sizeof(*fs_info), GFP_KERNEL);</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">          1 :         if (!fs_info)</span></a>
 <a name="171"><span class="lineNum">     171 </span>            :                 return -ENOMEM;</a>
 <a name="172"><span class="lineNum">     172 </span>            : </a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          4 :         fs_info-&gt;pid_ns = get_pid_ns(ctx-&gt;pid_ns);</span></a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">          4 :         proc_apply_options(fs_info, fc, current_user_ns());</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          2 :         fs_info-&gt;pid_ns = get_pid_ns(ctx-&gt;pid_ns);</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">          2 :         proc_apply_options(fs_info, fc, current_user_ns());</span></a>
 <a name="175"><span class="lineNum">     175 </span>            : </a>
 <a name="176"><span class="lineNum">     176 </span>            :         /* User space would break if executables or devices appear on proc */</a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          2 :         s-&gt;s_iflags |= SB_I_USERNS_VISIBLE | SB_I_NOEXEC | SB_I_NODEV;</span></a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">          2 :         s-&gt;s_flags |= SB_NODIRATIME | SB_NOSUID | SB_NOEXEC;</span></a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          2 :         s-&gt;s_blocksize = 1024;</span></a>
-<a name="180"><span class="lineNum">     180 </span><span class="lineCov">          2 :         s-&gt;s_blocksize_bits = 10;</span></a>
-<a name="181"><span class="lineNum">     181 </span><span class="lineCov">          2 :         s-&gt;s_magic = PROC_SUPER_MAGIC;</span></a>
-<a name="182"><span class="lineNum">     182 </span><span class="lineCov">          2 :         s-&gt;s_op = &amp;proc_sops;</span></a>
-<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          2 :         s-&gt;s_time_gran = 1;</span></a>
-<a name="184"><span class="lineNum">     184 </span><span class="lineCov">          2 :         s-&gt;s_fs_info = fs_info;</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          1 :         s-&gt;s_iflags |= SB_I_USERNS_VISIBLE | SB_I_NOEXEC | SB_I_NODEV;</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">          1 :         s-&gt;s_flags |= SB_NODIRATIME | SB_NOSUID | SB_NOEXEC;</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          1 :         s-&gt;s_blocksize = 1024;</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">          1 :         s-&gt;s_blocksize_bits = 10;</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">          1 :         s-&gt;s_magic = PROC_SUPER_MAGIC;</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineCov">          1 :         s-&gt;s_op = &amp;proc_sops;</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          1 :         s-&gt;s_time_gran = 1;</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">          1 :         s-&gt;s_fs_info = fs_info;</span></a>
 <a name="185"><span class="lineNum">     185 </span>            : </a>
 <a name="186"><span class="lineNum">     186 </span>            :         /*</a>
 <a name="187"><span class="lineNum">     187 </span>            :          * procfs isn't actually a stacking filesystem; however, there is</a>
 <a name="188"><span class="lineNum">     188 </span>            :          * too much magic going on inside it to permit stacking things on</a>
 <a name="189"><span class="lineNum">     189 </span>            :          * top of it</a>
 <a name="190"><span class="lineNum">     190 </span>            :          */</a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          2 :         s-&gt;s_stack_depth = FILESYSTEM_MAX_STACK_DEPTH;</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          1 :         s-&gt;s_stack_depth = FILESYSTEM_MAX_STACK_DEPTH;</span></a>
 <a name="192"><span class="lineNum">     192 </span>            : </a>
 <a name="193"><span class="lineNum">     193 </span>            :         /* procfs dentries and inodes don't require IO to create */</a>
-<a name="194"><span class="lineNum">     194 </span><span class="lineCov">          2 :         s-&gt;s_shrink.seeks = 0;</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineCov">          1 :         s-&gt;s_shrink.seeks = 0;</span></a>
 <a name="195"><span class="lineNum">     195 </span>            : </a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineCov">          2 :         pde_get(&amp;proc_root);</span></a>
-<a name="197"><span class="lineNum">     197 </span><span class="lineCov">          2 :         root_inode = proc_get_inode(s, &amp;proc_root);</span></a>
-<a name="198"><span class="lineNum">     198 </span><span class="lineCov">          2 :         if (!root_inode) {</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineCov">          1 :         pde_get(&amp;proc_root);</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineCov">          1 :         root_inode = proc_get_inode(s, &amp;proc_root);</span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineCov">          1 :         if (!root_inode) {</span></a>
 <a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :                 pr_err(&quot;proc_fill_super: get root inode failed\n&quot;);</span></a>
 <a name="200"><span class="lineNum">     200 </span><span class="lineNoCov">          0 :                 return -ENOMEM;</span></a>
 <a name="201"><span class="lineNum">     201 </span>            :         }</a>
 <a name="202"><span class="lineNum">     202 </span>            : </a>
-<a name="203"><span class="lineNum">     203 </span><span class="lineCov">          2 :         s-&gt;s_root = d_make_root(root_inode);</span></a>
-<a name="204"><span class="lineNum">     204 </span><span class="lineCov">          2 :         if (!s-&gt;s_root) {</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineCov">          1 :         s-&gt;s_root = d_make_root(root_inode);</span></a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineCov">          1 :         if (!s-&gt;s_root) {</span></a>
 <a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 :                 pr_err(&quot;proc_fill_super: allocate dentry failed\n&quot;);</span></a>
 <a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 :                 return -ENOMEM;</span></a>
 <a name="207"><span class="lineNum">     207 </span>            :         }</a>
 <a name="208"><span class="lineNum">     208 </span>            : </a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineCov">          2 :         ret = proc_setup_self(s);</span></a>
-<a name="210"><span class="lineNum">     210 </span><span class="lineCov">          2 :         if (ret) {</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineCov">          1 :         ret = proc_setup_self(s);</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineCov">          1 :         if (ret) {</span></a>
 <a name="211"><span class="lineNum">     211 </span>            :                 return ret;</a>
 <a name="212"><span class="lineNum">     212 </span>            :         }</a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineCov">          2 :         return proc_setup_thread_self(s);</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineCov">          1 :         return proc_setup_thread_self(s);</span></a>
 <a name="214"><span class="lineNum">     214 </span>            : }</a>
 <a name="215"><span class="lineNum">     215 </span>            : </a>
 <a name="216"><span class="lineNum">     216 </span><span class="lineNoCov">          0 : static int proc_reconfigure(struct fs_context *fc)</span></a>
@@ -286,18 +286,18 @@
 <a name="224"><span class="lineNum">     224 </span><span class="lineNoCov">          0 :         return 0;</span></a>
 <a name="225"><span class="lineNum">     225 </span>            : }</a>
 <a name="226"><span class="lineNum">     226 </span>            : </a>
-<a name="227"><span class="lineNum">     227 </span><span class="lineCov">          2 : static int proc_get_tree(struct fs_context *fc)</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">          1 : static int proc_get_tree(struct fs_context *fc)</span></a>
 <a name="228"><span class="lineNum">     228 </span>            : {</a>
-<a name="229"><span class="lineNum">     229 </span><span class="lineCov">          2 :         return get_tree_nodev(fc, proc_fill_super);</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineCov">          1 :         return get_tree_nodev(fc, proc_fill_super);</span></a>
 <a name="230"><span class="lineNum">     230 </span>            : }</a>
 <a name="231"><span class="lineNum">     231 </span>            : </a>
-<a name="232"><span class="lineNum">     232 </span><span class="lineCov">          2 : static void proc_fs_context_free(struct fs_context *fc)</span></a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineCov">          1 : static void proc_fs_context_free(struct fs_context *fc)</span></a>
 <a name="233"><span class="lineNum">     233 </span>            : {</a>
-<a name="234"><span class="lineNum">     234 </span><span class="lineCov">          2 :         struct proc_fs_context *ctx = fc-&gt;fs_private;</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">          1 :         struct proc_fs_context *ctx = fc-&gt;fs_private;</span></a>
 <a name="235"><span class="lineNum">     235 </span>            : </a>
-<a name="236"><span class="lineNum">     236 </span><span class="lineCov">          2 :         put_pid_ns(ctx-&gt;pid_ns);</span></a>
-<a name="237"><span class="lineNum">     237 </span><span class="lineCov">          2 :         kfree(ctx);</span></a>
-<a name="238"><span class="lineNum">     238 </span><span class="lineCov">          2 : }</span></a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineCov">          1 :         put_pid_ns(ctx-&gt;pid_ns);</span></a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineCov">          1 :         kfree(ctx);</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">          1 : }</span></a>
 <a name="239"><span class="lineNum">     239 </span>            : </a>
 <a name="240"><span class="lineNum">     240 </span>            : static const struct fs_context_operations proc_fs_context_ops = {</a>
 <a name="241"><span class="lineNum">     241 </span>            :         .free           = proc_fs_context_free,</a>
@@ -306,20 +306,20 @@
 <a name="244"><span class="lineNum">     244 </span>            :         .reconfigure    = proc_reconfigure,</a>
 <a name="245"><span class="lineNum">     245 </span>            : };</a>
 <a name="246"><span class="lineNum">     246 </span>            : </a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineCov">          2 : static int proc_init_fs_context(struct fs_context *fc)</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineCov">          1 : static int proc_init_fs_context(struct fs_context *fc)</span></a>
 <a name="248"><span class="lineNum">     248 </span>            : {</a>
 <a name="249"><span class="lineNum">     249 </span>            :         struct proc_fs_context *ctx;</a>
 <a name="250"><span class="lineNum">     250 </span>            : </a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineCov">          2 :         ctx = kzalloc(sizeof(struct proc_fs_context), GFP_KERNEL);</span></a>
-<a name="252"><span class="lineNum">     252 </span><span class="lineCov">          2 :         if (!ctx)</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineCov">          1 :         ctx = kzalloc(sizeof(struct proc_fs_context), GFP_KERNEL);</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineCov">          1 :         if (!ctx)</span></a>
 <a name="253"><span class="lineNum">     253 </span>            :                 return -ENOMEM;</a>
 <a name="254"><span class="lineNum">     254 </span>            : </a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineCov">          4 :         ctx-&gt;pid_ns = get_pid_ns(task_active_pid_ns(current));</span></a>
-<a name="256"><span class="lineNum">     256 </span><span class="lineCov">          2 :         put_user_ns(fc-&gt;user_ns);</span></a>
-<a name="257"><span class="lineNum">     257 </span><span class="lineCov">          2 :         fc-&gt;user_ns = get_user_ns(ctx-&gt;pid_ns-&gt;user_ns);</span></a>
-<a name="258"><span class="lineNum">     258 </span><span class="lineCov">          2 :         fc-&gt;fs_private = ctx;</span></a>
-<a name="259"><span class="lineNum">     259 </span><span class="lineCov">          2 :         fc-&gt;ops = &amp;proc_fs_context_ops;</span></a>
-<a name="260"><span class="lineNum">     260 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineCov">          2 :         ctx-&gt;pid_ns = get_pid_ns(task_active_pid_ns(current));</span></a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineCov">          1 :         put_user_ns(fc-&gt;user_ns);</span></a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineCov">          1 :         fc-&gt;user_ns = get_user_ns(ctx-&gt;pid_ns-&gt;user_ns);</span></a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineCov">          1 :         fc-&gt;fs_private = ctx;</span></a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineCov">          1 :         fc-&gt;ops = &amp;proc_fs_context_ops;</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="261"><span class="lineNum">     261 </span>            : }</a>
 <a name="262"><span class="lineNum">     262 </span>            : </a>
 <a name="263"><span class="lineNum">     263 </span><span class="lineNoCov">          0 : static void proc_kill_sb(struct super_block *sb)</span></a>
@@ -347,28 +347,28 @@
 <a name="285"><span class="lineNum">     285 </span>            :         .fs_flags               = FS_USERNS_MOUNT | FS_DISALLOW_NOTIFY_PERM,</a>
 <a name="286"><span class="lineNum">     286 </span>            : };</a>
 <a name="287"><span class="lineNum">     287 </span>            : </a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          2 : void __init proc_root_init(void)</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          1 : void __init proc_root_init(void)</span></a>
 <a name="289"><span class="lineNum">     289 </span>            : {</a>
-<a name="290"><span class="lineNum">     290 </span><span class="lineCov">          2 :         proc_init_kmemcache();</span></a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineCov">          2 :         set_proc_pid_nlink();</span></a>
-<a name="292"><span class="lineNum">     292 </span><span class="lineCov">          2 :         proc_self_init();</span></a>
-<a name="293"><span class="lineNum">     293 </span><span class="lineCov">          2 :         proc_thread_self_init();</span></a>
-<a name="294"><span class="lineNum">     294 </span><span class="lineCov">          2 :         proc_symlink(&quot;mounts&quot;, NULL, &quot;self/mounts&quot;);</span></a>
+<a name="290"><span class="lineNum">     290 </span><span class="lineCov">          1 :         proc_init_kmemcache();</span></a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineCov">          1 :         set_proc_pid_nlink();</span></a>
+<a name="292"><span class="lineNum">     292 </span><span class="lineCov">          1 :         proc_self_init();</span></a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineCov">          1 :         proc_thread_self_init();</span></a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineCov">          1 :         proc_symlink(&quot;mounts&quot;, NULL, &quot;self/mounts&quot;);</span></a>
 <a name="295"><span class="lineNum">     295 </span>            : </a>
 <a name="296"><span class="lineNum">     296 </span>            :         proc_net_init();</a>
-<a name="297"><span class="lineNum">     297 </span><span class="lineCov">          2 :         proc_mkdir(&quot;fs&quot;, NULL);</span></a>
-<a name="298"><span class="lineNum">     298 </span><span class="lineCov">          2 :         proc_mkdir(&quot;driver&quot;, NULL);</span></a>
-<a name="299"><span class="lineNum">     299 </span><span class="lineCov">          2 :         proc_create_mount_point(&quot;fs/nfsd&quot;); /* somewhere for the nfsd filesystem to be mounted */</span></a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineCov">          1 :         proc_mkdir(&quot;fs&quot;, NULL);</span></a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineCov">          1 :         proc_mkdir(&quot;driver&quot;, NULL);</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineCov">          1 :         proc_create_mount_point(&quot;fs/nfsd&quot;); /* somewhere for the nfsd filesystem to be mounted */</span></a>
 <a name="300"><span class="lineNum">     300 </span>            : #if defined(CONFIG_SUN_OPENPROMFS) || defined(CONFIG_SUN_OPENPROMFS_MODULE)</a>
 <a name="301"><span class="lineNum">     301 </span>            :         /* just give it a mountpoint */</a>
 <a name="302"><span class="lineNum">     302 </span>            :         proc_create_mount_point(&quot;openprom&quot;);</a>
 <a name="303"><span class="lineNum">     303 </span>            : #endif</a>
-<a name="304"><span class="lineNum">     304 </span><span class="lineCov">          2 :         proc_tty_init();</span></a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          2 :         proc_mkdir(&quot;bus&quot;, NULL);</span></a>
-<a name="306"><span class="lineNum">     306 </span><span class="lineCov">          2 :         proc_sys_init();</span></a>
+<a name="304"><span class="lineNum">     304 </span><span class="lineCov">          1 :         proc_tty_init();</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          1 :         proc_mkdir(&quot;bus&quot;, NULL);</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineCov">          1 :         proc_sys_init();</span></a>
 <a name="307"><span class="lineNum">     307 </span>            : </a>
-<a name="308"><span class="lineNum">     308 </span><span class="lineCov">          2 :         register_filesystem(&amp;proc_fs_type);</span></a>
-<a name="309"><span class="lineNum">     309 </span><span class="lineCov">          2 : }</span></a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineCov">          1 :         register_filesystem(&amp;proc_fs_type);</span></a>
+<a name="309"><span class="lineNum">     309 </span><span class="lineCov">          1 : }</span></a>
 <a name="310"><span class="lineNum">     310 </span>            : </a>
 <a name="311"><span class="lineNum">     311 </span><span class="lineNoCov">          0 : static int proc_root_getattr(struct user_namespace *mnt_userns,</span></a>
 <a name="312"><span class="lineNum">     312 </span>            :                              const struct path *path, struct kstat *stat,</a>

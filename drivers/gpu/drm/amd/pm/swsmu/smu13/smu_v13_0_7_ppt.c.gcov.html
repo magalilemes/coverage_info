@@ -32,16 +32,16 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">656</td>
+            <td class="headerCovTableEntry">660</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">28</td>
+            <td class="headerCovTableEntry">29</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -1629,77 +1629,91 @@
 <a name="1567"><span class="lineNum">    1567 </span><span class="lineNoCov">          0 :         return ret;</span></a>
 <a name="1568"><span class="lineNum">    1568 </span>            : }</a>
 <a name="1569"><span class="lineNum">    1569 </span>            : </a>
-<a name="1570"><span class="lineNum">    1570 </span>            : static const struct pptable_funcs smu_v13_0_7_ppt_funcs = {</a>
-<a name="1571"><span class="lineNum">    1571 </span>            :         .get_allowed_feature_mask = smu_v13_0_7_get_allowed_feature_mask,</a>
-<a name="1572"><span class="lineNum">    1572 </span>            :         .set_default_dpm_table = smu_v13_0_7_set_default_dpm_table,</a>
-<a name="1573"><span class="lineNum">    1573 </span>            :         .is_dpm_running = smu_v13_0_7_is_dpm_running,</a>
-<a name="1574"><span class="lineNum">    1574 </span>            :         .dump_pptable = smu_v13_0_7_dump_pptable,</a>
-<a name="1575"><span class="lineNum">    1575 </span>            :         .init_microcode = smu_v13_0_init_microcode,</a>
-<a name="1576"><span class="lineNum">    1576 </span>            :         .load_microcode = smu_v13_0_load_microcode,</a>
-<a name="1577"><span class="lineNum">    1577 </span>            :         .init_smc_tables = smu_v13_0_7_init_smc_tables,</a>
-<a name="1578"><span class="lineNum">    1578 </span>            :         .init_power = smu_v13_0_init_power,</a>
-<a name="1579"><span class="lineNum">    1579 </span>            :         .fini_power = smu_v13_0_fini_power,</a>
-<a name="1580"><span class="lineNum">    1580 </span>            :         .check_fw_status = smu_v13_0_7_check_fw_status,</a>
-<a name="1581"><span class="lineNum">    1581 </span>            :         .setup_pptable = smu_v13_0_7_setup_pptable,</a>
-<a name="1582"><span class="lineNum">    1582 </span>            :         .check_fw_version = smu_v13_0_check_fw_version,</a>
-<a name="1583"><span class="lineNum">    1583 </span>            :         .write_pptable = smu_cmn_write_pptable,</a>
-<a name="1584"><span class="lineNum">    1584 </span>            :         .set_driver_table_location = smu_v13_0_set_driver_table_location,</a>
-<a name="1585"><span class="lineNum">    1585 </span>            :         .system_features_control = smu_v13_0_system_features_control,</a>
-<a name="1586"><span class="lineNum">    1586 </span>            :         .set_allowed_mask = smu_v13_0_set_allowed_mask,</a>
-<a name="1587"><span class="lineNum">    1587 </span>            :         .get_enabled_mask = smu_cmn_get_enabled_mask,</a>
-<a name="1588"><span class="lineNum">    1588 </span>            :         .dpm_set_vcn_enable = smu_v13_0_set_vcn_enable,</a>
-<a name="1589"><span class="lineNum">    1589 </span>            :         .dpm_set_jpeg_enable = smu_v13_0_set_jpeg_enable,</a>
-<a name="1590"><span class="lineNum">    1590 </span>            :         .init_pptable_microcode = smu_v13_0_init_pptable_microcode,</a>
-<a name="1591"><span class="lineNum">    1591 </span>            :         .populate_umd_state_clk = smu_v13_0_7_populate_umd_state_clk,</a>
-<a name="1592"><span class="lineNum">    1592 </span>            :         .get_dpm_ultimate_freq = smu_v13_0_get_dpm_ultimate_freq,</a>
-<a name="1593"><span class="lineNum">    1593 </span>            :         .get_vbios_bootup_values = smu_v13_0_get_vbios_bootup_values,</a>
-<a name="1594"><span class="lineNum">    1594 </span>            :         .read_sensor = smu_v13_0_7_read_sensor,</a>
-<a name="1595"><span class="lineNum">    1595 </span>            :         .feature_is_enabled = smu_cmn_feature_is_enabled,</a>
-<a name="1596"><span class="lineNum">    1596 </span>            :         .print_clk_levels = smu_v13_0_7_print_clk_levels,</a>
-<a name="1597"><span class="lineNum">    1597 </span>            :         .force_clk_levels = smu_v13_0_7_force_clk_levels,</a>
-<a name="1598"><span class="lineNum">    1598 </span>            :         .update_pcie_parameters = smu_v13_0_7_update_pcie_parameters,</a>
-<a name="1599"><span class="lineNum">    1599 </span>            :         .get_thermal_temperature_range = smu_v13_0_7_get_thermal_temperature_range,</a>
-<a name="1600"><span class="lineNum">    1600 </span>            :         .register_irq_handler = smu_v13_0_register_irq_handler,</a>
-<a name="1601"><span class="lineNum">    1601 </span>            :         .enable_thermal_alert = smu_v13_0_enable_thermal_alert,</a>
-<a name="1602"><span class="lineNum">    1602 </span>            :         .disable_thermal_alert = smu_v13_0_disable_thermal_alert,</a>
-<a name="1603"><span class="lineNum">    1603 </span>            :         .notify_memory_pool_location = smu_v13_0_notify_memory_pool_location,</a>
-<a name="1604"><span class="lineNum">    1604 </span>            :         .get_gpu_metrics = smu_v13_0_7_get_gpu_metrics,</a>
-<a name="1605"><span class="lineNum">    1605 </span>            :         .set_soft_freq_limited_range = smu_v13_0_set_soft_freq_limited_range,</a>
-<a name="1606"><span class="lineNum">    1606 </span>            :         .set_performance_level = smu_v13_0_set_performance_level,</a>
-<a name="1607"><span class="lineNum">    1607 </span>            :         .gfx_off_control = smu_v13_0_gfx_off_control,</a>
-<a name="1608"><span class="lineNum">    1608 </span>            :         .get_fan_speed_pwm = smu_v13_0_7_get_fan_speed_pwm,</a>
-<a name="1609"><span class="lineNum">    1609 </span>            :         .get_fan_speed_rpm = smu_v13_0_7_get_fan_speed_rpm,</a>
-<a name="1610"><span class="lineNum">    1610 </span>            :         .set_fan_speed_pwm = smu_v13_0_set_fan_speed_pwm,</a>
-<a name="1611"><span class="lineNum">    1611 </span>            :         .set_fan_speed_rpm = smu_v13_0_set_fan_speed_rpm,</a>
-<a name="1612"><span class="lineNum">    1612 </span>            :         .get_fan_control_mode = smu_v13_0_get_fan_control_mode,</a>
-<a name="1613"><span class="lineNum">    1613 </span>            :         .set_fan_control_mode = smu_v13_0_set_fan_control_mode,</a>
-<a name="1614"><span class="lineNum">    1614 </span>            :         .enable_mgpu_fan_boost = smu_v13_0_7_enable_mgpu_fan_boost,</a>
-<a name="1615"><span class="lineNum">    1615 </span>            :         .get_power_limit = smu_v13_0_7_get_power_limit,</a>
-<a name="1616"><span class="lineNum">    1616 </span>            :         .set_power_limit = smu_v13_0_set_power_limit,</a>
-<a name="1617"><span class="lineNum">    1617 </span>            :         .get_power_profile_mode = smu_v13_0_7_get_power_profile_mode,</a>
-<a name="1618"><span class="lineNum">    1618 </span>            :         .set_power_profile_mode = smu_v13_0_7_set_power_profile_mode,</a>
-<a name="1619"><span class="lineNum">    1619 </span>            :         .set_tool_table_location = smu_v13_0_set_tool_table_location,</a>
-<a name="1620"><span class="lineNum">    1620 </span>            :         .get_pp_feature_mask = smu_cmn_get_pp_feature_mask,</a>
-<a name="1621"><span class="lineNum">    1621 </span>            :         .set_pp_feature_mask = smu_cmn_set_pp_feature_mask,</a>
-<a name="1622"><span class="lineNum">    1622 </span>            :         .baco_is_support = smu_v13_0_baco_is_support,</a>
-<a name="1623"><span class="lineNum">    1623 </span>            :         .baco_get_state = smu_v13_0_baco_get_state,</a>
-<a name="1624"><span class="lineNum">    1624 </span>            :         .baco_set_state = smu_v13_0_baco_set_state,</a>
-<a name="1625"><span class="lineNum">    1625 </span>            :         .baco_enter = smu_v13_0_baco_enter,</a>
-<a name="1626"><span class="lineNum">    1626 </span>            :         .baco_exit = smu_v13_0_baco_exit,</a>
-<a name="1627"><span class="lineNum">    1627 </span>            :         .set_mp1_state = smu_v13_0_7_set_mp1_state,</a>
-<a name="1628"><span class="lineNum">    1628 </span>            : };</a>
-<a name="1629"><span class="lineNum">    1629 </span>            : </a>
-<a name="1630"><span class="lineNum">    1630 </span><span class="lineNoCov">          0 : void smu_v13_0_7_set_ppt_funcs(struct smu_context *smu)</span></a>
-<a name="1631"><span class="lineNum">    1631 </span>            : {</a>
-<a name="1632"><span class="lineNum">    1632 </span><span class="lineNoCov">          0 :         smu-&gt;ppt_funcs = &amp;smu_v13_0_7_ppt_funcs;</span></a>
-<a name="1633"><span class="lineNum">    1633 </span><span class="lineNoCov">          0 :         smu-&gt;message_map = smu_v13_0_7_message_map;</span></a>
-<a name="1634"><span class="lineNum">    1634 </span><span class="lineNoCov">          0 :         smu-&gt;clock_map = smu_v13_0_7_clk_map;</span></a>
-<a name="1635"><span class="lineNum">    1635 </span><span class="lineNoCov">          0 :         smu-&gt;feature_map = smu_v13_0_7_feature_mask_map;</span></a>
-<a name="1636"><span class="lineNum">    1636 </span><span class="lineNoCov">          0 :         smu-&gt;table_map = smu_v13_0_7_table_map;</span></a>
-<a name="1637"><span class="lineNum">    1637 </span><span class="lineNoCov">          0 :         smu-&gt;pwr_src_map = smu_v13_0_7_pwr_src_map;</span></a>
-<a name="1638"><span class="lineNum">    1638 </span><span class="lineNoCov">          0 :         smu-&gt;workload_map = smu_v13_0_7_workload_map;</span></a>
-<a name="1639"><span class="lineNum">    1639 </span><span class="lineNoCov">          0 :         smu_v13_0_set_smu_mailbox_registers(smu);</span></a>
-<a name="1640"><span class="lineNum">    1640 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1570"><span class="lineNum">    1570 </span><span class="lineNoCov">          0 : static bool smu_v13_0_7_is_mode1_reset_supported(struct smu_context *smu)</span></a>
+<a name="1571"><span class="lineNum">    1571 </span>            : {</a>
+<a name="1572"><span class="lineNum">    1572 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = smu-&gt;adev;</span></a>
+<a name="1573"><span class="lineNum">    1573 </span>            : </a>
+<a name="1574"><span class="lineNum">    1574 </span>            :         /* SRIOV does not support SMU mode1 reset */</a>
+<a name="1575"><span class="lineNum">    1575 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
+<a name="1576"><span class="lineNum">    1576 </span>            :                 return false;</a>
+<a name="1577"><span class="lineNum">    1577 </span>            : </a>
+<a name="1578"><span class="lineNum">    1578 </span><span class="lineNoCov">          0 :         return true;</span></a>
+<a name="1579"><span class="lineNum">    1579 </span>            : }</a>
+<a name="1580"><span class="lineNum">    1580 </span>            : static const struct pptable_funcs smu_v13_0_7_ppt_funcs = {</a>
+<a name="1581"><span class="lineNum">    1581 </span>            :         .get_allowed_feature_mask = smu_v13_0_7_get_allowed_feature_mask,</a>
+<a name="1582"><span class="lineNum">    1582 </span>            :         .set_default_dpm_table = smu_v13_0_7_set_default_dpm_table,</a>
+<a name="1583"><span class="lineNum">    1583 </span>            :         .is_dpm_running = smu_v13_0_7_is_dpm_running,</a>
+<a name="1584"><span class="lineNum">    1584 </span>            :         .dump_pptable = smu_v13_0_7_dump_pptable,</a>
+<a name="1585"><span class="lineNum">    1585 </span>            :         .init_microcode = smu_v13_0_init_microcode,</a>
+<a name="1586"><span class="lineNum">    1586 </span>            :         .load_microcode = smu_v13_0_load_microcode,</a>
+<a name="1587"><span class="lineNum">    1587 </span>            :         .fini_microcode = smu_v13_0_fini_microcode,</a>
+<a name="1588"><span class="lineNum">    1588 </span>            :         .init_smc_tables = smu_v13_0_7_init_smc_tables,</a>
+<a name="1589"><span class="lineNum">    1589 </span>            :         .fini_smc_tables = smu_v13_0_fini_smc_tables,</a>
+<a name="1590"><span class="lineNum">    1590 </span>            :         .init_power = smu_v13_0_init_power,</a>
+<a name="1591"><span class="lineNum">    1591 </span>            :         .fini_power = smu_v13_0_fini_power,</a>
+<a name="1592"><span class="lineNum">    1592 </span>            :         .check_fw_status = smu_v13_0_7_check_fw_status,</a>
+<a name="1593"><span class="lineNum">    1593 </span>            :         .setup_pptable = smu_v13_0_7_setup_pptable,</a>
+<a name="1594"><span class="lineNum">    1594 </span>            :         .check_fw_version = smu_v13_0_check_fw_version,</a>
+<a name="1595"><span class="lineNum">    1595 </span>            :         .write_pptable = smu_cmn_write_pptable,</a>
+<a name="1596"><span class="lineNum">    1596 </span>            :         .set_driver_table_location = smu_v13_0_set_driver_table_location,</a>
+<a name="1597"><span class="lineNum">    1597 </span>            :         .system_features_control = smu_v13_0_system_features_control,</a>
+<a name="1598"><span class="lineNum">    1598 </span>            :         .set_allowed_mask = smu_v13_0_set_allowed_mask,</a>
+<a name="1599"><span class="lineNum">    1599 </span>            :         .get_enabled_mask = smu_cmn_get_enabled_mask,</a>
+<a name="1600"><span class="lineNum">    1600 </span>            :         .dpm_set_vcn_enable = smu_v13_0_set_vcn_enable,</a>
+<a name="1601"><span class="lineNum">    1601 </span>            :         .dpm_set_jpeg_enable = smu_v13_0_set_jpeg_enable,</a>
+<a name="1602"><span class="lineNum">    1602 </span>            :         .init_pptable_microcode = smu_v13_0_init_pptable_microcode,</a>
+<a name="1603"><span class="lineNum">    1603 </span>            :         .populate_umd_state_clk = smu_v13_0_7_populate_umd_state_clk,</a>
+<a name="1604"><span class="lineNum">    1604 </span>            :         .get_dpm_ultimate_freq = smu_v13_0_get_dpm_ultimate_freq,</a>
+<a name="1605"><span class="lineNum">    1605 </span>            :         .get_vbios_bootup_values = smu_v13_0_get_vbios_bootup_values,</a>
+<a name="1606"><span class="lineNum">    1606 </span>            :         .read_sensor = smu_v13_0_7_read_sensor,</a>
+<a name="1607"><span class="lineNum">    1607 </span>            :         .feature_is_enabled = smu_cmn_feature_is_enabled,</a>
+<a name="1608"><span class="lineNum">    1608 </span>            :         .print_clk_levels = smu_v13_0_7_print_clk_levels,</a>
+<a name="1609"><span class="lineNum">    1609 </span>            :         .force_clk_levels = smu_v13_0_7_force_clk_levels,</a>
+<a name="1610"><span class="lineNum">    1610 </span>            :         .update_pcie_parameters = smu_v13_0_7_update_pcie_parameters,</a>
+<a name="1611"><span class="lineNum">    1611 </span>            :         .get_thermal_temperature_range = smu_v13_0_7_get_thermal_temperature_range,</a>
+<a name="1612"><span class="lineNum">    1612 </span>            :         .register_irq_handler = smu_v13_0_register_irq_handler,</a>
+<a name="1613"><span class="lineNum">    1613 </span>            :         .enable_thermal_alert = smu_v13_0_enable_thermal_alert,</a>
+<a name="1614"><span class="lineNum">    1614 </span>            :         .disable_thermal_alert = smu_v13_0_disable_thermal_alert,</a>
+<a name="1615"><span class="lineNum">    1615 </span>            :         .notify_memory_pool_location = smu_v13_0_notify_memory_pool_location,</a>
+<a name="1616"><span class="lineNum">    1616 </span>            :         .get_gpu_metrics = smu_v13_0_7_get_gpu_metrics,</a>
+<a name="1617"><span class="lineNum">    1617 </span>            :         .set_soft_freq_limited_range = smu_v13_0_set_soft_freq_limited_range,</a>
+<a name="1618"><span class="lineNum">    1618 </span>            :         .set_performance_level = smu_v13_0_set_performance_level,</a>
+<a name="1619"><span class="lineNum">    1619 </span>            :         .gfx_off_control = smu_v13_0_gfx_off_control,</a>
+<a name="1620"><span class="lineNum">    1620 </span>            :         .get_fan_speed_pwm = smu_v13_0_7_get_fan_speed_pwm,</a>
+<a name="1621"><span class="lineNum">    1621 </span>            :         .get_fan_speed_rpm = smu_v13_0_7_get_fan_speed_rpm,</a>
+<a name="1622"><span class="lineNum">    1622 </span>            :         .set_fan_speed_pwm = smu_v13_0_set_fan_speed_pwm,</a>
+<a name="1623"><span class="lineNum">    1623 </span>            :         .set_fan_speed_rpm = smu_v13_0_set_fan_speed_rpm,</a>
+<a name="1624"><span class="lineNum">    1624 </span>            :         .get_fan_control_mode = smu_v13_0_get_fan_control_mode,</a>
+<a name="1625"><span class="lineNum">    1625 </span>            :         .set_fan_control_mode = smu_v13_0_set_fan_control_mode,</a>
+<a name="1626"><span class="lineNum">    1626 </span>            :         .enable_mgpu_fan_boost = smu_v13_0_7_enable_mgpu_fan_boost,</a>
+<a name="1627"><span class="lineNum">    1627 </span>            :         .get_power_limit = smu_v13_0_7_get_power_limit,</a>
+<a name="1628"><span class="lineNum">    1628 </span>            :         .set_power_limit = smu_v13_0_set_power_limit,</a>
+<a name="1629"><span class="lineNum">    1629 </span>            :         .get_power_profile_mode = smu_v13_0_7_get_power_profile_mode,</a>
+<a name="1630"><span class="lineNum">    1630 </span>            :         .set_power_profile_mode = smu_v13_0_7_set_power_profile_mode,</a>
+<a name="1631"><span class="lineNum">    1631 </span>            :         .set_tool_table_location = smu_v13_0_set_tool_table_location,</a>
+<a name="1632"><span class="lineNum">    1632 </span>            :         .get_pp_feature_mask = smu_cmn_get_pp_feature_mask,</a>
+<a name="1633"><span class="lineNum">    1633 </span>            :         .set_pp_feature_mask = smu_cmn_set_pp_feature_mask,</a>
+<a name="1634"><span class="lineNum">    1634 </span>            :         .baco_is_support = smu_v13_0_baco_is_support,</a>
+<a name="1635"><span class="lineNum">    1635 </span>            :         .baco_get_state = smu_v13_0_baco_get_state,</a>
+<a name="1636"><span class="lineNum">    1636 </span>            :         .baco_set_state = smu_v13_0_baco_set_state,</a>
+<a name="1637"><span class="lineNum">    1637 </span>            :         .baco_enter = smu_v13_0_baco_enter,</a>
+<a name="1638"><span class="lineNum">    1638 </span>            :         .baco_exit = smu_v13_0_baco_exit,</a>
+<a name="1639"><span class="lineNum">    1639 </span>            :         .mode1_reset_is_support = smu_v13_0_7_is_mode1_reset_supported,</a>
+<a name="1640"><span class="lineNum">    1640 </span>            :         .mode1_reset = smu_v13_0_mode1_reset,</a>
+<a name="1641"><span class="lineNum">    1641 </span>            :         .set_mp1_state = smu_v13_0_7_set_mp1_state,</a>
+<a name="1642"><span class="lineNum">    1642 </span>            : };</a>
+<a name="1643"><span class="lineNum">    1643 </span>            : </a>
+<a name="1644"><span class="lineNum">    1644 </span><span class="lineNoCov">          0 : void smu_v13_0_7_set_ppt_funcs(struct smu_context *smu)</span></a>
+<a name="1645"><span class="lineNum">    1645 </span>            : {</a>
+<a name="1646"><span class="lineNum">    1646 </span><span class="lineNoCov">          0 :         smu-&gt;ppt_funcs = &amp;smu_v13_0_7_ppt_funcs;</span></a>
+<a name="1647"><span class="lineNum">    1647 </span><span class="lineNoCov">          0 :         smu-&gt;message_map = smu_v13_0_7_message_map;</span></a>
+<a name="1648"><span class="lineNum">    1648 </span><span class="lineNoCov">          0 :         smu-&gt;clock_map = smu_v13_0_7_clk_map;</span></a>
+<a name="1649"><span class="lineNum">    1649 </span><span class="lineNoCov">          0 :         smu-&gt;feature_map = smu_v13_0_7_feature_mask_map;</span></a>
+<a name="1650"><span class="lineNum">    1650 </span><span class="lineNoCov">          0 :         smu-&gt;table_map = smu_v13_0_7_table_map;</span></a>
+<a name="1651"><span class="lineNum">    1651 </span><span class="lineNoCov">          0 :         smu-&gt;pwr_src_map = smu_v13_0_7_pwr_src_map;</span></a>
+<a name="1652"><span class="lineNum">    1652 </span><span class="lineNoCov">          0 :         smu-&gt;workload_map = smu_v13_0_7_workload_map;</span></a>
+<a name="1653"><span class="lineNum">    1653 </span><span class="lineNoCov">          0 :         smu_v13_0_set_smu_mailbox_registers(smu);</span></a>
+<a name="1654"><span class="lineNum">    1654 </span><span class="lineNoCov">          0 : }</span></a>
 </pre>
       </td>
     </tr>

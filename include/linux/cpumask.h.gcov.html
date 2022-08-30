@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -174,7 +174,7 @@
 <a name="112"><span class="lineNum">     112 </span>            : /* verify cpu argument to cpumask_* operators */</a>
 <a name="113"><span class="lineNum">     113 </span>            : static __always_inline unsigned int cpumask_check(unsigned int cpu)</a>
 <a name="114"><span class="lineNum">     114 </span>            : {</a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        176 :         cpu_max_bits_warn(cpu, nr_cpumask_bits);</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        117 :         cpu_max_bits_warn(cpu, nr_cpumask_bits);</span></a>
 <a name="116"><span class="lineNum">     116 </span>            :         return cpu;</a>
 <a name="117"><span class="lineNum">     117 </span>            : }</a>
 <a name="118"><span class="lineNum">     118 </span>            : </a>
@@ -405,7 +405,7 @@
 <a name="343"><span class="lineNum">     343 </span>            :  */</a>
 <a name="344"><span class="lineNum">     344 </span>            : static __always_inline void cpumask_set_cpu(unsigned int cpu, struct cpumask *dstp)</a>
 <a name="345"><span class="lineNum">     345 </span>            : {</a>
-<a name="346"><span class="lineNum">     346 </span><span class="lineCov">         12 :         set_bit(cpumask_check(cpu), cpumask_bits(dstp));</span></a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineCov">          6 :         set_bit(cpumask_check(cpu), cpumask_bits(dstp));</span></a>
 <a name="347"><span class="lineNum">     347 </span>            : }</a>
 <a name="348"><span class="lineNum">     348 </span>            : </a>
 <a name="349"><span class="lineNum">     349 </span>            : static __always_inline void __cpumask_set_cpu(unsigned int cpu, struct cpumask *dstp)</a>
@@ -438,7 +438,7 @@
 <a name="376"><span class="lineNum">     376 </span>            :  */</a>
 <a name="377"><span class="lineNum">     377 </span>            : static __always_inline int cpumask_test_cpu(int cpu, const struct cpumask *cpumask)</a>
 <a name="378"><span class="lineNum">     378 </span>            : {</a>
-<a name="379"><span class="lineNum">     379 </span><span class="lineCov">        504 :         return test_bit(cpumask_check(cpu), cpumask_bits((cpumask)));</span></a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineCov">        339 :         return test_bit(cpumask_check(cpu), cpumask_bits((cpumask)));</span></a>
 <a name="380"><span class="lineNum">     380 </span>            : }</a>
 <a name="381"><span class="lineNum">     381 </span>            : </a>
 <a name="382"><span class="lineNum">     382 </span>            : /**</a>
@@ -452,7 +452,7 @@
 <a name="390"><span class="lineNum">     390 </span>            :  */</a>
 <a name="391"><span class="lineNum">     391 </span>            : static __always_inline int cpumask_test_and_set_cpu(int cpu, struct cpumask *cpumask)</a>
 <a name="392"><span class="lineNum">     392 </span>            : {</a>
-<a name="393"><span class="lineNum">     393 </span><span class="lineCov">          6 :         return test_and_set_bit(cpumask_check(cpu), cpumask_bits(cpumask));</span></a>
+<a name="393"><span class="lineNum">     393 </span><span class="lineCov">          3 :         return test_and_set_bit(cpumask_check(cpu), cpumask_bits(cpumask));</span></a>
 <a name="394"><span class="lineNum">     394 </span>            : }</a>
 <a name="395"><span class="lineNum">     395 </span>            : </a>
 <a name="396"><span class="lineNum">     396 </span>            : /**</a>
@@ -499,8 +499,8 @@
 <a name="437"><span class="lineNum">     437 </span>            :                                const struct cpumask *src1p,</a>
 <a name="438"><span class="lineNum">     438 </span>            :                                const struct cpumask *src2p)</a>
 <a name="439"><span class="lineNum">     439 </span>            : {</a>
-<a name="440"><span class="lineNum">     440 </span><span class="lineCov">         28 :         return bitmap_and(cpumask_bits(dstp), cpumask_bits(src1p),</span></a>
-<a name="441"><span class="lineNum">     441 </span><span class="lineCov">         12 :                                        cpumask_bits(src2p), nr_cpumask_bits);</span></a>
+<a name="440"><span class="lineNum">     440 </span><span class="lineCov">         14 :         return bitmap_and(cpumask_bits(dstp), cpumask_bits(src1p),</span></a>
+<a name="441"><span class="lineNum">     441 </span><span class="lineCov">          6 :                                        cpumask_bits(src2p), nr_cpumask_bits);</span></a>
 <a name="442"><span class="lineNum">     442 </span>            : }</a>
 <a name="443"><span class="lineNum">     443 </span>            : </a>
 <a name="444"><span class="lineNum">     444 </span>            : /**</a>
@@ -566,7 +566,7 @@
 <a name="504"><span class="lineNum">     504 </span>            : static inline bool cpumask_equal(const struct cpumask *src1p,</a>
 <a name="505"><span class="lineNum">     505 </span>            :                                 const struct cpumask *src2p)</a>
 <a name="506"><span class="lineNum">     506 </span>            : {</a>
-<a name="507"><span class="lineNum">     507 </span><span class="lineCov">          8 :         return bitmap_equal(cpumask_bits(src1p), cpumask_bits(src2p),</span></a>
+<a name="507"><span class="lineNum">     507 </span><span class="lineCov">          4 :         return bitmap_equal(cpumask_bits(src1p), cpumask_bits(src2p),</span></a>
 <a name="508"><span class="lineNum">     508 </span>            :                                                  nr_cpumask_bits);</a>
 <a name="509"><span class="lineNum">     509 </span>            : }</a>
 <a name="510"><span class="lineNum">     510 </span>            : </a>
@@ -616,7 +616,7 @@
 <a name="554"><span class="lineNum">     554 </span>            :  */</a>
 <a name="555"><span class="lineNum">     555 </span>            : static inline bool cpumask_empty(const struct cpumask *srcp)</a>
 <a name="556"><span class="lineNum">     556 </span>            : {</a>
-<a name="557"><span class="lineNum">     557 </span><span class="lineCov">         20 :         return bitmap_empty(cpumask_bits(srcp), nr_cpumask_bits);</span></a>
+<a name="557"><span class="lineNum">     557 </span><span class="lineCov">         10 :         return bitmap_empty(cpumask_bits(srcp), nr_cpumask_bits);</span></a>
 <a name="558"><span class="lineNum">     558 </span>            : }</a>
 <a name="559"><span class="lineNum">     559 </span>            : </a>
 <a name="560"><span class="lineNum">     560 </span>            : /**</a>
@@ -634,7 +634,7 @@
 <a name="572"><span class="lineNum">     572 </span>            :  */</a>
 <a name="573"><span class="lineNum">     573 </span>            : static inline unsigned int cpumask_weight(const struct cpumask *srcp)</a>
 <a name="574"><span class="lineNum">     574 </span>            : {</a>
-<a name="575"><span class="lineNum">     575 </span><span class="lineCov">         12 :         return bitmap_weight(cpumask_bits(srcp), nr_cpumask_bits);</span></a>
+<a name="575"><span class="lineNum">     575 </span><span class="lineCov">          6 :         return bitmap_weight(cpumask_bits(srcp), nr_cpumask_bits);</span></a>
 <a name="576"><span class="lineNum">     576 </span>            : }</a>
 <a name="577"><span class="lineNum">     577 </span>            : </a>
 <a name="578"><span class="lineNum">     578 </span>            : /**</a>
@@ -671,7 +671,7 @@
 <a name="609"><span class="lineNum">     609 </span>            : static inline void cpumask_copy(struct cpumask *dstp,</a>
 <a name="610"><span class="lineNum">     610 </span>            :                                 const struct cpumask *srcp)</a>
 <a name="611"><span class="lineNum">     611 </span>            : {</a>
-<a name="612"><span class="lineNum">     612 </span><span class="lineCov">        140 :         bitmap_copy(cpumask_bits(dstp), cpumask_bits(srcp), nr_cpumask_bits);</span></a>
+<a name="612"><span class="lineNum">     612 </span><span class="lineCov">         70 :         bitmap_copy(cpumask_bits(dstp), cpumask_bits(srcp), nr_cpumask_bits);</span></a>
 <a name="613"><span class="lineNum">     613 </span>            : }</a>
 <a name="614"><span class="lineNum">     614 </span>            : </a>
 <a name="615"><span class="lineNum">     615 </span>            : /**</a>
@@ -956,8 +956,8 @@
 <a name="894"><span class="lineNum">     894 </span>            : </a>
 <a name="895"><span class="lineNum">     895 </span>            : static inline const struct cpumask *get_cpu_mask(unsigned int cpu)</a>
 <a name="896"><span class="lineNum">     896 </span>            : {</a>
-<a name="897"><span class="lineNum">     897 </span><span class="lineCov">         16 :         const unsigned long *p = cpu_bit_bitmap[1 + cpu % BITS_PER_LONG];</span></a>
-<a name="898"><span class="lineNum">     898 </span><span class="lineCov">         16 :         p -= cpu / BITS_PER_LONG;</span></a>
+<a name="897"><span class="lineNum">     897 </span><span class="lineCov">          8 :         const unsigned long *p = cpu_bit_bitmap[1 + cpu % BITS_PER_LONG];</span></a>
+<a name="898"><span class="lineNum">     898 </span><span class="lineCov">          8 :         p -= cpu / BITS_PER_LONG;</span></a>
 <a name="899"><span class="lineNum">     899 </span>            :         return to_cpumask(p);</a>
 <a name="900"><span class="lineNum">     900 </span>            : }</a>
 <a name="901"><span class="lineNum">     901 </span>            : </a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -253,9 +253,9 @@
 <a name="191"><span class="lineNum">     191 </span>            :  * for a device if they're missing.</a>
 <a name="192"><span class="lineNum">     192 </span>            :  * @parent: Device given wakeup source is associated with</a>
 <a name="193"><span class="lineNum">     193 </span>            :  */</a>
-<a name="194"><span class="lineNum">     194 </span><span class="lineCov">       1072 : int pm_wakeup_source_sysfs_add(struct device *parent)</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineCov">        536 : int pm_wakeup_source_sysfs_add(struct device *parent)</span></a>
 <a name="195"><span class="lineNum">     195 </span>            : {</a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineCov">       1072 :         if (!parent-&gt;power.wakeup || parent-&gt;power.wakeup-&gt;dev)</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineCov">        536 :         if (!parent-&gt;power.wakeup || parent-&gt;power.wakeup-&gt;dev)</span></a>
 <a name="197"><span class="lineNum">     197 </span>            :                 return 0;</a>
 <a name="198"><span class="lineNum">     198 </span>            : </a>
 <a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :         return wakeup_source_sysfs_add(parent, parent-&gt;power.wakeup);</span></a>
@@ -270,11 +270,11 @@
 <a name="208"><span class="lineNum">     208 </span><span class="lineNoCov">          0 :         device_unregister(ws-&gt;dev);</span></a>
 <a name="209"><span class="lineNum">     209 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="210"><span class="lineNum">     210 </span>            : </a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineCov">          2 : static int __init wakeup_sources_sysfs_init(void)</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineCov">          1 : static int __init wakeup_sources_sysfs_init(void)</span></a>
 <a name="212"><span class="lineNum">     212 </span>            : {</a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineCov">          2 :         wakeup_class = class_create(THIS_MODULE, &quot;wakeup&quot;);</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineCov">          1 :         wakeup_class = class_create(THIS_MODULE, &quot;wakeup&quot;);</span></a>
 <a name="214"><span class="lineNum">     214 </span>            : </a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineCov">          4 :         return PTR_ERR_OR_ZERO(wakeup_class);</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">          2 :         return PTR_ERR_OR_ZERO(wakeup_class);</span></a>
 <a name="216"><span class="lineNum">     216 </span>            : }</a>
 <a name="217"><span class="lineNum">     217 </span>            : postcore_initcall(wakeup_sources_sysfs_init);</a>
 </pre>

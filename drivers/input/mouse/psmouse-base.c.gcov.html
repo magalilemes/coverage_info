@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -2107,27 +2107,27 @@
 <a name="2045"><span class="lineNum">    2045 </span><span class="lineNoCov">          0 :         return sprintf(buffer, &quot;%s\n&quot;, psmouse_protocol_by_type(type)-&gt;name);</span></a>
 <a name="2046"><span class="lineNum">    2046 </span>            : }</a>
 <a name="2047"><span class="lineNum">    2047 </span>            : </a>
-<a name="2048"><span class="lineNum">    2048 </span><span class="lineCov">          2 : static int __init psmouse_init(void)</span></a>
+<a name="2048"><span class="lineNum">    2048 </span><span class="lineCov">          1 : static int __init psmouse_init(void)</span></a>
 <a name="2049"><span class="lineNum">    2049 </span>            : {</a>
 <a name="2050"><span class="lineNum">    2050 </span>            :         int err;</a>
 <a name="2051"><span class="lineNum">    2051 </span>            : </a>
 <a name="2052"><span class="lineNum">    2052 </span>            :         lifebook_module_init();</a>
-<a name="2053"><span class="lineNum">    2053 </span><span class="lineCov">          2 :         synaptics_module_init();</span></a>
+<a name="2053"><span class="lineNum">    2053 </span><span class="lineCov">          1 :         synaptics_module_init();</span></a>
 <a name="2054"><span class="lineNum">    2054 </span>            :         hgpk_module_init();</a>
 <a name="2055"><span class="lineNum">    2055 </span>            : </a>
-<a name="2056"><span class="lineNum">    2056 </span><span class="lineCov">          2 :         err = psmouse_smbus_module_init();</span></a>
-<a name="2057"><span class="lineNum">    2057 </span><span class="lineCov">          2 :         if (err)</span></a>
+<a name="2056"><span class="lineNum">    2056 </span><span class="lineCov">          1 :         err = psmouse_smbus_module_init();</span></a>
+<a name="2057"><span class="lineNum">    2057 </span><span class="lineCov">          1 :         if (err)</span></a>
 <a name="2058"><span class="lineNum">    2058 </span>            :                 return err;</a>
 <a name="2059"><span class="lineNum">    2059 </span>            : </a>
-<a name="2060"><span class="lineNum">    2060 </span><span class="lineCov">          2 :         kpsmoused_wq = alloc_ordered_workqueue(&quot;kpsmoused&quot;, 0);</span></a>
-<a name="2061"><span class="lineNum">    2061 </span><span class="lineCov">          2 :         if (!kpsmoused_wq) {</span></a>
+<a name="2060"><span class="lineNum">    2060 </span><span class="lineCov">          1 :         kpsmoused_wq = alloc_ordered_workqueue(&quot;kpsmoused&quot;, 0);</span></a>
+<a name="2061"><span class="lineNum">    2061 </span><span class="lineCov">          1 :         if (!kpsmoused_wq) {</span></a>
 <a name="2062"><span class="lineNum">    2062 </span><span class="lineNoCov">          0 :                 pr_err(&quot;failed to create kpsmoused workqueue\n&quot;);</span></a>
 <a name="2063"><span class="lineNum">    2063 </span><span class="lineNoCov">          0 :                 err = -ENOMEM;</span></a>
 <a name="2064"><span class="lineNum">    2064 </span><span class="lineNoCov">          0 :                 goto err_smbus_exit;</span></a>
 <a name="2065"><span class="lineNum">    2065 </span>            :         }</a>
 <a name="2066"><span class="lineNum">    2066 </span>            : </a>
-<a name="2067"><span class="lineNum">    2067 </span><span class="lineCov">          2 :         err = serio_register_driver(&amp;psmouse_drv);</span></a>
-<a name="2068"><span class="lineNum">    2068 </span><span class="lineCov">          2 :         if (err)</span></a>
+<a name="2067"><span class="lineNum">    2067 </span><span class="lineCov">          1 :         err = serio_register_driver(&amp;psmouse_drv);</span></a>
+<a name="2068"><span class="lineNum">    2068 </span><span class="lineCov">          1 :         if (err)</span></a>
 <a name="2069"><span class="lineNum">    2069 </span>            :                 goto err_destroy_wq;</a>
 <a name="2070"><span class="lineNum">    2070 </span>            : </a>
 <a name="2071"><span class="lineNum">    2071 </span>            :         return 0;</a>

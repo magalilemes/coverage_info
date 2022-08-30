@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -127,7 +127,7 @@
 <a name="65"><span class="lineNum">      65 </span>            :  */</a>
 <a name="66"><span class="lineNum">      66 </span>            : static inline unsigned int idr_get_cursor(const struct idr *idr)</a>
 <a name="67"><span class="lineNum">      67 </span>            : {</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        156 :         return READ_ONCE(idr-&gt;idr_next);</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        107 :         return READ_ONCE(idr-&gt;idr_next);</span></a>
 <a name="69"><span class="lineNum">      69 </span>            : }</a>
 <a name="70"><span class="lineNum">      70 </span>            : </a>
 <a name="71"><span class="lineNum">      71 </span>            : /**</a>
@@ -196,9 +196,9 @@
 <a name="134"><span class="lineNum">     134 </span>            :  */</a>
 <a name="135"><span class="lineNum">     135 </span>            : static inline void idr_init_base(struct idr *idr, int base)</a>
 <a name="136"><span class="lineNum">     136 </span>            : {</a>
-<a name="137"><span class="lineNum">     137 </span><span class="lineCov">         12 :         INIT_RADIX_TREE(&amp;idr-&gt;idr_rt, IDR_RT_MARKER);</span></a>
-<a name="138"><span class="lineNum">     138 </span><span class="lineCov">          6 :         idr-&gt;idr_base = base;</span></a>
-<a name="139"><span class="lineNum">     139 </span><span class="lineCov">          6 :         idr-&gt;idr_next = 0;</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineCov">          6 :         INIT_RADIX_TREE(&amp;idr-&gt;idr_rt, IDR_RT_MARKER);</span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">          3 :         idr-&gt;idr_base = base;</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineCov">          3 :         idr-&gt;idr_next = 0;</span></a>
 <a name="140"><span class="lineNum">     140 </span>            : }</a>
 <a name="141"><span class="lineNum">     141 </span>            : </a>
 <a name="142"><span class="lineNum">     142 </span>            : /**</a>
@@ -210,7 +210,7 @@
 <a name="148"><span class="lineNum">     148 </span>            :  */</a>
 <a name="149"><span class="lineNum">     149 </span>            : static inline void idr_init(struct idr *idr)</a>
 <a name="150"><span class="lineNum">     150 </span>            : {</a>
-<a name="151"><span class="lineNum">     151 </span><span class="lineCov">          6 :         idr_init_base(idr, 0);</span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineCov">          3 :         idr_init_base(idr, 0);</span></a>
 <a name="152"><span class="lineNum">     152 </span>            : }</a>
 <a name="153"><span class="lineNum">     153 </span>            : </a>
 <a name="154"><span class="lineNum">     154 </span>            : /**</a>
@@ -233,7 +233,7 @@
 <a name="171"><span class="lineNum">     171 </span>            :  */</a>
 <a name="172"><span class="lineNum">     172 </span>            : static inline void idr_preload_end(void)</a>
 <a name="173"><span class="lineNum">     173 </span>            : {</a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">      22256 :         local_unlock(&amp;radix_tree_preloads.lock);</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">      11157 :         local_unlock(&amp;radix_tree_preloads.lock);</span></a>
 <a name="175"><span class="lineNum">     175 </span>            : }</a>
 <a name="176"><span class="lineNum">     176 </span>            : </a>
 <a name="177"><span class="lineNum">     177 </span>            : /**</a>
@@ -332,7 +332,7 @@
 <a name="270"><span class="lineNum">     270 </span>            :  */</a>
 <a name="271"><span class="lineNum">     271 </span>            : static inline int ida_alloc(struct ida *ida, gfp_t gfp)</a>
 <a name="272"><span class="lineNum">     272 </span>            : {</a>
-<a name="273"><span class="lineNum">     273 </span><span class="lineCov">         30 :         return ida_alloc_range(ida, 0, ~0, gfp);</span></a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineCov">         15 :         return ida_alloc_range(ida, 0, ~0, gfp);</span></a>
 <a name="274"><span class="lineNum">     274 </span>            : }</a>
 <a name="275"><span class="lineNum">     275 </span>            : </a>
 <a name="276"><span class="lineNum">     276 </span>            : /**</a>
@@ -373,7 +373,7 @@
 <a name="311"><span class="lineNum">     311 </span>            : </a>
 <a name="312"><span class="lineNum">     312 </span>            : static inline void ida_init(struct ida *ida)</a>
 <a name="313"><span class="lineNum">     313 </span>            : {</a>
-<a name="314"><span class="lineNum">     314 </span><span class="lineCov">         96 :         xa_init_flags(&amp;ida-&gt;xa, IDA_INIT_FLAGS);</span></a>
+<a name="314"><span class="lineNum">     314 </span><span class="lineCov">         48 :         xa_init_flags(&amp;ida-&gt;xa, IDA_INIT_FLAGS);</span></a>
 <a name="315"><span class="lineNum">     315 </span>            : }</a>
 <a name="316"><span class="lineNum">     316 </span>            : </a>
 <a name="317"><span class="lineNum">     317 </span>            : /*</a>

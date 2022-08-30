@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">9</td>
@@ -527,8 +527,8 @@
 <a name="465"><span class="lineNum">     465 </span>            : debug_init(struct hrtimer *timer, clockid_t clockid,</a>
 <a name="466"><span class="lineNum">     466 </span>            :            enum hrtimer_mode mode)</a>
 <a name="467"><span class="lineNum">     467 </span>            : {</a>
-<a name="468"><span class="lineNum">     468 </span><span class="lineCov">       1546 :         debug_hrtimer_init(timer);</span></a>
-<a name="469"><span class="lineNum">     469 </span><span class="lineCov">       1546 :         trace_hrtimer_init(timer, clockid, mode);</span></a>
+<a name="468"><span class="lineNum">     468 </span><span class="lineCov">        860 :         debug_hrtimer_init(timer);</span></a>
+<a name="469"><span class="lineNum">     469 </span><span class="lineCov">        860 :         trace_hrtimer_init(timer, clockid, mode);</span></a>
 <a name="470"><span class="lineNum">     470 </span>            : }</a>
 <a name="471"><span class="lineNum">     471 </span>            : </a>
 <a name="472"><span class="lineNum">     472 </span>            : static inline void debug_activate(struct hrtimer *timer,</a>
@@ -549,7 +549,7 @@
 <a name="487"><span class="lineNum">     487 </span>            : {</a>
 <a name="488"><span class="lineNum">     488 </span>            :         unsigned int idx;</a>
 <a name="489"><span class="lineNum">     489 </span>            : </a>
-<a name="490"><span class="lineNum">     490 </span><span class="lineCov">         17 :         if (!*active)</span></a>
+<a name="490"><span class="lineNum">     490 </span><span class="lineCov">          9 :         if (!*active)</span></a>
 <a name="491"><span class="lineNum">     491 </span>            :                 return NULL;</a>
 <a name="492"><span class="lineNum">     492 </span>            : </a>
 <a name="493"><span class="lineNum">     493 </span><span class="lineNoCov">          0 :         idx = __ffs(*active);</span></a>
@@ -686,16 +686,16 @@
 <a name="624"><span class="lineNum">     624 </span>            : </a>
 <a name="625"><span class="lineNum">     625 </span>            : static inline ktime_t hrtimer_update_base(struct hrtimer_cpu_base *base)</a>
 <a name="626"><span class="lineNum">     626 </span>            : {</a>
-<a name="627"><span class="lineNum">     627 </span><span class="lineCov">         17 :         ktime_t *offs_real = &amp;base-&gt;clock_base[HRTIMER_BASE_REALTIME].offset;</span></a>
-<a name="628"><span class="lineNum">     628 </span><span class="lineCov">         17 :         ktime_t *offs_boot = &amp;base-&gt;clock_base[HRTIMER_BASE_BOOTTIME].offset;</span></a>
-<a name="629"><span class="lineNum">     629 </span><span class="lineCov">         17 :         ktime_t *offs_tai = &amp;base-&gt;clock_base[HRTIMER_BASE_TAI].offset;</span></a>
+<a name="627"><span class="lineNum">     627 </span><span class="lineCov">          9 :         ktime_t *offs_real = &amp;base-&gt;clock_base[HRTIMER_BASE_REALTIME].offset;</span></a>
+<a name="628"><span class="lineNum">     628 </span><span class="lineCov">          9 :         ktime_t *offs_boot = &amp;base-&gt;clock_base[HRTIMER_BASE_BOOTTIME].offset;</span></a>
+<a name="629"><span class="lineNum">     629 </span><span class="lineCov">          9 :         ktime_t *offs_tai = &amp;base-&gt;clock_base[HRTIMER_BASE_TAI].offset;</span></a>
 <a name="630"><span class="lineNum">     630 </span>            : </a>
-<a name="631"><span class="lineNum">     631 </span><span class="lineCov">         17 :         ktime_t now = ktime_get_update_offsets_now(&amp;base-&gt;clock_was_set_seq,</span></a>
+<a name="631"><span class="lineNum">     631 </span><span class="lineCov">          9 :         ktime_t now = ktime_get_update_offsets_now(&amp;base-&gt;clock_was_set_seq,</span></a>
 <a name="632"><span class="lineNum">     632 </span>            :                                             offs_real, offs_boot, offs_tai);</a>
 <a name="633"><span class="lineNum">     633 </span>            : </a>
-<a name="634"><span class="lineNum">     634 </span><span class="lineCov">         17 :         base-&gt;clock_base[HRTIMER_BASE_REALTIME_SOFT].offset = *offs_real;</span></a>
-<a name="635"><span class="lineNum">     635 </span><span class="lineCov">         17 :         base-&gt;clock_base[HRTIMER_BASE_BOOTTIME_SOFT].offset = *offs_boot;</span></a>
-<a name="636"><span class="lineNum">     636 </span><span class="lineCov">         17 :         base-&gt;clock_base[HRTIMER_BASE_TAI_SOFT].offset = *offs_tai;</span></a>
+<a name="634"><span class="lineNum">     634 </span><span class="lineCov">          9 :         base-&gt;clock_base[HRTIMER_BASE_REALTIME_SOFT].offset = *offs_real;</span></a>
+<a name="635"><span class="lineNum">     635 </span><span class="lineCov">          9 :         base-&gt;clock_base[HRTIMER_BASE_BOOTTIME_SOFT].offset = *offs_boot;</span></a>
+<a name="636"><span class="lineNum">     636 </span><span class="lineCov">          9 :         base-&gt;clock_base[HRTIMER_BASE_TAI_SOFT].offset = *offs_tai;</span></a>
 <a name="637"><span class="lineNum">     637 </span>            : </a>
 <a name="638"><span class="lineNum">     638 </span>            :         return now;</a>
 <a name="639"><span class="lineNum">     639 </span>            : }</a>
@@ -1375,11 +1375,11 @@
 <a name="1313"><span class="lineNum">    1313 </span>            :  *  * -1 when the timer is currently executing the callback function and</a>
 <a name="1314"><span class="lineNum">    1314 </span>            :  *    cannot be stopped</a>
 <a name="1315"><span class="lineNum">    1315 </span>            :  */</a>
-<a name="1316"><span class="lineNum">    1316 </span><span class="lineCov">        128 : int hrtimer_try_to_cancel(struct hrtimer *timer)</span></a>
+<a name="1316"><span class="lineNum">    1316 </span><span class="lineCov">         93 : int hrtimer_try_to_cancel(struct hrtimer *timer)</span></a>
 <a name="1317"><span class="lineNum">    1317 </span>            : {</a>
 <a name="1318"><span class="lineNum">    1318 </span>            :         struct hrtimer_clock_base *base;</a>
 <a name="1319"><span class="lineNum">    1319 </span>            :         unsigned long flags;</a>
-<a name="1320"><span class="lineNum">    1320 </span><span class="lineCov">        128 :         int ret = -1;</span></a>
+<a name="1320"><span class="lineNum">    1320 </span><span class="lineCov">         93 :         int ret = -1;</span></a>
 <a name="1321"><span class="lineNum">    1321 </span>            : </a>
 <a name="1322"><span class="lineNum">    1322 </span>            :         /*</a>
 <a name="1323"><span class="lineNum">    1323 </span>            :          * Check lockless first. If the timer is not active (neither</a>
@@ -1387,7 +1387,7 @@
 <a name="1325"><span class="lineNum">    1325 </span>            :          * base lock does not serialize against a concurrent enqueue,</a>
 <a name="1326"><span class="lineNum">    1326 </span>            :          * so we can avoid taking it.</a>
 <a name="1327"><span class="lineNum">    1327 </span>            :          */</a>
-<a name="1328"><span class="lineNum">    1328 </span><span class="lineCov">        128 :         if (!hrtimer_active(timer))</span></a>
+<a name="1328"><span class="lineNum">    1328 </span><span class="lineCov">         93 :         if (!hrtimer_active(timer))</span></a>
 <a name="1329"><span class="lineNum">    1329 </span>            :                 return 0;</a>
 <a name="1330"><span class="lineNum">    1330 </span>            : </a>
 <a name="1331"><span class="lineNum">    1331 </span><span class="lineNoCov">          0 :         base = lock_hrtimer_base(timer, &amp;flags);</span></a>
@@ -1497,17 +1497,17 @@
 <a name="1435"><span class="lineNum">    1435 </span>            :  *  0 when the timer was not active</a>
 <a name="1436"><span class="lineNum">    1436 </span>            :  *  1 when the timer was active</a>
 <a name="1437"><span class="lineNum">    1437 </span>            :  */</a>
-<a name="1438"><span class="lineNum">    1438 </span><span class="lineCov">        128 : int hrtimer_cancel(struct hrtimer *timer)</span></a>
+<a name="1438"><span class="lineNum">    1438 </span><span class="lineCov">         93 : int hrtimer_cancel(struct hrtimer *timer)</span></a>
 <a name="1439"><span class="lineNum">    1439 </span>            : {</a>
 <a name="1440"><span class="lineNum">    1440 </span>            :         int ret;</a>
 <a name="1441"><span class="lineNum">    1441 </span>            : </a>
 <a name="1442"><span class="lineNum">    1442 </span>            :         do {</a>
-<a name="1443"><span class="lineNum">    1443 </span><span class="lineCov">        128 :                 ret = hrtimer_try_to_cancel(timer);</span></a>
+<a name="1443"><span class="lineNum">    1443 </span><span class="lineCov">         93 :                 ret = hrtimer_try_to_cancel(timer);</span></a>
 <a name="1444"><span class="lineNum">    1444 </span>            : </a>
-<a name="1445"><span class="lineNum">    1445 </span><span class="lineCov">        128 :                 if (ret &lt; 0)</span></a>
+<a name="1445"><span class="lineNum">    1445 </span><span class="lineCov">         93 :                 if (ret &lt; 0)</span></a>
 <a name="1446"><span class="lineNum">    1446 </span><span class="lineNoCov">          0 :                         hrtimer_cancel_wait_running(timer);</span></a>
-<a name="1447"><span class="lineNum">    1447 </span><span class="lineCov">        128 :         } while (ret &lt; 0);</span></a>
-<a name="1448"><span class="lineNum">    1448 </span><span class="lineCov">        128 :         return ret;</span></a>
+<a name="1447"><span class="lineNum">    1447 </span><span class="lineCov">         93 :         } while (ret &lt; 0);</span></a>
+<a name="1448"><span class="lineNum">    1448 </span><span class="lineCov">         93 :         return ret;</span></a>
 <a name="1449"><span class="lineNum">    1449 </span>            : }</a>
 <a name="1450"><span class="lineNum">    1450 </span>            : EXPORT_SYMBOL_GPL(hrtimer_cancel);</a>
 <a name="1451"><span class="lineNum">    1451 </span>            : </a>
@@ -1588,22 +1588,22 @@
 <a name="1526"><span class="lineNum">    1526 </span>            : }</a>
 <a name="1527"><span class="lineNum">    1527 </span>            : #endif</a>
 <a name="1528"><span class="lineNum">    1528 </span>            : </a>
-<a name="1529"><span class="lineNum">    1529 </span><span class="lineCov">       1546 : static inline int hrtimer_clockid_to_base(clockid_t clock_id)</span></a>
+<a name="1529"><span class="lineNum">    1529 </span><span class="lineCov">        860 : static inline int hrtimer_clockid_to_base(clockid_t clock_id)</span></a>
 <a name="1530"><span class="lineNum">    1530 </span>            : {</a>
-<a name="1531"><span class="lineNum">    1531 </span><span class="lineCov">       1546 :         if (likely(clock_id &lt; MAX_CLOCKS)) {</span></a>
-<a name="1532"><span class="lineNum">    1532 </span><span class="lineCov">       1546 :                 int base = hrtimer_clock_to_base_table[clock_id];</span></a>
+<a name="1531"><span class="lineNum">    1531 </span><span class="lineCov">        860 :         if (likely(clock_id &lt; MAX_CLOCKS)) {</span></a>
+<a name="1532"><span class="lineNum">    1532 </span><span class="lineCov">        860 :                 int base = hrtimer_clock_to_base_table[clock_id];</span></a>
 <a name="1533"><span class="lineNum">    1533 </span>            : </a>
-<a name="1534"><span class="lineNum">    1534 </span><span class="lineCov">       1546 :                 if (likely(base != HRTIMER_MAX_CLOCK_BASES))</span></a>
+<a name="1534"><span class="lineNum">    1534 </span><span class="lineCov">        860 :                 if (likely(base != HRTIMER_MAX_CLOCK_BASES))</span></a>
 <a name="1535"><span class="lineNum">    1535 </span>            :                         return base;</a>
 <a name="1536"><span class="lineNum">    1536 </span>            :         }</a>
 <a name="1537"><span class="lineNum">    1537 </span><span class="lineNoCov">          0 :         WARN(1, &quot;Invalid clockid %d. Using MONOTONIC\n&quot;, clock_id);</span></a>
 <a name="1538"><span class="lineNum">    1538 </span><span class="lineNoCov">          0 :         return HRTIMER_BASE_MONOTONIC;</span></a>
 <a name="1539"><span class="lineNum">    1539 </span>            : }</a>
 <a name="1540"><span class="lineNum">    1540 </span>            : </a>
-<a name="1541"><span class="lineNum">    1541 </span><span class="lineCov">       1546 : static void __hrtimer_init(struct hrtimer *timer, clockid_t clock_id,</span></a>
+<a name="1541"><span class="lineNum">    1541 </span><span class="lineCov">        860 : static void __hrtimer_init(struct hrtimer *timer, clockid_t clock_id,</span></a>
 <a name="1542"><span class="lineNum">    1542 </span>            :                            enum hrtimer_mode mode)</a>
 <a name="1543"><span class="lineNum">    1543 </span>            : {</a>
-<a name="1544"><span class="lineNum">    1544 </span><span class="lineCov">       1546 :         bool softtimer = !!(mode &amp; HRTIMER_MODE_SOFT);</span></a>
+<a name="1544"><span class="lineNum">    1544 </span><span class="lineCov">        860 :         bool softtimer = !!(mode &amp; HRTIMER_MODE_SOFT);</span></a>
 <a name="1545"><span class="lineNum">    1545 </span>            :         struct hrtimer_cpu_base *cpu_base;</a>
 <a name="1546"><span class="lineNum">    1546 </span>            :         int base;</a>
 <a name="1547"><span class="lineNum">    1547 </span>            : </a>
@@ -1616,25 +1616,25 @@
 <a name="1554"><span class="lineNum">    1554 </span>            :         if (IS_ENABLED(CONFIG_PREEMPT_RT) &amp;&amp; !(mode &amp; HRTIMER_MODE_HARD))</a>
 <a name="1555"><span class="lineNum">    1555 </span>            :                 softtimer = true;</a>
 <a name="1556"><span class="lineNum">    1556 </span>            : </a>
-<a name="1557"><span class="lineNum">    1557 </span><span class="lineCov">       1546 :         memset(timer, 0, sizeof(struct hrtimer));</span></a>
+<a name="1557"><span class="lineNum">    1557 </span><span class="lineCov">        860 :         memset(timer, 0, sizeof(struct hrtimer));</span></a>
 <a name="1558"><span class="lineNum">    1558 </span>            : </a>
-<a name="1559"><span class="lineNum">    1559 </span><span class="lineCov">       1546 :         cpu_base = raw_cpu_ptr(&amp;hrtimer_bases);</span></a>
+<a name="1559"><span class="lineNum">    1559 </span><span class="lineCov">        860 :         cpu_base = raw_cpu_ptr(&amp;hrtimer_bases);</span></a>
 <a name="1560"><span class="lineNum">    1560 </span>            : </a>
 <a name="1561"><span class="lineNum">    1561 </span>            :         /*</a>
 <a name="1562"><span class="lineNum">    1562 </span>            :          * POSIX magic: Relative CLOCK_REALTIME timers are not affected by</a>
 <a name="1563"><span class="lineNum">    1563 </span>            :          * clock modifications, so they needs to become CLOCK_MONOTONIC to</a>
 <a name="1564"><span class="lineNum">    1564 </span>            :          * ensure POSIX compliance.</a>
 <a name="1565"><span class="lineNum">    1565 </span>            :          */</a>
-<a name="1566"><span class="lineNum">    1566 </span><span class="lineCov">       1546 :         if (clock_id == CLOCK_REALTIME &amp;&amp; mode &amp; HRTIMER_MODE_REL)</span></a>
+<a name="1566"><span class="lineNum">    1566 </span><span class="lineCov">        860 :         if (clock_id == CLOCK_REALTIME &amp;&amp; mode &amp; HRTIMER_MODE_REL)</span></a>
 <a name="1567"><span class="lineNum">    1567 </span><span class="lineNoCov">          0 :                 clock_id = CLOCK_MONOTONIC;</span></a>
 <a name="1568"><span class="lineNum">    1568 </span>            : </a>
-<a name="1569"><span class="lineNum">    1569 </span><span class="lineCov">       1546 :         base = softtimer ? HRTIMER_MAX_CLOCK_BASES / 2 : 0;</span></a>
-<a name="1570"><span class="lineNum">    1570 </span><span class="lineCov">       1546 :         base += hrtimer_clockid_to_base(clock_id);</span></a>
-<a name="1571"><span class="lineNum">    1571 </span><span class="lineCov">       1546 :         timer-&gt;is_soft = softtimer;</span></a>
-<a name="1572"><span class="lineNum">    1572 </span><span class="lineCov">       1546 :         timer-&gt;is_hard = !!(mode &amp; HRTIMER_MODE_HARD);</span></a>
-<a name="1573"><span class="lineNum">    1573 </span><span class="lineCov">       1546 :         timer-&gt;base = &amp;cpu_base-&gt;clock_base[base];</span></a>
-<a name="1574"><span class="lineNum">    1574 </span><span class="lineCov">       3092 :         timerqueue_init(&amp;timer-&gt;node);</span></a>
-<a name="1575"><span class="lineNum">    1575 </span><span class="lineCov">       1546 : }</span></a>
+<a name="1569"><span class="lineNum">    1569 </span><span class="lineCov">        860 :         base = softtimer ? HRTIMER_MAX_CLOCK_BASES / 2 : 0;</span></a>
+<a name="1570"><span class="lineNum">    1570 </span><span class="lineCov">        860 :         base += hrtimer_clockid_to_base(clock_id);</span></a>
+<a name="1571"><span class="lineNum">    1571 </span><span class="lineCov">        860 :         timer-&gt;is_soft = softtimer;</span></a>
+<a name="1572"><span class="lineNum">    1572 </span><span class="lineCov">        860 :         timer-&gt;is_hard = !!(mode &amp; HRTIMER_MODE_HARD);</span></a>
+<a name="1573"><span class="lineNum">    1573 </span><span class="lineCov">        860 :         timer-&gt;base = &amp;cpu_base-&gt;clock_base[base];</span></a>
+<a name="1574"><span class="lineNum">    1574 </span><span class="lineCov">       1720 :         timerqueue_init(&amp;timer-&gt;node);</span></a>
+<a name="1575"><span class="lineNum">    1575 </span><span class="lineCov">        860 : }</span></a>
 <a name="1576"><span class="lineNum">    1576 </span>            : </a>
 <a name="1577"><span class="lineNum">    1577 </span>            : /**</a>
 <a name="1578"><span class="lineNum">    1578 </span>            :  * hrtimer_init - initialize a timer to the given clock</a>
@@ -1648,12 +1648,12 @@
 <a name="1586"><span class="lineNum">    1586 </span>            :  *              but the PINNED bit is ignored as pinning happens</a>
 <a name="1587"><span class="lineNum">    1587 </span>            :  *              when the hrtimer is started</a>
 <a name="1588"><span class="lineNum">    1588 </span>            :  */</a>
-<a name="1589"><span class="lineNum">    1589 </span><span class="lineCov">       1546 : void hrtimer_init(struct hrtimer *timer, clockid_t clock_id,</span></a>
+<a name="1589"><span class="lineNum">    1589 </span><span class="lineCov">        860 : void hrtimer_init(struct hrtimer *timer, clockid_t clock_id,</span></a>
 <a name="1590"><span class="lineNum">    1590 </span>            :                   enum hrtimer_mode mode)</a>
 <a name="1591"><span class="lineNum">    1591 </span>            : {</a>
-<a name="1592"><span class="lineNum">    1592 </span><span class="lineCov">       1546 :         debug_init(timer, clock_id, mode);</span></a>
-<a name="1593"><span class="lineNum">    1593 </span><span class="lineCov">       1546 :         __hrtimer_init(timer, clock_id, mode);</span></a>
-<a name="1594"><span class="lineNum">    1594 </span><span class="lineCov">       1546 : }</span></a>
+<a name="1592"><span class="lineNum">    1592 </span><span class="lineCov">        860 :         debug_init(timer, clock_id, mode);</span></a>
+<a name="1593"><span class="lineNum">    1593 </span><span class="lineCov">        860 :         __hrtimer_init(timer, clock_id, mode);</span></a>
+<a name="1594"><span class="lineNum">    1594 </span><span class="lineCov">        860 : }</span></a>
 <a name="1595"><span class="lineNum">    1595 </span>            : EXPORT_SYMBOL_GPL(hrtimer_init);</a>
 <a name="1596"><span class="lineNum">    1596 </span>            : </a>
 <a name="1597"><span class="lineNum">    1597 </span>            : /*</a>
@@ -1663,21 +1663,21 @@
 <a name="1601"><span class="lineNum">    1601 </span>            :  *</a>
 <a name="1602"><span class="lineNum">    1602 </span>            :  * It is important for this function to not return a false negative.</a>
 <a name="1603"><span class="lineNum">    1603 </span>            :  */</a>
-<a name="1604"><span class="lineNum">    1604 </span><span class="lineCov">        128 : bool hrtimer_active(const struct hrtimer *timer)</span></a>
+<a name="1604"><span class="lineNum">    1604 </span><span class="lineCov">         93 : bool hrtimer_active(const struct hrtimer *timer)</span></a>
 <a name="1605"><span class="lineNum">    1605 </span>            : {</a>
 <a name="1606"><span class="lineNum">    1606 </span>            :         struct hrtimer_clock_base *base;</a>
 <a name="1607"><span class="lineNum">    1607 </span>            :         unsigned int seq;</a>
 <a name="1608"><span class="lineNum">    1608 </span>            : </a>
 <a name="1609"><span class="lineNum">    1609 </span>            :         do {</a>
-<a name="1610"><span class="lineNum">    1610 </span><span class="lineCov">        128 :                 base = READ_ONCE(timer-&gt;base);</span></a>
-<a name="1611"><span class="lineNum">    1611 </span><span class="lineCov">        384 :                 seq = raw_read_seqcount_begin(&amp;base-&gt;seq);</span></a>
+<a name="1610"><span class="lineNum">    1610 </span><span class="lineCov">         93 :                 base = READ_ONCE(timer-&gt;base);</span></a>
+<a name="1611"><span class="lineNum">    1611 </span><span class="lineCov">        279 :                 seq = raw_read_seqcount_begin(&amp;base-&gt;seq);</span></a>
 <a name="1612"><span class="lineNum">    1612 </span>            : </a>
-<a name="1613"><span class="lineNum">    1613 </span><span class="lineCov">        256 :                 if (timer-&gt;state != HRTIMER_STATE_INACTIVE ||</span></a>
-<a name="1614"><span class="lineNum">    1614 </span><span class="lineCov">        128 :                     base-&gt;running == timer)</span></a>
+<a name="1613"><span class="lineNum">    1613 </span><span class="lineCov">        186 :                 if (timer-&gt;state != HRTIMER_STATE_INACTIVE ||</span></a>
+<a name="1614"><span class="lineNum">    1614 </span><span class="lineCov">         93 :                     base-&gt;running == timer)</span></a>
 <a name="1615"><span class="lineNum">    1615 </span>            :                         return true;</a>
 <a name="1616"><span class="lineNum">    1616 </span>            : </a>
-<a name="1617"><span class="lineNum">    1617 </span><span class="lineCov">        512 :         } while (read_seqcount_retry(&amp;base-&gt;seq, seq) ||</span></a>
-<a name="1618"><span class="lineNum">    1618 </span><span class="lineCov">        128 :                  base != READ_ONCE(timer-&gt;base));</span></a>
+<a name="1617"><span class="lineNum">    1617 </span><span class="lineCov">        372 :         } while (read_seqcount_retry(&amp;base-&gt;seq, seq) ||</span></a>
+<a name="1618"><span class="lineNum">    1618 </span><span class="lineCov">         93 :                  base != READ_ONCE(timer-&gt;base));</span></a>
 <a name="1619"><span class="lineNum">    1619 </span>            : </a>
 <a name="1620"><span class="lineNum">    1620 </span>            :         return false;</a>
 <a name="1621"><span class="lineNum">    1621 </span>            : }</a>
@@ -1776,13 +1776,13 @@
 <a name="1714"><span class="lineNum">    1714 </span><span class="lineNoCov">          0 :         base-&gt;running = NULL;</span></a>
 <a name="1715"><span class="lineNum">    1715 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="1716"><span class="lineNum">    1716 </span>            : </a>
-<a name="1717"><span class="lineNum">    1717 </span><span class="lineCov">         17 : static void __hrtimer_run_queues(struct hrtimer_cpu_base *cpu_base, ktime_t now,</span></a>
+<a name="1717"><span class="lineNum">    1717 </span><span class="lineCov">          9 : static void __hrtimer_run_queues(struct hrtimer_cpu_base *cpu_base, ktime_t now,</span></a>
 <a name="1718"><span class="lineNum">    1718 </span>            :                                  unsigned long flags, unsigned int active_mask)</a>
 <a name="1719"><span class="lineNum">    1719 </span>            : {</a>
 <a name="1720"><span class="lineNum">    1720 </span>            :         struct hrtimer_clock_base *base;</a>
-<a name="1721"><span class="lineNum">    1721 </span><span class="lineCov">         17 :         unsigned int active = cpu_base-&gt;active_bases &amp; active_mask;</span></a>
+<a name="1721"><span class="lineNum">    1721 </span><span class="lineCov">          9 :         unsigned int active = cpu_base-&gt;active_bases &amp; active_mask;</span></a>
 <a name="1722"><span class="lineNum">    1722 </span>            : </a>
-<a name="1723"><span class="lineNum">    1723 </span><span class="lineCov">         34 :         for_each_active_base(base, cpu_base, active) {</span></a>
+<a name="1723"><span class="lineNum">    1723 </span><span class="lineCov">         18 :         for_each_active_base(base, cpu_base, active) {</span></a>
 <a name="1724"><span class="lineNum">    1724 </span>            :                 struct timerqueue_node *node;</a>
 <a name="1725"><span class="lineNum">    1725 </span>            :                 ktime_t basenow;</a>
 <a name="1726"><span class="lineNum">    1726 </span>            : </a>
@@ -1813,7 +1813,7 @@
 <a name="1751"><span class="lineNum">    1751 </span>            :                                 hrtimer_sync_wait_running(cpu_base, flags);</a>
 <a name="1752"><span class="lineNum">    1752 </span>            :                 }</a>
 <a name="1753"><span class="lineNum">    1753 </span>            :         }</a>
-<a name="1754"><span class="lineNum">    1754 </span><span class="lineCov">         17 : }</span></a>
+<a name="1754"><span class="lineNum">    1754 </span><span class="lineCov">          9 : }</span></a>
 <a name="1755"><span class="lineNum">    1755 </span>            : </a>
 <a name="1756"><span class="lineNum">    1756 </span><span class="lineNoCov">          0 : static __latent_entropy void hrtimer_run_softirq(struct softirq_action *h)</span></a>
 <a name="1757"><span class="lineNum">    1757 </span>            : {</a>
@@ -1953,13 +1953,13 @@
 <a name="1891"><span class="lineNum">    1891 </span>            : /*</a>
 <a name="1892"><span class="lineNum">    1892 </span>            :  * Called from run_local_timers in hardirq context every jiffy</a>
 <a name="1893"><span class="lineNum">    1893 </span>            :  */</a>
-<a name="1894"><span class="lineNum">    1894 </span><span class="lineCov">         17 : void hrtimer_run_queues(void)</span></a>
+<a name="1894"><span class="lineNum">    1894 </span><span class="lineCov">          9 : void hrtimer_run_queues(void)</span></a>
 <a name="1895"><span class="lineNum">    1895 </span>            : {</a>
-<a name="1896"><span class="lineNum">    1896 </span><span class="lineCov">         17 :         struct hrtimer_cpu_base *cpu_base = this_cpu_ptr(&amp;hrtimer_bases);</span></a>
+<a name="1896"><span class="lineNum">    1896 </span><span class="lineCov">          9 :         struct hrtimer_cpu_base *cpu_base = this_cpu_ptr(&amp;hrtimer_bases);</span></a>
 <a name="1897"><span class="lineNum">    1897 </span>            :         unsigned long flags;</a>
 <a name="1898"><span class="lineNum">    1898 </span>            :         ktime_t now;</a>
 <a name="1899"><span class="lineNum">    1899 </span>            : </a>
-<a name="1900"><span class="lineNum">    1900 </span><span class="lineCov">         17 :         if (__hrtimer_hres_active(cpu_base))</span></a>
+<a name="1900"><span class="lineNum">    1900 </span><span class="lineCov">          9 :         if (__hrtimer_hres_active(cpu_base))</span></a>
 <a name="1901"><span class="lineNum">    1901 </span>            :                 return;</a>
 <a name="1902"><span class="lineNum">    1902 </span>            : </a>
 <a name="1903"><span class="lineNum">    1903 </span>            :         /*</a>
@@ -1969,22 +1969,22 @@
 <a name="1907"><span class="lineNum">    1907 </span>            :          * there only sets the check bit in the tick_oneshot code,</a>
 <a name="1908"><span class="lineNum">    1908 </span>            :          * otherwise we might deadlock vs. xtime_lock.</a>
 <a name="1909"><span class="lineNum">    1909 </span>            :          */</a>
-<a name="1910"><span class="lineNum">    1910 </span><span class="lineCov">         17 :         if (tick_check_oneshot_change(!hrtimer_is_hres_enabled())) {</span></a>
+<a name="1910"><span class="lineNum">    1910 </span><span class="lineCov">          9 :         if (tick_check_oneshot_change(!hrtimer_is_hres_enabled())) {</span></a>
 <a name="1911"><span class="lineNum">    1911 </span>            :                 hrtimer_switch_to_hres();</a>
 <a name="1912"><span class="lineNum">    1912 </span>            :                 return;</a>
 <a name="1913"><span class="lineNum">    1913 </span>            :         }</a>
 <a name="1914"><span class="lineNum">    1914 </span>            : </a>
-<a name="1915"><span class="lineNum">    1915 </span><span class="lineCov">         17 :         raw_spin_lock_irqsave(&amp;cpu_base-&gt;lock, flags);</span></a>
-<a name="1916"><span class="lineNum">    1916 </span><span class="lineCov">         17 :         now = hrtimer_update_base(cpu_base);</span></a>
+<a name="1915"><span class="lineNum">    1915 </span><span class="lineCov">          9 :         raw_spin_lock_irqsave(&amp;cpu_base-&gt;lock, flags);</span></a>
+<a name="1916"><span class="lineNum">    1916 </span><span class="lineCov">          9 :         now = hrtimer_update_base(cpu_base);</span></a>
 <a name="1917"><span class="lineNum">    1917 </span>            : </a>
-<a name="1918"><span class="lineNum">    1918 </span><span class="lineCov">         34 :         if (!ktime_before(now, cpu_base-&gt;softirq_expires_next)) {</span></a>
+<a name="1918"><span class="lineNum">    1918 </span><span class="lineCov">         18 :         if (!ktime_before(now, cpu_base-&gt;softirq_expires_next)) {</span></a>
 <a name="1919"><span class="lineNum">    1919 </span><span class="lineNoCov">          0 :                 cpu_base-&gt;softirq_expires_next = KTIME_MAX;</span></a>
 <a name="1920"><span class="lineNum">    1920 </span><span class="lineNoCov">          0 :                 cpu_base-&gt;softirq_activated = 1;</span></a>
 <a name="1921"><span class="lineNum">    1921 </span><span class="lineNoCov">          0 :                 raise_softirq_irqoff(HRTIMER_SOFTIRQ);</span></a>
 <a name="1922"><span class="lineNum">    1922 </span>            :         }</a>
 <a name="1923"><span class="lineNum">    1923 </span>            : </a>
-<a name="1924"><span class="lineNum">    1924 </span><span class="lineCov">         17 :         __hrtimer_run_queues(cpu_base, now, flags, HRTIMER_ACTIVE_HARD);</span></a>
-<a name="1925"><span class="lineNum">    1925 </span><span class="lineCov">         34 :         raw_spin_unlock_irqrestore(&amp;cpu_base-&gt;lock, flags);</span></a>
+<a name="1924"><span class="lineNum">    1924 </span><span class="lineCov">          9 :         __hrtimer_run_queues(cpu_base, now, flags, HRTIMER_ACTIVE_HARD);</span></a>
+<a name="1925"><span class="lineNum">    1925 </span><span class="lineCov">         18 :         raw_spin_unlock_irqrestore(&amp;cpu_base-&gt;lock, flags);</span></a>
 <a name="1926"><span class="lineNum">    1926 </span>            : }</a>
 <a name="1927"><span class="lineNum">    1927 </span>            : </a>
 <a name="1928"><span class="lineNum">    1928 </span>            : /*</a>
@@ -2221,26 +2221,26 @@
 <a name="2159"><span class="lineNum">    2159 </span>            :  */</a>
 <a name="2160"><span class="lineNum">    2160 </span><span class="lineNoCov">          0 : int hrtimers_prepare_cpu(unsigned int cpu)</span></a>
 <a name="2161"><span class="lineNum">    2161 </span>            : {</a>
-<a name="2162"><span class="lineNum">    2162 </span><span class="lineCov">          2 :         struct hrtimer_cpu_base *cpu_base = &amp;per_cpu(hrtimer_bases, cpu);</span></a>
+<a name="2162"><span class="lineNum">    2162 </span><span class="lineCov">          1 :         struct hrtimer_cpu_base *cpu_base = &amp;per_cpu(hrtimer_bases, cpu);</span></a>
 <a name="2163"><span class="lineNum">    2163 </span>            :         int i;</a>
 <a name="2164"><span class="lineNum">    2164 </span>            : </a>
-<a name="2165"><span class="lineNum">    2165 </span><span class="lineCov">         18 :         for (i = 0; i &lt; HRTIMER_MAX_CLOCK_BASES; i++) {</span></a>
-<a name="2166"><span class="lineNum">    2166 </span><span class="lineCov">         16 :                 struct hrtimer_clock_base *clock_b = &amp;cpu_base-&gt;clock_base[i];</span></a>
+<a name="2165"><span class="lineNum">    2165 </span><span class="lineCov">          9 :         for (i = 0; i &lt; HRTIMER_MAX_CLOCK_BASES; i++) {</span></a>
+<a name="2166"><span class="lineNum">    2166 </span><span class="lineCov">          8 :                 struct hrtimer_clock_base *clock_b = &amp;cpu_base-&gt;clock_base[i];</span></a>
 <a name="2167"><span class="lineNum">    2167 </span>            : </a>
-<a name="2168"><span class="lineNum">    2168 </span><span class="lineCov">         16 :                 clock_b-&gt;cpu_base = cpu_base;</span></a>
-<a name="2169"><span class="lineNum">    2169 </span><span class="lineCov">         32 :                 seqcount_raw_spinlock_init(&amp;clock_b-&gt;seq, &amp;cpu_base-&gt;lock);</span></a>
-<a name="2170"><span class="lineNum">    2170 </span><span class="lineCov">         32 :                 timerqueue_init_head(&amp;clock_b-&gt;active);</span></a>
+<a name="2168"><span class="lineNum">    2168 </span><span class="lineCov">          8 :                 clock_b-&gt;cpu_base = cpu_base;</span></a>
+<a name="2169"><span class="lineNum">    2169 </span><span class="lineCov">         16 :                 seqcount_raw_spinlock_init(&amp;clock_b-&gt;seq, &amp;cpu_base-&gt;lock);</span></a>
+<a name="2170"><span class="lineNum">    2170 </span><span class="lineCov">         16 :                 timerqueue_init_head(&amp;clock_b-&gt;active);</span></a>
 <a name="2171"><span class="lineNum">    2171 </span>            :         }</a>
 <a name="2172"><span class="lineNum">    2172 </span>            : </a>
-<a name="2173"><span class="lineNum">    2173 </span><span class="lineCov">          2 :         cpu_base-&gt;cpu = cpu;</span></a>
-<a name="2174"><span class="lineNum">    2174 </span><span class="lineCov">          2 :         cpu_base-&gt;active_bases = 0;</span></a>
-<a name="2175"><span class="lineNum">    2175 </span><span class="lineCov">          2 :         cpu_base-&gt;hres_active = 0;</span></a>
-<a name="2176"><span class="lineNum">    2176 </span><span class="lineCov">          2 :         cpu_base-&gt;hang_detected = 0;</span></a>
-<a name="2177"><span class="lineNum">    2177 </span><span class="lineCov">          2 :         cpu_base-&gt;next_timer = NULL;</span></a>
-<a name="2178"><span class="lineNum">    2178 </span><span class="lineCov">          2 :         cpu_base-&gt;softirq_next_timer = NULL;</span></a>
-<a name="2179"><span class="lineNum">    2179 </span><span class="lineCov">          2 :         cpu_base-&gt;expires_next = KTIME_MAX;</span></a>
-<a name="2180"><span class="lineNum">    2180 </span><span class="lineCov">          2 :         cpu_base-&gt;softirq_expires_next = KTIME_MAX;</span></a>
-<a name="2181"><span class="lineNum">    2181 </span><span class="lineCov">          2 :         hrtimer_cpu_base_init_expiry_lock(cpu_base);</span></a>
+<a name="2173"><span class="lineNum">    2173 </span><span class="lineCov">          1 :         cpu_base-&gt;cpu = cpu;</span></a>
+<a name="2174"><span class="lineNum">    2174 </span><span class="lineCov">          1 :         cpu_base-&gt;active_bases = 0;</span></a>
+<a name="2175"><span class="lineNum">    2175 </span><span class="lineCov">          1 :         cpu_base-&gt;hres_active = 0;</span></a>
+<a name="2176"><span class="lineNum">    2176 </span><span class="lineCov">          1 :         cpu_base-&gt;hang_detected = 0;</span></a>
+<a name="2177"><span class="lineNum">    2177 </span><span class="lineCov">          1 :         cpu_base-&gt;next_timer = NULL;</span></a>
+<a name="2178"><span class="lineNum">    2178 </span><span class="lineCov">          1 :         cpu_base-&gt;softirq_next_timer = NULL;</span></a>
+<a name="2179"><span class="lineNum">    2179 </span><span class="lineCov">          1 :         cpu_base-&gt;expires_next = KTIME_MAX;</span></a>
+<a name="2180"><span class="lineNum">    2180 </span><span class="lineCov">          1 :         cpu_base-&gt;softirq_expires_next = KTIME_MAX;</span></a>
+<a name="2181"><span class="lineNum">    2181 </span><span class="lineCov">          1 :         hrtimer_cpu_base_init_expiry_lock(cpu_base);</span></a>
 <a name="2182"><span class="lineNum">    2182 </span><span class="lineNoCov">          0 :         return 0;</span></a>
 <a name="2183"><span class="lineNum">    2183 </span>            : }</a>
 <a name="2184"><span class="lineNum">    2184 </span>            : </a>
@@ -2323,11 +2323,11 @@
 <a name="2261"><span class="lineNum">    2261 </span>            : </a>
 <a name="2262"><span class="lineNum">    2262 </span>            : #endif /* CONFIG_HOTPLUG_CPU */</a>
 <a name="2263"><span class="lineNum">    2263 </span>            : </a>
-<a name="2264"><span class="lineNum">    2264 </span><span class="lineCov">          2 : void __init hrtimers_init(void)</span></a>
+<a name="2264"><span class="lineNum">    2264 </span><span class="lineCov">          1 : void __init hrtimers_init(void)</span></a>
 <a name="2265"><span class="lineNum">    2265 </span>            : {</a>
-<a name="2266"><span class="lineNum">    2266 </span><span class="lineCov">          2 :         hrtimers_prepare_cpu(smp_processor_id());</span></a>
-<a name="2267"><span class="lineNum">    2267 </span><span class="lineCov">          2 :         open_softirq(HRTIMER_SOFTIRQ, hrtimer_run_softirq);</span></a>
-<a name="2268"><span class="lineNum">    2268 </span><span class="lineCov">          2 : }</span></a>
+<a name="2266"><span class="lineNum">    2266 </span><span class="lineCov">          1 :         hrtimers_prepare_cpu(smp_processor_id());</span></a>
+<a name="2267"><span class="lineNum">    2267 </span><span class="lineCov">          1 :         open_softirq(HRTIMER_SOFTIRQ, hrtimer_run_softirq);</span></a>
+<a name="2268"><span class="lineNum">    2268 </span><span class="lineCov">          1 : }</span></a>
 <a name="2269"><span class="lineNum">    2269 </span>            : </a>
 <a name="2270"><span class="lineNum">    2270 </span>            : /**</a>
 <a name="2271"><span class="lineNum">    2271 </span>            :  * schedule_hrtimeout_range_clock - sleep until timeout</a>

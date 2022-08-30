@@ -31,18 +31,18 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">27</td>
-            <td class="headerCovTableEntry">27</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntry">23</td>
+            <td class="headerCovTableEntry">26</td>
+            <td class="headerCovTableEntryMed">88.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">4</td>
             <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntry">5</td>
-            <td class="headerCovTableEntryHi">100.0 %</td>
+            <td class="headerCovTableEntryMed">80.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -168,24 +168,24 @@
 <a name="106"><span class="lineNum">     106 </span>            :  */</a>
 <a name="107"><span class="lineNum">     107 </span>            : static inline void kunit_get_resource(struct kunit_resource *res)</a>
 <a name="108"><span class="lineNum">     108 </span>            : {</a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        282 :         kref_get(&amp;res-&gt;refcount);</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        280 :         kref_get(&amp;res-&gt;refcount);</span></a>
 <a name="110"><span class="lineNum">     110 </span>            : }</a>
 <a name="111"><span class="lineNum">     111 </span>            : </a>
 <a name="112"><span class="lineNum">     112 </span>            : /*</a>
 <a name="113"><span class="lineNum">     113 </span>            :  * Called when refcount reaches zero via kunit_put_resource();</a>
 <a name="114"><span class="lineNum">     114 </span>            :  * should not be called directly.</a>
 <a name="115"><span class="lineNum">     115 </span>            :  */</a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">        308 : static inline void kunit_release_resource(struct kref *kref)</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">        271 : static inline void kunit_release_resource(struct kref *kref)</span></a>
 <a name="117"><span class="lineNum">     117 </span>            : {</a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">        308 :         struct kunit_resource *res = container_of(kref, struct kunit_resource,</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">        271 :         struct kunit_resource *res = container_of(kref, struct kunit_resource,</span></a>
 <a name="119"><span class="lineNum">     119 </span>            :                                                   refcount);</a>
 <a name="120"><span class="lineNum">     120 </span>            : </a>
 <a name="121"><span class="lineNum">     121 </span>            :         /* If free function is defined, resource was dynamically allocated. */</a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        308 :         if (res-&gt;free) {</span></a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        308 :                 res-&gt;free(res);</span></a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        308 :                 kfree(res);</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        271 :         if (res-&gt;free) {</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        271 :                 res-&gt;free(res);</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        271 :                 kfree(res);</span></a>
 <a name="125"><span class="lineNum">     125 </span>            :         }</a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineCov">        308 : }</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">        271 : }</span></a>
 <a name="127"><span class="lineNum">     127 </span>            : </a>
 <a name="128"><span class="lineNum">     128 </span>            : /**</a>
 <a name="129"><span class="lineNum">     129 </span>            :  * kunit_put_resource() - When caller is done with retrieved resource,</a>
@@ -201,7 +201,7 @@
 <a name="139"><span class="lineNum">     139 </span>            :  */</a>
 <a name="140"><span class="lineNum">     140 </span>            : static inline void kunit_put_resource(struct kunit_resource *res)</a>
 <a name="141"><span class="lineNum">     141 </span>            : {</a>
-<a name="142"><span class="lineNum">     142 </span><span class="lineCov">        458 :         kref_put(&amp;res-&gt;refcount, kunit_release_resource);</span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineCov">        411 :         kref_put(&amp;res-&gt;refcount, kunit_release_resource);</span></a>
 <a name="143"><span class="lineNum">     143 </span>            : }</a>
 <a name="144"><span class="lineNum">     144 </span>            : </a>
 <a name="145"><span class="lineNum">     145 </span>            : /**</a>
@@ -252,7 +252,7 @@
 <a name="190"><span class="lineNum">     190 </span>            :  * specify an @internal_gfp that is compatible with the use context of your</a>
 <a name="191"><span class="lineNum">     191 </span>            :  * resource.</a>
 <a name="192"><span class="lineNum">     192 </span>            :  */</a>
-<a name="193"><span class="lineNum">     193 </span><span class="lineCov">        308 : static inline void *kunit_alloc_resource(struct kunit *test,</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineCov">        271 : static inline void *kunit_alloc_resource(struct kunit *test,</span></a>
 <a name="194"><span class="lineNum">     194 </span>            :                                          kunit_resource_init_t init,</a>
 <a name="195"><span class="lineNum">     195 </span>            :                                          kunit_resource_free_t free,</a>
 <a name="196"><span class="lineNum">     196 </span>            :                                          gfp_t internal_gfp,</a>
@@ -260,12 +260,12 @@
 <a name="198"><span class="lineNum">     198 </span>            : {</a>
 <a name="199"><span class="lineNum">     199 </span>            :         struct kunit_resource *res;</a>
 <a name="200"><span class="lineNum">     200 </span>            : </a>
-<a name="201"><span class="lineNum">     201 </span><span class="lineCov">        308 :         res = kzalloc(sizeof(*res), internal_gfp);</span></a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">        308 :         if (!res)</span></a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineCov">        271 :         res = kzalloc(sizeof(*res), internal_gfp);</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">        271 :         if (!res)</span></a>
 <a name="203"><span class="lineNum">     203 </span>            :                 return NULL;</a>
 <a name="204"><span class="lineNum">     204 </span>            : </a>
-<a name="205"><span class="lineNum">     205 </span><span class="lineCov">        308 :         if (!kunit_add_resource(test, init, free, res, context))</span></a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineCov">        308 :                 return res-&gt;data;</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineCov">        271 :         if (!kunit_add_resource(test, init, free, res, context))</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">        271 :                 return res-&gt;data;</span></a>
 <a name="207"><span class="lineNum">     207 </span>            : </a>
 <a name="208"><span class="lineNum">     208 </span>            :         return NULL;</a>
 <a name="209"><span class="lineNum">     209 </span>            : }</a>
@@ -283,11 +283,11 @@
 <a name="221"><span class="lineNum">     221 </span>            :  * An instance of kunit_resource_match_t that matches a resource whose</a>
 <a name="222"><span class="lineNum">     222 </span>            :  * allocation matches @match_data.</a>
 <a name="223"><span class="lineNum">     223 </span>            :  */</a>
-<a name="224"><span class="lineNum">     224 </span><span class="lineCov">        801 : static inline bool kunit_resource_instance_match(struct kunit *test,</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineCov">        800 : static inline bool kunit_resource_instance_match(struct kunit *test,</span></a>
 <a name="225"><span class="lineNum">     225 </span>            :                                                  struct kunit_resource *res,</a>
 <a name="226"><span class="lineNum">     226 </span>            :                                                  void *match_data)</a>
 <a name="227"><span class="lineNum">     227 </span>            : {</a>
-<a name="228"><span class="lineNum">     228 </span><span class="lineCov">        801 :         return res-&gt;data == match_data;</span></a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineCov">        800 :         return res-&gt;data == match_data;</span></a>
 <a name="229"><span class="lineNum">     229 </span>            : }</a>
 <a name="230"><span class="lineNum">     230 </span>            : </a>
 <a name="231"><span class="lineNum">     231 </span>            : /**</a>
@@ -296,11 +296,11 @@
 <a name="234"><span class="lineNum">     234 </span>            :  * @res: The resource.</a>
 <a name="235"><span class="lineNum">     235 </span>            :  * @match_name: The name to match against.</a>
 <a name="236"><span class="lineNum">     236 </span>            :  */</a>
-<a name="237"><span class="lineNum">     237 </span><span class="lineCov">          3 : static inline bool kunit_resource_name_match(struct kunit *test,</span></a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineNoCov">          0 : static inline bool kunit_resource_name_match(struct kunit *test,</span></a>
 <a name="238"><span class="lineNum">     238 </span>            :                                              struct kunit_resource *res,</a>
 <a name="239"><span class="lineNum">     239 </span>            :                                              void *match_name)</a>
 <a name="240"><span class="lineNum">     240 </span>            : {</a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineCov">          3 :         return res-&gt;name &amp;&amp; strcmp(res-&gt;name, match_name) == 0;</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineNoCov">          0 :         return res-&gt;name &amp;&amp; strcmp(res-&gt;name, match_name) == 0;</span></a>
 <a name="242"><span class="lineNum">     242 </span>            : }</a>
 <a name="243"><span class="lineNum">     243 </span>            : </a>
 <a name="244"><span class="lineNum">     244 </span>            : /**</a>
@@ -310,26 +310,26 @@
 <a name="248"><span class="lineNum">     248 </span>            :  * @match_data: data to be used in matching.</a>
 <a name="249"><span class="lineNum">     249 </span>            :  */</a>
 <a name="250"><span class="lineNum">     250 </span>            : static inline struct kunit_resource *</a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineCov">        141 : kunit_find_resource(struct kunit *test,</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineCov">        140 : kunit_find_resource(struct kunit *test,</span></a>
 <a name="252"><span class="lineNum">     252 </span>            :                     kunit_resource_match_t match,</a>
 <a name="253"><span class="lineNum">     253 </span>            :                     void *match_data)</a>
 <a name="254"><span class="lineNum">     254 </span>            : {</a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineCov">        141 :         struct kunit_resource *res, *found = NULL;</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineCov">        140 :         struct kunit_resource *res, *found = NULL;</span></a>
 <a name="256"><span class="lineNum">     256 </span>            :         unsigned long flags;</a>
 <a name="257"><span class="lineNum">     257 </span>            : </a>
-<a name="258"><span class="lineNum">     258 </span><span class="lineCov">        141 :         spin_lock_irqsave(&amp;test-&gt;lock, flags);</span></a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineCov">        140 :         spin_lock_irqsave(&amp;test-&gt;lock, flags);</span></a>
 <a name="259"><span class="lineNum">     259 </span>            : </a>
-<a name="260"><span class="lineNum">     260 </span><span class="lineCov">        802 :         list_for_each_entry_reverse(res, &amp;test-&gt;resources, node) {</span></a>
-<a name="261"><span class="lineNum">     261 </span><span class="lineCov">        802 :                 if (match(test, res, (void *)match_data)) {</span></a>
-<a name="262"><span class="lineNum">     262 </span><span class="lineCov">        141 :                         found = res;</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineCov">        800 :         list_for_each_entry_reverse(res, &amp;test-&gt;resources, node) {</span></a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineCov">        800 :                 if (match(test, res, (void *)match_data)) {</span></a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineCov">        140 :                         found = res;</span></a>
 <a name="263"><span class="lineNum">     263 </span>            :                         kunit_get_resource(found);</a>
 <a name="264"><span class="lineNum">     264 </span>            :                         break;</a>
 <a name="265"><span class="lineNum">     265 </span>            :                 }</a>
 <a name="266"><span class="lineNum">     266 </span>            :         }</a>
 <a name="267"><span class="lineNum">     267 </span>            : </a>
-<a name="268"><span class="lineNum">     268 </span><span class="lineCov">        282 :         spin_unlock_irqrestore(&amp;test-&gt;lock, flags);</span></a>
+<a name="268"><span class="lineNum">     268 </span><span class="lineCov">        280 :         spin_unlock_irqrestore(&amp;test-&gt;lock, flags);</span></a>
 <a name="269"><span class="lineNum">     269 </span>            : </a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineCov">        141 :         return found;</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineCov">        140 :         return found;</span></a>
 <a name="271"><span class="lineNum">     271 </span>            : }</a>
 <a name="272"><span class="lineNum">     272 </span>            : </a>
 <a name="273"><span class="lineNum">     273 </span>            : /**</a>
@@ -341,7 +341,7 @@
 <a name="279"><span class="lineNum">     279 </span>            : kunit_find_named_resource(struct kunit *test,</a>
 <a name="280"><span class="lineNum">     280 </span>            :                           const char *name)</a>
 <a name="281"><span class="lineNum">     281 </span>            : {</a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineCov">          1 :         return kunit_find_resource(test, kunit_resource_name_match,</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 :         return kunit_find_resource(test, kunit_resource_name_match,</span></a>
 <a name="283"><span class="lineNum">     283 </span>            :                                    (void *)name);</a>
 <a name="284"><span class="lineNum">     284 </span>            : }</a>
 <a name="285"><span class="lineNum">     285 </span>            : </a>
@@ -361,7 +361,7 @@
 <a name="299"><span class="lineNum">     299 </span>            : static inline int kunit_destroy_named_resource(struct kunit *test,</a>
 <a name="300"><span class="lineNum">     300 </span>            :                                                const char *name)</a>
 <a name="301"><span class="lineNum">     301 </span>            : {</a>
-<a name="302"><span class="lineNum">     302 </span><span class="lineCov">          1 :         return kunit_destroy_resource(test, kunit_resource_name_match,</span></a>
+<a name="302"><span class="lineNum">     302 </span>            :         return kunit_destroy_resource(test, kunit_resource_name_match,</a>
 <a name="303"><span class="lineNum">     303 </span>            :                                       (void *)name);</a>
 <a name="304"><span class="lineNum">     304 </span>            : }</a>
 <a name="305"><span class="lineNum">     305 </span>            : </a>

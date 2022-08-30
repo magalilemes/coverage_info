@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -424,21 +424,21 @@
 <a name="362"><span class="lineNum">     362 </span>            : }</a>
 <a name="363"><span class="lineNum">     363 </span>            : EXPORT_SYMBOL(has_capability_noaudit);</a>
 <a name="364"><span class="lineNum">     364 </span>            : </a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineCov">          2 : static bool ns_capable_common(struct user_namespace *ns,</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineCov">          1 : static bool ns_capable_common(struct user_namespace *ns,</span></a>
 <a name="366"><span class="lineNum">     366 </span>            :                               int cap,</a>
 <a name="367"><span class="lineNum">     367 </span>            :                               unsigned int opts)</a>
 <a name="368"><span class="lineNum">     368 </span>            : {</a>
 <a name="369"><span class="lineNum">     369 </span>            :         int capable;</a>
 <a name="370"><span class="lineNum">     370 </span>            : </a>
-<a name="371"><span class="lineNum">     371 </span><span class="lineCov">          2 :         if (unlikely(!cap_valid(cap))) {</span></a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineCov">          1 :         if (unlikely(!cap_valid(cap))) {</span></a>
 <a name="372"><span class="lineNum">     372 </span><span class="lineNoCov">          0 :                 pr_crit(&quot;capable() called with invalid cap=%u\n&quot;, cap);</span></a>
 <a name="373"><span class="lineNum">     373 </span><span class="lineNoCov">          0 :                 BUG();</span></a>
 <a name="374"><span class="lineNum">     374 </span>            :         }</a>
 <a name="375"><span class="lineNum">     375 </span>            : </a>
-<a name="376"><span class="lineNum">     376 </span><span class="lineCov">          4 :         capable = security_capable(current_cred(), ns, cap, opts);</span></a>
-<a name="377"><span class="lineNum">     377 </span><span class="lineCov">          2 :         if (capable == 0) {</span></a>
-<a name="378"><span class="lineNum">     378 </span><span class="lineCov">          2 :                 current-&gt;flags |= PF_SUPERPRIV;</span></a>
-<a name="379"><span class="lineNum">     379 </span><span class="lineCov">          2 :                 return true;</span></a>
+<a name="376"><span class="lineNum">     376 </span><span class="lineCov">          2 :         capable = security_capable(current_cred(), ns, cap, opts);</span></a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineCov">          1 :         if (capable == 0) {</span></a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineCov">          1 :                 current-&gt;flags |= PF_SUPERPRIV;</span></a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineCov">          1 :                 return true;</span></a>
 <a name="380"><span class="lineNum">     380 </span>            :         }</a>
 <a name="381"><span class="lineNum">     381 </span>            :         return false;</a>
 <a name="382"><span class="lineNum">     382 </span>            : }</a>
@@ -456,7 +456,7 @@
 <a name="394"><span class="lineNum">     394 </span>            :  */</a>
 <a name="395"><span class="lineNum">     395 </span><span class="lineNoCov">          0 : bool ns_capable(struct user_namespace *ns, int cap)</span></a>
 <a name="396"><span class="lineNum">     396 </span>            : {</a>
-<a name="397"><span class="lineNum">     397 </span><span class="lineCov">          2 :         return ns_capable_common(ns, cap, CAP_OPT_NONE);</span></a>
+<a name="397"><span class="lineNum">     397 </span><span class="lineCov">          1 :         return ns_capable_common(ns, cap, CAP_OPT_NONE);</span></a>
 <a name="398"><span class="lineNum">     398 </span>            : }</a>
 <a name="399"><span class="lineNum">     399 </span>            : EXPORT_SYMBOL(ns_capable);</a>
 <a name="400"><span class="lineNum">     400 </span>            : </a>
@@ -507,9 +507,9 @@
 <a name="445"><span class="lineNum">     445 </span>            :  * This sets PF_SUPERPRIV on the task if the capability is available on the</a>
 <a name="446"><span class="lineNum">     446 </span>            :  * assumption that it's about to be used.</a>
 <a name="447"><span class="lineNum">     447 </span>            :  */</a>
-<a name="448"><span class="lineNum">     448 </span><span class="lineCov">          2 : bool capable(int cap)</span></a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineCov">          1 : bool capable(int cap)</span></a>
 <a name="449"><span class="lineNum">     449 </span>            : {</a>
-<a name="450"><span class="lineNum">     450 </span><span class="lineCov">          2 :         return ns_capable(&amp;init_user_ns, cap);</span></a>
+<a name="450"><span class="lineNum">     450 </span><span class="lineCov">          1 :         return ns_capable(&amp;init_user_ns, cap);</span></a>
 <a name="451"><span class="lineNum">     451 </span>            : }</a>
 <a name="452"><span class="lineNum">     452 </span>            : EXPORT_SYMBOL(capable);</a>
 <a name="453"><span class="lineNum">     453 </span>            : #endif /* CONFIG_MULTIUSER */</a>

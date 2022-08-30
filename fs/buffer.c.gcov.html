@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -3441,12 +3441,12 @@
 <a name="3379"><span class="lineNum">    3379 </span>            : }</a>
 <a name="3380"><span class="lineNum">    3380 </span>            : EXPORT_SYMBOL(bh_submit_read);</a>
 <a name="3381"><span class="lineNum">    3381 </span>            : </a>
-<a name="3382"><span class="lineNum">    3382 </span><span class="lineCov">          2 : void __init buffer_init(void)</span></a>
+<a name="3382"><span class="lineNum">    3382 </span><span class="lineCov">          1 : void __init buffer_init(void)</span></a>
 <a name="3383"><span class="lineNum">    3383 </span>            : {</a>
 <a name="3384"><span class="lineNum">    3384 </span>            :         unsigned long nrpages;</a>
 <a name="3385"><span class="lineNum">    3385 </span>            :         int ret;</a>
 <a name="3386"><span class="lineNum">    3386 </span>            : </a>
-<a name="3387"><span class="lineNum">    3387 </span><span class="lineCov">          2 :         bh_cachep = kmem_cache_create(&quot;buffer_head&quot;,</span></a>
+<a name="3387"><span class="lineNum">    3387 </span><span class="lineCov">          1 :         bh_cachep = kmem_cache_create(&quot;buffer_head&quot;,</span></a>
 <a name="3388"><span class="lineNum">    3388 </span>            :                         sizeof(struct buffer_head), 0,</a>
 <a name="3389"><span class="lineNum">    3389 </span>            :                                 (SLAB_RECLAIM_ACCOUNT|SLAB_PANIC|</a>
 <a name="3390"><span class="lineNum">    3390 </span>            :                                 SLAB_MEM_SPREAD),</a>
@@ -3455,12 +3455,12 @@
 <a name="3393"><span class="lineNum">    3393 </span>            :         /*</a>
 <a name="3394"><span class="lineNum">    3394 </span>            :          * Limit the bh occupancy to 10% of ZONE_NORMAL</a>
 <a name="3395"><span class="lineNum">    3395 </span>            :          */</a>
-<a name="3396"><span class="lineNum">    3396 </span><span class="lineCov">          2 :         nrpages = (nr_free_buffer_pages() * 10) / 100;</span></a>
-<a name="3397"><span class="lineNum">    3397 </span><span class="lineCov">          2 :         max_buffer_heads = nrpages * (PAGE_SIZE / sizeof(struct buffer_head));</span></a>
-<a name="3398"><span class="lineNum">    3398 </span><span class="lineCov">          2 :         ret = cpuhp_setup_state_nocalls(CPUHP_FS_BUFF_DEAD, &quot;fs/buffer:dead&quot;,</span></a>
+<a name="3396"><span class="lineNum">    3396 </span><span class="lineCov">          1 :         nrpages = (nr_free_buffer_pages() * 10) / 100;</span></a>
+<a name="3397"><span class="lineNum">    3397 </span><span class="lineCov">          1 :         max_buffer_heads = nrpages * (PAGE_SIZE / sizeof(struct buffer_head));</span></a>
+<a name="3398"><span class="lineNum">    3398 </span><span class="lineCov">          1 :         ret = cpuhp_setup_state_nocalls(CPUHP_FS_BUFF_DEAD, &quot;fs/buffer:dead&quot;,</span></a>
 <a name="3399"><span class="lineNum">    3399 </span>            :                                         NULL, buffer_exit_cpu_dead);</a>
-<a name="3400"><span class="lineNum">    3400 </span><span class="lineCov">          2 :         WARN_ON(ret &lt; 0);</span></a>
-<a name="3401"><span class="lineNum">    3401 </span><span class="lineCov">          2 : }</span></a>
+<a name="3400"><span class="lineNum">    3400 </span><span class="lineCov">          1 :         WARN_ON(ret &lt; 0);</span></a>
+<a name="3401"><span class="lineNum">    3401 </span><span class="lineCov">          1 : }</span></a>
 </pre>
       </td>
     </tr>

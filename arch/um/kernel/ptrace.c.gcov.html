@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -81,15 +81,15 @@
 <a name="19"><span class="lineNum">      19 </span>            : #endif</a>
 <a name="20"><span class="lineNum">      20 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="21"><span class="lineNum">      21 </span>            : </a>
-<a name="22"><span class="lineNum">      22 </span><span class="lineCov">        156 : void user_disable_single_step(struct task_struct *child)</span></a>
+<a name="22"><span class="lineNum">      22 </span><span class="lineCov">        107 : void user_disable_single_step(struct task_struct *child)</span></a>
 <a name="23"><span class="lineNum">      23 </span>            : {</a>
-<a name="24"><span class="lineNum">      24 </span><span class="lineCov">        156 :         child-&gt;ptrace &amp;= ~PT_DTRACE;</span></a>
-<a name="25"><span class="lineNum">      25 </span><span class="lineCov">        156 :         child-&gt;thread.singlestep_syscall = 0;</span></a>
+<a name="24"><span class="lineNum">      24 </span><span class="lineCov">        107 :         child-&gt;ptrace &amp;= ~PT_DTRACE;</span></a>
+<a name="25"><span class="lineNum">      25 </span><span class="lineCov">        107 :         child-&gt;thread.singlestep_syscall = 0;</span></a>
 <a name="26"><span class="lineNum">      26 </span>            : </a>
 <a name="27"><span class="lineNum">      27 </span>            : #ifdef SUBARCH_SET_SINGLESTEPPING</a>
 <a name="28"><span class="lineNum">      28 </span>            :         SUBARCH_SET_SINGLESTEPPING(child, 0);</a>
 <a name="29"><span class="lineNum">      29 </span>            : #endif</a>
-<a name="30"><span class="lineNum">      30 </span><span class="lineCov">        156 : }</span></a>
+<a name="30"><span class="lineNum">      30 </span><span class="lineCov">        107 : }</span></a>
 <a name="31"><span class="lineNum">      31 </span>            : </a>
 <a name="32"><span class="lineNum">      32 </span>            : /*</a>
 <a name="33"><span class="lineNum">      33 </span>            :  * Called by kernel/ptrace.c when detaching..</a>

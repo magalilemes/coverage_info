@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -128,14 +128,14 @@
 <a name="66"><span class="lineNum">      66 </span>            :  * Lookup the data. This is trivial - if the dentry didn't already</a>
 <a name="67"><span class="lineNum">      67 </span>            :  * exist, we know it is negative.  Set d_op to delete negative dentries.</a>
 <a name="68"><span class="lineNum">      68 </span>            :  */</a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          6 : struct dentry *simple_lookup(struct inode *dir, struct dentry *dentry, unsigned int flags)</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          3 : struct dentry *simple_lookup(struct inode *dir, struct dentry *dentry, unsigned int flags)</span></a>
 <a name="70"><span class="lineNum">      70 </span>            : {</a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          6 :         if (dentry-&gt;d_name.len &gt; NAME_MAX)</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          3 :         if (dentry-&gt;d_name.len &gt; NAME_MAX)</span></a>
 <a name="72"><span class="lineNum">      72 </span>            :                 return ERR_PTR(-ENAMETOOLONG);</a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          6 :         if (!dentry-&gt;d_sb-&gt;s_d_op)</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          6 :                 d_set_d_op(dentry, &amp;simple_dentry_operations);</span></a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          6 :         d_add(dentry, NULL);</span></a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">          6 :         return NULL;</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          3 :         if (!dentry-&gt;d_sb-&gt;s_d_op)</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          3 :                 d_set_d_op(dentry, &amp;simple_dentry_operations);</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          3 :         d_add(dentry, NULL);</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">          3 :         return NULL;</span></a>
 <a name="77"><span class="lineNum">      77 </span>            : }</a>
 <a name="78"><span class="lineNum">      78 </span>            : EXPORT_SYMBOL(simple_lookup);</a>
 <a name="79"><span class="lineNum">      79 </span>            : </a>
@@ -378,20 +378,20 @@
 <a name="316"><span class="lineNum">     316 </span>            :         .statfs         = simple_statfs,</a>
 <a name="317"><span class="lineNum">     317 </span>            : };</a>
 <a name="318"><span class="lineNum">     318 </span>            : </a>
-<a name="319"><span class="lineNum">     319 </span><span class="lineCov">         14 : static int pseudo_fs_fill_super(struct super_block *s, struct fs_context *fc)</span></a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineCov">          7 : static int pseudo_fs_fill_super(struct super_block *s, struct fs_context *fc)</span></a>
 <a name="320"><span class="lineNum">     320 </span>            : {</a>
-<a name="321"><span class="lineNum">     321 </span><span class="lineCov">         14 :         struct pseudo_fs_context *ctx = fc-&gt;fs_private;</span></a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineCov">          7 :         struct pseudo_fs_context *ctx = fc-&gt;fs_private;</span></a>
 <a name="322"><span class="lineNum">     322 </span>            :         struct inode *root;</a>
 <a name="323"><span class="lineNum">     323 </span>            : </a>
-<a name="324"><span class="lineNum">     324 </span><span class="lineCov">         14 :         s-&gt;s_maxbytes = MAX_LFS_FILESIZE;</span></a>
-<a name="325"><span class="lineNum">     325 </span><span class="lineCov">         14 :         s-&gt;s_blocksize = PAGE_SIZE;</span></a>
-<a name="326"><span class="lineNum">     326 </span><span class="lineCov">         14 :         s-&gt;s_blocksize_bits = PAGE_SHIFT;</span></a>
-<a name="327"><span class="lineNum">     327 </span><span class="lineCov">         14 :         s-&gt;s_magic = ctx-&gt;magic;</span></a>
-<a name="328"><span class="lineNum">     328 </span><span class="lineCov">         14 :         s-&gt;s_op = ctx-&gt;ops ?: &amp;simple_super_operations;</span></a>
-<a name="329"><span class="lineNum">     329 </span><span class="lineCov">         14 :         s-&gt;s_xattr = ctx-&gt;xattr;</span></a>
-<a name="330"><span class="lineNum">     330 </span><span class="lineCov">         14 :         s-&gt;s_time_gran = 1;</span></a>
-<a name="331"><span class="lineNum">     331 </span><span class="lineCov">         14 :         root = new_inode(s);</span></a>
-<a name="332"><span class="lineNum">     332 </span><span class="lineCov">         14 :         if (!root)</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineCov">          7 :         s-&gt;s_maxbytes = MAX_LFS_FILESIZE;</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineCov">          7 :         s-&gt;s_blocksize = PAGE_SIZE;</span></a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineCov">          7 :         s-&gt;s_blocksize_bits = PAGE_SHIFT;</span></a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineCov">          7 :         s-&gt;s_magic = ctx-&gt;magic;</span></a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineCov">          7 :         s-&gt;s_op = ctx-&gt;ops ?: &amp;simple_super_operations;</span></a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineCov">          7 :         s-&gt;s_xattr = ctx-&gt;xattr;</span></a>
+<a name="330"><span class="lineNum">     330 </span><span class="lineCov">          7 :         s-&gt;s_time_gran = 1;</span></a>
+<a name="331"><span class="lineNum">     331 </span><span class="lineCov">          7 :         root = new_inode(s);</span></a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineCov">          7 :         if (!root)</span></a>
 <a name="333"><span class="lineNum">     333 </span>            :                 return -ENOMEM;</a>
 <a name="334"><span class="lineNum">     334 </span>            : </a>
 <a name="335"><span class="lineNum">     335 </span>            :         /*</a>
@@ -399,25 +399,25 @@
 <a name="337"><span class="lineNum">     337 </span>            :          * after this must take care not to collide with it (by passing</a>
 <a name="338"><span class="lineNum">     338 </span>            :          * max_reserved of 1 to iunique).</a>
 <a name="339"><span class="lineNum">     339 </span>            :          */</a>
-<a name="340"><span class="lineNum">     340 </span><span class="lineCov">         14 :         root-&gt;i_ino = 1;</span></a>
-<a name="341"><span class="lineNum">     341 </span><span class="lineCov">         14 :         root-&gt;i_mode = S_IFDIR | S_IRUSR | S_IWUSR;</span></a>
-<a name="342"><span class="lineNum">     342 </span><span class="lineCov">         14 :         root-&gt;i_atime = root-&gt;i_mtime = root-&gt;i_ctime = current_time(root);</span></a>
-<a name="343"><span class="lineNum">     343 </span><span class="lineCov">         14 :         s-&gt;s_root = d_make_root(root);</span></a>
-<a name="344"><span class="lineNum">     344 </span><span class="lineCov">         14 :         if (!s-&gt;s_root)</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineCov">          7 :         root-&gt;i_ino = 1;</span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineCov">          7 :         root-&gt;i_mode = S_IFDIR | S_IRUSR | S_IWUSR;</span></a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineCov">          7 :         root-&gt;i_atime = root-&gt;i_mtime = root-&gt;i_ctime = current_time(root);</span></a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineCov">          7 :         s-&gt;s_root = d_make_root(root);</span></a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineCov">          7 :         if (!s-&gt;s_root)</span></a>
 <a name="345"><span class="lineNum">     345 </span>            :                 return -ENOMEM;</a>
-<a name="346"><span class="lineNum">     346 </span><span class="lineCov">         14 :         s-&gt;s_d_op = ctx-&gt;dops;</span></a>
-<a name="347"><span class="lineNum">     347 </span><span class="lineCov">         14 :         return 0;</span></a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineCov">          7 :         s-&gt;s_d_op = ctx-&gt;dops;</span></a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineCov">          7 :         return 0;</span></a>
 <a name="348"><span class="lineNum">     348 </span>            : }</a>
 <a name="349"><span class="lineNum">     349 </span>            : </a>
-<a name="350"><span class="lineNum">     350 </span><span class="lineCov">         14 : static int pseudo_fs_get_tree(struct fs_context *fc)</span></a>
+<a name="350"><span class="lineNum">     350 </span><span class="lineCov">          7 : static int pseudo_fs_get_tree(struct fs_context *fc)</span></a>
 <a name="351"><span class="lineNum">     351 </span>            : {</a>
-<a name="352"><span class="lineNum">     352 </span><span class="lineCov">         14 :         return get_tree_nodev(fc, pseudo_fs_fill_super);</span></a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineCov">          7 :         return get_tree_nodev(fc, pseudo_fs_fill_super);</span></a>
 <a name="353"><span class="lineNum">     353 </span>            : }</a>
 <a name="354"><span class="lineNum">     354 </span>            : </a>
-<a name="355"><span class="lineNum">     355 </span><span class="lineCov">         14 : static void pseudo_fs_free(struct fs_context *fc)</span></a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineCov">          7 : static void pseudo_fs_free(struct fs_context *fc)</span></a>
 <a name="356"><span class="lineNum">     356 </span>            : {</a>
-<a name="357"><span class="lineNum">     357 </span><span class="lineCov">         14 :         kfree(fc-&gt;fs_private);</span></a>
-<a name="358"><span class="lineNum">     358 </span><span class="lineCov">         14 : }</span></a>
+<a name="357"><span class="lineNum">     357 </span><span class="lineCov">          7 :         kfree(fc-&gt;fs_private);</span></a>
+<a name="358"><span class="lineNum">     358 </span><span class="lineCov">          7 : }</span></a>
 <a name="359"><span class="lineNum">     359 </span>            : </a>
 <a name="360"><span class="lineNum">     360 </span>            : static const struct fs_context_operations pseudo_fs_context_ops = {</a>
 <a name="361"><span class="lineNum">     361 </span>            :         .free           = pseudo_fs_free,</a>
@@ -428,20 +428,20 @@
 <a name="366"><span class="lineNum">     366 </span>            :  * Common helper for pseudo-filesystems (sockfs, pipefs, bdev - stuff that</a>
 <a name="367"><span class="lineNum">     367 </span>            :  * will never be mountable)</a>
 <a name="368"><span class="lineNum">     368 </span>            :  */</a>
-<a name="369"><span class="lineNum">     369 </span><span class="lineCov">         14 : struct pseudo_fs_context *init_pseudo(struct fs_context *fc,</span></a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineCov">          7 : struct pseudo_fs_context *init_pseudo(struct fs_context *fc,</span></a>
 <a name="370"><span class="lineNum">     370 </span>            :                                         unsigned long magic)</a>
 <a name="371"><span class="lineNum">     371 </span>            : {</a>
 <a name="372"><span class="lineNum">     372 </span>            :         struct pseudo_fs_context *ctx;</a>
 <a name="373"><span class="lineNum">     373 </span>            : </a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineCov">         14 :         ctx = kzalloc(sizeof(struct pseudo_fs_context), GFP_KERNEL);</span></a>
-<a name="375"><span class="lineNum">     375 </span><span class="lineCov">         14 :         if (likely(ctx)) {</span></a>
-<a name="376"><span class="lineNum">     376 </span><span class="lineCov">         14 :                 ctx-&gt;magic = magic;</span></a>
-<a name="377"><span class="lineNum">     377 </span><span class="lineCov">         14 :                 fc-&gt;fs_private = ctx;</span></a>
-<a name="378"><span class="lineNum">     378 </span><span class="lineCov">         14 :                 fc-&gt;ops = &amp;pseudo_fs_context_ops;</span></a>
-<a name="379"><span class="lineNum">     379 </span><span class="lineCov">         14 :                 fc-&gt;sb_flags |= SB_NOUSER;</span></a>
-<a name="380"><span class="lineNum">     380 </span><span class="lineCov">         14 :                 fc-&gt;global = true;</span></a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineCov">          7 :         ctx = kzalloc(sizeof(struct pseudo_fs_context), GFP_KERNEL);</span></a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineCov">          7 :         if (likely(ctx)) {</span></a>
+<a name="376"><span class="lineNum">     376 </span><span class="lineCov">          7 :                 ctx-&gt;magic = magic;</span></a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineCov">          7 :                 fc-&gt;fs_private = ctx;</span></a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineCov">          7 :                 fc-&gt;ops = &amp;pseudo_fs_context_ops;</span></a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineCov">          7 :                 fc-&gt;sb_flags |= SB_NOUSER;</span></a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineCov">          7 :                 fc-&gt;global = true;</span></a>
 <a name="381"><span class="lineNum">     381 </span>            :         }</a>
-<a name="382"><span class="lineNum">     382 </span><span class="lineCov">         14 :         return ctx;</span></a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineCov">          7 :         return ctx;</span></a>
 <a name="383"><span class="lineNum">     383 </span>            : }</a>
 <a name="384"><span class="lineNum">     384 </span>            : EXPORT_SYMBOL(init_pseudo);</a>
 <a name="385"><span class="lineNum">     385 </span>            : </a>
@@ -768,24 +768,24 @@
 <a name="706"><span class="lineNum">     706 </span>            : </a>
 <a name="707"><span class="lineNum">     707 </span>            : static DEFINE_SPINLOCK(pin_fs_lock);</a>
 <a name="708"><span class="lineNum">     708 </span>            : </a>
-<a name="709"><span class="lineNum">     709 </span><span class="lineCov">          2 : int simple_pin_fs(struct file_system_type *type, struct vfsmount **mount, int *count)</span></a>
+<a name="709"><span class="lineNum">     709 </span><span class="lineCov">          1 : int simple_pin_fs(struct file_system_type *type, struct vfsmount **mount, int *count)</span></a>
 <a name="710"><span class="lineNum">     710 </span>            : {</a>
-<a name="711"><span class="lineNum">     711 </span><span class="lineCov">          2 :         struct vfsmount *mnt = NULL;</span></a>
-<a name="712"><span class="lineNum">     712 </span><span class="lineCov">          2 :         spin_lock(&amp;pin_fs_lock);</span></a>
-<a name="713"><span class="lineNum">     713 </span><span class="lineCov">          2 :         if (unlikely(!*mount)) {</span></a>
-<a name="714"><span class="lineNum">     714 </span><span class="lineCov">          2 :                 spin_unlock(&amp;pin_fs_lock);</span></a>
-<a name="715"><span class="lineNum">     715 </span><span class="lineCov">          2 :                 mnt = vfs_kern_mount(type, SB_KERNMOUNT, type-&gt;name, NULL);</span></a>
-<a name="716"><span class="lineNum">     716 </span><span class="lineCov">          2 :                 if (IS_ERR(mnt))</span></a>
+<a name="711"><span class="lineNum">     711 </span><span class="lineCov">          1 :         struct vfsmount *mnt = NULL;</span></a>
+<a name="712"><span class="lineNum">     712 </span><span class="lineCov">          1 :         spin_lock(&amp;pin_fs_lock);</span></a>
+<a name="713"><span class="lineNum">     713 </span><span class="lineCov">          1 :         if (unlikely(!*mount)) {</span></a>
+<a name="714"><span class="lineNum">     714 </span><span class="lineCov">          1 :                 spin_unlock(&amp;pin_fs_lock);</span></a>
+<a name="715"><span class="lineNum">     715 </span><span class="lineCov">          1 :                 mnt = vfs_kern_mount(type, SB_KERNMOUNT, type-&gt;name, NULL);</span></a>
+<a name="716"><span class="lineNum">     716 </span><span class="lineCov">          1 :                 if (IS_ERR(mnt))</span></a>
 <a name="717"><span class="lineNum">     717 </span><span class="lineNoCov">          0 :                         return PTR_ERR(mnt);</span></a>
-<a name="718"><span class="lineNum">     718 </span><span class="lineCov">          2 :                 spin_lock(&amp;pin_fs_lock);</span></a>
-<a name="719"><span class="lineNum">     719 </span><span class="lineCov">          2 :                 if (!*mount)</span></a>
-<a name="720"><span class="lineNum">     720 </span><span class="lineCov">          2 :                         *mount = mnt;</span></a>
+<a name="718"><span class="lineNum">     718 </span><span class="lineCov">          1 :                 spin_lock(&amp;pin_fs_lock);</span></a>
+<a name="719"><span class="lineNum">     719 </span><span class="lineCov">          1 :                 if (!*mount)</span></a>
+<a name="720"><span class="lineNum">     720 </span><span class="lineCov">          1 :                         *mount = mnt;</span></a>
 <a name="721"><span class="lineNum">     721 </span>            :         }</a>
-<a name="722"><span class="lineNum">     722 </span><span class="lineCov">          2 :         mntget(*mount);</span></a>
-<a name="723"><span class="lineNum">     723 </span><span class="lineCov">          2 :         ++*count;</span></a>
-<a name="724"><span class="lineNum">     724 </span><span class="lineCov">          2 :         spin_unlock(&amp;pin_fs_lock);</span></a>
-<a name="725"><span class="lineNum">     725 </span><span class="lineCov">          2 :         mntput(mnt);</span></a>
-<a name="726"><span class="lineNum">     726 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="722"><span class="lineNum">     722 </span><span class="lineCov">          1 :         mntget(*mount);</span></a>
+<a name="723"><span class="lineNum">     723 </span><span class="lineCov">          1 :         ++*count;</span></a>
+<a name="724"><span class="lineNum">     724 </span><span class="lineCov">          1 :         spin_unlock(&amp;pin_fs_lock);</span></a>
+<a name="725"><span class="lineNum">     725 </span><span class="lineCov">          1 :         mntput(mnt);</span></a>
+<a name="726"><span class="lineNum">     726 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="727"><span class="lineNum">     727 </span>            : }</a>
 <a name="728"><span class="lineNum">     728 </span>            : EXPORT_SYMBOL(simple_pin_fs);</a>
 <a name="729"><span class="lineNum">     729 </span>            : </a>
@@ -1279,18 +1279,18 @@
 <a name="1217"><span class="lineNum">    1217 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="1218"><span class="lineNum">    1218 </span>            : EXPORT_SYMBOL(kfree_link);</a>
 <a name="1219"><span class="lineNum">    1219 </span>            : </a>
-<a name="1220"><span class="lineNum">    1220 </span><span class="lineCov">          4 : struct inode *alloc_anon_inode(struct super_block *s)</span></a>
+<a name="1220"><span class="lineNum">    1220 </span><span class="lineCov">          2 : struct inode *alloc_anon_inode(struct super_block *s)</span></a>
 <a name="1221"><span class="lineNum">    1221 </span>            : {</a>
 <a name="1222"><span class="lineNum">    1222 </span>            :         static const struct address_space_operations anon_aops = {</a>
 <a name="1223"><span class="lineNum">    1223 </span>            :                 .dirty_folio    = noop_dirty_folio,</a>
 <a name="1224"><span class="lineNum">    1224 </span>            :         };</a>
-<a name="1225"><span class="lineNum">    1225 </span><span class="lineCov">          4 :         struct inode *inode = new_inode_pseudo(s);</span></a>
+<a name="1225"><span class="lineNum">    1225 </span><span class="lineCov">          2 :         struct inode *inode = new_inode_pseudo(s);</span></a>
 <a name="1226"><span class="lineNum">    1226 </span>            : </a>
-<a name="1227"><span class="lineNum">    1227 </span><span class="lineCov">          4 :         if (!inode)</span></a>
+<a name="1227"><span class="lineNum">    1227 </span><span class="lineCov">          2 :         if (!inode)</span></a>
 <a name="1228"><span class="lineNum">    1228 </span>            :                 return ERR_PTR(-ENOMEM);</a>
 <a name="1229"><span class="lineNum">    1229 </span>            : </a>
-<a name="1230"><span class="lineNum">    1230 </span><span class="lineCov">          4 :         inode-&gt;i_ino = get_next_ino();</span></a>
-<a name="1231"><span class="lineNum">    1231 </span><span class="lineCov">          4 :         inode-&gt;i_mapping-&gt;a_ops = &amp;anon_aops;</span></a>
+<a name="1230"><span class="lineNum">    1230 </span><span class="lineCov">          2 :         inode-&gt;i_ino = get_next_ino();</span></a>
+<a name="1231"><span class="lineNum">    1231 </span><span class="lineCov">          2 :         inode-&gt;i_mapping-&gt;a_ops = &amp;anon_aops;</span></a>
 <a name="1232"><span class="lineNum">    1232 </span>            : </a>
 <a name="1233"><span class="lineNum">    1233 </span>            :         /*</a>
 <a name="1234"><span class="lineNum">    1234 </span>            :          * Mark the inode dirty from the very beginning,</a>
@@ -1298,13 +1298,13 @@
 <a name="1236"><span class="lineNum">    1236 </span>            :          * list because mark_inode_dirty() will think</a>
 <a name="1237"><span class="lineNum">    1237 </span>            :          * that it already _is_ on the dirty list.</a>
 <a name="1238"><span class="lineNum">    1238 </span>            :          */</a>
-<a name="1239"><span class="lineNum">    1239 </span><span class="lineCov">          4 :         inode-&gt;i_state = I_DIRTY;</span></a>
-<a name="1240"><span class="lineNum">    1240 </span><span class="lineCov">          4 :         inode-&gt;i_mode = S_IRUSR | S_IWUSR;</span></a>
-<a name="1241"><span class="lineNum">    1241 </span><span class="lineCov">          4 :         inode-&gt;i_uid = current_fsuid();</span></a>
-<a name="1242"><span class="lineNum">    1242 </span><span class="lineCov">          4 :         inode-&gt;i_gid = current_fsgid();</span></a>
-<a name="1243"><span class="lineNum">    1243 </span><span class="lineCov">          4 :         inode-&gt;i_flags |= S_PRIVATE;</span></a>
-<a name="1244"><span class="lineNum">    1244 </span><span class="lineCov">          4 :         inode-&gt;i_atime = inode-&gt;i_mtime = inode-&gt;i_ctime = current_time(inode);</span></a>
-<a name="1245"><span class="lineNum">    1245 </span><span class="lineCov">          4 :         return inode;</span></a>
+<a name="1239"><span class="lineNum">    1239 </span><span class="lineCov">          2 :         inode-&gt;i_state = I_DIRTY;</span></a>
+<a name="1240"><span class="lineNum">    1240 </span><span class="lineCov">          2 :         inode-&gt;i_mode = S_IRUSR | S_IWUSR;</span></a>
+<a name="1241"><span class="lineNum">    1241 </span><span class="lineCov">          2 :         inode-&gt;i_uid = current_fsuid();</span></a>
+<a name="1242"><span class="lineNum">    1242 </span><span class="lineCov">          2 :         inode-&gt;i_gid = current_fsgid();</span></a>
+<a name="1243"><span class="lineNum">    1243 </span><span class="lineCov">          2 :         inode-&gt;i_flags |= S_PRIVATE;</span></a>
+<a name="1244"><span class="lineNum">    1244 </span><span class="lineCov">          2 :         inode-&gt;i_atime = inode-&gt;i_mtime = inode-&gt;i_ctime = current_time(inode);</span></a>
+<a name="1245"><span class="lineNum">    1245 </span><span class="lineCov">          2 :         return inode;</span></a>
 <a name="1246"><span class="lineNum">    1246 </span>            : }</a>
 <a name="1247"><span class="lineNum">    1247 </span>            : EXPORT_SYMBOL(alloc_anon_inode);</a>
 <a name="1248"><span class="lineNum">    1248 </span>            : </a>

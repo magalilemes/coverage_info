@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -77,18 +77,18 @@
 <a name="15"><span class="lineNum">      15 </span>            : static DEFINE_PER_CPU(int, printk_context);</a>
 <a name="16"><span class="lineNum">      16 </span>            : </a>
 <a name="17"><span class="lineNum">      17 </span>            : /* Can be preempted by NMI. */</a>
-<a name="18"><span class="lineNum">      18 </span><span class="lineCov">       1692 : void __printk_safe_enter(void)</span></a>
+<a name="18"><span class="lineNum">      18 </span><span class="lineCov">        966 : void __printk_safe_enter(void)</span></a>
 <a name="19"><span class="lineNum">      19 </span>            : {</a>
-<a name="20"><span class="lineNum">      20 </span><span class="lineCov">       5076 :         this_cpu_inc(printk_context);</span></a>
-<a name="21"><span class="lineNum">      21 </span><span class="lineCov">       1692 : }</span></a>
+<a name="20"><span class="lineNum">      20 </span><span class="lineCov">       2898 :         this_cpu_inc(printk_context);</span></a>
+<a name="21"><span class="lineNum">      21 </span><span class="lineCov">        966 : }</span></a>
 <a name="22"><span class="lineNum">      22 </span>            : </a>
 <a name="23"><span class="lineNum">      23 </span>            : /* Can be preempted by NMI. */</a>
-<a name="24"><span class="lineNum">      24 </span><span class="lineCov">       1692 : void __printk_safe_exit(void)</span></a>
+<a name="24"><span class="lineNum">      24 </span><span class="lineCov">        966 : void __printk_safe_exit(void)</span></a>
 <a name="25"><span class="lineNum">      25 </span>            : {</a>
-<a name="26"><span class="lineNum">      26 </span><span class="lineCov">       5076 :         this_cpu_dec(printk_context);</span></a>
-<a name="27"><span class="lineNum">      27 </span><span class="lineCov">       1692 : }</span></a>
+<a name="26"><span class="lineNum">      26 </span><span class="lineCov">       2898 :         this_cpu_dec(printk_context);</span></a>
+<a name="27"><span class="lineNum">      27 </span><span class="lineCov">        966 : }</span></a>
 <a name="28"><span class="lineNum">      28 </span>            : </a>
-<a name="29"><span class="lineNum">      29 </span><span class="lineCov">        504 : asmlinkage int vprintk(const char *fmt, va_list args)</span></a>
+<a name="29"><span class="lineNum">      29 </span><span class="lineCov">        292 : asmlinkage int vprintk(const char *fmt, va_list args)</span></a>
 <a name="30"><span class="lineNum">      30 </span>            : {</a>
 <a name="31"><span class="lineNum">      31 </span>            : #ifdef CONFIG_KGDB_KDB</a>
 <a name="32"><span class="lineNum">      32 </span>            :         /* Allow to pass printk() to kdb but avoid a recursion. */</a>
@@ -100,7 +100,7 @@
 <a name="38"><span class="lineNum">      38 </span>            :          * Use the main logbuf even in NMI. But avoid calling console</a>
 <a name="39"><span class="lineNum">      39 </span>            :          * drivers that might have their own locks.</a>
 <a name="40"><span class="lineNum">      40 </span>            :          */</a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">       1008 :         if (this_cpu_read(printk_context) || in_nmi()) {</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">        584 :         if (this_cpu_read(printk_context) || in_nmi()) {</span></a>
 <a name="42"><span class="lineNum">      42 </span>            :                 int len;</a>
 <a name="43"><span class="lineNum">      43 </span>            : </a>
 <a name="44"><span class="lineNum">      44 </span><span class="lineNoCov">          0 :                 len = vprintk_store(0, LOGLEVEL_DEFAULT, NULL, fmt, args);</span></a>
@@ -109,7 +109,7 @@
 <a name="47"><span class="lineNum">      47 </span>            :         }</a>
 <a name="48"><span class="lineNum">      48 </span>            : </a>
 <a name="49"><span class="lineNum">      49 </span>            :         /* No obstacles. */</a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">        504 :         return vprintk_default(fmt, args);</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">        292 :         return vprintk_default(fmt, args);</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : }</a>
 <a name="52"><span class="lineNum">      52 </span>            : EXPORT_SYMBOL(vprintk);</a>
 </pre>

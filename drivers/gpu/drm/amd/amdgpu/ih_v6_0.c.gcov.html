@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -789,22 +789,23 @@
 <a name="727"><span class="lineNum">     727 </span>            : static const struct amdgpu_ih_funcs ih_v6_0_funcs = {</a>
 <a name="728"><span class="lineNum">     728 </span>            :         .get_wptr = ih_v6_0_get_wptr,</a>
 <a name="729"><span class="lineNum">     729 </span>            :         .decode_iv = amdgpu_ih_decode_iv_helper,</a>
-<a name="730"><span class="lineNum">     730 </span>            :         .set_rptr = ih_v6_0_set_rptr</a>
-<a name="731"><span class="lineNum">     731 </span>            : };</a>
-<a name="732"><span class="lineNum">     732 </span>            : </a>
-<a name="733"><span class="lineNum">     733 </span>            : static void ih_v6_0_set_interrupt_funcs(struct amdgpu_device *adev)</a>
-<a name="734"><span class="lineNum">     734 </span>            : {</a>
-<a name="735"><span class="lineNum">     735 </span><span class="lineNoCov">          0 :         adev-&gt;irq.ih_funcs = &amp;ih_v6_0_funcs;</span></a>
-<a name="736"><span class="lineNum">     736 </span>            : }</a>
-<a name="737"><span class="lineNum">     737 </span>            : </a>
-<a name="738"><span class="lineNum">     738 </span>            : const struct amdgpu_ip_block_version ih_v6_0_ip_block =</a>
-<a name="739"><span class="lineNum">     739 </span>            : {</a>
-<a name="740"><span class="lineNum">     740 </span>            :         .type = AMD_IP_BLOCK_TYPE_IH,</a>
-<a name="741"><span class="lineNum">     741 </span>            :         .major = 6,</a>
-<a name="742"><span class="lineNum">     742 </span>            :         .minor = 0,</a>
-<a name="743"><span class="lineNum">     743 </span>            :         .rev = 0,</a>
-<a name="744"><span class="lineNum">     744 </span>            :         .funcs = &amp;ih_v6_0_ip_funcs,</a>
-<a name="745"><span class="lineNum">     745 </span>            : };</a>
+<a name="730"><span class="lineNum">     730 </span>            :         .decode_iv_ts = amdgpu_ih_decode_iv_ts_helper,</a>
+<a name="731"><span class="lineNum">     731 </span>            :         .set_rptr = ih_v6_0_set_rptr</a>
+<a name="732"><span class="lineNum">     732 </span>            : };</a>
+<a name="733"><span class="lineNum">     733 </span>            : </a>
+<a name="734"><span class="lineNum">     734 </span>            : static void ih_v6_0_set_interrupt_funcs(struct amdgpu_device *adev)</a>
+<a name="735"><span class="lineNum">     735 </span>            : {</a>
+<a name="736"><span class="lineNum">     736 </span><span class="lineNoCov">          0 :         adev-&gt;irq.ih_funcs = &amp;ih_v6_0_funcs;</span></a>
+<a name="737"><span class="lineNum">     737 </span>            : }</a>
+<a name="738"><span class="lineNum">     738 </span>            : </a>
+<a name="739"><span class="lineNum">     739 </span>            : const struct amdgpu_ip_block_version ih_v6_0_ip_block =</a>
+<a name="740"><span class="lineNum">     740 </span>            : {</a>
+<a name="741"><span class="lineNum">     741 </span>            :         .type = AMD_IP_BLOCK_TYPE_IH,</a>
+<a name="742"><span class="lineNum">     742 </span>            :         .major = 6,</a>
+<a name="743"><span class="lineNum">     743 </span>            :         .minor = 0,</a>
+<a name="744"><span class="lineNum">     744 </span>            :         .rev = 0,</a>
+<a name="745"><span class="lineNum">     745 </span>            :         .funcs = &amp;ih_v6_0_ip_funcs,</a>
+<a name="746"><span class="lineNum">     746 </span>            : };</a>
 </pre>
       </td>
     </tr>

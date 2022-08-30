@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">2330</td>
+            <td class="headerCovTableEntry">2331</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -5983,61 +5983,63 @@
 <a name="5921"><span class="lineNum">    5921 </span>            :                 /* Enpoint decompression with DP-to-DP peer device */</a>
 <a name="5922"><span class="lineNum">    5922 </span><span class="lineNoCov">          0 :                 if ((endpoint_dsc &amp; DP_DSC_DECOMPRESSION_IS_SUPPORTED) &amp;&amp;</span></a>
 <a name="5923"><span class="lineNum">    5923 </span><span class="lineNoCov">          0 :                     (endpoint_fec &amp; DP_FEC_CAPABLE) &amp;&amp;</span></a>
-<a name="5924"><span class="lineNum">    5924 </span><span class="lineNoCov">          0 :                     (upstream_dsc &amp; 0x2) /* DSC passthrough */)</span></a>
-<a name="5925"><span class="lineNum">    5925 </span>            :                         return &amp;port-&gt;aux;</a>
-<a name="5926"><span class="lineNum">    5926 </span>            : </a>
-<a name="5927"><span class="lineNum">    5927 </span>            :                 /* Virtual DPCD decompression with DP-to-DP peer device */</a>
-<a name="5928"><span class="lineNum">    5928 </span><span class="lineNoCov">          0 :                 return &amp;immediate_upstream_port-&gt;aux;</span></a>
-<a name="5929"><span class="lineNum">    5929 </span>            :         }</a>
-<a name="5930"><span class="lineNum">    5930 </span>            : </a>
-<a name="5931"><span class="lineNum">    5931 </span>            :         /* Virtual DPCD decompression with DP-to-HDMI or Virtual DP Sink */</a>
-<a name="5932"><span class="lineNum">    5932 </span><span class="lineNoCov">          0 :         if (drm_dp_mst_is_virtual_dpcd(port))</span></a>
-<a name="5933"><span class="lineNum">    5933 </span><span class="lineNoCov">          0 :                 return &amp;port-&gt;aux;</span></a>
-<a name="5934"><span class="lineNum">    5934 </span>            : </a>
-<a name="5935"><span class="lineNum">    5935 </span>            :         /*</a>
-<a name="5936"><span class="lineNum">    5936 </span>            :          * Synaptics quirk</a>
-<a name="5937"><span class="lineNum">    5937 </span>            :          * Applies to ports for which:</a>
-<a name="5938"><span class="lineNum">    5938 </span>            :          * - Physical aux has Synaptics OUI</a>
-<a name="5939"><span class="lineNum">    5939 </span>            :          * - DPv1.4 or higher</a>
-<a name="5940"><span class="lineNum">    5940 </span>            :          * - Port is on primary branch device</a>
-<a name="5941"><span class="lineNum">    5941 </span>            :          * - Not a VGA adapter (DP_DWN_STRM_PORT_TYPE_ANALOG)</a>
-<a name="5942"><span class="lineNum">    5942 </span>            :          */</a>
-<a name="5943"><span class="lineNum">    5943 </span><span class="lineNoCov">          0 :         if (drm_dp_read_desc(port-&gt;mgr-&gt;aux, &amp;desc, true))</span></a>
-<a name="5944"><span class="lineNum">    5944 </span>            :                 return NULL;</a>
-<a name="5945"><span class="lineNum">    5945 </span>            : </a>
-<a name="5946"><span class="lineNum">    5946 </span><span class="lineNoCov">          0 :         if (drm_dp_has_quirk(&amp;desc, DP_DPCD_QUIRK_DSC_WITHOUT_VIRTUAL_DPCD) &amp;&amp;</span></a>
-<a name="5947"><span class="lineNum">    5947 </span><span class="lineNoCov">          0 :             port-&gt;mgr-&gt;dpcd[DP_DPCD_REV] &gt;= DP_DPCD_REV_14 &amp;&amp;</span></a>
-<a name="5948"><span class="lineNum">    5948 </span><span class="lineNoCov">          0 :             port-&gt;parent == port-&gt;mgr-&gt;mst_primary) {</span></a>
-<a name="5949"><span class="lineNum">    5949 </span>            :                 u8 dpcd_ext[DP_RECEIVER_CAP_SIZE];</a>
-<a name="5950"><span class="lineNum">    5950 </span>            : </a>
-<a name="5951"><span class="lineNum">    5951 </span><span class="lineNoCov">          0 :                 if (drm_dp_read_dpcd_caps(port-&gt;mgr-&gt;aux, dpcd_ext) &lt; 0)</span></a>
-<a name="5952"><span class="lineNum">    5952 </span><span class="lineNoCov">          0 :                         return NULL;</span></a>
-<a name="5953"><span class="lineNum">    5953 </span>            : </a>
-<a name="5954"><span class="lineNum">    5954 </span><span class="lineNoCov">          0 :                 if ((dpcd_ext[DP_DOWNSTREAMPORT_PRESENT] &amp; DP_DWN_STRM_PORT_PRESENT) &amp;&amp;</span></a>
-<a name="5955"><span class="lineNum">    5955 </span>            :                     ((dpcd_ext[DP_DOWNSTREAMPORT_PRESENT] &amp; DP_DWN_STRM_PORT_TYPE_MASK)</a>
-<a name="5956"><span class="lineNum">    5956 </span>            :                      != DP_DWN_STRM_PORT_TYPE_ANALOG))</a>
-<a name="5957"><span class="lineNum">    5957 </span><span class="lineNoCov">          0 :                         return port-&gt;mgr-&gt;aux;</span></a>
-<a name="5958"><span class="lineNum">    5958 </span>            :         }</a>
-<a name="5959"><span class="lineNum">    5959 </span>            : </a>
-<a name="5960"><span class="lineNum">    5960 </span>            :         /*</a>
-<a name="5961"><span class="lineNum">    5961 </span>            :          * The check below verifies if the MST sink</a>
-<a name="5962"><span class="lineNum">    5962 </span>            :          * connected to the GPU is capable of DSC -</a>
-<a name="5963"><span class="lineNum">    5963 </span>            :          * therefore the endpoint needs to be</a>
-<a name="5964"><span class="lineNum">    5964 </span>            :          * both DSC and FEC capable.</a>
-<a name="5965"><span class="lineNum">    5965 </span>            :          */</a>
-<a name="5966"><span class="lineNum">    5966 </span><span class="lineNoCov">          0 :         if (drm_dp_dpcd_read(&amp;port-&gt;aux,</span></a>
-<a name="5967"><span class="lineNum">    5967 </span>            :            DP_DSC_SUPPORT, &amp;endpoint_dsc, 1) != 1)</a>
-<a name="5968"><span class="lineNum">    5968 </span>            :                 return NULL;</a>
-<a name="5969"><span class="lineNum">    5969 </span><span class="lineNoCov">          0 :         if (drm_dp_dpcd_read(&amp;port-&gt;aux,</span></a>
-<a name="5970"><span class="lineNum">    5970 </span>            :            DP_FEC_CAPABILITY, &amp;endpoint_fec, 1) != 1)</a>
-<a name="5971"><span class="lineNum">    5971 </span>            :                 return NULL;</a>
-<a name="5972"><span class="lineNum">    5972 </span><span class="lineNoCov">          0 :         if ((endpoint_dsc &amp; DP_DSC_DECOMPRESSION_IS_SUPPORTED) &amp;&amp;</span></a>
-<a name="5973"><span class="lineNum">    5973 </span><span class="lineNoCov">          0 :            (endpoint_fec &amp; DP_FEC_CAPABLE))</span></a>
-<a name="5974"><span class="lineNum">    5974 </span><span class="lineNoCov">          0 :                 return &amp;port-&gt;aux;</span></a>
-<a name="5975"><span class="lineNum">    5975 </span>            : </a>
-<a name="5976"><span class="lineNum">    5976 </span>            :         return NULL;</a>
-<a name="5977"><span class="lineNum">    5977 </span>            : }</a>
-<a name="5978"><span class="lineNum">    5978 </span>            : EXPORT_SYMBOL(drm_dp_mst_dsc_aux_for_port);</a>
+<a name="5924"><span class="lineNum">    5924 </span><span class="lineNoCov">          0 :                     (upstream_dsc &amp; DP_DSC_PASSTHROUGH_IS_SUPPORTED)) {</span></a>
+<a name="5925"><span class="lineNum">    5925 </span><span class="lineNoCov">          0 :                         port-&gt;passthrough_aux = &amp;immediate_upstream_port-&gt;aux;</span></a>
+<a name="5926"><span class="lineNum">    5926 </span><span class="lineNoCov">          0 :                         return &amp;port-&gt;aux;</span></a>
+<a name="5927"><span class="lineNum">    5927 </span>            :                 }</a>
+<a name="5928"><span class="lineNum">    5928 </span>            : </a>
+<a name="5929"><span class="lineNum">    5929 </span>            :                 /* Virtual DPCD decompression with DP-to-DP peer device */</a>
+<a name="5930"><span class="lineNum">    5930 </span>            :                 return &amp;immediate_upstream_port-&gt;aux;</a>
+<a name="5931"><span class="lineNum">    5931 </span>            :         }</a>
+<a name="5932"><span class="lineNum">    5932 </span>            : </a>
+<a name="5933"><span class="lineNum">    5933 </span>            :         /* Virtual DPCD decompression with DP-to-HDMI or Virtual DP Sink */</a>
+<a name="5934"><span class="lineNum">    5934 </span><span class="lineNoCov">          0 :         if (drm_dp_mst_is_virtual_dpcd(port))</span></a>
+<a name="5935"><span class="lineNum">    5935 </span><span class="lineNoCov">          0 :                 return &amp;port-&gt;aux;</span></a>
+<a name="5936"><span class="lineNum">    5936 </span>            : </a>
+<a name="5937"><span class="lineNum">    5937 </span>            :         /*</a>
+<a name="5938"><span class="lineNum">    5938 </span>            :          * Synaptics quirk</a>
+<a name="5939"><span class="lineNum">    5939 </span>            :          * Applies to ports for which:</a>
+<a name="5940"><span class="lineNum">    5940 </span>            :          * - Physical aux has Synaptics OUI</a>
+<a name="5941"><span class="lineNum">    5941 </span>            :          * - DPv1.4 or higher</a>
+<a name="5942"><span class="lineNum">    5942 </span>            :          * - Port is on primary branch device</a>
+<a name="5943"><span class="lineNum">    5943 </span>            :          * - Not a VGA adapter (DP_DWN_STRM_PORT_TYPE_ANALOG)</a>
+<a name="5944"><span class="lineNum">    5944 </span>            :          */</a>
+<a name="5945"><span class="lineNum">    5945 </span><span class="lineNoCov">          0 :         if (drm_dp_read_desc(port-&gt;mgr-&gt;aux, &amp;desc, true))</span></a>
+<a name="5946"><span class="lineNum">    5946 </span>            :                 return NULL;</a>
+<a name="5947"><span class="lineNum">    5947 </span>            : </a>
+<a name="5948"><span class="lineNum">    5948 </span><span class="lineNoCov">          0 :         if (drm_dp_has_quirk(&amp;desc, DP_DPCD_QUIRK_DSC_WITHOUT_VIRTUAL_DPCD) &amp;&amp;</span></a>
+<a name="5949"><span class="lineNum">    5949 </span><span class="lineNoCov">          0 :             port-&gt;mgr-&gt;dpcd[DP_DPCD_REV] &gt;= DP_DPCD_REV_14 &amp;&amp;</span></a>
+<a name="5950"><span class="lineNum">    5950 </span><span class="lineNoCov">          0 :             port-&gt;parent == port-&gt;mgr-&gt;mst_primary) {</span></a>
+<a name="5951"><span class="lineNum">    5951 </span>            :                 u8 dpcd_ext[DP_RECEIVER_CAP_SIZE];</a>
+<a name="5952"><span class="lineNum">    5952 </span>            : </a>
+<a name="5953"><span class="lineNum">    5953 </span><span class="lineNoCov">          0 :                 if (drm_dp_read_dpcd_caps(port-&gt;mgr-&gt;aux, dpcd_ext) &lt; 0)</span></a>
+<a name="5954"><span class="lineNum">    5954 </span><span class="lineNoCov">          0 :                         return NULL;</span></a>
+<a name="5955"><span class="lineNum">    5955 </span>            : </a>
+<a name="5956"><span class="lineNum">    5956 </span><span class="lineNoCov">          0 :                 if ((dpcd_ext[DP_DOWNSTREAMPORT_PRESENT] &amp; DP_DWN_STRM_PORT_PRESENT) &amp;&amp;</span></a>
+<a name="5957"><span class="lineNum">    5957 </span>            :                     ((dpcd_ext[DP_DOWNSTREAMPORT_PRESENT] &amp; DP_DWN_STRM_PORT_TYPE_MASK)</a>
+<a name="5958"><span class="lineNum">    5958 </span>            :                      != DP_DWN_STRM_PORT_TYPE_ANALOG))</a>
+<a name="5959"><span class="lineNum">    5959 </span><span class="lineNoCov">          0 :                         return port-&gt;mgr-&gt;aux;</span></a>
+<a name="5960"><span class="lineNum">    5960 </span>            :         }</a>
+<a name="5961"><span class="lineNum">    5961 </span>            : </a>
+<a name="5962"><span class="lineNum">    5962 </span>            :         /*</a>
+<a name="5963"><span class="lineNum">    5963 </span>            :          * The check below verifies if the MST sink</a>
+<a name="5964"><span class="lineNum">    5964 </span>            :          * connected to the GPU is capable of DSC -</a>
+<a name="5965"><span class="lineNum">    5965 </span>            :          * therefore the endpoint needs to be</a>
+<a name="5966"><span class="lineNum">    5966 </span>            :          * both DSC and FEC capable.</a>
+<a name="5967"><span class="lineNum">    5967 </span>            :          */</a>
+<a name="5968"><span class="lineNum">    5968 </span><span class="lineNoCov">          0 :         if (drm_dp_dpcd_read(&amp;port-&gt;aux,</span></a>
+<a name="5969"><span class="lineNum">    5969 </span>            :            DP_DSC_SUPPORT, &amp;endpoint_dsc, 1) != 1)</a>
+<a name="5970"><span class="lineNum">    5970 </span>            :                 return NULL;</a>
+<a name="5971"><span class="lineNum">    5971 </span><span class="lineNoCov">          0 :         if (drm_dp_dpcd_read(&amp;port-&gt;aux,</span></a>
+<a name="5972"><span class="lineNum">    5972 </span>            :            DP_FEC_CAPABILITY, &amp;endpoint_fec, 1) != 1)</a>
+<a name="5973"><span class="lineNum">    5973 </span>            :                 return NULL;</a>
+<a name="5974"><span class="lineNum">    5974 </span><span class="lineNoCov">          0 :         if ((endpoint_dsc &amp; DP_DSC_DECOMPRESSION_IS_SUPPORTED) &amp;&amp;</span></a>
+<a name="5975"><span class="lineNum">    5975 </span><span class="lineNoCov">          0 :            (endpoint_fec &amp; DP_FEC_CAPABLE))</span></a>
+<a name="5976"><span class="lineNum">    5976 </span><span class="lineNoCov">          0 :                 return &amp;port-&gt;aux;</span></a>
+<a name="5977"><span class="lineNum">    5977 </span>            : </a>
+<a name="5978"><span class="lineNum">    5978 </span>            :         return NULL;</a>
+<a name="5979"><span class="lineNum">    5979 </span>            : }</a>
+<a name="5980"><span class="lineNum">    5980 </span>            : EXPORT_SYMBOL(drm_dp_mst_dsc_aux_for_port);</a>
 </pre>
       </td>
     </tr>

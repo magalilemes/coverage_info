@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -436,7 +436,7 @@
 <a name="374"><span class="lineNum">     374 </span>            : </a>
 <a name="375"><span class="lineNum">     375 </span>            : static inline int task_sigpending(struct task_struct *p)</a>
 <a name="376"><span class="lineNum">     376 </span>            : {</a>
-<a name="377"><span class="lineNum">     377 </span><span class="lineCov">       1814 :         return unlikely(test_tsk_thread_flag(p,TIF_SIGPENDING));</span></a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineCov">       1254 :         return unlikely(test_tsk_thread_flag(p,TIF_SIGPENDING));</span></a>
 <a name="378"><span class="lineNum">     378 </span>            : }</a>
 <a name="379"><span class="lineNum">     379 </span>            : </a>
 <a name="380"><span class="lineNum">     380 </span>            : static inline int signal_pending(struct task_struct *p)</a>
@@ -446,9 +446,9 @@
 <a name="384"><span class="lineNum">     384 </span>            :          * behavior in terms of ensuring that we break out of wait loops</a>
 <a name="385"><span class="lineNum">     385 </span>            :          * so that notify signal callbacks can be processed.</a>
 <a name="386"><span class="lineNum">     386 </span>            :          */</a>
-<a name="387"><span class="lineNum">     387 </span><span class="lineCov">       1190 :         if (unlikely(test_tsk_thread_flag(p, TIF_NOTIFY_SIGNAL)))</span></a>
+<a name="387"><span class="lineNum">     387 </span><span class="lineCov">        826 :         if (unlikely(test_tsk_thread_flag(p, TIF_NOTIFY_SIGNAL)))</span></a>
 <a name="388"><span class="lineNum">     388 </span>            :                 return 1;</a>
-<a name="389"><span class="lineNum">     389 </span><span class="lineCov">        595 :         return task_sigpending(p);</span></a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineCov">        413 :         return task_sigpending(p);</span></a>
 <a name="390"><span class="lineNum">     390 </span>            : }</a>
 <a name="391"><span class="lineNum">     391 </span>            : </a>
 <a name="392"><span class="lineNum">     392 </span>            : static inline int __fatal_signal_pending(struct task_struct *p)</a>
@@ -458,14 +458,14 @@
 <a name="396"><span class="lineNum">     396 </span>            : </a>
 <a name="397"><span class="lineNum">     397 </span>            : static inline int fatal_signal_pending(struct task_struct *p)</a>
 <a name="398"><span class="lineNum">     398 </span>            : {</a>
-<a name="399"><span class="lineNum">     399 </span><span class="lineCov">        156 :         return task_sigpending(p) &amp;&amp; __fatal_signal_pending(p);</span></a>
+<a name="399"><span class="lineNum">     399 </span><span class="lineCov">        107 :         return task_sigpending(p) &amp;&amp; __fatal_signal_pending(p);</span></a>
 <a name="400"><span class="lineNum">     400 </span>            : }</a>
 <a name="401"><span class="lineNum">     401 </span>            : </a>
-<a name="402"><span class="lineNum">     402 </span><span class="lineCov">       1172 : static inline int signal_pending_state(unsigned int state, struct task_struct *p)</span></a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineCov">        817 : static inline int signal_pending_state(unsigned int state, struct task_struct *p)</span></a>
 <a name="403"><span class="lineNum">     403 </span>            : {</a>
-<a name="404"><span class="lineNum">     404 </span><span class="lineCov">       1172 :         if (!(state &amp; (TASK_INTERRUPTIBLE | TASK_WAKEKILL)))</span></a>
+<a name="404"><span class="lineNum">     404 </span><span class="lineCov">        817 :         if (!(state &amp; (TASK_INTERRUPTIBLE | TASK_WAKEKILL)))</span></a>
 <a name="405"><span class="lineNum">     405 </span>            :                 return 0;</a>
-<a name="406"><span class="lineNum">     406 </span><span class="lineCov">        595 :         if (!signal_pending(p))</span></a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineCov">        413 :         if (!signal_pending(p))</span></a>
 <a name="407"><span class="lineNum">     407 </span>            :                 return 0;</a>
 <a name="408"><span class="lineNum">     408 </span>            : </a>
 <a name="409"><span class="lineNum">     409 </span><span class="lineNoCov">          0 :         return (state &amp; TASK_INTERRUPTIBLE) || __fatal_signal_pending(p);</span></a>
@@ -658,9 +658,9 @@
 <a name="596"><span class="lineNum">     596 </span>            : </a>
 <a name="597"><span class="lineNum">     597 </span>            : static inline void sas_ss_reset(struct task_struct *p)</a>
 <a name="598"><span class="lineNum">     598 </span>            : {</a>
-<a name="599"><span class="lineNum">     599 </span><span class="lineCov">        156 :         p-&gt;sas_ss_sp = 0;</span></a>
-<a name="600"><span class="lineNum">     600 </span><span class="lineCov">        156 :         p-&gt;sas_ss_size = 0;</span></a>
-<a name="601"><span class="lineNum">     601 </span><span class="lineCov">        156 :         p-&gt;sas_ss_flags = SS_DISABLE;</span></a>
+<a name="599"><span class="lineNum">     599 </span><span class="lineCov">        107 :         p-&gt;sas_ss_sp = 0;</span></a>
+<a name="600"><span class="lineNum">     600 </span><span class="lineCov">        107 :         p-&gt;sas_ss_size = 0;</span></a>
+<a name="601"><span class="lineNum">     601 </span><span class="lineCov">        107 :         p-&gt;sas_ss_flags = SS_DISABLE;</span></a>
 <a name="602"><span class="lineNum">     602 </span>            : }</a>
 <a name="603"><span class="lineNum">     603 </span>            : </a>
 <a name="604"><span class="lineNum">     604 </span>            : static inline unsigned long sigsp(unsigned long sp, struct ksignal *ksig)</a>
@@ -734,12 +734,12 @@
 <a name="672"><span class="lineNum">     672 </span>            :  */</a>
 <a name="673"><span class="lineNum">     673 </span>            : static inline struct pid *task_pgrp(struct task_struct *task)</a>
 <a name="674"><span class="lineNum">     674 </span>            : {</a>
-<a name="675"><span class="lineNum">     675 </span><span class="lineCov">        412 :         return task-&gt;signal-&gt;pids[PIDTYPE_PGID];</span></a>
+<a name="675"><span class="lineNum">     675 </span><span class="lineCov">        293 :         return task-&gt;signal-&gt;pids[PIDTYPE_PGID];</span></a>
 <a name="676"><span class="lineNum">     676 </span>            : }</a>
 <a name="677"><span class="lineNum">     677 </span>            : </a>
 <a name="678"><span class="lineNum">     678 </span>            : static inline struct pid *task_session(struct task_struct *task)</a>
 <a name="679"><span class="lineNum">     679 </span>            : {</a>
-<a name="680"><span class="lineNum">     680 </span><span class="lineCov">        156 :         return task-&gt;signal-&gt;pids[PIDTYPE_SID];</span></a>
+<a name="680"><span class="lineNum">     680 </span><span class="lineCov">        107 :         return task-&gt;signal-&gt;pids[PIDTYPE_SID];</span></a>
 <a name="681"><span class="lineNum">     681 </span>            : }</a>
 <a name="682"><span class="lineNum">     682 </span>            : </a>
 <a name="683"><span class="lineNum">     683 </span>            : static inline int get_nr_threads(struct task_struct *task)</a>
@@ -749,7 +749,7 @@
 <a name="687"><span class="lineNum">     687 </span>            : </a>
 <a name="688"><span class="lineNum">     688 </span>            : static inline bool thread_group_leader(struct task_struct *p)</a>
 <a name="689"><span class="lineNum">     689 </span>            : {</a>
-<a name="690"><span class="lineNum">     690 </span><span class="lineCov">        128 :         return p-&gt;exit_signal &gt;= 0;</span></a>
+<a name="690"><span class="lineNum">     690 </span><span class="lineCov">         93 :         return p-&gt;exit_signal &gt;= 0;</span></a>
 <a name="691"><span class="lineNum">     691 </span>            : }</a>
 <a name="692"><span class="lineNum">     692 </span>            : </a>
 <a name="693"><span class="lineNum">     693 </span>            : static inline</a>
@@ -766,7 +766,7 @@
 <a name="704"><span class="lineNum">     704 </span>            : </a>
 <a name="705"><span class="lineNum">     705 </span>            : static inline int thread_group_empty(struct task_struct *p)</a>
 <a name="706"><span class="lineNum">     706 </span>            : {</a>
-<a name="707"><span class="lineNum">     707 </span><span class="lineCov">        768 :         return list_empty(&amp;p-&gt;thread_group);</span></a>
+<a name="707"><span class="lineNum">     707 </span><span class="lineCov">        558 :         return list_empty(&amp;p-&gt;thread_group);</span></a>
 <a name="708"><span class="lineNum">     708 </span>            : }</a>
 <a name="709"><span class="lineNum">     709 </span>            : </a>
 <a name="710"><span class="lineNum">     710 </span>            : #define delay_group_leader(p) \</a>
@@ -802,7 +802,7 @@
 <a name="740"><span class="lineNum">     740 </span>            : static inline unsigned long task_rlimit(const struct task_struct *task,</a>
 <a name="741"><span class="lineNum">     741 </span>            :                 unsigned int limit)</a>
 <a name="742"><span class="lineNum">     742 </span>            : {</a>
-<a name="743"><span class="lineNum">     743 </span><span class="lineCov">        156 :         return READ_ONCE(task-&gt;signal-&gt;rlim[limit].rlim_cur);</span></a>
+<a name="743"><span class="lineNum">     743 </span><span class="lineCov">        107 :         return READ_ONCE(task-&gt;signal-&gt;rlim[limit].rlim_cur);</span></a>
 <a name="744"><span class="lineNum">     744 </span>            : }</a>
 <a name="745"><span class="lineNum">     745 </span>            : </a>
 <a name="746"><span class="lineNum">     746 </span>            : static inline unsigned long task_rlimit_max(const struct task_struct *task,</a>
@@ -813,7 +813,7 @@
 <a name="751"><span class="lineNum">     751 </span>            : </a>
 <a name="752"><span class="lineNum">     752 </span>            : static inline unsigned long rlimit(unsigned int limit)</a>
 <a name="753"><span class="lineNum">     753 </span>            : {</a>
-<a name="754"><span class="lineNum">     754 </span><span class="lineCov">        312 :         return task_rlimit(current, limit);</span></a>
+<a name="754"><span class="lineNum">     754 </span><span class="lineCov">        214 :         return task_rlimit(current, limit);</span></a>
 <a name="755"><span class="lineNum">     755 </span>            : }</a>
 <a name="756"><span class="lineNum">     756 </span>            : </a>
 <a name="757"><span class="lineNum">     757 </span>            : static inline unsigned long rlimit_max(unsigned int limit)</a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -121,36 +121,36 @@
 <a name="59"><span class="lineNum">      59 </span>            :                         &quot;vm.max_map_count has been reached.\n&quot;);</a>
 <a name="60"><span class="lineNum">      60 </span>            : }</a>
 <a name="61"><span class="lineNum">      61 </span>            : </a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        240 : static int do_ops(struct host_vm_change *hvc, int end,</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">        120 : static int do_ops(struct host_vm_change *hvc, int end,</span></a>
 <a name="63"><span class="lineNum">      63 </span>            :                   int finished)</a>
 <a name="64"><span class="lineNum">      64 </span>            : {</a>
 <a name="65"><span class="lineNum">      65 </span>            :         struct host_vm_op *op;</a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">        240 :         int i, ret = 0;</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">        120 :         int i, ret = 0;</span></a>
 <a name="67"><span class="lineNum">      67 </span>            : </a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        480 :         for (i = 0; i &lt; end &amp;&amp; !ret; i++) {</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        240 :                 op = &amp;hvc-&gt;ops[i];</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        240 :                 switch (op-&gt;type) {</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        240 :         for (i = 0; i &lt; end &amp;&amp; !ret; i++) {</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">        120 :                 op = &amp;hvc-&gt;ops[i];</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">        120 :                 switch (op-&gt;type) {</span></a>
 <a name="71"><span class="lineNum">      71 </span>            :                 case MMAP:</a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">        120 :                         if (hvc-&gt;userspace)</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">         60 :                         if (hvc-&gt;userspace)</span></a>
 <a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 :                                 ret = map(&amp;hvc-&gt;mm-&gt;context.id, op-&gt;u.mmap.addr,</span></a>
 <a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 :                                           op-&gt;u.mmap.len, op-&gt;u.mmap.prot,</span></a>
 <a name="75"><span class="lineNum">      75 </span>            :                                           op-&gt;u.mmap.fd,</a>
 <a name="76"><span class="lineNum">      76 </span>            :                                           op-&gt;u.mmap.offset, finished,</a>
 <a name="77"><span class="lineNum">      77 </span>            :                                           &amp;hvc-&gt;data);</a>
 <a name="78"><span class="lineNum">      78 </span>            :                         else</a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        120 :                                 map_memory(op-&gt;u.mmap.addr, op-&gt;u.mmap.offset,</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         60 :                                 map_memory(op-&gt;u.mmap.addr, op-&gt;u.mmap.offset,</span></a>
 <a name="80"><span class="lineNum">      80 </span>            :                                            op-&gt;u.mmap.len, 1, 1, 1);</a>
 <a name="81"><span class="lineNum">      81 </span>            :                         break;</a>
 <a name="82"><span class="lineNum">      82 </span>            :                 case MUNMAP:</a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">        120 :                         if (hvc-&gt;userspace)</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">         60 :                         if (hvc-&gt;userspace)</span></a>
 <a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 :                                 ret = unmap(&amp;hvc-&gt;mm-&gt;context.id,</span></a>
 <a name="85"><span class="lineNum">      85 </span>            :                                             op-&gt;u.munmap.addr,</a>
 <a name="86"><span class="lineNum">      86 </span>            :                                             op-&gt;u.munmap.len, finished,</a>
 <a name="87"><span class="lineNum">      87 </span>            :                                             &amp;hvc-&gt;data);</a>
 <a name="88"><span class="lineNum">      88 </span>            :                         else</a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        240 :                                 ret = os_unmap_memory(</span></a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineCov">        120 :                                         (void *) op-&gt;u.munmap.addr,</span></a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">        120 :                                                       op-&gt;u.munmap.len);</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        120 :                                 ret = os_unmap_memory(</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">         60 :                                         (void *) op-&gt;u.munmap.addr,</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">         60 :                                                       op-&gt;u.munmap.len);</span></a>
 <a name="92"><span class="lineNum">      92 </span>            : </a>
 <a name="93"><span class="lineNum">      93 </span>            :                         break;</a>
 <a name="94"><span class="lineNum">      94 </span>            :                 case MPROTECT:</a>
@@ -174,26 +174,26 @@
 <a name="112"><span class="lineNum">     112 </span>            :                 }</a>
 <a name="113"><span class="lineNum">     113 </span>            :         }</a>
 <a name="114"><span class="lineNum">     114 </span>            : </a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        240 :         if (ret == -ENOMEM)</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        120 :         if (ret == -ENOMEM)</span></a>
 <a name="116"><span class="lineNum">     116 </span>            :                 report_enomem();</a>
 <a name="117"><span class="lineNum">     117 </span>            : </a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">        240 :         return ret;</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">        120 :         return ret;</span></a>
 <a name="119"><span class="lineNum">     119 </span>            : }</a>
 <a name="120"><span class="lineNum">     120 </span>            : </a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        120 : static int add_mmap(unsigned long virt, unsigned long phys, unsigned long len,</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineCov">         60 : static int add_mmap(unsigned long virt, unsigned long phys, unsigned long len,</span></a>
 <a name="122"><span class="lineNum">     122 </span>            :                     unsigned int prot, struct host_vm_change *hvc)</a>
 <a name="123"><span class="lineNum">     123 </span>            : {</a>
 <a name="124"><span class="lineNum">     124 </span>            :         __u64 offset;</a>
 <a name="125"><span class="lineNum">     125 </span>            :         struct host_vm_op *last;</a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineCov">        120 :         int fd = -1, ret = 0;</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">         60 :         int fd = -1, ret = 0;</span></a>
 <a name="127"><span class="lineNum">     127 </span>            : </a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineCov">        120 :         if (hvc-&gt;userspace)</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">         60 :         if (hvc-&gt;userspace)</span></a>
 <a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 :                 fd = phys_mapping(phys, &amp;offset);</span></a>
 <a name="130"><span class="lineNum">     130 </span>            :         else</a>
-<a name="131"><span class="lineNum">     131 </span><span class="lineCov">        120 :                 offset = phys;</span></a>
-<a name="132"><span class="lineNum">     132 </span><span class="lineCov">        120 :         if (hvc-&gt;index != 0) {</span></a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">        120 :                 last = &amp;hvc-&gt;ops[hvc-&gt;index - 1];</span></a>
-<a name="134"><span class="lineNum">     134 </span><span class="lineCov">        120 :                 if ((last-&gt;type == MMAP) &amp;&amp;</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineCov">         60 :                 offset = phys;</span></a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineCov">         60 :         if (hvc-&gt;index != 0) {</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">         60 :                 last = &amp;hvc-&gt;ops[hvc-&gt;index - 1];</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineCov">         60 :                 if ((last-&gt;type == MMAP) &amp;&amp;</span></a>
 <a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 :                    (last-&gt;u.mmap.addr + last-&gt;u.mmap.len == virt) &amp;&amp;</span></a>
 <a name="136"><span class="lineNum">     136 </span><span class="lineNoCov">          0 :                    (last-&gt;u.mmap.prot == prot) &amp;&amp; (last-&gt;u.mmap.fd == fd) &amp;&amp;</span></a>
 <a name="137"><span class="lineNum">     137 </span><span class="lineNoCov">          0 :                    (last-&gt;u.mmap.offset + last-&gt;u.mmap.len == offset)) {</span></a>
@@ -202,12 +202,12 @@
 <a name="140"><span class="lineNum">     140 </span>            :                 }</a>
 <a name="141"><span class="lineNum">     141 </span>            :         }</a>
 <a name="142"><span class="lineNum">     142 </span>            : </a>
-<a name="143"><span class="lineNum">     143 </span><span class="lineCov">        120 :         if (hvc-&gt;index == ARRAY_SIZE(hvc-&gt;ops)) {</span></a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineCov">        120 :                 ret = do_ops(hvc, ARRAY_SIZE(hvc-&gt;ops), 0);</span></a>
-<a name="145"><span class="lineNum">     145 </span><span class="lineCov">        120 :                 hvc-&gt;index = 0;</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineCov">         60 :         if (hvc-&gt;index == ARRAY_SIZE(hvc-&gt;ops)) {</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineCov">         60 :                 ret = do_ops(hvc, ARRAY_SIZE(hvc-&gt;ops), 0);</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">         60 :                 hvc-&gt;index = 0;</span></a>
 <a name="146"><span class="lineNum">     146 </span>            :         }</a>
 <a name="147"><span class="lineNum">     147 </span>            : </a>
-<a name="148"><span class="lineNum">     148 </span><span class="lineCov">        120 :         hvc-&gt;ops[hvc-&gt;index++] = ((struct host_vm_op)</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineCov">         60 :         hvc-&gt;ops[hvc-&gt;index++] = ((struct host_vm_op)</span></a>
 <a name="149"><span class="lineNum">     149 </span>            :                                   { .type       = MMAP,</a>
 <a name="150"><span class="lineNum">     150 </span>            :                                     .u = { .mmap = { .addr      = virt,</a>
 <a name="151"><span class="lineNum">     151 </span>            :                                                      .len       = len,</a>
@@ -215,34 +215,34 @@
 <a name="153"><span class="lineNum">     153 </span>            :                                                      .fd        = fd,</a>
 <a name="154"><span class="lineNum">     154 </span>            :                                                      .offset    = offset }</a>
 <a name="155"><span class="lineNum">     155 </span>            :                            } });</a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">        120 :         return ret;</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">         60 :         return ret;</span></a>
 <a name="157"><span class="lineNum">     157 </span>            : }</a>
 <a name="158"><span class="lineNum">     158 </span>            : </a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">        120 : static int add_munmap(unsigned long addr, unsigned long len,</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">         60 : static int add_munmap(unsigned long addr, unsigned long len,</span></a>
 <a name="160"><span class="lineNum">     160 </span>            :                       struct host_vm_change *hvc)</a>
 <a name="161"><span class="lineNum">     161 </span>            : {</a>
 <a name="162"><span class="lineNum">     162 </span>            :         struct host_vm_op *last;</a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">        120 :         int ret = 0;</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">         60 :         int ret = 0;</span></a>
 <a name="164"><span class="lineNum">     164 </span>            : </a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">        120 :         if (hvc-&gt;index != 0) {</span></a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">         90 :                 last = &amp;hvc-&gt;ops[hvc-&gt;index - 1];</span></a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">         90 :                 if ((last-&gt;type == MUNMAP) &amp;&amp;</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">         60 :         if (hvc-&gt;index != 0) {</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">         45 :                 last = &amp;hvc-&gt;ops[hvc-&gt;index - 1];</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">         45 :                 if ((last-&gt;type == MUNMAP) &amp;&amp;</span></a>
 <a name="168"><span class="lineNum">     168 </span><span class="lineNoCov">          0 :                    (last-&gt;u.munmap.addr + last-&gt;u.mmap.len == addr)) {</span></a>
 <a name="169"><span class="lineNum">     169 </span><span class="lineNoCov">          0 :                         last-&gt;u.munmap.len += len;</span></a>
 <a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 :                         return 0;</span></a>
 <a name="171"><span class="lineNum">     171 </span>            :                 }</a>
 <a name="172"><span class="lineNum">     172 </span>            :         }</a>
 <a name="173"><span class="lineNum">     173 </span>            : </a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">        120 :         if (hvc-&gt;index == ARRAY_SIZE(hvc-&gt;ops)) {</span></a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineCov">         90 :                 ret = do_ops(hvc, ARRAY_SIZE(hvc-&gt;ops), 0);</span></a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineCov">         90 :                 hvc-&gt;index = 0;</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">         60 :         if (hvc-&gt;index == ARRAY_SIZE(hvc-&gt;ops)) {</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">         45 :                 ret = do_ops(hvc, ARRAY_SIZE(hvc-&gt;ops), 0);</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">         45 :                 hvc-&gt;index = 0;</span></a>
 <a name="177"><span class="lineNum">     177 </span>            :         }</a>
 <a name="178"><span class="lineNum">     178 </span>            : </a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">        120 :         hvc-&gt;ops[hvc-&gt;index++] = ((struct host_vm_op)</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">         60 :         hvc-&gt;ops[hvc-&gt;index++] = ((struct host_vm_op)</span></a>
 <a name="180"><span class="lineNum">     180 </span>            :                                   { .type       = MUNMAP,</a>
 <a name="181"><span class="lineNum">     181 </span>            :                                     .u = { .munmap = { .addr    = addr,</a>
 <a name="182"><span class="lineNum">     182 </span>            :                                                        .len     = len } } });</a>
-<a name="183"><span class="lineNum">     183 </span><span class="lineCov">        120 :         return ret;</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">         60 :         return ret;</span></a>
 <a name="184"><span class="lineNum">     184 </span>            : }</a>
 <a name="185"><span class="lineNum">     185 </span>            : </a>
 <a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 : static int add_mprotect(unsigned long addr, unsigned long len,</span></a>
@@ -410,7 +410,7 @@
 <a name="348"><span class="lineNum">     348 </span>            :         }</a>
 <a name="349"><span class="lineNum">     349 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="350"><span class="lineNum">     350 </span>            : </a>
-<a name="351"><span class="lineNum">     351 </span><span class="lineCov">         30 : static int flush_tlb_kernel_range_common(unsigned long start, unsigned long end)</span></a>
+<a name="351"><span class="lineNum">     351 </span><span class="lineCov">         15 : static int flush_tlb_kernel_range_common(unsigned long start, unsigned long end)</span></a>
 <a name="352"><span class="lineNum">     352 </span>            : {</a>
 <a name="353"><span class="lineNum">     353 </span>            :         struct mm_struct *mm;</a>
 <a name="354"><span class="lineNum">     354 </span>            :         pgd_t *pgd;</a>
@@ -419,13 +419,13 @@
 <a name="357"><span class="lineNum">     357 </span>            :         pmd_t *pmd;</a>
 <a name="358"><span class="lineNum">     358 </span>            :         pte_t *pte;</a>
 <a name="359"><span class="lineNum">     359 </span>            :         unsigned long addr, last;</a>
-<a name="360"><span class="lineNum">     360 </span><span class="lineCov">         30 :         int updated = 0, err = 0, force = 0, userspace = 0;</span></a>
+<a name="360"><span class="lineNum">     360 </span><span class="lineCov">         15 :         int updated = 0, err = 0, force = 0, userspace = 0;</span></a>
 <a name="361"><span class="lineNum">     361 </span>            :         struct host_vm_change hvc;</a>
 <a name="362"><span class="lineNum">     362 </span>            : </a>
-<a name="363"><span class="lineNum">     363 </span><span class="lineCov">         30 :         mm = &amp;init_mm;</span></a>
-<a name="364"><span class="lineNum">     364 </span><span class="lineCov">         30 :         hvc = INIT_HVC(mm, force, userspace);</span></a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineCov">        180 :         for (addr = start; addr &lt; end;) {</span></a>
-<a name="366"><span class="lineNum">     366 </span><span class="lineCov">        240 :                 pgd = pgd_offset(mm, addr);</span></a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineCov">         15 :         mm = &amp;init_mm;</span></a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineCov">         15 :         hvc = INIT_HVC(mm, force, userspace);</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineCov">         90 :         for (addr = start; addr &lt; end;) {</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineCov">        120 :                 pgd = pgd_offset(mm, addr);</span></a>
 <a name="367"><span class="lineNum">     367 </span>            :                 if (!pgd_present(*pgd)) {</a>
 <a name="368"><span class="lineNum">     368 </span>            :                         last = ADD_ROUND(addr, PGDIR_SIZE);</a>
 <a name="369"><span class="lineNum">     369 </span>            :                         if (last &gt; end)</a>
@@ -441,7 +441,7 @@
 <a name="379"><span class="lineNum">     379 </span>            :                         continue;</a>
 <a name="380"><span class="lineNum">     380 </span>            :                 }</a>
 <a name="381"><span class="lineNum">     381 </span>            : </a>
-<a name="382"><span class="lineNum">     382 </span><span class="lineCov">        120 :                 p4d = p4d_offset(pgd, addr);</span></a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineCov">         60 :                 p4d = p4d_offset(pgd, addr);</span></a>
 <a name="383"><span class="lineNum">     383 </span>            :                 if (!p4d_present(*p4d)) {</a>
 <a name="384"><span class="lineNum">     384 </span>            :                         last = ADD_ROUND(addr, P4D_SIZE);</a>
 <a name="385"><span class="lineNum">     385 </span>            :                         if (last &gt; end)</a>
@@ -457,8 +457,8 @@
 <a name="395"><span class="lineNum">     395 </span>            :                         continue;</a>
 <a name="396"><span class="lineNum">     396 </span>            :                 }</a>
 <a name="397"><span class="lineNum">     397 </span>            : </a>
-<a name="398"><span class="lineNum">     398 </span><span class="lineCov">        120 :                 pud = pud_offset(p4d, addr);</span></a>
-<a name="399"><span class="lineNum">     399 </span><span class="lineCov">        120 :                 if (!pud_present(*pud)) {</span></a>
+<a name="398"><span class="lineNum">     398 </span><span class="lineCov">         60 :                 pud = pud_offset(p4d, addr);</span></a>
+<a name="399"><span class="lineNum">     399 </span><span class="lineCov">         60 :                 if (!pud_present(*pud)) {</span></a>
 <a name="400"><span class="lineNum">     400 </span><span class="lineNoCov">          0 :                         last = ADD_ROUND(addr, PUD_SIZE);</span></a>
 <a name="401"><span class="lineNum">     401 </span><span class="lineNoCov">          0 :                         if (last &gt; end)</span></a>
 <a name="402"><span class="lineNum">     402 </span><span class="lineNoCov">          0 :                                 last = end;</span></a>
@@ -473,8 +473,8 @@
 <a name="411"><span class="lineNum">     411 </span><span class="lineNoCov">          0 :                         continue;</span></a>
 <a name="412"><span class="lineNum">     412 </span>            :                 }</a>
 <a name="413"><span class="lineNum">     413 </span>            : </a>
-<a name="414"><span class="lineNum">     414 </span><span class="lineCov">        120 :                 pmd = pmd_offset(pud, addr);</span></a>
-<a name="415"><span class="lineNum">     415 </span><span class="lineCov">        120 :                 if (!pmd_present(*pmd)) {</span></a>
+<a name="414"><span class="lineNum">     414 </span><span class="lineCov">         60 :                 pmd = pmd_offset(pud, addr);</span></a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineCov">         60 :                 if (!pmd_present(*pmd)) {</span></a>
 <a name="416"><span class="lineNum">     416 </span><span class="lineNoCov">          0 :                         last = ADD_ROUND(addr, PMD_SIZE);</span></a>
 <a name="417"><span class="lineNum">     417 </span><span class="lineNoCov">          0 :                         if (last &gt; end)</span></a>
 <a name="418"><span class="lineNum">     418 </span><span class="lineNoCov">          0 :                                 last = end;</span></a>
@@ -489,29 +489,29 @@
 <a name="427"><span class="lineNum">     427 </span><span class="lineNoCov">          0 :                         continue;</span></a>
 <a name="428"><span class="lineNum">     428 </span>            :                 }</a>
 <a name="429"><span class="lineNum">     429 </span>            : </a>
-<a name="430"><span class="lineNum">     430 </span><span class="lineCov">        120 :                 pte = pte_offset_kernel(pmd, addr);</span></a>
-<a name="431"><span class="lineNum">     431 </span><span class="lineCov">        240 :                 if (!pte_present(*pte) || pte_newpage(*pte)) {</span></a>
-<a name="432"><span class="lineNum">     432 </span><span class="lineCov">        120 :                         updated = 1;</span></a>
-<a name="433"><span class="lineNum">     433 </span><span class="lineCov">        120 :                         err = add_munmap(addr, PAGE_SIZE, &amp;hvc);</span></a>
-<a name="434"><span class="lineNum">     434 </span><span class="lineCov">        120 :                         if (err &lt; 0)</span></a>
+<a name="430"><span class="lineNum">     430 </span><span class="lineCov">         60 :                 pte = pte_offset_kernel(pmd, addr);</span></a>
+<a name="431"><span class="lineNum">     431 </span><span class="lineCov">        120 :                 if (!pte_present(*pte) || pte_newpage(*pte)) {</span></a>
+<a name="432"><span class="lineNum">     432 </span><span class="lineCov">         60 :                         updated = 1;</span></a>
+<a name="433"><span class="lineNum">     433 </span><span class="lineCov">         60 :                         err = add_munmap(addr, PAGE_SIZE, &amp;hvc);</span></a>
+<a name="434"><span class="lineNum">     434 </span><span class="lineCov">         60 :                         if (err &lt; 0)</span></a>
 <a name="435"><span class="lineNum">     435 </span><span class="lineNoCov">          0 :                                 panic(&quot;munmap failed, errno = %d\n&quot;,</span></a>
 <a name="436"><span class="lineNum">     436 </span>            :                                       -err);</a>
-<a name="437"><span class="lineNum">     437 </span><span class="lineCov">        120 :                         if (pte_present(*pte))</span></a>
-<a name="438"><span class="lineNum">     438 </span><span class="lineCov">        120 :                                 err = add_mmap(addr, pte_val(*pte) &amp; PAGE_MASK,</span></a>
+<a name="437"><span class="lineNum">     437 </span><span class="lineCov">         60 :                         if (pte_present(*pte))</span></a>
+<a name="438"><span class="lineNum">     438 </span><span class="lineCov">         60 :                                 err = add_mmap(addr, pte_val(*pte) &amp; PAGE_MASK,</span></a>
 <a name="439"><span class="lineNum">     439 </span>            :                                                PAGE_SIZE, 0, &amp;hvc);</a>
 <a name="440"><span class="lineNum">     440 </span>            :                 }</a>
 <a name="441"><span class="lineNum">     441 </span><span class="lineNoCov">          0 :                 else if (pte_newprot(*pte)) {</span></a>
 <a name="442"><span class="lineNum">     442 </span><span class="lineNoCov">          0 :                         updated = 1;</span></a>
 <a name="443"><span class="lineNum">     443 </span><span class="lineNoCov">          0 :                         err = add_mprotect(addr, PAGE_SIZE, 0, &amp;hvc);</span></a>
 <a name="444"><span class="lineNum">     444 </span>            :                 }</a>
-<a name="445"><span class="lineNum">     445 </span><span class="lineCov">        120 :                 addr += PAGE_SIZE;</span></a>
+<a name="445"><span class="lineNum">     445 </span><span class="lineCov">         60 :                 addr += PAGE_SIZE;</span></a>
 <a name="446"><span class="lineNum">     446 </span>            :         }</a>
-<a name="447"><span class="lineNum">     447 </span><span class="lineCov">         30 :         if (!err)</span></a>
-<a name="448"><span class="lineNum">     448 </span><span class="lineCov">         30 :                 err = do_ops(&amp;hvc, hvc.index, 1);</span></a>
+<a name="447"><span class="lineNum">     447 </span><span class="lineCov">         15 :         if (!err)</span></a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineCov">         15 :                 err = do_ops(&amp;hvc, hvc.index, 1);</span></a>
 <a name="449"><span class="lineNum">     449 </span>            : </a>
-<a name="450"><span class="lineNum">     450 </span><span class="lineCov">         30 :         if (err &lt; 0)</span></a>
+<a name="450"><span class="lineNum">     450 </span><span class="lineCov">         15 :         if (err &lt; 0)</span></a>
 <a name="451"><span class="lineNum">     451 </span><span class="lineNoCov">          0 :                 panic(&quot;flush_tlb_kernel failed, errno = %d\n&quot;, err);</span></a>
-<a name="452"><span class="lineNum">     452 </span><span class="lineCov">         30 :         return updated;</span></a>
+<a name="452"><span class="lineNum">     452 </span><span class="lineCov">         15 :         return updated;</span></a>
 <a name="453"><span class="lineNum">     453 </span>            : }</a>
 <a name="454"><span class="lineNum">     454 </span>            : </a>
 <a name="455"><span class="lineNum">     455 </span><span class="lineNoCov">          0 : void flush_tlb_page(struct vm_area_struct *vma, unsigned long address)</span></a>
@@ -601,10 +601,10 @@
 <a name="539"><span class="lineNum">     539 </span><span class="lineNoCov">          0 :         flush_tlb_mm(current-&gt;mm);</span></a>
 <a name="540"><span class="lineNum">     540 </span>            : }</a>
 <a name="541"><span class="lineNum">     541 </span>            : </a>
-<a name="542"><span class="lineNum">     542 </span><span class="lineCov">         30 : void flush_tlb_kernel_range(unsigned long start, unsigned long end)</span></a>
+<a name="542"><span class="lineNum">     542 </span><span class="lineCov">         15 : void flush_tlb_kernel_range(unsigned long start, unsigned long end)</span></a>
 <a name="543"><span class="lineNum">     543 </span>            : {</a>
-<a name="544"><span class="lineNum">     544 </span><span class="lineCov">         30 :         flush_tlb_kernel_range_common(start, end);</span></a>
-<a name="545"><span class="lineNum">     545 </span><span class="lineCov">         30 : }</span></a>
+<a name="544"><span class="lineNum">     544 </span><span class="lineCov">         15 :         flush_tlb_kernel_range_common(start, end);</span></a>
+<a name="545"><span class="lineNum">     545 </span><span class="lineCov">         15 : }</span></a>
 <a name="546"><span class="lineNum">     546 </span>            : </a>
 <a name="547"><span class="lineNum">     547 </span><span class="lineNoCov">          0 : void flush_tlb_kernel_vm(void)</span></a>
 <a name="548"><span class="lineNum">     548 </span>            : {</a>

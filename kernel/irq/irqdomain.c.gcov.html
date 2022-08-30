@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -1813,11 +1813,11 @@
 <a name="1751"><span class="lineNum">    1751 </span>            :         }</a>
 <a name="1752"><span class="lineNum">    1752 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="1753"><span class="lineNum">    1753 </span>            : </a>
-<a name="1754"><span class="lineNum">    1754 </span><span class="lineCov">          4 : static int __irq_domain_activate_irq(struct irq_data *irqd, bool reserve)</span></a>
+<a name="1754"><span class="lineNum">    1754 </span><span class="lineCov">          2 : static int __irq_domain_activate_irq(struct irq_data *irqd, bool reserve)</span></a>
 <a name="1755"><span class="lineNum">    1755 </span>            : {</a>
-<a name="1756"><span class="lineNum">    1756 </span><span class="lineCov">          4 :         int ret = 0;</span></a>
+<a name="1756"><span class="lineNum">    1756 </span><span class="lineCov">          2 :         int ret = 0;</span></a>
 <a name="1757"><span class="lineNum">    1757 </span>            : </a>
-<a name="1758"><span class="lineNum">    1758 </span><span class="lineCov">          4 :         if (irqd &amp;&amp; irqd-&gt;domain) {</span></a>
+<a name="1758"><span class="lineNum">    1758 </span><span class="lineCov">          2 :         if (irqd &amp;&amp; irqd-&gt;domain) {</span></a>
 <a name="1759"><span class="lineNum">    1759 </span><span class="lineNoCov">          0 :                 struct irq_domain *domain = irqd-&gt;domain;</span></a>
 <a name="1760"><span class="lineNum">    1760 </span>            : </a>
 <a name="1761"><span class="lineNum">    1761 </span><span class="lineNoCov">          0 :                 if (irqd-&gt;parent_data)</span></a>
@@ -1830,7 +1830,7 @@
 <a name="1768"><span class="lineNum">    1768 </span><span class="lineNoCov">          0 :                                 __irq_domain_deactivate_irq(irqd-&gt;parent_data);</span></a>
 <a name="1769"><span class="lineNum">    1769 </span>            :                 }</a>
 <a name="1770"><span class="lineNum">    1770 </span>            :         }</a>
-<a name="1771"><span class="lineNum">    1771 </span><span class="lineCov">          4 :         return ret;</span></a>
+<a name="1771"><span class="lineNum">    1771 </span><span class="lineCov">          2 :         return ret;</span></a>
 <a name="1772"><span class="lineNum">    1772 </span>            : }</a>
 <a name="1773"><span class="lineNum">    1773 </span>            : </a>
 <a name="1774"><span class="lineNum">    1774 </span>            : /**</a>
@@ -1842,15 +1842,15 @@
 <a name="1780"><span class="lineNum">    1780 </span>            :  * This is the second step to call domain_ops-&gt;activate to program interrupt</a>
 <a name="1781"><span class="lineNum">    1781 </span>            :  * controllers, so the interrupt could actually get delivered.</a>
 <a name="1782"><span class="lineNum">    1782 </span>            :  */</a>
-<a name="1783"><span class="lineNum">    1783 </span><span class="lineCov">          4 : int irq_domain_activate_irq(struct irq_data *irq_data, bool reserve)</span></a>
+<a name="1783"><span class="lineNum">    1783 </span><span class="lineCov">          2 : int irq_domain_activate_irq(struct irq_data *irq_data, bool reserve)</span></a>
 <a name="1784"><span class="lineNum">    1784 </span>            : {</a>
-<a name="1785"><span class="lineNum">    1785 </span><span class="lineCov">          4 :         int ret = 0;</span></a>
+<a name="1785"><span class="lineNum">    1785 </span><span class="lineCov">          2 :         int ret = 0;</span></a>
 <a name="1786"><span class="lineNum">    1786 </span>            : </a>
-<a name="1787"><span class="lineNum">    1787 </span><span class="lineCov">          8 :         if (!irqd_is_activated(irq_data))</span></a>
-<a name="1788"><span class="lineNum">    1788 </span><span class="lineCov">          4 :                 ret = __irq_domain_activate_irq(irq_data, reserve);</span></a>
-<a name="1789"><span class="lineNum">    1789 </span><span class="lineCov">          4 :         if (!ret)</span></a>
-<a name="1790"><span class="lineNum">    1790 </span><span class="lineCov">          4 :                 irqd_set_activated(irq_data);</span></a>
-<a name="1791"><span class="lineNum">    1791 </span><span class="lineCov">          4 :         return ret;</span></a>
+<a name="1787"><span class="lineNum">    1787 </span><span class="lineCov">          4 :         if (!irqd_is_activated(irq_data))</span></a>
+<a name="1788"><span class="lineNum">    1788 </span><span class="lineCov">          2 :                 ret = __irq_domain_activate_irq(irq_data, reserve);</span></a>
+<a name="1789"><span class="lineNum">    1789 </span><span class="lineCov">          2 :         if (!ret)</span></a>
+<a name="1790"><span class="lineNum">    1790 </span><span class="lineCov">          2 :                 irqd_set_activated(irq_data);</span></a>
+<a name="1791"><span class="lineNum">    1791 </span><span class="lineCov">          2 :         return ret;</span></a>
 <a name="1792"><span class="lineNum">    1792 </span>            : }</a>
 <a name="1793"><span class="lineNum">    1793 </span>            : </a>
 <a name="1794"><span class="lineNum">    1794 </span>            : /**</a>

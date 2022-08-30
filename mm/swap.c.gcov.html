@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -1190,20 +1190,20 @@
 <a name="1128"><span class="lineNum">    1128 </span>            : /*</a>
 <a name="1129"><span class="lineNum">    1129 </span>            :  * Perform any setup for the swap system</a>
 <a name="1130"><span class="lineNum">    1130 </span>            :  */</a>
-<a name="1131"><span class="lineNum">    1131 </span><span class="lineCov">          2 : void __init swap_setup(void)</span></a>
+<a name="1131"><span class="lineNum">    1131 </span><span class="lineCov">          1 : void __init swap_setup(void)</span></a>
 <a name="1132"><span class="lineNum">    1132 </span>            : {</a>
-<a name="1133"><span class="lineNum">    1133 </span><span class="lineCov">          2 :         unsigned long megs = totalram_pages() &gt;&gt; (20 - PAGE_SHIFT);</span></a>
+<a name="1133"><span class="lineNum">    1133 </span><span class="lineCov">          1 :         unsigned long megs = totalram_pages() &gt;&gt; (20 - PAGE_SHIFT);</span></a>
 <a name="1134"><span class="lineNum">    1134 </span>            : </a>
 <a name="1135"><span class="lineNum">    1135 </span>            :         /* Use a smaller cluster for small-memory machines */</a>
-<a name="1136"><span class="lineNum">    1136 </span><span class="lineCov">          2 :         if (megs &lt; 16)</span></a>
+<a name="1136"><span class="lineNum">    1136 </span><span class="lineCov">          1 :         if (megs &lt; 16)</span></a>
 <a name="1137"><span class="lineNum">    1137 </span><span class="lineNoCov">          0 :                 page_cluster = 2;</span></a>
 <a name="1138"><span class="lineNum">    1138 </span>            :         else</a>
-<a name="1139"><span class="lineNum">    1139 </span><span class="lineCov">          2 :                 page_cluster = 3;</span></a>
+<a name="1139"><span class="lineNum">    1139 </span><span class="lineCov">          1 :                 page_cluster = 3;</span></a>
 <a name="1140"><span class="lineNum">    1140 </span>            :         /*</a>
 <a name="1141"><span class="lineNum">    1141 </span>            :          * Right now other parts of the system means that we</a>
 <a name="1142"><span class="lineNum">    1142 </span>            :          * _really_ don't want to cluster much more</a>
 <a name="1143"><span class="lineNum">    1143 </span>            :          */</a>
-<a name="1144"><span class="lineNum">    1144 </span><span class="lineCov">          2 : }</span></a>
+<a name="1144"><span class="lineNum">    1144 </span><span class="lineCov">          1 : }</span></a>
 </pre>
       </td>
     </tr>

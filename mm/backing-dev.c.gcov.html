@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -279,33 +279,33 @@
 <a name="217"><span class="lineNum">     217 </span>            : };</a>
 <a name="218"><span class="lineNum">     218 </span>            : ATTRIBUTE_GROUPS(bdi_dev);</a>
 <a name="219"><span class="lineNum">     219 </span>            : </a>
-<a name="220"><span class="lineNum">     220 </span><span class="lineCov">          2 : static __init int bdi_class_init(void)</span></a>
+<a name="220"><span class="lineNum">     220 </span><span class="lineCov">          1 : static __init int bdi_class_init(void)</span></a>
 <a name="221"><span class="lineNum">     221 </span>            : {</a>
-<a name="222"><span class="lineNum">     222 </span><span class="lineCov">          2 :         bdi_class = class_create(THIS_MODULE, &quot;bdi&quot;);</span></a>
-<a name="223"><span class="lineNum">     223 </span><span class="lineCov">          4 :         if (IS_ERR(bdi_class))</span></a>
+<a name="222"><span class="lineNum">     222 </span><span class="lineCov">          1 :         bdi_class = class_create(THIS_MODULE, &quot;bdi&quot;);</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineCov">          2 :         if (IS_ERR(bdi_class))</span></a>
 <a name="224"><span class="lineNum">     224 </span><span class="lineNoCov">          0 :                 return PTR_ERR(bdi_class);</span></a>
 <a name="225"><span class="lineNum">     225 </span>            : </a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">          2 :         bdi_class-&gt;dev_groups = bdi_dev_groups;</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">          1 :         bdi_class-&gt;dev_groups = bdi_dev_groups;</span></a>
 <a name="227"><span class="lineNum">     227 </span>            :         bdi_debug_init();</a>
 <a name="228"><span class="lineNum">     228 </span>            : </a>
-<a name="229"><span class="lineNum">     229 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="230"><span class="lineNum">     230 </span>            : }</a>
 <a name="231"><span class="lineNum">     231 </span>            : postcore_initcall(bdi_class_init);</a>
 <a name="232"><span class="lineNum">     232 </span>            : </a>
 <a name="233"><span class="lineNum">     233 </span>            : static int bdi_init(struct backing_dev_info *bdi);</a>
 <a name="234"><span class="lineNum">     234 </span>            : </a>
-<a name="235"><span class="lineNum">     235 </span><span class="lineCov">          2 : static int __init default_bdi_init(void)</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineCov">          1 : static int __init default_bdi_init(void)</span></a>
 <a name="236"><span class="lineNum">     236 </span>            : {</a>
 <a name="237"><span class="lineNum">     237 </span>            :         int err;</a>
 <a name="238"><span class="lineNum">     238 </span>            : </a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineCov">          2 :         bdi_wq = alloc_workqueue(&quot;writeback&quot;, WQ_MEM_RECLAIM | WQ_UNBOUND |</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">          1 :         bdi_wq = alloc_workqueue(&quot;writeback&quot;, WQ_MEM_RECLAIM | WQ_UNBOUND |</span></a>
 <a name="240"><span class="lineNum">     240 </span>            :                                  WQ_SYSFS, 0);</a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineCov">          2 :         if (!bdi_wq)</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">          1 :         if (!bdi_wq)</span></a>
 <a name="242"><span class="lineNum">     242 </span>            :                 return -ENOMEM;</a>
 <a name="243"><span class="lineNum">     243 </span>            : </a>
-<a name="244"><span class="lineNum">     244 </span><span class="lineCov">          2 :         err = bdi_init(&amp;noop_backing_dev_info);</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineCov">          1 :         err = bdi_init(&amp;noop_backing_dev_info);</span></a>
 <a name="245"><span class="lineNum">     245 </span>            : </a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineCov">          2 :         return err;</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">          1 :         return err;</span></a>
 <a name="247"><span class="lineNum">     247 </span>            : }</a>
 <a name="248"><span class="lineNum">     248 </span>            : subsys_initcall(default_bdi_init);</a>
 <a name="249"><span class="lineNum">     249 </span>            : </a>
@@ -347,40 +347,40 @@
 <a name="285"><span class="lineNum">     285 </span>            :  */</a>
 <a name="286"><span class="lineNum">     286 </span>            : #define INIT_BW         (100 &lt;&lt; (20 - PAGE_SHIFT))</a>
 <a name="287"><span class="lineNum">     287 </span>            : </a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          2 : static int wb_init(struct bdi_writeback *wb, struct backing_dev_info *bdi,</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          1 : static int wb_init(struct bdi_writeback *wb, struct backing_dev_info *bdi,</span></a>
 <a name="289"><span class="lineNum">     289 </span>            :                    gfp_t gfp)</a>
 <a name="290"><span class="lineNum">     290 </span>            : {</a>
 <a name="291"><span class="lineNum">     291 </span>            :         int i, err;</a>
 <a name="292"><span class="lineNum">     292 </span>            : </a>
-<a name="293"><span class="lineNum">     293 </span><span class="lineCov">          2 :         memset(wb, 0, sizeof(*wb));</span></a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineCov">          1 :         memset(wb, 0, sizeof(*wb));</span></a>
 <a name="294"><span class="lineNum">     294 </span>            : </a>
-<a name="295"><span class="lineNum">     295 </span><span class="lineCov">          2 :         wb-&gt;bdi = bdi;</span></a>
-<a name="296"><span class="lineNum">     296 </span><span class="lineCov">          2 :         wb-&gt;last_old_flush = jiffies;</span></a>
-<a name="297"><span class="lineNum">     297 </span><span class="lineCov">          4 :         INIT_LIST_HEAD(&amp;wb-&gt;b_dirty);</span></a>
-<a name="298"><span class="lineNum">     298 </span><span class="lineCov">          4 :         INIT_LIST_HEAD(&amp;wb-&gt;b_io);</span></a>
-<a name="299"><span class="lineNum">     299 </span><span class="lineCov">          4 :         INIT_LIST_HEAD(&amp;wb-&gt;b_more_io);</span></a>
-<a name="300"><span class="lineNum">     300 </span><span class="lineCov">          4 :         INIT_LIST_HEAD(&amp;wb-&gt;b_dirty_time);</span></a>
-<a name="301"><span class="lineNum">     301 </span><span class="lineCov">          2 :         spin_lock_init(&amp;wb-&gt;list_lock);</span></a>
+<a name="295"><span class="lineNum">     295 </span><span class="lineCov">          1 :         wb-&gt;bdi = bdi;</span></a>
+<a name="296"><span class="lineNum">     296 </span><span class="lineCov">          1 :         wb-&gt;last_old_flush = jiffies;</span></a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;wb-&gt;b_dirty);</span></a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;wb-&gt;b_io);</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;wb-&gt;b_more_io);</span></a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;wb-&gt;b_dirty_time);</span></a>
+<a name="301"><span class="lineNum">     301 </span><span class="lineCov">          1 :         spin_lock_init(&amp;wb-&gt;list_lock);</span></a>
 <a name="302"><span class="lineNum">     302 </span>            : </a>
-<a name="303"><span class="lineNum">     303 </span><span class="lineCov">          4 :         atomic_set(&amp;wb-&gt;writeback_inodes, 0);</span></a>
-<a name="304"><span class="lineNum">     304 </span><span class="lineCov">          2 :         wb-&gt;bw_time_stamp = jiffies;</span></a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          2 :         wb-&gt;balanced_dirty_ratelimit = INIT_BW;</span></a>
-<a name="306"><span class="lineNum">     306 </span><span class="lineCov">          2 :         wb-&gt;dirty_ratelimit = INIT_BW;</span></a>
-<a name="307"><span class="lineNum">     307 </span><span class="lineCov">          2 :         wb-&gt;write_bandwidth = INIT_BW;</span></a>
-<a name="308"><span class="lineNum">     308 </span><span class="lineCov">          2 :         wb-&gt;avg_write_bandwidth = INIT_BW;</span></a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineCov">          2 :         atomic_set(&amp;wb-&gt;writeback_inodes, 0);</span></a>
+<a name="304"><span class="lineNum">     304 </span><span class="lineCov">          1 :         wb-&gt;bw_time_stamp = jiffies;</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          1 :         wb-&gt;balanced_dirty_ratelimit = INIT_BW;</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineCov">          1 :         wb-&gt;dirty_ratelimit = INIT_BW;</span></a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineCov">          1 :         wb-&gt;write_bandwidth = INIT_BW;</span></a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineCov">          1 :         wb-&gt;avg_write_bandwidth = INIT_BW;</span></a>
 <a name="309"><span class="lineNum">     309 </span>            : </a>
-<a name="310"><span class="lineNum">     310 </span><span class="lineCov">          2 :         spin_lock_init(&amp;wb-&gt;work_lock);</span></a>
-<a name="311"><span class="lineNum">     311 </span><span class="lineCov">          4 :         INIT_LIST_HEAD(&amp;wb-&gt;work_list);</span></a>
-<a name="312"><span class="lineNum">     312 </span><span class="lineCov">          4 :         INIT_DELAYED_WORK(&amp;wb-&gt;dwork, wb_workfn);</span></a>
-<a name="313"><span class="lineNum">     313 </span><span class="lineCov">          4 :         INIT_DELAYED_WORK(&amp;wb-&gt;bw_dwork, wb_update_bandwidth_workfn);</span></a>
-<a name="314"><span class="lineNum">     314 </span><span class="lineCov">          2 :         wb-&gt;dirty_sleep = jiffies;</span></a>
+<a name="310"><span class="lineNum">     310 </span><span class="lineCov">          1 :         spin_lock_init(&amp;wb-&gt;work_lock);</span></a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;wb-&gt;work_list);</span></a>
+<a name="312"><span class="lineNum">     312 </span><span class="lineCov">          2 :         INIT_DELAYED_WORK(&amp;wb-&gt;dwork, wb_workfn);</span></a>
+<a name="313"><span class="lineNum">     313 </span><span class="lineCov">          2 :         INIT_DELAYED_WORK(&amp;wb-&gt;bw_dwork, wb_update_bandwidth_workfn);</span></a>
+<a name="314"><span class="lineNum">     314 </span><span class="lineCov">          1 :         wb-&gt;dirty_sleep = jiffies;</span></a>
 <a name="315"><span class="lineNum">     315 </span>            : </a>
-<a name="316"><span class="lineNum">     316 </span><span class="lineCov">          2 :         err = fprop_local_init_percpu(&amp;wb-&gt;completions, gfp);</span></a>
-<a name="317"><span class="lineNum">     317 </span><span class="lineCov">          2 :         if (err)</span></a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineCov">          1 :         err = fprop_local_init_percpu(&amp;wb-&gt;completions, gfp);</span></a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineCov">          1 :         if (err)</span></a>
 <a name="318"><span class="lineNum">     318 </span>            :                 return err;</a>
 <a name="319"><span class="lineNum">     319 </span>            : </a>
-<a name="320"><span class="lineNum">     320 </span><span class="lineCov">          8 :         for (i = 0; i &lt; NR_WB_STAT_ITEMS; i++) {</span></a>
-<a name="321"><span class="lineNum">     321 </span><span class="lineCov">         16 :                 err = percpu_counter_init(&amp;wb-&gt;stat[i], 0, gfp);</span></a>
+<a name="320"><span class="lineNum">     320 </span><span class="lineCov">          4 :         for (i = 0; i &lt; NR_WB_STAT_ITEMS; i++) {</span></a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineCov">          8 :                 err = percpu_counter_init(&amp;wb-&gt;stat[i], 0, gfp);</span></a>
 <a name="322"><span class="lineNum">     322 </span>            :                 if (err)</a>
 <a name="323"><span class="lineNum">     323 </span>            :                         goto out_destroy_stat;</a>
 <a name="324"><span class="lineNum">     324 </span>            :         }</a>
@@ -827,7 +827,7 @@
 <a name="765"><span class="lineNum">     765 </span>            : </a>
 <a name="766"><span class="lineNum">     766 </span>            : static int cgwb_bdi_init(struct backing_dev_info *bdi)</a>
 <a name="767"><span class="lineNum">     767 </span>            : {</a>
-<a name="768"><span class="lineNum">     768 </span><span class="lineCov">          2 :         return wb_init(&amp;bdi-&gt;wb, bdi, GFP_KERNEL);</span></a>
+<a name="768"><span class="lineNum">     768 </span><span class="lineCov">          1 :         return wb_init(&amp;bdi-&gt;wb, bdi, GFP_KERNEL);</span></a>
 <a name="769"><span class="lineNum">     769 </span>            : }</a>
 <a name="770"><span class="lineNum">     770 </span>            : </a>
 <a name="771"><span class="lineNum">     771 </span>            : static void cgwb_bdi_unregister(struct backing_dev_info *bdi) { }</a>
@@ -844,23 +844,23 @@
 <a name="782"><span class="lineNum">     782 </span>            : </a>
 <a name="783"><span class="lineNum">     783 </span>            : #endif  /* CONFIG_CGROUP_WRITEBACK */</a>
 <a name="784"><span class="lineNum">     784 </span>            : </a>
-<a name="785"><span class="lineNum">     785 </span><span class="lineCov">          2 : static int bdi_init(struct backing_dev_info *bdi)</span></a>
+<a name="785"><span class="lineNum">     785 </span><span class="lineCov">          1 : static int bdi_init(struct backing_dev_info *bdi)</span></a>
 <a name="786"><span class="lineNum">     786 </span>            : {</a>
 <a name="787"><span class="lineNum">     787 </span>            :         int ret;</a>
 <a name="788"><span class="lineNum">     788 </span>            : </a>
-<a name="789"><span class="lineNum">     789 </span><span class="lineCov">          2 :         bdi-&gt;dev = NULL;</span></a>
+<a name="789"><span class="lineNum">     789 </span><span class="lineCov">          1 :         bdi-&gt;dev = NULL;</span></a>
 <a name="790"><span class="lineNum">     790 </span>            : </a>
-<a name="791"><span class="lineNum">     791 </span><span class="lineCov">          4 :         kref_init(&amp;bdi-&gt;refcnt);</span></a>
-<a name="792"><span class="lineNum">     792 </span><span class="lineCov">          2 :         bdi-&gt;min_ratio = 0;</span></a>
-<a name="793"><span class="lineNum">     793 </span><span class="lineCov">          2 :         bdi-&gt;max_ratio = 100;</span></a>
-<a name="794"><span class="lineNum">     794 </span><span class="lineCov">          2 :         bdi-&gt;max_prop_frac = FPROP_FRAC_BASE;</span></a>
-<a name="795"><span class="lineNum">     795 </span><span class="lineCov">          4 :         INIT_LIST_HEAD(&amp;bdi-&gt;bdi_list);</span></a>
-<a name="796"><span class="lineNum">     796 </span><span class="lineCov">          4 :         INIT_LIST_HEAD(&amp;bdi-&gt;wb_list);</span></a>
-<a name="797"><span class="lineNum">     797 </span><span class="lineCov">          2 :         init_waitqueue_head(&amp;bdi-&gt;wb_waitq);</span></a>
+<a name="791"><span class="lineNum">     791 </span><span class="lineCov">          2 :         kref_init(&amp;bdi-&gt;refcnt);</span></a>
+<a name="792"><span class="lineNum">     792 </span><span class="lineCov">          1 :         bdi-&gt;min_ratio = 0;</span></a>
+<a name="793"><span class="lineNum">     793 </span><span class="lineCov">          1 :         bdi-&gt;max_ratio = 100;</span></a>
+<a name="794"><span class="lineNum">     794 </span><span class="lineCov">          1 :         bdi-&gt;max_prop_frac = FPROP_FRAC_BASE;</span></a>
+<a name="795"><span class="lineNum">     795 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;bdi-&gt;bdi_list);</span></a>
+<a name="796"><span class="lineNum">     796 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;bdi-&gt;wb_list);</span></a>
+<a name="797"><span class="lineNum">     797 </span><span class="lineCov">          1 :         init_waitqueue_head(&amp;bdi-&gt;wb_waitq);</span></a>
 <a name="798"><span class="lineNum">     798 </span>            : </a>
-<a name="799"><span class="lineNum">     799 </span><span class="lineCov">          2 :         ret = cgwb_bdi_init(bdi);</span></a>
+<a name="799"><span class="lineNum">     799 </span><span class="lineCov">          1 :         ret = cgwb_bdi_init(bdi);</span></a>
 <a name="800"><span class="lineNum">     800 </span>            : </a>
-<a name="801"><span class="lineNum">     801 </span><span class="lineCov">          2 :         return ret;</span></a>
+<a name="801"><span class="lineNum">     801 </span><span class="lineCov">          1 :         return ret;</span></a>
 <a name="802"><span class="lineNum">     802 </span>            : }</a>
 <a name="803"><span class="lineNum">     803 </span>            : </a>
 <a name="804"><span class="lineNum">     804 </span><span class="lineNoCov">          0 : struct backing_dev_info *bdi_alloc(int node_id)</span></a>

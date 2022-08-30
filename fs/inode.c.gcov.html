@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">16</td>
@@ -194,10 +194,10 @@
 <a name="132"><span class="lineNum">     132 </span>            :         { }</a>
 <a name="133"><span class="lineNum">     133 </span>            : };</a>
 <a name="134"><span class="lineNum">     134 </span>            : </a>
-<a name="135"><span class="lineNum">     135 </span><span class="lineCov">          2 : static int __init init_fs_inode_sysctls(void)</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineCov">          1 : static int __init init_fs_inode_sysctls(void)</span></a>
 <a name="136"><span class="lineNum">     136 </span>            : {</a>
-<a name="137"><span class="lineNum">     137 </span><span class="lineCov">          2 :         register_sysctl_init(&quot;fs&quot;, inodes_sysctls);</span></a>
-<a name="138"><span class="lineNum">     138 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineCov">          1 :         register_sysctl_init(&quot;fs&quot;, inodes_sysctls);</span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="139"><span class="lineNum">     139 </span>            : }</a>
 <a name="140"><span class="lineNum">     140 </span>            : early_initcall(init_fs_inode_sysctls);</a>
 <a name="141"><span class="lineNum">     141 </span>            : #endif</a>
@@ -215,38 +215,38 @@
 <a name="153"><span class="lineNum">     153 </span>            :  * These are initializations that need to be done on every inode</a>
 <a name="154"><span class="lineNum">     154 </span>            :  * allocation as the fields are not initialised by slab allocation.</a>
 <a name="155"><span class="lineNum">     155 </span>            :  */</a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">         34 : int inode_init_always(struct super_block *sb, struct inode *inode)</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">         17 : int inode_init_always(struct super_block *sb, struct inode *inode)</span></a>
 <a name="157"><span class="lineNum">     157 </span>            : {</a>
 <a name="158"><span class="lineNum">     158 </span>            :         static const struct inode_operations empty_iops;</a>
 <a name="159"><span class="lineNum">     159 </span>            :         static const struct file_operations no_open_fops = {.open = no_open};</a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">         34 :         struct address_space *const mapping = &amp;inode-&gt;i_data;</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">         17 :         struct address_space *const mapping = &amp;inode-&gt;i_data;</span></a>
 <a name="161"><span class="lineNum">     161 </span>            : </a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineCov">         34 :         inode-&gt;i_sb = sb;</span></a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">         34 :         inode-&gt;i_blkbits = sb-&gt;s_blocksize_bits;</span></a>
-<a name="164"><span class="lineNum">     164 </span><span class="lineCov">         34 :         inode-&gt;i_flags = 0;</span></a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">         68 :         atomic64_set(&amp;inode-&gt;i_sequence, 0);</span></a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">         68 :         atomic_set(&amp;inode-&gt;i_count, 1);</span></a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">         34 :         inode-&gt;i_op = &amp;empty_iops;</span></a>
-<a name="168"><span class="lineNum">     168 </span><span class="lineCov">         34 :         inode-&gt;i_fop = &amp;no_open_fops;</span></a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineCov">         34 :         inode-&gt;i_ino = 0;</span></a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">         34 :         inode-&gt;__i_nlink = 1;</span></a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">         34 :         inode-&gt;i_opflags = 0;</span></a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">         34 :         if (sb-&gt;s_xattr)</span></a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineCov">         17 :         inode-&gt;i_sb = sb;</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">         17 :         inode-&gt;i_blkbits = sb-&gt;s_blocksize_bits;</span></a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineCov">         17 :         inode-&gt;i_flags = 0;</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">         34 :         atomic64_set(&amp;inode-&gt;i_sequence, 0);</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">         34 :         atomic_set(&amp;inode-&gt;i_count, 1);</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">         17 :         inode-&gt;i_op = &amp;empty_iops;</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">         17 :         inode-&gt;i_fop = &amp;no_open_fops;</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">         17 :         inode-&gt;i_ino = 0;</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">         17 :         inode-&gt;__i_nlink = 1;</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">         17 :         inode-&gt;i_opflags = 0;</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">         17 :         if (sb-&gt;s_xattr)</span></a>
 <a name="173"><span class="lineNum">     173 </span><span class="lineNoCov">          0 :                 inode-&gt;i_opflags |= IOP_XATTR;</span></a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">         34 :         i_uid_write(inode, 0);</span></a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineCov">         34 :         i_gid_write(inode, 0);</span></a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineCov">         68 :         atomic_set(&amp;inode-&gt;i_writecount, 0);</span></a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">         34 :         inode-&gt;i_size = 0;</span></a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">         34 :         inode-&gt;i_write_hint = WRITE_LIFE_NOT_SET;</span></a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">         34 :         inode-&gt;i_blocks = 0;</span></a>
-<a name="180"><span class="lineNum">     180 </span><span class="lineCov">         34 :         inode-&gt;i_bytes = 0;</span></a>
-<a name="181"><span class="lineNum">     181 </span><span class="lineCov">         34 :         inode-&gt;i_generation = 0;</span></a>
-<a name="182"><span class="lineNum">     182 </span><span class="lineCov">         34 :         inode-&gt;i_pipe = NULL;</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">         17 :         i_uid_write(inode, 0);</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">         17 :         i_gid_write(inode, 0);</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">         34 :         atomic_set(&amp;inode-&gt;i_writecount, 0);</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">         17 :         inode-&gt;i_size = 0;</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">         17 :         inode-&gt;i_write_hint = WRITE_LIFE_NOT_SET;</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">         17 :         inode-&gt;i_blocks = 0;</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">         17 :         inode-&gt;i_bytes = 0;</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">         17 :         inode-&gt;i_generation = 0;</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineCov">         17 :         inode-&gt;i_pipe = NULL;</span></a>
 <a name="183"><span class="lineNum">     183 </span>            :         inode-&gt;i_cdev = NULL;</a>
 <a name="184"><span class="lineNum">     184 </span>            :         inode-&gt;i_link = NULL;</a>
 <a name="185"><span class="lineNum">     185 </span>            :         inode-&gt;i_dir_seq = 0;</a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineCov">         34 :         inode-&gt;i_rdev = 0;</span></a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">         34 :         inode-&gt;dirtied_when = 0;</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">         17 :         inode-&gt;i_rdev = 0;</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">         17 :         inode-&gt;dirtied_when = 0;</span></a>
 <a name="188"><span class="lineNum">     188 </span>            : </a>
 <a name="189"><span class="lineNum">     189 </span>            : #ifdef CONFIG_CGROUP_WRITEBACK</a>
 <a name="190"><span class="lineNum">     190 </span>            :         inode-&gt;i_wb_frn_winner = 0;</a>
@@ -254,43 +254,43 @@
 <a name="192"><span class="lineNum">     192 </span>            :         inode-&gt;i_wb_frn_history = 0;</a>
 <a name="193"><span class="lineNum">     193 </span>            : #endif</a>
 <a name="194"><span class="lineNum">     194 </span>            : </a>
-<a name="195"><span class="lineNum">     195 </span><span class="lineCov">         34 :         if (security_inode_alloc(inode))</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineCov">         17 :         if (security_inode_alloc(inode))</span></a>
 <a name="196"><span class="lineNum">     196 </span>            :                 goto out;</a>
-<a name="197"><span class="lineNum">     197 </span><span class="lineCov">         34 :         spin_lock_init(&amp;inode-&gt;i_lock);</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineCov">         17 :         spin_lock_init(&amp;inode-&gt;i_lock);</span></a>
 <a name="198"><span class="lineNum">     198 </span>            :         lockdep_set_class(&amp;inode-&gt;i_lock, &amp;sb-&gt;s_type-&gt;i_lock_key);</a>
 <a name="199"><span class="lineNum">     199 </span>            : </a>
-<a name="200"><span class="lineNum">     200 </span><span class="lineCov">         34 :         init_rwsem(&amp;inode-&gt;i_rwsem);</span></a>
+<a name="200"><span class="lineNum">     200 </span><span class="lineCov">         17 :         init_rwsem(&amp;inode-&gt;i_rwsem);</span></a>
 <a name="201"><span class="lineNum">     201 </span>            :         lockdep_set_class(&amp;inode-&gt;i_rwsem, &amp;sb-&gt;s_type-&gt;i_mutex_key);</a>
 <a name="202"><span class="lineNum">     202 </span>            : </a>
-<a name="203"><span class="lineNum">     203 </span><span class="lineCov">         68 :         atomic_set(&amp;inode-&gt;i_dio_count, 0);</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineCov">         34 :         atomic_set(&amp;inode-&gt;i_dio_count, 0);</span></a>
 <a name="204"><span class="lineNum">     204 </span>            : </a>
-<a name="205"><span class="lineNum">     205 </span><span class="lineCov">         34 :         mapping-&gt;a_ops = &amp;empty_aops;</span></a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineCov">         34 :         mapping-&gt;host = inode;</span></a>
-<a name="207"><span class="lineNum">     207 </span><span class="lineCov">         34 :         mapping-&gt;flags = 0;</span></a>
-<a name="208"><span class="lineNum">     208 </span><span class="lineCov">         34 :         mapping-&gt;wb_err = 0;</span></a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineCov">         68 :         atomic_set(&amp;mapping-&gt;i_mmap_writable, 0);</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineCov">         17 :         mapping-&gt;a_ops = &amp;empty_aops;</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">         17 :         mapping-&gt;host = inode;</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">         17 :         mapping-&gt;flags = 0;</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineCov">         17 :         mapping-&gt;wb_err = 0;</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineCov">         34 :         atomic_set(&amp;mapping-&gt;i_mmap_writable, 0);</span></a>
 <a name="210"><span class="lineNum">     210 </span>            : #ifdef CONFIG_READ_ONLY_THP_FOR_FS</a>
 <a name="211"><span class="lineNum">     211 </span>            :         atomic_set(&amp;mapping-&gt;nr_thps, 0);</a>
 <a name="212"><span class="lineNum">     212 </span>            : #endif</a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineCov">         68 :         mapping_set_gfp_mask(mapping, GFP_HIGHUSER_MOVABLE);</span></a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineCov">         34 :         mapping-&gt;private_data = NULL;</span></a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineCov">         34 :         mapping-&gt;writeback_index = 0;</span></a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineCov">         34 :         init_rwsem(&amp;mapping-&gt;invalidate_lock);</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineCov">         34 :         mapping_set_gfp_mask(mapping, GFP_HIGHUSER_MOVABLE);</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">         17 :         mapping-&gt;private_data = NULL;</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">         17 :         mapping-&gt;writeback_index = 0;</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineCov">         17 :         init_rwsem(&amp;mapping-&gt;invalidate_lock);</span></a>
 <a name="217"><span class="lineNum">     217 </span>            :         lockdep_set_class_and_name(&amp;mapping-&gt;invalidate_lock,</a>
 <a name="218"><span class="lineNum">     218 </span>            :                                    &amp;sb-&gt;s_type-&gt;invalidate_lock_key,</a>
 <a name="219"><span class="lineNum">     219 </span>            :                                    &quot;mapping.invalidate_lock&quot;);</a>
-<a name="220"><span class="lineNum">     220 </span><span class="lineCov">         34 :         inode-&gt;i_private = NULL;</span></a>
-<a name="221"><span class="lineNum">     221 </span><span class="lineCov">         34 :         inode-&gt;i_mapping = mapping;</span></a>
-<a name="222"><span class="lineNum">     222 </span><span class="lineCov">         34 :         INIT_HLIST_HEAD(&amp;inode-&gt;i_dentry);       /* buggered by rcu freeing */</span></a>
+<a name="220"><span class="lineNum">     220 </span><span class="lineCov">         17 :         inode-&gt;i_private = NULL;</span></a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineCov">         17 :         inode-&gt;i_mapping = mapping;</span></a>
+<a name="222"><span class="lineNum">     222 </span><span class="lineCov">         17 :         INIT_HLIST_HEAD(&amp;inode-&gt;i_dentry);       /* buggered by rcu freeing */</span></a>
 <a name="223"><span class="lineNum">     223 </span>            : #ifdef CONFIG_FS_POSIX_ACL</a>
 <a name="224"><span class="lineNum">     224 </span>            :         inode-&gt;i_acl = inode-&gt;i_default_acl = ACL_NOT_CACHED;</a>
 <a name="225"><span class="lineNum">     225 </span>            : #endif</a>
 <a name="226"><span class="lineNum">     226 </span>            : </a>
 <a name="227"><span class="lineNum">     227 </span>            : #ifdef CONFIG_FSNOTIFY</a>
-<a name="228"><span class="lineNum">     228 </span><span class="lineCov">         34 :         inode-&gt;i_fsnotify_mask = 0;</span></a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineCov">         17 :         inode-&gt;i_fsnotify_mask = 0;</span></a>
 <a name="229"><span class="lineNum">     229 </span>            : #endif</a>
-<a name="230"><span class="lineNum">     230 </span><span class="lineCov">         34 :         inode-&gt;i_flctx = NULL;</span></a>
-<a name="231"><span class="lineNum">     231 </span><span class="lineCov">        102 :         this_cpu_inc(nr_inodes);</span></a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineCov">         17 :         inode-&gt;i_flctx = NULL;</span></a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineCov">         51 :         this_cpu_inc(nr_inodes);</span></a>
 <a name="232"><span class="lineNum">     232 </span>            : </a>
 <a name="233"><span class="lineNum">     233 </span>            :         return 0;</a>
 <a name="234"><span class="lineNum">     234 </span>            : out:</a>
@@ -313,20 +313,20 @@
 <a name="251"><span class="lineNum">     251 </span>            :                 free_inode_nonrcu(inode);</a>
 <a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="253"><span class="lineNum">     253 </span>            : </a>
-<a name="254"><span class="lineNum">     254 </span><span class="lineCov">         34 : static struct inode *alloc_inode(struct super_block *sb)</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">         17 : static struct inode *alloc_inode(struct super_block *sb)</span></a>
 <a name="255"><span class="lineNum">     255 </span>            : {</a>
-<a name="256"><span class="lineNum">     256 </span><span class="lineCov">         34 :         const struct super_operations *ops = sb-&gt;s_op;</span></a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineCov">         17 :         const struct super_operations *ops = sb-&gt;s_op;</span></a>
 <a name="257"><span class="lineNum">     257 </span>            :         struct inode *inode;</a>
 <a name="258"><span class="lineNum">     258 </span>            : </a>
-<a name="259"><span class="lineNum">     259 </span><span class="lineCov">         34 :         if (ops-&gt;alloc_inode)</span></a>
-<a name="260"><span class="lineNum">     260 </span><span class="lineCov">         10 :                 inode = ops-&gt;alloc_inode(sb);</span></a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineCov">         17 :         if (ops-&gt;alloc_inode)</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineCov">          5 :                 inode = ops-&gt;alloc_inode(sb);</span></a>
 <a name="261"><span class="lineNum">     261 </span>            :         else</a>
-<a name="262"><span class="lineNum">     262 </span><span class="lineCov">         48 :                 inode = alloc_inode_sb(sb, inode_cachep, GFP_KERNEL);</span></a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineCov">         24 :                 inode = alloc_inode_sb(sb, inode_cachep, GFP_KERNEL);</span></a>
 <a name="263"><span class="lineNum">     263 </span>            : </a>
-<a name="264"><span class="lineNum">     264 </span><span class="lineCov">         34 :         if (!inode)</span></a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineCov">         17 :         if (!inode)</span></a>
 <a name="265"><span class="lineNum">     265 </span>            :                 return NULL;</a>
 <a name="266"><span class="lineNum">     266 </span>            : </a>
-<a name="267"><span class="lineNum">     267 </span><span class="lineCov">         34 :         if (unlikely(inode_init_always(sb, inode))) {</span></a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineCov">         17 :         if (unlikely(inode_init_always(sb, inode))) {</span></a>
 <a name="268"><span class="lineNum">     268 </span><span class="lineNoCov">          0 :                 if (ops-&gt;destroy_inode) {</span></a>
 <a name="269"><span class="lineNum">     269 </span><span class="lineNoCov">          0 :                         ops-&gt;destroy_inode(inode);</span></a>
 <a name="270"><span class="lineNum">     270 </span><span class="lineNoCov">          0 :                         if (!ops-&gt;free_inode)</span></a>
@@ -422,18 +422,18 @@
 <a name="360"><span class="lineNum">     360 </span>            :  * This is a low-level filesystem helper to replace any</a>
 <a name="361"><span class="lineNum">     361 </span>            :  * direct filesystem manipulation of i_nlink.</a>
 <a name="362"><span class="lineNum">     362 </span>            :  */</a>
-<a name="363"><span class="lineNum">     363 </span><span class="lineCov">          2 : void set_nlink(struct inode *inode, unsigned int nlink)</span></a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineCov">          1 : void set_nlink(struct inode *inode, unsigned int nlink)</span></a>
 <a name="364"><span class="lineNum">     364 </span>            : {</a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineCov">          2 :         if (!nlink) {</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineCov">          1 :         if (!nlink) {</span></a>
 <a name="366"><span class="lineNum">     366 </span>            :                 clear_nlink(inode);</a>
 <a name="367"><span class="lineNum">     367 </span>            :         } else {</a>
 <a name="368"><span class="lineNum">     368 </span>            :                 /* Yes, some filesystems do change nlink from zero to one */</a>
-<a name="369"><span class="lineNum">     369 </span><span class="lineCov">          2 :                 if (inode-&gt;i_nlink == 0)</span></a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineCov">          1 :                 if (inode-&gt;i_nlink == 0)</span></a>
 <a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 :                         atomic_long_dec(&amp;inode-&gt;i_sb-&gt;s_remove_count);</span></a>
 <a name="371"><span class="lineNum">     371 </span>            : </a>
-<a name="372"><span class="lineNum">     372 </span><span class="lineCov">          2 :                 inode-&gt;__i_nlink = nlink;</span></a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineCov">          1 :                 inode-&gt;__i_nlink = nlink;</span></a>
 <a name="373"><span class="lineNum">     373 </span>            :         }</a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineCov">          2 : }</span></a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineCov">          1 : }</span></a>
 <a name="375"><span class="lineNum">     375 </span>            : EXPORT_SYMBOL(set_nlink);</a>
 <a name="376"><span class="lineNum">     376 </span>            : </a>
 <a name="377"><span class="lineNum">     377 </span>            : /**</a>
@@ -444,24 +444,24 @@
 <a name="382"><span class="lineNum">     382 </span>            :  * direct filesystem manipulation of i_nlink.  Currently,</a>
 <a name="383"><span class="lineNum">     383 </span>            :  * it is only here for parity with dec_nlink().</a>
 <a name="384"><span class="lineNum">     384 </span>            :  */</a>
-<a name="385"><span class="lineNum">     385 </span><span class="lineCov">         12 : void inc_nlink(struct inode *inode)</span></a>
+<a name="385"><span class="lineNum">     385 </span><span class="lineCov">          6 : void inc_nlink(struct inode *inode)</span></a>
 <a name="386"><span class="lineNum">     386 </span>            : {</a>
-<a name="387"><span class="lineNum">     387 </span><span class="lineCov">         12 :         if (unlikely(inode-&gt;i_nlink == 0)) {</span></a>
+<a name="387"><span class="lineNum">     387 </span><span class="lineCov">          6 :         if (unlikely(inode-&gt;i_nlink == 0)) {</span></a>
 <a name="388"><span class="lineNum">     388 </span><span class="lineNoCov">          0 :                 WARN_ON(!(inode-&gt;i_state &amp; I_LINKABLE));</span></a>
 <a name="389"><span class="lineNum">     389 </span><span class="lineNoCov">          0 :                 atomic_long_dec(&amp;inode-&gt;i_sb-&gt;s_remove_count);</span></a>
 <a name="390"><span class="lineNum">     390 </span>            :         }</a>
 <a name="391"><span class="lineNum">     391 </span>            : </a>
-<a name="392"><span class="lineNum">     392 </span><span class="lineCov">         12 :         inode-&gt;__i_nlink++;</span></a>
-<a name="393"><span class="lineNum">     393 </span><span class="lineCov">         12 : }</span></a>
+<a name="392"><span class="lineNum">     392 </span><span class="lineCov">          6 :         inode-&gt;__i_nlink++;</span></a>
+<a name="393"><span class="lineNum">     393 </span><span class="lineCov">          6 : }</span></a>
 <a name="394"><span class="lineNum">     394 </span>            : EXPORT_SYMBOL(inc_nlink);</a>
 <a name="395"><span class="lineNum">     395 </span>            : </a>
 <a name="396"><span class="lineNum">     396 </span>            : static void __address_space_init_once(struct address_space *mapping)</a>
 <a name="397"><span class="lineNum">     397 </span>            : {</a>
-<a name="398"><span class="lineNum">     398 </span><span class="lineCov">        248 :         xa_init_flags(&amp;mapping-&gt;i_pages, XA_FLAGS_LOCK_IRQ | XA_FLAGS_ACCOUNT);</span></a>
-<a name="399"><span class="lineNum">     399 </span><span class="lineCov">        124 :         init_rwsem(&amp;mapping-&gt;i_mmap_rwsem);</span></a>
-<a name="400"><span class="lineNum">     400 </span><span class="lineCov">        248 :         INIT_LIST_HEAD(&amp;mapping-&gt;private_list);</span></a>
-<a name="401"><span class="lineNum">     401 </span><span class="lineCov">        124 :         spin_lock_init(&amp;mapping-&gt;private_lock);</span></a>
-<a name="402"><span class="lineNum">     402 </span><span class="lineCov">        124 :         mapping-&gt;i_mmap = RB_ROOT_CACHED;</span></a>
+<a name="398"><span class="lineNum">     398 </span><span class="lineCov">        124 :         xa_init_flags(&amp;mapping-&gt;i_pages, XA_FLAGS_LOCK_IRQ | XA_FLAGS_ACCOUNT);</span></a>
+<a name="399"><span class="lineNum">     399 </span><span class="lineCov">         62 :         init_rwsem(&amp;mapping-&gt;i_mmap_rwsem);</span></a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineCov">        124 :         INIT_LIST_HEAD(&amp;mapping-&gt;private_list);</span></a>
+<a name="401"><span class="lineNum">     401 </span><span class="lineCov">         62 :         spin_lock_init(&amp;mapping-&gt;private_lock);</span></a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineCov">         62 :         mapping-&gt;i_mmap = RB_ROOT_CACHED;</span></a>
 <a name="403"><span class="lineNum">     403 </span>            : }</a>
 <a name="404"><span class="lineNum">     404 </span>            : </a>
 <a name="405"><span class="lineNum">     405 </span><span class="lineNoCov">          0 : void address_space_init_once(struct address_space *mapping)</span></a>
@@ -476,25 +476,25 @@
 <a name="414"><span class="lineNum">     414 </span>            :  * once, because the fields are idempotent across use</a>
 <a name="415"><span class="lineNum">     415 </span>            :  * of the inode, so let the slab aware of that.</a>
 <a name="416"><span class="lineNum">     416 </span>            :  */</a>
-<a name="417"><span class="lineNum">     417 </span><span class="lineCov">        124 : void inode_init_once(struct inode *inode)</span></a>
+<a name="417"><span class="lineNum">     417 </span><span class="lineCov">         62 : void inode_init_once(struct inode *inode)</span></a>
 <a name="418"><span class="lineNum">     418 </span>            : {</a>
-<a name="419"><span class="lineNum">     419 </span><span class="lineCov">        124 :         memset(inode, 0, sizeof(*inode));</span></a>
-<a name="420"><span class="lineNum">     420 </span><span class="lineCov">        248 :         INIT_HLIST_NODE(&amp;inode-&gt;i_hash);</span></a>
-<a name="421"><span class="lineNum">     421 </span><span class="lineCov">        248 :         INIT_LIST_HEAD(&amp;inode-&gt;i_devices);</span></a>
-<a name="422"><span class="lineNum">     422 </span><span class="lineCov">        248 :         INIT_LIST_HEAD(&amp;inode-&gt;i_io_list);</span></a>
-<a name="423"><span class="lineNum">     423 </span><span class="lineCov">        248 :         INIT_LIST_HEAD(&amp;inode-&gt;i_wb_list);</span></a>
-<a name="424"><span class="lineNum">     424 </span><span class="lineCov">        248 :         INIT_LIST_HEAD(&amp;inode-&gt;i_lru);</span></a>
-<a name="425"><span class="lineNum">     425 </span><span class="lineCov">        248 :         __address_space_init_once(&amp;inode-&gt;i_data);</span></a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineCov">         62 :         memset(inode, 0, sizeof(*inode));</span></a>
+<a name="420"><span class="lineNum">     420 </span><span class="lineCov">        124 :         INIT_HLIST_NODE(&amp;inode-&gt;i_hash);</span></a>
+<a name="421"><span class="lineNum">     421 </span><span class="lineCov">        124 :         INIT_LIST_HEAD(&amp;inode-&gt;i_devices);</span></a>
+<a name="422"><span class="lineNum">     422 </span><span class="lineCov">        124 :         INIT_LIST_HEAD(&amp;inode-&gt;i_io_list);</span></a>
+<a name="423"><span class="lineNum">     423 </span><span class="lineCov">        124 :         INIT_LIST_HEAD(&amp;inode-&gt;i_wb_list);</span></a>
+<a name="424"><span class="lineNum">     424 </span><span class="lineCov">        124 :         INIT_LIST_HEAD(&amp;inode-&gt;i_lru);</span></a>
+<a name="425"><span class="lineNum">     425 </span><span class="lineCov">        124 :         __address_space_init_once(&amp;inode-&gt;i_data);</span></a>
 <a name="426"><span class="lineNum">     426 </span>            :         i_size_ordered_init(inode);</a>
-<a name="427"><span class="lineNum">     427 </span><span class="lineCov">        124 : }</span></a>
+<a name="427"><span class="lineNum">     427 </span><span class="lineCov">         62 : }</span></a>
 <a name="428"><span class="lineNum">     428 </span>            : EXPORT_SYMBOL(inode_init_once);</a>
 <a name="429"><span class="lineNum">     429 </span>            : </a>
-<a name="430"><span class="lineNum">     430 </span><span class="lineCov">         28 : static void init_once(void *foo)</span></a>
+<a name="430"><span class="lineNum">     430 </span><span class="lineCov">         14 : static void init_once(void *foo)</span></a>
 <a name="431"><span class="lineNum">     431 </span>            : {</a>
-<a name="432"><span class="lineNum">     432 </span><span class="lineCov">         28 :         struct inode *inode = (struct inode *) foo;</span></a>
+<a name="432"><span class="lineNum">     432 </span><span class="lineCov">         14 :         struct inode *inode = (struct inode *) foo;</span></a>
 <a name="433"><span class="lineNum">     433 </span>            : </a>
-<a name="434"><span class="lineNum">     434 </span><span class="lineCov">         28 :         inode_init_once(inode);</span></a>
-<a name="435"><span class="lineNum">     435 </span><span class="lineCov">         28 : }</span></a>
+<a name="434"><span class="lineNum">     434 </span><span class="lineCov">         14 :         inode_init_once(inode);</span></a>
+<a name="435"><span class="lineNum">     435 </span><span class="lineCov">         14 : }</span></a>
 <a name="436"><span class="lineNum">     436 </span>            : </a>
 <a name="437"><span class="lineNum">     437 </span>            : /*</a>
 <a name="438"><span class="lineNum">     438 </span>            :  * inode-&gt;i_lock must be held</a>
@@ -552,9 +552,9 @@
 <a name="490"><span class="lineNum">     490 </span>            :  */</a>
 <a name="491"><span class="lineNum">     491 </span><span class="lineNoCov">          0 : void inode_sb_list_add(struct inode *inode)</span></a>
 <a name="492"><span class="lineNum">     492 </span>            : {</a>
-<a name="493"><span class="lineNum">     493 </span><span class="lineCov">         60 :         spin_lock(&amp;inode-&gt;i_sb-&gt;s_inode_list_lock);</span></a>
-<a name="494"><span class="lineNum">     494 </span><span class="lineCov">         60 :         list_add(&amp;inode-&gt;i_sb_list, &amp;inode-&gt;i_sb-&gt;s_inodes);</span></a>
-<a name="495"><span class="lineNum">     495 </span><span class="lineCov">         60 :         spin_unlock(&amp;inode-&gt;i_sb-&gt;s_inode_list_lock);</span></a>
+<a name="493"><span class="lineNum">     493 </span><span class="lineCov">         30 :         spin_lock(&amp;inode-&gt;i_sb-&gt;s_inode_list_lock);</span></a>
+<a name="494"><span class="lineNum">     494 </span><span class="lineCov">         30 :         list_add(&amp;inode-&gt;i_sb_list, &amp;inode-&gt;i_sb-&gt;s_inodes);</span></a>
+<a name="495"><span class="lineNum">     495 </span><span class="lineCov">         30 :         spin_unlock(&amp;inode-&gt;i_sb-&gt;s_inode_list_lock);</span></a>
 <a name="496"><span class="lineNum">     496 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="497"><span class="lineNum">     497 </span>            : EXPORT_SYMBOL_GPL(inode_sb_list_add);</a>
 <a name="498"><span class="lineNum">     498 </span>            : </a>
@@ -1041,10 +1041,10 @@
 <a name="979"><span class="lineNum">     979 </span>            : #define LAST_INO_BATCH 1024</a>
 <a name="980"><span class="lineNum">     980 </span>            : static DEFINE_PER_CPU(unsigned int, last_ino);</a>
 <a name="981"><span class="lineNum">     981 </span>            : </a>
-<a name="982"><span class="lineNum">     982 </span><span class="lineCov">         12 : unsigned int get_next_ino(void)</span></a>
+<a name="982"><span class="lineNum">     982 </span><span class="lineCov">          6 : unsigned int get_next_ino(void)</span></a>
 <a name="983"><span class="lineNum">     983 </span>            : {</a>
-<a name="984"><span class="lineNum">     984 </span><span class="lineCov">         12 :         unsigned int *p = &amp;get_cpu_var(last_ino);</span></a>
-<a name="985"><span class="lineNum">     985 </span><span class="lineCov">         12 :         unsigned int res = *p;</span></a>
+<a name="984"><span class="lineNum">     984 </span><span class="lineCov">          6 :         unsigned int *p = &amp;get_cpu_var(last_ino);</span></a>
+<a name="985"><span class="lineNum">     985 </span><span class="lineCov">          6 :         unsigned int res = *p;</span></a>
 <a name="986"><span class="lineNum">     986 </span>            : </a>
 <a name="987"><span class="lineNum">     987 </span>            : #ifdef CONFIG_SMP</a>
 <a name="988"><span class="lineNum">     988 </span>            :         if (unlikely((res &amp; (LAST_INO_BATCH-1)) == 0)) {</a>
@@ -1055,13 +1055,13 @@
 <a name="993"><span class="lineNum">     993 </span>            :         }</a>
 <a name="994"><span class="lineNum">     994 </span>            : #endif</a>
 <a name="995"><span class="lineNum">     995 </span>            : </a>
-<a name="996"><span class="lineNum">     996 </span><span class="lineCov">         12 :         res++;</span></a>
+<a name="996"><span class="lineNum">     996 </span><span class="lineCov">          6 :         res++;</span></a>
 <a name="997"><span class="lineNum">     997 </span>            :         /* get_next_ino should not provide a 0 inode number */</a>
-<a name="998"><span class="lineNum">     998 </span><span class="lineCov">         12 :         if (unlikely(!res))</span></a>
+<a name="998"><span class="lineNum">     998 </span><span class="lineCov">          6 :         if (unlikely(!res))</span></a>
 <a name="999"><span class="lineNum">     999 </span><span class="lineNoCov">          0 :                 res++;</span></a>
-<a name="1000"><span class="lineNum">    1000 </span><span class="lineCov">         12 :         *p = res;</span></a>
-<a name="1001"><span class="lineNum">    1001 </span><span class="lineCov">         12 :         put_cpu_var(last_ino);</span></a>
-<a name="1002"><span class="lineNum">    1002 </span><span class="lineCov">         12 :         return res;</span></a>
+<a name="1000"><span class="lineNum">    1000 </span><span class="lineCov">          6 :         *p = res;</span></a>
+<a name="1001"><span class="lineNum">    1001 </span><span class="lineCov">          6 :         put_cpu_var(last_ino);</span></a>
+<a name="1002"><span class="lineNum">    1002 </span><span class="lineCov">          6 :         return res;</span></a>
 <a name="1003"><span class="lineNum">    1003 </span>            : }</a>
 <a name="1004"><span class="lineNum">    1004 </span>            : EXPORT_SYMBOL(get_next_ino);</a>
 <a name="1005"><span class="lineNum">    1005 </span>            : </a>
@@ -1075,17 +1075,17 @@
 <a name="1013"><span class="lineNum">    1013 </span>            :  *      - fs can't be unmount</a>
 <a name="1014"><span class="lineNum">    1014 </span>            :  *      - quotas, fsnotify, writeback can't work</a>
 <a name="1015"><span class="lineNum">    1015 </span>            :  */</a>
-<a name="1016"><span class="lineNum">    1016 </span><span class="lineCov">          4 : struct inode *new_inode_pseudo(struct super_block *sb)</span></a>
+<a name="1016"><span class="lineNum">    1016 </span><span class="lineCov">          2 : struct inode *new_inode_pseudo(struct super_block *sb)</span></a>
 <a name="1017"><span class="lineNum">    1017 </span>            : {</a>
-<a name="1018"><span class="lineNum">    1018 </span><span class="lineCov">         34 :         struct inode *inode = alloc_inode(sb);</span></a>
+<a name="1018"><span class="lineNum">    1018 </span><span class="lineCov">         17 :         struct inode *inode = alloc_inode(sb);</span></a>
 <a name="1019"><span class="lineNum">    1019 </span>            : </a>
-<a name="1020"><span class="lineNum">    1020 </span><span class="lineCov">         34 :         if (inode) {</span></a>
-<a name="1021"><span class="lineNum">    1021 </span><span class="lineCov">         68 :                 spin_lock(&amp;inode-&gt;i_lock);</span></a>
-<a name="1022"><span class="lineNum">    1022 </span><span class="lineCov">         34 :                 inode-&gt;i_state = 0;</span></a>
-<a name="1023"><span class="lineNum">    1023 </span><span class="lineCov">         68 :                 spin_unlock(&amp;inode-&gt;i_lock);</span></a>
-<a name="1024"><span class="lineNum">    1024 </span><span class="lineCov">         34 :                 INIT_LIST_HEAD(&amp;inode-&gt;i_sb_list);</span></a>
+<a name="1020"><span class="lineNum">    1020 </span><span class="lineCov">         17 :         if (inode) {</span></a>
+<a name="1021"><span class="lineNum">    1021 </span><span class="lineCov">         34 :                 spin_lock(&amp;inode-&gt;i_lock);</span></a>
+<a name="1022"><span class="lineNum">    1022 </span><span class="lineCov">         17 :                 inode-&gt;i_state = 0;</span></a>
+<a name="1023"><span class="lineNum">    1023 </span><span class="lineCov">         34 :                 spin_unlock(&amp;inode-&gt;i_lock);</span></a>
+<a name="1024"><span class="lineNum">    1024 </span><span class="lineCov">         17 :                 INIT_LIST_HEAD(&amp;inode-&gt;i_sb_list);</span></a>
 <a name="1025"><span class="lineNum">    1025 </span>            :         }</a>
-<a name="1026"><span class="lineNum">    1026 </span><span class="lineCov">          4 :         return inode;</span></a>
+<a name="1026"><span class="lineNum">    1026 </span><span class="lineCov">          2 :         return inode;</span></a>
 <a name="1027"><span class="lineNum">    1027 </span>            : }</a>
 <a name="1028"><span class="lineNum">    1028 </span>            : </a>
 <a name="1029"><span class="lineNum">    1029 </span>            : /**</a>
@@ -1100,16 +1100,16 @@
 <a name="1038"><span class="lineNum">    1038 </span>            :  *      newly created inode's mapping</a>
 <a name="1039"><span class="lineNum">    1039 </span>            :  *</a>
 <a name="1040"><span class="lineNum">    1040 </span>            :  */</a>
-<a name="1041"><span class="lineNum">    1041 </span><span class="lineCov">         30 : struct inode *new_inode(struct super_block *sb)</span></a>
+<a name="1041"><span class="lineNum">    1041 </span><span class="lineCov">         15 : struct inode *new_inode(struct super_block *sb)</span></a>
 <a name="1042"><span class="lineNum">    1042 </span>            : {</a>
 <a name="1043"><span class="lineNum">    1043 </span>            :         struct inode *inode;</a>
 <a name="1044"><span class="lineNum">    1044 </span>            : </a>
-<a name="1045"><span class="lineNum">    1045 </span><span class="lineCov">         30 :         spin_lock_prefetch(&amp;sb-&gt;s_inode_list_lock);</span></a>
+<a name="1045"><span class="lineNum">    1045 </span><span class="lineCov">         15 :         spin_lock_prefetch(&amp;sb-&gt;s_inode_list_lock);</span></a>
 <a name="1046"><span class="lineNum">    1046 </span>            : </a>
-<a name="1047"><span class="lineNum">    1047 </span><span class="lineCov">         30 :         inode = new_inode_pseudo(sb);</span></a>
-<a name="1048"><span class="lineNum">    1048 </span><span class="lineCov">         30 :         if (inode)</span></a>
+<a name="1047"><span class="lineNum">    1047 </span><span class="lineCov">         15 :         inode = new_inode_pseudo(sb);</span></a>
+<a name="1048"><span class="lineNum">    1048 </span><span class="lineCov">         15 :         if (inode)</span></a>
 <a name="1049"><span class="lineNum">    1049 </span>            :                 inode_sb_list_add(inode);</a>
-<a name="1050"><span class="lineNum">    1050 </span><span class="lineCov">         30 :         return inode;</span></a>
+<a name="1050"><span class="lineNum">    1050 </span><span class="lineCov">         15 :         return inode;</span></a>
 <a name="1051"><span class="lineNum">    1051 </span>            : }</a>
 <a name="1052"><span class="lineNum">    1052 </span>            : EXPORT_SYMBOL(new_inode);</a>
 <a name="1053"><span class="lineNum">    1053 </span>            : </a>
@@ -2219,7 +2219,7 @@
 <a name="2157"><span class="lineNum">    2157 </span>            : /*</a>
 <a name="2158"><span class="lineNum">    2158 </span>            :  * Initialize the waitqueues and inode hash table.</a>
 <a name="2159"><span class="lineNum">    2159 </span>            :  */</a>
-<a name="2160"><span class="lineNum">    2160 </span><span class="lineCov">          2 : void __init inode_init_early(void)</span></a>
+<a name="2160"><span class="lineNum">    2160 </span><span class="lineCov">          1 : void __init inode_init_early(void)</span></a>
 <a name="2161"><span class="lineNum">    2161 </span>            : {</a>
 <a name="2162"><span class="lineNum">    2162 </span>            :         /* If hashes are distributed across NUMA nodes, defer</a>
 <a name="2163"><span class="lineNum">    2163 </span>            :          * hash allocation until vmalloc space is available.</a>
@@ -2227,8 +2227,8 @@
 <a name="2165"><span class="lineNum">    2165 </span>            :         if (hashdist)</a>
 <a name="2166"><span class="lineNum">    2166 </span>            :                 return;</a>
 <a name="2167"><span class="lineNum">    2167 </span>            : </a>
-<a name="2168"><span class="lineNum">    2168 </span><span class="lineCov">          2 :         inode_hashtable =</span></a>
-<a name="2169"><span class="lineNum">    2169 </span><span class="lineCov">          2 :                 alloc_large_system_hash(&quot;Inode-cache&quot;,</span></a>
+<a name="2168"><span class="lineNum">    2168 </span><span class="lineCov">          1 :         inode_hashtable =</span></a>
+<a name="2169"><span class="lineNum">    2169 </span><span class="lineCov">          1 :                 alloc_large_system_hash(&quot;Inode-cache&quot;,</span></a>
 <a name="2170"><span class="lineNum">    2170 </span>            :                                         sizeof(struct hlist_head),</a>
 <a name="2171"><span class="lineNum">    2171 </span>            :                                         ihash_entries,</a>
 <a name="2172"><span class="lineNum">    2172 </span>            :                                         14,</a>
@@ -2239,10 +2239,10 @@
 <a name="2177"><span class="lineNum">    2177 </span>            :                                         0);</a>
 <a name="2178"><span class="lineNum">    2178 </span>            : }</a>
 <a name="2179"><span class="lineNum">    2179 </span>            : </a>
-<a name="2180"><span class="lineNum">    2180 </span><span class="lineCov">          2 : void __init inode_init(void)</span></a>
+<a name="2180"><span class="lineNum">    2180 </span><span class="lineCov">          1 : void __init inode_init(void)</span></a>
 <a name="2181"><span class="lineNum">    2181 </span>            : {</a>
 <a name="2182"><span class="lineNum">    2182 </span>            :         /* inode slab cache */</a>
-<a name="2183"><span class="lineNum">    2183 </span><span class="lineCov">          2 :         inode_cachep = kmem_cache_create(&quot;inode_cache&quot;,</span></a>
+<a name="2183"><span class="lineNum">    2183 </span><span class="lineCov">          1 :         inode_cachep = kmem_cache_create(&quot;inode_cache&quot;,</span></a>
 <a name="2184"><span class="lineNum">    2184 </span>            :                                          sizeof(struct inode),</a>
 <a name="2185"><span class="lineNum">    2185 </span>            :                                          0,</a>
 <a name="2186"><span class="lineNum">    2186 </span>            :                                          (SLAB_RECLAIM_ACCOUNT|SLAB_PANIC|</a>
@@ -2265,12 +2265,12 @@
 <a name="2203"><span class="lineNum">    2203 </span>            :                                         0);</a>
 <a name="2204"><span class="lineNum">    2204 </span>            : }</a>
 <a name="2205"><span class="lineNum">    2205 </span>            : </a>
-<a name="2206"><span class="lineNum">    2206 </span><span class="lineCov">          2 : void init_special_inode(struct inode *inode, umode_t mode, dev_t rdev)</span></a>
+<a name="2206"><span class="lineNum">    2206 </span><span class="lineCov">          1 : void init_special_inode(struct inode *inode, umode_t mode, dev_t rdev)</span></a>
 <a name="2207"><span class="lineNum">    2207 </span>            : {</a>
-<a name="2208"><span class="lineNum">    2208 </span><span class="lineCov">          2 :         inode-&gt;i_mode = mode;</span></a>
-<a name="2209"><span class="lineNum">    2209 </span><span class="lineCov">          2 :         if (S_ISCHR(mode)) {</span></a>
-<a name="2210"><span class="lineNum">    2210 </span><span class="lineCov">          2 :                 inode-&gt;i_fop = &amp;def_chr_fops;</span></a>
-<a name="2211"><span class="lineNum">    2211 </span><span class="lineCov">          2 :                 inode-&gt;i_rdev = rdev;</span></a>
+<a name="2208"><span class="lineNum">    2208 </span><span class="lineCov">          1 :         inode-&gt;i_mode = mode;</span></a>
+<a name="2209"><span class="lineNum">    2209 </span><span class="lineCov">          1 :         if (S_ISCHR(mode)) {</span></a>
+<a name="2210"><span class="lineNum">    2210 </span><span class="lineCov">          1 :                 inode-&gt;i_fop = &amp;def_chr_fops;</span></a>
+<a name="2211"><span class="lineNum">    2211 </span><span class="lineCov">          1 :                 inode-&gt;i_rdev = rdev;</span></a>
 <a name="2212"><span class="lineNum">    2212 </span><span class="lineNoCov">          0 :         } else if (S_ISBLK(mode)) {</span></a>
 <a name="2213"><span class="lineNum">    2213 </span><span class="lineNoCov">          0 :                 inode-&gt;i_fop = &amp;def_blk_fops;</span></a>
 <a name="2214"><span class="lineNum">    2214 </span><span class="lineNoCov">          0 :                 inode-&gt;i_rdev = rdev;</span></a>
@@ -2282,7 +2282,7 @@
 <a name="2220"><span class="lineNum">    2220 </span><span class="lineNoCov">          0 :                 printk(KERN_DEBUG &quot;init_special_inode: bogus i_mode (%o) for&quot;</span></a>
 <a name="2221"><span class="lineNum">    2221 </span>            :                                   &quot; inode %s:%lu\n&quot;, mode, inode-&gt;i_sb-&gt;s_id,</a>
 <a name="2222"><span class="lineNum">    2222 </span>            :                                   inode-&gt;i_ino);</a>
-<a name="2223"><span class="lineNum">    2223 </span><span class="lineCov">          2 : }</span></a>
+<a name="2223"><span class="lineNum">    2223 </span><span class="lineCov">          1 : }</span></a>
 <a name="2224"><span class="lineNum">    2224 </span>            : EXPORT_SYMBOL(init_special_inode);</a>
 <a name="2225"><span class="lineNum">    2225 </span>            : </a>
 <a name="2226"><span class="lineNum">    2226 </span>            : /**</a>
@@ -2298,11 +2298,11 @@
 <a name="2236"><span class="lineNum">    2236 </span>            :  * and initializing i_uid and i_gid. On non-idmapped mounts or if permission</a>
 <a name="2237"><span class="lineNum">    2237 </span>            :  * checking is to be performed on the raw inode simply passs init_user_ns.</a>
 <a name="2238"><span class="lineNum">    2238 </span>            :  */</a>
-<a name="2239"><span class="lineNum">    2239 </span><span class="lineCov">         10 : void inode_init_owner(struct user_namespace *mnt_userns, struct inode *inode,</span></a>
+<a name="2239"><span class="lineNum">    2239 </span><span class="lineCov">          5 : void inode_init_owner(struct user_namespace *mnt_userns, struct inode *inode,</span></a>
 <a name="2240"><span class="lineNum">    2240 </span>            :                       const struct inode *dir, umode_t mode)</a>
 <a name="2241"><span class="lineNum">    2241 </span>            : {</a>
-<a name="2242"><span class="lineNum">    2242 </span><span class="lineCov">         10 :         inode_fsuid_set(inode, mnt_userns);</span></a>
-<a name="2243"><span class="lineNum">    2243 </span><span class="lineCov">         10 :         if (dir &amp;&amp; dir-&gt;i_mode &amp; S_ISGID) {</span></a>
+<a name="2242"><span class="lineNum">    2242 </span><span class="lineCov">          5 :         inode_fsuid_set(inode, mnt_userns);</span></a>
+<a name="2243"><span class="lineNum">    2243 </span><span class="lineCov">          5 :         if (dir &amp;&amp; dir-&gt;i_mode &amp; S_ISGID) {</span></a>
 <a name="2244"><span class="lineNum">    2244 </span><span class="lineNoCov">          0 :                 inode-&gt;i_gid = dir-&gt;i_gid;</span></a>
 <a name="2245"><span class="lineNum">    2245 </span>            : </a>
 <a name="2246"><span class="lineNum">    2246 </span>            :                 /* Directories are special, and always inherit S_ISGID */</a>
@@ -2314,8 +2314,8 @@
 <a name="2252"><span class="lineNum">    2252 </span><span class="lineNoCov">          0 :                         mode &amp;= ~S_ISGID;</span></a>
 <a name="2253"><span class="lineNum">    2253 </span>            :         } else</a>
 <a name="2254"><span class="lineNum">    2254 </span>            :                 inode_fsgid_set(inode, mnt_userns);</a>
-<a name="2255"><span class="lineNum">    2255 </span><span class="lineCov">         10 :         inode-&gt;i_mode = mode;</span></a>
-<a name="2256"><span class="lineNum">    2256 </span><span class="lineCov">         10 : }</span></a>
+<a name="2255"><span class="lineNum">    2255 </span><span class="lineCov">          5 :         inode-&gt;i_mode = mode;</span></a>
+<a name="2256"><span class="lineNum">    2256 </span><span class="lineCov">          5 : }</span></a>
 <a name="2257"><span class="lineNum">    2257 </span>            : EXPORT_SYMBOL(inode_init_owner);</a>
 <a name="2258"><span class="lineNum">    2258 </span>            : </a>
 <a name="2259"><span class="lineNum">    2259 </span>            : /**</a>
@@ -2421,17 +2421,17 @@
 <a name="2359"><span class="lineNum">    2359 </span>            :  * containing the inode. Always rounds down. gran must</a>
 <a name="2360"><span class="lineNum">    2360 </span>            :  * not be 0 nor greater than a second (NSEC_PER_SEC, or 10^9 ns).</a>
 <a name="2361"><span class="lineNum">    2361 </span>            :  */</a>
-<a name="2362"><span class="lineNum">    2362 </span><span class="lineCov">         40 : struct timespec64 timestamp_truncate(struct timespec64 t, struct inode *inode)</span></a>
+<a name="2362"><span class="lineNum">    2362 </span><span class="lineCov">         20 : struct timespec64 timestamp_truncate(struct timespec64 t, struct inode *inode)</span></a>
 <a name="2363"><span class="lineNum">    2363 </span>            : {</a>
-<a name="2364"><span class="lineNum">    2364 </span><span class="lineCov">         40 :         struct super_block *sb = inode-&gt;i_sb;</span></a>
-<a name="2365"><span class="lineNum">    2365 </span><span class="lineCov">         40 :         unsigned int gran = sb-&gt;s_time_gran;</span></a>
+<a name="2364"><span class="lineNum">    2364 </span><span class="lineCov">         20 :         struct super_block *sb = inode-&gt;i_sb;</span></a>
+<a name="2365"><span class="lineNum">    2365 </span><span class="lineCov">         20 :         unsigned int gran = sb-&gt;s_time_gran;</span></a>
 <a name="2366"><span class="lineNum">    2366 </span>            : </a>
-<a name="2367"><span class="lineNum">    2367 </span><span class="lineCov">         40 :         t.tv_sec = clamp(t.tv_sec, sb-&gt;s_time_min, sb-&gt;s_time_max);</span></a>
-<a name="2368"><span class="lineNum">    2368 </span><span class="lineCov">         40 :         if (unlikely(t.tv_sec == sb-&gt;s_time_max || t.tv_sec == sb-&gt;s_time_min))</span></a>
+<a name="2367"><span class="lineNum">    2367 </span><span class="lineCov">         20 :         t.tv_sec = clamp(t.tv_sec, sb-&gt;s_time_min, sb-&gt;s_time_max);</span></a>
+<a name="2368"><span class="lineNum">    2368 </span><span class="lineCov">         20 :         if (unlikely(t.tv_sec == sb-&gt;s_time_max || t.tv_sec == sb-&gt;s_time_min))</span></a>
 <a name="2369"><span class="lineNum">    2369 </span><span class="lineNoCov">          0 :                 t.tv_nsec = 0;</span></a>
 <a name="2370"><span class="lineNum">    2370 </span>            : </a>
 <a name="2371"><span class="lineNum">    2371 </span>            :         /* Avoid division in the common cases 1 ns and 1 s. */</a>
-<a name="2372"><span class="lineNum">    2372 </span><span class="lineCov">         40 :         if (gran == 1)</span></a>
+<a name="2372"><span class="lineNum">    2372 </span><span class="lineCov">         20 :         if (gran == 1)</span></a>
 <a name="2373"><span class="lineNum">    2373 </span>            :                 ; /* nothing */</a>
 <a name="2374"><span class="lineNum">    2374 </span><span class="lineNoCov">          0 :         else if (gran == NSEC_PER_SEC)</span></a>
 <a name="2375"><span class="lineNum">    2375 </span>            :                 t.tv_nsec = 0;</a>
@@ -2439,7 +2439,7 @@
 <a name="2377"><span class="lineNum">    2377 </span><span class="lineNoCov">          0 :                 t.tv_nsec -= t.tv_nsec % gran;</span></a>
 <a name="2378"><span class="lineNum">    2378 </span>            :         else</a>
 <a name="2379"><span class="lineNum">    2379 </span><span class="lineNoCov">          0 :                 WARN(1, &quot;invalid file time granularity: %u&quot;, gran);</span></a>
-<a name="2380"><span class="lineNum">    2380 </span><span class="lineCov">         40 :         return t;</span></a>
+<a name="2380"><span class="lineNum">    2380 </span><span class="lineCov">         20 :         return t;</span></a>
 <a name="2381"><span class="lineNum">    2381 </span>            : }</a>
 <a name="2382"><span class="lineNum">    2382 </span>            : EXPORT_SYMBOL(timestamp_truncate);</a>
 <a name="2383"><span class="lineNum">    2383 </span>            : </a>
@@ -2453,18 +2453,18 @@
 <a name="2391"><span class="lineNum">    2391 </span>            :  * Note that inode and inode-&gt;sb cannot be NULL.</a>
 <a name="2392"><span class="lineNum">    2392 </span>            :  * Otherwise, the function warns and returns time without truncation.</a>
 <a name="2393"><span class="lineNum">    2393 </span>            :  */</a>
-<a name="2394"><span class="lineNum">    2394 </span><span class="lineCov">         40 : struct timespec64 current_time(struct inode *inode)</span></a>
+<a name="2394"><span class="lineNum">    2394 </span><span class="lineCov">         20 : struct timespec64 current_time(struct inode *inode)</span></a>
 <a name="2395"><span class="lineNum">    2395 </span>            : {</a>
 <a name="2396"><span class="lineNum">    2396 </span>            :         struct timespec64 now;</a>
 <a name="2397"><span class="lineNum">    2397 </span>            : </a>
-<a name="2398"><span class="lineNum">    2398 </span><span class="lineCov">         40 :         ktime_get_coarse_real_ts64(&amp;now);</span></a>
+<a name="2398"><span class="lineNum">    2398 </span><span class="lineCov">         20 :         ktime_get_coarse_real_ts64(&amp;now);</span></a>
 <a name="2399"><span class="lineNum">    2399 </span>            : </a>
-<a name="2400"><span class="lineNum">    2400 </span><span class="lineCov">         40 :         if (unlikely(!inode-&gt;i_sb)) {</span></a>
+<a name="2400"><span class="lineNum">    2400 </span><span class="lineCov">         20 :         if (unlikely(!inode-&gt;i_sb)) {</span></a>
 <a name="2401"><span class="lineNum">    2401 </span><span class="lineNoCov">          0 :                 WARN(1, &quot;current_time() called with uninitialized super_block in the inode&quot;);</span></a>
 <a name="2402"><span class="lineNum">    2402 </span><span class="lineNoCov">          0 :                 return now;</span></a>
 <a name="2403"><span class="lineNum">    2403 </span>            :         }</a>
 <a name="2404"><span class="lineNum">    2404 </span>            : </a>
-<a name="2405"><span class="lineNum">    2405 </span><span class="lineCov">         40 :         return timestamp_truncate(now, inode);</span></a>
+<a name="2405"><span class="lineNum">    2405 </span><span class="lineCov">         20 :         return timestamp_truncate(now, inode);</span></a>
 <a name="2406"><span class="lineNum">    2406 </span>            : }</a>
 <a name="2407"><span class="lineNum">    2407 </span>            : EXPORT_SYMBOL(current_time);</a>
 </pre>

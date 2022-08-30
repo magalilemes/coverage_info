@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -153,9 +153,9 @@
 <a name="91"><span class="lineNum">      91 </span>            : /*</a>
 <a name="92"><span class="lineNum">      92 </span>            :  * The RCU callback to actually dispose of a set of credentials</a>
 <a name="93"><span class="lineNum">      93 </span>            :  */</a>
-<a name="94"><span class="lineNum">      94 </span><span class="lineCov">        126 : static void put_cred_rcu(struct rcu_head *rcu)</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineCov">         92 : static void put_cred_rcu(struct rcu_head *rcu)</span></a>
 <a name="95"><span class="lineNum">      95 </span>            : {</a>
-<a name="96"><span class="lineNum">      96 </span><span class="lineCov">        126 :         struct cred *cred = container_of(rcu, struct cred, rcu);</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineCov">         92 :         struct cred *cred = container_of(rcu, struct cred, rcu);</span></a>
 <a name="97"><span class="lineNum">      97 </span>            : </a>
 <a name="98"><span class="lineNum">      98 </span>            :         kdebug(&quot;put_cred_rcu(%p)&quot;, cred);</a>
 <a name="99"><span class="lineNum">      99 </span>            : </a>
@@ -169,24 +169,24 @@
 <a name="107"><span class="lineNum">     107 </span>            :                       atomic_read(&amp;cred-&gt;usage),</a>
 <a name="108"><span class="lineNum">     108 </span>            :                       read_cred_subscribers(cred));</a>
 <a name="109"><span class="lineNum">     109 </span>            : #else</a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineCov">        252 :         if (atomic_read(&amp;cred-&gt;usage) != 0)</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">        184 :         if (atomic_read(&amp;cred-&gt;usage) != 0)</span></a>
 <a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 :                 panic(&quot;CRED: put_cred_rcu() sees %p with usage %d\n&quot;,</span></a>
 <a name="112"><span class="lineNum">     112 </span><span class="lineNoCov">          0 :                       cred, atomic_read(&amp;cred-&gt;usage));</span></a>
 <a name="113"><span class="lineNum">     113 </span>            : #endif</a>
 <a name="114"><span class="lineNum">     114 </span>            : </a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        126 :         security_cred_free(cred);</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">         92 :         security_cred_free(cred);</span></a>
 <a name="116"><span class="lineNum">     116 </span>            :         key_put(cred-&gt;session_keyring);</a>
 <a name="117"><span class="lineNum">     117 </span>            :         key_put(cred-&gt;process_keyring);</a>
 <a name="118"><span class="lineNum">     118 </span>            :         key_put(cred-&gt;thread_keyring);</a>
 <a name="119"><span class="lineNum">     119 </span>            :         key_put(cred-&gt;request_key_auth);</a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">        126 :         if (cred-&gt;group_info)</span></a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        252 :                 put_group_info(cred-&gt;group_info);</span></a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        126 :         free_uid(cred-&gt;user);</span></a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        126 :         if (cred-&gt;ucounts)</span></a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        126 :                 put_ucounts(cred-&gt;ucounts);</span></a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineCov">        126 :         put_user_ns(cred-&gt;user_ns);</span></a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineCov">        126 :         kmem_cache_free(cred_jar, cred);</span></a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineCov">        126 : }</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">         92 :         if (cred-&gt;group_info)</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        184 :                 put_group_info(cred-&gt;group_info);</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">         92 :         free_uid(cred-&gt;user);</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">         92 :         if (cred-&gt;ucounts)</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         92 :                 put_ucounts(cred-&gt;ucounts);</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">         92 :         put_user_ns(cred-&gt;user_ns);</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">         92 :         kmem_cache_free(cred_jar, cred);</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineCov">         92 : }</span></a>
 <a name="128"><span class="lineNum">     128 </span>            : </a>
 <a name="129"><span class="lineNum">     129 </span>            : /**</a>
 <a name="130"><span class="lineNum">     130 </span>            :  * __put_cred - Destroy a set of credentials</a>
@@ -194,32 +194,32 @@
 <a name="132"><span class="lineNum">     132 </span>            :  *</a>
 <a name="133"><span class="lineNum">     133 </span>            :  * Destroy a set of credentials on which no references remain.</a>
 <a name="134"><span class="lineNum">     134 </span>            :  */</a>
-<a name="135"><span class="lineNum">     135 </span><span class="lineCov">        126 : void __put_cred(struct cred *cred)</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineCov">         92 : void __put_cred(struct cred *cred)</span></a>
 <a name="136"><span class="lineNum">     136 </span>            : {</a>
 <a name="137"><span class="lineNum">     137 </span>            :         kdebug(&quot;__put_cred(%p{%d,%d})&quot;, cred,</a>
 <a name="138"><span class="lineNum">     138 </span>            :                atomic_read(&amp;cred-&gt;usage),</a>
 <a name="139"><span class="lineNum">     139 </span>            :                read_cred_subscribers(cred));</a>
 <a name="140"><span class="lineNum">     140 </span>            : </a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineCov">        252 :         BUG_ON(atomic_read(&amp;cred-&gt;usage) != 0);</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">        184 :         BUG_ON(atomic_read(&amp;cred-&gt;usage) != 0);</span></a>
 <a name="142"><span class="lineNum">     142 </span>            : #ifdef CONFIG_DEBUG_CREDENTIALS</a>
 <a name="143"><span class="lineNum">     143 </span>            :         BUG_ON(read_cred_subscribers(cred) != 0);</a>
 <a name="144"><span class="lineNum">     144 </span>            :         cred-&gt;magic = CRED_MAGIC_DEAD;</a>
 <a name="145"><span class="lineNum">     145 </span>            :         cred-&gt;put_addr = __builtin_return_address(0);</a>
 <a name="146"><span class="lineNum">     146 </span>            : #endif</a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineCov">        126 :         BUG_ON(cred == current-&gt;cred);</span></a>
-<a name="148"><span class="lineNum">     148 </span><span class="lineCov">        126 :         BUG_ON(cred == current-&gt;real_cred);</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">         92 :         BUG_ON(cred == current-&gt;cred);</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineCov">         92 :         BUG_ON(cred == current-&gt;real_cred);</span></a>
 <a name="149"><span class="lineNum">     149 </span>            : </a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">        126 :         if (cred-&gt;non_rcu)</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">         92 :         if (cred-&gt;non_rcu)</span></a>
 <a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 :                 put_cred_rcu(&amp;cred-&gt;rcu);</span></a>
 <a name="152"><span class="lineNum">     152 </span>            :         else</a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineCov">        126 :                 call_rcu(&amp;cred-&gt;rcu, put_cred_rcu);</span></a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineCov">        126 : }</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">         92 :                 call_rcu(&amp;cred-&gt;rcu, put_cred_rcu);</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">         92 : }</span></a>
 <a name="155"><span class="lineNum">     155 </span>            : EXPORT_SYMBOL(__put_cred);</a>
 <a name="156"><span class="lineNum">     156 </span>            : </a>
 <a name="157"><span class="lineNum">     157 </span>            : /*</a>
 <a name="158"><span class="lineNum">     158 </span>            :  * Clean up a task's credentials when it exits</a>
 <a name="159"><span class="lineNum">     159 </span>            :  */</a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">        126 : void exit_creds(struct task_struct *tsk)</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">         92 : void exit_creds(struct task_struct *tsk)</span></a>
 <a name="161"><span class="lineNum">     161 </span>            : {</a>
 <a name="162"><span class="lineNum">     162 </span>            :         struct cred *cred;</a>
 <a name="163"><span class="lineNum">     163 </span>            : </a>
@@ -227,23 +227,23 @@
 <a name="165"><span class="lineNum">     165 </span>            :                atomic_read(&amp;tsk-&gt;cred-&gt;usage),</a>
 <a name="166"><span class="lineNum">     166 </span>            :                read_cred_subscribers(tsk-&gt;cred));</a>
 <a name="167"><span class="lineNum">     167 </span>            : </a>
-<a name="168"><span class="lineNum">     168 </span><span class="lineCov">        126 :         cred = (struct cred *) tsk-&gt;real_cred;</span></a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineCov">        126 :         tsk-&gt;real_cred = NULL;</span></a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">        126 :         validate_creds(cred);</span></a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">        126 :         alter_cred_subscribers(cred, -1);</span></a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">        126 :         put_cred(cred);</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">         92 :         cred = (struct cred *) tsk-&gt;real_cred;</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">         92 :         tsk-&gt;real_cred = NULL;</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">         92 :         validate_creds(cred);</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">         92 :         alter_cred_subscribers(cred, -1);</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">         92 :         put_cred(cred);</span></a>
 <a name="173"><span class="lineNum">     173 </span>            : </a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">        126 :         cred = (struct cred *) tsk-&gt;cred;</span></a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineCov">        126 :         tsk-&gt;cred = NULL;</span></a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineCov">        126 :         validate_creds(cred);</span></a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">        126 :         alter_cred_subscribers(cred, -1);</span></a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">        126 :         put_cred(cred);</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">         92 :         cred = (struct cred *) tsk-&gt;cred;</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">         92 :         tsk-&gt;cred = NULL;</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">         92 :         validate_creds(cred);</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">         92 :         alter_cred_subscribers(cred, -1);</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">         92 :         put_cred(cred);</span></a>
 <a name="179"><span class="lineNum">     179 </span>            : </a>
 <a name="180"><span class="lineNum">     180 </span>            : #ifdef CONFIG_KEYS_REQUEST_CACHE</a>
 <a name="181"><span class="lineNum">     181 </span>            :         key_put(tsk-&gt;cached_requested_key);</a>
 <a name="182"><span class="lineNum">     182 </span>            :         tsk-&gt;cached_requested_key = NULL;</a>
 <a name="183"><span class="lineNum">     183 </span>            : #endif</a>
-<a name="184"><span class="lineNum">     184 </span><span class="lineCov">        126 : }</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">         92 : }</span></a>
 <a name="185"><span class="lineNum">     185 </span>            : </a>
 <a name="186"><span class="lineNum">     186 </span>            : /**</a>
 <a name="187"><span class="lineNum">     187 </span>            :  * get_task_cred - Get another task's objective credentials</a>
@@ -311,29 +311,29 @@
 <a name="249"><span class="lineNum">     249 </span>            :  *</a>
 <a name="250"><span class="lineNum">     250 </span>            :  * Call commit_creds() or abort_creds() to clean up.</a>
 <a name="251"><span class="lineNum">     251 </span>            :  */</a>
-<a name="252"><span class="lineNum">     252 </span><span class="lineCov">        156 : struct cred *prepare_creds(void)</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineCov">        107 : struct cred *prepare_creds(void)</span></a>
 <a name="253"><span class="lineNum">     253 </span>            : {</a>
-<a name="254"><span class="lineNum">     254 </span><span class="lineCov">        156 :         struct task_struct *task = current;</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">        107 :         struct task_struct *task = current;</span></a>
 <a name="255"><span class="lineNum">     255 </span>            :         const struct cred *old;</a>
 <a name="256"><span class="lineNum">     256 </span>            :         struct cred *new;</a>
 <a name="257"><span class="lineNum">     257 </span>            : </a>
 <a name="258"><span class="lineNum">     258 </span>            :         validate_process_creds();</a>
 <a name="259"><span class="lineNum">     259 </span>            : </a>
-<a name="260"><span class="lineNum">     260 </span><span class="lineCov">        156 :         new = kmem_cache_alloc(cred_jar, GFP_KERNEL);</span></a>
-<a name="261"><span class="lineNum">     261 </span><span class="lineCov">        156 :         if (!new)</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineCov">        107 :         new = kmem_cache_alloc(cred_jar, GFP_KERNEL);</span></a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineCov">        107 :         if (!new)</span></a>
 <a name="262"><span class="lineNum">     262 </span>            :                 return NULL;</a>
 <a name="263"><span class="lineNum">     263 </span>            : </a>
 <a name="264"><span class="lineNum">     264 </span>            :         kdebug(&quot;prepare_creds() alloc %p&quot;, new);</a>
 <a name="265"><span class="lineNum">     265 </span>            : </a>
-<a name="266"><span class="lineNum">     266 </span><span class="lineCov">        156 :         old = task-&gt;cred;</span></a>
-<a name="267"><span class="lineNum">     267 </span><span class="lineCov">        156 :         memcpy(new, old, sizeof(struct cred));</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineCov">        107 :         old = task-&gt;cred;</span></a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineCov">        107 :         memcpy(new, old, sizeof(struct cred));</span></a>
 <a name="268"><span class="lineNum">     268 </span>            : </a>
-<a name="269"><span class="lineNum">     269 </span><span class="lineCov">        156 :         new-&gt;non_rcu = 0;</span></a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineCov">        312 :         atomic_set(&amp;new-&gt;usage, 1);</span></a>
-<a name="271"><span class="lineNum">     271 </span><span class="lineCov">        156 :         set_cred_subscribers(new, 0);</span></a>
-<a name="272"><span class="lineNum">     272 </span><span class="lineCov">        312 :         get_group_info(new-&gt;group_info);</span></a>
-<a name="273"><span class="lineNum">     273 </span><span class="lineCov">        312 :         get_uid(new-&gt;user);</span></a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineCov">        156 :         get_user_ns(new-&gt;user_ns);</span></a>
+<a name="269"><span class="lineNum">     269 </span><span class="lineCov">        107 :         new-&gt;non_rcu = 0;</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineCov">        214 :         atomic_set(&amp;new-&gt;usage, 1);</span></a>
+<a name="271"><span class="lineNum">     271 </span><span class="lineCov">        107 :         set_cred_subscribers(new, 0);</span></a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineCov">        214 :         get_group_info(new-&gt;group_info);</span></a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineCov">        214 :         get_uid(new-&gt;user);</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineCov">        107 :         get_user_ns(new-&gt;user_ns);</span></a>
 <a name="275"><span class="lineNum">     275 </span>            : </a>
 <a name="276"><span class="lineNum">     276 </span>            : #ifdef CONFIG_KEYS</a>
 <a name="277"><span class="lineNum">     277 </span>            :         key_get(new-&gt;session_keyring);</a>
@@ -346,8 +346,8 @@
 <a name="284"><span class="lineNum">     284 </span>            :         new-&gt;security = NULL;</a>
 <a name="285"><span class="lineNum">     285 </span>            : #endif</a>
 <a name="286"><span class="lineNum">     286 </span>            : </a>
-<a name="287"><span class="lineNum">     287 </span><span class="lineCov">        156 :         new-&gt;ucounts = get_ucounts(new-&gt;ucounts);</span></a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">        156 :         if (!new-&gt;ucounts)</span></a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineCov">        107 :         new-&gt;ucounts = get_ucounts(new-&gt;ucounts);</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">        107 :         if (!new-&gt;ucounts)</span></a>
 <a name="289"><span class="lineNum">     289 </span>            :                 goto error;</a>
 <a name="290"><span class="lineNum">     290 </span>            : </a>
 <a name="291"><span class="lineNum">     291 </span>            :         if (security_prepare_creds(new, old, GFP_KERNEL_ACCOUNT) &lt; 0)</a>
@@ -399,7 +399,7 @@
 <a name="337"><span class="lineNum">     337 </span>            :  * The new process gets the current process's subjective credentials as its</a>
 <a name="338"><span class="lineNum">     338 </span>            :  * objective and subjective credentials</a>
 <a name="339"><span class="lineNum">     339 </span>            :  */</a>
-<a name="340"><span class="lineNum">     340 </span><span class="lineCov">        156 : int copy_creds(struct task_struct *p, unsigned long clone_flags)</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineCov">        107 : int copy_creds(struct task_struct *p, unsigned long clone_flags)</span></a>
 <a name="341"><span class="lineNum">     341 </span>            : {</a>
 <a name="342"><span class="lineNum">     342 </span>            :         struct cred *new;</a>
 <a name="343"><span class="lineNum">     343 </span>            :         int ret;</a>
@@ -408,11 +408,11 @@
 <a name="346"><span class="lineNum">     346 </span>            :         p-&gt;cached_requested_key = NULL;</a>
 <a name="347"><span class="lineNum">     347 </span>            : #endif</a>
 <a name="348"><span class="lineNum">     348 </span>            : </a>
-<a name="349"><span class="lineNum">     349 </span><span class="lineCov">        156 :         if (</span></a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineCov">        107 :         if (</span></a>
 <a name="350"><span class="lineNum">     350 </span>            : #ifdef CONFIG_KEYS</a>
 <a name="351"><span class="lineNum">     351 </span>            :                 !p-&gt;cred-&gt;thread_keyring &amp;&amp;</a>
 <a name="352"><span class="lineNum">     352 </span>            : #endif</a>
-<a name="353"><span class="lineNum">     353 </span><span class="lineCov">        156 :                 clone_flags &amp; CLONE_THREAD</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineCov">        107 :                 clone_flags &amp; CLONE_THREAD</span></a>
 <a name="354"><span class="lineNum">     354 </span>            :             ) {</a>
 <a name="355"><span class="lineNum">     355 </span><span class="lineNoCov">          0 :                 p-&gt;real_cred = get_cred(p-&gt;cred);</span></a>
 <a name="356"><span class="lineNum">     356 </span><span class="lineNoCov">          0 :                 get_cred(p-&gt;cred);</span></a>
@@ -424,11 +424,11 @@
 <a name="362"><span class="lineNum">     362 </span><span class="lineNoCov">          0 :                 return 0;</span></a>
 <a name="363"><span class="lineNum">     363 </span>            :         }</a>
 <a name="364"><span class="lineNum">     364 </span>            : </a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineCov">        156 :         new = prepare_creds();</span></a>
-<a name="366"><span class="lineNum">     366 </span><span class="lineCov">        156 :         if (!new)</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineCov">        107 :         new = prepare_creds();</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineCov">        107 :         if (!new)</span></a>
 <a name="367"><span class="lineNum">     367 </span>            :                 return -ENOMEM;</a>
 <a name="368"><span class="lineNum">     368 </span>            : </a>
-<a name="369"><span class="lineNum">     369 </span><span class="lineCov">        156 :         if (clone_flags &amp; CLONE_NEWUSER) {</span></a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineCov">        107 :         if (clone_flags &amp; CLONE_NEWUSER) {</span></a>
 <a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 :                 ret = create_user_ns(new);</span></a>
 <a name="371"><span class="lineNum">     371 </span>            :                 if (ret &lt; 0)</a>
 <a name="372"><span class="lineNum">     372 </span>            :                         goto error_put;</a>
@@ -456,11 +456,11 @@
 <a name="394"><span class="lineNum">     394 </span>            :         }</a>
 <a name="395"><span class="lineNum">     395 </span>            : #endif</a>
 <a name="396"><span class="lineNum">     396 </span>            : </a>
-<a name="397"><span class="lineNum">     397 </span><span class="lineCov">        156 :         p-&gt;cred = p-&gt;real_cred = get_cred(new);</span></a>
-<a name="398"><span class="lineNum">     398 </span><span class="lineCov">        312 :         inc_rlimit_ucounts(task_ucounts(p), UCOUNT_RLIMIT_NPROC, 1);</span></a>
-<a name="399"><span class="lineNum">     399 </span><span class="lineCov">        156 :         alter_cred_subscribers(new, 2);</span></a>
-<a name="400"><span class="lineNum">     400 </span><span class="lineCov">        156 :         validate_creds(new);</span></a>
-<a name="401"><span class="lineNum">     401 </span><span class="lineCov">        156 :         return 0;</span></a>
+<a name="397"><span class="lineNum">     397 </span><span class="lineCov">        107 :         p-&gt;cred = p-&gt;real_cred = get_cred(new);</span></a>
+<a name="398"><span class="lineNum">     398 </span><span class="lineCov">        214 :         inc_rlimit_ucounts(task_ucounts(p), UCOUNT_RLIMIT_NPROC, 1);</span></a>
+<a name="399"><span class="lineNum">     399 </span><span class="lineCov">        107 :         alter_cred_subscribers(new, 2);</span></a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineCov">        107 :         validate_creds(new);</span></a>
+<a name="401"><span class="lineNum">     401 </span><span class="lineCov">        107 :         return 0;</span></a>
 <a name="402"><span class="lineNum">     402 </span>            : </a>
 <a name="403"><span class="lineNum">     403 </span>            : error_put:</a>
 <a name="404"><span class="lineNum">     404 </span>            :         put_cred(new);</a>
@@ -748,12 +748,12 @@
 <a name="686"><span class="lineNum">     686 </span>            : /*</a>
 <a name="687"><span class="lineNum">     687 </span>            :  * initialise the credentials stuff</a>
 <a name="688"><span class="lineNum">     688 </span>            :  */</a>
-<a name="689"><span class="lineNum">     689 </span><span class="lineCov">          2 : void __init cred_init(void)</span></a>
+<a name="689"><span class="lineNum">     689 </span><span class="lineCov">          1 : void __init cred_init(void)</span></a>
 <a name="690"><span class="lineNum">     690 </span>            : {</a>
 <a name="691"><span class="lineNum">     691 </span>            :         /* allocate a slab in which we can store credentials */</a>
-<a name="692"><span class="lineNum">     692 </span><span class="lineCov">          2 :         cred_jar = kmem_cache_create(&quot;cred_jar&quot;, sizeof(struct cred), 0,</span></a>
+<a name="692"><span class="lineNum">     692 </span><span class="lineCov">          1 :         cred_jar = kmem_cache_create(&quot;cred_jar&quot;, sizeof(struct cred), 0,</span></a>
 <a name="693"><span class="lineNum">     693 </span>            :                         SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT, NULL);</a>
-<a name="694"><span class="lineNum">     694 </span><span class="lineCov">          2 : }</span></a>
+<a name="694"><span class="lineNum">     694 </span><span class="lineCov">          1 : }</span></a>
 <a name="695"><span class="lineNum">     695 </span>            : </a>
 <a name="696"><span class="lineNum">     696 </span>            : /**</a>
 <a name="697"><span class="lineNum">     697 </span>            :  * prepare_kernel_cred - Prepare a set of credentials for a kernel service</a>

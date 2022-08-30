@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -3712,13 +3712,13 @@
 <a name="3650"><span class="lineNum">    3650 </span>            : /*</a>
 <a name="3651"><span class="lineNum">    3651 </span>            :  * initialise the percpu counter for VM</a>
 <a name="3652"><span class="lineNum">    3652 </span>            :  */</a>
-<a name="3653"><span class="lineNum">    3653 </span><span class="lineCov">          2 : void __init mmap_init(void)</span></a>
+<a name="3653"><span class="lineNum">    3653 </span><span class="lineCov">          1 : void __init mmap_init(void)</span></a>
 <a name="3654"><span class="lineNum">    3654 </span>            : {</a>
 <a name="3655"><span class="lineNum">    3655 </span>            :         int ret;</a>
 <a name="3656"><span class="lineNum">    3656 </span>            : </a>
-<a name="3657"><span class="lineNum">    3657 </span><span class="lineCov">          4 :         ret = percpu_counter_init(&amp;vm_committed_as, 0, GFP_KERNEL);</span></a>
+<a name="3657"><span class="lineNum">    3657 </span><span class="lineCov">          2 :         ret = percpu_counter_init(&amp;vm_committed_as, 0, GFP_KERNEL);</span></a>
 <a name="3658"><span class="lineNum">    3658 </span>            :         VM_BUG_ON(ret);</a>
-<a name="3659"><span class="lineNum">    3659 </span><span class="lineCov">          2 : }</span></a>
+<a name="3659"><span class="lineNum">    3659 </span><span class="lineCov">          1 : }</span></a>
 <a name="3660"><span class="lineNum">    3660 </span>            : </a>
 <a name="3661"><span class="lineNum">    3661 </span>            : /*</a>
 <a name="3662"><span class="lineNum">    3662 </span>            :  * Initialise sysctl_user_reserve_kbytes.</a>
@@ -3730,14 +3730,14 @@
 <a name="3668"><span class="lineNum">    3668 </span>            :  * The default value is min(3% of free memory, 128MB)</a>
 <a name="3669"><span class="lineNum">    3669 </span>            :  * 128MB is enough to recover with sshd/login, bash, and top/kill.</a>
 <a name="3670"><span class="lineNum">    3670 </span>            :  */</a>
-<a name="3671"><span class="lineNum">    3671 </span><span class="lineCov">          2 : static int init_user_reserve(void)</span></a>
+<a name="3671"><span class="lineNum">    3671 </span><span class="lineCov">          1 : static int init_user_reserve(void)</span></a>
 <a name="3672"><span class="lineNum">    3672 </span>            : {</a>
 <a name="3673"><span class="lineNum">    3673 </span>            :         unsigned long free_kbytes;</a>
 <a name="3674"><span class="lineNum">    3674 </span>            : </a>
-<a name="3675"><span class="lineNum">    3675 </span><span class="lineCov">          2 :         free_kbytes = global_zone_page_state(NR_FREE_PAGES) &lt;&lt; (PAGE_SHIFT - 10);</span></a>
+<a name="3675"><span class="lineNum">    3675 </span><span class="lineCov">          1 :         free_kbytes = global_zone_page_state(NR_FREE_PAGES) &lt;&lt; (PAGE_SHIFT - 10);</span></a>
 <a name="3676"><span class="lineNum">    3676 </span>            : </a>
-<a name="3677"><span class="lineNum">    3677 </span><span class="lineCov">          2 :         sysctl_user_reserve_kbytes = min(free_kbytes / 32, 1UL &lt;&lt; 17);</span></a>
-<a name="3678"><span class="lineNum">    3678 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="3677"><span class="lineNum">    3677 </span><span class="lineCov">          1 :         sysctl_user_reserve_kbytes = min(free_kbytes / 32, 1UL &lt;&lt; 17);</span></a>
+<a name="3678"><span class="lineNum">    3678 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="3679"><span class="lineNum">    3679 </span>            : }</a>
 <a name="3680"><span class="lineNum">    3680 </span>            : subsys_initcall(init_user_reserve);</a>
 <a name="3681"><span class="lineNum">    3681 </span>            : </a>
@@ -3751,14 +3751,14 @@
 <a name="3689"><span class="lineNum">    3689 </span>            :  * with sshd, bash, and top in OVERCOMMIT_GUESS. Smaller systems will</a>
 <a name="3690"><span class="lineNum">    3690 </span>            :  * only reserve 3% of free pages by default.</a>
 <a name="3691"><span class="lineNum">    3691 </span>            :  */</a>
-<a name="3692"><span class="lineNum">    3692 </span><span class="lineCov">          2 : static int init_admin_reserve(void)</span></a>
+<a name="3692"><span class="lineNum">    3692 </span><span class="lineCov">          1 : static int init_admin_reserve(void)</span></a>
 <a name="3693"><span class="lineNum">    3693 </span>            : {</a>
 <a name="3694"><span class="lineNum">    3694 </span>            :         unsigned long free_kbytes;</a>
 <a name="3695"><span class="lineNum">    3695 </span>            : </a>
-<a name="3696"><span class="lineNum">    3696 </span><span class="lineCov">          2 :         free_kbytes = global_zone_page_state(NR_FREE_PAGES) &lt;&lt; (PAGE_SHIFT - 10);</span></a>
+<a name="3696"><span class="lineNum">    3696 </span><span class="lineCov">          1 :         free_kbytes = global_zone_page_state(NR_FREE_PAGES) &lt;&lt; (PAGE_SHIFT - 10);</span></a>
 <a name="3697"><span class="lineNum">    3697 </span>            : </a>
-<a name="3698"><span class="lineNum">    3698 </span><span class="lineCov">          2 :         sysctl_admin_reserve_kbytes = min(free_kbytes / 32, 1UL &lt;&lt; 13);</span></a>
-<a name="3699"><span class="lineNum">    3699 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="3698"><span class="lineNum">    3698 </span><span class="lineCov">          1 :         sysctl_admin_reserve_kbytes = min(free_kbytes / 32, 1UL &lt;&lt; 13);</span></a>
+<a name="3699"><span class="lineNum">    3699 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="3700"><span class="lineNum">    3700 </span>            : }</a>
 <a name="3701"><span class="lineNum">    3701 </span>            : subsys_initcall(init_admin_reserve);</a>
 <a name="3702"><span class="lineNum">    3702 </span>            : </a>
@@ -3823,12 +3823,12 @@
 <a name="3761"><span class="lineNum">    3761 </span>            :         .notifier_call = reserve_mem_notifier,</a>
 <a name="3762"><span class="lineNum">    3762 </span>            : };</a>
 <a name="3763"><span class="lineNum">    3763 </span>            : </a>
-<a name="3764"><span class="lineNum">    3764 </span><span class="lineCov">          2 : static int __meminit init_reserve_notifier(void)</span></a>
+<a name="3764"><span class="lineNum">    3764 </span><span class="lineCov">          1 : static int __meminit init_reserve_notifier(void)</span></a>
 <a name="3765"><span class="lineNum">    3765 </span>            : {</a>
 <a name="3766"><span class="lineNum">    3766 </span>            :         if (register_hotmemory_notifier(&amp;reserve_mem_nb))</a>
 <a name="3767"><span class="lineNum">    3767 </span>            :                 pr_err(&quot;Failed registering memory add/remove notifier for admin reserve\n&quot;);</a>
 <a name="3768"><span class="lineNum">    3768 </span>            : </a>
-<a name="3769"><span class="lineNum">    3769 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="3769"><span class="lineNum">    3769 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="3770"><span class="lineNum">    3770 </span>            : }</a>
 <a name="3771"><span class="lineNum">    3771 </span>            : subsys_initcall(init_reserve_notifier);</a>
 </pre>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -88,7 +88,7 @@
 <a name="26"><span class="lineNum">      26 </span>            :          * Note for KASAN: we deliberately don't use READ_ONCE_NOCHECK() here,</a>
 <a name="27"><span class="lineNum">      27 </span>            :          * it's non-inlined function that increases binary size and stack usage.</a>
 <a name="28"><span class="lineNum">      28 </span>            :          */</a>
-<a name="29"><span class="lineNum">      29 </span><span class="lineCov">    1239872 :         return __READ_ONCE((v)-&gt;counter);</span></a>
+<a name="29"><span class="lineNum">      29 </span><span class="lineCov">     621291 :         return __READ_ONCE((v)-&gt;counter);</span></a>
 <a name="30"><span class="lineNum">      30 </span>            : }</a>
 <a name="31"><span class="lineNum">      31 </span>            : </a>
 <a name="32"><span class="lineNum">      32 </span>            : /**</a>
@@ -112,7 +112,7 @@
 <a name="50"><span class="lineNum">      50 </span>            :  */</a>
 <a name="51"><span class="lineNum">      51 </span>            : static __always_inline void arch_atomic_add(int i, atomic_t *v)</a>
 <a name="52"><span class="lineNum">      52 </span>            : {</a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">       4650 :         asm volatile(LOCK_PREFIX &quot;addl %1,%0&quot;</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">       2325 :         asm volatile(LOCK_PREFIX &quot;addl %1,%0&quot;</span></a>
 <a name="54"><span class="lineNum">      54 </span>            :                      : &quot;+m&quot; (v-&gt;counter)</a>
 <a name="55"><span class="lineNum">      55 </span>            :                      : &quot;ir&quot; (i) : &quot;memory&quot;);</a>
 <a name="56"><span class="lineNum">      56 </span>            : }</a>
@@ -126,7 +126,7 @@
 <a name="64"><span class="lineNum">      64 </span>            :  */</a>
 <a name="65"><span class="lineNum">      65 </span>            : static __always_inline void arch_atomic_sub(int i, atomic_t *v)</a>
 <a name="66"><span class="lineNum">      66 </span>            : {</a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">      22100 :         asm volatile(LOCK_PREFIX &quot;subl %1,%0&quot;</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">      11050 :         asm volatile(LOCK_PREFIX &quot;subl %1,%0&quot;</span></a>
 <a name="68"><span class="lineNum">      68 </span>            :                      : &quot;+m&quot; (v-&gt;counter)</a>
 <a name="69"><span class="lineNum">      69 </span>            :                      : &quot;ir&quot; (i) : &quot;memory&quot;);</a>
 <a name="70"><span class="lineNum">      70 </span>            : }</a>
@@ -154,7 +154,7 @@
 <a name="92"><span class="lineNum">      92 </span>            :  */</a>
 <a name="93"><span class="lineNum">      93 </span>            : static __always_inline void arch_atomic_inc(atomic_t *v)</a>
 <a name="94"><span class="lineNum">      94 </span>            : {</a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineCov">      40270 :         asm volatile(LOCK_PREFIX &quot;incl %0&quot;</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">      20251 :         asm volatile(LOCK_PREFIX &quot;incl %0&quot;</span></a>
 <a name="96"><span class="lineNum">      96 </span>            :                      : &quot;+m&quot; (v-&gt;counter) :: &quot;memory&quot;);</a>
 <a name="97"><span class="lineNum">      97 </span>            : }</a>
 <a name="98"><span class="lineNum">      98 </span>            : #define arch_atomic_inc arch_atomic_inc</a>
@@ -182,7 +182,7 @@
 <a name="120"><span class="lineNum">     120 </span>            :  */</a>
 <a name="121"><span class="lineNum">     121 </span>            : static __always_inline bool arch_atomic_dec_and_test(atomic_t *v)</a>
 <a name="122"><span class="lineNum">     122 </span>            : {</a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">      20778 :         return GEN_UNARY_RMWcc(LOCK_PREFIX &quot;decl&quot;, v-&gt;counter, e);</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">      10563 :         return GEN_UNARY_RMWcc(LOCK_PREFIX &quot;decl&quot;, v-&gt;counter, e);</span></a>
 <a name="124"><span class="lineNum">     124 </span>            : }</a>
 <a name="125"><span class="lineNum">     125 </span>            : #define arch_atomic_dec_and_test arch_atomic_dec_and_test</a>
 <a name="126"><span class="lineNum">     126 </span>            : </a>
@@ -211,7 +211,7 @@
 <a name="149"><span class="lineNum">     149 </span>            :  */</a>
 <a name="150"><span class="lineNum">     150 </span>            : static __always_inline bool arch_atomic_add_negative(int i, atomic_t *v)</a>
 <a name="151"><span class="lineNum">     151 </span>            : {</a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineCov">        156 :         return GEN_BINARY_RMWcc(LOCK_PREFIX &quot;addl&quot;, v-&gt;counter, s, &quot;er&quot;, i);</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">        107 :         return GEN_BINARY_RMWcc(LOCK_PREFIX &quot;addl&quot;, v-&gt;counter, s, &quot;er&quot;, i);</span></a>
 <a name="153"><span class="lineNum">     153 </span>            : }</a>
 <a name="154"><span class="lineNum">     154 </span>            : #define arch_atomic_add_negative arch_atomic_add_negative</a>
 <a name="155"><span class="lineNum">     155 </span>            : </a>
@@ -243,25 +243,25 @@
 <a name="181"><span class="lineNum">     181 </span>            : </a>
 <a name="182"><span class="lineNum">     182 </span>            : static __always_inline int arch_atomic_fetch_add(int i, atomic_t *v)</a>
 <a name="183"><span class="lineNum">     183 </span>            : {</a>
-<a name="184"><span class="lineNum">     184 </span><span class="lineCov">       7885 :         return xadd(&amp;v-&gt;counter, i);</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">       4099 :         return xadd(&amp;v-&gt;counter, i);</span></a>
 <a name="185"><span class="lineNum">     185 </span>            : }</a>
 <a name="186"><span class="lineNum">     186 </span>            : #define arch_atomic_fetch_add arch_atomic_fetch_add</a>
 <a name="187"><span class="lineNum">     187 </span>            : </a>
 <a name="188"><span class="lineNum">     188 </span>            : static __always_inline int arch_atomic_fetch_sub(int i, atomic_t *v)</a>
 <a name="189"><span class="lineNum">     189 </span>            : {</a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineCov">       4112 :         return xadd(&amp;v-&gt;counter, -i);</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineCov">       2470 :         return xadd(&amp;v-&gt;counter, -i);</span></a>
 <a name="191"><span class="lineNum">     191 </span>            : }</a>
 <a name="192"><span class="lineNum">     192 </span>            : #define arch_atomic_fetch_sub arch_atomic_fetch_sub</a>
 <a name="193"><span class="lineNum">     193 </span>            : </a>
 <a name="194"><span class="lineNum">     194 </span>            : static __always_inline int arch_atomic_cmpxchg(atomic_t *v, int old, int new)</a>
 <a name="195"><span class="lineNum">     195 </span>            : {</a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineCov">          2 :         return arch_cmpxchg(&amp;v-&gt;counter, old, new);</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineCov">          1 :         return arch_cmpxchg(&amp;v-&gt;counter, old, new);</span></a>
 <a name="197"><span class="lineNum">     197 </span>            : }</a>
 <a name="198"><span class="lineNum">     198 </span>            : #define arch_atomic_cmpxchg arch_atomic_cmpxchg</a>
 <a name="199"><span class="lineNum">     199 </span>            : </a>
 <a name="200"><span class="lineNum">     200 </span>            : static __always_inline bool arch_atomic_try_cmpxchg(atomic_t *v, int *old, int new)</a>
 <a name="201"><span class="lineNum">     201 </span>            : {</a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">       1534 :         return arch_try_cmpxchg(&amp;v-&gt;counter, old, new);</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">        825 :         return arch_try_cmpxchg(&amp;v-&gt;counter, old, new);</span></a>
 <a name="203"><span class="lineNum">     203 </span>            : }</a>
 <a name="204"><span class="lineNum">     204 </span>            : #define arch_atomic_try_cmpxchg arch_atomic_try_cmpxchg</a>
 <a name="205"><span class="lineNum">     205 </span>            : </a>
@@ -299,9 +299,9 @@
 <a name="237"><span class="lineNum">     237 </span>            : </a>
 <a name="238"><span class="lineNum">     238 </span>            : static __always_inline int arch_atomic_fetch_or(int i, atomic_t *v)</a>
 <a name="239"><span class="lineNum">     239 </span>            : {</a>
-<a name="240"><span class="lineNum">     240 </span><span class="lineCov">          2 :         int val = arch_atomic_read(v);</span></a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineCov">          1 :         int val = arch_atomic_read(v);</span></a>
 <a name="241"><span class="lineNum">     241 </span>            : </a>
-<a name="242"><span class="lineNum">     242 </span><span class="lineCov">          4 :         do { } while (!arch_atomic_try_cmpxchg(v, &amp;val, val | i));</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineCov">          2 :         do { } while (!arch_atomic_try_cmpxchg(v, &amp;val, val | i));</span></a>
 <a name="243"><span class="lineNum">     243 </span>            : </a>
 <a name="244"><span class="lineNum">     244 </span>            :         return val;</a>
 <a name="245"><span class="lineNum">     245 </span>            : }</a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -201,12 +201,12 @@
 <a name="139"><span class="lineNum">     139 </span>            :         .show   = r_show,</a>
 <a name="140"><span class="lineNum">     140 </span>            : };</a>
 <a name="141"><span class="lineNum">     141 </span>            : </a>
-<a name="142"><span class="lineNum">     142 </span><span class="lineCov">          2 : static int __init ioresources_init(void)</span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineCov">          1 : static int __init ioresources_init(void)</span></a>
 <a name="143"><span class="lineNum">     143 </span>            : {</a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineCov">          2 :         proc_create_seq_data(&quot;ioports&quot;, 0, NULL, &amp;resource_op,</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineCov">          1 :         proc_create_seq_data(&quot;ioports&quot;, 0, NULL, &amp;resource_op,</span></a>
 <a name="145"><span class="lineNum">     145 </span>            :                         &amp;ioport_resource);</a>
-<a name="146"><span class="lineNum">     146 </span><span class="lineCov">          2 :         proc_create_seq_data(&quot;iomem&quot;, 0, NULL, &amp;resource_op, &amp;iomem_resource);</span></a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineCov">          1 :         proc_create_seq_data(&quot;iomem&quot;, 0, NULL, &amp;resource_op, &amp;iomem_resource);</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="148"><span class="lineNum">     148 </span>            : }</a>
 <a name="149"><span class="lineNum">     149 </span>            : __initcall(ioresources_init);</a>
 <a name="150"><span class="lineNum">     150 </span>            : </a>
@@ -230,30 +230,30 @@
 <a name="168"><span class="lineNum">     168 </span>            : }</a>
 <a name="169"><span class="lineNum">     169 </span>            : </a>
 <a name="170"><span class="lineNum">     170 </span>            : /* Return the conflict entry if you can't request it */</a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">          4 : static struct resource * __request_resource(struct resource *root, struct resource *new)</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">          2 : static struct resource * __request_resource(struct resource *root, struct resource *new)</span></a>
 <a name="172"><span class="lineNum">     172 </span>            : {</a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          4 :         resource_size_t start = new-&gt;start;</span></a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">          4 :         resource_size_t end = new-&gt;end;</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          2 :         resource_size_t start = new-&gt;start;</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">          2 :         resource_size_t end = new-&gt;end;</span></a>
 <a name="175"><span class="lineNum">     175 </span>            :         struct resource *tmp, **p;</a>
 <a name="176"><span class="lineNum">     176 </span>            : </a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          4 :         if (end &lt; start)</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          2 :         if (end &lt; start)</span></a>
 <a name="178"><span class="lineNum">     178 </span>            :                 return root;</a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          4 :         if (start &lt; root-&gt;start)</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          2 :         if (start &lt; root-&gt;start)</span></a>
 <a name="180"><span class="lineNum">     180 </span>            :                 return root;</a>
-<a name="181"><span class="lineNum">     181 </span><span class="lineCov">          4 :         if (end &gt; root-&gt;end)</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">          2 :         if (end &gt; root-&gt;end)</span></a>
 <a name="182"><span class="lineNum">     182 </span>            :                 return root;</a>
-<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          4 :         p = &amp;root-&gt;child;</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          2 :         p = &amp;root-&gt;child;</span></a>
 <a name="184"><span class="lineNum">     184 </span>            :         for (;;) {</a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineCov">          8 :                 tmp = *p;</span></a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          6 :                 if (!tmp || tmp-&gt;start &gt; end) {</span></a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">          4 :                         new-&gt;sibling = tmp;</span></a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineCov">          4 :                         *p = new;</span></a>
-<a name="189"><span class="lineNum">     189 </span><span class="lineCov">          4 :                         new-&gt;parent = root;</span></a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineCov">          4 :                         return NULL;</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineCov">          4 :                 tmp = *p;</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          3 :                 if (!tmp || tmp-&gt;start &gt; end) {</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">          2 :                         new-&gt;sibling = tmp;</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineCov">          2 :                         *p = new;</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineCov">          2 :                         new-&gt;parent = root;</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineCov">          2 :                         return NULL;</span></a>
 <a name="191"><span class="lineNum">     191 </span>            :                 }</a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineCov">          2 :                 p = &amp;tmp-&gt;sibling;</span></a>
-<a name="193"><span class="lineNum">     193 </span><span class="lineCov">          2 :                 if (tmp-&gt;end &lt; start)</span></a>
-<a name="194"><span class="lineNum">     194 </span><span class="lineCov">          2 :                         continue;</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">          1 :                 p = &amp;tmp-&gt;sibling;</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineCov">          1 :                 if (tmp-&gt;end &lt; start)</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineCov">          1 :                         continue;</span></a>
 <a name="195"><span class="lineNum">     195 </span>            :                 return tmp;</a>
 <a name="196"><span class="lineNum">     196 </span>            :         }</a>
 <a name="197"><span class="lineNum">     197 </span>            : }</a>
@@ -328,9 +328,9 @@
 <a name="266"><span class="lineNum">     266 </span>            : {</a>
 <a name="267"><span class="lineNum">     267 </span>            :         struct resource *conflict;</a>
 <a name="268"><span class="lineNum">     268 </span>            : </a>
-<a name="269"><span class="lineNum">     269 </span><span class="lineCov">          4 :         write_lock(&amp;resource_lock);</span></a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineCov">          4 :         conflict = __request_resource(root, new);</span></a>
-<a name="271"><span class="lineNum">     271 </span><span class="lineCov">          4 :         write_unlock(&amp;resource_lock);</span></a>
+<a name="269"><span class="lineNum">     269 </span><span class="lineCov">          2 :         write_lock(&amp;resource_lock);</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineCov">          2 :         conflict = __request_resource(root, new);</span></a>
+<a name="271"><span class="lineNum">     271 </span><span class="lineCov">          2 :         write_unlock(&amp;resource_lock);</span></a>
 <a name="272"><span class="lineNum">     272 </span><span class="lineNoCov">          0 :         return conflict;</span></a>
 <a name="273"><span class="lineNum">     273 </span>            : }</a>
 <a name="274"><span class="lineNum">     274 </span>            : </a>
@@ -341,12 +341,12 @@
 <a name="279"><span class="lineNum">     279 </span>            :  *</a>
 <a name="280"><span class="lineNum">     280 </span>            :  * Returns 0 for success, negative error code on error.</a>
 <a name="281"><span class="lineNum">     281 </span>            :  */</a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineCov">          4 : int request_resource(struct resource *root, struct resource *new)</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineCov">          2 : int request_resource(struct resource *root, struct resource *new)</span></a>
 <a name="283"><span class="lineNum">     283 </span>            : {</a>
 <a name="284"><span class="lineNum">     284 </span>            :         struct resource *conflict;</a>
 <a name="285"><span class="lineNum">     285 </span>            : </a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          4 :         conflict = request_resource_conflict(root, new);</span></a>
-<a name="287"><span class="lineNum">     287 </span><span class="lineCov">          4 :         return conflict ? -EBUSY : 0;</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          2 :         conflict = request_resource_conflict(root, new);</span></a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineCov">          2 :         return conflict ? -EBUSY : 0;</span></a>
 <a name="288"><span class="lineNum">     288 </span>            : }</a>
 <a name="289"><span class="lineNum">     289 </span>            : </a>
 <a name="290"><span class="lineNum">     290 </span>            : EXPORT_SYMBOL(request_resource);</a>
@@ -1931,9 +1931,9 @@
 <a name="1869"><span class="lineNum">    1869 </span><span class="lineNoCov">          0 :         return 1;</span></a>
 <a name="1870"><span class="lineNum">    1870 </span>            : }</a>
 <a name="1871"><span class="lineNum">    1871 </span>            : </a>
-<a name="1872"><span class="lineNum">    1872 </span><span class="lineCov">          2 : static int iomem_fs_init_fs_context(struct fs_context *fc)</span></a>
+<a name="1872"><span class="lineNum">    1872 </span><span class="lineCov">          1 : static int iomem_fs_init_fs_context(struct fs_context *fc)</span></a>
 <a name="1873"><span class="lineNum">    1873 </span>            : {</a>
-<a name="1874"><span class="lineNum">    1874 </span><span class="lineCov">          2 :         return init_pseudo(fc, DEVMEM_MAGIC) ? 0 : -ENOMEM;</span></a>
+<a name="1874"><span class="lineNum">    1874 </span><span class="lineCov">          1 :         return init_pseudo(fc, DEVMEM_MAGIC) ? 0 : -ENOMEM;</span></a>
 <a name="1875"><span class="lineNum">    1875 </span>            : }</a>
 <a name="1876"><span class="lineNum">    1876 </span>            : </a>
 <a name="1877"><span class="lineNum">    1877 </span>            : static struct file_system_type iomem_fs_type = {</a>
@@ -1943,21 +1943,21 @@
 <a name="1881"><span class="lineNum">    1881 </span>            :         .kill_sb        = kill_anon_super,</a>
 <a name="1882"><span class="lineNum">    1882 </span>            : };</a>
 <a name="1883"><span class="lineNum">    1883 </span>            : </a>
-<a name="1884"><span class="lineNum">    1884 </span><span class="lineCov">          2 : static int __init iomem_init_inode(void)</span></a>
+<a name="1884"><span class="lineNum">    1884 </span><span class="lineCov">          1 : static int __init iomem_init_inode(void)</span></a>
 <a name="1885"><span class="lineNum">    1885 </span>            : {</a>
 <a name="1886"><span class="lineNum">    1886 </span>            :         static struct vfsmount *iomem_vfs_mount;</a>
 <a name="1887"><span class="lineNum">    1887 </span>            :         static int iomem_fs_cnt;</a>
 <a name="1888"><span class="lineNum">    1888 </span>            :         struct inode *inode;</a>
 <a name="1889"><span class="lineNum">    1889 </span>            :         int rc;</a>
 <a name="1890"><span class="lineNum">    1890 </span>            : </a>
-<a name="1891"><span class="lineNum">    1891 </span><span class="lineCov">          2 :         rc = simple_pin_fs(&amp;iomem_fs_type, &amp;iomem_vfs_mount, &amp;iomem_fs_cnt);</span></a>
-<a name="1892"><span class="lineNum">    1892 </span><span class="lineCov">          2 :         if (rc &lt; 0) {</span></a>
+<a name="1891"><span class="lineNum">    1891 </span><span class="lineCov">          1 :         rc = simple_pin_fs(&amp;iomem_fs_type, &amp;iomem_vfs_mount, &amp;iomem_fs_cnt);</span></a>
+<a name="1892"><span class="lineNum">    1892 </span><span class="lineCov">          1 :         if (rc &lt; 0) {</span></a>
 <a name="1893"><span class="lineNum">    1893 </span><span class="lineNoCov">          0 :                 pr_err(&quot;Cannot mount iomem pseudo filesystem: %d\n&quot;, rc);</span></a>
 <a name="1894"><span class="lineNum">    1894 </span><span class="lineNoCov">          0 :                 return rc;</span></a>
 <a name="1895"><span class="lineNum">    1895 </span>            :         }</a>
 <a name="1896"><span class="lineNum">    1896 </span>            : </a>
-<a name="1897"><span class="lineNum">    1897 </span><span class="lineCov">          2 :         inode = alloc_anon_inode(iomem_vfs_mount-&gt;mnt_sb);</span></a>
-<a name="1898"><span class="lineNum">    1898 </span><span class="lineCov">          2 :         if (IS_ERR(inode)) {</span></a>
+<a name="1897"><span class="lineNum">    1897 </span><span class="lineCov">          1 :         inode = alloc_anon_inode(iomem_vfs_mount-&gt;mnt_sb);</span></a>
+<a name="1898"><span class="lineNum">    1898 </span><span class="lineCov">          1 :         if (IS_ERR(inode)) {</span></a>
 <a name="1899"><span class="lineNum">    1899 </span><span class="lineNoCov">          0 :                 rc = PTR_ERR(inode);</span></a>
 <a name="1900"><span class="lineNum">    1900 </span><span class="lineNoCov">          0 :                 pr_err(&quot;Cannot allocate inode for iomem: %d\n&quot;, rc);</span></a>
 <a name="1901"><span class="lineNum">    1901 </span><span class="lineNoCov">          0 :                 simple_release_fs(&amp;iomem_vfs_mount, &amp;iomem_fs_cnt);</span></a>
@@ -1968,9 +1968,9 @@
 <a name="1906"><span class="lineNum">    1906 </span>            :          * Publish iomem revocation inode initialized.</a>
 <a name="1907"><span class="lineNum">    1907 </span>            :          * Pairs with smp_load_acquire() in revoke_iomem().</a>
 <a name="1908"><span class="lineNum">    1908 </span>            :          */</a>
-<a name="1909"><span class="lineNum">    1909 </span><span class="lineCov">          2 :         smp_store_release(&amp;iomem_inode, inode);</span></a>
+<a name="1909"><span class="lineNum">    1909 </span><span class="lineCov">          1 :         smp_store_release(&amp;iomem_inode, inode);</span></a>
 <a name="1910"><span class="lineNum">    1910 </span>            : </a>
-<a name="1911"><span class="lineNum">    1911 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="1911"><span class="lineNum">    1911 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="1912"><span class="lineNum">    1912 </span>            : }</a>
 <a name="1913"><span class="lineNum">    1913 </span>            : </a>
 <a name="1914"><span class="lineNum">    1914 </span>            : fs_initcall(iomem_init_inode);</a>

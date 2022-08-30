@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -165,7 +165,7 @@
 <a name="103"><span class="lineNum">     103 </span>            : static __always_inline void kasan_poison_element(mempool_t *pool, void *element)</a>
 <a name="104"><span class="lineNum">     104 </span>            : {</a>
 <a name="105"><span class="lineNum">     105 </span>            :         if (pool-&gt;alloc == mempool_alloc_slab || pool-&gt;alloc == mempool_kmalloc)</a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">         24 :                 kasan_slab_free_mempool(element);</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">         12 :                 kasan_slab_free_mempool(element);</span></a>
 <a name="107"><span class="lineNum">     107 </span>            :         else if (pool-&gt;alloc == mempool_alloc_pages)</a>
 <a name="108"><span class="lineNum">     108 </span>            :                 kasan_poison_pages(element, (unsigned long)pool-&gt;pool_data,</a>
 <a name="109"><span class="lineNum">     109 </span>            :                                    false);</a>
@@ -182,10 +182,10 @@
 <a name="120"><span class="lineNum">     120 </span>            : </a>
 <a name="121"><span class="lineNum">     121 </span>            : static __always_inline void add_element(mempool_t *pool, void *element)</a>
 <a name="122"><span class="lineNum">     122 </span>            : {</a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">         24 :         BUG_ON(pool-&gt;curr_nr &gt;= pool-&gt;min_nr);</span></a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         24 :         poison_element(pool, element);</span></a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineCov">         24 :         kasan_poison_element(pool, element);</span></a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineCov">         24 :         pool-&gt;elements[pool-&gt;curr_nr++] = element;</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">         12 :         BUG_ON(pool-&gt;curr_nr &gt;= pool-&gt;min_nr);</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         12 :         poison_element(pool, element);</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">         12 :         kasan_poison_element(pool, element);</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">         12 :         pool-&gt;elements[pool-&gt;curr_nr++] = element;</span></a>
 <a name="127"><span class="lineNum">     127 </span>            : }</a>
 <a name="128"><span class="lineNum">     128 </span>            : </a>
 <a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 : static void *remove_element(mempool_t *pool)</span></a>
@@ -238,30 +238,30 @@
 <a name="176"><span class="lineNum">     176 </span>            : }</a>
 <a name="177"><span class="lineNum">     177 </span>            : EXPORT_SYMBOL(mempool_destroy);</a>
 <a name="178"><span class="lineNum">     178 </span>            : </a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          8 : int mempool_init_node(mempool_t *pool, int min_nr, mempool_alloc_t *alloc_fn,</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          4 : int mempool_init_node(mempool_t *pool, int min_nr, mempool_alloc_t *alloc_fn,</span></a>
 <a name="180"><span class="lineNum">     180 </span>            :                       mempool_free_t *free_fn, void *pool_data,</a>
 <a name="181"><span class="lineNum">     181 </span>            :                       gfp_t gfp_mask, int node_id)</a>
 <a name="182"><span class="lineNum">     182 </span>            : {</a>
-<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          8 :         spin_lock_init(&amp;pool-&gt;lock);</span></a>
-<a name="184"><span class="lineNum">     184 </span><span class="lineCov">          8 :         pool-&gt;min_nr = min_nr;</span></a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineCov">          8 :         pool-&gt;pool_data = pool_data;</span></a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          8 :         pool-&gt;alloc  = alloc_fn;</span></a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">          8 :         pool-&gt;free   = free_fn;</span></a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineCov">          8 :         init_waitqueue_head(&amp;pool-&gt;wait);</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          4 :         spin_lock_init(&amp;pool-&gt;lock);</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">          4 :         pool-&gt;min_nr = min_nr;</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineCov">          4 :         pool-&gt;pool_data = pool_data;</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          4 :         pool-&gt;alloc  = alloc_fn;</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">          4 :         pool-&gt;free   = free_fn;</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineCov">          4 :         init_waitqueue_head(&amp;pool-&gt;wait);</span></a>
 <a name="189"><span class="lineNum">     189 </span>            : </a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineCov">          8 :         pool-&gt;elements = kmalloc_array_node(min_nr, sizeof(void *),</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineCov">          4 :         pool-&gt;elements = kmalloc_array_node(min_nr, sizeof(void *),</span></a>
 <a name="191"><span class="lineNum">     191 </span>            :                                             gfp_mask, node_id);</a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineCov">          8 :         if (!pool-&gt;elements)</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">          4 :         if (!pool-&gt;elements)</span></a>
 <a name="193"><span class="lineNum">     193 </span>            :                 return -ENOMEM;</a>
 <a name="194"><span class="lineNum">     194 </span>            : </a>
 <a name="195"><span class="lineNum">     195 </span>            :         /*</a>
 <a name="196"><span class="lineNum">     196 </span>            :          * First pre-allocate the guaranteed number of buffers.</a>
 <a name="197"><span class="lineNum">     197 </span>            :          */</a>
-<a name="198"><span class="lineNum">     198 </span><span class="lineCov">         32 :         while (pool-&gt;curr_nr &lt; pool-&gt;min_nr) {</span></a>
+<a name="198"><span class="lineNum">     198 </span><span class="lineCov">         16 :         while (pool-&gt;curr_nr &lt; pool-&gt;min_nr) {</span></a>
 <a name="199"><span class="lineNum">     199 </span>            :                 void *element;</a>
 <a name="200"><span class="lineNum">     200 </span>            : </a>
-<a name="201"><span class="lineNum">     201 </span><span class="lineCov">         24 :                 element = pool-&gt;alloc(gfp_mask, pool-&gt;pool_data);</span></a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">         24 :                 if (unlikely(!element)) {</span></a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineCov">         12 :                 element = pool-&gt;alloc(gfp_mask, pool-&gt;pool_data);</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">         12 :                 if (unlikely(!element)) {</span></a>
 <a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 :                         mempool_exit(pool);</span></a>
 <a name="204"><span class="lineNum">     204 </span><span class="lineNoCov">          0 :                         return -ENOMEM;</span></a>
 <a name="205"><span class="lineNum">     205 </span>            :                 }</a>
@@ -286,10 +286,10 @@
 <a name="224"><span class="lineNum">     224 </span>            :  *</a>
 <a name="225"><span class="lineNum">     225 </span>            :  * Return: %0 on success, negative error code otherwise.</a>
 <a name="226"><span class="lineNum">     226 </span>            :  */</a>
-<a name="227"><span class="lineNum">     227 </span><span class="lineCov">          8 : int mempool_init(mempool_t *pool, int min_nr, mempool_alloc_t *alloc_fn,</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">          4 : int mempool_init(mempool_t *pool, int min_nr, mempool_alloc_t *alloc_fn,</span></a>
 <a name="228"><span class="lineNum">     228 </span>            :                  mempool_free_t *free_fn, void *pool_data)</a>
 <a name="229"><span class="lineNum">     229 </span>            : {</a>
-<a name="230"><span class="lineNum">     230 </span><span class="lineCov">          8 :         return mempool_init_node(pool, min_nr, alloc_fn, free_fn,</span></a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineCov">          4 :         return mempool_init_node(pool, min_nr, alloc_fn, free_fn,</span></a>
 <a name="231"><span class="lineNum">     231 </span>            :                                  pool_data, GFP_KERNEL, NUMA_NO_NODE);</a>
 <a name="232"><span class="lineNum">     232 </span>            : </a>
 <a name="233"><span class="lineNum">     233 </span>            : }</a>
@@ -567,11 +567,11 @@
 <a name="505"><span class="lineNum">     505 </span>            : /*</a>
 <a name="506"><span class="lineNum">     506 </span>            :  * A commonly used alloc and free fn.</a>
 <a name="507"><span class="lineNum">     507 </span>            :  */</a>
-<a name="508"><span class="lineNum">     508 </span><span class="lineCov">         24 : void *mempool_alloc_slab(gfp_t gfp_mask, void *pool_data)</span></a>
+<a name="508"><span class="lineNum">     508 </span><span class="lineCov">         12 : void *mempool_alloc_slab(gfp_t gfp_mask, void *pool_data)</span></a>
 <a name="509"><span class="lineNum">     509 </span>            : {</a>
-<a name="510"><span class="lineNum">     510 </span><span class="lineCov">         24 :         struct kmem_cache *mem = pool_data;</span></a>
+<a name="510"><span class="lineNum">     510 </span><span class="lineCov">         12 :         struct kmem_cache *mem = pool_data;</span></a>
 <a name="511"><span class="lineNum">     511 </span>            :         VM_BUG_ON(mem-&gt;ctor);</a>
-<a name="512"><span class="lineNum">     512 </span><span class="lineCov">         24 :         return kmem_cache_alloc(mem, gfp_mask);</span></a>
+<a name="512"><span class="lineNum">     512 </span><span class="lineCov">         12 :         return kmem_cache_alloc(mem, gfp_mask);</span></a>
 <a name="513"><span class="lineNum">     513 </span>            : }</a>
 <a name="514"><span class="lineNum">     514 </span>            : EXPORT_SYMBOL(mempool_alloc_slab);</a>
 <a name="515"><span class="lineNum">     515 </span>            : </a>

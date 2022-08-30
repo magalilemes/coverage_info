@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -265,7 +265,7 @@
 <a name="203"><span class="lineNum">     203 </span>            :  */</a>
 <a name="204"><span class="lineNum">     204 </span>            : static inline s64 clocksource_cyc2ns(u64 cycles, u32 mult, u32 shift)</a>
 <a name="205"><span class="lineNum">     205 </span>            : {</a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineCov">          4 :         return ((u64) cycles * mult) &gt;&gt; shift;</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">          2 :         return ((u64) cycles * mult) &gt;&gt; shift;</span></a>
 <a name="207"><span class="lineNum">     207 </span>            : }</a>
 <a name="208"><span class="lineNum">     208 </span>            : </a>
 <a name="209"><span class="lineNum">     209 </span>            : </a>
@@ -300,12 +300,12 @@
 <a name="238"><span class="lineNum">     238 </span>            :  */</a>
 <a name="239"><span class="lineNum">     239 </span>            : static inline int __clocksource_register(struct clocksource *cs)</a>
 <a name="240"><span class="lineNum">     240 </span>            : {</a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineCov">          2 :         return __clocksource_register_scale(cs, 1, 0);</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">          1 :         return __clocksource_register_scale(cs, 1, 0);</span></a>
 <a name="242"><span class="lineNum">     242 </span>            : }</a>
 <a name="243"><span class="lineNum">     243 </span>            : </a>
 <a name="244"><span class="lineNum">     244 </span>            : static inline int clocksource_register_hz(struct clocksource *cs, u32 hz)</a>
 <a name="245"><span class="lineNum">     245 </span>            : {</a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineCov">          2 :         return __clocksource_register_scale(cs, 1, hz);</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">          1 :         return __clocksource_register_scale(cs, 1, hz);</span></a>
 <a name="247"><span class="lineNum">     247 </span>            : }</a>
 <a name="248"><span class="lineNum">     248 </span>            : </a>
 <a name="249"><span class="lineNum">     249 </span>            : static inline int clocksource_register_khz(struct clocksource *cs, u32 khz)</a>

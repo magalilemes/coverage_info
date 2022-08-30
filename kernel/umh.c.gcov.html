@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -341,13 +341,13 @@
 <a name="279"><span class="lineNum">     279 </span>            :  * Change the value of usermodehelper_disabled (under umhelper_sem locked for</a>
 <a name="280"><span class="lineNum">     280 </span>            :  * writing) and wakeup tasks waiting for it to change.</a>
 <a name="281"><span class="lineNum">     281 </span>            :  */</a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineCov">          2 : void __usermodehelper_set_disable_depth(enum umh_disable_depth depth)</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineCov">          1 : void __usermodehelper_set_disable_depth(enum umh_disable_depth depth)</span></a>
 <a name="283"><span class="lineNum">     283 </span>            : {</a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          2 :         down_write(&amp;umhelper_sem);</span></a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineCov">          2 :         usermodehelper_disabled = depth;</span></a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          2 :         wake_up(&amp;usermodehelper_disabled_waitq);</span></a>
-<a name="287"><span class="lineNum">     287 </span><span class="lineCov">          2 :         up_write(&amp;umhelper_sem);</span></a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          2 : }</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          1 :         down_write(&amp;umhelper_sem);</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">          1 :         usermodehelper_disabled = depth;</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          1 :         wake_up(&amp;usermodehelper_disabled_waitq);</span></a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineCov">          1 :         up_write(&amp;umhelper_sem);</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          1 : }</span></a>
 <a name="289"><span class="lineNum">     289 </span>            : </a>
 <a name="290"><span class="lineNum">     290 </span>            : /**</a>
 <a name="291"><span class="lineNum">     291 </span>            :  * __usermodehelper_disable - Prevent new helpers from being started.</a>
@@ -355,16 +355,16 @@
 <a name="293"><span class="lineNum">     293 </span>            :  *</a>
 <a name="294"><span class="lineNum">     294 </span>            :  * Set usermodehelper_disabled to @depth and wait for running helpers to exit.</a>
 <a name="295"><span class="lineNum">     295 </span>            :  */</a>
-<a name="296"><span class="lineNum">     296 </span><span class="lineCov">          2 : int __usermodehelper_disable(enum umh_disable_depth depth)</span></a>
+<a name="296"><span class="lineNum">     296 </span><span class="lineCov">          1 : int __usermodehelper_disable(enum umh_disable_depth depth)</span></a>
 <a name="297"><span class="lineNum">     297 </span>            : {</a>
 <a name="298"><span class="lineNum">     298 </span>            :         long retval;</a>
 <a name="299"><span class="lineNum">     299 </span>            : </a>
-<a name="300"><span class="lineNum">     300 </span><span class="lineCov">          2 :         if (!depth)</span></a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineCov">          1 :         if (!depth)</span></a>
 <a name="301"><span class="lineNum">     301 </span>            :                 return -EINVAL;</a>
 <a name="302"><span class="lineNum">     302 </span>            : </a>
-<a name="303"><span class="lineNum">     303 </span><span class="lineCov">          2 :         down_write(&amp;umhelper_sem);</span></a>
-<a name="304"><span class="lineNum">     304 </span><span class="lineCov">          2 :         usermodehelper_disabled = depth;</span></a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          2 :         up_write(&amp;umhelper_sem);</span></a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineCov">          1 :         down_write(&amp;umhelper_sem);</span></a>
+<a name="304"><span class="lineNum">     304 </span><span class="lineCov">          1 :         usermodehelper_disabled = depth;</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          1 :         up_write(&amp;umhelper_sem);</span></a>
 <a name="306"><span class="lineNum">     306 </span>            : </a>
 <a name="307"><span class="lineNum">     307 </span>            :         /*</a>
 <a name="308"><span class="lineNum">     308 </span>            :          * From now on call_usermodehelper_exec() won't start any new</a>
@@ -372,10 +372,10 @@
 <a name="310"><span class="lineNum">     310 </span>            :          * be zero at one point (it may be increased later, but that</a>
 <a name="311"><span class="lineNum">     311 </span>            :          * doesn't matter).</a>
 <a name="312"><span class="lineNum">     312 </span>            :          */</a>
-<a name="313"><span class="lineNum">     313 </span><span class="lineCov">          4 :         retval = wait_event_timeout(running_helpers_waitq,</span></a>
+<a name="313"><span class="lineNum">     313 </span><span class="lineCov">          2 :         retval = wait_event_timeout(running_helpers_waitq,</span></a>
 <a name="314"><span class="lineNum">     314 </span>            :                                         atomic_read(&amp;running_helpers) == 0,</a>
 <a name="315"><span class="lineNum">     315 </span>            :                                         RUNNING_HELPERS_TIMEOUT);</a>
-<a name="316"><span class="lineNum">     316 </span><span class="lineCov">          2 :         if (retval)</span></a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineCov">          1 :         if (retval)</span></a>
 <a name="317"><span class="lineNum">     317 </span>            :                 return 0;</a>
 <a name="318"><span class="lineNum">     318 </span>            : </a>
 <a name="319"><span class="lineNum">     319 </span><span class="lineNoCov">          0 :         __usermodehelper_set_disable_depth(UMH_ENABLED);</span></a>

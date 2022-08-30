@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -83,14 +83,14 @@
 <a name="21"><span class="lineNum">      21 </span>            : </a>
 <a name="22"><span class="lineNum">      22 </span>            : #ifdef CONFIG_PM_SLEEP</a>
 <a name="23"><span class="lineNum">      23 </span>            : </a>
-<a name="24"><span class="lineNum">      24 </span><span class="lineCov">          2 : void lock_system_sleep(void)</span></a>
+<a name="24"><span class="lineNum">      24 </span><span class="lineCov">          1 : void lock_system_sleep(void)</span></a>
 <a name="25"><span class="lineNum">      25 </span>            : {</a>
-<a name="26"><span class="lineNum">      26 </span><span class="lineCov">          2 :         current-&gt;flags |= PF_FREEZER_SKIP;</span></a>
-<a name="27"><span class="lineNum">      27 </span><span class="lineCov">          2 :         mutex_lock(&amp;system_transition_mutex);</span></a>
-<a name="28"><span class="lineNum">      28 </span><span class="lineCov">          2 : }</span></a>
+<a name="26"><span class="lineNum">      26 </span><span class="lineCov">          1 :         current-&gt;flags |= PF_FREEZER_SKIP;</span></a>
+<a name="27"><span class="lineNum">      27 </span><span class="lineCov">          1 :         mutex_lock(&amp;system_transition_mutex);</span></a>
+<a name="28"><span class="lineNum">      28 </span><span class="lineCov">          1 : }</span></a>
 <a name="29"><span class="lineNum">      29 </span>            : EXPORT_SYMBOL_GPL(lock_system_sleep);</a>
 <a name="30"><span class="lineNum">      30 </span>            : </a>
-<a name="31"><span class="lineNum">      31 </span><span class="lineCov">          2 : void unlock_system_sleep(void)</span></a>
+<a name="31"><span class="lineNum">      31 </span><span class="lineCov">          1 : void unlock_system_sleep(void)</span></a>
 <a name="32"><span class="lineNum">      32 </span>            : {</a>
 <a name="33"><span class="lineNum">      33 </span>            :         /*</a>
 <a name="34"><span class="lineNum">      34 </span>            :          * Don't use freezer_count() because we don't want the call to</a>
@@ -108,9 +108,9 @@
 <a name="46"><span class="lineNum">      46 </span>            :          * Which means, if we use try_to_freeze() here, it would make them</a>
 <a name="47"><span class="lineNum">      47 </span>            :          * enter the refrigerator, thus causing hibernation to lockup.</a>
 <a name="48"><span class="lineNum">      48 </span>            :          */</a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          2 :         current-&gt;flags &amp;= ~PF_FREEZER_SKIP;</span></a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          2 :         mutex_unlock(&amp;system_transition_mutex);</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          2 : }</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          1 :         current-&gt;flags &amp;= ~PF_FREEZER_SKIP;</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          1 :         mutex_unlock(&amp;system_transition_mutex);</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          1 : }</span></a>
 <a name="52"><span class="lineNum">      52 </span>            : EXPORT_SYMBOL_GPL(unlock_system_sleep);</a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
 <a name="54"><span class="lineNum">      54 </span><span class="lineNoCov">          0 : void ksys_sync_helper(void)</span></a>
@@ -130,9 +130,9 @@
 <a name="68"><span class="lineNum">      68 </span>            : </a>
 <a name="69"><span class="lineNum">      69 </span>            : static BLOCKING_NOTIFIER_HEAD(pm_chain_head);</a>
 <a name="70"><span class="lineNum">      70 </span>            : </a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          2 : int register_pm_notifier(struct notifier_block *nb)</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          1 : int register_pm_notifier(struct notifier_block *nb)</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : {</a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          2 :         return blocking_notifier_chain_register(&amp;pm_chain_head, nb);</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          1 :         return blocking_notifier_chain_register(&amp;pm_chain_head, nb);</span></a>
 <a name="74"><span class="lineNum">      74 </span>            : }</a>
 <a name="75"><span class="lineNum">      75 </span>            : EXPORT_SYMBOL_GPL(register_pm_notifier);</a>
 <a name="76"><span class="lineNum">      76 </span>            : </a>
@@ -996,29 +996,29 @@
 <a name="934"><span class="lineNum">     934 </span>            : struct workqueue_struct *pm_wq;</a>
 <a name="935"><span class="lineNum">     935 </span>            : EXPORT_SYMBOL_GPL(pm_wq);</a>
 <a name="936"><span class="lineNum">     936 </span>            : </a>
-<a name="937"><span class="lineNum">     937 </span><span class="lineCov">          2 : static int __init pm_start_workqueue(void)</span></a>
+<a name="937"><span class="lineNum">     937 </span><span class="lineCov">          1 : static int __init pm_start_workqueue(void)</span></a>
 <a name="938"><span class="lineNum">     938 </span>            : {</a>
-<a name="939"><span class="lineNum">     939 </span><span class="lineCov">          2 :         pm_wq = alloc_workqueue(&quot;pm&quot;, WQ_FREEZABLE, 0);</span></a>
+<a name="939"><span class="lineNum">     939 </span><span class="lineCov">          1 :         pm_wq = alloc_workqueue(&quot;pm&quot;, WQ_FREEZABLE, 0);</span></a>
 <a name="940"><span class="lineNum">     940 </span>            : </a>
-<a name="941"><span class="lineNum">     941 </span><span class="lineCov">          2 :         return pm_wq ? 0 : -ENOMEM;</span></a>
+<a name="941"><span class="lineNum">     941 </span><span class="lineCov">          1 :         return pm_wq ? 0 : -ENOMEM;</span></a>
 <a name="942"><span class="lineNum">     942 </span>            : }</a>
 <a name="943"><span class="lineNum">     943 </span>            : </a>
-<a name="944"><span class="lineNum">     944 </span><span class="lineCov">          2 : static int __init pm_init(void)</span></a>
+<a name="944"><span class="lineNum">     944 </span><span class="lineCov">          1 : static int __init pm_init(void)</span></a>
 <a name="945"><span class="lineNum">     945 </span>            : {</a>
-<a name="946"><span class="lineNum">     946 </span><span class="lineCov">          2 :         int error = pm_start_workqueue();</span></a>
-<a name="947"><span class="lineNum">     947 </span><span class="lineCov">          2 :         if (error)</span></a>
+<a name="946"><span class="lineNum">     946 </span><span class="lineCov">          1 :         int error = pm_start_workqueue();</span></a>
+<a name="947"><span class="lineNum">     947 </span><span class="lineCov">          1 :         if (error)</span></a>
 <a name="948"><span class="lineNum">     948 </span>            :                 return error;</a>
 <a name="949"><span class="lineNum">     949 </span>            :         hibernate_image_size_init();</a>
 <a name="950"><span class="lineNum">     950 </span>            :         hibernate_reserved_size_init();</a>
-<a name="951"><span class="lineNum">     951 </span><span class="lineCov">          2 :         pm_states_init();</span></a>
-<a name="952"><span class="lineNum">     952 </span><span class="lineCov">          2 :         power_kobj = kobject_create_and_add(&quot;power&quot;, NULL);</span></a>
-<a name="953"><span class="lineNum">     953 </span><span class="lineCov">          2 :         if (!power_kobj)</span></a>
+<a name="951"><span class="lineNum">     951 </span><span class="lineCov">          1 :         pm_states_init();</span></a>
+<a name="952"><span class="lineNum">     952 </span><span class="lineCov">          1 :         power_kobj = kobject_create_and_add(&quot;power&quot;, NULL);</span></a>
+<a name="953"><span class="lineNum">     953 </span><span class="lineCov">          1 :         if (!power_kobj)</span></a>
 <a name="954"><span class="lineNum">     954 </span>            :                 return -ENOMEM;</a>
-<a name="955"><span class="lineNum">     955 </span><span class="lineCov">          2 :         error = sysfs_create_groups(power_kobj, attr_groups);</span></a>
-<a name="956"><span class="lineNum">     956 </span><span class="lineCov">          2 :         if (error)</span></a>
+<a name="955"><span class="lineNum">     955 </span><span class="lineCov">          1 :         error = sysfs_create_groups(power_kobj, attr_groups);</span></a>
+<a name="956"><span class="lineNum">     956 </span><span class="lineCov">          1 :         if (error)</span></a>
 <a name="957"><span class="lineNum">     957 </span>            :                 return error;</a>
 <a name="958"><span class="lineNum">     958 </span>            :         pm_print_times_init();</a>
-<a name="959"><span class="lineNum">     959 </span><span class="lineCov">          2 :         return pm_autosleep_init();</span></a>
+<a name="959"><span class="lineNum">     959 </span><span class="lineCov">          1 :         return pm_autosleep_init();</span></a>
 <a name="960"><span class="lineNum">     960 </span>            : }</a>
 <a name="961"><span class="lineNum">     961 </span>            : </a>
 <a name="962"><span class="lineNum">     962 </span>            : core_initcall(pm_init);</a>

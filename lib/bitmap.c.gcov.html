@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -410,46 +410,46 @@
 <a name="348"><span class="lineNum">     348 </span>            : }</a>
 <a name="349"><span class="lineNum">     349 </span>            : EXPORT_SYMBOL(__bitmap_weight);</a>
 <a name="350"><span class="lineNum">     350 </span>            : </a>
-<a name="351"><span class="lineNum">     351 </span><span class="lineCov">        476 : void __bitmap_set(unsigned long *map, unsigned int start, int len)</span></a>
+<a name="351"><span class="lineNum">     351 </span><span class="lineCov">        238 : void __bitmap_set(unsigned long *map, unsigned int start, int len)</span></a>
 <a name="352"><span class="lineNum">     352 </span>            : {</a>
-<a name="353"><span class="lineNum">     353 </span><span class="lineCov">        476 :         unsigned long *p = map + BIT_WORD(start);</span></a>
-<a name="354"><span class="lineNum">     354 </span><span class="lineCov">        476 :         const unsigned int size = start + len;</span></a>
-<a name="355"><span class="lineNum">     355 </span><span class="lineCov">        476 :         int bits_to_set = BITS_PER_LONG - (start % BITS_PER_LONG);</span></a>
-<a name="356"><span class="lineNum">     356 </span><span class="lineCov">        476 :         unsigned long mask_to_set = BITMAP_FIRST_WORD_MASK(start);</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineCov">        238 :         unsigned long *p = map + BIT_WORD(start);</span></a>
+<a name="354"><span class="lineNum">     354 </span><span class="lineCov">        238 :         const unsigned int size = start + len;</span></a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineCov">        238 :         int bits_to_set = BITS_PER_LONG - (start % BITS_PER_LONG);</span></a>
+<a name="356"><span class="lineNum">     356 </span><span class="lineCov">        238 :         unsigned long mask_to_set = BITMAP_FIRST_WORD_MASK(start);</span></a>
 <a name="357"><span class="lineNum">     357 </span>            : </a>
-<a name="358"><span class="lineNum">     358 </span><span class="lineCov">        986 :         while (len - bits_to_set &gt;= 0) {</span></a>
-<a name="359"><span class="lineNum">     359 </span><span class="lineCov">         34 :                 *p |= mask_to_set;</span></a>
-<a name="360"><span class="lineNum">     360 </span><span class="lineCov">         34 :                 len -= bits_to_set;</span></a>
-<a name="361"><span class="lineNum">     361 </span><span class="lineCov">         34 :                 bits_to_set = BITS_PER_LONG;</span></a>
-<a name="362"><span class="lineNum">     362 </span><span class="lineCov">         34 :                 mask_to_set = ~0UL;</span></a>
-<a name="363"><span class="lineNum">     363 </span><span class="lineCov">         34 :                 p++;</span></a>
+<a name="358"><span class="lineNum">     358 </span><span class="lineCov">        493 :         while (len - bits_to_set &gt;= 0) {</span></a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineCov">         17 :                 *p |= mask_to_set;</span></a>
+<a name="360"><span class="lineNum">     360 </span><span class="lineCov">         17 :                 len -= bits_to_set;</span></a>
+<a name="361"><span class="lineNum">     361 </span><span class="lineCov">         17 :                 bits_to_set = BITS_PER_LONG;</span></a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineCov">         17 :                 mask_to_set = ~0UL;</span></a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineCov">         17 :                 p++;</span></a>
 <a name="364"><span class="lineNum">     364 </span>            :         }</a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineCov">        476 :         if (len) {</span></a>
-<a name="366"><span class="lineNum">     366 </span><span class="lineCov">        450 :                 mask_to_set &amp;= BITMAP_LAST_WORD_MASK(size);</span></a>
-<a name="367"><span class="lineNum">     367 </span><span class="lineCov">        450 :                 *p |= mask_to_set;</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineCov">        238 :         if (len) {</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineCov">        225 :                 mask_to_set &amp;= BITMAP_LAST_WORD_MASK(size);</span></a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineCov">        225 :                 *p |= mask_to_set;</span></a>
 <a name="368"><span class="lineNum">     368 </span>            :         }</a>
-<a name="369"><span class="lineNum">     369 </span><span class="lineCov">        476 : }</span></a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineCov">        238 : }</span></a>
 <a name="370"><span class="lineNum">     370 </span>            : EXPORT_SYMBOL(__bitmap_set);</a>
 <a name="371"><span class="lineNum">     371 </span>            : </a>
-<a name="372"><span class="lineNum">     372 </span><span class="lineCov">        476 : void __bitmap_clear(unsigned long *map, unsigned int start, int len)</span></a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineCov">        238 : void __bitmap_clear(unsigned long *map, unsigned int start, int len)</span></a>
 <a name="373"><span class="lineNum">     373 </span>            : {</a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineCov">        476 :         unsigned long *p = map + BIT_WORD(start);</span></a>
-<a name="375"><span class="lineNum">     375 </span><span class="lineCov">        476 :         const unsigned int size = start + len;</span></a>
-<a name="376"><span class="lineNum">     376 </span><span class="lineCov">        476 :         int bits_to_clear = BITS_PER_LONG - (start % BITS_PER_LONG);</span></a>
-<a name="377"><span class="lineNum">     377 </span><span class="lineCov">        476 :         unsigned long mask_to_clear = BITMAP_FIRST_WORD_MASK(start);</span></a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineCov">        238 :         unsigned long *p = map + BIT_WORD(start);</span></a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineCov">        238 :         const unsigned int size = start + len;</span></a>
+<a name="376"><span class="lineNum">     376 </span><span class="lineCov">        238 :         int bits_to_clear = BITS_PER_LONG - (start % BITS_PER_LONG);</span></a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineCov">        238 :         unsigned long mask_to_clear = BITMAP_FIRST_WORD_MASK(start);</span></a>
 <a name="378"><span class="lineNum">     378 </span>            : </a>
-<a name="379"><span class="lineNum">     379 </span><span class="lineCov">        978 :         while (len - bits_to_clear &gt;= 0) {</span></a>
-<a name="380"><span class="lineNum">     380 </span><span class="lineCov">         26 :                 *p &amp;= ~mask_to_clear;</span></a>
-<a name="381"><span class="lineNum">     381 </span><span class="lineCov">         26 :                 len -= bits_to_clear;</span></a>
-<a name="382"><span class="lineNum">     382 </span><span class="lineCov">         26 :                 bits_to_clear = BITS_PER_LONG;</span></a>
-<a name="383"><span class="lineNum">     383 </span><span class="lineCov">         26 :                 mask_to_clear = ~0UL;</span></a>
-<a name="384"><span class="lineNum">     384 </span><span class="lineCov">         26 :                 p++;</span></a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineCov">        489 :         while (len - bits_to_clear &gt;= 0) {</span></a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineCov">         13 :                 *p &amp;= ~mask_to_clear;</span></a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineCov">         13 :                 len -= bits_to_clear;</span></a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineCov">         13 :                 bits_to_clear = BITS_PER_LONG;</span></a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineCov">         13 :                 mask_to_clear = ~0UL;</span></a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineCov">         13 :                 p++;</span></a>
 <a name="385"><span class="lineNum">     385 </span>            :         }</a>
-<a name="386"><span class="lineNum">     386 </span><span class="lineCov">        476 :         if (len) {</span></a>
-<a name="387"><span class="lineNum">     387 </span><span class="lineCov">        142 :                 mask_to_clear &amp;= BITMAP_LAST_WORD_MASK(size);</span></a>
-<a name="388"><span class="lineNum">     388 </span><span class="lineCov">        142 :                 *p &amp;= ~mask_to_clear;</span></a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineCov">        238 :         if (len) {</span></a>
+<a name="387"><span class="lineNum">     387 </span><span class="lineCov">         71 :                 mask_to_clear &amp;= BITMAP_LAST_WORD_MASK(size);</span></a>
+<a name="388"><span class="lineNum">     388 </span><span class="lineCov">         71 :                 *p &amp;= ~mask_to_clear;</span></a>
 <a name="389"><span class="lineNum">     389 </span>            :         }</a>
-<a name="390"><span class="lineNum">     390 </span><span class="lineCov">        476 : }</span></a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineCov">        238 : }</span></a>
 <a name="391"><span class="lineNum">     391 </span>            : EXPORT_SYMBOL(__bitmap_clear);</a>
 <a name="392"><span class="lineNum">     392 </span>            : </a>
 <a name="393"><span class="lineNum">     393 </span>            : /**</a>

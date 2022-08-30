@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -101,7 +101,7 @@
 <a name="39"><span class="lineNum">      39 </span>            :  */</a>
 <a name="40"><span class="lineNum">      40 </span>            : static inline struct group_info *get_group_info(struct group_info *gi)</a>
 <a name="41"><span class="lineNum">      41 </span>            : {</a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">        312 :         atomic_inc(&amp;gi-&gt;usage);</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">        214 :         atomic_inc(&amp;gi-&gt;usage);</span></a>
 <a name="43"><span class="lineNum">      43 </span>            :         return gi;</a>
 <a name="44"><span class="lineNum">      44 </span>            : }</a>
 <a name="45"><span class="lineNum">      45 </span>            : </a>
@@ -290,7 +290,7 @@
 <a name="228"><span class="lineNum">     228 </span>            :  */</a>
 <a name="229"><span class="lineNum">     229 </span>            : static inline struct cred *get_new_cred(struct cred *cred)</a>
 <a name="230"><span class="lineNum">     230 </span>            : {</a>
-<a name="231"><span class="lineNum">     231 </span><span class="lineCov">        352 :         atomic_inc(&amp;cred-&gt;usage);</span></a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineCov">        234 :         atomic_inc(&amp;cred-&gt;usage);</span></a>
 <a name="232"><span class="lineNum">     232 </span>            :         return cred;</a>
 <a name="233"><span class="lineNum">     233 </span>            : }</a>
 <a name="234"><span class="lineNum">     234 </span>            : </a>
@@ -309,12 +309,12 @@
 <a name="247"><span class="lineNum">     247 </span>            :  */</a>
 <a name="248"><span class="lineNum">     248 </span>            : static inline const struct cred *get_cred(const struct cred *cred)</a>
 <a name="249"><span class="lineNum">     249 </span>            : {</a>
-<a name="250"><span class="lineNum">     250 </span><span class="lineCov">        176 :         struct cred *nonconst_cred = (struct cred *) cred;</span></a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineCov">         20 :         if (!cred)</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineCov">        117 :         struct cred *nonconst_cred = (struct cred *) cred;</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineCov">         10 :         if (!cred)</span></a>
 <a name="252"><span class="lineNum">     252 </span>            :                 return cred;</a>
-<a name="253"><span class="lineNum">     253 </span><span class="lineCov">        176 :         validate_creds(cred);</span></a>
-<a name="254"><span class="lineNum">     254 </span><span class="lineCov">        176 :         nonconst_cred-&gt;non_rcu = 0;</span></a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineCov">        176 :         return get_new_cred(nonconst_cred);</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineCov">        117 :         validate_creds(cred);</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">        117 :         nonconst_cred-&gt;non_rcu = 0;</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineCov">        117 :         return get_new_cred(nonconst_cred);</span></a>
 <a name="256"><span class="lineNum">     256 </span>            : }</a>
 <a name="257"><span class="lineNum">     257 </span>            : </a>
 <a name="258"><span class="lineNum">     258 </span>            : static inline const struct cred *get_cred_rcu(const struct cred *cred)</a>
@@ -342,12 +342,12 @@
 <a name="280"><span class="lineNum">     280 </span>            :  */</a>
 <a name="281"><span class="lineNum">     281 </span>            : static inline void put_cred(const struct cred *_cred)</a>
 <a name="282"><span class="lineNum">     282 </span>            : {</a>
-<a name="283"><span class="lineNum">     283 </span><span class="lineCov">        272 :         struct cred *cred = (struct cred *) _cred;</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineCov">        194 :         struct cred *cred = (struct cred *) _cred;</span></a>
 <a name="284"><span class="lineNum">     284 </span>            : </a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineCov">        272 :         if (cred) {</span></a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">        272 :                 validate_creds(cred);</span></a>
-<a name="287"><span class="lineNum">     287 </span><span class="lineCov">        544 :                 if (atomic_dec_and_test(&amp;(cred)-&gt;usage))</span></a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">        126 :                         __put_cred(cred);</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">        194 :         if (cred) {</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">        194 :                 validate_creds(cred);</span></a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineCov">        388 :                 if (atomic_dec_and_test(&amp;(cred)-&gt;usage))</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">         92 :                         __put_cred(cred);</span></a>
 <a name="289"><span class="lineNum">     289 </span>            :         }</a>
 <a name="290"><span class="lineNum">     290 </span>            : }</a>
 <a name="291"><span class="lineNum">     291 </span>            : </a>

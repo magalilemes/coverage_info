@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -162,12 +162,12 @@
 <a name="100"><span class="lineNum">     100 </span>            : </a>
 <a name="101"><span class="lineNum">     101 </span>            : static void tty_buffer_reset(struct tty_buffer *p, size_t size)</a>
 <a name="102"><span class="lineNum">     102 </span>            : {</a>
-<a name="103"><span class="lineNum">     103 </span><span class="lineCov">         32 :         p-&gt;used = 0;</span></a>
-<a name="104"><span class="lineNum">     104 </span><span class="lineCov">         32 :         p-&gt;size = size;</span></a>
-<a name="105"><span class="lineNum">     105 </span><span class="lineCov">         32 :         p-&gt;next = NULL;</span></a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">         32 :         p-&gt;commit = 0;</span></a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">         32 :         p-&gt;read = 0;</span></a>
-<a name="108"><span class="lineNum">     108 </span><span class="lineCov">         32 :         p-&gt;flags = 0;</span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineCov">         16 :         p-&gt;used = 0;</span></a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineCov">         16 :         p-&gt;size = size;</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">         16 :         p-&gt;next = NULL;</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">         16 :         p-&gt;commit = 0;</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">         16 :         p-&gt;read = 0;</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineCov">         16 :         p-&gt;flags = 0;</span></a>
 <a name="109"><span class="lineNum">     109 </span>            : }</a>
 <a name="110"><span class="lineNum">     110 </span>            : </a>
 <a name="111"><span class="lineNum">     111 </span>            : /**</a>
@@ -623,20 +623,20 @@
 <a name="561"><span class="lineNum">     561 </span>            :  * Set up the initial state of the buffer management for a tty device. Must be</a>
 <a name="562"><span class="lineNum">     562 </span>            :  * called before the other tty buffer functions are used.</a>
 <a name="563"><span class="lineNum">     563 </span>            :  */</a>
-<a name="564"><span class="lineNum">     564 </span><span class="lineCov">         32 : void tty_buffer_init(struct tty_port *port)</span></a>
+<a name="564"><span class="lineNum">     564 </span><span class="lineCov">         16 : void tty_buffer_init(struct tty_port *port)</span></a>
 <a name="565"><span class="lineNum">     565 </span>            : {</a>
-<a name="566"><span class="lineNum">     566 </span><span class="lineCov">         32 :         struct tty_bufhead *buf = &amp;port-&gt;buf;</span></a>
+<a name="566"><span class="lineNum">     566 </span><span class="lineCov">         16 :         struct tty_bufhead *buf = &amp;port-&gt;buf;</span></a>
 <a name="567"><span class="lineNum">     567 </span>            : </a>
-<a name="568"><span class="lineNum">     568 </span><span class="lineCov">         32 :         mutex_init(&amp;buf-&gt;lock);</span></a>
-<a name="569"><span class="lineNum">     569 </span><span class="lineCov">         64 :         tty_buffer_reset(&amp;buf-&gt;sentinel, 0);</span></a>
-<a name="570"><span class="lineNum">     570 </span><span class="lineCov">         32 :         buf-&gt;head = &amp;buf-&gt;sentinel;</span></a>
-<a name="571"><span class="lineNum">     571 </span><span class="lineCov">         32 :         buf-&gt;tail = &amp;buf-&gt;sentinel;</span></a>
-<a name="572"><span class="lineNum">     572 </span><span class="lineCov">         64 :         init_llist_head(&amp;buf-&gt;free);</span></a>
-<a name="573"><span class="lineNum">     573 </span><span class="lineCov">         64 :         atomic_set(&amp;buf-&gt;mem_used, 0);</span></a>
-<a name="574"><span class="lineNum">     574 </span><span class="lineCov">         64 :         atomic_set(&amp;buf-&gt;priority, 0);</span></a>
-<a name="575"><span class="lineNum">     575 </span><span class="lineCov">         64 :         INIT_WORK(&amp;buf-&gt;work, flush_to_ldisc);</span></a>
-<a name="576"><span class="lineNum">     576 </span><span class="lineCov">         32 :         buf-&gt;mem_limit = TTYB_DEFAULT_MEM_LIMIT;</span></a>
-<a name="577"><span class="lineNum">     577 </span><span class="lineCov">         32 : }</span></a>
+<a name="568"><span class="lineNum">     568 </span><span class="lineCov">         16 :         mutex_init(&amp;buf-&gt;lock);</span></a>
+<a name="569"><span class="lineNum">     569 </span><span class="lineCov">         32 :         tty_buffer_reset(&amp;buf-&gt;sentinel, 0);</span></a>
+<a name="570"><span class="lineNum">     570 </span><span class="lineCov">         16 :         buf-&gt;head = &amp;buf-&gt;sentinel;</span></a>
+<a name="571"><span class="lineNum">     571 </span><span class="lineCov">         16 :         buf-&gt;tail = &amp;buf-&gt;sentinel;</span></a>
+<a name="572"><span class="lineNum">     572 </span><span class="lineCov">         32 :         init_llist_head(&amp;buf-&gt;free);</span></a>
+<a name="573"><span class="lineNum">     573 </span><span class="lineCov">         32 :         atomic_set(&amp;buf-&gt;mem_used, 0);</span></a>
+<a name="574"><span class="lineNum">     574 </span><span class="lineCov">         32 :         atomic_set(&amp;buf-&gt;priority, 0);</span></a>
+<a name="575"><span class="lineNum">     575 </span><span class="lineCov">         32 :         INIT_WORK(&amp;buf-&gt;work, flush_to_ldisc);</span></a>
+<a name="576"><span class="lineNum">     576 </span><span class="lineCov">         16 :         buf-&gt;mem_limit = TTYB_DEFAULT_MEM_LIMIT;</span></a>
+<a name="577"><span class="lineNum">     577 </span><span class="lineCov">         16 : }</span></a>
 <a name="578"><span class="lineNum">     578 </span>            : </a>
 <a name="579"><span class="lineNum">     579 </span>            : /**</a>
 <a name="580"><span class="lineNum">     580 </span>            :  * tty_buffer_set_limit         -       change the tty buffer memory limit</a>

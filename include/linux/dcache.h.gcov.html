@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -375,8 +375,8 @@
 <a name="313"><span class="lineNum">     313 </span>            : </a>
 <a name="314"><span class="lineNum">     314 </span>            : static inline struct dentry *dget(struct dentry *dentry)</a>
 <a name="315"><span class="lineNum">     315 </span>            : {</a>
-<a name="316"><span class="lineNum">     316 </span><span class="lineCov">         50 :         if (dentry)</span></a>
-<a name="317"><span class="lineNum">     317 </span><span class="lineCov">         50 :                 lockref_get(&amp;dentry-&gt;d_lockref);</span></a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineCov">         25 :         if (dentry)</span></a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineCov">         25 :                 lockref_get(&amp;dentry-&gt;d_lockref);</span></a>
 <a name="318"><span class="lineNum">     318 </span>            :         return dentry;</a>
 <a name="319"><span class="lineNum">     319 </span>            : }</a>
 <a name="320"><span class="lineNum">     320 </span>            : </a>
@@ -391,7 +391,7 @@
 <a name="329"><span class="lineNum">     329 </span>            :  </a>
 <a name="330"><span class="lineNum">     330 </span>            : static inline int d_unhashed(const struct dentry *dentry)</a>
 <a name="331"><span class="lineNum">     331 </span>            : {</a>
-<a name="332"><span class="lineNum">     332 </span><span class="lineCov">          2 :         return hlist_bl_unhashed(&amp;dentry-&gt;d_hash);</span></a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineCov">          1 :         return hlist_bl_unhashed(&amp;dentry-&gt;d_hash);</span></a>
 <a name="333"><span class="lineNum">     333 </span>            : }</a>
 <a name="334"><span class="lineNum">     334 </span>            : </a>
 <a name="335"><span class="lineNum">     335 </span>            : static inline int d_unlinked(const struct dentry *dentry)</a>
@@ -415,7 +415,7 @@
 <a name="353"><span class="lineNum">     353 </span>            : </a>
 <a name="354"><span class="lineNum">     354 </span>            : static inline int d_in_lookup(const struct dentry *dentry)</a>
 <a name="355"><span class="lineNum">     355 </span>            : {</a>
-<a name="356"><span class="lineNum">     356 </span><span class="lineCov">         36 :         return dentry-&gt;d_flags &amp; DCACHE_PAR_LOOKUP;</span></a>
+<a name="356"><span class="lineNum">     356 </span><span class="lineCov">         18 :         return dentry-&gt;d_flags &amp; DCACHE_PAR_LOOKUP;</span></a>
 <a name="357"><span class="lineNum">     357 </span>            : }</a>
 <a name="358"><span class="lineNum">     358 </span>            : </a>
 <a name="359"><span class="lineNum">     359 </span>            : static inline void d_lookup_done(struct dentry *dentry)</a>
@@ -444,12 +444,12 @@
 <a name="382"><span class="lineNum">     382 </span>            :  */</a>
 <a name="383"><span class="lineNum">     383 </span>            : static inline unsigned __d_entry_type(const struct dentry *dentry)</a>
 <a name="384"><span class="lineNum">     384 </span>            : {</a>
-<a name="385"><span class="lineNum">     385 </span><span class="lineCov">         10 :         return dentry-&gt;d_flags &amp; DCACHE_ENTRY_TYPE;</span></a>
+<a name="385"><span class="lineNum">     385 </span><span class="lineCov">          5 :         return dentry-&gt;d_flags &amp; DCACHE_ENTRY_TYPE;</span></a>
 <a name="386"><span class="lineNum">     386 </span>            : }</a>
 <a name="387"><span class="lineNum">     387 </span>            : </a>
 <a name="388"><span class="lineNum">     388 </span>            : static inline bool d_is_miss(const struct dentry *dentry)</a>
 <a name="389"><span class="lineNum">     389 </span>            : {</a>
-<a name="390"><span class="lineNum">     390 </span><span class="lineCov">          6 :         return __d_entry_type(dentry) == DCACHE_MISS_TYPE;</span></a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineCov">          3 :         return __d_entry_type(dentry) == DCACHE_MISS_TYPE;</span></a>
 <a name="391"><span class="lineNum">     391 </span>            : }</a>
 <a name="392"><span class="lineNum">     392 </span>            : </a>
 <a name="393"><span class="lineNum">     393 </span>            : static inline bool d_is_whiteout(const struct dentry *dentry)</a>
@@ -459,7 +459,7 @@
 <a name="397"><span class="lineNum">     397 </span>            : </a>
 <a name="398"><span class="lineNum">     398 </span>            : static inline bool d_can_lookup(const struct dentry *dentry)</a>
 <a name="399"><span class="lineNum">     399 </span>            : {</a>
-<a name="400"><span class="lineNum">     400 </span><span class="lineCov">          2 :         return __d_entry_type(dentry) == DCACHE_DIRECTORY_TYPE;</span></a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineCov">          1 :         return __d_entry_type(dentry) == DCACHE_DIRECTORY_TYPE;</span></a>
 <a name="401"><span class="lineNum">     401 </span>            : }</a>
 <a name="402"><span class="lineNum">     402 </span>            : </a>
 <a name="403"><span class="lineNum">     403 </span>            : static inline bool d_is_autodir(const struct dentry *dentry)</a>
@@ -474,7 +474,7 @@
 <a name="412"><span class="lineNum">     412 </span>            : </a>
 <a name="413"><span class="lineNum">     413 </span>            : static inline bool d_is_symlink(const struct dentry *dentry)</a>
 <a name="414"><span class="lineNum">     414 </span>            : {</a>
-<a name="415"><span class="lineNum">     415 </span><span class="lineCov">          2 :         return __d_entry_type(dentry) == DCACHE_SYMLINK_TYPE;</span></a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineCov">          1 :         return __d_entry_type(dentry) == DCACHE_SYMLINK_TYPE;</span></a>
 <a name="416"><span class="lineNum">     416 </span>            : }</a>
 <a name="417"><span class="lineNum">     417 </span>            : </a>
 <a name="418"><span class="lineNum">     418 </span>            : static inline bool d_is_reg(const struct dentry *dentry)</a>
@@ -495,7 +495,7 @@
 <a name="433"><span class="lineNum">     433 </span>            : static inline bool d_is_negative(const struct dentry *dentry)</a>
 <a name="434"><span class="lineNum">     434 </span>            : {</a>
 <a name="435"><span class="lineNum">     435 </span>            :         // TODO: check d_is_whiteout(dentry) also.</a>
-<a name="436"><span class="lineNum">     436 </span><span class="lineCov">          6 :         return d_is_miss(dentry);</span></a>
+<a name="436"><span class="lineNum">     436 </span><span class="lineCov">          3 :         return d_is_miss(dentry);</span></a>
 <a name="437"><span class="lineNum">     437 </span>            : }</a>
 <a name="438"><span class="lineNum">     438 </span>            : </a>
 <a name="439"><span class="lineNum">     439 </span>            : static inline bool d_flags_negative(unsigned flags)</a>
@@ -505,7 +505,7 @@
 <a name="443"><span class="lineNum">     443 </span>            : </a>
 <a name="444"><span class="lineNum">     444 </span>            : static inline bool d_is_positive(const struct dentry *dentry)</a>
 <a name="445"><span class="lineNum">     445 </span>            : {</a>
-<a name="446"><span class="lineNum">     446 </span><span class="lineCov">          6 :         return !d_is_negative(dentry);</span></a>
+<a name="446"><span class="lineNum">     446 </span><span class="lineCov">          3 :         return !d_is_negative(dentry);</span></a>
 <a name="447"><span class="lineNum">     447 </span>            : }</a>
 <a name="448"><span class="lineNum">     448 </span>            : </a>
 <a name="449"><span class="lineNum">     449 </span>            : /**</a>
@@ -602,7 +602,7 @@
 <a name="540"><span class="lineNum">     540 </span>            :  */</a>
 <a name="541"><span class="lineNum">     541 </span>            : static inline struct inode *d_backing_inode(const struct dentry *upper)</a>
 <a name="542"><span class="lineNum">     542 </span>            : {</a>
-<a name="543"><span class="lineNum">     543 </span><span class="lineCov">          2 :         struct inode *inode = upper-&gt;d_inode;</span></a>
+<a name="543"><span class="lineNum">     543 </span><span class="lineCov">          1 :         struct inode *inode = upper-&gt;d_inode;</span></a>
 <a name="544"><span class="lineNum">     544 </span>            : </a>
 <a name="545"><span class="lineNum">     545 </span>            :         return inode;</a>
 <a name="546"><span class="lineNum">     546 </span>            : }</a>

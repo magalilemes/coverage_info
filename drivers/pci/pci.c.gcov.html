@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -6760,9 +6760,9 @@
 <a name="6698"><span class="lineNum">    6698 </span>            : </a>
 <a name="6699"><span class="lineNum">    6699 </span>            : static BUS_ATTR_RW(resource_alignment);</a>
 <a name="6700"><span class="lineNum">    6700 </span>            : </a>
-<a name="6701"><span class="lineNum">    6701 </span><span class="lineCov">          2 : static int __init pci_resource_alignment_sysfs_init(void)</span></a>
+<a name="6701"><span class="lineNum">    6701 </span><span class="lineCov">          1 : static int __init pci_resource_alignment_sysfs_init(void)</span></a>
 <a name="6702"><span class="lineNum">    6702 </span>            : {</a>
-<a name="6703"><span class="lineNum">    6703 </span><span class="lineCov">          2 :         return bus_create_file(&amp;pci_bus_type,</span></a>
+<a name="6703"><span class="lineNum">    6703 </span><span class="lineCov">          1 :         return bus_create_file(&amp;pci_bus_type,</span></a>
 <a name="6704"><span class="lineNum">    6704 </span>            :                                         &amp;bus_attr_resource_alignment);</a>
 <a name="6705"><span class="lineNum">    6705 </span>            : }</a>
 <a name="6706"><span class="lineNum">    6706 </span>            : late_initcall(pci_resource_alignment_sysfs_init);</a>
@@ -6932,13 +6932,13 @@
 <a name="6870"><span class="lineNum">    6870 </span>            :  * copy the variable here before the init section is freed.</a>
 <a name="6871"><span class="lineNum">    6871 </span>            :  *</a>
 <a name="6872"><span class="lineNum">    6872 </span>            :  */</a>
-<a name="6873"><span class="lineNum">    6873 </span><span class="lineCov">          2 : static int __init pci_realloc_setup_params(void)</span></a>
+<a name="6873"><span class="lineNum">    6873 </span><span class="lineCov">          1 : static int __init pci_realloc_setup_params(void)</span></a>
 <a name="6874"><span class="lineNum">    6874 </span>            : {</a>
-<a name="6875"><span class="lineNum">    6875 </span><span class="lineCov">          2 :         resource_alignment_param = kstrdup(resource_alignment_param,</span></a>
+<a name="6875"><span class="lineNum">    6875 </span><span class="lineCov">          1 :         resource_alignment_param = kstrdup(resource_alignment_param,</span></a>
 <a name="6876"><span class="lineNum">    6876 </span>            :                                            GFP_KERNEL);</a>
-<a name="6877"><span class="lineNum">    6877 </span><span class="lineCov">          2 :         disable_acs_redir_param = kstrdup(disable_acs_redir_param, GFP_KERNEL);</span></a>
+<a name="6877"><span class="lineNum">    6877 </span><span class="lineCov">          1 :         disable_acs_redir_param = kstrdup(disable_acs_redir_param, GFP_KERNEL);</span></a>
 <a name="6878"><span class="lineNum">    6878 </span>            : </a>
-<a name="6879"><span class="lineNum">    6879 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="6879"><span class="lineNum">    6879 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="6880"><span class="lineNum">    6880 </span>            : }</a>
 <a name="6881"><span class="lineNum">    6881 </span>            : pure_initcall(pci_realloc_setup_params);</a>
 </pre>

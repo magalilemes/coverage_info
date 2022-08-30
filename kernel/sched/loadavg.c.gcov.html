@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -408,13 +408,13 @@
 <a name="346"><span class="lineNum">     346 </span>            :  *</a>
 <a name="347"><span class="lineNum">     347 </span>            :  * Called from the global timer code.</a>
 <a name="348"><span class="lineNum">     348 </span>            :  */</a>
-<a name="349"><span class="lineNum">     349 </span><span class="lineCov">         17 : void calc_global_load(void)</span></a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineCov">          9 : void calc_global_load(void)</span></a>
 <a name="350"><span class="lineNum">     350 </span>            : {</a>
 <a name="351"><span class="lineNum">     351 </span>            :         unsigned long sample_window;</a>
 <a name="352"><span class="lineNum">     352 </span>            :         long active, delta;</a>
 <a name="353"><span class="lineNum">     353 </span>            : </a>
-<a name="354"><span class="lineNum">     354 </span><span class="lineCov">         17 :         sample_window = READ_ONCE(calc_load_update);</span></a>
-<a name="355"><span class="lineNum">     355 </span><span class="lineCov">         17 :         if (time_before(jiffies, sample_window + 10))</span></a>
+<a name="354"><span class="lineNum">     354 </span><span class="lineCov">          9 :         sample_window = READ_ONCE(calc_load_update);</span></a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineCov">          9 :         if (time_before(jiffies, sample_window + 10))</span></a>
 <a name="356"><span class="lineNum">     356 </span>            :                 return;</a>
 <a name="357"><span class="lineNum">     357 </span>            : </a>
 <a name="358"><span class="lineNum">     358 </span>            :         /*</a>
@@ -444,11 +444,11 @@
 <a name="382"><span class="lineNum">     382 </span>            :  * Called from scheduler_tick() to periodically update this CPU's</a>
 <a name="383"><span class="lineNum">     383 </span>            :  * active count.</a>
 <a name="384"><span class="lineNum">     384 </span>            :  */</a>
-<a name="385"><span class="lineNum">     385 </span><span class="lineCov">         17 : void calc_global_load_tick(struct rq *this_rq)</span></a>
+<a name="385"><span class="lineNum">     385 </span><span class="lineCov">          9 : void calc_global_load_tick(struct rq *this_rq)</span></a>
 <a name="386"><span class="lineNum">     386 </span>            : {</a>
 <a name="387"><span class="lineNum">     387 </span>            :         long delta;</a>
 <a name="388"><span class="lineNum">     388 </span>            : </a>
-<a name="389"><span class="lineNum">     389 </span><span class="lineCov">         17 :         if (time_before(jiffies, this_rq-&gt;calc_load_update))</span></a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineCov">          9 :         if (time_before(jiffies, this_rq-&gt;calc_load_update))</span></a>
 <a name="390"><span class="lineNum">     390 </span>            :                 return;</a>
 <a name="391"><span class="lineNum">     391 </span>            : </a>
 <a name="392"><span class="lineNum">     392 </span><span class="lineNoCov">          0 :         delta  = calc_load_fold_active(this_rq, 0);</span></a>

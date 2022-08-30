@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -115,7 +115,7 @@
 <a name="53"><span class="lineNum">      53 </span>            : extern atomic_long_t _totalram_pages;</a>
 <a name="54"><span class="lineNum">      54 </span>            : static inline unsigned long totalram_pages(void)</a>
 <a name="55"><span class="lineNum">      55 </span>            : {</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         48 :         return (unsigned long)atomic_long_read(&amp;_totalram_pages);</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         24 :         return (unsigned long)atomic_long_read(&amp;_totalram_pages);</span></a>
 <a name="57"><span class="lineNum">      57 </span>            : }</a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
 <a name="59"><span class="lineNum">      59 </span>            : static inline void totalram_pages_inc(void)</a>
@@ -130,7 +130,7 @@
 <a name="68"><span class="lineNum">      68 </span>            : </a>
 <a name="69"><span class="lineNum">      69 </span>            : static inline void totalram_pages_add(long count)</a>
 <a name="70"><span class="lineNum">      70 </span>            : {</a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          2 :         atomic_long_add(count, &amp;_totalram_pages);</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          1 :         atomic_long_add(count, &amp;_totalram_pages);</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : }</a>
 <a name="73"><span class="lineNum">      73 </span>            : </a>
 <a name="74"><span class="lineNum">      74 </span>            : extern void * high_memory;</a>
@@ -206,7 +206,7 @@
 <a name="144"><span class="lineNum">     144 </span>            : #define mm_zero_struct_page(pp) __mm_zero_struct_page(pp)</a>
 <a name="145"><span class="lineNum">     145 </span>            : static inline void __mm_zero_struct_page(struct page *page)</a>
 <a name="146"><span class="lineNum">     146 </span>            : {</a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineCov">     530445 :         unsigned long *_pp = (void *)page;</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">     269548 :         unsigned long *_pp = (void *)page;</span></a>
 <a name="148"><span class="lineNum">     148 </span>            : </a>
 <a name="149"><span class="lineNum">     149 </span>            :          /* Check that struct page is either 56, 64, 72, or 80 bytes */</a>
 <a name="150"><span class="lineNum">     150 </span>            :         BUILD_BUG_ON(sizeof(struct page) &amp; 7);</a>
@@ -224,10 +224,10 @@
 <a name="162"><span class="lineNum">     162 </span>            :                 _pp[7] = 0;</a>
 <a name="163"><span class="lineNum">     163 </span>            :                 fallthrough;</a>
 <a name="164"><span class="lineNum">     164 </span>            :         case 56:</a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">     530445 :                 _pp[6] = 0;</span></a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">     530445 :                 _pp[5] = 0;</span></a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">     530445 :                 _pp[4] = 0;</span></a>
-<a name="168"><span class="lineNum">     168 </span><span class="lineCov">     530445 :                 _pp[3] = 0;</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">     269548 :                 _pp[6] = 0;</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">     269548 :                 _pp[5] = 0;</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">     269548 :                 _pp[4] = 0;</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">     269548 :                 _pp[3] = 0;</span></a>
 <a name="169"><span class="lineNum">     169 </span>            :                 _pp[2] = 0;</a>
 <a name="170"><span class="lineNum">     170 </span>            :                 _pp[1] = 0;</a>
 <a name="171"><span class="lineNum">     171 </span>            :                 _pp[0] = 0;</a>
@@ -740,9 +740,9 @@
 <a name="678"><span class="lineNum">     678 </span>            : </a>
 <a name="679"><span class="lineNum">     679 </span>            : static inline unsigned int compound_order(struct page *page)</a>
 <a name="680"><span class="lineNum">     680 </span>            : {</a>
-<a name="681"><span class="lineNum">     681 </span><span class="lineCov">         22 :         if (!PageHead(page))</span></a>
+<a name="681"><span class="lineNum">     681 </span><span class="lineCov">         11 :         if (!PageHead(page))</span></a>
 <a name="682"><span class="lineNum">     682 </span>            :                 return 0;</a>
-<a name="683"><span class="lineNum">     683 </span><span class="lineCov">         22 :         return page[1].compound_order;</span></a>
+<a name="683"><span class="lineNum">     683 </span><span class="lineCov">         11 :         return page[1].compound_order;</span></a>
 <a name="684"><span class="lineNum">     684 </span>            : }</a>
 <a name="685"><span class="lineNum">     685 </span>            : </a>
 <a name="686"><span class="lineNum">     686 </span>            : /**</a>
@@ -756,7 +756,7 @@
 <a name="694"><span class="lineNum">     694 </span>            :  */</a>
 <a name="695"><span class="lineNum">     695 </span>            : static inline unsigned int folio_order(struct folio *folio)</a>
 <a name="696"><span class="lineNum">     696 </span>            : {</a>
-<a name="697"><span class="lineNum">     697 </span><span class="lineCov">         44 :         return compound_order(&amp;folio-&gt;page);</span></a>
+<a name="697"><span class="lineNum">     697 </span><span class="lineCov">         22 :         return compound_order(&amp;folio-&gt;page);</span></a>
 <a name="698"><span class="lineNum">     698 </span>            : }</a>
 <a name="699"><span class="lineNum">     699 </span>            : </a>
 <a name="700"><span class="lineNum">     700 </span>            : #include &lt;linux/huge_mm.h&gt;</a>
@@ -780,7 +780,7 @@
 <a name="718"><span class="lineNum">     718 </span>            : static inline int put_page_testzero(struct page *page)</a>
 <a name="719"><span class="lineNum">     719 </span>            : {</a>
 <a name="720"><span class="lineNum">     720 </span>            :         VM_BUG_ON_PAGE(page_ref_count(page) == 0, page);</a>
-<a name="721"><span class="lineNum">     721 </span><span class="lineCov">         22 :         return page_ref_dec_and_test(page);</span></a>
+<a name="721"><span class="lineNum">     721 </span><span class="lineCov">         11 :         return page_ref_dec_and_test(page);</span></a>
 <a name="722"><span class="lineNum">     722 </span>            : }</a>
 <a name="723"><span class="lineNum">     723 </span>            : </a>
 <a name="724"><span class="lineNum">     724 </span>            : static inline int folio_put_testzero(struct folio *folio)</a>
@@ -868,7 +868,7 @@
 <a name="806"><span class="lineNum">     806 </span>            :  */</a>
 <a name="807"><span class="lineNum">     807 </span>            : static inline void page_mapcount_reset(struct page *page)</a>
 <a name="808"><span class="lineNum">     808 </span>            : {</a>
-<a name="809"><span class="lineNum">     809 </span><span class="lineCov">    1060890 :         atomic_set(&amp;(page)-&gt;_mapcount, -1);</span></a>
+<a name="809"><span class="lineNum">     809 </span><span class="lineCov">     539096 :         atomic_set(&amp;(page)-&gt;_mapcount, -1);</span></a>
 <a name="810"><span class="lineNum">     810 </span>            : }</a>
 <a name="811"><span class="lineNum">     811 </span>            : </a>
 <a name="812"><span class="lineNum">     812 </span>            : int __page_mapcount(struct page *page);</a>
@@ -912,9 +912,9 @@
 <a name="850"><span class="lineNum">     850 </span>            : </a>
 <a name="851"><span class="lineNum">     851 </span>            : static inline struct folio *virt_to_folio(const void *x)</a>
 <a name="852"><span class="lineNum">     852 </span>            : {</a>
-<a name="853"><span class="lineNum">     853 </span><span class="lineCov">      20192 :         struct page *page = virt_to_page(x);</span></a>
+<a name="853"><span class="lineNum">     853 </span><span class="lineCov">      11094 :         struct page *page = virt_to_page(x);</span></a>
 <a name="854"><span class="lineNum">     854 </span>            : </a>
-<a name="855"><span class="lineNum">     855 </span><span class="lineCov">      10096 :         return page_folio(page);</span></a>
+<a name="855"><span class="lineNum">     855 </span><span class="lineCov">       5547 :         return page_folio(page);</span></a>
 <a name="856"><span class="lineNum">     856 </span>            : }</a>
 <a name="857"><span class="lineNum">     857 </span>            : </a>
 <a name="858"><span class="lineNum">     858 </span>            : void __put_page(struct page *page);</a>
@@ -951,7 +951,7 @@
 <a name="889"><span class="lineNum">     889 </span>            :                 enum compound_dtor_id compound_dtor)</a>
 <a name="890"><span class="lineNum">     890 </span>            : {</a>
 <a name="891"><span class="lineNum">     891 </span>            :         VM_BUG_ON_PAGE(compound_dtor &gt;= NR_COMPOUND_DTORS, page);</a>
-<a name="892"><span class="lineNum">     892 </span><span class="lineCov">        218 :         page[1].compound_dtor = compound_dtor;</span></a>
+<a name="892"><span class="lineNum">     892 </span><span class="lineCov">        109 :         page[1].compound_dtor = compound_dtor;</span></a>
 <a name="893"><span class="lineNum">     893 </span>            : }</a>
 <a name="894"><span class="lineNum">     894 </span>            : </a>
 <a name="895"><span class="lineNum">     895 </span>            : static inline void destroy_compound_page(struct page *page)</a>
@@ -967,9 +967,9 @@
 <a name="905"><span class="lineNum">     905 </span>            : </a>
 <a name="906"><span class="lineNum">     906 </span>            : static inline void set_compound_order(struct page *page, unsigned int order)</a>
 <a name="907"><span class="lineNum">     907 </span>            : {</a>
-<a name="908"><span class="lineNum">     908 </span><span class="lineCov">        218 :         page[1].compound_order = order;</span></a>
+<a name="908"><span class="lineNum">     908 </span><span class="lineCov">        109 :         page[1].compound_order = order;</span></a>
 <a name="909"><span class="lineNum">     909 </span>            : #ifdef CONFIG_64BIT</a>
-<a name="910"><span class="lineNum">     910 </span><span class="lineCov">        218 :         page[1].compound_nr = 1U &lt;&lt; order;</span></a>
+<a name="910"><span class="lineNum">     910 </span><span class="lineCov">        109 :         page[1].compound_nr = 1U &lt;&lt; order;</span></a>
 <a name="911"><span class="lineNum">     911 </span>            : #endif</a>
 <a name="912"><span class="lineNum">     912 </span>            : }</a>
 <a name="913"><span class="lineNum">     913 </span>            : </a>
@@ -1156,8 +1156,8 @@
 <a name="1094"><span class="lineNum">    1094 </span>            : </a>
 <a name="1095"><span class="lineNum">    1095 </span>            : static inline enum zone_type page_zonenum(const struct page *page)</a>
 <a name="1096"><span class="lineNum">    1096 </span>            : {</a>
-<a name="1097"><span class="lineNum">    1097 </span><span class="lineCov">       4610 :         ASSERT_EXCLUSIVE_BITS(page-&gt;flags, ZONES_MASK &lt;&lt; ZONES_PGSHIFT);</span></a>
-<a name="1098"><span class="lineNum">    1098 </span><span class="lineCov">       3552 :         return (page-&gt;flags &gt;&gt; ZONES_PGSHIFT) &amp; ZONES_MASK;</span></a>
+<a name="1097"><span class="lineNum">    1097 </span><span class="lineCov">       2329 :         ASSERT_EXCLUSIVE_BITS(page-&gt;flags, ZONES_MASK &lt;&lt; ZONES_PGSHIFT);</span></a>
+<a name="1098"><span class="lineNum">    1098 </span><span class="lineCov">       1793 :         return (page-&gt;flags &gt;&gt; ZONES_PGSHIFT) &amp; ZONES_MASK;</span></a>
 <a name="1099"><span class="lineNum">    1099 </span>            : }</a>
 <a name="1100"><span class="lineNum">    1100 </span>            : </a>
 <a name="1101"><span class="lineNum">    1101 </span>            : static inline enum zone_type folio_zonenum(const struct folio *folio)</a>
@@ -1353,7 +1353,7 @@
 <a name="1291"><span class="lineNum">    1291 </span>            :  */</a>
 <a name="1292"><span class="lineNum">    1292 </span>            : static inline int page_zone_id(struct page *page)</a>
 <a name="1293"><span class="lineNum">    1293 </span>            : {</a>
-<a name="1294"><span class="lineNum">    1294 </span><span class="lineCov">       1102 :         return (page-&gt;flags &gt;&gt; ZONEID_PGSHIFT) &amp; ZONEID_MASK;</span></a>
+<a name="1294"><span class="lineNum">    1294 </span><span class="lineCov">        560 :         return (page-&gt;flags &gt;&gt; ZONEID_PGSHIFT) &amp; ZONEID_MASK;</span></a>
 <a name="1295"><span class="lineNum">    1295 </span>            : }</a>
 <a name="1296"><span class="lineNum">    1296 </span>            : </a>
 <a name="1297"><span class="lineNum">    1297 </span>            : #ifdef NODE_NOT_IN_PAGE_FLAGS</a>
@@ -1361,7 +1361,7 @@
 <a name="1299"><span class="lineNum">    1299 </span>            : #else</a>
 <a name="1300"><span class="lineNum">    1300 </span>            : static inline int page_to_nid(const struct page *page)</a>
 <a name="1301"><span class="lineNum">    1301 </span>            : {</a>
-<a name="1302"><span class="lineNum">    1302 </span><span class="lineCov">       6858 :         struct page *p = (struct page *)page;</span></a>
+<a name="1302"><span class="lineNum">    1302 </span><span class="lineCov">       3686 :         struct page *p = (struct page *)page;</span></a>
 <a name="1303"><span class="lineNum">    1303 </span>            : </a>
 <a name="1304"><span class="lineNum">    1304 </span>            :         return (PF_POISONED_CHECK(p)-&gt;flags &gt;&gt; NODES_PGSHIFT) &amp; NODES_MASK;</a>
 <a name="1305"><span class="lineNum">    1305 </span>            : }</a>
@@ -1369,7 +1369,7 @@
 <a name="1307"><span class="lineNum">    1307 </span>            : </a>
 <a name="1308"><span class="lineNum">    1308 </span>            : static inline int folio_nid(const struct folio *folio)</a>
 <a name="1309"><span class="lineNum">    1309 </span>            : {</a>
-<a name="1310"><span class="lineNum">    1310 </span><span class="lineCov">       1100 :         return page_to_nid(&amp;folio-&gt;page);</span></a>
+<a name="1310"><span class="lineNum">    1310 </span><span class="lineCov">        551 :         return page_to_nid(&amp;folio-&gt;page);</span></a>
 <a name="1311"><span class="lineNum">    1311 </span>            : }</a>
 <a name="1312"><span class="lineNum">    1312 </span>            : </a>
 <a name="1313"><span class="lineNum">    1313 </span>            : #ifdef CONFIG_NUMA_BALANCING</a>
@@ -1538,12 +1538,12 @@
 <a name="1476"><span class="lineNum">    1476 </span>            : </a>
 <a name="1477"><span class="lineNum">    1477 </span>            : static inline struct zone *page_zone(const struct page *page)</a>
 <a name="1478"><span class="lineNum">    1478 </span>            : {</a>
-<a name="1479"><span class="lineNum">    1479 </span><span class="lineCov">       8400 :         return &amp;NODE_DATA(page_to_nid(page))-&gt;node_zones[page_zonenum(page)];</span></a>
+<a name="1479"><span class="lineNum">    1479 </span><span class="lineCov">       4254 :         return &amp;NODE_DATA(page_to_nid(page))-&gt;node_zones[page_zonenum(page)];</span></a>
 <a name="1480"><span class="lineNum">    1480 </span>            : }</a>
 <a name="1481"><span class="lineNum">    1481 </span>            : </a>
 <a name="1482"><span class="lineNum">    1482 </span>            : static inline pg_data_t *page_pgdat(const struct page *page)</a>
 <a name="1483"><span class="lineNum">    1483 </span>            : {</a>
-<a name="1484"><span class="lineNum">    1484 </span><span class="lineCov">       2083 :         return NODE_DATA(page_to_nid(page));</span></a>
+<a name="1484"><span class="lineNum">    1484 </span><span class="lineCov">       1274 :         return NODE_DATA(page_to_nid(page));</span></a>
 <a name="1485"><span class="lineNum">    1485 </span>            : }</a>
 <a name="1486"><span class="lineNum">    1486 </span>            : </a>
 <a name="1487"><span class="lineNum">    1487 </span>            : static inline struct zone *folio_zone(const struct folio *folio)</a>
@@ -1553,7 +1553,7 @@
 <a name="1491"><span class="lineNum">    1491 </span>            : </a>
 <a name="1492"><span class="lineNum">    1492 </span>            : static inline pg_data_t *folio_pgdat(const struct folio *folio)</a>
 <a name="1493"><span class="lineNum">    1493 </span>            : {</a>
-<a name="1494"><span class="lineNum">    1494 </span><span class="lineCov">        913 :         return page_pgdat(&amp;folio-&gt;page);</span></a>
+<a name="1494"><span class="lineNum">    1494 </span><span class="lineCov">        457 :         return page_pgdat(&amp;folio-&gt;page);</span></a>
 <a name="1495"><span class="lineNum">    1495 </span>            : }</a>
 <a name="1496"><span class="lineNum">    1496 </span>            : </a>
 <a name="1497"><span class="lineNum">    1497 </span>            : #ifdef SECTION_IN_PAGE_FLAGS</a>
@@ -1673,7 +1673,7 @@
 <a name="1611"><span class="lineNum">    1611 </span>            : static inline void set_page_zone(struct page *page, enum zone_type zone)</a>
 <a name="1612"><span class="lineNum">    1612 </span>            : {</a>
 <a name="1613"><span class="lineNum">    1613 </span>            :         page-&gt;flags &amp;= ~(ZONES_MASK &lt;&lt; ZONES_PGSHIFT);</a>
-<a name="1614"><span class="lineNum">    1614 </span><span class="lineCov">     530445 :         page-&gt;flags |= (zone &amp; ZONES_MASK) &lt;&lt; ZONES_PGSHIFT;</span></a>
+<a name="1614"><span class="lineNum">    1614 </span><span class="lineCov">     269548 :         page-&gt;flags |= (zone &amp; ZONES_MASK) &lt;&lt; ZONES_PGSHIFT;</span></a>
 <a name="1615"><span class="lineNum">    1615 </span>            : }</a>
 <a name="1616"><span class="lineNum">    1616 </span>            : </a>
 <a name="1617"><span class="lineNum">    1617 </span>            : static inline void set_page_node(struct page *page, unsigned long node)</a>
@@ -1685,8 +1685,8 @@
 <a name="1623"><span class="lineNum">    1623 </span>            : static inline void set_page_links(struct page *page, enum zone_type zone,</a>
 <a name="1624"><span class="lineNum">    1624 </span>            :         unsigned long node, unsigned long pfn)</a>
 <a name="1625"><span class="lineNum">    1625 </span>            : {</a>
-<a name="1626"><span class="lineNum">    1626 </span><span class="lineCov">    1060890 :         set_page_zone(page, zone);</span></a>
-<a name="1627"><span class="lineNum">    1627 </span><span class="lineCov">     530445 :         set_page_node(page, node);</span></a>
+<a name="1626"><span class="lineNum">    1626 </span><span class="lineCov">     539096 :         set_page_zone(page, zone);</span></a>
+<a name="1627"><span class="lineNum">    1627 </span><span class="lineCov">     269548 :         set_page_node(page, node);</span></a>
 <a name="1628"><span class="lineNum">    1628 </span>            : #ifdef SECTION_IN_PAGE_FLAGS</a>
 <a name="1629"><span class="lineNum">    1629 </span>            :         set_page_section(page, pfn_to_section_nr(pfn));</a>
 <a name="1630"><span class="lineNum">    1630 </span>            : #endif</a>
@@ -1782,7 +1782,7 @@
 <a name="1720"><span class="lineNum">    1720 </span>            : </a>
 <a name="1721"><span class="lineNum">    1721 </span>            : static __always_inline void *lowmem_page_address(const struct page *page)</a>
 <a name="1722"><span class="lineNum">    1722 </span>            : {</a>
-<a name="1723"><span class="lineNum">    1723 </span><span class="lineCov">       3174 :         return page_to_virt(page);</span></a>
+<a name="1723"><span class="lineNum">    1723 </span><span class="lineCov">       1604 :         return page_to_virt(page);</span></a>
 <a name="1724"><span class="lineNum">    1724 </span>            : }</a>
 <a name="1725"><span class="lineNum">    1725 </span>            : </a>
 <a name="1726"><span class="lineNum">    1726 </span>            : #if defined(CONFIG_HIGHMEM) &amp;&amp; !defined(WANT_PAGE_VIRTUAL)</a>
@@ -1815,7 +1815,7 @@
 <a name="1753"><span class="lineNum">    1753 </span>            : </a>
 <a name="1754"><span class="lineNum">    1754 </span>            : static inline void *folio_address(const struct folio *folio)</a>
 <a name="1755"><span class="lineNum">    1755 </span>            : {</a>
-<a name="1756"><span class="lineNum">    1756 </span><span class="lineCov">       1814 :         return page_address(&amp;folio-&gt;page);</span></a>
+<a name="1756"><span class="lineNum">    1756 </span><span class="lineCov">        908 :         return page_address(&amp;folio-&gt;page);</span></a>
 <a name="1757"><span class="lineNum">    1757 </span>            : }</a>
 <a name="1758"><span class="lineNum">    1758 </span>            : </a>
 <a name="1759"><span class="lineNum">    1759 </span>            : extern void *page_rmapping(struct page *page);</a>
@@ -1847,7 +1847,7 @@
 <a name="1785"><span class="lineNum">    1785 </span>            :          * pfmemalloc reserves.  Callers may simply overwrite it if</a>
 <a name="1786"><span class="lineNum">    1786 </span>            :          * they do not need to preserve that information.</a>
 <a name="1787"><span class="lineNum">    1787 </span>            :          */</a>
-<a name="1788"><span class="lineNum">    1788 </span><span class="lineCov">        907 :         return (uintptr_t)page-&gt;lru.next &amp; BIT(1);</span></a>
+<a name="1788"><span class="lineNum">    1788 </span><span class="lineCov">        454 :         return (uintptr_t)page-&gt;lru.next &amp; BIT(1);</span></a>
 <a name="1789"><span class="lineNum">    1789 </span>            : }</a>
 <a name="1790"><span class="lineNum">    1790 </span>            : </a>
 <a name="1791"><span class="lineNum">    1791 </span>            : /*</a>
@@ -1861,7 +1861,7 @@
 <a name="1799"><span class="lineNum">    1799 </span>            : </a>
 <a name="1800"><span class="lineNum">    1800 </span>            : static inline void clear_page_pfmemalloc(struct page *page)</a>
 <a name="1801"><span class="lineNum">    1801 </span>            : {</a>
-<a name="1802"><span class="lineNum">    1802 </span><span class="lineCov">       1055 :         page-&gt;lru.next = NULL;</span></a>
+<a name="1802"><span class="lineNum">    1802 </span><span class="lineCov">        528 :         page-&gt;lru.next = NULL;</span></a>
 <a name="1803"><span class="lineNum">    1803 </span>            : }</a>
 <a name="1804"><span class="lineNum">    1804 </span>            : </a>
 <a name="1805"><span class="lineNum">    1805 </span>            : /*</a>
@@ -2245,7 +2245,7 @@
 <a name="2183"><span class="lineNum">    2183 </span>            : {</a>
 <a name="2184"><span class="lineNum">    2184 </span>            :         if (mm_pmd_folded(mm))</a>
 <a name="2185"><span class="lineNum">    2185 </span>            :                 return;</a>
-<a name="2186"><span class="lineNum">    2186 </span><span class="lineCov">          4 :         atomic_long_add(PTRS_PER_PMD * sizeof(pmd_t), &amp;mm-&gt;pgtables_bytes);</span></a>
+<a name="2186"><span class="lineNum">    2186 </span><span class="lineCov">          2 :         atomic_long_add(PTRS_PER_PMD * sizeof(pmd_t), &amp;mm-&gt;pgtables_bytes);</span></a>
 <a name="2187"><span class="lineNum">    2187 </span>            : }</a>
 <a name="2188"><span class="lineNum">    2188 </span>            : </a>
 <a name="2189"><span class="lineNum">    2189 </span>            : static inline void mm_dec_nr_pmds(struct mm_struct *mm)</a>
@@ -2381,7 +2381,7 @@
 <a name="2319"><span class="lineNum">    2319 </span>            : static inline void pgtable_init(void)</a>
 <a name="2320"><span class="lineNum">    2320 </span>            : {</a>
 <a name="2321"><span class="lineNum">    2321 </span>            :         ptlock_cache_init();</a>
-<a name="2322"><span class="lineNum">    2322 </span><span class="lineCov">          2 :         pgtable_cache_init();</span></a>
+<a name="2322"><span class="lineNum">    2322 </span><span class="lineCov">          1 :         pgtable_cache_init();</span></a>
 <a name="2323"><span class="lineNum">    2323 </span>            : }</a>
 <a name="2324"><span class="lineNum">    2324 </span>            : </a>
 <a name="2325"><span class="lineNum">    2325 </span>            : static inline bool pgtable_pte_page_ctor(struct page *page)</a>
@@ -2481,10 +2481,10 @@
 <a name="2419"><span class="lineNum">    2419 </span>            : </a>
 <a name="2420"><span class="lineNum">    2420 </span>            : static inline bool pgtable_pmd_page_ctor(struct page *page)</a>
 <a name="2421"><span class="lineNum">    2421 </span>            : {</a>
-<a name="2422"><span class="lineNum">    2422 </span><span class="lineCov">          2 :         if (!pmd_ptlock_init(page))</span></a>
+<a name="2422"><span class="lineNum">    2422 </span><span class="lineCov">          1 :         if (!pmd_ptlock_init(page))</span></a>
 <a name="2423"><span class="lineNum">    2423 </span>            :                 return false;</a>
-<a name="2424"><span class="lineNum">    2424 </span><span class="lineCov">          2 :         __SetPageTable(page);</span></a>
-<a name="2425"><span class="lineNum">    2425 </span><span class="lineCov">          4 :         inc_lruvec_page_state(page, NR_PAGETABLE);</span></a>
+<a name="2424"><span class="lineNum">    2424 </span><span class="lineCov">          1 :         __SetPageTable(page);</span></a>
+<a name="2425"><span class="lineNum">    2425 </span><span class="lineCov">          2 :         inc_lruvec_page_state(page, NR_PAGETABLE);</span></a>
 <a name="2426"><span class="lineNum">    2426 </span>            :         return true;</a>
 <a name="2427"><span class="lineNum">    2427 </span>            : }</a>
 <a name="2428"><span class="lineNum">    2428 </span>            : </a>
@@ -2508,9 +2508,9 @@
 <a name="2446"><span class="lineNum">    2446 </span>            : </a>
 <a name="2447"><span class="lineNum">    2447 </span>            : static inline spinlock_t *pud_lock(struct mm_struct *mm, pud_t *pud)</a>
 <a name="2448"><span class="lineNum">    2448 </span>            : {</a>
-<a name="2449"><span class="lineNum">    2449 </span><span class="lineCov">          2 :         spinlock_t *ptl = pud_lockptr(mm, pud);</span></a>
+<a name="2449"><span class="lineNum">    2449 </span><span class="lineCov">          1 :         spinlock_t *ptl = pud_lockptr(mm, pud);</span></a>
 <a name="2450"><span class="lineNum">    2450 </span>            : </a>
-<a name="2451"><span class="lineNum">    2451 </span><span class="lineCov">          2 :         spin_lock(ptl);</span></a>
+<a name="2451"><span class="lineNum">    2451 </span><span class="lineCov">          1 :         spin_lock(ptl);</span></a>
 <a name="2452"><span class="lineNum">    2452 </span>            :         return ptl;</a>
 <a name="2453"><span class="lineNum">    2453 </span>            : }</a>
 <a name="2454"><span class="lineNum">    2454 </span>            : </a>
@@ -2564,10 +2564,10 @@
 <a name="2502"><span class="lineNum">    2502 </span>            : static inline unsigned long get_num_physpages(void)</a>
 <a name="2503"><span class="lineNum">    2503 </span>            : {</a>
 <a name="2504"><span class="lineNum">    2504 </span>            :         int nid;</a>
-<a name="2505"><span class="lineNum">    2505 </span><span class="lineCov">          2 :         unsigned long phys_pages = 0;</span></a>
+<a name="2505"><span class="lineNum">    2505 </span><span class="lineCov">          1 :         unsigned long phys_pages = 0;</span></a>
 <a name="2506"><span class="lineNum">    2506 </span>            : </a>
-<a name="2507"><span class="lineNum">    2507 </span><span class="lineCov">          4 :         for_each_online_node(nid)</span></a>
-<a name="2508"><span class="lineNum">    2508 </span><span class="lineCov">          2 :                 phys_pages += node_present_pages(nid);</span></a>
+<a name="2507"><span class="lineNum">    2507 </span><span class="lineCov">          2 :         for_each_online_node(nid)</span></a>
+<a name="2508"><span class="lineNum">    2508 </span><span class="lineCov">          1 :                 phys_pages += node_present_pages(nid);</span></a>
 <a name="2509"><span class="lineNum">    2509 </span>            : </a>
 <a name="2510"><span class="lineNum">    2510 </span>            :         return phys_pages;</a>
 <a name="2511"><span class="lineNum">    2511 </span>            : }</a>
@@ -3112,16 +3112,16 @@
 <a name="3050"><span class="lineNum">    3050 </span>            : DECLARE_STATIC_KEY_MAYBE(CONFIG_INIT_ON_ALLOC_DEFAULT_ON, init_on_alloc);</a>
 <a name="3051"><span class="lineNum">    3051 </span>            : static inline bool want_init_on_alloc(gfp_t flags)</a>
 <a name="3052"><span class="lineNum">    3052 </span>            : {</a>
-<a name="3053"><span class="lineNum">    3053 </span><span class="lineCov">       1087 :         if (static_branch_maybe(CONFIG_INIT_ON_ALLOC_DEFAULT_ON,</span></a>
+<a name="3053"><span class="lineNum">    3053 </span><span class="lineCov">        544 :         if (static_branch_maybe(CONFIG_INIT_ON_ALLOC_DEFAULT_ON,</span></a>
 <a name="3054"><span class="lineNum">    3054 </span>            :                                 &amp;init_on_alloc))</a>
 <a name="3055"><span class="lineNum">    3055 </span>            :                 return true;</a>
-<a name="3056"><span class="lineNum">    3056 </span><span class="lineCov">       1055 :         return flags &amp; __GFP_ZERO;</span></a>
+<a name="3056"><span class="lineNum">    3056 </span><span class="lineCov">        528 :         return flags &amp; __GFP_ZERO;</span></a>
 <a name="3057"><span class="lineNum">    3057 </span>            : }</a>
 <a name="3058"><span class="lineNum">    3058 </span>            : </a>
 <a name="3059"><span class="lineNum">    3059 </span>            : DECLARE_STATIC_KEY_MAYBE(CONFIG_INIT_ON_FREE_DEFAULT_ON, init_on_free);</a>
-<a name="3060"><span class="lineNum">    3060 </span><span class="lineCov">          6 : static inline bool want_init_on_free(void)</span></a>
+<a name="3060"><span class="lineNum">    3060 </span><span class="lineCov">          3 : static inline bool want_init_on_free(void)</span></a>
 <a name="3061"><span class="lineNum">    3061 </span>            : {</a>
-<a name="3062"><span class="lineNum">    3062 </span><span class="lineCov">       1620 :         return static_branch_maybe(CONFIG_INIT_ON_FREE_DEFAULT_ON,</span></a>
+<a name="3062"><span class="lineNum">    3062 </span><span class="lineCov">        813 :         return static_branch_maybe(CONFIG_INIT_ON_FREE_DEFAULT_ON,</span></a>
 <a name="3063"><span class="lineNum">    3063 </span>            :                                    &amp;init_on_free);</a>
 <a name="3064"><span class="lineNum">    3064 </span>            : }</a>
 <a name="3065"><span class="lineNum">    3065 </span>            : </a>

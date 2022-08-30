@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -258,7 +258,7 @@
 <a name="196"><span class="lineNum">     196 </span>            : /* index in the above - for now: assume no multimajor ranges */</a>
 <a name="197"><span class="lineNum">     197 </span>            : static inline int major_to_index(unsigned major)</a>
 <a name="198"><span class="lineNum">     198 </span>            : {</a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineCov">          2 :         return major % BLKDEV_MAJOR_HASH_SIZE;</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">          1 :         return major % BLKDEV_MAJOR_HASH_SIZE;</span></a>
 <a name="200"><span class="lineNum">     200 </span>            : }</a>
 <a name="201"><span class="lineNum">     201 </span>            : </a>
 <a name="202"><span class="lineNum">     202 </span>            : #ifdef CONFIG_PROC_FS</a>
@@ -300,16 +300,16 @@
 <a name="238"><span class="lineNum">     238 </span>            :  *</a>
 <a name="239"><span class="lineNum">     239 </span>            :  * Use register_blkdev instead for any new code.</a>
 <a name="240"><span class="lineNum">     240 </span>            :  */</a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineCov">          2 : int __register_blkdev(unsigned int major, const char *name,</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">          1 : int __register_blkdev(unsigned int major, const char *name,</span></a>
 <a name="242"><span class="lineNum">     242 </span>            :                 void (*probe)(dev_t devt))</a>
 <a name="243"><span class="lineNum">     243 </span>            : {</a>
 <a name="244"><span class="lineNum">     244 </span>            :         struct blk_major_name **n, *p;</a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineCov">          2 :         int index, ret = 0;</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">          1 :         int index, ret = 0;</span></a>
 <a name="246"><span class="lineNum">     246 </span>            : </a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineCov">          2 :         mutex_lock(&amp;major_names_lock);</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineCov">          1 :         mutex_lock(&amp;major_names_lock);</span></a>
 <a name="248"><span class="lineNum">     248 </span>            : </a>
 <a name="249"><span class="lineNum">     249 </span>            :         /* temporary */</a>
-<a name="250"><span class="lineNum">     250 </span><span class="lineCov">          2 :         if (major == 0) {</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineCov">          1 :         if (major == 0) {</span></a>
 <a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 :                 for (index = ARRAY_SIZE(major_names)-1; index &gt; 0; index--) {</span></a>
 <a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 :                         if (major_names[index] == NULL)</span></a>
 <a name="253"><span class="lineNum">     253 </span>            :                                 break;</a>
@@ -325,7 +325,7 @@
 <a name="263"><span class="lineNum">     263 </span><span class="lineNoCov">          0 :                 ret = major;</span></a>
 <a name="264"><span class="lineNum">     264 </span>            :         }</a>
 <a name="265"><span class="lineNum">     265 </span>            : </a>
-<a name="266"><span class="lineNum">     266 </span><span class="lineCov">          2 :         if (major &gt;= BLKDEV_MAJOR_MAX) {</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineCov">          1 :         if (major &gt;= BLKDEV_MAJOR_MAX) {</span></a>
 <a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 :                 pr_err(&quot;%s: major requested (%u) is greater than the maximum (%u) for %s\n&quot;,</span></a>
 <a name="268"><span class="lineNum">     268 </span>            :                        __func__, major, BLKDEV_MAJOR_MAX-1, name);</a>
 <a name="269"><span class="lineNum">     269 </span>            : </a>
@@ -333,39 +333,39 @@
 <a name="271"><span class="lineNum">     271 </span><span class="lineNoCov">          0 :                 goto out;</span></a>
 <a name="272"><span class="lineNum">     272 </span>            :         }</a>
 <a name="273"><span class="lineNum">     273 </span>            : </a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineCov">          2 :         p = kmalloc(sizeof(struct blk_major_name), GFP_KERNEL);</span></a>
-<a name="275"><span class="lineNum">     275 </span><span class="lineCov">          2 :         if (p == NULL) {</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineCov">          1 :         p = kmalloc(sizeof(struct blk_major_name), GFP_KERNEL);</span></a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineCov">          1 :         if (p == NULL) {</span></a>
 <a name="276"><span class="lineNum">     276 </span>            :                 ret = -ENOMEM;</a>
 <a name="277"><span class="lineNum">     277 </span>            :                 goto out;</a>
 <a name="278"><span class="lineNum">     278 </span>            :         }</a>
 <a name="279"><span class="lineNum">     279 </span>            : </a>
-<a name="280"><span class="lineNum">     280 </span><span class="lineCov">          2 :         p-&gt;major = major;</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineCov">          1 :         p-&gt;major = major;</span></a>
 <a name="281"><span class="lineNum">     281 </span>            : #ifdef CONFIG_BLOCK_LEGACY_AUTOLOAD</a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineCov">          2 :         p-&gt;probe = probe;</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineCov">          1 :         p-&gt;probe = probe;</span></a>
 <a name="283"><span class="lineNum">     283 </span>            : #endif</a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          2 :         strlcpy(p-&gt;name, name, sizeof(p-&gt;name));</span></a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineCov">          2 :         p-&gt;next = NULL;</span></a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          2 :         index = major_to_index(major);</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          1 :         strlcpy(p-&gt;name, name, sizeof(p-&gt;name));</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">          1 :         p-&gt;next = NULL;</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          1 :         index = major_to_index(major);</span></a>
 <a name="287"><span class="lineNum">     287 </span>            : </a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          2 :         spin_lock(&amp;major_names_spinlock);</span></a>
-<a name="289"><span class="lineNum">     289 </span><span class="lineCov">          2 :         for (n = &amp;major_names[index]; *n; n = &amp;(*n)-&gt;next) {</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          1 :         spin_lock(&amp;major_names_spinlock);</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineCov">          1 :         for (n = &amp;major_names[index]; *n; n = &amp;(*n)-&gt;next) {</span></a>
 <a name="290"><span class="lineNum">     290 </span><span class="lineNoCov">          0 :                 if ((*n)-&gt;major == major)</span></a>
 <a name="291"><span class="lineNum">     291 </span>            :                         break;</a>
 <a name="292"><span class="lineNum">     292 </span>            :         }</a>
-<a name="293"><span class="lineNum">     293 </span><span class="lineCov">          2 :         if (!*n)</span></a>
-<a name="294"><span class="lineNum">     294 </span><span class="lineCov">          2 :                 *n = p;</span></a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineCov">          1 :         if (!*n)</span></a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineCov">          1 :                 *n = p;</span></a>
 <a name="295"><span class="lineNum">     295 </span>            :         else</a>
 <a name="296"><span class="lineNum">     296 </span>            :                 ret = -EBUSY;</a>
-<a name="297"><span class="lineNum">     297 </span><span class="lineCov">          2 :         spin_unlock(&amp;major_names_spinlock);</span></a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineCov">          1 :         spin_unlock(&amp;major_names_spinlock);</span></a>
 <a name="298"><span class="lineNum">     298 </span>            : </a>
-<a name="299"><span class="lineNum">     299 </span><span class="lineCov">          2 :         if (ret &lt; 0) {</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineCov">          1 :         if (ret &lt; 0) {</span></a>
 <a name="300"><span class="lineNum">     300 </span><span class="lineNoCov">          0 :                 printk(&quot;register_blkdev: cannot get major %u for %s\n&quot;,</span></a>
 <a name="301"><span class="lineNum">     301 </span>            :                        major, name);</a>
 <a name="302"><span class="lineNum">     302 </span><span class="lineNoCov">          0 :                 kfree(p);</span></a>
 <a name="303"><span class="lineNum">     303 </span>            :         }</a>
 <a name="304"><span class="lineNum">     304 </span>            : out:</a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          2 :         mutex_unlock(&amp;major_names_lock);</span></a>
-<a name="306"><span class="lineNum">     306 </span><span class="lineCov">          2 :         return ret;</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          1 :         mutex_unlock(&amp;major_names_lock);</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineCov">          1 :         return ret;</span></a>
 <a name="307"><span class="lineNum">     307 </span>            : }</a>
 <a name="308"><span class="lineNum">     308 </span>            : EXPORT_SYMBOL(__register_blkdev);</a>
 <a name="309"><span class="lineNum">     309 </span>            : </a>
@@ -925,22 +925,22 @@
 <a name="863"><span class="lineNum">     863 </span>            : };</a>
 <a name="864"><span class="lineNum">     864 </span>            : #endif</a>
 <a name="865"><span class="lineNum">     865 </span>            : </a>
-<a name="866"><span class="lineNum">     866 </span><span class="lineCov">          2 : static int __init genhd_device_init(void)</span></a>
+<a name="866"><span class="lineNum">     866 </span><span class="lineCov">          1 : static int __init genhd_device_init(void)</span></a>
 <a name="867"><span class="lineNum">     867 </span>            : {</a>
 <a name="868"><span class="lineNum">     868 </span>            :         int error;</a>
 <a name="869"><span class="lineNum">     869 </span>            : </a>
-<a name="870"><span class="lineNum">     870 </span><span class="lineCov">          2 :         block_class.dev_kobj = sysfs_dev_block_kobj;</span></a>
-<a name="871"><span class="lineNum">     871 </span><span class="lineCov">          2 :         error = class_register(&amp;block_class);</span></a>
-<a name="872"><span class="lineNum">     872 </span><span class="lineCov">          2 :         if (unlikely(error))</span></a>
+<a name="870"><span class="lineNum">     870 </span><span class="lineCov">          1 :         block_class.dev_kobj = sysfs_dev_block_kobj;</span></a>
+<a name="871"><span class="lineNum">     871 </span><span class="lineCov">          1 :         error = class_register(&amp;block_class);</span></a>
+<a name="872"><span class="lineNum">     872 </span><span class="lineCov">          1 :         if (unlikely(error))</span></a>
 <a name="873"><span class="lineNum">     873 </span>            :                 return error;</a>
-<a name="874"><span class="lineNum">     874 </span><span class="lineCov">          2 :         blk_dev_init();</span></a>
+<a name="874"><span class="lineNum">     874 </span><span class="lineCov">          1 :         blk_dev_init();</span></a>
 <a name="875"><span class="lineNum">     875 </span>            : </a>
-<a name="876"><span class="lineNum">     876 </span><span class="lineCov">          2 :         register_blkdev(BLOCK_EXT_MAJOR, &quot;blkext&quot;);</span></a>
+<a name="876"><span class="lineNum">     876 </span><span class="lineCov">          1 :         register_blkdev(BLOCK_EXT_MAJOR, &quot;blkext&quot;);</span></a>
 <a name="877"><span class="lineNum">     877 </span>            : </a>
 <a name="878"><span class="lineNum">     878 </span>            :         /* create top-level block dir */</a>
 <a name="879"><span class="lineNum">     879 </span>            :         if (!sysfs_deprecated)</a>
-<a name="880"><span class="lineNum">     880 </span><span class="lineCov">          2 :                 block_depr = kobject_create_and_add(&quot;block&quot;, NULL);</span></a>
-<a name="881"><span class="lineNum">     881 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="880"><span class="lineNum">     880 </span><span class="lineCov">          1 :                 block_depr = kobject_create_and_add(&quot;block&quot;, NULL);</span></a>
+<a name="881"><span class="lineNum">     881 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="882"><span class="lineNum">     882 </span>            : }</a>
 <a name="883"><span class="lineNum">     883 </span>            : </a>
 <a name="884"><span class="lineNum">     884 </span>            : subsys_initcall(genhd_device_init);</a>
@@ -1359,11 +1359,11 @@
 <a name="1297"><span class="lineNum">    1297 </span>            :         .show   = diskstats_show</a>
 <a name="1298"><span class="lineNum">    1298 </span>            : };</a>
 <a name="1299"><span class="lineNum">    1299 </span>            : </a>
-<a name="1300"><span class="lineNum">    1300 </span><span class="lineCov">          2 : static int __init proc_genhd_init(void)</span></a>
+<a name="1300"><span class="lineNum">    1300 </span><span class="lineCov">          1 : static int __init proc_genhd_init(void)</span></a>
 <a name="1301"><span class="lineNum">    1301 </span>            : {</a>
-<a name="1302"><span class="lineNum">    1302 </span><span class="lineCov">          2 :         proc_create_seq(&quot;diskstats&quot;, 0, NULL, &amp;diskstats_op);</span></a>
-<a name="1303"><span class="lineNum">    1303 </span><span class="lineCov">          2 :         proc_create_seq(&quot;partitions&quot;, 0, NULL, &amp;partitions_op);</span></a>
-<a name="1304"><span class="lineNum">    1304 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="1302"><span class="lineNum">    1302 </span><span class="lineCov">          1 :         proc_create_seq(&quot;diskstats&quot;, 0, NULL, &amp;diskstats_op);</span></a>
+<a name="1303"><span class="lineNum">    1303 </span><span class="lineCov">          1 :         proc_create_seq(&quot;partitions&quot;, 0, NULL, &amp;partitions_op);</span></a>
+<a name="1304"><span class="lineNum">    1304 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="1305"><span class="lineNum">    1305 </span>            : }</a>
 <a name="1306"><span class="lineNum">    1306 </span>            : module_init(proc_genhd_init);</a>
 <a name="1307"><span class="lineNum">    1307 </span>            : #endif /* CONFIG_PROC_FS */</a>

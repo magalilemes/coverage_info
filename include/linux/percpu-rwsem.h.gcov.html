@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -106,13 +106,13 @@
 <a name="44"><span class="lineNum">      44 </span>            : </a>
 <a name="45"><span class="lineNum">      45 </span>            : extern bool __percpu_down_read(struct percpu_rw_semaphore *, bool);</a>
 <a name="46"><span class="lineNum">      46 </span>            : </a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          6 : static inline void percpu_down_read(struct percpu_rw_semaphore *sem)</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          3 : static inline void percpu_down_read(struct percpu_rw_semaphore *sem)</span></a>
 <a name="48"><span class="lineNum">      48 </span>            : {</a>
 <a name="49"><span class="lineNum">      49 </span>            :         might_sleep();</a>
 <a name="50"><span class="lineNum">      50 </span>            : </a>
 <a name="51"><span class="lineNum">      51 </span>            :         rwsem_acquire_read(&amp;sem-&gt;dep_map, 0, 0, _RET_IP_);</a>
 <a name="52"><span class="lineNum">      52 </span>            : </a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          6 :         preempt_disable();</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          3 :         preempt_disable();</span></a>
 <a name="54"><span class="lineNum">      54 </span>            :         /*</a>
 <a name="55"><span class="lineNum">      55 </span>            :          * We are in an RCU-sched read-side critical section, so the writer</a>
 <a name="56"><span class="lineNum">      56 </span>            :          * cannot both change sem-&gt;state from readers_fast and start checking</a>
@@ -121,16 +121,16 @@
 <a name="59"><span class="lineNum">      59 </span>            :          * and that once the synchronize_rcu() is done, the writer will see</a>
 <a name="60"><span class="lineNum">      60 </span>            :          * anything we did within this RCU-sched read-size critical section.</a>
 <a name="61"><span class="lineNum">      61 </span>            :          */</a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">         12 :         if (likely(rcu_sync_is_idle(&amp;sem-&gt;rss)))</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">         12 :                 this_cpu_inc(*sem-&gt;read_count);</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          6 :         if (likely(rcu_sync_is_idle(&amp;sem-&gt;rss)))</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          6 :                 this_cpu_inc(*sem-&gt;read_count);</span></a>
 <a name="64"><span class="lineNum">      64 </span>            :         else</a>
 <a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :                 __percpu_down_read(sem, false); /* Unconditional memory barrier */</span></a>
 <a name="66"><span class="lineNum">      66 </span>            :         /*</a>
 <a name="67"><span class="lineNum">      67 </span>            :          * The preempt_enable() prevents the compiler from</a>
 <a name="68"><span class="lineNum">      68 </span>            :          * bleeding the critical section out.</a>
 <a name="69"><span class="lineNum">      69 </span>            :          */</a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          6 :         preempt_enable();</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          6 : }</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          3 :         preempt_enable();</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          3 : }</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : </a>
 <a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 : static inline bool percpu_down_read_trylock(struct percpu_rw_semaphore *sem)</span></a>
 <a name="74"><span class="lineNum">      74 </span>            : {</a>
@@ -156,16 +156,16 @@
 <a name="94"><span class="lineNum">      94 </span><span class="lineNoCov">          0 :         return ret;</span></a>
 <a name="95"><span class="lineNum">      95 </span>            : }</a>
 <a name="96"><span class="lineNum">      96 </span>            : </a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineCov">          6 : static inline void percpu_up_read(struct percpu_rw_semaphore *sem)</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">          3 : static inline void percpu_up_read(struct percpu_rw_semaphore *sem)</span></a>
 <a name="98"><span class="lineNum">      98 </span>            : {</a>
 <a name="99"><span class="lineNum">      99 </span>            :         rwsem_release(&amp;sem-&gt;dep_map, _RET_IP_);</a>
 <a name="100"><span class="lineNum">     100 </span>            : </a>
-<a name="101"><span class="lineNum">     101 </span><span class="lineCov">          6 :         preempt_disable();</span></a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineCov">          3 :         preempt_disable();</span></a>
 <a name="102"><span class="lineNum">     102 </span>            :         /*</a>
 <a name="103"><span class="lineNum">     103 </span>            :          * Same as in percpu_down_read().</a>
 <a name="104"><span class="lineNum">     104 </span>            :          */</a>
-<a name="105"><span class="lineNum">     105 </span><span class="lineCov">         12 :         if (likely(rcu_sync_is_idle(&amp;sem-&gt;rss))) {</span></a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">         12 :                 this_cpu_dec(*sem-&gt;read_count);</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">          6 :         if (likely(rcu_sync_is_idle(&amp;sem-&gt;rss))) {</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">          6 :                 this_cpu_dec(*sem-&gt;read_count);</span></a>
 <a name="107"><span class="lineNum">     107 </span>            :         } else {</a>
 <a name="108"><span class="lineNum">     108 </span>            :                 /*</a>
 <a name="109"><span class="lineNum">     109 </span>            :                  * slowpath; reader will only ever wake a single blocked</a>
@@ -180,8 +180,8 @@
 <a name="118"><span class="lineNum">     118 </span><span class="lineNoCov">          0 :                 this_cpu_dec(*sem-&gt;read_count);</span></a>
 <a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 :                 rcuwait_wake_up(&amp;sem-&gt;writer);</span></a>
 <a name="120"><span class="lineNum">     120 </span>            :         }</a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineCov">          6 :         preempt_enable();</span></a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">          6 : }</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineCov">          3 :         preempt_enable();</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">          3 : }</span></a>
 <a name="123"><span class="lineNum">     123 </span>            : </a>
 <a name="124"><span class="lineNum">     124 </span>            : extern void percpu_down_write(struct percpu_rw_semaphore *);</a>
 <a name="125"><span class="lineNum">     125 </span>            : extern void percpu_up_write(struct percpu_rw_semaphore *);</a>

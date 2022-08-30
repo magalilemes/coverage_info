@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -76,14 +76,14 @@
 <a name="14"><span class="lineNum">      14 </span>            :         LIST_BL_BUG_ON((unsigned long)n &amp; LIST_BL_LOCKMASK);</a>
 <a name="15"><span class="lineNum">      15 </span>            :         LIST_BL_BUG_ON(((unsigned long)h-&gt;first &amp; LIST_BL_LOCKMASK) !=</a>
 <a name="16"><span class="lineNum">      16 </span>            :                                                         LIST_BL_LOCKMASK);</a>
-<a name="17"><span class="lineNum">      17 </span><span class="lineCov">         10 :         rcu_assign_pointer(h-&gt;first,</span></a>
+<a name="17"><span class="lineNum">      17 </span><span class="lineCov">          5 :         rcu_assign_pointer(h-&gt;first,</span></a>
 <a name="18"><span class="lineNum">      18 </span>            :                 (struct hlist_bl_node *)((unsigned long)n | LIST_BL_LOCKMASK));</a>
 <a name="19"><span class="lineNum">      19 </span>            : }</a>
 <a name="20"><span class="lineNum">      20 </span>            : </a>
 <a name="21"><span class="lineNum">      21 </span>            : static inline struct hlist_bl_node *hlist_bl_first_rcu(struct hlist_bl_head *h)</a>
 <a name="22"><span class="lineNum">      22 </span>            : {</a>
 <a name="23"><span class="lineNum">      23 </span>            :         return (struct hlist_bl_node *)</a>
-<a name="24"><span class="lineNum">      24 </span><span class="lineCov">          8 :                 ((unsigned long)rcu_dereference_check(h-&gt;first, hlist_bl_is_locked(h)) &amp; ~LIST_BL_LOCKMASK);</span></a>
+<a name="24"><span class="lineNum">      24 </span><span class="lineCov">          4 :                 ((unsigned long)rcu_dereference_check(h-&gt;first, hlist_bl_is_locked(h)) &amp; ~LIST_BL_LOCKMASK);</span></a>
 <a name="25"><span class="lineNum">      25 </span>            : }</a>
 <a name="26"><span class="lineNum">      26 </span>            : </a>
 <a name="27"><span class="lineNum">      27 </span>            : /**</a>
@@ -136,15 +136,15 @@
 <a name="74"><span class="lineNum">      74 </span>            :         struct hlist_bl_node *first;</a>
 <a name="75"><span class="lineNum">      75 </span>            : </a>
 <a name="76"><span class="lineNum">      76 </span>            :         /* don't need hlist_bl_first_rcu because we're under lock */</a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">         10 :         first = hlist_bl_first(h);</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">          5 :         first = hlist_bl_first(h);</span></a>
 <a name="78"><span class="lineNum">      78 </span>            : </a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         10 :         n-&gt;next = first;</span></a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">         10 :         if (first)</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">          5 :         n-&gt;next = first;</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">          5 :         if (first)</span></a>
 <a name="81"><span class="lineNum">      81 </span><span class="lineNoCov">          0 :                 first-&gt;pprev = &amp;n-&gt;next;</span></a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         10 :         n-&gt;pprev = &amp;h-&gt;first;</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">          5 :         n-&gt;pprev = &amp;h-&gt;first;</span></a>
 <a name="83"><span class="lineNum">      83 </span>            : </a>
 <a name="84"><span class="lineNum">      84 </span>            :         /* need _rcu because we can have concurrent lock free readers */</a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">         10 :         hlist_bl_set_first_rcu(h, n);</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">          5 :         hlist_bl_set_first_rcu(h, n);</span></a>
 <a name="86"><span class="lineNum">      86 </span>            : }</a>
 <a name="87"><span class="lineNum">      87 </span>            : /**</a>
 <a name="88"><span class="lineNum">      88 </span>            :  * hlist_bl_for_each_entry_rcu - iterate over rcu list of given type</a>

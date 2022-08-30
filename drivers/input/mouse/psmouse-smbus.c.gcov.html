@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -363,12 +363,12 @@
 <a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 :         return error &lt; 0 ? error : -EAGAIN;</span></a>
 <a name="302"><span class="lineNum">     302 </span>            : }</a>
 <a name="303"><span class="lineNum">     303 </span>            : </a>
-<a name="304"><span class="lineNum">     304 </span><span class="lineCov">          2 : int __init psmouse_smbus_module_init(void)</span></a>
+<a name="304"><span class="lineNum">     304 </span><span class="lineCov">          1 : int __init psmouse_smbus_module_init(void)</span></a>
 <a name="305"><span class="lineNum">     305 </span>            : {</a>
 <a name="306"><span class="lineNum">     306 </span>            :         int error;</a>
 <a name="307"><span class="lineNum">     307 </span>            : </a>
-<a name="308"><span class="lineNum">     308 </span><span class="lineCov">          2 :         error = bus_register_notifier(&amp;i2c_bus_type, &amp;psmouse_smbus_notifier);</span></a>
-<a name="309"><span class="lineNum">     309 </span><span class="lineCov">          2 :         if (error) {</span></a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineCov">          1 :         error = bus_register_notifier(&amp;i2c_bus_type, &amp;psmouse_smbus_notifier);</span></a>
+<a name="309"><span class="lineNum">     309 </span><span class="lineCov">          1 :         if (error) {</span></a>
 <a name="310"><span class="lineNum">     310 </span><span class="lineNoCov">          0 :                 pr_err(&quot;failed to register i2c bus notifier: %d\n&quot;, error);</span></a>
 <a name="311"><span class="lineNum">     311 </span><span class="lineNoCov">          0 :                 return error;</span></a>
 <a name="312"><span class="lineNum">     312 </span>            :         }</a>

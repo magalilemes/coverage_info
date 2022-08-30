@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -811,22 +811,22 @@
 <a name="749"><span class="lineNum">     749 </span><span class="lineNoCov">          0 :         class_destroy(backlight_class);</span></a>
 <a name="750"><span class="lineNum">     750 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="751"><span class="lineNum">     751 </span>            : </a>
-<a name="752"><span class="lineNum">     752 </span><span class="lineCov">          2 : static int __init backlight_class_init(void)</span></a>
+<a name="752"><span class="lineNum">     752 </span><span class="lineCov">          1 : static int __init backlight_class_init(void)</span></a>
 <a name="753"><span class="lineNum">     753 </span>            : {</a>
-<a name="754"><span class="lineNum">     754 </span><span class="lineCov">          2 :         backlight_class = class_create(THIS_MODULE, &quot;backlight&quot;);</span></a>
-<a name="755"><span class="lineNum">     755 </span><span class="lineCov">          4 :         if (IS_ERR(backlight_class)) {</span></a>
+<a name="754"><span class="lineNum">     754 </span><span class="lineCov">          1 :         backlight_class = class_create(THIS_MODULE, &quot;backlight&quot;);</span></a>
+<a name="755"><span class="lineNum">     755 </span><span class="lineCov">          2 :         if (IS_ERR(backlight_class)) {</span></a>
 <a name="756"><span class="lineNum">     756 </span><span class="lineNoCov">          0 :                 pr_warn(&quot;Unable to create backlight class; errno = %ld\n&quot;,</span></a>
 <a name="757"><span class="lineNum">     757 </span>            :                         PTR_ERR(backlight_class));</a>
 <a name="758"><span class="lineNum">     758 </span><span class="lineNoCov">          0 :                 return PTR_ERR(backlight_class);</span></a>
 <a name="759"><span class="lineNum">     759 </span>            :         }</a>
 <a name="760"><span class="lineNum">     760 </span>            : </a>
-<a name="761"><span class="lineNum">     761 </span><span class="lineCov">          2 :         backlight_class-&gt;dev_groups = bl_device_groups;</span></a>
-<a name="762"><span class="lineNum">     762 </span><span class="lineCov">          2 :         backlight_class-&gt;pm = &amp;backlight_class_dev_pm_ops;</span></a>
-<a name="763"><span class="lineNum">     763 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;backlight_dev_list);</span></a>
-<a name="764"><span class="lineNum">     764 </span><span class="lineCov">          2 :         mutex_init(&amp;backlight_dev_list_mutex);</span></a>
-<a name="765"><span class="lineNum">     765 </span><span class="lineCov">          2 :         BLOCKING_INIT_NOTIFIER_HEAD(&amp;backlight_notifier);</span></a>
+<a name="761"><span class="lineNum">     761 </span><span class="lineCov">          1 :         backlight_class-&gt;dev_groups = bl_device_groups;</span></a>
+<a name="762"><span class="lineNum">     762 </span><span class="lineCov">          1 :         backlight_class-&gt;pm = &amp;backlight_class_dev_pm_ops;</span></a>
+<a name="763"><span class="lineNum">     763 </span><span class="lineCov">          1 :         INIT_LIST_HEAD(&amp;backlight_dev_list);</span></a>
+<a name="764"><span class="lineNum">     764 </span><span class="lineCov">          1 :         mutex_init(&amp;backlight_dev_list_mutex);</span></a>
+<a name="765"><span class="lineNum">     765 </span><span class="lineCov">          1 :         BLOCKING_INIT_NOTIFIER_HEAD(&amp;backlight_notifier);</span></a>
 <a name="766"><span class="lineNum">     766 </span>            : </a>
-<a name="767"><span class="lineNum">     767 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="767"><span class="lineNum">     767 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="768"><span class="lineNum">     768 </span>            : }</a>
 <a name="769"><span class="lineNum">     769 </span>            : </a>
 <a name="770"><span class="lineNum">     770 </span>            : /*</a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -96,7 +96,7 @@
 <a name="34"><span class="lineNum">      34 </span>            :  */</a>
 <a name="35"><span class="lineNum">      35 </span>            : static inline bool freezing(struct task_struct *p)</a>
 <a name="36"><span class="lineNum">      36 </span>            : {</a>
-<a name="37"><span class="lineNum">      37 </span><span class="lineCov">        320 :         if (likely(!atomic_read(&amp;system_freezing_cnt)))</span></a>
+<a name="37"><span class="lineNum">      37 </span><span class="lineCov">        218 :         if (likely(!atomic_read(&amp;system_freezing_cnt)))</span></a>
 <a name="38"><span class="lineNum">      38 </span>            :                 return false;</a>
 <a name="39"><span class="lineNum">      39 </span><span class="lineNoCov">          0 :         return freezing_slow_path(p);</span></a>
 <a name="40"><span class="lineNum">      40 </span>            : }</a>
@@ -114,19 +114,19 @@
 <a name="52"><span class="lineNum">      52 </span>            :  * DO NOT ADD ANY NEW CALLERS OF THIS FUNCTION</a>
 <a name="53"><span class="lineNum">      53 </span>            :  * If try_to_freeze causes a lockdep warning it means the caller may deadlock</a>
 <a name="54"><span class="lineNum">      54 </span>            :  */</a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          6 : static inline bool try_to_freeze_unsafe(void)</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">          3 : static inline bool try_to_freeze_unsafe(void)</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : {</a>
 <a name="57"><span class="lineNum">      57 </span>            :         might_sleep();</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">         12 :         if (likely(!freezing(current)))</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          6 :         if (likely(!freezing(current)))</span></a>
 <a name="59"><span class="lineNum">      59 </span>            :                 return false;</a>
 <a name="60"><span class="lineNum">      60 </span><span class="lineNoCov">          0 :         return __refrigerator(false);</span></a>
 <a name="61"><span class="lineNum">      61 </span>            : }</a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
 <a name="63"><span class="lineNum">      63 </span>            : static inline bool try_to_freeze(void)</a>
 <a name="64"><span class="lineNum">      64 </span>            : {</a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          6 :         if (!(current-&gt;flags &amp; PF_NOFREEZE))</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          3 :         if (!(current-&gt;flags &amp; PF_NOFREEZE))</span></a>
 <a name="66"><span class="lineNum">      66 </span>            :                 debug_check_no_locks_held();</a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          6 :         return try_to_freeze_unsafe();</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          3 :         return try_to_freeze_unsafe();</span></a>
 <a name="68"><span class="lineNum">      68 </span>            : }</a>
 <a name="69"><span class="lineNum">      69 </span>            : </a>
 <a name="70"><span class="lineNum">      70 </span>            : extern bool freeze_task(struct task_struct *p);</a>
@@ -168,7 +168,7 @@
 <a name="106"><span class="lineNum">     106 </span>            :  */</a>
 <a name="107"><span class="lineNum">     107 </span>            : static inline void freezer_do_not_count(void)</a>
 <a name="108"><span class="lineNum">     108 </span>            : {</a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">          4 :         current-&gt;flags |= PF_FREEZER_SKIP;</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">          2 :         current-&gt;flags |= PF_FREEZER_SKIP;</span></a>
 <a name="110"><span class="lineNum">     110 </span>            : }</a>
 <a name="111"><span class="lineNum">     111 </span>            : </a>
 <a name="112"><span class="lineNum">     112 </span>            : /**</a>
@@ -228,10 +228,10 @@
 <a name="166"><span class="lineNum">     166 </span>            :  */</a>
 <a name="167"><span class="lineNum">     167 </span>            : </a>
 <a name="168"><span class="lineNum">     168 </span>            : /* Like schedule(), but should not block the freezer. */</a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineCov">          2 : static inline void freezable_schedule(void)</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">          1 : static inline void freezable_schedule(void)</span></a>
 <a name="170"><span class="lineNum">     170 </span>            : {</a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">          2 :         freezer_do_not_count();</span></a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">          2 :         schedule();</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">          1 :         freezer_do_not_count();</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">          1 :         schedule();</span></a>
 <a name="173"><span class="lineNum">     173 </span><span class="lineNoCov">          0 :         freezer_count();</span></a>
 <a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="175"><span class="lineNum">     175 </span>            : </a>
@@ -247,11 +247,11 @@
 <a name="185"><span class="lineNum">     185 </span>            :  * Like schedule_timeout(), but should not block the freezer.  Do not</a>
 <a name="186"><span class="lineNum">     186 </span>            :  * call this with locks held.</a>
 <a name="187"><span class="lineNum">     187 </span>            :  */</a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineCov">          2 : static inline long freezable_schedule_timeout(long timeout)</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineCov">          1 : static inline long freezable_schedule_timeout(long timeout)</span></a>
 <a name="189"><span class="lineNum">     189 </span>            : {</a>
 <a name="190"><span class="lineNum">     190 </span>            :         long __retval;</a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          2 :         freezer_do_not_count();</span></a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineCov">          2 :         __retval = schedule_timeout(timeout);</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          1 :         freezer_do_not_count();</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">          1 :         __retval = schedule_timeout(timeout);</span></a>
 <a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :         freezer_count();</span></a>
 <a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 :         return __retval;</span></a>
 <a name="195"><span class="lineNum">     195 </span>            : }</a>

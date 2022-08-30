@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -192,23 +192,23 @@
 <a name="130"><span class="lineNum">     130 </span>            :  * pointer.  Return p, or any of its subthreads with a valid -&gt;mm, with</a>
 <a name="131"><span class="lineNum">     131 </span>            :  * task_lock() held.</a>
 <a name="132"><span class="lineNum">     132 </span>            :  */</a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">         28 : struct task_struct *find_lock_task_mm(struct task_struct *p)</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">         14 : struct task_struct *find_lock_task_mm(struct task_struct *p)</span></a>
 <a name="134"><span class="lineNum">     134 </span>            : {</a>
 <a name="135"><span class="lineNum">     135 </span>            :         struct task_struct *t;</a>
 <a name="136"><span class="lineNum">     136 </span>            : </a>
 <a name="137"><span class="lineNum">     137 </span>            :         rcu_read_lock();</a>
 <a name="138"><span class="lineNum">     138 </span>            : </a>
-<a name="139"><span class="lineNum">     139 </span><span class="lineCov">         56 :         for_each_thread(p, t) {</span></a>
-<a name="140"><span class="lineNum">     140 </span><span class="lineCov">         28 :                 task_lock(t);</span></a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineCov">         28 :                 if (likely(t-&gt;mm))</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineCov">         28 :         for_each_thread(p, t) {</span></a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineCov">         14 :                 task_lock(t);</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">         14 :                 if (likely(t-&gt;mm))</span></a>
 <a name="142"><span class="lineNum">     142 </span>            :                         goto found;</a>
-<a name="143"><span class="lineNum">     143 </span><span class="lineCov">         28 :                 task_unlock(t);</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineCov">         14 :                 task_unlock(t);</span></a>
 <a name="144"><span class="lineNum">     144 </span>            :         }</a>
 <a name="145"><span class="lineNum">     145 </span>            :         t = NULL;</a>
 <a name="146"><span class="lineNum">     146 </span>            : found:</a>
 <a name="147"><span class="lineNum">     147 </span>            :         rcu_read_unlock();</a>
 <a name="148"><span class="lineNum">     148 </span>            : </a>
-<a name="149"><span class="lineNum">     149 </span><span class="lineCov">         28 :         return t;</span></a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineCov">         14 :         return t;</span></a>
 <a name="150"><span class="lineNum">     150 </span>            : }</a>
 <a name="151"><span class="lineNum">     151 </span>            : </a>
 <a name="152"><span class="lineNum">     152 </span>            : /*</a>
@@ -698,14 +698,14 @@
 <a name="636"><span class="lineNum">     636 </span><span class="lineNoCov">          0 :         put_task_struct(tsk);</span></a>
 <a name="637"><span class="lineNum">     637 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="638"><span class="lineNum">     638 </span>            : </a>
-<a name="639"><span class="lineNum">     639 </span><span class="lineCov">          2 : static int oom_reaper(void *unused)</span></a>
+<a name="639"><span class="lineNum">     639 </span><span class="lineCov">          1 : static int oom_reaper(void *unused)</span></a>
 <a name="640"><span class="lineNum">     640 </span>            : {</a>
-<a name="641"><span class="lineNum">     641 </span><span class="lineCov">          2 :         set_freezable();</span></a>
+<a name="641"><span class="lineNum">     641 </span><span class="lineCov">          1 :         set_freezable();</span></a>
 <a name="642"><span class="lineNum">     642 </span>            : </a>
 <a name="643"><span class="lineNum">     643 </span>            :         while (true) {</a>
-<a name="644"><span class="lineNum">     644 </span><span class="lineCov">          2 :                 struct task_struct *tsk = NULL;</span></a>
+<a name="644"><span class="lineNum">     644 </span><span class="lineCov">          1 :                 struct task_struct *tsk = NULL;</span></a>
 <a name="645"><span class="lineNum">     645 </span>            : </a>
-<a name="646"><span class="lineNum">     646 </span><span class="lineCov">          2 :                 wait_event_freezable(oom_reaper_wait, oom_reaper_list != NULL);</span></a>
+<a name="646"><span class="lineNum">     646 </span><span class="lineCov">          1 :                 wait_event_freezable(oom_reaper_wait, oom_reaper_list != NULL);</span></a>
 <a name="647"><span class="lineNum">     647 </span><span class="lineNoCov">          0 :                 spin_lock_irq(&amp;oom_reaper_lock);</span></a>
 <a name="648"><span class="lineNum">     648 </span><span class="lineNoCov">          0 :                 if (oom_reaper_list != NULL) {</span></a>
 <a name="649"><span class="lineNum">     649 </span><span class="lineNoCov">          0 :                         tsk = oom_reaper_list;</span></a>
@@ -762,10 +762,10 @@
 <a name="700"><span class="lineNum">     700 </span><span class="lineNoCov">          0 :         add_timer(&amp;tsk-&gt;oom_reaper_timer);</span></a>
 <a name="701"><span class="lineNum">     701 </span>            : }</a>
 <a name="702"><span class="lineNum">     702 </span>            : </a>
-<a name="703"><span class="lineNum">     703 </span><span class="lineCov">          2 : static int __init oom_init(void)</span></a>
+<a name="703"><span class="lineNum">     703 </span><span class="lineCov">          1 : static int __init oom_init(void)</span></a>
 <a name="704"><span class="lineNum">     704 </span>            : {</a>
-<a name="705"><span class="lineNum">     705 </span><span class="lineCov">          4 :         oom_reaper_th = kthread_run(oom_reaper, NULL, &quot;oom_reaper&quot;);</span></a>
-<a name="706"><span class="lineNum">     706 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="705"><span class="lineNum">     705 </span><span class="lineCov">          2 :         oom_reaper_th = kthread_run(oom_reaper, NULL, &quot;oom_reaper&quot;);</span></a>
+<a name="706"><span class="lineNum">     706 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="707"><span class="lineNum">     707 </span>            : }</a>
 <a name="708"><span class="lineNum">     708 </span>            : subsys_initcall(oom_init)</a>
 <a name="709"><span class="lineNum">     709 </span>            : #else</a>

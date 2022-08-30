@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -100,16 +100,16 @@
 <a name="38"><span class="lineNum">      38 </span>            : </a>
 <a name="39"><span class="lineNum">      39 </span>            : static __always_inline u32 new_encode_dev(dev_t dev)</a>
 <a name="40"><span class="lineNum">      40 </span>            : {</a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">          2 :         unsigned major = MAJOR(dev);</span></a>
-<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          2 :         unsigned minor = MINOR(dev);</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">          1 :         unsigned major = MAJOR(dev);</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">          1 :         unsigned minor = MINOR(dev);</span></a>
 <a name="43"><span class="lineNum">      43 </span><span class="lineNoCov">          0 :         return (minor &amp; 0xff) | (major &lt;&lt; 8) | ((minor &amp; ~0xff) &lt;&lt; 12);</span></a>
 <a name="44"><span class="lineNum">      44 </span>            : }</a>
 <a name="45"><span class="lineNum">      45 </span>            : </a>
 <a name="46"><span class="lineNum">      46 </span>            : static __always_inline dev_t new_decode_dev(u32 dev)</a>
 <a name="47"><span class="lineNum">      47 </span>            : {</a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          2 :         unsigned major = (dev &amp; 0xfff00) &gt;&gt; 8;</span></a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          2 :         unsigned minor = (dev &amp; 0xff) | ((dev &gt;&gt; 12) &amp; 0xfff00);</span></a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          2 :         return MKDEV(major, minor);</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          1 :         unsigned major = (dev &amp; 0xfff00) &gt;&gt; 8;</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          1 :         unsigned minor = (dev &amp; 0xff) | ((dev &gt;&gt; 12) &amp; 0xfff00);</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          1 :         return MKDEV(major, minor);</span></a>
 <a name="51"><span class="lineNum">      51 </span>            : }</a>
 <a name="52"><span class="lineNum">      52 </span>            : </a>
 <a name="53"><span class="lineNum">      53 </span>            : static __always_inline u64 huge_encode_dev(dev_t dev)</a>

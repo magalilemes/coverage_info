@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -562,7 +562,7 @@
 <a name="500"><span class="lineNum">     500 </span>            : static inline bool queue_work(struct workqueue_struct *wq,</a>
 <a name="501"><span class="lineNum">     501 </span>            :                               struct work_struct *work)</a>
 <a name="502"><span class="lineNum">     502 </span>            : {</a>
-<a name="503"><span class="lineNum">     503 </span><span class="lineCov">         10 :         return queue_work_on(WORK_CPU_UNBOUND, wq, work);</span></a>
+<a name="503"><span class="lineNum">     503 </span><span class="lineCov">          5 :         return queue_work_on(WORK_CPU_UNBOUND, wq, work);</span></a>
 <a name="504"><span class="lineNum">     504 </span>            : }</a>
 <a name="505"><span class="lineNum">     505 </span>            : </a>
 <a name="506"><span class="lineNum">     506 </span>            : /**</a>
@@ -577,7 +577,7 @@
 <a name="515"><span class="lineNum">     515 </span>            :                                       struct delayed_work *dwork,</a>
 <a name="516"><span class="lineNum">     516 </span>            :                                       unsigned long delay)</a>
 <a name="517"><span class="lineNum">     517 </span>            : {</a>
-<a name="518"><span class="lineNum">     518 </span><span class="lineCov">          2 :         return queue_delayed_work_on(WORK_CPU_UNBOUND, wq, dwork, delay);</span></a>
+<a name="518"><span class="lineNum">     518 </span><span class="lineCov">          1 :         return queue_delayed_work_on(WORK_CPU_UNBOUND, wq, dwork, delay);</span></a>
 <a name="519"><span class="lineNum">     519 </span>            : }</a>
 <a name="520"><span class="lineNum">     520 </span>            : </a>
 <a name="521"><span class="lineNum">     521 </span>            : /**</a>
@@ -623,7 +623,7 @@
 <a name="561"><span class="lineNum">     561 </span>            :  */</a>
 <a name="562"><span class="lineNum">     562 </span>            : static inline bool schedule_work(struct work_struct *work)</a>
 <a name="563"><span class="lineNum">     563 </span>            : {</a>
-<a name="564"><span class="lineNum">     564 </span><span class="lineCov">          4 :         return queue_work(system_wq, work);</span></a>
+<a name="564"><span class="lineNum">     564 </span><span class="lineCov">          2 :         return queue_work(system_wq, work);</span></a>
 <a name="565"><span class="lineNum">     565 </span>            : }</a>
 <a name="566"><span class="lineNum">     566 </span>            : </a>
 <a name="567"><span class="lineNum">     567 </span>            : /**</a>
@@ -681,7 +681,7 @@
 <a name="619"><span class="lineNum">     619 </span>            : static inline bool schedule_delayed_work(struct delayed_work *dwork,</a>
 <a name="620"><span class="lineNum">     620 </span>            :                                          unsigned long delay)</a>
 <a name="621"><span class="lineNum">     621 </span>            : {</a>
-<a name="622"><span class="lineNum">     622 </span><span class="lineCov">          4 :         return queue_delayed_work(system_wq, dwork, delay);</span></a>
+<a name="622"><span class="lineNum">     622 </span><span class="lineCov">          2 :         return queue_delayed_work(system_wq, dwork, delay);</span></a>
 <a name="623"><span class="lineNum">     623 </span>            : }</a>
 <a name="624"><span class="lineNum">     624 </span>            : </a>
 <a name="625"><span class="lineNum">     625 </span>            : #ifndef CONFIG_SMP</a>

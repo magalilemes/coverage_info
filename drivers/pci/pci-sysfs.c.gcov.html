@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -1477,14 +1477,14 @@
 <a name="1415"><span class="lineNum">    1415 </span><span class="lineNoCov">          0 :         pci_remove_resource_files(pdev);</span></a>
 <a name="1416"><span class="lineNum">    1416 </span>            : }</a>
 <a name="1417"><span class="lineNum">    1417 </span>            : </a>
-<a name="1418"><span class="lineNum">    1418 </span><span class="lineCov">          2 : static int __init pci_sysfs_init(void)</span></a>
+<a name="1418"><span class="lineNum">    1418 </span><span class="lineCov">          1 : static int __init pci_sysfs_init(void)</span></a>
 <a name="1419"><span class="lineNum">    1419 </span>            : {</a>
-<a name="1420"><span class="lineNum">    1420 </span><span class="lineCov">          2 :         struct pci_dev *pdev = NULL;</span></a>
-<a name="1421"><span class="lineNum">    1421 </span><span class="lineCov">          2 :         struct pci_bus *pbus = NULL;</span></a>
+<a name="1420"><span class="lineNum">    1420 </span><span class="lineCov">          1 :         struct pci_dev *pdev = NULL;</span></a>
+<a name="1421"><span class="lineNum">    1421 </span><span class="lineCov">          1 :         struct pci_bus *pbus = NULL;</span></a>
 <a name="1422"><span class="lineNum">    1422 </span>            :         int retval;</a>
 <a name="1423"><span class="lineNum">    1423 </span>            : </a>
-<a name="1424"><span class="lineNum">    1424 </span><span class="lineCov">          2 :         sysfs_initialized = 1;</span></a>
-<a name="1425"><span class="lineNum">    1425 </span><span class="lineCov">          4 :         for_each_pci_dev(pdev) {</span></a>
+<a name="1424"><span class="lineNum">    1424 </span><span class="lineCov">          1 :         sysfs_initialized = 1;</span></a>
+<a name="1425"><span class="lineNum">    1425 </span><span class="lineCov">          2 :         for_each_pci_dev(pdev) {</span></a>
 <a name="1426"><span class="lineNum">    1426 </span><span class="lineNoCov">          0 :                 retval = pci_create_sysfs_dev_files(pdev);</span></a>
 <a name="1427"><span class="lineNum">    1427 </span><span class="lineNoCov">          0 :                 if (retval) {</span></a>
 <a name="1428"><span class="lineNum">    1428 </span><span class="lineNoCov">          0 :                         pci_dev_put(pdev);</span></a>
@@ -1492,7 +1492,7 @@
 <a name="1430"><span class="lineNum">    1430 </span>            :                 }</a>
 <a name="1431"><span class="lineNum">    1431 </span>            :         }</a>
 <a name="1432"><span class="lineNum">    1432 </span>            : </a>
-<a name="1433"><span class="lineNum">    1433 </span><span class="lineCov">          2 :         while ((pbus = pci_find_next_bus(pbus)))</span></a>
+<a name="1433"><span class="lineNum">    1433 </span><span class="lineCov">          1 :         while ((pbus = pci_find_next_bus(pbus)))</span></a>
 <a name="1434"><span class="lineNum">    1434 </span>            :                 pci_create_legacy_files(pbus);</a>
 <a name="1435"><span class="lineNum">    1435 </span>            : </a>
 <a name="1436"><span class="lineNum">    1436 </span>            :         return 0;</a>

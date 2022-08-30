@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -78,10 +78,10 @@
 <a name="16"><span class="lineNum">      16 </span>            : </a>
 <a name="17"><span class="lineNum">      17 </span>            : #ifdef CONFIG_FRAME_POINTER</a>
 <a name="18"><span class="lineNum">      18 </span>            : static inline unsigned long</a>
-<a name="19"><span class="lineNum">      19 </span><span class="lineCov">          2 : get_frame_pointer(struct task_struct *task, struct pt_regs *segv_regs)</span></a>
+<a name="19"><span class="lineNum">      19 </span><span class="lineCov">          1 : get_frame_pointer(struct task_struct *task, struct pt_regs *segv_regs)</span></a>
 <a name="20"><span class="lineNum">      20 </span>            : {</a>
-<a name="21"><span class="lineNum">      21 </span><span class="lineCov">          4 :         if (!task || task == current)</span></a>
-<a name="22"><span class="lineNum">      22 </span><span class="lineCov">          2 :                 return segv_regs ? PT_REGS_BP(segv_regs) : current_bp();</span></a>
+<a name="21"><span class="lineNum">      21 </span><span class="lineCov">          2 :         if (!task || task == current)</span></a>
+<a name="22"><span class="lineNum">      22 </span><span class="lineCov">          1 :                 return segv_regs ? PT_REGS_BP(segv_regs) : current_bp();</span></a>
 <a name="23"><span class="lineNum">      23 </span><span class="lineNoCov">          0 :         return KSTK_EBP(task);</span></a>
 <a name="24"><span class="lineNum">      24 </span>            : }</a>
 <a name="25"><span class="lineNum">      25 </span>            : #else</a>
@@ -93,10 +93,10 @@
 <a name="31"><span class="lineNum">      31 </span>            : #endif</a>
 <a name="32"><span class="lineNum">      32 </span>            : </a>
 <a name="33"><span class="lineNum">      33 </span>            : static inline unsigned long</a>
-<a name="34"><span class="lineNum">      34 </span><span class="lineCov">          4 : *get_stack_pointer(struct task_struct *task, struct pt_regs *segv_regs)</span></a>
+<a name="34"><span class="lineNum">      34 </span><span class="lineCov">          2 : *get_stack_pointer(struct task_struct *task, struct pt_regs *segv_regs)</span></a>
 <a name="35"><span class="lineNum">      35 </span>            : {</a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          6 :         if (!task || task == current)</span></a>
-<a name="37"><span class="lineNum">      37 </span><span class="lineCov">          4 :                 return segv_regs ? (unsigned long *)PT_REGS_SP(segv_regs) : current_sp();</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          3 :         if (!task || task == current)</span></a>
+<a name="37"><span class="lineNum">      37 </span><span class="lineCov">          2 :                 return segv_regs ? (unsigned long *)PT_REGS_SP(segv_regs) : current_sp();</span></a>
 <a name="38"><span class="lineNum">      38 </span><span class="lineNoCov">          0 :         return (unsigned long *)KSTK_ESP(task);</span></a>
 <a name="39"><span class="lineNum">      39 </span>            : }</a>
 <a name="40"><span class="lineNum">      40 </span>            : </a>

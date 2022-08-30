@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -1341,7 +1341,7 @@
 <a name="1279"><span class="lineNum">    1279 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="1280"><span class="lineNum">    1280 </span>            : EXPORT_SYMBOL_GPL(blk_io_schedule);</a>
 <a name="1281"><span class="lineNum">    1281 </span>            : </a>
-<a name="1282"><span class="lineNum">    1282 </span><span class="lineCov">          2 : int __init blk_dev_init(void)</span></a>
+<a name="1282"><span class="lineNum">    1282 </span><span class="lineCov">          1 : int __init blk_dev_init(void)</span></a>
 <a name="1283"><span class="lineNum">    1283 </span>            : {</a>
 <a name="1284"><span class="lineNum">    1284 </span>            :         BUILD_BUG_ON(REQ_OP_LAST &gt;= (1 &lt;&lt; REQ_OP_BITS));</a>
 <a name="1285"><span class="lineNum">    1285 </span>            :         BUILD_BUG_ON(REQ_OP_BITS + REQ_FLAG_BITS &gt; 8 *</a>
@@ -1353,21 +1353,21 @@
 <a name="1291"><span class="lineNum">    1291 </span>            :                      sizeof(struct request_queue));</a>
 <a name="1292"><span class="lineNum">    1292 </span>            : </a>
 <a name="1293"><span class="lineNum">    1293 </span>            :         /* used for unplugging and affects IO latency/throughput - HIGHPRI */</a>
-<a name="1294"><span class="lineNum">    1294 </span><span class="lineCov">          2 :         kblockd_workqueue = alloc_workqueue(&quot;kblockd&quot;,</span></a>
+<a name="1294"><span class="lineNum">    1294 </span><span class="lineCov">          1 :         kblockd_workqueue = alloc_workqueue(&quot;kblockd&quot;,</span></a>
 <a name="1295"><span class="lineNum">    1295 </span>            :                                             WQ_MEM_RECLAIM | WQ_HIGHPRI, 0);</a>
-<a name="1296"><span class="lineNum">    1296 </span><span class="lineCov">          2 :         if (!kblockd_workqueue)</span></a>
+<a name="1296"><span class="lineNum">    1296 </span><span class="lineCov">          1 :         if (!kblockd_workqueue)</span></a>
 <a name="1297"><span class="lineNum">    1297 </span><span class="lineNoCov">          0 :                 panic(&quot;Failed to create kblockd\n&quot;);</span></a>
 <a name="1298"><span class="lineNum">    1298 </span>            : </a>
-<a name="1299"><span class="lineNum">    1299 </span><span class="lineCov">          2 :         blk_requestq_cachep = kmem_cache_create(&quot;request_queue&quot;,</span></a>
+<a name="1299"><span class="lineNum">    1299 </span><span class="lineCov">          1 :         blk_requestq_cachep = kmem_cache_create(&quot;request_queue&quot;,</span></a>
 <a name="1300"><span class="lineNum">    1300 </span>            :                         sizeof(struct request_queue), 0, SLAB_PANIC, NULL);</a>
 <a name="1301"><span class="lineNum">    1301 </span>            : </a>
-<a name="1302"><span class="lineNum">    1302 </span><span class="lineCov">          2 :         blk_requestq_srcu_cachep = kmem_cache_create(&quot;request_queue_srcu&quot;,</span></a>
+<a name="1302"><span class="lineNum">    1302 </span><span class="lineCov">          1 :         blk_requestq_srcu_cachep = kmem_cache_create(&quot;request_queue_srcu&quot;,</span></a>
 <a name="1303"><span class="lineNum">    1303 </span>            :                         sizeof(struct request_queue) +</a>
 <a name="1304"><span class="lineNum">    1304 </span>            :                         sizeof(struct srcu_struct), 0, SLAB_PANIC, NULL);</a>
 <a name="1305"><span class="lineNum">    1305 </span>            : </a>
-<a name="1306"><span class="lineNum">    1306 </span><span class="lineCov">          4 :         blk_debugfs_root = debugfs_create_dir(&quot;block&quot;, NULL);</span></a>
+<a name="1306"><span class="lineNum">    1306 </span><span class="lineCov">          2 :         blk_debugfs_root = debugfs_create_dir(&quot;block&quot;, NULL);</span></a>
 <a name="1307"><span class="lineNum">    1307 </span>            : </a>
-<a name="1308"><span class="lineNum">    1308 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="1308"><span class="lineNum">    1308 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="1309"><span class="lineNum">    1309 </span>            : }</a>
 </pre>
       </td>

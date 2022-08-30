@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -95,37 +95,37 @@
 <a name="33"><span class="lineNum">      33 </span>            : static inline void blake2s_increment_counter(struct blake2s_state *state,</a>
 <a name="34"><span class="lineNum">      34 </span>            :                                              const u32 inc)</a>
 <a name="35"><span class="lineNum">      35 </span>            : {</a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineCov">       3746 :         state-&gt;t[0] += inc;</span></a>
-<a name="37"><span class="lineNum">      37 </span><span class="lineCov">       3746 :         state-&gt;t[1] += (state-&gt;t[0] &lt; inc);</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">       1913 :         state-&gt;t[0] += inc;</span></a>
+<a name="37"><span class="lineNum">      37 </span><span class="lineCov">       1913 :         state-&gt;t[1] += (state-&gt;t[0] &lt; inc);</span></a>
 <a name="38"><span class="lineNum">      38 </span>            : }</a>
 <a name="39"><span class="lineNum">      39 </span>            : </a>
 <a name="40"><span class="lineNum">      40 </span>            : void blake2s_compress(struct blake2s_state *state, const u8 *block,</a>
 <a name="41"><span class="lineNum">      41 </span>            :                       size_t nblocks, const u32 inc)</a>
 <a name="42"><span class="lineNum">      42 </span>            :                       __weak __alias(blake2s_compress_generic);</a>
 <a name="43"><span class="lineNum">      43 </span>            : </a>
-<a name="44"><span class="lineNum">      44 </span><span class="lineCov">       3230 : void blake2s_compress_generic(struct blake2s_state *state, const u8 *block,</span></a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineCov">       1655 : void blake2s_compress_generic(struct blake2s_state *state, const u8 *block,</span></a>
 <a name="45"><span class="lineNum">      45 </span>            :                               size_t nblocks, const u32 inc)</a>
 <a name="46"><span class="lineNum">      46 </span>            : {</a>
 <a name="47"><span class="lineNum">      47 </span>            :         u32 m[16];</a>
 <a name="48"><span class="lineNum">      48 </span>            :         u32 v[16];</a>
 <a name="49"><span class="lineNum">      49 </span>            :         int i;</a>
 <a name="50"><span class="lineNum">      50 </span>            : </a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">       3230 :         WARN_ON(IS_ENABLED(DEBUG) &amp;&amp;</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">       1655 :         WARN_ON(IS_ENABLED(DEBUG) &amp;&amp;</span></a>
 <a name="52"><span class="lineNum">      52 </span>            :                 (nblocks &gt; 1 &amp;&amp; inc != BLAKE2S_BLOCK_SIZE));</a>
 <a name="53"><span class="lineNum">      53 </span>            : </a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">      10206 :         while (nblocks &gt; 0) {</span></a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">       7492 :                 blake2s_increment_counter(state, inc);</span></a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">       3746 :                 memcpy(m, block, BLAKE2S_BLOCK_SIZE);</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">       3746 :                 le32_to_cpu_array(m, ARRAY_SIZE(m));</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">       3746 :                 memcpy(v, state-&gt;h, 32);</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">       5223 :         while (nblocks &gt; 0) {</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">       3826 :                 blake2s_increment_counter(state, inc);</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">       1913 :                 memcpy(m, block, BLAKE2S_BLOCK_SIZE);</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">       1913 :                 le32_to_cpu_array(m, ARRAY_SIZE(m));</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">       1913 :                 memcpy(v, state-&gt;h, 32);</span></a>
 <a name="59"><span class="lineNum">      59 </span>            :                 v[ 8] = BLAKE2S_IV0;</a>
 <a name="60"><span class="lineNum">      60 </span>            :                 v[ 9] = BLAKE2S_IV1;</a>
 <a name="61"><span class="lineNum">      61 </span>            :                 v[10] = BLAKE2S_IV2;</a>
 <a name="62"><span class="lineNum">      62 </span>            :                 v[11] = BLAKE2S_IV3;</a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">       3746 :                 v[12] = BLAKE2S_IV4 ^ state-&gt;t[0];</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">       3746 :                 v[13] = BLAKE2S_IV5 ^ state-&gt;t[1];</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">       3746 :                 v[14] = BLAKE2S_IV6 ^ state-&gt;f[0];</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">       3746 :                 v[15] = BLAKE2S_IV7 ^ state-&gt;f[1];</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">       1913 :                 v[12] = BLAKE2S_IV4 ^ state-&gt;t[0];</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">       1913 :                 v[13] = BLAKE2S_IV5 ^ state-&gt;t[1];</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">       1913 :                 v[14] = BLAKE2S_IV6 ^ state-&gt;f[0];</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">       1913 :                 v[15] = BLAKE2S_IV7 ^ state-&gt;f[1];</span></a>
 <a name="67"><span class="lineNum">      67 </span>            : </a>
 <a name="68"><span class="lineNum">      68 </span>            : #define G(r, i, a, b, c, d) do { \</a>
 <a name="69"><span class="lineNum">      69 </span>            :         a += b + m[blake2s_sigma[r][2 * i + 0]]; \</a>
@@ -148,27 +148,27 @@
 <a name="86"><span class="lineNum">      86 </span>            :         G(r, 6, v[2], v[ 7], v[ 8], v[13]); \</a>
 <a name="87"><span class="lineNum">      87 </span>            :         G(r, 7, v[3], v[ 4], v[ 9], v[14]); \</a>
 <a name="88"><span class="lineNum">      88 </span>            : } while (0)</a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">     123618 :                 ROUND(0);</span></a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineCov">     123618 :                 ROUND(1);</span></a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">     123618 :                 ROUND(2);</span></a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineCov">     123618 :                 ROUND(3);</span></a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineCov">     123618 :                 ROUND(4);</span></a>
-<a name="94"><span class="lineNum">      94 </span><span class="lineCov">     123618 :                 ROUND(5);</span></a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineCov">     123618 :                 ROUND(6);</span></a>
-<a name="96"><span class="lineNum">      96 </span><span class="lineCov">     123618 :                 ROUND(7);</span></a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineCov">     123618 :                 ROUND(8);</span></a>
-<a name="98"><span class="lineNum">      98 </span><span class="lineCov">     123618 :                 ROUND(9);</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">      63129 :                 ROUND(0);</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">      63129 :                 ROUND(1);</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">      63129 :                 ROUND(2);</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">      63129 :                 ROUND(3);</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">      63129 :                 ROUND(4);</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineCov">      63129 :                 ROUND(5);</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">      63129 :                 ROUND(6);</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineCov">      63129 :                 ROUND(7);</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">      63129 :                 ROUND(8);</span></a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineCov">      63129 :                 ROUND(9);</span></a>
 <a name="99"><span class="lineNum">      99 </span>            : </a>
 <a name="100"><span class="lineNum">     100 </span>            : #undef G</a>
 <a name="101"><span class="lineNum">     101 </span>            : #undef ROUND</a>
 <a name="102"><span class="lineNum">     102 </span>            : </a>
-<a name="103"><span class="lineNum">     103 </span><span class="lineCov">      33714 :                 for (i = 0; i &lt; 8; ++i)</span></a>
-<a name="104"><span class="lineNum">     104 </span><span class="lineCov">      29968 :                         state-&gt;h[i] ^= v[i] ^ v[i + 8];</span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineCov">      17217 :                 for (i = 0; i &lt; 8; ++i)</span></a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineCov">      15304 :                         state-&gt;h[i] ^= v[i] ^ v[i + 8];</span></a>
 <a name="105"><span class="lineNum">     105 </span>            : </a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">       3746 :                 block += BLAKE2S_BLOCK_SIZE;</span></a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">       3746 :                 --nblocks;</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">       1913 :                 block += BLAKE2S_BLOCK_SIZE;</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">       1913 :                 --nblocks;</span></a>
 <a name="108"><span class="lineNum">     108 </span>            :         }</a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">       3230 : }</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">       1655 : }</span></a>
 <a name="110"><span class="lineNum">     110 </span>            : </a>
 <a name="111"><span class="lineNum">     111 </span>            : EXPORT_SYMBOL(blake2s_compress_generic);</a>
 <a name="112"><span class="lineNum">     112 </span>            : </a>

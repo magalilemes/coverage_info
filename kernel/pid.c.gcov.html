@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">13</td>
@@ -164,38 +164,38 @@
 <a name="102"><span class="lineNum">     102 </span>            : </a>
 <a name="103"><span class="lineNum">     103 </span>            : static  __cacheline_aligned_in_smp DEFINE_SPINLOCK(pidmap_lock);</a>
 <a name="104"><span class="lineNum">     104 </span>            : </a>
-<a name="105"><span class="lineNum">     105 </span><span class="lineCov">        410 : void put_pid(struct pid *pid)</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">        292 : void put_pid(struct pid *pid)</span></a>
 <a name="106"><span class="lineNum">     106 </span>            : {</a>
 <a name="107"><span class="lineNum">     107 </span>            :         struct pid_namespace *ns;</a>
 <a name="108"><span class="lineNum">     108 </span>            : </a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        410 :         if (!pid)</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">        292 :         if (!pid)</span></a>
 <a name="110"><span class="lineNum">     110 </span>            :                 return;</a>
 <a name="111"><span class="lineNum">     111 </span>            : </a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineCov">        410 :         ns = pid-&gt;numbers[pid-&gt;level].ns;</span></a>
-<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        820 :         if (refcount_dec_and_test(&amp;pid-&gt;count)) {</span></a>
-<a name="114"><span class="lineNum">     114 </span><span class="lineCov">        126 :                 kmem_cache_free(ns-&gt;pid_cachep, pid);</span></a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        126 :                 put_pid_ns(ns);</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">        292 :         ns = pid-&gt;numbers[pid-&gt;level].ns;</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        584 :         if (refcount_dec_and_test(&amp;pid-&gt;count)) {</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineCov">         92 :                 kmem_cache_free(ns-&gt;pid_cachep, pid);</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">         92 :                 put_pid_ns(ns);</span></a>
 <a name="116"><span class="lineNum">     116 </span>            :         }</a>
 <a name="117"><span class="lineNum">     117 </span>            : }</a>
 <a name="118"><span class="lineNum">     118 </span>            : EXPORT_SYMBOL_GPL(put_pid);</a>
 <a name="119"><span class="lineNum">     119 </span>            : </a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineCov">        126 : static void delayed_put_pid(struct rcu_head *rhp)</span></a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineCov">         92 : static void delayed_put_pid(struct rcu_head *rhp)</span></a>
 <a name="121"><span class="lineNum">     121 </span>            : {</a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">        126 :         struct pid *pid = container_of(rhp, struct pid, rcu);</span></a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        126 :         put_pid(pid);</span></a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        126 : }</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">         92 :         struct pid *pid = container_of(rhp, struct pid, rcu);</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">         92 :         put_pid(pid);</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         92 : }</span></a>
 <a name="125"><span class="lineNum">     125 </span>            : </a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineCov">        128 : void free_pid(struct pid *pid)</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">         93 : void free_pid(struct pid *pid)</span></a>
 <a name="127"><span class="lineNum">     127 </span>            : {</a>
 <a name="128"><span class="lineNum">     128 </span>            :         /* We can be called with write_lock_irq(&amp;tasklist_lock) held */</a>
 <a name="129"><span class="lineNum">     129 </span>            :         int i;</a>
 <a name="130"><span class="lineNum">     130 </span>            :         unsigned long flags;</a>
 <a name="131"><span class="lineNum">     131 </span>            : </a>
-<a name="132"><span class="lineNum">     132 </span><span class="lineCov">        128 :         spin_lock_irqsave(&amp;pidmap_lock, flags);</span></a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">        256 :         for (i = 0; i &lt;= pid-&gt;level; i++) {</span></a>
-<a name="134"><span class="lineNum">     134 </span><span class="lineCov">        128 :                 struct upid *upid = pid-&gt;numbers + i;</span></a>
-<a name="135"><span class="lineNum">     135 </span><span class="lineCov">        128 :                 struct pid_namespace *ns = upid-&gt;ns;</span></a>
-<a name="136"><span class="lineNum">     136 </span><span class="lineCov">        128 :                 switch (--ns-&gt;pid_allocated) {</span></a>
+<a name="132"><span class="lineNum">     132 </span><span class="lineCov">         93 :         spin_lock_irqsave(&amp;pidmap_lock, flags);</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">        186 :         for (i = 0; i &lt;= pid-&gt;level; i++) {</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineCov">         93 :                 struct upid *upid = pid-&gt;numbers + i;</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineCov">         93 :                 struct pid_namespace *ns = upid-&gt;ns;</span></a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineCov">         93 :                 switch (--ns-&gt;pid_allocated) {</span></a>
 <a name="137"><span class="lineNum">     137 </span>            :                 case 2:</a>
 <a name="138"><span class="lineNum">     138 </span>            :                 case 1:</a>
 <a name="139"><span class="lineNum">     139 </span>            :                         /* When all that is left in the pid namespace</a>
@@ -211,14 +211,14 @@
 <a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 :                         break;</span></a>
 <a name="150"><span class="lineNum">     150 </span>            :                 }</a>
 <a name="151"><span class="lineNum">     151 </span>            : </a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineCov">        128 :                 idr_remove(&amp;ns-&gt;idr, upid-&gt;nr);</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">         93 :                 idr_remove(&amp;ns-&gt;idr, upid-&gt;nr);</span></a>
 <a name="153"><span class="lineNum">     153 </span>            :         }</a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineCov">        128 :         spin_unlock_irqrestore(&amp;pidmap_lock, flags);</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">         93 :         spin_unlock_irqrestore(&amp;pidmap_lock, flags);</span></a>
 <a name="155"><span class="lineNum">     155 </span>            : </a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">        128 :         call_rcu(&amp;pid-&gt;rcu, delayed_put_pid);</span></a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">        128 : }</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">         93 :         call_rcu(&amp;pid-&gt;rcu, delayed_put_pid);</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">         93 : }</span></a>
 <a name="158"><span class="lineNum">     158 </span>            : </a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">        156 : struct pid *alloc_pid(struct pid_namespace *ns, pid_t *set_tid,</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">        107 : struct pid *alloc_pid(struct pid_namespace *ns, pid_t *set_tid,</span></a>
 <a name="160"><span class="lineNum">     160 </span>            :                       size_t set_tid_size)</a>
 <a name="161"><span class="lineNum">     161 </span>            : {</a>
 <a name="162"><span class="lineNum">     162 </span>            :         struct pid *pid;</a>
@@ -226,7 +226,7 @@
 <a name="164"><span class="lineNum">     164 </span>            :         int i, nr;</a>
 <a name="165"><span class="lineNum">     165 </span>            :         struct pid_namespace *tmp;</a>
 <a name="166"><span class="lineNum">     166 </span>            :         struct upid *upid;</a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">        156 :         int retval = -ENOMEM;</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">        107 :         int retval = -ENOMEM;</span></a>
 <a name="168"><span class="lineNum">     168 </span>            : </a>
 <a name="169"><span class="lineNum">     169 </span>            :         /*</a>
 <a name="170"><span class="lineNum">     170 </span>            :          * set_tid_size contains the size of the set_tid array. Starting at</a>
@@ -236,20 +236,20 @@
 <a name="174"><span class="lineNum">     174 </span>            :          * for a process in all nested PID namespaces but set_tid_size must</a>
 <a name="175"><span class="lineNum">     175 </span>            :          * never be greater than the current ns-&gt;level + 1.</a>
 <a name="176"><span class="lineNum">     176 </span>            :          */</a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">        156 :         if (set_tid_size &gt; ns-&gt;level + 1)</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">        107 :         if (set_tid_size &gt; ns-&gt;level + 1)</span></a>
 <a name="178"><span class="lineNum">     178 </span>            :                 return ERR_PTR(-EINVAL);</a>
 <a name="179"><span class="lineNum">     179 </span>            : </a>
-<a name="180"><span class="lineNum">     180 </span><span class="lineCov">        156 :         pid = kmem_cache_alloc(ns-&gt;pid_cachep, GFP_KERNEL);</span></a>
-<a name="181"><span class="lineNum">     181 </span><span class="lineCov">        156 :         if (!pid)</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">        107 :         pid = kmem_cache_alloc(ns-&gt;pid_cachep, GFP_KERNEL);</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">        107 :         if (!pid)</span></a>
 <a name="182"><span class="lineNum">     182 </span>            :                 return ERR_PTR(retval);</a>
 <a name="183"><span class="lineNum">     183 </span>            : </a>
-<a name="184"><span class="lineNum">     184 </span><span class="lineCov">        156 :         tmp = ns;</span></a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineCov">        156 :         pid-&gt;level = ns-&gt;level;</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">        107 :         tmp = ns;</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineCov">        107 :         pid-&gt;level = ns-&gt;level;</span></a>
 <a name="186"><span class="lineNum">     186 </span>            : </a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">        312 :         for (i = ns-&gt;level; i &gt;= 0; i--) {</span></a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineCov">        156 :                 int tid = 0;</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">        214 :         for (i = ns-&gt;level; i &gt;= 0; i--) {</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineCov">        107 :                 int tid = 0;</span></a>
 <a name="189"><span class="lineNum">     189 </span>            : </a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineCov">        156 :                 if (set_tid_size) {</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineCov">        107 :                 if (set_tid_size) {</span></a>
 <a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :                         tid = set_tid[ns-&gt;level - i];</span></a>
 <a name="192"><span class="lineNum">     192 </span>            : </a>
 <a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :                         retval = -EINVAL;</span></a>
@@ -267,10 +267,10 @@
 <a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 :                         set_tid_size--;</span></a>
 <a name="206"><span class="lineNum">     206 </span>            :                 }</a>
 <a name="207"><span class="lineNum">     207 </span>            : </a>
-<a name="208"><span class="lineNum">     208 </span><span class="lineCov">        156 :                 idr_preload(GFP_KERNEL);</span></a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineCov">        156 :                 spin_lock_irq(&amp;pidmap_lock);</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineCov">        107 :                 idr_preload(GFP_KERNEL);</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineCov">        107 :                 spin_lock_irq(&amp;pidmap_lock);</span></a>
 <a name="210"><span class="lineNum">     210 </span>            : </a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineCov">        156 :                 if (tid) {</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineCov">        107 :                 if (tid) {</span></a>
 <a name="212"><span class="lineNum">     212 </span><span class="lineNoCov">          0 :                         nr = idr_alloc(&amp;tmp-&gt;idr, NULL, tid,</span></a>
 <a name="213"><span class="lineNum">     213 </span>            :                                        tid + 1, GFP_ATOMIC);</a>
 <a name="214"><span class="lineNum">     214 </span>            :                         /*</a>
@@ -280,32 +280,32 @@
 <a name="218"><span class="lineNum">     218 </span><span class="lineNoCov">          0 :                         if (nr == -ENOSPC)</span></a>
 <a name="219"><span class="lineNum">     219 </span><span class="lineNoCov">          0 :                                 nr = -EEXIST;</span></a>
 <a name="220"><span class="lineNum">     220 </span>            :                 } else {</a>
-<a name="221"><span class="lineNum">     221 </span><span class="lineCov">        156 :                         int pid_min = 1;</span></a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineCov">        107 :                         int pid_min = 1;</span></a>
 <a name="222"><span class="lineNum">     222 </span>            :                         /*</a>
 <a name="223"><span class="lineNum">     223 </span>            :                          * init really needs pid 1, but after reaching the</a>
 <a name="224"><span class="lineNum">     224 </span>            :                          * maximum wrap back to RESERVED_PIDS</a>
 <a name="225"><span class="lineNum">     225 </span>            :                          */</a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">        312 :                         if (idr_get_cursor(&amp;tmp-&gt;idr) &gt; RESERVED_PIDS)</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">        214 :                         if (idr_get_cursor(&amp;tmp-&gt;idr) &gt; RESERVED_PIDS)</span></a>
 <a name="227"><span class="lineNum">     227 </span><span class="lineNoCov">          0 :                                 pid_min = RESERVED_PIDS;</span></a>
 <a name="228"><span class="lineNum">     228 </span>            : </a>
 <a name="229"><span class="lineNum">     229 </span>            :                         /*</a>
 <a name="230"><span class="lineNum">     230 </span>            :                          * Store a null pointer so find_pid_ns does not find</a>
 <a name="231"><span class="lineNum">     231 </span>            :                          * a partially initialized PID (see below).</a>
 <a name="232"><span class="lineNum">     232 </span>            :                          */</a>
-<a name="233"><span class="lineNum">     233 </span><span class="lineCov">        156 :                         nr = idr_alloc_cyclic(&amp;tmp-&gt;idr, NULL, pid_min,</span></a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineCov">        107 :                         nr = idr_alloc_cyclic(&amp;tmp-&gt;idr, NULL, pid_min,</span></a>
 <a name="234"><span class="lineNum">     234 </span>            :                                               pid_max, GFP_ATOMIC);</a>
 <a name="235"><span class="lineNum">     235 </span>            :                 }</a>
-<a name="236"><span class="lineNum">     236 </span><span class="lineCov">        156 :                 spin_unlock_irq(&amp;pidmap_lock);</span></a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineCov">        107 :                 spin_unlock_irq(&amp;pidmap_lock);</span></a>
 <a name="237"><span class="lineNum">     237 </span>            :                 idr_preload_end();</a>
 <a name="238"><span class="lineNum">     238 </span>            : </a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineCov">        156 :                 if (nr &lt; 0) {</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">        107 :                 if (nr &lt; 0) {</span></a>
 <a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 :                         retval = (nr == -ENOSPC) ? -EAGAIN : nr;</span></a>
 <a name="241"><span class="lineNum">     241 </span>            :                         goto out_free;</a>
 <a name="242"><span class="lineNum">     242 </span>            :                 }</a>
 <a name="243"><span class="lineNum">     243 </span>            : </a>
-<a name="244"><span class="lineNum">     244 </span><span class="lineCov">        156 :                 pid-&gt;numbers[i].nr = nr;</span></a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineCov">        156 :                 pid-&gt;numbers[i].ns = tmp;</span></a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineCov">        156 :                 tmp = tmp-&gt;parent;</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineCov">        107 :                 pid-&gt;numbers[i].nr = nr;</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">        107 :                 pid-&gt;numbers[i].ns = tmp;</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">        107 :                 tmp = tmp-&gt;parent;</span></a>
 <a name="247"><span class="lineNum">     247 </span>            :         }</a>
 <a name="248"><span class="lineNum">     248 </span>            : </a>
 <a name="249"><span class="lineNum">     249 </span>            :         /*</a>
@@ -316,29 +316,29 @@
 <a name="254"><span class="lineNum">     254 </span>            :          * documented behavior for pid namespaces. So we can't easily</a>
 <a name="255"><span class="lineNum">     255 </span>            :          * change it even if there were an error code better suited.</a>
 <a name="256"><span class="lineNum">     256 </span>            :          */</a>
-<a name="257"><span class="lineNum">     257 </span><span class="lineCov">        156 :         retval = -ENOMEM;</span></a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineCov">        107 :         retval = -ENOMEM;</span></a>
 <a name="258"><span class="lineNum">     258 </span>            : </a>
-<a name="259"><span class="lineNum">     259 </span><span class="lineCov">        156 :         get_pid_ns(ns);</span></a>
-<a name="260"><span class="lineNum">     260 </span><span class="lineCov">        312 :         refcount_set(&amp;pid-&gt;count, 1);</span></a>
-<a name="261"><span class="lineNum">     261 </span><span class="lineCov">        156 :         spin_lock_init(&amp;pid-&gt;lock);</span></a>
-<a name="262"><span class="lineNum">     262 </span><span class="lineCov">        780 :         for (type = 0; type &lt; PIDTYPE_MAX; ++type)</span></a>
-<a name="263"><span class="lineNum">     263 </span><span class="lineCov">        624 :                 INIT_HLIST_HEAD(&amp;pid-&gt;tasks[type]);</span></a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineCov">        107 :         get_pid_ns(ns);</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineCov">        214 :         refcount_set(&amp;pid-&gt;count, 1);</span></a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineCov">        107 :         spin_lock_init(&amp;pid-&gt;lock);</span></a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineCov">        535 :         for (type = 0; type &lt; PIDTYPE_MAX; ++type)</span></a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineCov">        428 :                 INIT_HLIST_HEAD(&amp;pid-&gt;tasks[type]);</span></a>
 <a name="264"><span class="lineNum">     264 </span>            : </a>
-<a name="265"><span class="lineNum">     265 </span><span class="lineCov">        156 :         init_waitqueue_head(&amp;pid-&gt;wait_pidfd);</span></a>
-<a name="266"><span class="lineNum">     266 </span><span class="lineCov">        156 :         INIT_HLIST_HEAD(&amp;pid-&gt;inodes);</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">        107 :         init_waitqueue_head(&amp;pid-&gt;wait_pidfd);</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineCov">        107 :         INIT_HLIST_HEAD(&amp;pid-&gt;inodes);</span></a>
 <a name="267"><span class="lineNum">     267 </span>            : </a>
-<a name="268"><span class="lineNum">     268 </span><span class="lineCov">        156 :         upid = pid-&gt;numbers + ns-&gt;level;</span></a>
-<a name="269"><span class="lineNum">     269 </span><span class="lineCov">        156 :         spin_lock_irq(&amp;pidmap_lock);</span></a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineCov">        156 :         if (!(ns-&gt;pid_allocated &amp; PIDNS_ADDING))</span></a>
+<a name="268"><span class="lineNum">     268 </span><span class="lineCov">        107 :         upid = pid-&gt;numbers + ns-&gt;level;</span></a>
+<a name="269"><span class="lineNum">     269 </span><span class="lineCov">        107 :         spin_lock_irq(&amp;pidmap_lock);</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineCov">        107 :         if (!(ns-&gt;pid_allocated &amp; PIDNS_ADDING))</span></a>
 <a name="271"><span class="lineNum">     271 </span>            :                 goto out_unlock;</a>
-<a name="272"><span class="lineNum">     272 </span><span class="lineCov">        156 :         for ( ; upid &gt;= pid-&gt;numbers; --upid) {</span></a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineCov">        107 :         for ( ; upid &gt;= pid-&gt;numbers; --upid) {</span></a>
 <a name="273"><span class="lineNum">     273 </span>            :                 /* Make the PID visible to find_pid_ns. */</a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineCov">        156 :                 idr_replace(&amp;upid-&gt;ns-&gt;idr, pid, upid-&gt;nr);</span></a>
-<a name="275"><span class="lineNum">     275 </span><span class="lineCov">        156 :                 upid-&gt;ns-&gt;pid_allocated++;</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineCov">        107 :                 idr_replace(&amp;upid-&gt;ns-&gt;idr, pid, upid-&gt;nr);</span></a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineCov">        107 :                 upid-&gt;ns-&gt;pid_allocated++;</span></a>
 <a name="276"><span class="lineNum">     276 </span>            :         }</a>
-<a name="277"><span class="lineNum">     277 </span><span class="lineCov">        156 :         spin_unlock_irq(&amp;pidmap_lock);</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineCov">        107 :         spin_unlock_irq(&amp;pidmap_lock);</span></a>
 <a name="278"><span class="lineNum">     278 </span>            : </a>
-<a name="279"><span class="lineNum">     279 </span><span class="lineCov">        156 :         return pid;</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineCov">        107 :         return pid;</span></a>
 <a name="280"><span class="lineNum">     280 </span>            : </a>
 <a name="281"><span class="lineNum">     281 </span>            : out_unlock:</a>
 <a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 :         spin_unlock_irq(&amp;pidmap_lock);</span></a>
@@ -370,7 +370,7 @@
 <a name="308"><span class="lineNum">     308 </span>            : </a>
 <a name="309"><span class="lineNum">     309 </span><span class="lineNoCov">          0 : struct pid *find_pid_ns(int nr, struct pid_namespace *ns)</span></a>
 <a name="310"><span class="lineNum">     310 </span>            : {</a>
-<a name="311"><span class="lineNum">     311 </span><span class="lineCov">          4 :         return idr_find(&amp;ns-&gt;idr, nr);</span></a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineCov">          2 :         return idr_find(&amp;ns-&gt;idr, nr);</span></a>
 <a name="312"><span class="lineNum">     312 </span>            : }</a>
 <a name="313"><span class="lineNum">     313 </span>            : EXPORT_SYMBOL_GPL(find_pid_ns);</a>
 <a name="314"><span class="lineNum">     314 </span>            : </a>
@@ -383,42 +383,42 @@
 <a name="321"><span class="lineNum">     321 </span>            : static struct pid **task_pid_ptr(struct task_struct *task, enum pid_type type)</a>
 <a name="322"><span class="lineNum">     322 </span>            : {</a>
 <a name="323"><span class="lineNum">     323 </span>            :         return (type == PIDTYPE_PID) ?</a>
-<a name="324"><span class="lineNum">     324 </span><span class="lineCov">       2272 :                 &amp;task-&gt;thread_pid :</span></a>
-<a name="325"><span class="lineNum">     325 </span><span class="lineCov">        852 :                 &amp;task-&gt;signal-&gt;pids[type];</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineCov">       1600 :                 &amp;task-&gt;thread_pid :</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineCov">        600 :                 &amp;task-&gt;signal-&gt;pids[type];</span></a>
 <a name="326"><span class="lineNum">     326 </span>            : }</a>
 <a name="327"><span class="lineNum">     327 </span>            : </a>
 <a name="328"><span class="lineNum">     328 </span>            : /*</a>
 <a name="329"><span class="lineNum">     329 </span>            :  * attach_pid() must be called with the tasklist_lock write-held.</a>
 <a name="330"><span class="lineNum">     330 </span>            :  */</a>
-<a name="331"><span class="lineNum">     331 </span><span class="lineCov">        624 : void attach_pid(struct task_struct *task, enum pid_type type)</span></a>
+<a name="331"><span class="lineNum">     331 </span><span class="lineCov">        428 : void attach_pid(struct task_struct *task, enum pid_type type)</span></a>
 <a name="332"><span class="lineNum">     332 </span>            : {</a>
-<a name="333"><span class="lineNum">     333 </span><span class="lineCov">        624 :         struct pid *pid = *task_pid_ptr(task, type);</span></a>
-<a name="334"><span class="lineNum">     334 </span><span class="lineCov">       1248 :         hlist_add_head_rcu(&amp;task-&gt;pid_links[type], &amp;pid-&gt;tasks[type]);</span></a>
-<a name="335"><span class="lineNum">     335 </span><span class="lineCov">        624 : }</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineCov">        428 :         struct pid *pid = *task_pid_ptr(task, type);</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineCov">        856 :         hlist_add_head_rcu(&amp;task-&gt;pid_links[type], &amp;pid-&gt;tasks[type]);</span></a>
+<a name="335"><span class="lineNum">     335 </span><span class="lineCov">        428 : }</span></a>
 <a name="336"><span class="lineNum">     336 </span>            : </a>
-<a name="337"><span class="lineNum">     337 </span><span class="lineCov">        512 : static void __change_pid(struct task_struct *task, enum pid_type type,</span></a>
+<a name="337"><span class="lineNum">     337 </span><span class="lineCov">        372 : static void __change_pid(struct task_struct *task, enum pid_type type,</span></a>
 <a name="338"><span class="lineNum">     338 </span>            :                         struct pid *new)</a>
 <a name="339"><span class="lineNum">     339 </span>            : {</a>
-<a name="340"><span class="lineNum">     340 </span><span class="lineCov">        512 :         struct pid **pid_ptr = task_pid_ptr(task, type);</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineCov">        372 :         struct pid **pid_ptr = task_pid_ptr(task, type);</span></a>
 <a name="341"><span class="lineNum">     341 </span>            :         struct pid *pid;</a>
 <a name="342"><span class="lineNum">     342 </span>            :         int tmp;</a>
 <a name="343"><span class="lineNum">     343 </span>            : </a>
-<a name="344"><span class="lineNum">     344 </span><span class="lineCov">        512 :         pid = *pid_ptr;</span></a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineCov">        372 :         pid = *pid_ptr;</span></a>
 <a name="345"><span class="lineNum">     345 </span>            : </a>
-<a name="346"><span class="lineNum">     346 </span><span class="lineCov">       1024 :         hlist_del_rcu(&amp;task-&gt;pid_links[type]);</span></a>
-<a name="347"><span class="lineNum">     347 </span><span class="lineCov">        512 :         *pid_ptr = new;</span></a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineCov">        744 :         hlist_del_rcu(&amp;task-&gt;pid_links[type]);</span></a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineCov">        372 :         *pid_ptr = new;</span></a>
 <a name="348"><span class="lineNum">     348 </span>            : </a>
-<a name="349"><span class="lineNum">     349 </span><span class="lineCov">       1792 :         for (tmp = PIDTYPE_MAX; --tmp &gt;= 0; )</span></a>
-<a name="350"><span class="lineNum">     350 </span><span class="lineCov">       2304 :                 if (pid_has_task(pid, tmp))</span></a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineCov">       1302 :         for (tmp = PIDTYPE_MAX; --tmp &gt;= 0; )</span></a>
+<a name="350"><span class="lineNum">     350 </span><span class="lineCov">       1674 :                 if (pid_has_task(pid, tmp))</span></a>
 <a name="351"><span class="lineNum">     351 </span>            :                         return;</a>
 <a name="352"><span class="lineNum">     352 </span>            : </a>
-<a name="353"><span class="lineNum">     353 </span><span class="lineCov">        128 :         free_pid(pid);</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineCov">         93 :         free_pid(pid);</span></a>
 <a name="354"><span class="lineNum">     354 </span>            : }</a>
 <a name="355"><span class="lineNum">     355 </span>            : </a>
-<a name="356"><span class="lineNum">     356 </span><span class="lineCov">        512 : void detach_pid(struct task_struct *task, enum pid_type type)</span></a>
+<a name="356"><span class="lineNum">     356 </span><span class="lineCov">        372 : void detach_pid(struct task_struct *task, enum pid_type type)</span></a>
 <a name="357"><span class="lineNum">     357 </span>            : {</a>
-<a name="358"><span class="lineNum">     358 </span><span class="lineCov">        512 :         __change_pid(task, type, NULL);</span></a>
-<a name="359"><span class="lineNum">     359 </span><span class="lineCov">        512 : }</span></a>
+<a name="358"><span class="lineNum">     358 </span><span class="lineCov">        372 :         __change_pid(task, type, NULL);</span></a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineCov">        372 : }</span></a>
 <a name="360"><span class="lineNum">     360 </span>            : </a>
 <a name="361"><span class="lineNum">     361 </span><span class="lineNoCov">          0 : void change_pid(struct task_struct *task, enum pid_type type,</span></a>
 <a name="362"><span class="lineNum">     362 </span>            :                 struct pid *pid)</a>
@@ -457,13 +457,13 @@
 <a name="395"><span class="lineNum">     395 </span>            : </a>
 <a name="396"><span class="lineNum">     396 </span><span class="lineNoCov">          0 : struct task_struct *pid_task(struct pid *pid, enum pid_type type)</span></a>
 <a name="397"><span class="lineNum">     397 </span>            : {</a>
-<a name="398"><span class="lineNum">     398 </span><span class="lineCov">          4 :         struct task_struct *result = NULL;</span></a>
-<a name="399"><span class="lineNum">     399 </span><span class="lineCov">          4 :         if (pid) {</span></a>
+<a name="398"><span class="lineNum">     398 </span><span class="lineCov">          2 :         struct task_struct *result = NULL;</span></a>
+<a name="399"><span class="lineNum">     399 </span><span class="lineCov">          2 :         if (pid) {</span></a>
 <a name="400"><span class="lineNum">     400 </span>            :                 struct hlist_node *first;</a>
-<a name="401"><span class="lineNum">     401 </span><span class="lineCov">          4 :                 first = rcu_dereference_check(hlist_first_rcu(&amp;pid-&gt;tasks[type]),</span></a>
+<a name="401"><span class="lineNum">     401 </span><span class="lineCov">          2 :                 first = rcu_dereference_check(hlist_first_rcu(&amp;pid-&gt;tasks[type]),</span></a>
 <a name="402"><span class="lineNum">     402 </span>            :                                               lockdep_tasklist_lock_is_held());</a>
-<a name="403"><span class="lineNum">     403 </span><span class="lineCov">          4 :                 if (first)</span></a>
-<a name="404"><span class="lineNum">     404 </span><span class="lineCov">          4 :                         result = hlist_entry(first, struct task_struct, pid_links[(type)]);</span></a>
+<a name="403"><span class="lineNum">     403 </span><span class="lineCov">          2 :                 if (first)</span></a>
+<a name="404"><span class="lineNum">     404 </span><span class="lineCov">          2 :                         result = hlist_entry(first, struct task_struct, pid_links[(type)]);</span></a>
 <a name="405"><span class="lineNum">     405 </span>            :         }</a>
 <a name="406"><span class="lineNum">     406 </span><span class="lineNoCov">          0 :         return result;</span></a>
 <a name="407"><span class="lineNum">     407 </span>            : }</a>
@@ -472,11 +472,11 @@
 <a name="410"><span class="lineNum">     410 </span>            : /*</a>
 <a name="411"><span class="lineNum">     411 </span>            :  * Must be called under rcu_read_lock().</a>
 <a name="412"><span class="lineNum">     412 </span>            :  */</a>
-<a name="413"><span class="lineNum">     413 </span><span class="lineCov">          4 : struct task_struct *find_task_by_pid_ns(pid_t nr, struct pid_namespace *ns)</span></a>
+<a name="413"><span class="lineNum">     413 </span><span class="lineCov">          2 : struct task_struct *find_task_by_pid_ns(pid_t nr, struct pid_namespace *ns)</span></a>
 <a name="414"><span class="lineNum">     414 </span>            : {</a>
 <a name="415"><span class="lineNum">     415 </span>            :         RCU_LOCKDEP_WARN(!rcu_read_lock_held(),</a>
 <a name="416"><span class="lineNum">     416 </span>            :                          &quot;find_task_by_pid_ns() needs rcu_read_lock() protection&quot;);</a>
-<a name="417"><span class="lineNum">     417 </span><span class="lineCov">          8 :         return pid_task(find_pid_ns(nr, ns), PIDTYPE_PID);</span></a>
+<a name="417"><span class="lineNum">     417 </span><span class="lineCov">          4 :         return pid_task(find_pid_ns(nr, ns), PIDTYPE_PID);</span></a>
 <a name="418"><span class="lineNum">     418 </span>            : }</a>
 <a name="419"><span class="lineNum">     419 </span>            : </a>
 <a name="420"><span class="lineNum">     420 </span><span class="lineNoCov">          0 : struct task_struct *find_task_by_vpid(pid_t vnr)</span></a>
@@ -497,13 +497,13 @@
 <a name="435"><span class="lineNum">     435 </span><span class="lineNoCov">          0 :         return task;</span></a>
 <a name="436"><span class="lineNum">     436 </span>            : }</a>
 <a name="437"><span class="lineNum">     437 </span>            : </a>
-<a name="438"><span class="lineNum">     438 </span><span class="lineCov">        156 : struct pid *get_task_pid(struct task_struct *task, enum pid_type type)</span></a>
+<a name="438"><span class="lineNum">     438 </span><span class="lineCov">        107 : struct pid *get_task_pid(struct task_struct *task, enum pid_type type)</span></a>
 <a name="439"><span class="lineNum">     439 </span>            : {</a>
 <a name="440"><span class="lineNum">     440 </span>            :         struct pid *pid;</a>
 <a name="441"><span class="lineNum">     441 </span>            :         rcu_read_lock();</a>
-<a name="442"><span class="lineNum">     442 </span><span class="lineCov">        312 :         pid = get_pid(rcu_dereference(*task_pid_ptr(task, type)));</span></a>
+<a name="442"><span class="lineNum">     442 </span><span class="lineCov">        214 :         pid = get_pid(rcu_dereference(*task_pid_ptr(task, type)));</span></a>
 <a name="443"><span class="lineNum">     443 </span>            :         rcu_read_unlock();</a>
-<a name="444"><span class="lineNum">     444 </span><span class="lineCov">        156 :         return pid;</span></a>
+<a name="444"><span class="lineNum">     444 </span><span class="lineCov">        107 :         return pid;</span></a>
 <a name="445"><span class="lineNum">     445 </span>            : }</a>
 <a name="446"><span class="lineNum">     446 </span>            : EXPORT_SYMBOL_GPL(get_task_pid);</a>
 <a name="447"><span class="lineNum">     447 </span>            : </a>
@@ -534,41 +534,41 @@
 <a name="472"><span class="lineNum">     472 </span><span class="lineNoCov">          0 : pid_t pid_nr_ns(struct pid *pid, struct pid_namespace *ns)</span></a>
 <a name="473"><span class="lineNum">     473 </span>            : {</a>
 <a name="474"><span class="lineNum">     474 </span>            :         struct upid *upid;</a>
-<a name="475"><span class="lineNum">     475 </span><span class="lineCov">        284 :         pid_t nr = 0;</span></a>
+<a name="475"><span class="lineNum">     475 </span><span class="lineCov">        200 :         pid_t nr = 0;</span></a>
 <a name="476"><span class="lineNum">     476 </span>            : </a>
-<a name="477"><span class="lineNum">     477 </span><span class="lineCov">        284 :         if (pid &amp;&amp; ns-&gt;level &lt;= pid-&gt;level) {</span></a>
-<a name="478"><span class="lineNum">     478 </span><span class="lineCov">        284 :                 upid = &amp;pid-&gt;numbers[ns-&gt;level];</span></a>
-<a name="479"><span class="lineNum">     479 </span><span class="lineCov">        284 :                 if (upid-&gt;ns == ns)</span></a>
-<a name="480"><span class="lineNum">     480 </span><span class="lineCov">        284 :                         nr = upid-&gt;nr;</span></a>
+<a name="477"><span class="lineNum">     477 </span><span class="lineCov">        200 :         if (pid &amp;&amp; ns-&gt;level &lt;= pid-&gt;level) {</span></a>
+<a name="478"><span class="lineNum">     478 </span><span class="lineCov">        200 :                 upid = &amp;pid-&gt;numbers[ns-&gt;level];</span></a>
+<a name="479"><span class="lineNum">     479 </span><span class="lineCov">        200 :                 if (upid-&gt;ns == ns)</span></a>
+<a name="480"><span class="lineNum">     480 </span><span class="lineCov">        200 :                         nr = upid-&gt;nr;</span></a>
 <a name="481"><span class="lineNum">     481 </span>            :         }</a>
 <a name="482"><span class="lineNum">     482 </span><span class="lineNoCov">          0 :         return nr;</span></a>
 <a name="483"><span class="lineNum">     483 </span>            : }</a>
 <a name="484"><span class="lineNum">     484 </span>            : EXPORT_SYMBOL_GPL(pid_nr_ns);</a>
 <a name="485"><span class="lineNum">     485 </span>            : </a>
-<a name="486"><span class="lineNum">     486 </span><span class="lineCov">        156 : pid_t pid_vnr(struct pid *pid)</span></a>
+<a name="486"><span class="lineNum">     486 </span><span class="lineCov">        107 : pid_t pid_vnr(struct pid *pid)</span></a>
 <a name="487"><span class="lineNum">     487 </span>            : {</a>
-<a name="488"><span class="lineNum">     488 </span><span class="lineCov">        468 :         return pid_nr_ns(pid, task_active_pid_ns(current));</span></a>
+<a name="488"><span class="lineNum">     488 </span><span class="lineCov">        321 :         return pid_nr_ns(pid, task_active_pid_ns(current));</span></a>
 <a name="489"><span class="lineNum">     489 </span>            : }</a>
 <a name="490"><span class="lineNum">     490 </span>            : EXPORT_SYMBOL_GPL(pid_vnr);</a>
 <a name="491"><span class="lineNum">     491 </span>            : </a>
-<a name="492"><span class="lineNum">     492 </span><span class="lineCov">        128 : pid_t __task_pid_nr_ns(struct task_struct *task, enum pid_type type,</span></a>
+<a name="492"><span class="lineNum">     492 </span><span class="lineCov">         93 : pid_t __task_pid_nr_ns(struct task_struct *task, enum pid_type type,</span></a>
 <a name="493"><span class="lineNum">     493 </span>            :                         struct pid_namespace *ns)</a>
 <a name="494"><span class="lineNum">     494 </span>            : {</a>
-<a name="495"><span class="lineNum">     495 </span><span class="lineCov">        128 :         pid_t nr = 0;</span></a>
+<a name="495"><span class="lineNum">     495 </span><span class="lineCov">         93 :         pid_t nr = 0;</span></a>
 <a name="496"><span class="lineNum">     496 </span>            : </a>
 <a name="497"><span class="lineNum">     497 </span>            :         rcu_read_lock();</a>
-<a name="498"><span class="lineNum">     498 </span><span class="lineCov">        128 :         if (!ns)</span></a>
+<a name="498"><span class="lineNum">     498 </span><span class="lineCov">         93 :         if (!ns)</span></a>
 <a name="499"><span class="lineNum">     499 </span><span class="lineNoCov">          0 :                 ns = task_active_pid_ns(current);</span></a>
-<a name="500"><span class="lineNum">     500 </span><span class="lineCov">        256 :         nr = pid_nr_ns(rcu_dereference(*task_pid_ptr(task, type)), ns);</span></a>
+<a name="500"><span class="lineNum">     500 </span><span class="lineCov">        186 :         nr = pid_nr_ns(rcu_dereference(*task_pid_ptr(task, type)), ns);</span></a>
 <a name="501"><span class="lineNum">     501 </span>            :         rcu_read_unlock();</a>
 <a name="502"><span class="lineNum">     502 </span>            : </a>
-<a name="503"><span class="lineNum">     503 </span><span class="lineCov">        128 :         return nr;</span></a>
+<a name="503"><span class="lineNum">     503 </span><span class="lineCov">         93 :         return nr;</span></a>
 <a name="504"><span class="lineNum">     504 </span>            : }</a>
 <a name="505"><span class="lineNum">     505 </span>            : EXPORT_SYMBOL(__task_pid_nr_ns);</a>
 <a name="506"><span class="lineNum">     506 </span>            : </a>
-<a name="507"><span class="lineNum">     507 </span><span class="lineCov">        258 : struct pid_namespace *task_active_pid_ns(struct task_struct *tsk)</span></a>
+<a name="507"><span class="lineNum">     507 </span><span class="lineCov">        187 : struct pid_namespace *task_active_pid_ns(struct task_struct *tsk)</span></a>
 <a name="508"><span class="lineNum">     508 </span>            : {</a>
-<a name="509"><span class="lineNum">     509 </span><span class="lineCov">        828 :         return ns_of_pid(task_pid(tsk));</span></a>
+<a name="509"><span class="lineNum">     509 </span><span class="lineCov">        588 :         return ns_of_pid(task_pid(tsk));</span></a>
 <a name="510"><span class="lineNum">     510 </span>            : }</a>
 <a name="511"><span class="lineNum">     511 </span>            : EXPORT_SYMBOL_GPL(task_active_pid_ns);</a>
 <a name="512"><span class="lineNum">     512 </span>            : </a>
@@ -708,23 +708,23 @@
 <a name="646"><span class="lineNum">     646 </span><span class="lineNoCov">          0 :         return fd;</span></a>
 <a name="647"><span class="lineNum">     647 </span>            : }</a>
 <a name="648"><span class="lineNum">     648 </span>            : </a>
-<a name="649"><span class="lineNum">     649 </span><span class="lineCov">          2 : void __init pid_idr_init(void)</span></a>
+<a name="649"><span class="lineNum">     649 </span><span class="lineCov">          1 : void __init pid_idr_init(void)</span></a>
 <a name="650"><span class="lineNum">     650 </span>            : {</a>
 <a name="651"><span class="lineNum">     651 </span>            :         /* Verify no one has done anything silly: */</a>
 <a name="652"><span class="lineNum">     652 </span>            :         BUILD_BUG_ON(PID_MAX_LIMIT &gt;= PIDNS_ADDING);</a>
 <a name="653"><span class="lineNum">     653 </span>            : </a>
 <a name="654"><span class="lineNum">     654 </span>            :         /* bump default and minimum pid_max based on number of cpus */</a>
-<a name="655"><span class="lineNum">     655 </span><span class="lineCov">          2 :         pid_max = min(pid_max_max, max_t(int, pid_max,</span></a>
+<a name="655"><span class="lineNum">     655 </span><span class="lineCov">          1 :         pid_max = min(pid_max_max, max_t(int, pid_max,</span></a>
 <a name="656"><span class="lineNum">     656 </span>            :                                 PIDS_PER_CPU_DEFAULT * num_possible_cpus()));</a>
-<a name="657"><span class="lineNum">     657 </span><span class="lineCov">          2 :         pid_max_min = max_t(int, pid_max_min,</span></a>
+<a name="657"><span class="lineNum">     657 </span><span class="lineCov">          1 :         pid_max_min = max_t(int, pid_max_min,</span></a>
 <a name="658"><span class="lineNum">     658 </span>            :                                 PIDS_PER_CPU_MIN * num_possible_cpus());</a>
-<a name="659"><span class="lineNum">     659 </span><span class="lineCov">          2 :         pr_info(&quot;pid_max: default: %u minimum: %u\n&quot;, pid_max, pid_max_min);</span></a>
+<a name="659"><span class="lineNum">     659 </span><span class="lineCov">          1 :         pr_info(&quot;pid_max: default: %u minimum: %u\n&quot;, pid_max, pid_max_min);</span></a>
 <a name="660"><span class="lineNum">     660 </span>            : </a>
-<a name="661"><span class="lineNum">     661 </span><span class="lineCov">          2 :         idr_init(&amp;init_pid_ns.idr);</span></a>
+<a name="661"><span class="lineNum">     661 </span><span class="lineCov">          1 :         idr_init(&amp;init_pid_ns.idr);</span></a>
 <a name="662"><span class="lineNum">     662 </span>            : </a>
-<a name="663"><span class="lineNum">     663 </span><span class="lineCov">          2 :         init_pid_ns.pid_cachep = KMEM_CACHE(pid,</span></a>
+<a name="663"><span class="lineNum">     663 </span><span class="lineCov">          1 :         init_pid_ns.pid_cachep = KMEM_CACHE(pid,</span></a>
 <a name="664"><span class="lineNum">     664 </span>            :                         SLAB_HWCACHE_ALIGN | SLAB_PANIC | SLAB_ACCOUNT);</a>
-<a name="665"><span class="lineNum">     665 </span><span class="lineCov">          2 : }</span></a>
+<a name="665"><span class="lineNum">     665 </span><span class="lineCov">          1 : }</span></a>
 <a name="666"><span class="lineNum">     666 </span>            : </a>
 <a name="667"><span class="lineNum">     667 </span><span class="lineNoCov">          0 : static struct file *__pidfd_fget(struct task_struct *task, int fd)</span></a>
 <a name="668"><span class="lineNum">     668 </span>            : {</a>

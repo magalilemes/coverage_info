@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -382,10 +382,10 @@
 <a name="320"><span class="lineNum">     320 </span>            :         { }</a>
 <a name="321"><span class="lineNum">     321 </span>            : };</a>
 <a name="322"><span class="lineNum">     322 </span>            : </a>
-<a name="323"><span class="lineNum">     323 </span><span class="lineCov">          2 : static void __init epoll_sysctls_init(void)</span></a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineCov">          1 : static void __init epoll_sysctls_init(void)</span></a>
 <a name="324"><span class="lineNum">     324 </span>            : {</a>
-<a name="325"><span class="lineNum">     325 </span><span class="lineCov">          2 :         register_sysctl(&quot;fs/epoll&quot;, epoll_table);</span></a>
-<a name="326"><span class="lineNum">     326 </span><span class="lineCov">          2 : }</span></a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineCov">          1 :         register_sysctl(&quot;fs/epoll&quot;, epoll_table);</span></a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineCov">          1 : }</span></a>
 <a name="327"><span class="lineNum">     327 </span>            : #else</a>
 <a name="328"><span class="lineNum">     328 </span>            : #define epoll_sysctls_init() do { } while (0)</a>
 <a name="329"><span class="lineNum">     329 </span>            : #endif /* CONFIG_SYSCTL */</a>
@@ -2422,17 +2422,17 @@
 <a name="2360"><span class="lineNum">    2360 </span>            : </a>
 <a name="2361"><span class="lineNum">    2361 </span>            : #endif</a>
 <a name="2362"><span class="lineNum">    2362 </span>            : </a>
-<a name="2363"><span class="lineNum">    2363 </span><span class="lineCov">          2 : static int __init eventpoll_init(void)</span></a>
+<a name="2363"><span class="lineNum">    2363 </span><span class="lineCov">          1 : static int __init eventpoll_init(void)</span></a>
 <a name="2364"><span class="lineNum">    2364 </span>            : {</a>
 <a name="2365"><span class="lineNum">    2365 </span>            :         struct sysinfo si;</a>
 <a name="2366"><span class="lineNum">    2366 </span>            : </a>
-<a name="2367"><span class="lineNum">    2367 </span><span class="lineCov">          2 :         si_meminfo(&amp;si);</span></a>
+<a name="2367"><span class="lineNum">    2367 </span><span class="lineCov">          1 :         si_meminfo(&amp;si);</span></a>
 <a name="2368"><span class="lineNum">    2368 </span>            :         /*</a>
 <a name="2369"><span class="lineNum">    2369 </span>            :          * Allows top 4% of lomem to be allocated for epoll watches (per user).</a>
 <a name="2370"><span class="lineNum">    2370 </span>            :          */</a>
-<a name="2371"><span class="lineNum">    2371 </span><span class="lineCov">          2 :         max_user_watches = (((si.totalram - si.totalhigh) / 25) &lt;&lt; PAGE_SHIFT) /</span></a>
+<a name="2371"><span class="lineNum">    2371 </span><span class="lineCov">          1 :         max_user_watches = (((si.totalram - si.totalhigh) / 25) &lt;&lt; PAGE_SHIFT) /</span></a>
 <a name="2372"><span class="lineNum">    2372 </span>            :                 EP_ITEM_COST;</a>
-<a name="2373"><span class="lineNum">    2373 </span><span class="lineCov">          2 :         BUG_ON(max_user_watches &lt; 0);</span></a>
+<a name="2373"><span class="lineNum">    2373 </span><span class="lineCov">          1 :         BUG_ON(max_user_watches &lt; 0);</span></a>
 <a name="2374"><span class="lineNum">    2374 </span>            : </a>
 <a name="2375"><span class="lineNum">    2375 </span>            :         /*</a>
 <a name="2376"><span class="lineNum">    2376 </span>            :          * We can have many thousands of epitems, so prevent this from</a>
@@ -2441,18 +2441,18 @@
 <a name="2379"><span class="lineNum">    2379 </span>            :         BUILD_BUG_ON(sizeof(void *) &lt;= 8 &amp;&amp; sizeof(struct epitem) &gt; 128);</a>
 <a name="2380"><span class="lineNum">    2380 </span>            : </a>
 <a name="2381"><span class="lineNum">    2381 </span>            :         /* Allocates slab cache used to allocate &quot;struct epitem&quot; items */</a>
-<a name="2382"><span class="lineNum">    2382 </span><span class="lineCov">          2 :         epi_cache = kmem_cache_create(&quot;eventpoll_epi&quot;, sizeof(struct epitem),</span></a>
+<a name="2382"><span class="lineNum">    2382 </span><span class="lineCov">          1 :         epi_cache = kmem_cache_create(&quot;eventpoll_epi&quot;, sizeof(struct epitem),</span></a>
 <a name="2383"><span class="lineNum">    2383 </span>            :                         0, SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT, NULL);</a>
 <a name="2384"><span class="lineNum">    2384 </span>            : </a>
 <a name="2385"><span class="lineNum">    2385 </span>            :         /* Allocates slab cache used to allocate &quot;struct eppoll_entry&quot; */</a>
-<a name="2386"><span class="lineNum">    2386 </span><span class="lineCov">          2 :         pwq_cache = kmem_cache_create(&quot;eventpoll_pwq&quot;,</span></a>
+<a name="2386"><span class="lineNum">    2386 </span><span class="lineCov">          1 :         pwq_cache = kmem_cache_create(&quot;eventpoll_pwq&quot;,</span></a>
 <a name="2387"><span class="lineNum">    2387 </span>            :                 sizeof(struct eppoll_entry), 0, SLAB_PANIC|SLAB_ACCOUNT, NULL);</a>
-<a name="2388"><span class="lineNum">    2388 </span><span class="lineCov">          2 :         epoll_sysctls_init();</span></a>
+<a name="2388"><span class="lineNum">    2388 </span><span class="lineCov">          1 :         epoll_sysctls_init();</span></a>
 <a name="2389"><span class="lineNum">    2389 </span>            : </a>
-<a name="2390"><span class="lineNum">    2390 </span><span class="lineCov">          2 :         ephead_cache = kmem_cache_create(&quot;ep_head&quot;,</span></a>
+<a name="2390"><span class="lineNum">    2390 </span><span class="lineCov">          1 :         ephead_cache = kmem_cache_create(&quot;ep_head&quot;,</span></a>
 <a name="2391"><span class="lineNum">    2391 </span>            :                 sizeof(struct epitems_head), 0, SLAB_PANIC|SLAB_ACCOUNT, NULL);</a>
 <a name="2392"><span class="lineNum">    2392 </span>            : </a>
-<a name="2393"><span class="lineNum">    2393 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="2393"><span class="lineNum">    2393 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="2394"><span class="lineNum">    2394 </span>            : }</a>
 <a name="2395"><span class="lineNum">    2395 </span>            : fs_initcall(eventpoll_init);</a>
 </pre>

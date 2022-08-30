@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -2149,11 +2149,11 @@
 <a name="2087"><span class="lineNum">    2087 </span>            : </a>
 <a name="2088"><span class="lineNum">    2088 </span>            : struct workqueue_struct *mm_percpu_wq;</a>
 <a name="2089"><span class="lineNum">    2089 </span>            : </a>
-<a name="2090"><span class="lineNum">    2090 </span><span class="lineCov">          2 : void __init init_mm_internals(void)</span></a>
+<a name="2090"><span class="lineNum">    2090 </span><span class="lineCov">          1 : void __init init_mm_internals(void)</span></a>
 <a name="2091"><span class="lineNum">    2091 </span>            : {</a>
 <a name="2092"><span class="lineNum">    2092 </span>            :         int ret __maybe_unused;</a>
 <a name="2093"><span class="lineNum">    2093 </span>            : </a>
-<a name="2094"><span class="lineNum">    2094 </span><span class="lineCov">          2 :         mm_percpu_wq = alloc_workqueue(&quot;mm_percpu_wq&quot;, WQ_MEM_RECLAIM, 0);</span></a>
+<a name="2094"><span class="lineNum">    2094 </span><span class="lineCov">          1 :         mm_percpu_wq = alloc_workqueue(&quot;mm_percpu_wq&quot;, WQ_MEM_RECLAIM, 0);</span></a>
 <a name="2095"><span class="lineNum">    2095 </span>            : </a>
 <a name="2096"><span class="lineNum">    2096 </span>            : #ifdef CONFIG_SMP</a>
 <a name="2097"><span class="lineNum">    2097 </span>            :         ret = cpuhp_setup_state_nocalls(CPUHP_MM_VMSTAT_DEAD, &quot;mm/vmstat:dead&quot;,</a>
@@ -2177,12 +2177,12 @@
 <a name="2115"><span class="lineNum">    2115 </span>            :         migrate_on_reclaim_init();</a>
 <a name="2116"><span class="lineNum">    2116 </span>            : #endif</a>
 <a name="2117"><span class="lineNum">    2117 </span>            : #ifdef CONFIG_PROC_FS</a>
-<a name="2118"><span class="lineNum">    2118 </span><span class="lineCov">          2 :         proc_create_seq(&quot;buddyinfo&quot;, 0444, NULL, &amp;fragmentation_op);</span></a>
-<a name="2119"><span class="lineNum">    2119 </span><span class="lineCov">          2 :         proc_create_seq(&quot;pagetypeinfo&quot;, 0400, NULL, &amp;pagetypeinfo_op);</span></a>
-<a name="2120"><span class="lineNum">    2120 </span><span class="lineCov">          2 :         proc_create_seq(&quot;vmstat&quot;, 0444, NULL, &amp;vmstat_op);</span></a>
-<a name="2121"><span class="lineNum">    2121 </span><span class="lineCov">          2 :         proc_create_seq(&quot;zoneinfo&quot;, 0444, NULL, &amp;zoneinfo_op);</span></a>
+<a name="2118"><span class="lineNum">    2118 </span><span class="lineCov">          1 :         proc_create_seq(&quot;buddyinfo&quot;, 0444, NULL, &amp;fragmentation_op);</span></a>
+<a name="2119"><span class="lineNum">    2119 </span><span class="lineCov">          1 :         proc_create_seq(&quot;pagetypeinfo&quot;, 0400, NULL, &amp;pagetypeinfo_op);</span></a>
+<a name="2120"><span class="lineNum">    2120 </span><span class="lineCov">          1 :         proc_create_seq(&quot;vmstat&quot;, 0444, NULL, &amp;vmstat_op);</span></a>
+<a name="2121"><span class="lineNum">    2121 </span><span class="lineCov">          1 :         proc_create_seq(&quot;zoneinfo&quot;, 0444, NULL, &amp;zoneinfo_op);</span></a>
 <a name="2122"><span class="lineNum">    2122 </span>            : #endif</a>
-<a name="2123"><span class="lineNum">    2123 </span><span class="lineCov">          2 : }</span></a>
+<a name="2123"><span class="lineNum">    2123 </span><span class="lineCov">          1 : }</span></a>
 <a name="2124"><span class="lineNum">    2124 </span>            : </a>
 <a name="2125"><span class="lineNum">    2125 </span>            : #if defined(CONFIG_DEBUG_FS) &amp;&amp; defined(CONFIG_COMPACTION)</a>
 <a name="2126"><span class="lineNum">    2126 </span>            : </a>

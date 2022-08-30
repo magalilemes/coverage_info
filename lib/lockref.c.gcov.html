@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -103,7 +103,7 @@
 <a name="41"><span class="lineNum">      41 </span>            :  * This operation is only valid if you already hold a reference</a>
 <a name="42"><span class="lineNum">      42 </span>            :  * to the object, so you know the count cannot be zero.</a>
 <a name="43"><span class="lineNum">      43 </span>            :  */</a>
-<a name="44"><span class="lineNum">      44 </span><span class="lineCov">         50 : void lockref_get(struct lockref *lockref)</span></a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineCov">         25 : void lockref_get(struct lockref *lockref)</span></a>
 <a name="45"><span class="lineNum">      45 </span>            : {</a>
 <a name="46"><span class="lineNum">      46 </span>            :         CMPXCHG_LOOP(</a>
 <a name="47"><span class="lineNum">      47 </span>            :                 new.count++;</a>
@@ -111,10 +111,10 @@
 <a name="49"><span class="lineNum">      49 </span>            :                 return;</a>
 <a name="50"><span class="lineNum">      50 </span>            :         );</a>
 <a name="51"><span class="lineNum">      51 </span>            : </a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">        100 :         spin_lock(&amp;lockref-&gt;lock);</span></a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">         50 :         lockref-&gt;count++;</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">        100 :         spin_unlock(&amp;lockref-&gt;lock);</span></a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">         50 : }</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">         50 :         spin_lock(&amp;lockref-&gt;lock);</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">         25 :         lockref-&gt;count++;</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">         50 :         spin_unlock(&amp;lockref-&gt;lock);</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">         25 : }</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : EXPORT_SYMBOL(lockref_get);</a>
 <a name="57"><span class="lineNum">      57 </span>            : </a>
 <a name="58"><span class="lineNum">      58 </span>            : /**</a>
@@ -205,7 +205,7 @@
 <a name="143"><span class="lineNum">     143 </span>            :  * Decrement the reference count and return the new value.</a>
 <a name="144"><span class="lineNum">     144 </span>            :  * If the lockref was dead or locked, return an error.</a>
 <a name="145"><span class="lineNum">     145 </span>            :  */</a>
-<a name="146"><span class="lineNum">     146 </span><span class="lineCov">         24 : int lockref_put_return(struct lockref *lockref)</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineCov">         12 : int lockref_put_return(struct lockref *lockref)</span></a>
 <a name="147"><span class="lineNum">     147 </span>            : {</a>
 <a name="148"><span class="lineNum">     148 </span>            :         CMPXCHG_LOOP(</a>
 <a name="149"><span class="lineNum">     149 </span>            :                 new.count--;</a>
@@ -214,7 +214,7 @@
 <a name="152"><span class="lineNum">     152 </span>            :         ,</a>
 <a name="153"><span class="lineNum">     153 </span>            :                 return new.count;</a>
 <a name="154"><span class="lineNum">     154 </span>            :         );</a>
-<a name="155"><span class="lineNum">     155 </span><span class="lineCov">         24 :         return -1;</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineCov">         12 :         return -1;</span></a>
 <a name="156"><span class="lineNum">     156 </span>            : }</a>
 <a name="157"><span class="lineNum">     157 </span>            : EXPORT_SYMBOL(lockref_put_return);</a>
 <a name="158"><span class="lineNum">     158 </span>            : </a>
@@ -223,7 +223,7 @@
 <a name="161"><span class="lineNum">     161 </span>            :  * @lockref: pointer to lockref structure</a>
 <a name="162"><span class="lineNum">     162 </span>            :  * Return: 1 if count updated successfully or 0 if count &lt;= 1 and lock taken</a>
 <a name="163"><span class="lineNum">     163 </span>            :  */</a>
-<a name="164"><span class="lineNum">     164 </span><span class="lineCov">          8 : int lockref_put_or_lock(struct lockref *lockref)</span></a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineCov">          4 : int lockref_put_or_lock(struct lockref *lockref)</span></a>
 <a name="165"><span class="lineNum">     165 </span>            : {</a>
 <a name="166"><span class="lineNum">     166 </span>            :         CMPXCHG_LOOP(</a>
 <a name="167"><span class="lineNum">     167 </span>            :                 new.count--;</a>
@@ -233,12 +233,12 @@
 <a name="171"><span class="lineNum">     171 </span>            :                 return 1;</a>
 <a name="172"><span class="lineNum">     172 </span>            :         );</a>
 <a name="173"><span class="lineNum">     173 </span>            : </a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">         16 :         spin_lock(&amp;lockref-&gt;lock);</span></a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineCov">          8 :         if (lockref-&gt;count &lt;= 1)</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">          8 :         spin_lock(&amp;lockref-&gt;lock);</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">          4 :         if (lockref-&gt;count &lt;= 1)</span></a>
 <a name="176"><span class="lineNum">     176 </span>            :                 return 0;</a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          8 :         lockref-&gt;count--;</span></a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">         16 :         spin_unlock(&amp;lockref-&gt;lock);</span></a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          8 :         return 1;</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          4 :         lockref-&gt;count--;</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">          8 :         spin_unlock(&amp;lockref-&gt;lock);</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          4 :         return 1;</span></a>
 <a name="180"><span class="lineNum">     180 </span>            : }</a>
 <a name="181"><span class="lineNum">     181 </span>            : EXPORT_SYMBOL(lockref_put_or_lock);</a>
 <a name="182"><span class="lineNum">     182 </span>            : </a>
@@ -258,7 +258,7 @@
 <a name="196"><span class="lineNum">     196 </span>            :  * @lockref: pointer to lockref structure</a>
 <a name="197"><span class="lineNum">     197 </span>            :  * Return: 1 if count updated successfully or 0 if lockref was dead</a>
 <a name="198"><span class="lineNum">     198 </span>            :  */</a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineCov">          6 : int lockref_get_not_dead(struct lockref *lockref)</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">          3 : int lockref_get_not_dead(struct lockref *lockref)</span></a>
 <a name="200"><span class="lineNum">     200 </span>            : {</a>
 <a name="201"><span class="lineNum">     201 </span>            :         int retval;</a>
 <a name="202"><span class="lineNum">     202 </span>            : </a>
@@ -270,14 +270,14 @@
 <a name="208"><span class="lineNum">     208 </span>            :                 return 1;</a>
 <a name="209"><span class="lineNum">     209 </span>            :         );</a>
 <a name="210"><span class="lineNum">     210 </span>            : </a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineCov">         12 :         spin_lock(&amp;lockref-&gt;lock);</span></a>
-<a name="212"><span class="lineNum">     212 </span><span class="lineCov">          6 :         retval = 0;</span></a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineCov">          6 :         if (lockref-&gt;count &gt;= 0) {</span></a>
-<a name="214"><span class="lineNum">     214 </span><span class="lineCov">          6 :                 lockref-&gt;count++;</span></a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineCov">          6 :                 retval = 1;</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineCov">          6 :         spin_lock(&amp;lockref-&gt;lock);</span></a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineCov">          3 :         retval = 0;</span></a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineCov">          3 :         if (lockref-&gt;count &gt;= 0) {</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineCov">          3 :                 lockref-&gt;count++;</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">          3 :                 retval = 1;</span></a>
 <a name="216"><span class="lineNum">     216 </span>            :         }</a>
-<a name="217"><span class="lineNum">     217 </span><span class="lineCov">         12 :         spin_unlock(&amp;lockref-&gt;lock);</span></a>
-<a name="218"><span class="lineNum">     218 </span><span class="lineCov">          6 :         return retval;</span></a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineCov">          6 :         spin_unlock(&amp;lockref-&gt;lock);</span></a>
+<a name="218"><span class="lineNum">     218 </span><span class="lineCov">          3 :         return retval;</span></a>
 <a name="219"><span class="lineNum">     219 </span>            : }</a>
 <a name="220"><span class="lineNum">     220 </span>            : EXPORT_SYMBOL(lockref_get_not_dead);</a>
 </pre>

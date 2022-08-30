@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">8</td>
@@ -197,12 +197,12 @@
 <a name="135"><span class="lineNum">     135 </span>            :  */</a>
 <a name="136"><span class="lineNum">     136 </span>            : static inline void rwsem_set_owner(struct rw_semaphore *sem)</a>
 <a name="137"><span class="lineNum">     137 </span>            : {</a>
-<a name="138"><span class="lineNum">     138 </span><span class="lineCov">     107488 :         atomic_long_set(&amp;sem-&gt;owner, (long)current);</span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">      53744 :         atomic_long_set(&amp;sem-&gt;owner, (long)current);</span></a>
 <a name="139"><span class="lineNum">     139 </span>            : }</a>
 <a name="140"><span class="lineNum">     140 </span>            : </a>
 <a name="141"><span class="lineNum">     141 </span>            : static inline void rwsem_clear_owner(struct rw_semaphore *sem)</a>
 <a name="142"><span class="lineNum">     142 </span>            : {</a>
-<a name="143"><span class="lineNum">     143 </span><span class="lineCov">     107488 :         atomic_long_set(&amp;sem-&gt;owner, 0);</span></a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineCov">      53744 :         atomic_long_set(&amp;sem-&gt;owner, 0);</span></a>
 <a name="144"><span class="lineNum">     144 </span>            : }</a>
 <a name="145"><span class="lineNum">     145 </span>            : </a>
 <a name="146"><span class="lineNum">     146 </span>            : /*</a>
@@ -226,15 +226,15 @@
 <a name="164"><span class="lineNum">     164 </span>            : static inline void __rwsem_set_reader_owned(struct rw_semaphore *sem,</a>
 <a name="165"><span class="lineNum">     165 </span>            :                                             struct task_struct *owner)</a>
 <a name="166"><span class="lineNum">     166 </span>            : {</a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">       1270 :         unsigned long val = (unsigned long)owner | RWSEM_READER_OWNED |</span></a>
-<a name="168"><span class="lineNum">     168 </span><span class="lineCov">       2540 :                 (atomic_long_read(&amp;sem-&gt;owner) &amp; RWSEM_NONSPINNABLE);</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">        635 :         unsigned long val = (unsigned long)owner | RWSEM_READER_OWNED |</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">       1270 :                 (atomic_long_read(&amp;sem-&gt;owner) &amp; RWSEM_NONSPINNABLE);</span></a>
 <a name="169"><span class="lineNum">     169 </span>            : </a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">       2540 :         atomic_long_set(&amp;sem-&gt;owner, val);</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">       1270 :         atomic_long_set(&amp;sem-&gt;owner, val);</span></a>
 <a name="171"><span class="lineNum">     171 </span>            : }</a>
 <a name="172"><span class="lineNum">     172 </span>            : </a>
 <a name="173"><span class="lineNum">     173 </span>            : static inline void rwsem_set_reader_owned(struct rw_semaphore *sem)</a>
 <a name="174"><span class="lineNum">     174 </span>            : {</a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineCov">       2540 :         __rwsem_set_reader_owned(sem, current);</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">       1270 :         __rwsem_set_reader_owned(sem, current);</span></a>
 <a name="176"><span class="lineNum">     176 </span>            : }</a>
 <a name="177"><span class="lineNum">     177 </span>            : </a>
 <a name="178"><span class="lineNum">     178 </span>            : /*</a>
@@ -294,16 +294,16 @@
 <a name="232"><span class="lineNum">     232 </span><span class="lineNoCov">          0 :                                           owner | RWSEM_NONSPINNABLE));</span></a>
 <a name="233"><span class="lineNum">     233 </span>            : }</a>
 <a name="234"><span class="lineNum">     234 </span>            : </a>
-<a name="235"><span class="lineNum">     235 </span><span class="lineCov">       1270 : static inline bool rwsem_read_trylock(struct rw_semaphore *sem, long *cntp)</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineCov">        635 : static inline bool rwsem_read_trylock(struct rw_semaphore *sem, long *cntp)</span></a>
 <a name="236"><span class="lineNum">     236 </span>            : {</a>
-<a name="237"><span class="lineNum">     237 </span><span class="lineCov">       2540 :         *cntp = atomic_long_add_return_acquire(RWSEM_READER_BIAS, &amp;sem-&gt;count);</span></a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineCov">       1270 :         *cntp = atomic_long_add_return_acquire(RWSEM_READER_BIAS, &amp;sem-&gt;count);</span></a>
 <a name="238"><span class="lineNum">     238 </span>            : </a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineCov">       1270 :         if (WARN_ON_ONCE(*cntp &lt; 0))</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">        635 :         if (WARN_ON_ONCE(*cntp &lt; 0))</span></a>
 <a name="240"><span class="lineNum">     240 </span>            :                 rwsem_set_nonspinnable(sem);</a>
 <a name="241"><span class="lineNum">     241 </span>            : </a>
-<a name="242"><span class="lineNum">     242 </span><span class="lineCov">       1270 :         if (!(*cntp &amp; RWSEM_READ_FAILED_MASK)) {</span></a>
-<a name="243"><span class="lineNum">     243 </span><span class="lineCov">       1270 :                 rwsem_set_reader_owned(sem);</span></a>
-<a name="244"><span class="lineNum">     244 </span><span class="lineCov">       1270 :                 return true;</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineCov">        635 :         if (!(*cntp &amp; RWSEM_READ_FAILED_MASK)) {</span></a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineCov">        635 :                 rwsem_set_reader_owned(sem);</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineCov">        635 :                 return true;</span></a>
 <a name="245"><span class="lineNum">     245 </span>            :         }</a>
 <a name="246"><span class="lineNum">     246 </span>            : </a>
 <a name="247"><span class="lineNum">     247 </span>            :         return false;</a>
@@ -311,10 +311,10 @@
 <a name="249"><span class="lineNum">     249 </span>            : </a>
 <a name="250"><span class="lineNum">     250 </span>            : static inline bool rwsem_write_trylock(struct rw_semaphore *sem)</a>
 <a name="251"><span class="lineNum">     251 </span>            : {</a>
-<a name="252"><span class="lineNum">     252 </span><span class="lineCov">      53744 :         long tmp = RWSEM_UNLOCKED_VALUE;</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineCov">      26872 :         long tmp = RWSEM_UNLOCKED_VALUE;</span></a>
 <a name="253"><span class="lineNum">     253 </span>            : </a>
-<a name="254"><span class="lineNum">     254 </span><span class="lineCov">     107488 :         if (atomic_long_try_cmpxchg_acquire(&amp;sem-&gt;count, &amp;tmp, RWSEM_WRITER_LOCKED)) {</span></a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineCov">      53744 :                 rwsem_set_owner(sem);</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">      53744 :         if (atomic_long_try_cmpxchg_acquire(&amp;sem-&gt;count, &amp;tmp, RWSEM_WRITER_LOCKED)) {</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineCov">      26872 :                 rwsem_set_owner(sem);</span></a>
 <a name="256"><span class="lineNum">     256 </span>            :                 return true;</a>
 <a name="257"><span class="lineNum">     257 </span>            :         }</a>
 <a name="258"><span class="lineNum">     258 </span>            : </a>
@@ -363,7 +363,7 @@
 <a name="301"><span class="lineNum">     301 </span>            : /*</a>
 <a name="302"><span class="lineNum">     302 </span>            :  * Initialize an rwsem:</a>
 <a name="303"><span class="lineNum">     303 </span>            :  */</a>
-<a name="304"><span class="lineNum">     304 </span><span class="lineCov">        420 : void __init_rwsem(struct rw_semaphore *sem, const char *name,</span></a>
+<a name="304"><span class="lineNum">     304 </span><span class="lineCov">        239 : void __init_rwsem(struct rw_semaphore *sem, const char *name,</span></a>
 <a name="305"><span class="lineNum">     305 </span>            :                   struct lock_class_key *key)</a>
 <a name="306"><span class="lineNum">     306 </span>            : {</a>
 <a name="307"><span class="lineNum">     307 </span>            : #ifdef CONFIG_DEBUG_LOCK_ALLOC</a>
@@ -376,14 +376,14 @@
 <a name="314"><span class="lineNum">     314 </span>            : #ifdef CONFIG_DEBUG_RWSEMS</a>
 <a name="315"><span class="lineNum">     315 </span>            :         sem-&gt;magic = sem;</a>
 <a name="316"><span class="lineNum">     316 </span>            : #endif</a>
-<a name="317"><span class="lineNum">     317 </span><span class="lineCov">        840 :         atomic_long_set(&amp;sem-&gt;count, RWSEM_UNLOCKED_VALUE);</span></a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineCov">        478 :         atomic_long_set(&amp;sem-&gt;count, RWSEM_UNLOCKED_VALUE);</span></a>
 <a name="318"><span class="lineNum">     318 </span>            :         raw_spin_lock_init(&amp;sem-&gt;wait_lock);</a>
-<a name="319"><span class="lineNum">     319 </span><span class="lineCov">        840 :         INIT_LIST_HEAD(&amp;sem-&gt;wait_list);</span></a>
-<a name="320"><span class="lineNum">     320 </span><span class="lineCov">        840 :         atomic_long_set(&amp;sem-&gt;owner, 0L);</span></a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineCov">        478 :         INIT_LIST_HEAD(&amp;sem-&gt;wait_list);</span></a>
+<a name="320"><span class="lineNum">     320 </span><span class="lineCov">        478 :         atomic_long_set(&amp;sem-&gt;owner, 0L);</span></a>
 <a name="321"><span class="lineNum">     321 </span>            : #ifdef CONFIG_RWSEM_SPIN_ON_OWNER</a>
 <a name="322"><span class="lineNum">     322 </span>            :         osq_lock_init(&amp;sem-&gt;osq);</a>
 <a name="323"><span class="lineNum">     323 </span>            : #endif</a>
-<a name="324"><span class="lineNum">     324 </span><span class="lineCov">        420 : }</span></a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineCov">        239 : }</span></a>
 <a name="325"><span class="lineNum">     325 </span>            : EXPORT_SYMBOL(__init_rwsem);</a>
 <a name="326"><span class="lineNum">     326 </span>            : </a>
 <a name="327"><span class="lineNum">     327 </span>            : enum rwsem_waiter_type {</a>
@@ -1268,11 +1268,11 @@
 <a name="1206"><span class="lineNum">    1206 </span>            : /*</a>
 <a name="1207"><span class="lineNum">    1207 </span>            :  * lock for reading</a>
 <a name="1208"><span class="lineNum">    1208 </span>            :  */</a>
-<a name="1209"><span class="lineNum">    1209 </span><span class="lineCov">       1270 : static inline int __down_read_common(struct rw_semaphore *sem, int state)</span></a>
+<a name="1209"><span class="lineNum">    1209 </span><span class="lineCov">        635 : static inline int __down_read_common(struct rw_semaphore *sem, int state)</span></a>
 <a name="1210"><span class="lineNum">    1210 </span>            : {</a>
 <a name="1211"><span class="lineNum">    1211 </span>            :         long count;</a>
 <a name="1212"><span class="lineNum">    1212 </span>            : </a>
-<a name="1213"><span class="lineNum">    1213 </span><span class="lineCov">       1270 :         if (!rwsem_read_trylock(sem, &amp;count)) {</span></a>
+<a name="1213"><span class="lineNum">    1213 </span><span class="lineCov">        635 :         if (!rwsem_read_trylock(sem, &amp;count)) {</span></a>
 <a name="1214"><span class="lineNum">    1214 </span><span class="lineNoCov">          0 :                 if (IS_ERR(rwsem_down_read_slowpath(sem, count, state)))</span></a>
 <a name="1215"><span class="lineNum">    1215 </span>            :                         return -EINTR;</a>
 <a name="1216"><span class="lineNum">    1216 </span>            :                 DEBUG_RWSEMS_WARN_ON(!is_rwsem_reader_owned(sem), sem);</a>
@@ -1282,7 +1282,7 @@
 <a name="1220"><span class="lineNum">    1220 </span>            : </a>
 <a name="1221"><span class="lineNum">    1221 </span>            : static inline void __down_read(struct rw_semaphore *sem)</a>
 <a name="1222"><span class="lineNum">    1222 </span>            : {</a>
-<a name="1223"><span class="lineNum">    1223 </span><span class="lineCov">       1270 :         __down_read_common(sem, TASK_UNINTERRUPTIBLE);</span></a>
+<a name="1223"><span class="lineNum">    1223 </span><span class="lineCov">        635 :         __down_read_common(sem, TASK_UNINTERRUPTIBLE);</span></a>
 <a name="1224"><span class="lineNum">    1224 </span>            : }</a>
 <a name="1225"><span class="lineNum">    1225 </span>            : </a>
 <a name="1226"><span class="lineNum">    1226 </span>            : static inline int __down_read_interruptible(struct rw_semaphore *sem)</a>
@@ -1315,9 +1315,9 @@
 <a name="1253"><span class="lineNum">    1253 </span>            : /*</a>
 <a name="1254"><span class="lineNum">    1254 </span>            :  * lock for writing</a>
 <a name="1255"><span class="lineNum">    1255 </span>            :  */</a>
-<a name="1256"><span class="lineNum">    1256 </span><span class="lineCov">      53744 : static inline int __down_write_common(struct rw_semaphore *sem, int state)</span></a>
+<a name="1256"><span class="lineNum">    1256 </span><span class="lineCov">      26872 : static inline int __down_write_common(struct rw_semaphore *sem, int state)</span></a>
 <a name="1257"><span class="lineNum">    1257 </span>            : {</a>
-<a name="1258"><span class="lineNum">    1258 </span><span class="lineCov">      53744 :         if (unlikely(!rwsem_write_trylock(sem))) {</span></a>
+<a name="1258"><span class="lineNum">    1258 </span><span class="lineCov">      26872 :         if (unlikely(!rwsem_write_trylock(sem))) {</span></a>
 <a name="1259"><span class="lineNum">    1259 </span><span class="lineNoCov">          0 :                 if (IS_ERR(rwsem_down_write_slowpath(sem, state)))</span></a>
 <a name="1260"><span class="lineNum">    1260 </span>            :                         return -EINTR;</a>
 <a name="1261"><span class="lineNum">    1261 </span>            :         }</a>
@@ -1327,7 +1327,7 @@
 <a name="1265"><span class="lineNum">    1265 </span>            : </a>
 <a name="1266"><span class="lineNum">    1266 </span>            : static inline void __down_write(struct rw_semaphore *sem)</a>
 <a name="1267"><span class="lineNum">    1267 </span>            : {</a>
-<a name="1268"><span class="lineNum">    1268 </span><span class="lineCov">      53744 :         __down_write_common(sem, TASK_UNINTERRUPTIBLE);</span></a>
+<a name="1268"><span class="lineNum">    1268 </span><span class="lineCov">      26872 :         __down_write_common(sem, TASK_UNINTERRUPTIBLE);</span></a>
 <a name="1269"><span class="lineNum">    1269 </span>            : }</a>
 <a name="1270"><span class="lineNum">    1270 </span>            : </a>
 <a name="1271"><span class="lineNum">    1271 </span>            : static inline int __down_write_killable(struct rw_semaphore *sem)</a>
@@ -1351,10 +1351,10 @@
 <a name="1289"><span class="lineNum">    1289 </span>            :         DEBUG_RWSEMS_WARN_ON(sem-&gt;magic != sem, sem);</a>
 <a name="1290"><span class="lineNum">    1290 </span>            :         DEBUG_RWSEMS_WARN_ON(!is_rwsem_reader_owned(sem), sem);</a>
 <a name="1291"><span class="lineNum">    1291 </span>            : </a>
-<a name="1292"><span class="lineNum">    1292 </span><span class="lineCov">       1270 :         rwsem_clear_reader_owned(sem);</span></a>
-<a name="1293"><span class="lineNum">    1293 </span><span class="lineCov">       2540 :         tmp = atomic_long_add_return_release(-RWSEM_READER_BIAS, &amp;sem-&gt;count);</span></a>
+<a name="1292"><span class="lineNum">    1292 </span><span class="lineCov">        635 :         rwsem_clear_reader_owned(sem);</span></a>
+<a name="1293"><span class="lineNum">    1293 </span><span class="lineCov">       1270 :         tmp = atomic_long_add_return_release(-RWSEM_READER_BIAS, &amp;sem-&gt;count);</span></a>
 <a name="1294"><span class="lineNum">    1294 </span>            :         DEBUG_RWSEMS_WARN_ON(tmp &lt; 0, sem);</a>
-<a name="1295"><span class="lineNum">    1295 </span><span class="lineCov">       1270 :         if (unlikely((tmp &amp; (RWSEM_LOCK_MASK|RWSEM_FLAG_WAITERS)) ==</span></a>
+<a name="1295"><span class="lineNum">    1295 </span><span class="lineCov">        635 :         if (unlikely((tmp &amp; (RWSEM_LOCK_MASK|RWSEM_FLAG_WAITERS)) ==</span></a>
 <a name="1296"><span class="lineNum">    1296 </span>            :                       RWSEM_FLAG_WAITERS)) {</a>
 <a name="1297"><span class="lineNum">    1297 </span><span class="lineNoCov">          0 :                 clear_nonspinnable(sem);</span></a>
 <a name="1298"><span class="lineNum">    1298 </span><span class="lineNoCov">          0 :                 rwsem_wake(sem);</span></a>
@@ -1376,9 +1376,9 @@
 <a name="1314"><span class="lineNum">    1314 </span>            :         DEBUG_RWSEMS_WARN_ON((rwsem_owner(sem) != current) &amp;&amp;</a>
 <a name="1315"><span class="lineNum">    1315 </span>            :                             !rwsem_test_oflags(sem, RWSEM_NONSPINNABLE), sem);</a>
 <a name="1316"><span class="lineNum">    1316 </span>            : </a>
-<a name="1317"><span class="lineNum">    1317 </span><span class="lineCov">      53744 :         rwsem_clear_owner(sem);</span></a>
-<a name="1318"><span class="lineNum">    1318 </span><span class="lineCov">     107488 :         tmp = atomic_long_fetch_add_release(-RWSEM_WRITER_LOCKED, &amp;sem-&gt;count);</span></a>
-<a name="1319"><span class="lineNum">    1319 </span><span class="lineCov">      53744 :         if (unlikely(tmp &amp; RWSEM_FLAG_WAITERS))</span></a>
+<a name="1317"><span class="lineNum">    1317 </span><span class="lineCov">      26872 :         rwsem_clear_owner(sem);</span></a>
+<a name="1318"><span class="lineNum">    1318 </span><span class="lineCov">      53744 :         tmp = atomic_long_fetch_add_release(-RWSEM_WRITER_LOCKED, &amp;sem-&gt;count);</span></a>
+<a name="1319"><span class="lineNum">    1319 </span><span class="lineCov">      26872 :         if (unlikely(tmp &amp; RWSEM_FLAG_WAITERS))</span></a>
 <a name="1320"><span class="lineNum">    1320 </span><span class="lineNoCov">          0 :                 rwsem_wake(sem);</span></a>
 <a name="1321"><span class="lineNum">    1321 </span>            : }</a>
 <a name="1322"><span class="lineNum">    1322 </span>            : </a>
@@ -1517,13 +1517,13 @@
 <a name="1455"><span class="lineNum">    1455 </span>            : /*</a>
 <a name="1456"><span class="lineNum">    1456 </span>            :  * lock for reading</a>
 <a name="1457"><span class="lineNum">    1457 </span>            :  */</a>
-<a name="1458"><span class="lineNum">    1458 </span><span class="lineCov">       1270 : void __sched down_read(struct rw_semaphore *sem)</span></a>
+<a name="1458"><span class="lineNum">    1458 </span><span class="lineCov">        635 : void __sched down_read(struct rw_semaphore *sem)</span></a>
 <a name="1459"><span class="lineNum">    1459 </span>            : {</a>
 <a name="1460"><span class="lineNum">    1460 </span>            :         might_sleep();</a>
 <a name="1461"><span class="lineNum">    1461 </span>            :         rwsem_acquire_read(&amp;sem-&gt;dep_map, 0, 0, _RET_IP_);</a>
 <a name="1462"><span class="lineNum">    1462 </span>            : </a>
-<a name="1463"><span class="lineNum">    1463 </span><span class="lineCov">       1270 :         LOCK_CONTENDED(sem, __down_read_trylock, __down_read);</span></a>
-<a name="1464"><span class="lineNum">    1464 </span><span class="lineCov">       1270 : }</span></a>
+<a name="1463"><span class="lineNum">    1463 </span><span class="lineCov">        635 :         LOCK_CONTENDED(sem, __down_read_trylock, __down_read);</span></a>
+<a name="1464"><span class="lineNum">    1464 </span><span class="lineCov">        635 : }</span></a>
 <a name="1465"><span class="lineNum">    1465 </span>            : EXPORT_SYMBOL(down_read);</a>
 <a name="1466"><span class="lineNum">    1466 </span>            : </a>
 <a name="1467"><span class="lineNum">    1467 </span><span class="lineNoCov">          0 : int __sched down_read_interruptible(struct rw_semaphore *sem)</span></a>
@@ -1570,12 +1570,12 @@
 <a name="1508"><span class="lineNum">    1508 </span>            : /*</a>
 <a name="1509"><span class="lineNum">    1509 </span>            :  * lock for writing</a>
 <a name="1510"><span class="lineNum">    1510 </span>            :  */</a>
-<a name="1511"><span class="lineNum">    1511 </span><span class="lineCov">      53744 : void __sched down_write(struct rw_semaphore *sem)</span></a>
+<a name="1511"><span class="lineNum">    1511 </span><span class="lineCov">      26872 : void __sched down_write(struct rw_semaphore *sem)</span></a>
 <a name="1512"><span class="lineNum">    1512 </span>            : {</a>
 <a name="1513"><span class="lineNum">    1513 </span>            :         might_sleep();</a>
 <a name="1514"><span class="lineNum">    1514 </span>            :         rwsem_acquire(&amp;sem-&gt;dep_map, 0, 0, _RET_IP_);</a>
-<a name="1515"><span class="lineNum">    1515 </span><span class="lineCov">      53744 :         LOCK_CONTENDED(sem, __down_write_trylock, __down_write);</span></a>
-<a name="1516"><span class="lineNum">    1516 </span><span class="lineCov">      53744 : }</span></a>
+<a name="1515"><span class="lineNum">    1515 </span><span class="lineCov">      26872 :         LOCK_CONTENDED(sem, __down_write_trylock, __down_write);</span></a>
+<a name="1516"><span class="lineNum">    1516 </span><span class="lineCov">      26872 : }</span></a>
 <a name="1517"><span class="lineNum">    1517 </span>            : EXPORT_SYMBOL(down_write);</a>
 <a name="1518"><span class="lineNum">    1518 </span>            : </a>
 <a name="1519"><span class="lineNum">    1519 </span>            : /*</a>
@@ -1613,21 +1613,21 @@
 <a name="1551"><span class="lineNum">    1551 </span>            : /*</a>
 <a name="1552"><span class="lineNum">    1552 </span>            :  * release a read lock</a>
 <a name="1553"><span class="lineNum">    1553 </span>            :  */</a>
-<a name="1554"><span class="lineNum">    1554 </span><span class="lineCov">       1270 : void up_read(struct rw_semaphore *sem)</span></a>
+<a name="1554"><span class="lineNum">    1554 </span><span class="lineCov">        635 : void up_read(struct rw_semaphore *sem)</span></a>
 <a name="1555"><span class="lineNum">    1555 </span>            : {</a>
 <a name="1556"><span class="lineNum">    1556 </span>            :         rwsem_release(&amp;sem-&gt;dep_map, _RET_IP_);</a>
-<a name="1557"><span class="lineNum">    1557 </span><span class="lineCov">       1270 :         __up_read(sem);</span></a>
-<a name="1558"><span class="lineNum">    1558 </span><span class="lineCov">       1270 : }</span></a>
+<a name="1557"><span class="lineNum">    1557 </span><span class="lineCov">        635 :         __up_read(sem);</span></a>
+<a name="1558"><span class="lineNum">    1558 </span><span class="lineCov">        635 : }</span></a>
 <a name="1559"><span class="lineNum">    1559 </span>            : EXPORT_SYMBOL(up_read);</a>
 <a name="1560"><span class="lineNum">    1560 </span>            : </a>
 <a name="1561"><span class="lineNum">    1561 </span>            : /*</a>
 <a name="1562"><span class="lineNum">    1562 </span>            :  * release a write lock</a>
 <a name="1563"><span class="lineNum">    1563 </span>            :  */</a>
-<a name="1564"><span class="lineNum">    1564 </span><span class="lineCov">      53744 : void up_write(struct rw_semaphore *sem)</span></a>
+<a name="1564"><span class="lineNum">    1564 </span><span class="lineCov">      26872 : void up_write(struct rw_semaphore *sem)</span></a>
 <a name="1565"><span class="lineNum">    1565 </span>            : {</a>
 <a name="1566"><span class="lineNum">    1566 </span>            :         rwsem_release(&amp;sem-&gt;dep_map, _RET_IP_);</a>
-<a name="1567"><span class="lineNum">    1567 </span><span class="lineCov">      53744 :         __up_write(sem);</span></a>
-<a name="1568"><span class="lineNum">    1568 </span><span class="lineCov">      53744 : }</span></a>
+<a name="1567"><span class="lineNum">    1567 </span><span class="lineCov">      26872 :         __up_write(sem);</span></a>
+<a name="1568"><span class="lineNum">    1568 </span><span class="lineCov">      26872 : }</span></a>
 <a name="1569"><span class="lineNum">    1569 </span>            : EXPORT_SYMBOL(up_write);</a>
 <a name="1570"><span class="lineNum">    1570 </span>            : </a>
 <a name="1571"><span class="lineNum">    1571 </span>            : /*</a>

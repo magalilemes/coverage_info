@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -408,15 +408,15 @@
 <a name="346"><span class="lineNum">     346 </span>            :         .show = timer_list_show,</a>
 <a name="347"><span class="lineNum">     347 </span>            : };</a>
 <a name="348"><span class="lineNum">     348 </span>            : </a>
-<a name="349"><span class="lineNum">     349 </span><span class="lineCov">          2 : static int __init init_timer_list_procfs(void)</span></a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineCov">          1 : static int __init init_timer_list_procfs(void)</span></a>
 <a name="350"><span class="lineNum">     350 </span>            : {</a>
 <a name="351"><span class="lineNum">     351 </span>            :         struct proc_dir_entry *pe;</a>
 <a name="352"><span class="lineNum">     352 </span>            : </a>
-<a name="353"><span class="lineNum">     353 </span><span class="lineCov">          2 :         pe = proc_create_seq_private(&quot;timer_list&quot;, 0400, NULL, &amp;timer_list_sops,</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineCov">          1 :         pe = proc_create_seq_private(&quot;timer_list&quot;, 0400, NULL, &amp;timer_list_sops,</span></a>
 <a name="354"><span class="lineNum">     354 </span>            :                         sizeof(struct timer_list_iter), NULL);</a>
-<a name="355"><span class="lineNum">     355 </span><span class="lineCov">          2 :         if (!pe)</span></a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineCov">          1 :         if (!pe)</span></a>
 <a name="356"><span class="lineNum">     356 </span>            :                 return -ENOMEM;</a>
-<a name="357"><span class="lineNum">     357 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="357"><span class="lineNum">     357 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="358"><span class="lineNum">     358 </span>            : }</a>
 <a name="359"><span class="lineNum">     359 </span>            : __initcall(init_timer_list_procfs);</a>
 <a name="360"><span class="lineNum">     360 </span>            : #endif</a>

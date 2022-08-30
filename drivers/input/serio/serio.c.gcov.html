@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -209,39 +209,39 @@
 <a name="147"><span class="lineNum">     147 </span>            : static DEFINE_SPINLOCK(serio_event_lock);       /* protects serio_event_list */</a>
 <a name="148"><span class="lineNum">     148 </span>            : static LIST_HEAD(serio_event_list);</a>
 <a name="149"><span class="lineNum">     149 </span>            : </a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">          6 : static struct serio_event *serio_get_event(void)</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">          3 : static struct serio_event *serio_get_event(void)</span></a>
 <a name="151"><span class="lineNum">     151 </span>            : {</a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineCov">          6 :         struct serio_event *event = NULL;</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">          3 :         struct serio_event *event = NULL;</span></a>
 <a name="153"><span class="lineNum">     153 </span>            :         unsigned long flags;</a>
 <a name="154"><span class="lineNum">     154 </span>            : </a>
-<a name="155"><span class="lineNum">     155 </span><span class="lineCov">          6 :         spin_lock_irqsave(&amp;serio_event_lock, flags);</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineCov">          3 :         spin_lock_irqsave(&amp;serio_event_lock, flags);</span></a>
 <a name="156"><span class="lineNum">     156 </span>            : </a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">          6 :         if (!list_empty(&amp;serio_event_list)) {</span></a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">          4 :                 event = list_first_entry(&amp;serio_event_list,</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">          3 :         if (!list_empty(&amp;serio_event_list)) {</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">          2 :                 event = list_first_entry(&amp;serio_event_list,</span></a>
 <a name="159"><span class="lineNum">     159 </span>            :                                          struct serio_event, node);</a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          4 :                 list_del_init(&amp;event-&gt;node);</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          2 :                 list_del_init(&amp;event-&gt;node);</span></a>
 <a name="161"><span class="lineNum">     161 </span>            :         }</a>
 <a name="162"><span class="lineNum">     162 </span>            : </a>
-<a name="163"><span class="lineNum">     163 </span><span class="lineCov">          6 :         spin_unlock_irqrestore(&amp;serio_event_lock, flags);</span></a>
-<a name="164"><span class="lineNum">     164 </span><span class="lineCov">          6 :         return event;</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">          3 :         spin_unlock_irqrestore(&amp;serio_event_lock, flags);</span></a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineCov">          3 :         return event;</span></a>
 <a name="165"><span class="lineNum">     165 </span>            : }</a>
 <a name="166"><span class="lineNum">     166 </span>            : </a>
 <a name="167"><span class="lineNum">     167 </span>            : static void serio_free_event(struct serio_event *event)</a>
 <a name="168"><span class="lineNum">     168 </span>            : {</a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineCov">          4 :         module_put(event-&gt;owner);</span></a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">          4 :         kfree(event);</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">          2 :         module_put(event-&gt;owner);</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">          2 :         kfree(event);</span></a>
 <a name="171"><span class="lineNum">     171 </span>            : }</a>
 <a name="172"><span class="lineNum">     172 </span>            : </a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          4 : static void serio_remove_duplicate_events(void *object,</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          2 : static void serio_remove_duplicate_events(void *object,</span></a>
 <a name="174"><span class="lineNum">     174 </span>            :                                           enum serio_event_type type)</a>
 <a name="175"><span class="lineNum">     175 </span>            : {</a>
 <a name="176"><span class="lineNum">     176 </span>            :         struct serio_event *e, *next;</a>
 <a name="177"><span class="lineNum">     177 </span>            :         unsigned long flags;</a>
 <a name="178"><span class="lineNum">     178 </span>            : </a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          4 :         spin_lock_irqsave(&amp;serio_event_lock, flags);</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          2 :         spin_lock_irqsave(&amp;serio_event_lock, flags);</span></a>
 <a name="180"><span class="lineNum">     180 </span>            : </a>
-<a name="181"><span class="lineNum">     181 </span><span class="lineCov">          6 :         list_for_each_entry_safe(e, next, &amp;serio_event_list, node) {</span></a>
-<a name="182"><span class="lineNum">     182 </span><span class="lineCov">          2 :                 if (object == e-&gt;object) {</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">          3 :         list_for_each_entry_safe(e, next, &amp;serio_event_list, node) {</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineCov">          1 :                 if (object == e-&gt;object) {</span></a>
 <a name="183"><span class="lineNum">     183 </span>            :                         /*</a>
 <a name="184"><span class="lineNum">     184 </span>            :                          * If this event is of different type we should not</a>
 <a name="185"><span class="lineNum">     185 </span>            :                          * look further - we only suppress duplicate events</a>
@@ -255,18 +255,18 @@
 <a name="193"><span class="lineNum">     193 </span>            :                 }</a>
 <a name="194"><span class="lineNum">     194 </span>            :         }</a>
 <a name="195"><span class="lineNum">     195 </span>            : </a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineCov">          4 :         spin_unlock_irqrestore(&amp;serio_event_lock, flags);</span></a>
-<a name="197"><span class="lineNum">     197 </span><span class="lineCov">          4 : }</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineCov">          2 :         spin_unlock_irqrestore(&amp;serio_event_lock, flags);</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineCov">          2 : }</span></a>
 <a name="198"><span class="lineNum">     198 </span>            : </a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineCov">          2 : static void serio_handle_event(struct work_struct *work)</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">          1 : static void serio_handle_event(struct work_struct *work)</span></a>
 <a name="200"><span class="lineNum">     200 </span>            : {</a>
 <a name="201"><span class="lineNum">     201 </span>            :         struct serio_event *event;</a>
 <a name="202"><span class="lineNum">     202 </span>            : </a>
-<a name="203"><span class="lineNum">     203 </span><span class="lineCov">          2 :         mutex_lock(&amp;serio_mutex);</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineCov">          1 :         mutex_lock(&amp;serio_mutex);</span></a>
 <a name="204"><span class="lineNum">     204 </span>            : </a>
-<a name="205"><span class="lineNum">     205 </span><span class="lineCov">          8 :         while ((event = serio_get_event())) {</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineCov">          4 :         while ((event = serio_get_event())) {</span></a>
 <a name="206"><span class="lineNum">     206 </span>            : </a>
-<a name="207"><span class="lineNum">     207 </span><span class="lineCov">          4 :                 switch (event-&gt;type) {</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">          2 :                 switch (event-&gt;type) {</span></a>
 <a name="208"><span class="lineNum">     208 </span>            : </a>
 <a name="209"><span class="lineNum">     209 </span>            :                 case SERIO_REGISTER_PORT:</a>
 <a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 :                         serio_add_port(event-&gt;object);</span></a>
@@ -286,27 +286,27 @@
 <a name="224"><span class="lineNum">     224 </span><span class="lineNoCov">          0 :                         break;</span></a>
 <a name="225"><span class="lineNum">     225 </span>            : </a>
 <a name="226"><span class="lineNum">     226 </span>            :                 case SERIO_ATTACH_DRIVER:</a>
-<a name="227"><span class="lineNum">     227 </span><span class="lineCov">          4 :                         serio_attach_driver(event-&gt;object);</span></a>
-<a name="228"><span class="lineNum">     228 </span><span class="lineCov">          4 :                         break;</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">          2 :                         serio_attach_driver(event-&gt;object);</span></a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineCov">          2 :                         break;</span></a>
 <a name="229"><span class="lineNum">     229 </span>            :                 }</a>
 <a name="230"><span class="lineNum">     230 </span>            : </a>
-<a name="231"><span class="lineNum">     231 </span><span class="lineCov">          4 :                 serio_remove_duplicate_events(event-&gt;object, event-&gt;type);</span></a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineCov">          2 :                 serio_remove_duplicate_events(event-&gt;object, event-&gt;type);</span></a>
 <a name="232"><span class="lineNum">     232 </span>            :                 serio_free_event(event);</a>
 <a name="233"><span class="lineNum">     233 </span>            :         }</a>
 <a name="234"><span class="lineNum">     234 </span>            : </a>
-<a name="235"><span class="lineNum">     235 </span><span class="lineCov">          2 :         mutex_unlock(&amp;serio_mutex);</span></a>
-<a name="236"><span class="lineNum">     236 </span><span class="lineCov">          2 : }</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineCov">          1 :         mutex_unlock(&amp;serio_mutex);</span></a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineCov">          1 : }</span></a>
 <a name="237"><span class="lineNum">     237 </span>            : </a>
 <a name="238"><span class="lineNum">     238 </span>            : static DECLARE_WORK(serio_event_work, serio_handle_event);</a>
 <a name="239"><span class="lineNum">     239 </span>            : </a>
-<a name="240"><span class="lineNum">     240 </span><span class="lineCov">          4 : static int serio_queue_event(void *object, struct module *owner,</span></a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineCov">          2 : static int serio_queue_event(void *object, struct module *owner,</span></a>
 <a name="241"><span class="lineNum">     241 </span>            :                              enum serio_event_type event_type)</a>
 <a name="242"><span class="lineNum">     242 </span>            : {</a>
 <a name="243"><span class="lineNum">     243 </span>            :         unsigned long flags;</a>
 <a name="244"><span class="lineNum">     244 </span>            :         struct serio_event *event;</a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineCov">          4 :         int retval = 0;</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">          2 :         int retval = 0;</span></a>
 <a name="246"><span class="lineNum">     246 </span>            : </a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineCov">          4 :         spin_lock_irqsave(&amp;serio_event_lock, flags);</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineCov">          2 :         spin_lock_irqsave(&amp;serio_event_lock, flags);</span></a>
 <a name="248"><span class="lineNum">     248 </span>            : </a>
 <a name="249"><span class="lineNum">     249 </span>            :         /*</a>
 <a name="250"><span class="lineNum">     250 </span>            :          * Scan event list for the other events for the same serio port,</a>
@@ -315,22 +315,22 @@
 <a name="253"><span class="lineNum">     253 </span>            :          * need to add this event and should not look further because</a>
 <a name="254"><span class="lineNum">     254 </span>            :          * we need to preseve sequence of distinct events.</a>
 <a name="255"><span class="lineNum">     255 </span>            :          */</a>
-<a name="256"><span class="lineNum">     256 </span><span class="lineCov">          6 :         list_for_each_entry_reverse(event, &amp;serio_event_list, node) {</span></a>
-<a name="257"><span class="lineNum">     257 </span><span class="lineCov">          2 :                 if (event-&gt;object == object) {</span></a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineCov">          3 :         list_for_each_entry_reverse(event, &amp;serio_event_list, node) {</span></a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineCov">          1 :                 if (event-&gt;object == object) {</span></a>
 <a name="258"><span class="lineNum">     258 </span><span class="lineNoCov">          0 :                         if (event-&gt;type == event_type)</span></a>
 <a name="259"><span class="lineNum">     259 </span>            :                                 goto out;</a>
 <a name="260"><span class="lineNum">     260 </span>            :                         break;</a>
 <a name="261"><span class="lineNum">     261 </span>            :                 }</a>
 <a name="262"><span class="lineNum">     262 </span>            :         }</a>
 <a name="263"><span class="lineNum">     263 </span>            : </a>
-<a name="264"><span class="lineNum">     264 </span><span class="lineCov">          4 :         event = kmalloc(sizeof(struct serio_event), GFP_ATOMIC);</span></a>
-<a name="265"><span class="lineNum">     265 </span><span class="lineCov">          4 :         if (!event) {</span></a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineCov">          2 :         event = kmalloc(sizeof(struct serio_event), GFP_ATOMIC);</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">          2 :         if (!event) {</span></a>
 <a name="266"><span class="lineNum">     266 </span><span class="lineNoCov">          0 :                 pr_err(&quot;Not enough memory to queue event %d\n&quot;, event_type);</span></a>
 <a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 :                 retval = -ENOMEM;</span></a>
 <a name="268"><span class="lineNum">     268 </span><span class="lineNoCov">          0 :                 goto out;</span></a>
 <a name="269"><span class="lineNum">     269 </span>            :         }</a>
 <a name="270"><span class="lineNum">     270 </span>            : </a>
-<a name="271"><span class="lineNum">     271 </span><span class="lineCov">          4 :         if (!try_module_get(owner)) {</span></a>
+<a name="271"><span class="lineNum">     271 </span><span class="lineCov">          2 :         if (!try_module_get(owner)) {</span></a>
 <a name="272"><span class="lineNum">     272 </span>            :                 pr_warn(&quot;Can't get module reference, dropping event %d\n&quot;,</a>
 <a name="273"><span class="lineNum">     273 </span>            :                         event_type);</a>
 <a name="274"><span class="lineNum">     274 </span>            :                 kfree(event);</a>
@@ -338,16 +338,16 @@
 <a name="276"><span class="lineNum">     276 </span>            :                 goto out;</a>
 <a name="277"><span class="lineNum">     277 </span>            :         }</a>
 <a name="278"><span class="lineNum">     278 </span>            : </a>
-<a name="279"><span class="lineNum">     279 </span><span class="lineCov">          4 :         event-&gt;type = event_type;</span></a>
-<a name="280"><span class="lineNum">     280 </span><span class="lineCov">          4 :         event-&gt;object = object;</span></a>
-<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          4 :         event-&gt;owner = owner;</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineCov">          2 :         event-&gt;type = event_type;</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineCov">          2 :         event-&gt;object = object;</span></a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          2 :         event-&gt;owner = owner;</span></a>
 <a name="282"><span class="lineNum">     282 </span>            : </a>
-<a name="283"><span class="lineNum">     283 </span><span class="lineCov">          8 :         list_add_tail(&amp;event-&gt;node, &amp;serio_event_list);</span></a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          4 :         queue_work(system_long_wq, &amp;serio_event_work);</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineCov">          4 :         list_add_tail(&amp;event-&gt;node, &amp;serio_event_list);</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          2 :         queue_work(system_long_wq, &amp;serio_event_work);</span></a>
 <a name="285"><span class="lineNum">     285 </span>            : </a>
 <a name="286"><span class="lineNum">     286 </span>            : out:</a>
-<a name="287"><span class="lineNum">     287 </span><span class="lineCov">          4 :         spin_unlock_irqrestore(&amp;serio_event_lock, flags);</span></a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          4 :         return retval;</span></a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineCov">          2 :         spin_unlock_irqrestore(&amp;serio_event_lock, flags);</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineCov">          2 :         return retval;</span></a>
 <a name="289"><span class="lineNum">     289 </span>            : }</a>
 <a name="290"><span class="lineNum">     290 </span>            : </a>
 <a name="291"><span class="lineNum">     291 </span>            : /*</a>
@@ -862,33 +862,33 @@
 <a name="800"><span class="lineNum">     800 </span><span class="lineNoCov">          0 :         serio_cleanup(serio);</span></a>
 <a name="801"><span class="lineNum">     801 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="802"><span class="lineNum">     802 </span>            : </a>
-<a name="803"><span class="lineNum">     803 </span><span class="lineCov">          4 : static void serio_attach_driver(struct serio_driver *drv)</span></a>
+<a name="803"><span class="lineNum">     803 </span><span class="lineCov">          2 : static void serio_attach_driver(struct serio_driver *drv)</span></a>
 <a name="804"><span class="lineNum">     804 </span>            : {</a>
 <a name="805"><span class="lineNum">     805 </span>            :         int error;</a>
 <a name="806"><span class="lineNum">     806 </span>            : </a>
-<a name="807"><span class="lineNum">     807 </span><span class="lineCov">          4 :         error = driver_attach(&amp;drv-&gt;driver);</span></a>
-<a name="808"><span class="lineNum">     808 </span><span class="lineCov">          4 :         if (error)</span></a>
+<a name="807"><span class="lineNum">     807 </span><span class="lineCov">          2 :         error = driver_attach(&amp;drv-&gt;driver);</span></a>
+<a name="808"><span class="lineNum">     808 </span><span class="lineCov">          2 :         if (error)</span></a>
 <a name="809"><span class="lineNum">     809 </span><span class="lineNoCov">          0 :                 pr_warn(&quot;driver_attach() failed for %s with error %d\n&quot;,</span></a>
 <a name="810"><span class="lineNum">     810 </span>            :                         drv-&gt;driver.name, error);</a>
-<a name="811"><span class="lineNum">     811 </span><span class="lineCov">          4 : }</span></a>
+<a name="811"><span class="lineNum">     811 </span><span class="lineCov">          2 : }</span></a>
 <a name="812"><span class="lineNum">     812 </span>            : </a>
-<a name="813"><span class="lineNum">     813 </span><span class="lineCov">          4 : int __serio_register_driver(struct serio_driver *drv, struct module *owner, const char *mod_name)</span></a>
+<a name="813"><span class="lineNum">     813 </span><span class="lineCov">          2 : int __serio_register_driver(struct serio_driver *drv, struct module *owner, const char *mod_name)</span></a>
 <a name="814"><span class="lineNum">     814 </span>            : {</a>
-<a name="815"><span class="lineNum">     815 </span><span class="lineCov">          4 :         bool manual_bind = drv-&gt;manual_bind;</span></a>
+<a name="815"><span class="lineNum">     815 </span><span class="lineCov">          2 :         bool manual_bind = drv-&gt;manual_bind;</span></a>
 <a name="816"><span class="lineNum">     816 </span>            :         int error;</a>
 <a name="817"><span class="lineNum">     817 </span>            : </a>
-<a name="818"><span class="lineNum">     818 </span><span class="lineCov">          4 :         drv-&gt;driver.bus = &amp;serio_bus;</span></a>
-<a name="819"><span class="lineNum">     819 </span><span class="lineCov">          4 :         drv-&gt;driver.owner = owner;</span></a>
-<a name="820"><span class="lineNum">     820 </span><span class="lineCov">          4 :         drv-&gt;driver.mod_name = mod_name;</span></a>
+<a name="818"><span class="lineNum">     818 </span><span class="lineCov">          2 :         drv-&gt;driver.bus = &amp;serio_bus;</span></a>
+<a name="819"><span class="lineNum">     819 </span><span class="lineCov">          2 :         drv-&gt;driver.owner = owner;</span></a>
+<a name="820"><span class="lineNum">     820 </span><span class="lineCov">          2 :         drv-&gt;driver.mod_name = mod_name;</span></a>
 <a name="821"><span class="lineNum">     821 </span>            : </a>
 <a name="822"><span class="lineNum">     822 </span>            :         /*</a>
 <a name="823"><span class="lineNum">     823 </span>            :          * Temporarily disable automatic binding because probing</a>
 <a name="824"><span class="lineNum">     824 </span>            :          * takes long time and we are better off doing it in kseriod</a>
 <a name="825"><span class="lineNum">     825 </span>            :          */</a>
-<a name="826"><span class="lineNum">     826 </span><span class="lineCov">          4 :         drv-&gt;manual_bind = true;</span></a>
+<a name="826"><span class="lineNum">     826 </span><span class="lineCov">          2 :         drv-&gt;manual_bind = true;</span></a>
 <a name="827"><span class="lineNum">     827 </span>            : </a>
-<a name="828"><span class="lineNum">     828 </span><span class="lineCov">          4 :         error = driver_register(&amp;drv-&gt;driver);</span></a>
-<a name="829"><span class="lineNum">     829 </span><span class="lineCov">          4 :         if (error) {</span></a>
+<a name="828"><span class="lineNum">     828 </span><span class="lineCov">          2 :         error = driver_register(&amp;drv-&gt;driver);</span></a>
+<a name="829"><span class="lineNum">     829 </span><span class="lineCov">          2 :         if (error) {</span></a>
 <a name="830"><span class="lineNum">     830 </span><span class="lineNoCov">          0 :                 pr_err(&quot;driver_register() failed for %s, error: %d\n&quot;,</span></a>
 <a name="831"><span class="lineNum">     831 </span>            :                         drv-&gt;driver.name, error);</a>
 <a name="832"><span class="lineNum">     832 </span><span class="lineNoCov">          0 :                 return error;</span></a>
@@ -898,10 +898,10 @@
 <a name="836"><span class="lineNum">     836 </span>            :          * Restore original bind mode and let kseriod bind the</a>
 <a name="837"><span class="lineNum">     837 </span>            :          * driver to free ports</a>
 <a name="838"><span class="lineNum">     838 </span>            :          */</a>
-<a name="839"><span class="lineNum">     839 </span><span class="lineCov">          4 :         if (!manual_bind) {</span></a>
-<a name="840"><span class="lineNum">     840 </span><span class="lineCov">          4 :                 drv-&gt;manual_bind = false;</span></a>
-<a name="841"><span class="lineNum">     841 </span><span class="lineCov">          4 :                 error = serio_queue_event(drv, NULL, SERIO_ATTACH_DRIVER);</span></a>
-<a name="842"><span class="lineNum">     842 </span><span class="lineCov">          4 :                 if (error) {</span></a>
+<a name="839"><span class="lineNum">     839 </span><span class="lineCov">          2 :         if (!manual_bind) {</span></a>
+<a name="840"><span class="lineNum">     840 </span><span class="lineCov">          2 :                 drv-&gt;manual_bind = false;</span></a>
+<a name="841"><span class="lineNum">     841 </span><span class="lineCov">          2 :                 error = serio_queue_event(drv, NULL, SERIO_ATTACH_DRIVER);</span></a>
+<a name="842"><span class="lineNum">     842 </span><span class="lineCov">          2 :                 if (error) {</span></a>
 <a name="843"><span class="lineNum">     843 </span><span class="lineNoCov">          0 :                         driver_unregister(&amp;drv-&gt;driver);</span></a>
 <a name="844"><span class="lineNum">     844 </span><span class="lineNoCov">          0 :                         return error;</span></a>
 <a name="845"><span class="lineNum">     845 </span>            :                 }</a>
@@ -1086,12 +1086,12 @@
 <a name="1024"><span class="lineNum">    1024 </span>            : };</a>
 <a name="1025"><span class="lineNum">    1025 </span>            : EXPORT_SYMBOL(serio_bus);</a>
 <a name="1026"><span class="lineNum">    1026 </span>            : </a>
-<a name="1027"><span class="lineNum">    1027 </span><span class="lineCov">          2 : static int __init serio_init(void)</span></a>
+<a name="1027"><span class="lineNum">    1027 </span><span class="lineCov">          1 : static int __init serio_init(void)</span></a>
 <a name="1028"><span class="lineNum">    1028 </span>            : {</a>
 <a name="1029"><span class="lineNum">    1029 </span>            :         int error;</a>
 <a name="1030"><span class="lineNum">    1030 </span>            : </a>
-<a name="1031"><span class="lineNum">    1031 </span><span class="lineCov">          2 :         error = bus_register(&amp;serio_bus);</span></a>
-<a name="1032"><span class="lineNum">    1032 </span><span class="lineCov">          2 :         if (error) {</span></a>
+<a name="1031"><span class="lineNum">    1031 </span><span class="lineCov">          1 :         error = bus_register(&amp;serio_bus);</span></a>
+<a name="1032"><span class="lineNum">    1032 </span><span class="lineCov">          1 :         if (error) {</span></a>
 <a name="1033"><span class="lineNum">    1033 </span><span class="lineNoCov">          0 :                 pr_err(&quot;Failed to register serio bus, error: %d\n&quot;, error);</span></a>
 <a name="1034"><span class="lineNum">    1034 </span><span class="lineNoCov">          0 :                 return error;</span></a>
 <a name="1035"><span class="lineNum">    1035 </span>            :         }</a>

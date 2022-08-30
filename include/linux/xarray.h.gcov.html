@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -114,8 +114,8 @@
 <a name="52"><span class="lineNum">      52 </span>            :  */</a>
 <a name="53"><span class="lineNum">      53 </span>            : static inline void *xa_mk_value(unsigned long v)</a>
 <a name="54"><span class="lineNum">      54 </span>            : {</a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineCov">        176 :         WARN_ON((long)v &lt; 0);</span></a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        176 :         return (void *)((v &lt;&lt; 1) | 1);</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineCov">         88 :         WARN_ON((long)v &lt; 0);</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         88 :         return (void *)((v &lt;&lt; 1) | 1);</span></a>
 <a name="57"><span class="lineNum">      57 </span>            : }</a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
 <a name="59"><span class="lineNum">      59 </span>            : /**</a>
@@ -127,7 +127,7 @@
 <a name="65"><span class="lineNum">      65 </span>            :  */</a>
 <a name="66"><span class="lineNum">      66 </span>            : static inline unsigned long xa_to_value(const void *entry)</a>
 <a name="67"><span class="lineNum">      67 </span>            : {</a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">        166 :         return (unsigned long)entry &gt;&gt; 1;</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         83 :         return (unsigned long)entry &gt;&gt; 1;</span></a>
 <a name="69"><span class="lineNum">      69 </span>            : }</a>
 <a name="70"><span class="lineNum">      70 </span>            : </a>
 <a name="71"><span class="lineNum">      71 </span>            : /**</a>
@@ -139,7 +139,7 @@
 <a name="77"><span class="lineNum">      77 </span>            :  */</a>
 <a name="78"><span class="lineNum">      78 </span>            : static inline bool xa_is_value(const void *entry)</a>
 <a name="79"><span class="lineNum">      79 </span>            : {</a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">      50214 :         return (unsigned long)entry &amp; 1;</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">      25252 :         return (unsigned long)entry &amp; 1;</span></a>
 <a name="81"><span class="lineNum">      81 </span>            : }</a>
 <a name="82"><span class="lineNum">      82 </span>            : </a>
 <a name="83"><span class="lineNum">      83 </span>            : /**</a>
@@ -229,7 +229,7 @@
 <a name="167"><span class="lineNum">     167 </span>            :  */</a>
 <a name="168"><span class="lineNum">     168 </span>            : static inline bool xa_is_internal(const void *entry)</a>
 <a name="169"><span class="lineNum">     169 </span>            : {</a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">       1974 :         return ((unsigned long)entry &amp; 3) == 2;</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">        987 :         return ((unsigned long)entry &amp; 3) == 2;</span></a>
 <a name="171"><span class="lineNum">     171 </span>            : }</a>
 <a name="172"><span class="lineNum">     172 </span>            : </a>
 <a name="173"><span class="lineNum">     173 </span>            : #define XA_ZERO_ENTRY           xa_mk_internal(257)</a>
@@ -245,7 +245,7 @@
 <a name="183"><span class="lineNum">     183 </span>            :  */</a>
 <a name="184"><span class="lineNum">     184 </span>            : static inline bool xa_is_zero(const void *entry)</a>
 <a name="185"><span class="lineNum">     185 </span>            : {</a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineCov">        194 :         return unlikely(entry == XA_ZERO_ENTRY);</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">         97 :         return unlikely(entry == XA_ZERO_ENTRY);</span></a>
 <a name="187"><span class="lineNum">     187 </span>            : }</a>
 <a name="188"><span class="lineNum">     188 </span>            : </a>
 <a name="189"><span class="lineNum">     189 </span>            : /**</a>
@@ -261,7 +261,7 @@
 <a name="199"><span class="lineNum">     199 </span>            :  */</a>
 <a name="200"><span class="lineNum">     200 </span>            : static inline bool xa_is_err(const void *entry)</a>
 <a name="201"><span class="lineNum">     201 </span>            : {</a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">        842 :         return unlikely(xa_is_internal(entry) &amp;&amp;</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">        421 :         return unlikely(xa_is_internal(entry) &amp;&amp;</span></a>
 <a name="203"><span class="lineNum">     203 </span>            :                         entry &gt;= xa_mk_internal(-MAX_ERRNO));</a>
 <a name="204"><span class="lineNum">     204 </span>            : }</a>
 <a name="205"><span class="lineNum">     205 </span>            : </a>
@@ -280,7 +280,7 @@
 <a name="218"><span class="lineNum">     218 </span>            : static inline int xa_err(void *entry)</a>
 <a name="219"><span class="lineNum">     219 </span>            : {</a>
 <a name="220"><span class="lineNum">     220 </span>            :         /* xa_to_internal() would not do sign extension. */</a>
-<a name="221"><span class="lineNum">     221 </span><span class="lineCov">        842 :         if (xa_is_err(entry))</span></a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineCov">        421 :         if (xa_is_err(entry))</span></a>
 <a name="222"><span class="lineNum">     222 </span><span class="lineNoCov">          0 :                 return (long)entry &gt;&gt; 2;</span></a>
 <a name="223"><span class="lineNum">     223 </span>            :         return 0;</a>
 <a name="224"><span class="lineNum">     224 </span>            : }</a>
@@ -438,9 +438,9 @@
 <a name="376"><span class="lineNum">     376 </span>            :  */</a>
 <a name="377"><span class="lineNum">     377 </span>            : static inline void xa_init_flags(struct xarray *xa, gfp_t flags)</a>
 <a name="378"><span class="lineNum">     378 </span>            : {</a>
-<a name="379"><span class="lineNum">     379 </span><span class="lineCov">        178 :         spin_lock_init(&amp;xa-&gt;xa_lock);</span></a>
-<a name="380"><span class="lineNum">     380 </span><span class="lineCov">        178 :         xa-&gt;xa_flags = flags;</span></a>
-<a name="381"><span class="lineNum">     381 </span><span class="lineCov">        178 :         xa-&gt;xa_head = NULL;</span></a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineCov">         89 :         spin_lock_init(&amp;xa-&gt;xa_lock);</span></a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineCov">         89 :         xa-&gt;xa_flags = flags;</span></a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineCov">         89 :         xa-&gt;xa_head = NULL;</span></a>
 <a name="382"><span class="lineNum">     382 </span>            : }</a>
 <a name="383"><span class="lineNum">     383 </span>            : </a>
 <a name="384"><span class="lineNum">     384 </span>            : /**</a>
@@ -478,7 +478,7 @@
 <a name="416"><span class="lineNum">     416 </span>            :  */</a>
 <a name="417"><span class="lineNum">     417 </span>            : static inline bool xa_marked(const struct xarray *xa, xa_mark_t mark)</a>
 <a name="418"><span class="lineNum">     418 </span>            : {</a>
-<a name="419"><span class="lineNum">     419 </span><span class="lineCov">        414 :         return xa-&gt;xa_flags &amp; XA_FLAGS_MARK(mark);</span></a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineCov">        207 :         return xa-&gt;xa_flags &amp; XA_FLAGS_MARK(mark);</span></a>
 <a name="420"><span class="lineNum">     420 </span>            : }</a>
 <a name="421"><span class="lineNum">     421 </span>            : </a>
 <a name="422"><span class="lineNum">     422 </span>            : /**</a>
@@ -1226,7 +1226,7 @@
 <a name="1164"><span class="lineNum">    1164 </span>            : /* Private */</a>
 <a name="1165"><span class="lineNum">    1165 </span>            : static inline void *xa_head(const struct xarray *xa)</a>
 <a name="1166"><span class="lineNum">    1166 </span>            : {</a>
-<a name="1167"><span class="lineNum">    1167 </span><span class="lineCov">        418 :         return rcu_dereference_check(xa-&gt;xa_head,</span></a>
+<a name="1167"><span class="lineNum">    1167 </span><span class="lineCov">        209 :         return rcu_dereference_check(xa-&gt;xa_head,</span></a>
 <a name="1168"><span class="lineNum">    1168 </span>            :                                                 lockdep_is_held(&amp;xa-&gt;xa_lock));</a>
 <a name="1169"><span class="lineNum">    1169 </span>            : }</a>
 <a name="1170"><span class="lineNum">    1170 </span>            : </a>
@@ -1242,7 +1242,7 @@
 <a name="1180"><span class="lineNum">    1180 </span>            :                                 const struct xa_node *node, unsigned int offset)</a>
 <a name="1181"><span class="lineNum">    1181 </span>            : {</a>
 <a name="1182"><span class="lineNum">    1182 </span>            :         XA_NODE_BUG_ON(node, offset &gt;= XA_CHUNK_SIZE);</a>
-<a name="1183"><span class="lineNum">    1183 </span><span class="lineCov">         12 :         return rcu_dereference_check(node-&gt;slots[offset],</span></a>
+<a name="1183"><span class="lineNum">    1183 </span><span class="lineCov">          6 :         return rcu_dereference_check(node-&gt;slots[offset],</span></a>
 <a name="1184"><span class="lineNum">    1184 </span>            :                                                 lockdep_is_held(&amp;xa-&gt;xa_lock));</a>
 <a name="1185"><span class="lineNum">    1185 </span>            : }</a>
 <a name="1186"><span class="lineNum">    1186 </span>            : </a>
@@ -1274,19 +1274,19 @@
 <a name="1212"><span class="lineNum">    1212 </span>            : /* Private */</a>
 <a name="1213"><span class="lineNum">    1213 </span>            : static inline void *xa_mk_node(const struct xa_node *node)</a>
 <a name="1214"><span class="lineNum">    1214 </span>            : {</a>
-<a name="1215"><span class="lineNum">    1215 </span><span class="lineCov">          4 :         return (void *)((unsigned long)node | 2);</span></a>
+<a name="1215"><span class="lineNum">    1215 </span><span class="lineCov">          2 :         return (void *)((unsigned long)node | 2);</span></a>
 <a name="1216"><span class="lineNum">    1216 </span>            : }</a>
 <a name="1217"><span class="lineNum">    1217 </span>            : </a>
 <a name="1218"><span class="lineNum">    1218 </span>            : /* Private */</a>
 <a name="1219"><span class="lineNum">    1219 </span>            : static inline struct xa_node *xa_to_node(const void *entry)</a>
 <a name="1220"><span class="lineNum">    1220 </span>            : {</a>
-<a name="1221"><span class="lineNum">    1221 </span><span class="lineCov">         14 :         return (struct xa_node *)((unsigned long)entry - 2);</span></a>
+<a name="1221"><span class="lineNum">    1221 </span><span class="lineCov">          7 :         return (struct xa_node *)((unsigned long)entry - 2);</span></a>
 <a name="1222"><span class="lineNum">    1222 </span>            : }</a>
 <a name="1223"><span class="lineNum">    1223 </span>            : </a>
 <a name="1224"><span class="lineNum">    1224 </span>            : /* Private */</a>
 <a name="1225"><span class="lineNum">    1225 </span>            : static inline bool xa_is_node(const void *entry)</a>
 <a name="1226"><span class="lineNum">    1226 </span>            : {</a>
-<a name="1227"><span class="lineNum">    1227 </span><span class="lineCov">       1542 :         return xa_is_internal(entry) &amp;&amp; (unsigned long)entry &gt; 4096;</span></a>
+<a name="1227"><span class="lineNum">    1227 </span><span class="lineCov">        771 :         return xa_is_internal(entry) &amp;&amp; (unsigned long)entry &gt; 4096;</span></a>
 <a name="1228"><span class="lineNum">    1228 </span>            : }</a>
 <a name="1229"><span class="lineNum">    1229 </span>            : </a>
 <a name="1230"><span class="lineNum">    1230 </span>            : /* Private */</a>
@@ -1323,7 +1323,7 @@
 <a name="1261"><span class="lineNum">    1261 </span>            :  */</a>
 <a name="1262"><span class="lineNum">    1262 </span>            : static inline bool xa_is_retry(const void *entry)</a>
 <a name="1263"><span class="lineNum">    1263 </span>            : {</a>
-<a name="1264"><span class="lineNum">    1264 </span><span class="lineCov">          4 :         return unlikely(entry == XA_RETRY_ENTRY);</span></a>
+<a name="1264"><span class="lineNum">    1264 </span><span class="lineCov">          2 :         return unlikely(entry == XA_RETRY_ENTRY);</span></a>
 <a name="1265"><span class="lineNum">    1265 </span>            : }</a>
 <a name="1266"><span class="lineNum">    1266 </span>            : </a>
 <a name="1267"><span class="lineNum">    1267 </span>            : /**</a>
@@ -1334,7 +1334,7 @@
 <a name="1272"><span class="lineNum">    1272 </span>            :  */</a>
 <a name="1273"><span class="lineNum">    1273 </span>            : static inline bool xa_is_advanced(const void *entry)</a>
 <a name="1274"><span class="lineNum">    1274 </span>            : {</a>
-<a name="1275"><span class="lineNum">    1275 </span><span class="lineCov">          4 :         return xa_is_internal(entry) &amp;&amp; (entry &lt;= XA_RETRY_ENTRY);</span></a>
+<a name="1275"><span class="lineNum">    1275 </span><span class="lineCov">          2 :         return xa_is_internal(entry) &amp;&amp; (entry &lt;= XA_RETRY_ENTRY);</span></a>
 <a name="1276"><span class="lineNum">    1276 </span>            : }</a>
 <a name="1277"><span class="lineNum">    1277 </span>            : </a>
 <a name="1278"><span class="lineNum">    1278 </span>            : /**</a>
@@ -1453,7 +1453,7 @@
 <a name="1391"><span class="lineNum">    1391 </span>            :  */</a>
 <a name="1392"><span class="lineNum">    1392 </span>            : static inline int xas_error(const struct xa_state *xas)</a>
 <a name="1393"><span class="lineNum">    1393 </span>            : {</a>
-<a name="1394"><span class="lineNum">    1394 </span><span class="lineCov">       1676 :         return xa_err(xas-&gt;xa_node);</span></a>
+<a name="1394"><span class="lineNum">    1394 </span><span class="lineCov">        838 :         return xa_err(xas-&gt;xa_node);</span></a>
 <a name="1395"><span class="lineNum">    1395 </span>            : }</a>
 <a name="1396"><span class="lineNum">    1396 </span>            : </a>
 <a name="1397"><span class="lineNum">    1397 </span>            : /**</a>
@@ -1478,7 +1478,7 @@
 <a name="1416"><span class="lineNum">    1416 </span>            :  */</a>
 <a name="1417"><span class="lineNum">    1417 </span>            : static inline bool xas_invalid(const struct xa_state *xas)</a>
 <a name="1418"><span class="lineNum">    1418 </span>            : {</a>
-<a name="1419"><span class="lineNum">    1419 </span><span class="lineCov">        190 :         return (unsigned long)xas-&gt;xa_node &amp; 3;</span></a>
+<a name="1419"><span class="lineNum">    1419 </span><span class="lineCov">         95 :         return (unsigned long)xas-&gt;xa_node &amp; 3;</span></a>
 <a name="1420"><span class="lineNum">    1420 </span>            : }</a>
 <a name="1421"><span class="lineNum">    1421 </span>            : </a>
 <a name="1422"><span class="lineNum">    1422 </span>            : /**</a>
@@ -1489,7 +1489,7 @@
 <a name="1427"><span class="lineNum">    1427 </span>            :  */</a>
 <a name="1428"><span class="lineNum">    1428 </span>            : static inline bool xas_valid(const struct xa_state *xas)</a>
 <a name="1429"><span class="lineNum">    1429 </span>            : {</a>
-<a name="1430"><span class="lineNum">    1430 </span><span class="lineCov">          4 :         return !xas_invalid(xas);</span></a>
+<a name="1430"><span class="lineNum">    1430 </span><span class="lineCov">          2 :         return !xas_invalid(xas);</span></a>
 <a name="1431"><span class="lineNum">    1431 </span>            : }</a>
 <a name="1432"><span class="lineNum">    1432 </span>            : </a>
 <a name="1433"><span class="lineNum">    1433 </span>            : /**</a>
@@ -1550,9 +1550,9 @@
 <a name="1488"><span class="lineNum">    1488 </span>            :  */</a>
 <a name="1489"><span class="lineNum">    1489 </span>            : static inline bool xas_retry(struct xa_state *xas, const void *entry)</a>
 <a name="1490"><span class="lineNum">    1490 </span>            : {</a>
-<a name="1491"><span class="lineNum">    1491 </span><span class="lineCov">          4 :         if (xa_is_zero(entry))</span></a>
+<a name="1491"><span class="lineNum">    1491 </span><span class="lineCov">          2 :         if (xa_is_zero(entry))</span></a>
 <a name="1492"><span class="lineNum">    1492 </span>            :                 return true;</a>
-<a name="1493"><span class="lineNum">    1493 </span><span class="lineCov">          4 :         if (!xa_is_retry(entry))</span></a>
+<a name="1493"><span class="lineNum">    1493 </span><span class="lineCov">          2 :         if (!xa_is_retry(entry))</span></a>
 <a name="1494"><span class="lineNum">    1494 </span>            :                 return false;</a>
 <a name="1495"><span class="lineNum">    1495 </span><span class="lineNoCov">          0 :         xas_reset(xas);</span></a>
 <a name="1496"><span class="lineNum">    1496 </span>            :         return true;</a>

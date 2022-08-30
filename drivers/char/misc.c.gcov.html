@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -232,42 +232,42 @@
 <a name="170"><span class="lineNum">     170 </span>            :  *      failure.</a>
 <a name="171"><span class="lineNum">     171 </span>            :  */</a>
 <a name="172"><span class="lineNum">     172 </span>            : </a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          4 : int misc_register(struct miscdevice *misc)</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          2 : int misc_register(struct miscdevice *misc)</span></a>
 <a name="174"><span class="lineNum">     174 </span>            : {</a>
 <a name="175"><span class="lineNum">     175 </span>            :         dev_t dev;</a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineCov">          4 :         int err = 0;</span></a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          4 :         bool is_dynamic = (misc-&gt;minor == MISC_DYNAMIC_MINOR);</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">          2 :         int err = 0;</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          2 :         bool is_dynamic = (misc-&gt;minor == MISC_DYNAMIC_MINOR);</span></a>
 <a name="178"><span class="lineNum">     178 </span>            : </a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          8 :         INIT_LIST_HEAD(&amp;misc-&gt;list);</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          4 :         INIT_LIST_HEAD(&amp;misc-&gt;list);</span></a>
 <a name="180"><span class="lineNum">     180 </span>            : </a>
-<a name="181"><span class="lineNum">     181 </span><span class="lineCov">          4 :         mutex_lock(&amp;misc_mtx);</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">          2 :         mutex_lock(&amp;misc_mtx);</span></a>
 <a name="182"><span class="lineNum">     182 </span>            : </a>
-<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          4 :         if (is_dynamic) {</span></a>
-<a name="184"><span class="lineNum">     184 </span><span class="lineCov">          2 :                 int i = find_first_zero_bit(misc_minors, DYNAMIC_MINORS);</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          2 :         if (is_dynamic) {</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">          1 :                 int i = find_first_zero_bit(misc_minors, DYNAMIC_MINORS);</span></a>
 <a name="185"><span class="lineNum">     185 </span>            : </a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          2 :                 if (i &gt;= DYNAMIC_MINORS) {</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          1 :                 if (i &gt;= DYNAMIC_MINORS) {</span></a>
 <a name="187"><span class="lineNum">     187 </span>            :                         err = -EBUSY;</a>
 <a name="188"><span class="lineNum">     188 </span>            :                         goto out;</a>
 <a name="189"><span class="lineNum">     189 </span>            :                 }</a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineCov">          2 :                 misc-&gt;minor = DYNAMIC_MINORS - i - 1;</span></a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          2 :                 set_bit(i, misc_minors);</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineCov">          1 :                 misc-&gt;minor = DYNAMIC_MINORS - i - 1;</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          1 :                 set_bit(i, misc_minors);</span></a>
 <a name="192"><span class="lineNum">     192 </span>            :         } else {</a>
 <a name="193"><span class="lineNum">     193 </span>            :                 struct miscdevice *c;</a>
 <a name="194"><span class="lineNum">     194 </span>            : </a>
-<a name="195"><span class="lineNum">     195 </span><span class="lineCov">          4 :                 list_for_each_entry(c, &amp;misc_list, list) {</span></a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineCov">          2 :                         if (c-&gt;minor == misc-&gt;minor) {</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineCov">          2 :                 list_for_each_entry(c, &amp;misc_list, list) {</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineCov">          1 :                         if (c-&gt;minor == misc-&gt;minor) {</span></a>
 <a name="197"><span class="lineNum">     197 </span>            :                                 err = -EBUSY;</a>
 <a name="198"><span class="lineNum">     198 </span>            :                                 goto out;</a>
 <a name="199"><span class="lineNum">     199 </span>            :                         }</a>
 <a name="200"><span class="lineNum">     200 </span>            :                 }</a>
 <a name="201"><span class="lineNum">     201 </span>            :         }</a>
 <a name="202"><span class="lineNum">     202 </span>            : </a>
-<a name="203"><span class="lineNum">     203 </span><span class="lineCov">          4 :         dev = MKDEV(MISC_MAJOR, misc-&gt;minor);</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineCov">          2 :         dev = MKDEV(MISC_MAJOR, misc-&gt;minor);</span></a>
 <a name="204"><span class="lineNum">     204 </span>            : </a>
-<a name="205"><span class="lineNum">     205 </span><span class="lineCov">          4 :         misc-&gt;this_device =</span></a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineCov">          4 :                 device_create_with_groups(misc_class, misc-&gt;parent, dev,</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineCov">          2 :         misc-&gt;this_device =</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">          2 :                 device_create_with_groups(misc_class, misc-&gt;parent, dev,</span></a>
 <a name="207"><span class="lineNum">     207 </span>            :                                           misc, misc-&gt;groups, &quot;%s&quot;, misc-&gt;name);</a>
-<a name="208"><span class="lineNum">     208 </span><span class="lineCov">          8 :         if (IS_ERR(misc-&gt;this_device)) {</span></a>
+<a name="208"><span class="lineNum">     208 </span><span class="lineCov">          4 :         if (IS_ERR(misc-&gt;this_device)) {</span></a>
 <a name="209"><span class="lineNum">     209 </span><span class="lineNoCov">          0 :                 if (is_dynamic) {</span></a>
 <a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 :                         int i = DYNAMIC_MINORS - misc-&gt;minor - 1;</span></a>
 <a name="211"><span class="lineNum">     211 </span>            : </a>
@@ -283,10 +283,10 @@
 <a name="221"><span class="lineNum">     221 </span>            :          * Add it to the front, so that later devices can &quot;override&quot;</a>
 <a name="222"><span class="lineNum">     222 </span>            :          * earlier defaults</a>
 <a name="223"><span class="lineNum">     223 </span>            :          */</a>
-<a name="224"><span class="lineNum">     224 </span><span class="lineCov">          4 :         list_add(&amp;misc-&gt;list, &amp;misc_list);</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineCov">          2 :         list_add(&amp;misc-&gt;list, &amp;misc_list);</span></a>
 <a name="225"><span class="lineNum">     225 </span>            :  out:</a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">          4 :         mutex_unlock(&amp;misc_mtx);</span></a>
-<a name="227"><span class="lineNum">     227 </span><span class="lineCov">          4 :         return err;</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">          2 :         mutex_unlock(&amp;misc_mtx);</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">          2 :         return err;</span></a>
 <a name="228"><span class="lineNum">     228 </span>            : }</a>
 <a name="229"><span class="lineNum">     229 </span>            : EXPORT_SYMBOL(misc_register);</a>
 <a name="230"><span class="lineNum">     230 </span>            : </a>
@@ -314,33 +314,33 @@
 <a name="252"><span class="lineNum">     252 </span>            : }</a>
 <a name="253"><span class="lineNum">     253 </span>            : EXPORT_SYMBOL(misc_deregister);</a>
 <a name="254"><span class="lineNum">     254 </span>            : </a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineCov">          4 : static char *misc_devnode(struct device *dev, umode_t *mode)</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineCov">          2 : static char *misc_devnode(struct device *dev, umode_t *mode)</span></a>
 <a name="256"><span class="lineNum">     256 </span>            : {</a>
-<a name="257"><span class="lineNum">     257 </span><span class="lineCov">          4 :         struct miscdevice *c = dev_get_drvdata(dev);</span></a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineCov">          2 :         struct miscdevice *c = dev_get_drvdata(dev);</span></a>
 <a name="258"><span class="lineNum">     258 </span>            : </a>
-<a name="259"><span class="lineNum">     259 </span><span class="lineCov">          4 :         if (mode &amp;&amp; c-&gt;mode)</span></a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineCov">          2 :         if (mode &amp;&amp; c-&gt;mode)</span></a>
 <a name="260"><span class="lineNum">     260 </span><span class="lineNoCov">          0 :                 *mode = c-&gt;mode;</span></a>
-<a name="261"><span class="lineNum">     261 </span><span class="lineCov">          4 :         if (c-&gt;nodename)</span></a>
-<a name="262"><span class="lineNum">     262 </span><span class="lineCov">          2 :                 return kstrdup(c-&gt;nodename, GFP_KERNEL);</span></a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineCov">          2 :         if (c-&gt;nodename)</span></a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineCov">          1 :                 return kstrdup(c-&gt;nodename, GFP_KERNEL);</span></a>
 <a name="263"><span class="lineNum">     263 </span>            :         return NULL;</a>
 <a name="264"><span class="lineNum">     264 </span>            : }</a>
 <a name="265"><span class="lineNum">     265 </span>            : </a>
-<a name="266"><span class="lineNum">     266 </span><span class="lineCov">          2 : static int __init misc_init(void)</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineCov">          1 : static int __init misc_init(void)</span></a>
 <a name="267"><span class="lineNum">     267 </span>            : {</a>
 <a name="268"><span class="lineNum">     268 </span>            :         int err;</a>
 <a name="269"><span class="lineNum">     269 </span>            :         struct proc_dir_entry *ret;</a>
 <a name="270"><span class="lineNum">     270 </span>            : </a>
-<a name="271"><span class="lineNum">     271 </span><span class="lineCov">          2 :         ret = proc_create_seq(&quot;misc&quot;, 0, NULL, &amp;misc_seq_ops);</span></a>
-<a name="272"><span class="lineNum">     272 </span><span class="lineCov">          2 :         misc_class = class_create(THIS_MODULE, &quot;misc&quot;);</span></a>
-<a name="273"><span class="lineNum">     273 </span><span class="lineCov">          4 :         err = PTR_ERR(misc_class);</span></a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineCov">          4 :         if (IS_ERR(misc_class))</span></a>
+<a name="271"><span class="lineNum">     271 </span><span class="lineCov">          1 :         ret = proc_create_seq(&quot;misc&quot;, 0, NULL, &amp;misc_seq_ops);</span></a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineCov">          1 :         misc_class = class_create(THIS_MODULE, &quot;misc&quot;);</span></a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineCov">          2 :         err = PTR_ERR(misc_class);</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineCov">          2 :         if (IS_ERR(misc_class))</span></a>
 <a name="275"><span class="lineNum">     275 </span>            :                 goto fail_remove;</a>
 <a name="276"><span class="lineNum">     276 </span>            : </a>
-<a name="277"><span class="lineNum">     277 </span><span class="lineCov">          2 :         err = -EIO;</span></a>
-<a name="278"><span class="lineNum">     278 </span><span class="lineCov">          2 :         if (register_chrdev(MISC_MAJOR, &quot;misc&quot;, &amp;misc_fops))</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineCov">          1 :         err = -EIO;</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineCov">          1 :         if (register_chrdev(MISC_MAJOR, &quot;misc&quot;, &amp;misc_fops))</span></a>
 <a name="279"><span class="lineNum">     279 </span>            :                 goto fail_printk;</a>
-<a name="280"><span class="lineNum">     280 </span><span class="lineCov">          2 :         misc_class-&gt;devnode = misc_devnode;</span></a>
-<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineCov">          1 :         misc_class-&gt;devnode = misc_devnode;</span></a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="282"><span class="lineNum">     282 </span>            : </a>
 <a name="283"><span class="lineNum">     283 </span>            : fail_printk:</a>
 <a name="284"><span class="lineNum">     284 </span><span class="lineNoCov">          0 :         pr_err(&quot;unable to get major %d for misc devices\n&quot;, MISC_MAJOR);</span></a>

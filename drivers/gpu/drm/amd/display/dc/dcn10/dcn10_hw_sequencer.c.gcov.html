@@ -32,16 +32,16 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">1721</td>
+            <td class="headerCovTableEntry">1723</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">85</td>
+            <td class="headerCovTableEntry">86</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -3395,630 +3395,633 @@
 <a name="3333"><span class="lineNum">    3333 </span>            :         return false;</a>
 <a name="3334"><span class="lineNum">    3334 </span>            : }</a>
 <a name="3335"><span class="lineNum">    3335 </span>            : </a>
-<a name="3336"><span class="lineNum">    3336 </span>            : static bool dcn10_dmub_should_update_cursor_data(</a>
+<a name="3336"><span class="lineNum">    3336 </span><span class="lineNoCov">          0 : static bool dcn10_dmub_should_update_cursor_data(</span></a>
 <a name="3337"><span class="lineNum">    3337 </span>            :                 struct pipe_ctx *pipe_ctx,</a>
 <a name="3338"><span class="lineNum">    3338 </span>            :                 struct dc_debug_options *debug)</a>
 <a name="3339"><span class="lineNum">    3339 </span>            : {</a>
 <a name="3340"><span class="lineNum">    3340 </span><span class="lineNoCov">          0 :         if (pipe_ctx-&gt;plane_state-&gt;address.type == PLN_ADDR_TYPE_VIDEO_PROGRESSIVE)</span></a>
 <a name="3341"><span class="lineNum">    3341 </span>            :                 return false;</a>
 <a name="3342"><span class="lineNum">    3342 </span>            : </a>
-<a name="3343"><span class="lineNum">    3343 </span><span class="lineNoCov">          0 :         if (pipe_ctx-&gt;stream-&gt;link-&gt;psr_settings.psr_version == DC_PSR_VERSION_SU_1)</span></a>
-<a name="3344"><span class="lineNum">    3344 </span>            :                 return true;</a>
+<a name="3343"><span class="lineNum">    3343 </span><span class="lineNoCov">          0 :         if (dcn10_can_pipe_disable_cursor(pipe_ctx))</span></a>
+<a name="3344"><span class="lineNum">    3344 </span>            :                 return false;</a>
 <a name="3345"><span class="lineNum">    3345 </span>            : </a>
-<a name="3346"><span class="lineNum">    3346 </span><span class="lineNoCov">          0 :         if (pipe_ctx-&gt;stream-&gt;link-&gt;psr_settings.psr_version == DC_PSR_VERSION_1 &amp;&amp;</span></a>
-<a name="3347"><span class="lineNum">    3347 </span><span class="lineNoCov">          0 :             debug-&gt;enable_sw_cntl_psr)</span></a>
-<a name="3348"><span class="lineNum">    3348 </span>            :                 return true;</a>
-<a name="3349"><span class="lineNum">    3349 </span>            : </a>
-<a name="3350"><span class="lineNum">    3350 </span>            :         return false;</a>
-<a name="3351"><span class="lineNum">    3351 </span>            : }</a>
+<a name="3346"><span class="lineNum">    3346 </span><span class="lineNoCov">          0 :         if (pipe_ctx-&gt;stream-&gt;link-&gt;psr_settings.psr_version == DC_PSR_VERSION_SU_1)</span></a>
+<a name="3347"><span class="lineNum">    3347 </span>            :                 return true;</a>
+<a name="3348"><span class="lineNum">    3348 </span>            : </a>
+<a name="3349"><span class="lineNum">    3349 </span><span class="lineNoCov">          0 :         if (pipe_ctx-&gt;stream-&gt;link-&gt;psr_settings.psr_version == DC_PSR_VERSION_1 &amp;&amp;</span></a>
+<a name="3350"><span class="lineNum">    3350 </span><span class="lineNoCov">          0 :             debug-&gt;enable_sw_cntl_psr)</span></a>
+<a name="3351"><span class="lineNum">    3351 </span>            :                 return true;</a>
 <a name="3352"><span class="lineNum">    3352 </span>            : </a>
-<a name="3353"><span class="lineNum">    3353 </span><span class="lineNoCov">          0 : static void dcn10_dmub_update_cursor_data(</span></a>
-<a name="3354"><span class="lineNum">    3354 </span>            :                 struct pipe_ctx *pipe_ctx,</a>
-<a name="3355"><span class="lineNum">    3355 </span>            :                 struct hubp *hubp,</a>
-<a name="3356"><span class="lineNum">    3356 </span>            :                 const struct dc_cursor_mi_param *param,</a>
-<a name="3357"><span class="lineNum">    3357 </span>            :                 const struct dc_cursor_position *cur_pos,</a>
-<a name="3358"><span class="lineNum">    3358 </span>            :                 const struct dc_cursor_attributes *cur_attr)</a>
-<a name="3359"><span class="lineNum">    3359 </span>            : {</a>
-<a name="3360"><span class="lineNum">    3360 </span>            :         union dmub_rb_cmd cmd;</a>
-<a name="3361"><span class="lineNum">    3361 </span>            :         struct dmub_cmd_update_cursor_info_data *update_cursor_info;</a>
-<a name="3362"><span class="lineNum">    3362 </span>            :         const struct dc_cursor_position *pos;</a>
-<a name="3363"><span class="lineNum">    3363 </span>            :         const struct dc_cursor_attributes *attr;</a>
-<a name="3364"><span class="lineNum">    3364 </span><span class="lineNoCov">          0 :         int src_x_offset = 0;</span></a>
-<a name="3365"><span class="lineNum">    3365 </span><span class="lineNoCov">          0 :         int src_y_offset = 0;</span></a>
-<a name="3366"><span class="lineNum">    3366 </span><span class="lineNoCov">          0 :         int x_hotspot = 0;</span></a>
-<a name="3367"><span class="lineNum">    3367 </span><span class="lineNoCov">          0 :         int cursor_height = 0;</span></a>
-<a name="3368"><span class="lineNum">    3368 </span><span class="lineNoCov">          0 :         int cursor_width = 0;</span></a>
-<a name="3369"><span class="lineNum">    3369 </span><span class="lineNoCov">          0 :         uint32_t cur_en = 0;</span></a>
-<a name="3370"><span class="lineNum">    3370 </span><span class="lineNoCov">          0 :         unsigned int panel_inst = 0;</span></a>
-<a name="3371"><span class="lineNum">    3371 </span>            : </a>
-<a name="3372"><span class="lineNum">    3372 </span><span class="lineNoCov">          0 :         struct dc_debug_options *debug = &amp;hubp-&gt;ctx-&gt;dc-&gt;debug;</span></a>
-<a name="3373"><span class="lineNum">    3373 </span>            : </a>
-<a name="3374"><span class="lineNum">    3374 </span><span class="lineNoCov">          0 :         if (!dcn10_dmub_should_update_cursor_data(pipe_ctx, debug))</span></a>
-<a name="3375"><span class="lineNum">    3375 </span><span class="lineNoCov">          0 :                 return;</span></a>
-<a name="3376"><span class="lineNum">    3376 </span>            :         /**</a>
-<a name="3377"><span class="lineNum">    3377 </span>            :          * if cur_pos == NULL means the caller is from cursor_set_attribute</a>
-<a name="3378"><span class="lineNum">    3378 </span>            :          * then driver use previous cursor position data</a>
-<a name="3379"><span class="lineNum">    3379 </span>            :          * if cur_attr == NULL means the caller is from cursor_set_position</a>
-<a name="3380"><span class="lineNum">    3380 </span>            :          * then driver use previous cursor attribute</a>
-<a name="3381"><span class="lineNum">    3381 </span>            :          * if cur_pos or cur_attr is not NULL then update it</a>
-<a name="3382"><span class="lineNum">    3382 </span>            :          */</a>
-<a name="3383"><span class="lineNum">    3383 </span><span class="lineNoCov">          0 :         if (cur_pos != NULL)</span></a>
-<a name="3384"><span class="lineNum">    3384 </span>            :                 pos = cur_pos;</a>
-<a name="3385"><span class="lineNum">    3385 </span>            :         else</a>
-<a name="3386"><span class="lineNum">    3386 </span><span class="lineNoCov">          0 :                 pos = &amp;hubp-&gt;curs_pos;</span></a>
-<a name="3387"><span class="lineNum">    3387 </span>            : </a>
-<a name="3388"><span class="lineNum">    3388 </span><span class="lineNoCov">          0 :         if (cur_attr != NULL)</span></a>
-<a name="3389"><span class="lineNum">    3389 </span>            :                 attr = cur_attr;</a>
-<a name="3390"><span class="lineNum">    3390 </span>            :         else</a>
-<a name="3391"><span class="lineNum">    3391 </span><span class="lineNoCov">          0 :                 attr = &amp;hubp-&gt;curs_attr;</span></a>
-<a name="3392"><span class="lineNum">    3392 </span>            : </a>
-<a name="3393"><span class="lineNum">    3393 </span><span class="lineNoCov">          0 :         if (!dc_get_edp_link_panel_inst(hubp-&gt;ctx-&gt;dc, pipe_ctx-&gt;stream-&gt;link, &amp;panel_inst))</span></a>
-<a name="3394"><span class="lineNum">    3394 </span>            :                 return;</a>
+<a name="3353"><span class="lineNum">    3353 </span>            :         return false;</a>
+<a name="3354"><span class="lineNum">    3354 </span>            : }</a>
+<a name="3355"><span class="lineNum">    3355 </span>            : </a>
+<a name="3356"><span class="lineNum">    3356 </span><span class="lineNoCov">          0 : static void dcn10_dmub_update_cursor_data(</span></a>
+<a name="3357"><span class="lineNum">    3357 </span>            :                 struct pipe_ctx *pipe_ctx,</a>
+<a name="3358"><span class="lineNum">    3358 </span>            :                 struct hubp *hubp,</a>
+<a name="3359"><span class="lineNum">    3359 </span>            :                 const struct dc_cursor_mi_param *param,</a>
+<a name="3360"><span class="lineNum">    3360 </span>            :                 const struct dc_cursor_position *cur_pos,</a>
+<a name="3361"><span class="lineNum">    3361 </span>            :                 const struct dc_cursor_attributes *cur_attr)</a>
+<a name="3362"><span class="lineNum">    3362 </span>            : {</a>
+<a name="3363"><span class="lineNum">    3363 </span>            :         union dmub_rb_cmd cmd;</a>
+<a name="3364"><span class="lineNum">    3364 </span>            :         struct dmub_cmd_update_cursor_info_data *update_cursor_info;</a>
+<a name="3365"><span class="lineNum">    3365 </span>            :         const struct dc_cursor_position *pos;</a>
+<a name="3366"><span class="lineNum">    3366 </span>            :         const struct dc_cursor_attributes *attr;</a>
+<a name="3367"><span class="lineNum">    3367 </span><span class="lineNoCov">          0 :         int src_x_offset = 0;</span></a>
+<a name="3368"><span class="lineNum">    3368 </span><span class="lineNoCov">          0 :         int src_y_offset = 0;</span></a>
+<a name="3369"><span class="lineNum">    3369 </span><span class="lineNoCov">          0 :         int x_hotspot = 0;</span></a>
+<a name="3370"><span class="lineNum">    3370 </span><span class="lineNoCov">          0 :         int cursor_height = 0;</span></a>
+<a name="3371"><span class="lineNum">    3371 </span><span class="lineNoCov">          0 :         int cursor_width = 0;</span></a>
+<a name="3372"><span class="lineNum">    3372 </span><span class="lineNoCov">          0 :         uint32_t cur_en = 0;</span></a>
+<a name="3373"><span class="lineNum">    3373 </span><span class="lineNoCov">          0 :         unsigned int panel_inst = 0;</span></a>
+<a name="3374"><span class="lineNum">    3374 </span>            : </a>
+<a name="3375"><span class="lineNum">    3375 </span><span class="lineNoCov">          0 :         struct dc_debug_options *debug = &amp;hubp-&gt;ctx-&gt;dc-&gt;debug;</span></a>
+<a name="3376"><span class="lineNum">    3376 </span>            : </a>
+<a name="3377"><span class="lineNum">    3377 </span><span class="lineNoCov">          0 :         if (!dcn10_dmub_should_update_cursor_data(pipe_ctx, debug))</span></a>
+<a name="3378"><span class="lineNum">    3378 </span><span class="lineNoCov">          0 :                 return;</span></a>
+<a name="3379"><span class="lineNum">    3379 </span>            :         /**</a>
+<a name="3380"><span class="lineNum">    3380 </span>            :          * if cur_pos == NULL means the caller is from cursor_set_attribute</a>
+<a name="3381"><span class="lineNum">    3381 </span>            :          * then driver use previous cursor position data</a>
+<a name="3382"><span class="lineNum">    3382 </span>            :          * if cur_attr == NULL means the caller is from cursor_set_position</a>
+<a name="3383"><span class="lineNum">    3383 </span>            :          * then driver use previous cursor attribute</a>
+<a name="3384"><span class="lineNum">    3384 </span>            :          * if cur_pos or cur_attr is not NULL then update it</a>
+<a name="3385"><span class="lineNum">    3385 </span>            :          */</a>
+<a name="3386"><span class="lineNum">    3386 </span><span class="lineNoCov">          0 :         if (cur_pos != NULL)</span></a>
+<a name="3387"><span class="lineNum">    3387 </span>            :                 pos = cur_pos;</a>
+<a name="3388"><span class="lineNum">    3388 </span>            :         else</a>
+<a name="3389"><span class="lineNum">    3389 </span><span class="lineNoCov">          0 :                 pos = &amp;hubp-&gt;curs_pos;</span></a>
+<a name="3390"><span class="lineNum">    3390 </span>            : </a>
+<a name="3391"><span class="lineNum">    3391 </span><span class="lineNoCov">          0 :         if (cur_attr != NULL)</span></a>
+<a name="3392"><span class="lineNum">    3392 </span>            :                 attr = cur_attr;</a>
+<a name="3393"><span class="lineNum">    3393 </span>            :         else</a>
+<a name="3394"><span class="lineNum">    3394 </span><span class="lineNoCov">          0 :                 attr = &amp;hubp-&gt;curs_attr;</span></a>
 <a name="3395"><span class="lineNum">    3395 </span>            : </a>
-<a name="3396"><span class="lineNum">    3396 </span><span class="lineNoCov">          0 :         src_x_offset = pos-&gt;x - pos-&gt;x_hotspot - param-&gt;viewport.x;</span></a>
-<a name="3397"><span class="lineNum">    3397 </span><span class="lineNoCov">          0 :         src_y_offset = pos-&gt;y - pos-&gt;y_hotspot - param-&gt;viewport.y;</span></a>
-<a name="3398"><span class="lineNum">    3398 </span><span class="lineNoCov">          0 :         x_hotspot = pos-&gt;x_hotspot;</span></a>
-<a name="3399"><span class="lineNum">    3399 </span><span class="lineNoCov">          0 :         cursor_height = (int)attr-&gt;height;</span></a>
-<a name="3400"><span class="lineNum">    3400 </span><span class="lineNoCov">          0 :         cursor_width = (int)attr-&gt;width;</span></a>
-<a name="3401"><span class="lineNum">    3401 </span><span class="lineNoCov">          0 :         cur_en = pos-&gt;enable ? 1:0;</span></a>
-<a name="3402"><span class="lineNum">    3402 </span>            : </a>
-<a name="3403"><span class="lineNum">    3403 </span>            :         // Rotated cursor width/height and hotspots tweaks for offset calculation</a>
-<a name="3404"><span class="lineNum">    3404 </span><span class="lineNoCov">          0 :         if (param-&gt;rotation == ROTATION_ANGLE_90 || param-&gt;rotation == ROTATION_ANGLE_270) {</span></a>
-<a name="3405"><span class="lineNum">    3405 </span><span class="lineNoCov">          0 :                 swap(cursor_height, cursor_width);</span></a>
-<a name="3406"><span class="lineNum">    3406 </span><span class="lineNoCov">          0 :                 if (param-&gt;rotation == ROTATION_ANGLE_90) {</span></a>
-<a name="3407"><span class="lineNum">    3407 </span><span class="lineNoCov">          0 :                         src_x_offset = pos-&gt;x - pos-&gt;y_hotspot - param-&gt;viewport.x;</span></a>
-<a name="3408"><span class="lineNum">    3408 </span><span class="lineNoCov">          0 :                         src_y_offset = pos-&gt;y - pos-&gt;x_hotspot - param-&gt;viewport.y;</span></a>
-<a name="3409"><span class="lineNum">    3409 </span>            :                 }</a>
-<a name="3410"><span class="lineNum">    3410 </span><span class="lineNoCov">          0 :         } else if (param-&gt;rotation == ROTATION_ANGLE_180) {</span></a>
-<a name="3411"><span class="lineNum">    3411 </span><span class="lineNoCov">          0 :                 src_x_offset = pos-&gt;x - param-&gt;viewport.x;</span></a>
-<a name="3412"><span class="lineNum">    3412 </span><span class="lineNoCov">          0 :                 src_y_offset = pos-&gt;y - param-&gt;viewport.y;</span></a>
-<a name="3413"><span class="lineNum">    3413 </span>            :         }</a>
-<a name="3414"><span class="lineNum">    3414 </span>            : </a>
-<a name="3415"><span class="lineNum">    3415 </span><span class="lineNoCov">          0 :         if (param-&gt;mirror) {</span></a>
-<a name="3416"><span class="lineNum">    3416 </span><span class="lineNoCov">          0 :                 x_hotspot = param-&gt;viewport.width - x_hotspot;</span></a>
-<a name="3417"><span class="lineNum">    3417 </span><span class="lineNoCov">          0 :                 src_x_offset = param-&gt;viewport.x + param-&gt;viewport.width - src_x_offset;</span></a>
-<a name="3418"><span class="lineNum">    3418 </span>            :         }</a>
-<a name="3419"><span class="lineNum">    3419 </span>            : </a>
-<a name="3420"><span class="lineNum">    3420 </span><span class="lineNoCov">          0 :         if (src_x_offset &gt;= (int)param-&gt;viewport.width)</span></a>
-<a name="3421"><span class="lineNum">    3421 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond right edge*/</span></a>
+<a name="3396"><span class="lineNum">    3396 </span><span class="lineNoCov">          0 :         if (!dc_get_edp_link_panel_inst(hubp-&gt;ctx-&gt;dc, pipe_ctx-&gt;stream-&gt;link, &amp;panel_inst))</span></a>
+<a name="3397"><span class="lineNum">    3397 </span>            :                 return;</a>
+<a name="3398"><span class="lineNum">    3398 </span>            : </a>
+<a name="3399"><span class="lineNum">    3399 </span><span class="lineNoCov">          0 :         src_x_offset = pos-&gt;x - pos-&gt;x_hotspot - param-&gt;viewport.x;</span></a>
+<a name="3400"><span class="lineNum">    3400 </span><span class="lineNoCov">          0 :         src_y_offset = pos-&gt;y - pos-&gt;y_hotspot - param-&gt;viewport.y;</span></a>
+<a name="3401"><span class="lineNum">    3401 </span><span class="lineNoCov">          0 :         x_hotspot = pos-&gt;x_hotspot;</span></a>
+<a name="3402"><span class="lineNum">    3402 </span><span class="lineNoCov">          0 :         cursor_height = (int)attr-&gt;height;</span></a>
+<a name="3403"><span class="lineNum">    3403 </span><span class="lineNoCov">          0 :         cursor_width = (int)attr-&gt;width;</span></a>
+<a name="3404"><span class="lineNum">    3404 </span><span class="lineNoCov">          0 :         cur_en = pos-&gt;enable ? 1:0;</span></a>
+<a name="3405"><span class="lineNum">    3405 </span>            : </a>
+<a name="3406"><span class="lineNum">    3406 </span>            :         // Rotated cursor width/height and hotspots tweaks for offset calculation</a>
+<a name="3407"><span class="lineNum">    3407 </span><span class="lineNoCov">          0 :         if (param-&gt;rotation == ROTATION_ANGLE_90 || param-&gt;rotation == ROTATION_ANGLE_270) {</span></a>
+<a name="3408"><span class="lineNum">    3408 </span><span class="lineNoCov">          0 :                 swap(cursor_height, cursor_width);</span></a>
+<a name="3409"><span class="lineNum">    3409 </span><span class="lineNoCov">          0 :                 if (param-&gt;rotation == ROTATION_ANGLE_90) {</span></a>
+<a name="3410"><span class="lineNum">    3410 </span><span class="lineNoCov">          0 :                         src_x_offset = pos-&gt;x - pos-&gt;y_hotspot - param-&gt;viewport.x;</span></a>
+<a name="3411"><span class="lineNum">    3411 </span><span class="lineNoCov">          0 :                         src_y_offset = pos-&gt;y - pos-&gt;x_hotspot - param-&gt;viewport.y;</span></a>
+<a name="3412"><span class="lineNum">    3412 </span>            :                 }</a>
+<a name="3413"><span class="lineNum">    3413 </span><span class="lineNoCov">          0 :         } else if (param-&gt;rotation == ROTATION_ANGLE_180) {</span></a>
+<a name="3414"><span class="lineNum">    3414 </span><span class="lineNoCov">          0 :                 src_x_offset = pos-&gt;x - param-&gt;viewport.x;</span></a>
+<a name="3415"><span class="lineNum">    3415 </span><span class="lineNoCov">          0 :                 src_y_offset = pos-&gt;y - param-&gt;viewport.y;</span></a>
+<a name="3416"><span class="lineNum">    3416 </span>            :         }</a>
+<a name="3417"><span class="lineNum">    3417 </span>            : </a>
+<a name="3418"><span class="lineNum">    3418 </span><span class="lineNoCov">          0 :         if (param-&gt;mirror) {</span></a>
+<a name="3419"><span class="lineNum">    3419 </span><span class="lineNoCov">          0 :                 x_hotspot = param-&gt;viewport.width - x_hotspot;</span></a>
+<a name="3420"><span class="lineNum">    3420 </span><span class="lineNoCov">          0 :                 src_x_offset = param-&gt;viewport.x + param-&gt;viewport.width - src_x_offset;</span></a>
+<a name="3421"><span class="lineNum">    3421 </span>            :         }</a>
 <a name="3422"><span class="lineNum">    3422 </span>            : </a>
-<a name="3423"><span class="lineNum">    3423 </span><span class="lineNoCov">          0 :         if (src_x_offset + cursor_width &lt;= 0)</span></a>
-<a name="3424"><span class="lineNum">    3424 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond left edge*/</span></a>
+<a name="3423"><span class="lineNum">    3423 </span><span class="lineNoCov">          0 :         if (src_x_offset &gt;= (int)param-&gt;viewport.width)</span></a>
+<a name="3424"><span class="lineNum">    3424 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond right edge*/</span></a>
 <a name="3425"><span class="lineNum">    3425 </span>            : </a>
-<a name="3426"><span class="lineNum">    3426 </span><span class="lineNoCov">          0 :         if (src_y_offset &gt;= (int)param-&gt;viewport.height)</span></a>
-<a name="3427"><span class="lineNum">    3427 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond bottom edge*/</span></a>
+<a name="3426"><span class="lineNum">    3426 </span><span class="lineNoCov">          0 :         if (src_x_offset + cursor_width &lt;= 0)</span></a>
+<a name="3427"><span class="lineNum">    3427 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond left edge*/</span></a>
 <a name="3428"><span class="lineNum">    3428 </span>            : </a>
-<a name="3429"><span class="lineNum">    3429 </span><span class="lineNoCov">          0 :         if (src_y_offset + cursor_height &lt;= 0)</span></a>
-<a name="3430"><span class="lineNum">    3430 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond top edge*/</span></a>
+<a name="3429"><span class="lineNum">    3429 </span><span class="lineNoCov">          0 :         if (src_y_offset &gt;= (int)param-&gt;viewport.height)</span></a>
+<a name="3430"><span class="lineNum">    3430 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond bottom edge*/</span></a>
 <a name="3431"><span class="lineNum">    3431 </span>            : </a>
-<a name="3432"><span class="lineNum">    3432 </span>            :         // Cursor bitmaps have different hotspot values</a>
-<a name="3433"><span class="lineNum">    3433 </span>            :         // There's a possibility that the above logic returns a negative value, so we clamp them to 0</a>
-<a name="3434"><span class="lineNum">    3434 </span><span class="lineNoCov">          0 :         if (src_x_offset &lt; 0)</span></a>
-<a name="3435"><span class="lineNum">    3435 </span><span class="lineNoCov">          0 :                 src_x_offset = 0;</span></a>
-<a name="3436"><span class="lineNum">    3436 </span><span class="lineNoCov">          0 :         if (src_y_offset &lt; 0)</span></a>
-<a name="3437"><span class="lineNum">    3437 </span><span class="lineNoCov">          0 :                 src_y_offset = 0;</span></a>
-<a name="3438"><span class="lineNum">    3438 </span>            : </a>
-<a name="3439"><span class="lineNum">    3439 </span><span class="lineNoCov">          0 :         memset(&amp;cmd, 0x0, sizeof(cmd));</span></a>
-<a name="3440"><span class="lineNum">    3440 </span><span class="lineNoCov">          0 :         cmd.update_cursor_info.header.type = DMUB_CMD__UPDATE_CURSOR_INFO;</span></a>
-<a name="3441"><span class="lineNum">    3441 </span><span class="lineNoCov">          0 :         cmd.update_cursor_info.header.payload_bytes =</span></a>
-<a name="3442"><span class="lineNum">    3442 </span>            :                         sizeof(cmd.update_cursor_info.update_cursor_info_data);</a>
-<a name="3443"><span class="lineNum">    3443 </span><span class="lineNoCov">          0 :         update_cursor_info = &amp;cmd.update_cursor_info.update_cursor_info_data;</span></a>
-<a name="3444"><span class="lineNum">    3444 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;cursor_rect.x = src_x_offset + param-&gt;viewport.x;</span></a>
-<a name="3445"><span class="lineNum">    3445 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;cursor_rect.y = src_y_offset + param-&gt;viewport.y;</span></a>
-<a name="3446"><span class="lineNum">    3446 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;cursor_rect.width = attr-&gt;width;</span></a>
-<a name="3447"><span class="lineNum">    3447 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;cursor_rect.height = attr-&gt;height;</span></a>
-<a name="3448"><span class="lineNum">    3448 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;enable = cur_en;</span></a>
-<a name="3449"><span class="lineNum">    3449 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;pipe_idx = pipe_ctx-&gt;pipe_idx;</span></a>
-<a name="3450"><span class="lineNum">    3450 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;cmd_version = DMUB_CMD_PSR_CONTROL_VERSION_1;</span></a>
-<a name="3451"><span class="lineNum">    3451 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;panel_inst = panel_inst;</span></a>
-<a name="3452"><span class="lineNum">    3452 </span><span class="lineNoCov">          0 :         dc_dmub_srv_cmd_queue(pipe_ctx-&gt;stream-&gt;ctx-&gt;dmub_srv, &amp;cmd);</span></a>
-<a name="3453"><span class="lineNum">    3453 </span><span class="lineNoCov">          0 :         dc_dmub_srv_cmd_execute(pipe_ctx-&gt;stream-&gt;ctx-&gt;dmub_srv);</span></a>
-<a name="3454"><span class="lineNum">    3454 </span><span class="lineNoCov">          0 :         dc_dmub_srv_wait_idle(pipe_ctx-&gt;stream-&gt;ctx-&gt;dmub_srv);</span></a>
-<a name="3455"><span class="lineNum">    3455 </span>            : }</a>
-<a name="3456"><span class="lineNum">    3456 </span>            : </a>
-<a name="3457"><span class="lineNum">    3457 </span><span class="lineNoCov">          0 : void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)</span></a>
-<a name="3458"><span class="lineNum">    3458 </span>            : {</a>
-<a name="3459"><span class="lineNum">    3459 </span><span class="lineNoCov">          0 :         struct dc_cursor_position pos_cpy = pipe_ctx-&gt;stream-&gt;cursor_position;</span></a>
-<a name="3460"><span class="lineNum">    3460 </span><span class="lineNoCov">          0 :         struct hubp *hubp = pipe_ctx-&gt;plane_res.hubp;</span></a>
-<a name="3461"><span class="lineNum">    3461 </span><span class="lineNoCov">          0 :         struct dpp *dpp = pipe_ctx-&gt;plane_res.dpp;</span></a>
-<a name="3462"><span class="lineNum">    3462 </span><span class="lineNoCov">          0 :         struct dc_cursor_mi_param param = {</span></a>
-<a name="3463"><span class="lineNum">    3463 </span><span class="lineNoCov">          0 :                 .pixel_clk_khz = pipe_ctx-&gt;stream-&gt;timing.pix_clk_100hz / 10,</span></a>
-<a name="3464"><span class="lineNum">    3464 </span><span class="lineNoCov">          0 :                 .ref_clk_khz = pipe_ctx-&gt;stream-&gt;ctx-&gt;dc-&gt;res_pool-&gt;ref_clocks.dchub_ref_clock_inKhz,</span></a>
-<a name="3465"><span class="lineNum">    3465 </span>            :                 .viewport = pipe_ctx-&gt;plane_res.scl_data.viewport,</a>
-<a name="3466"><span class="lineNum">    3466 </span>            :                 .h_scale_ratio = pipe_ctx-&gt;plane_res.scl_data.ratios.horz,</a>
-<a name="3467"><span class="lineNum">    3467 </span>            :                 .v_scale_ratio = pipe_ctx-&gt;plane_res.scl_data.ratios.vert,</a>
-<a name="3468"><span class="lineNum">    3468 </span><span class="lineNoCov">          0 :                 .rotation = pipe_ctx-&gt;plane_state-&gt;rotation,</span></a>
-<a name="3469"><span class="lineNum">    3469 </span><span class="lineNoCov">          0 :                 .mirror = pipe_ctx-&gt;plane_state-&gt;horizontal_mirror</span></a>
-<a name="3470"><span class="lineNum">    3470 </span>            :         };</a>
-<a name="3471"><span class="lineNum">    3471 </span><span class="lineNoCov">          0 :         bool pipe_split_on = (pipe_ctx-&gt;top_pipe != NULL) ||</span></a>
-<a name="3472"><span class="lineNum">    3472 </span><span class="lineNoCov">          0 :                 (pipe_ctx-&gt;bottom_pipe != NULL);</span></a>
-<a name="3473"><span class="lineNum">    3473 </span><span class="lineNoCov">          0 :         bool odm_combine_on = (pipe_ctx-&gt;next_odm_pipe != NULL) ||</span></a>
-<a name="3474"><span class="lineNum">    3474 </span><span class="lineNoCov">          0 :                 (pipe_ctx-&gt;prev_odm_pipe != NULL);</span></a>
-<a name="3475"><span class="lineNum">    3475 </span>            : </a>
-<a name="3476"><span class="lineNum">    3476 </span><span class="lineNoCov">          0 :         int x_plane = pipe_ctx-&gt;plane_state-&gt;dst_rect.x;</span></a>
-<a name="3477"><span class="lineNum">    3477 </span><span class="lineNoCov">          0 :         int y_plane = pipe_ctx-&gt;plane_state-&gt;dst_rect.y;</span></a>
-<a name="3478"><span class="lineNum">    3478 </span><span class="lineNoCov">          0 :         int x_pos = pos_cpy.x;</span></a>
-<a name="3479"><span class="lineNum">    3479 </span><span class="lineNoCov">          0 :         int y_pos = pos_cpy.y;</span></a>
-<a name="3480"><span class="lineNum">    3480 </span>            : </a>
-<a name="3481"><span class="lineNum">    3481 </span>            :         /**</a>
-<a name="3482"><span class="lineNum">    3482 </span>            :          * DC cursor is stream space, HW cursor is plane space and drawn</a>
-<a name="3483"><span class="lineNum">    3483 </span>            :          * as part of the framebuffer.</a>
-<a name="3484"><span class="lineNum">    3484 </span>            :          *</a>
-<a name="3485"><span class="lineNum">    3485 </span>            :          * Cursor position can't be negative, but hotspot can be used to</a>
-<a name="3486"><span class="lineNum">    3486 </span>            :          * shift cursor out of the plane bounds. Hotspot must be smaller</a>
-<a name="3487"><span class="lineNum">    3487 </span>            :          * than the cursor size.</a>
-<a name="3488"><span class="lineNum">    3488 </span>            :          */</a>
-<a name="3489"><span class="lineNum">    3489 </span>            : </a>
-<a name="3490"><span class="lineNum">    3490 </span>            :         /**</a>
-<a name="3491"><span class="lineNum">    3491 </span>            :          * Translate cursor from stream space to plane space.</a>
-<a name="3492"><span class="lineNum">    3492 </span>            :          *</a>
-<a name="3493"><span class="lineNum">    3493 </span>            :          * If the cursor is scaled then we need to scale the position</a>
-<a name="3494"><span class="lineNum">    3494 </span>            :          * to be in the approximately correct place. We can't do anything</a>
-<a name="3495"><span class="lineNum">    3495 </span>            :          * about the actual size being incorrect, that's a limitation of</a>
-<a name="3496"><span class="lineNum">    3496 </span>            :          * the hardware.</a>
-<a name="3497"><span class="lineNum">    3497 </span>            :          */</a>
-<a name="3498"><span class="lineNum">    3498 </span><span class="lineNoCov">          0 :         if (param.rotation == ROTATION_ANGLE_90 || param.rotation == ROTATION_ANGLE_270) {</span></a>
-<a name="3499"><span class="lineNum">    3499 </span><span class="lineNoCov">          0 :                 x_pos = (x_pos - x_plane) * pipe_ctx-&gt;plane_state-&gt;src_rect.height /</span></a>
-<a name="3500"><span class="lineNum">    3500 </span><span class="lineNoCov">          0 :                                 pipe_ctx-&gt;plane_state-&gt;dst_rect.width;</span></a>
-<a name="3501"><span class="lineNum">    3501 </span><span class="lineNoCov">          0 :                 y_pos = (y_pos - y_plane) * pipe_ctx-&gt;plane_state-&gt;src_rect.width /</span></a>
-<a name="3502"><span class="lineNum">    3502 </span><span class="lineNoCov">          0 :                                 pipe_ctx-&gt;plane_state-&gt;dst_rect.height;</span></a>
-<a name="3503"><span class="lineNum">    3503 </span>            :         } else {</a>
-<a name="3504"><span class="lineNum">    3504 </span><span class="lineNoCov">          0 :                 x_pos = (x_pos - x_plane) * pipe_ctx-&gt;plane_state-&gt;src_rect.width /</span></a>
-<a name="3505"><span class="lineNum">    3505 </span><span class="lineNoCov">          0 :                                 pipe_ctx-&gt;plane_state-&gt;dst_rect.width;</span></a>
-<a name="3506"><span class="lineNum">    3506 </span><span class="lineNoCov">          0 :                 y_pos = (y_pos - y_plane) * pipe_ctx-&gt;plane_state-&gt;src_rect.height /</span></a>
-<a name="3507"><span class="lineNum">    3507 </span><span class="lineNoCov">          0 :                                 pipe_ctx-&gt;plane_state-&gt;dst_rect.height;</span></a>
-<a name="3508"><span class="lineNum">    3508 </span>            :         }</a>
-<a name="3509"><span class="lineNum">    3509 </span>            : </a>
-<a name="3510"><span class="lineNum">    3510 </span>            :         /**</a>
-<a name="3511"><span class="lineNum">    3511 </span>            :          * If the cursor's source viewport is clipped then we need to</a>
-<a name="3512"><span class="lineNum">    3512 </span>            :          * translate the cursor to appear in the correct position on</a>
-<a name="3513"><span class="lineNum">    3513 </span>            :          * the screen.</a>
-<a name="3514"><span class="lineNum">    3514 </span>            :          *</a>
-<a name="3515"><span class="lineNum">    3515 </span>            :          * This translation isn't affected by scaling so it needs to be</a>
-<a name="3516"><span class="lineNum">    3516 </span>            :          * done *after* we adjust the position for the scale factor.</a>
+<a name="3432"><span class="lineNum">    3432 </span><span class="lineNoCov">          0 :         if (src_y_offset + cursor_height &lt;= 0)</span></a>
+<a name="3433"><span class="lineNum">    3433 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond top edge*/</span></a>
+<a name="3434"><span class="lineNum">    3434 </span>            : </a>
+<a name="3435"><span class="lineNum">    3435 </span>            :         // Cursor bitmaps have different hotspot values</a>
+<a name="3436"><span class="lineNum">    3436 </span>            :         // There's a possibility that the above logic returns a negative value, so we clamp them to 0</a>
+<a name="3437"><span class="lineNum">    3437 </span><span class="lineNoCov">          0 :         if (src_x_offset &lt; 0)</span></a>
+<a name="3438"><span class="lineNum">    3438 </span><span class="lineNoCov">          0 :                 src_x_offset = 0;</span></a>
+<a name="3439"><span class="lineNum">    3439 </span><span class="lineNoCov">          0 :         if (src_y_offset &lt; 0)</span></a>
+<a name="3440"><span class="lineNum">    3440 </span><span class="lineNoCov">          0 :                 src_y_offset = 0;</span></a>
+<a name="3441"><span class="lineNum">    3441 </span>            : </a>
+<a name="3442"><span class="lineNum">    3442 </span><span class="lineNoCov">          0 :         memset(&amp;cmd, 0x0, sizeof(cmd));</span></a>
+<a name="3443"><span class="lineNum">    3443 </span><span class="lineNoCov">          0 :         cmd.update_cursor_info.header.type = DMUB_CMD__UPDATE_CURSOR_INFO;</span></a>
+<a name="3444"><span class="lineNum">    3444 </span><span class="lineNoCov">          0 :         cmd.update_cursor_info.header.payload_bytes =</span></a>
+<a name="3445"><span class="lineNum">    3445 </span>            :                         sizeof(cmd.update_cursor_info.update_cursor_info_data);</a>
+<a name="3446"><span class="lineNum">    3446 </span><span class="lineNoCov">          0 :         update_cursor_info = &amp;cmd.update_cursor_info.update_cursor_info_data;</span></a>
+<a name="3447"><span class="lineNum">    3447 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;cursor_rect.x = src_x_offset + param-&gt;viewport.x;</span></a>
+<a name="3448"><span class="lineNum">    3448 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;cursor_rect.y = src_y_offset + param-&gt;viewport.y;</span></a>
+<a name="3449"><span class="lineNum">    3449 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;cursor_rect.width = attr-&gt;width;</span></a>
+<a name="3450"><span class="lineNum">    3450 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;cursor_rect.height = attr-&gt;height;</span></a>
+<a name="3451"><span class="lineNum">    3451 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;enable = cur_en;</span></a>
+<a name="3452"><span class="lineNum">    3452 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;pipe_idx = pipe_ctx-&gt;pipe_idx;</span></a>
+<a name="3453"><span class="lineNum">    3453 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;cmd_version = DMUB_CMD_PSR_CONTROL_VERSION_1;</span></a>
+<a name="3454"><span class="lineNum">    3454 </span><span class="lineNoCov">          0 :         update_cursor_info-&gt;panel_inst = panel_inst;</span></a>
+<a name="3455"><span class="lineNum">    3455 </span><span class="lineNoCov">          0 :         dc_dmub_srv_cmd_queue(pipe_ctx-&gt;stream-&gt;ctx-&gt;dmub_srv, &amp;cmd);</span></a>
+<a name="3456"><span class="lineNum">    3456 </span><span class="lineNoCov">          0 :         dc_dmub_srv_cmd_execute(pipe_ctx-&gt;stream-&gt;ctx-&gt;dmub_srv);</span></a>
+<a name="3457"><span class="lineNum">    3457 </span><span class="lineNoCov">          0 :         dc_dmub_srv_wait_idle(pipe_ctx-&gt;stream-&gt;ctx-&gt;dmub_srv);</span></a>
+<a name="3458"><span class="lineNum">    3458 </span>            : }</a>
+<a name="3459"><span class="lineNum">    3459 </span>            : </a>
+<a name="3460"><span class="lineNum">    3460 </span><span class="lineNoCov">          0 : void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)</span></a>
+<a name="3461"><span class="lineNum">    3461 </span>            : {</a>
+<a name="3462"><span class="lineNum">    3462 </span><span class="lineNoCov">          0 :         struct dc_cursor_position pos_cpy = pipe_ctx-&gt;stream-&gt;cursor_position;</span></a>
+<a name="3463"><span class="lineNum">    3463 </span><span class="lineNoCov">          0 :         struct hubp *hubp = pipe_ctx-&gt;plane_res.hubp;</span></a>
+<a name="3464"><span class="lineNum">    3464 </span><span class="lineNoCov">          0 :         struct dpp *dpp = pipe_ctx-&gt;plane_res.dpp;</span></a>
+<a name="3465"><span class="lineNum">    3465 </span><span class="lineNoCov">          0 :         struct dc_cursor_mi_param param = {</span></a>
+<a name="3466"><span class="lineNum">    3466 </span><span class="lineNoCov">          0 :                 .pixel_clk_khz = pipe_ctx-&gt;stream-&gt;timing.pix_clk_100hz / 10,</span></a>
+<a name="3467"><span class="lineNum">    3467 </span><span class="lineNoCov">          0 :                 .ref_clk_khz = pipe_ctx-&gt;stream-&gt;ctx-&gt;dc-&gt;res_pool-&gt;ref_clocks.dchub_ref_clock_inKhz,</span></a>
+<a name="3468"><span class="lineNum">    3468 </span>            :                 .viewport = pipe_ctx-&gt;plane_res.scl_data.viewport,</a>
+<a name="3469"><span class="lineNum">    3469 </span>            :                 .h_scale_ratio = pipe_ctx-&gt;plane_res.scl_data.ratios.horz,</a>
+<a name="3470"><span class="lineNum">    3470 </span>            :                 .v_scale_ratio = pipe_ctx-&gt;plane_res.scl_data.ratios.vert,</a>
+<a name="3471"><span class="lineNum">    3471 </span><span class="lineNoCov">          0 :                 .rotation = pipe_ctx-&gt;plane_state-&gt;rotation,</span></a>
+<a name="3472"><span class="lineNum">    3472 </span><span class="lineNoCov">          0 :                 .mirror = pipe_ctx-&gt;plane_state-&gt;horizontal_mirror</span></a>
+<a name="3473"><span class="lineNum">    3473 </span>            :         };</a>
+<a name="3474"><span class="lineNum">    3474 </span><span class="lineNoCov">          0 :         bool pipe_split_on = (pipe_ctx-&gt;top_pipe != NULL) ||</span></a>
+<a name="3475"><span class="lineNum">    3475 </span><span class="lineNoCov">          0 :                 (pipe_ctx-&gt;bottom_pipe != NULL);</span></a>
+<a name="3476"><span class="lineNum">    3476 </span><span class="lineNoCov">          0 :         bool odm_combine_on = (pipe_ctx-&gt;next_odm_pipe != NULL) ||</span></a>
+<a name="3477"><span class="lineNum">    3477 </span><span class="lineNoCov">          0 :                 (pipe_ctx-&gt;prev_odm_pipe != NULL);</span></a>
+<a name="3478"><span class="lineNum">    3478 </span>            : </a>
+<a name="3479"><span class="lineNum">    3479 </span><span class="lineNoCov">          0 :         int x_plane = pipe_ctx-&gt;plane_state-&gt;dst_rect.x;</span></a>
+<a name="3480"><span class="lineNum">    3480 </span><span class="lineNoCov">          0 :         int y_plane = pipe_ctx-&gt;plane_state-&gt;dst_rect.y;</span></a>
+<a name="3481"><span class="lineNum">    3481 </span><span class="lineNoCov">          0 :         int x_pos = pos_cpy.x;</span></a>
+<a name="3482"><span class="lineNum">    3482 </span><span class="lineNoCov">          0 :         int y_pos = pos_cpy.y;</span></a>
+<a name="3483"><span class="lineNum">    3483 </span>            : </a>
+<a name="3484"><span class="lineNum">    3484 </span>            :         /**</a>
+<a name="3485"><span class="lineNum">    3485 </span>            :          * DC cursor is stream space, HW cursor is plane space and drawn</a>
+<a name="3486"><span class="lineNum">    3486 </span>            :          * as part of the framebuffer.</a>
+<a name="3487"><span class="lineNum">    3487 </span>            :          *</a>
+<a name="3488"><span class="lineNum">    3488 </span>            :          * Cursor position can't be negative, but hotspot can be used to</a>
+<a name="3489"><span class="lineNum">    3489 </span>            :          * shift cursor out of the plane bounds. Hotspot must be smaller</a>
+<a name="3490"><span class="lineNum">    3490 </span>            :          * than the cursor size.</a>
+<a name="3491"><span class="lineNum">    3491 </span>            :          */</a>
+<a name="3492"><span class="lineNum">    3492 </span>            : </a>
+<a name="3493"><span class="lineNum">    3493 </span>            :         /**</a>
+<a name="3494"><span class="lineNum">    3494 </span>            :          * Translate cursor from stream space to plane space.</a>
+<a name="3495"><span class="lineNum">    3495 </span>            :          *</a>
+<a name="3496"><span class="lineNum">    3496 </span>            :          * If the cursor is scaled then we need to scale the position</a>
+<a name="3497"><span class="lineNum">    3497 </span>            :          * to be in the approximately correct place. We can't do anything</a>
+<a name="3498"><span class="lineNum">    3498 </span>            :          * about the actual size being incorrect, that's a limitation of</a>
+<a name="3499"><span class="lineNum">    3499 </span>            :          * the hardware.</a>
+<a name="3500"><span class="lineNum">    3500 </span>            :          */</a>
+<a name="3501"><span class="lineNum">    3501 </span><span class="lineNoCov">          0 :         if (param.rotation == ROTATION_ANGLE_90 || param.rotation == ROTATION_ANGLE_270) {</span></a>
+<a name="3502"><span class="lineNum">    3502 </span><span class="lineNoCov">          0 :                 x_pos = (x_pos - x_plane) * pipe_ctx-&gt;plane_state-&gt;src_rect.height /</span></a>
+<a name="3503"><span class="lineNum">    3503 </span><span class="lineNoCov">          0 :                                 pipe_ctx-&gt;plane_state-&gt;dst_rect.width;</span></a>
+<a name="3504"><span class="lineNum">    3504 </span><span class="lineNoCov">          0 :                 y_pos = (y_pos - y_plane) * pipe_ctx-&gt;plane_state-&gt;src_rect.width /</span></a>
+<a name="3505"><span class="lineNum">    3505 </span><span class="lineNoCov">          0 :                                 pipe_ctx-&gt;plane_state-&gt;dst_rect.height;</span></a>
+<a name="3506"><span class="lineNum">    3506 </span>            :         } else {</a>
+<a name="3507"><span class="lineNum">    3507 </span><span class="lineNoCov">          0 :                 x_pos = (x_pos - x_plane) * pipe_ctx-&gt;plane_state-&gt;src_rect.width /</span></a>
+<a name="3508"><span class="lineNum">    3508 </span><span class="lineNoCov">          0 :                                 pipe_ctx-&gt;plane_state-&gt;dst_rect.width;</span></a>
+<a name="3509"><span class="lineNum">    3509 </span><span class="lineNoCov">          0 :                 y_pos = (y_pos - y_plane) * pipe_ctx-&gt;plane_state-&gt;src_rect.height /</span></a>
+<a name="3510"><span class="lineNum">    3510 </span><span class="lineNoCov">          0 :                                 pipe_ctx-&gt;plane_state-&gt;dst_rect.height;</span></a>
+<a name="3511"><span class="lineNum">    3511 </span>            :         }</a>
+<a name="3512"><span class="lineNum">    3512 </span>            : </a>
+<a name="3513"><span class="lineNum">    3513 </span>            :         /**</a>
+<a name="3514"><span class="lineNum">    3514 </span>            :          * If the cursor's source viewport is clipped then we need to</a>
+<a name="3515"><span class="lineNum">    3515 </span>            :          * translate the cursor to appear in the correct position on</a>
+<a name="3516"><span class="lineNum">    3516 </span>            :          * the screen.</a>
 <a name="3517"><span class="lineNum">    3517 </span>            :          *</a>
-<a name="3518"><span class="lineNum">    3518 </span>            :          * This is only done by opt-in for now since there are still</a>
-<a name="3519"><span class="lineNum">    3519 </span>            :          * some usecases like tiled display that might enable the</a>
-<a name="3520"><span class="lineNum">    3520 </span>            :          * cursor on both streams while expecting dc to clip it.</a>
-<a name="3521"><span class="lineNum">    3521 </span>            :          */</a>
-<a name="3522"><span class="lineNum">    3522 </span><span class="lineNoCov">          0 :         if (pos_cpy.translate_by_source) {</span></a>
-<a name="3523"><span class="lineNum">    3523 </span><span class="lineNoCov">          0 :                 x_pos += pipe_ctx-&gt;plane_state-&gt;src_rect.x;</span></a>
-<a name="3524"><span class="lineNum">    3524 </span><span class="lineNoCov">          0 :                 y_pos += pipe_ctx-&gt;plane_state-&gt;src_rect.y;</span></a>
-<a name="3525"><span class="lineNum">    3525 </span>            :         }</a>
-<a name="3526"><span class="lineNum">    3526 </span>            : </a>
-<a name="3527"><span class="lineNum">    3527 </span>            :         /**</a>
-<a name="3528"><span class="lineNum">    3528 </span>            :          * If the position is negative then we need to add to the hotspot</a>
-<a name="3529"><span class="lineNum">    3529 </span>            :          * to shift the cursor outside the plane.</a>
-<a name="3530"><span class="lineNum">    3530 </span>            :          */</a>
-<a name="3531"><span class="lineNum">    3531 </span>            : </a>
-<a name="3532"><span class="lineNum">    3532 </span><span class="lineNoCov">          0 :         if (x_pos &lt; 0) {</span></a>
-<a name="3533"><span class="lineNum">    3533 </span><span class="lineNoCov">          0 :                 pos_cpy.x_hotspot -= x_pos;</span></a>
-<a name="3534"><span class="lineNum">    3534 </span><span class="lineNoCov">          0 :                 x_pos = 0;</span></a>
-<a name="3535"><span class="lineNum">    3535 </span>            :         }</a>
-<a name="3536"><span class="lineNum">    3536 </span>            : </a>
-<a name="3537"><span class="lineNum">    3537 </span><span class="lineNoCov">          0 :         if (y_pos &lt; 0) {</span></a>
-<a name="3538"><span class="lineNum">    3538 </span><span class="lineNoCov">          0 :                 pos_cpy.y_hotspot -= y_pos;</span></a>
-<a name="3539"><span class="lineNum">    3539 </span><span class="lineNoCov">          0 :                 y_pos = 0;</span></a>
-<a name="3540"><span class="lineNum">    3540 </span>            :         }</a>
-<a name="3541"><span class="lineNum">    3541 </span>            : </a>
-<a name="3542"><span class="lineNum">    3542 </span><span class="lineNoCov">          0 :         pos_cpy.x = (uint32_t)x_pos;</span></a>
-<a name="3543"><span class="lineNum">    3543 </span><span class="lineNoCov">          0 :         pos_cpy.y = (uint32_t)y_pos;</span></a>
+<a name="3518"><span class="lineNum">    3518 </span>            :          * This translation isn't affected by scaling so it needs to be</a>
+<a name="3519"><span class="lineNum">    3519 </span>            :          * done *after* we adjust the position for the scale factor.</a>
+<a name="3520"><span class="lineNum">    3520 </span>            :          *</a>
+<a name="3521"><span class="lineNum">    3521 </span>            :          * This is only done by opt-in for now since there are still</a>
+<a name="3522"><span class="lineNum">    3522 </span>            :          * some usecases like tiled display that might enable the</a>
+<a name="3523"><span class="lineNum">    3523 </span>            :          * cursor on both streams while expecting dc to clip it.</a>
+<a name="3524"><span class="lineNum">    3524 </span>            :          */</a>
+<a name="3525"><span class="lineNum">    3525 </span><span class="lineNoCov">          0 :         if (pos_cpy.translate_by_source) {</span></a>
+<a name="3526"><span class="lineNum">    3526 </span><span class="lineNoCov">          0 :                 x_pos += pipe_ctx-&gt;plane_state-&gt;src_rect.x;</span></a>
+<a name="3527"><span class="lineNum">    3527 </span><span class="lineNoCov">          0 :                 y_pos += pipe_ctx-&gt;plane_state-&gt;src_rect.y;</span></a>
+<a name="3528"><span class="lineNum">    3528 </span>            :         }</a>
+<a name="3529"><span class="lineNum">    3529 </span>            : </a>
+<a name="3530"><span class="lineNum">    3530 </span>            :         /**</a>
+<a name="3531"><span class="lineNum">    3531 </span>            :          * If the position is negative then we need to add to the hotspot</a>
+<a name="3532"><span class="lineNum">    3532 </span>            :          * to shift the cursor outside the plane.</a>
+<a name="3533"><span class="lineNum">    3533 </span>            :          */</a>
+<a name="3534"><span class="lineNum">    3534 </span>            : </a>
+<a name="3535"><span class="lineNum">    3535 </span><span class="lineNoCov">          0 :         if (x_pos &lt; 0) {</span></a>
+<a name="3536"><span class="lineNum">    3536 </span><span class="lineNoCov">          0 :                 pos_cpy.x_hotspot -= x_pos;</span></a>
+<a name="3537"><span class="lineNum">    3537 </span><span class="lineNoCov">          0 :                 x_pos = 0;</span></a>
+<a name="3538"><span class="lineNum">    3538 </span>            :         }</a>
+<a name="3539"><span class="lineNum">    3539 </span>            : </a>
+<a name="3540"><span class="lineNum">    3540 </span><span class="lineNoCov">          0 :         if (y_pos &lt; 0) {</span></a>
+<a name="3541"><span class="lineNum">    3541 </span><span class="lineNoCov">          0 :                 pos_cpy.y_hotspot -= y_pos;</span></a>
+<a name="3542"><span class="lineNum">    3542 </span><span class="lineNoCov">          0 :                 y_pos = 0;</span></a>
+<a name="3543"><span class="lineNum">    3543 </span>            :         }</a>
 <a name="3544"><span class="lineNum">    3544 </span>            : </a>
-<a name="3545"><span class="lineNum">    3545 </span><span class="lineNoCov">          0 :         if (pipe_ctx-&gt;plane_state-&gt;address.type</span></a>
-<a name="3546"><span class="lineNum">    3546 </span>            :                         == PLN_ADDR_TYPE_VIDEO_PROGRESSIVE)</a>
-<a name="3547"><span class="lineNum">    3547 </span><span class="lineNoCov">          0 :                 pos_cpy.enable = false;</span></a>
-<a name="3548"><span class="lineNum">    3548 </span>            : </a>
-<a name="3549"><span class="lineNum">    3549 </span><span class="lineNoCov">          0 :         if (pos_cpy.enable &amp;&amp; dcn10_can_pipe_disable_cursor(pipe_ctx))</span></a>
+<a name="3545"><span class="lineNum">    3545 </span><span class="lineNoCov">          0 :         pos_cpy.x = (uint32_t)x_pos;</span></a>
+<a name="3546"><span class="lineNum">    3546 </span><span class="lineNoCov">          0 :         pos_cpy.y = (uint32_t)y_pos;</span></a>
+<a name="3547"><span class="lineNum">    3547 </span>            : </a>
+<a name="3548"><span class="lineNum">    3548 </span><span class="lineNoCov">          0 :         if (pipe_ctx-&gt;plane_state-&gt;address.type</span></a>
+<a name="3549"><span class="lineNum">    3549 </span>            :                         == PLN_ADDR_TYPE_VIDEO_PROGRESSIVE)</a>
 <a name="3550"><span class="lineNum">    3550 </span><span class="lineNoCov">          0 :                 pos_cpy.enable = false;</span></a>
 <a name="3551"><span class="lineNum">    3551 </span>            : </a>
-<a name="3552"><span class="lineNum">    3552 </span>            :         // Swap axis and mirror horizontally</a>
-<a name="3553"><span class="lineNum">    3553 </span><span class="lineNoCov">          0 :         if (param.rotation == ROTATION_ANGLE_90) {</span></a>
-<a name="3554"><span class="lineNum">    3554 </span><span class="lineNoCov">          0 :                 uint32_t temp_x = pos_cpy.x;</span></a>
-<a name="3555"><span class="lineNum">    3555 </span>            : </a>
-<a name="3556"><span class="lineNum">    3556 </span><span class="lineNoCov">          0 :                 pos_cpy.x = pipe_ctx-&gt;plane_res.scl_data.viewport.width -</span></a>
-<a name="3557"><span class="lineNum">    3557 </span><span class="lineNoCov">          0 :                                 (pos_cpy.y - pipe_ctx-&gt;plane_res.scl_data.viewport.x) + pipe_ctx-&gt;plane_res.scl_data.viewport.x;</span></a>
-<a name="3558"><span class="lineNum">    3558 </span><span class="lineNoCov">          0 :                 pos_cpy.y = temp_x;</span></a>
-<a name="3559"><span class="lineNum">    3559 </span>            :         }</a>
-<a name="3560"><span class="lineNum">    3560 </span>            :         // Swap axis and mirror vertically</a>
-<a name="3561"><span class="lineNum">    3561 </span><span class="lineNoCov">          0 :         else if (param.rotation == ROTATION_ANGLE_270) {</span></a>
-<a name="3562"><span class="lineNum">    3562 </span><span class="lineNoCov">          0 :                 uint32_t temp_y = pos_cpy.y;</span></a>
-<a name="3563"><span class="lineNum">    3563 </span><span class="lineNoCov">          0 :                 int viewport_height =</span></a>
-<a name="3564"><span class="lineNum">    3564 </span>            :                         pipe_ctx-&gt;plane_res.scl_data.viewport.height;</a>
-<a name="3565"><span class="lineNum">    3565 </span><span class="lineNoCov">          0 :                 int viewport_y =</span></a>
-<a name="3566"><span class="lineNum">    3566 </span>            :                         pipe_ctx-&gt;plane_res.scl_data.viewport.y;</a>
-<a name="3567"><span class="lineNum">    3567 </span>            : </a>
-<a name="3568"><span class="lineNum">    3568 </span>            :                 /**</a>
-<a name="3569"><span class="lineNum">    3569 </span>            :                  * Display groups that are 1xnY, have pos_cpy.x &gt; 2 * viewport.height</a>
-<a name="3570"><span class="lineNum">    3570 </span>            :                  * For pipe split cases:</a>
-<a name="3571"><span class="lineNum">    3571 </span>            :                  * - apply offset of viewport.y to normalize pos_cpy.x</a>
-<a name="3572"><span class="lineNum">    3572 </span>            :                  * - calculate the pos_cpy.y as before</a>
-<a name="3573"><span class="lineNum">    3573 </span>            :                  * - shift pos_cpy.y back by same offset to get final value</a>
-<a name="3574"><span class="lineNum">    3574 </span>            :                  * - since we iterate through both pipes, use the lower</a>
-<a name="3575"><span class="lineNum">    3575 </span>            :                  *   viewport.y for offset</a>
-<a name="3576"><span class="lineNum">    3576 </span>            :                  * For non pipe split cases, use the same calculation for</a>
-<a name="3577"><span class="lineNum">    3577 </span>            :                  *  pos_cpy.y as the 180 degree rotation case below,</a>
-<a name="3578"><span class="lineNum">    3578 </span>            :                  *  but use pos_cpy.x as our input because we are rotating</a>
-<a name="3579"><span class="lineNum">    3579 </span>            :                  *  270 degrees</a>
-<a name="3580"><span class="lineNum">    3580 </span>            :                  */</a>
-<a name="3581"><span class="lineNum">    3581 </span><span class="lineNoCov">          0 :                 if (pipe_split_on || odm_combine_on) {</span></a>
-<a name="3582"><span class="lineNum">    3582 </span>            :                         int pos_cpy_x_offset;</a>
-<a name="3583"><span class="lineNum">    3583 </span>            :                         int other_pipe_viewport_y;</a>
-<a name="3584"><span class="lineNum">    3584 </span>            : </a>
-<a name="3585"><span class="lineNum">    3585 </span><span class="lineNoCov">          0 :                         if (pipe_split_on) {</span></a>
-<a name="3586"><span class="lineNum">    3586 </span><span class="lineNoCov">          0 :                                 if (pipe_ctx-&gt;bottom_pipe) {</span></a>
-<a name="3587"><span class="lineNum">    3587 </span><span class="lineNoCov">          0 :                                         other_pipe_viewport_y =</span></a>
-<a name="3588"><span class="lineNum">    3588 </span>            :                                                 pipe_ctx-&gt;bottom_pipe-&gt;plane_res.scl_data.viewport.y;</a>
-<a name="3589"><span class="lineNum">    3589 </span>            :                                 } else {</a>
+<a name="3552"><span class="lineNum">    3552 </span><span class="lineNoCov">          0 :         if (pos_cpy.enable &amp;&amp; dcn10_can_pipe_disable_cursor(pipe_ctx))</span></a>
+<a name="3553"><span class="lineNum">    3553 </span><span class="lineNoCov">          0 :                 pos_cpy.enable = false;</span></a>
+<a name="3554"><span class="lineNum">    3554 </span>            : </a>
+<a name="3555"><span class="lineNum">    3555 </span>            :         // Swap axis and mirror horizontally</a>
+<a name="3556"><span class="lineNum">    3556 </span><span class="lineNoCov">          0 :         if (param.rotation == ROTATION_ANGLE_90) {</span></a>
+<a name="3557"><span class="lineNum">    3557 </span><span class="lineNoCov">          0 :                 uint32_t temp_x = pos_cpy.x;</span></a>
+<a name="3558"><span class="lineNum">    3558 </span>            : </a>
+<a name="3559"><span class="lineNum">    3559 </span><span class="lineNoCov">          0 :                 pos_cpy.x = pipe_ctx-&gt;plane_res.scl_data.viewport.width -</span></a>
+<a name="3560"><span class="lineNum">    3560 </span><span class="lineNoCov">          0 :                                 (pos_cpy.y - pipe_ctx-&gt;plane_res.scl_data.viewport.x) + pipe_ctx-&gt;plane_res.scl_data.viewport.x;</span></a>
+<a name="3561"><span class="lineNum">    3561 </span><span class="lineNoCov">          0 :                 pos_cpy.y = temp_x;</span></a>
+<a name="3562"><span class="lineNum">    3562 </span>            :         }</a>
+<a name="3563"><span class="lineNum">    3563 </span>            :         // Swap axis and mirror vertically</a>
+<a name="3564"><span class="lineNum">    3564 </span><span class="lineNoCov">          0 :         else if (param.rotation == ROTATION_ANGLE_270) {</span></a>
+<a name="3565"><span class="lineNum">    3565 </span><span class="lineNoCov">          0 :                 uint32_t temp_y = pos_cpy.y;</span></a>
+<a name="3566"><span class="lineNum">    3566 </span><span class="lineNoCov">          0 :                 int viewport_height =</span></a>
+<a name="3567"><span class="lineNum">    3567 </span>            :                         pipe_ctx-&gt;plane_res.scl_data.viewport.height;</a>
+<a name="3568"><span class="lineNum">    3568 </span><span class="lineNoCov">          0 :                 int viewport_y =</span></a>
+<a name="3569"><span class="lineNum">    3569 </span>            :                         pipe_ctx-&gt;plane_res.scl_data.viewport.y;</a>
+<a name="3570"><span class="lineNum">    3570 </span>            : </a>
+<a name="3571"><span class="lineNum">    3571 </span>            :                 /**</a>
+<a name="3572"><span class="lineNum">    3572 </span>            :                  * Display groups that are 1xnY, have pos_cpy.x &gt; 2 * viewport.height</a>
+<a name="3573"><span class="lineNum">    3573 </span>            :                  * For pipe split cases:</a>
+<a name="3574"><span class="lineNum">    3574 </span>            :                  * - apply offset of viewport.y to normalize pos_cpy.x</a>
+<a name="3575"><span class="lineNum">    3575 </span>            :                  * - calculate the pos_cpy.y as before</a>
+<a name="3576"><span class="lineNum">    3576 </span>            :                  * - shift pos_cpy.y back by same offset to get final value</a>
+<a name="3577"><span class="lineNum">    3577 </span>            :                  * - since we iterate through both pipes, use the lower</a>
+<a name="3578"><span class="lineNum">    3578 </span>            :                  *   viewport.y for offset</a>
+<a name="3579"><span class="lineNum">    3579 </span>            :                  * For non pipe split cases, use the same calculation for</a>
+<a name="3580"><span class="lineNum">    3580 </span>            :                  *  pos_cpy.y as the 180 degree rotation case below,</a>
+<a name="3581"><span class="lineNum">    3581 </span>            :                  *  but use pos_cpy.x as our input because we are rotating</a>
+<a name="3582"><span class="lineNum">    3582 </span>            :                  *  270 degrees</a>
+<a name="3583"><span class="lineNum">    3583 </span>            :                  */</a>
+<a name="3584"><span class="lineNum">    3584 </span><span class="lineNoCov">          0 :                 if (pipe_split_on || odm_combine_on) {</span></a>
+<a name="3585"><span class="lineNum">    3585 </span>            :                         int pos_cpy_x_offset;</a>
+<a name="3586"><span class="lineNum">    3586 </span>            :                         int other_pipe_viewport_y;</a>
+<a name="3587"><span class="lineNum">    3587 </span>            : </a>
+<a name="3588"><span class="lineNum">    3588 </span><span class="lineNoCov">          0 :                         if (pipe_split_on) {</span></a>
+<a name="3589"><span class="lineNum">    3589 </span><span class="lineNoCov">          0 :                                 if (pipe_ctx-&gt;bottom_pipe) {</span></a>
 <a name="3590"><span class="lineNum">    3590 </span><span class="lineNoCov">          0 :                                         other_pipe_viewport_y =</span></a>
-<a name="3591"><span class="lineNum">    3591 </span>            :                                                 pipe_ctx-&gt;top_pipe-&gt;plane_res.scl_data.viewport.y;</a>
-<a name="3592"><span class="lineNum">    3592 </span>            :                                 }</a>
-<a name="3593"><span class="lineNum">    3593 </span>            :                         } else {</a>
-<a name="3594"><span class="lineNum">    3594 </span><span class="lineNoCov">          0 :                                 if (pipe_ctx-&gt;next_odm_pipe) {</span></a>
-<a name="3595"><span class="lineNum">    3595 </span><span class="lineNoCov">          0 :                                         other_pipe_viewport_y =</span></a>
-<a name="3596"><span class="lineNum">    3596 </span>            :                                                 pipe_ctx-&gt;next_odm_pipe-&gt;plane_res.scl_data.viewport.y;</a>
-<a name="3597"><span class="lineNum">    3597 </span>            :                                 } else {</a>
+<a name="3591"><span class="lineNum">    3591 </span>            :                                                 pipe_ctx-&gt;bottom_pipe-&gt;plane_res.scl_data.viewport.y;</a>
+<a name="3592"><span class="lineNum">    3592 </span>            :                                 } else {</a>
+<a name="3593"><span class="lineNum">    3593 </span><span class="lineNoCov">          0 :                                         other_pipe_viewport_y =</span></a>
+<a name="3594"><span class="lineNum">    3594 </span>            :                                                 pipe_ctx-&gt;top_pipe-&gt;plane_res.scl_data.viewport.y;</a>
+<a name="3595"><span class="lineNum">    3595 </span>            :                                 }</a>
+<a name="3596"><span class="lineNum">    3596 </span>            :                         } else {</a>
+<a name="3597"><span class="lineNum">    3597 </span><span class="lineNoCov">          0 :                                 if (pipe_ctx-&gt;next_odm_pipe) {</span></a>
 <a name="3598"><span class="lineNum">    3598 </span><span class="lineNoCov">          0 :                                         other_pipe_viewport_y =</span></a>
-<a name="3599"><span class="lineNum">    3599 </span><span class="lineNoCov">          0 :                                                 pipe_ctx-&gt;prev_odm_pipe-&gt;plane_res.scl_data.viewport.y;</span></a>
-<a name="3600"><span class="lineNum">    3600 </span>            :                                 }</a>
-<a name="3601"><span class="lineNum">    3601 </span>            :                         }</a>
-<a name="3602"><span class="lineNum">    3602 </span><span class="lineNoCov">          0 :                         pos_cpy_x_offset = (viewport_y &gt; other_pipe_viewport_y) ?</span></a>
-<a name="3603"><span class="lineNum">    3603 </span>            :                                 other_pipe_viewport_y : viewport_y;</a>
-<a name="3604"><span class="lineNum">    3604 </span><span class="lineNoCov">          0 :                         pos_cpy.x -= pos_cpy_x_offset;</span></a>
-<a name="3605"><span class="lineNum">    3605 </span><span class="lineNoCov">          0 :                         if (pos_cpy.x &gt; viewport_height) {</span></a>
-<a name="3606"><span class="lineNum">    3606 </span><span class="lineNoCov">          0 :                                 pos_cpy.x = pos_cpy.x - viewport_height;</span></a>
-<a name="3607"><span class="lineNum">    3607 </span><span class="lineNoCov">          0 :                                 pos_cpy.y = viewport_height - pos_cpy.x;</span></a>
-<a name="3608"><span class="lineNum">    3608 </span>            :                         } else {</a>
-<a name="3609"><span class="lineNum">    3609 </span><span class="lineNoCov">          0 :                                 pos_cpy.y = 2 * viewport_height - pos_cpy.x;</span></a>
-<a name="3610"><span class="lineNum">    3610 </span>            :                         }</a>
-<a name="3611"><span class="lineNum">    3611 </span><span class="lineNoCov">          0 :                         pos_cpy.y += pos_cpy_x_offset;</span></a>
-<a name="3612"><span class="lineNum">    3612 </span>            :                 } else {</a>
-<a name="3613"><span class="lineNum">    3613 </span><span class="lineNoCov">          0 :                         pos_cpy.y = (2 * viewport_y) + viewport_height - pos_cpy.x;</span></a>
-<a name="3614"><span class="lineNum">    3614 </span>            :                 }</a>
-<a name="3615"><span class="lineNum">    3615 </span><span class="lineNoCov">          0 :                 pos_cpy.x = temp_y;</span></a>
-<a name="3616"><span class="lineNum">    3616 </span>            :         }</a>
-<a name="3617"><span class="lineNum">    3617 </span>            :         // Mirror horizontally and vertically</a>
-<a name="3618"><span class="lineNum">    3618 </span><span class="lineNoCov">          0 :         else if (param.rotation == ROTATION_ANGLE_180) {</span></a>
-<a name="3619"><span class="lineNum">    3619 </span><span class="lineNoCov">          0 :                 int viewport_width =</span></a>
-<a name="3620"><span class="lineNum">    3620 </span>            :                         pipe_ctx-&gt;plane_res.scl_data.viewport.width;</a>
-<a name="3621"><span class="lineNum">    3621 </span><span class="lineNoCov">          0 :                 int viewport_x =</span></a>
-<a name="3622"><span class="lineNum">    3622 </span>            :                         pipe_ctx-&gt;plane_res.scl_data.viewport.x;</a>
-<a name="3623"><span class="lineNum">    3623 </span>            : </a>
-<a name="3624"><span class="lineNum">    3624 </span><span class="lineNoCov">          0 :                 if (pipe_split_on || odm_combine_on) {</span></a>
-<a name="3625"><span class="lineNum">    3625 </span><span class="lineNoCov">          0 :                         if (pos_cpy.x &gt;= viewport_width + viewport_x) {</span></a>
-<a name="3626"><span class="lineNum">    3626 </span><span class="lineNoCov">          0 :                                 pos_cpy.x = 2 * viewport_width</span></a>
-<a name="3627"><span class="lineNum">    3627 </span><span class="lineNoCov">          0 :                                                 - pos_cpy.x + 2 * viewport_x;</span></a>
-<a name="3628"><span class="lineNum">    3628 </span>            :                         } else {</a>
-<a name="3629"><span class="lineNum">    3629 </span><span class="lineNoCov">          0 :                                 uint32_t temp_x = pos_cpy.x;</span></a>
-<a name="3630"><span class="lineNum">    3630 </span>            : </a>
-<a name="3631"><span class="lineNum">    3631 </span><span class="lineNoCov">          0 :                                 pos_cpy.x = 2 * viewport_x - pos_cpy.x;</span></a>
-<a name="3632"><span class="lineNum">    3632 </span><span class="lineNoCov">          0 :                                 if (temp_x &gt;= viewport_x +</span></a>
-<a name="3633"><span class="lineNum">    3633 </span><span class="lineNoCov">          0 :                                         (int)hubp-&gt;curs_attr.width || pos_cpy.x</span></a>
-<a name="3634"><span class="lineNum">    3634 </span><span class="lineNoCov">          0 :                                         &lt;= (int)hubp-&gt;curs_attr.width +</span></a>
-<a name="3635"><span class="lineNum">    3635 </span><span class="lineNoCov">          0 :                                         pipe_ctx-&gt;plane_state-&gt;src_rect.x) {</span></a>
-<a name="3636"><span class="lineNum">    3636 </span><span class="lineNoCov">          0 :                                         pos_cpy.x = temp_x + viewport_width;</span></a>
-<a name="3637"><span class="lineNum">    3637 </span>            :                                 }</a>
-<a name="3638"><span class="lineNum">    3638 </span>            :                         }</a>
-<a name="3639"><span class="lineNum">    3639 </span>            :                 } else {</a>
-<a name="3640"><span class="lineNum">    3640 </span><span class="lineNoCov">          0 :                         pos_cpy.x = viewport_width - pos_cpy.x + 2 * viewport_x;</span></a>
-<a name="3641"><span class="lineNum">    3641 </span>            :                 }</a>
-<a name="3642"><span class="lineNum">    3642 </span>            : </a>
-<a name="3643"><span class="lineNum">    3643 </span>            :                 /**</a>
-<a name="3644"><span class="lineNum">    3644 </span>            :                  * Display groups that are 1xnY, have pos_cpy.y &gt; viewport.height</a>
-<a name="3645"><span class="lineNum">    3645 </span>            :                  * Calculation:</a>
-<a name="3646"><span class="lineNum">    3646 </span>            :                  *   delta_from_bottom = viewport.y + viewport.height - pos_cpy.y</a>
-<a name="3647"><span class="lineNum">    3647 </span>            :                  *   pos_cpy.y_new = viewport.y + delta_from_bottom</a>
-<a name="3648"><span class="lineNum">    3648 </span>            :                  * Simplify it as:</a>
-<a name="3649"><span class="lineNum">    3649 </span>            :                  *   pos_cpy.y = viewport.y * 2 + viewport.height - pos_cpy.y</a>
-<a name="3650"><span class="lineNum">    3650 </span>            :                  */</a>
-<a name="3651"><span class="lineNum">    3651 </span><span class="lineNoCov">          0 :                 pos_cpy.y = (2 * pipe_ctx-&gt;plane_res.scl_data.viewport.y) +</span></a>
-<a name="3652"><span class="lineNum">    3652 </span><span class="lineNoCov">          0 :                         pipe_ctx-&gt;plane_res.scl_data.viewport.height - pos_cpy.y;</span></a>
-<a name="3653"><span class="lineNum">    3653 </span>            :         }</a>
-<a name="3654"><span class="lineNum">    3654 </span>            : </a>
-<a name="3655"><span class="lineNum">    3655 </span><span class="lineNoCov">          0 :         dcn10_dmub_update_cursor_data(pipe_ctx, hubp, &amp;param, &amp;pos_cpy, NULL);</span></a>
-<a name="3656"><span class="lineNum">    3656 </span><span class="lineNoCov">          0 :         hubp-&gt;funcs-&gt;set_cursor_position(hubp, &amp;pos_cpy, &amp;param);</span></a>
-<a name="3657"><span class="lineNum">    3657 </span><span class="lineNoCov">          0 :         dpp-&gt;funcs-&gt;set_cursor_position(dpp, &amp;pos_cpy, &amp;param, hubp-&gt;curs_attr.width, hubp-&gt;curs_attr.height);</span></a>
-<a name="3658"><span class="lineNum">    3658 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="3659"><span class="lineNum">    3659 </span>            : </a>
-<a name="3660"><span class="lineNum">    3660 </span><span class="lineNoCov">          0 : void dcn10_set_cursor_attribute(struct pipe_ctx *pipe_ctx)</span></a>
-<a name="3661"><span class="lineNum">    3661 </span>            : {</a>
-<a name="3662"><span class="lineNum">    3662 </span><span class="lineNoCov">          0 :         struct dc_cursor_attributes *attributes = &amp;pipe_ctx-&gt;stream-&gt;cursor_attributes;</span></a>
-<a name="3663"><span class="lineNum">    3663 </span><span class="lineNoCov">          0 :         struct dc_cursor_mi_param param = { 0 };</span></a>
-<a name="3664"><span class="lineNum">    3664 </span>            : </a>
-<a name="3665"><span class="lineNum">    3665 </span>            :         /**</a>
-<a name="3666"><span class="lineNum">    3666 </span>            :          * If enter PSR without cursor attribute update</a>
-<a name="3667"><span class="lineNum">    3667 </span>            :          * the cursor attribute of dmub_restore_plane</a>
-<a name="3668"><span class="lineNum">    3668 </span>            :          * are initial value. call dmub to exit PSR and</a>
-<a name="3669"><span class="lineNum">    3669 </span>            :          * restore plane then update cursor attribute to</a>
-<a name="3670"><span class="lineNum">    3670 </span>            :          * avoid override with initial value</a>
-<a name="3671"><span class="lineNum">    3671 </span>            :          */</a>
-<a name="3672"><span class="lineNum">    3672 </span><span class="lineNoCov">          0 :         if (pipe_ctx-&gt;plane_state != NULL) {</span></a>
-<a name="3673"><span class="lineNum">    3673 </span><span class="lineNoCov">          0 :                 param.pixel_clk_khz = pipe_ctx-&gt;stream-&gt;timing.pix_clk_100hz / 10;</span></a>
-<a name="3674"><span class="lineNum">    3674 </span><span class="lineNoCov">          0 :                 param.ref_clk_khz = pipe_ctx-&gt;stream-&gt;ctx-&gt;dc-&gt;res_pool-&gt;ref_clocks.dchub_ref_clock_inKhz;</span></a>
-<a name="3675"><span class="lineNum">    3675 </span><span class="lineNoCov">          0 :                 param.viewport = pipe_ctx-&gt;plane_res.scl_data.viewport;</span></a>
-<a name="3676"><span class="lineNum">    3676 </span><span class="lineNoCov">          0 :                 param.h_scale_ratio = pipe_ctx-&gt;plane_res.scl_data.ratios.horz;</span></a>
-<a name="3677"><span class="lineNum">    3677 </span><span class="lineNoCov">          0 :                 param.v_scale_ratio = pipe_ctx-&gt;plane_res.scl_data.ratios.vert;</span></a>
-<a name="3678"><span class="lineNum">    3678 </span><span class="lineNoCov">          0 :                 param.rotation = pipe_ctx-&gt;plane_state-&gt;rotation;</span></a>
-<a name="3679"><span class="lineNum">    3679 </span><span class="lineNoCov">          0 :                 param.mirror = pipe_ctx-&gt;plane_state-&gt;horizontal_mirror;</span></a>
-<a name="3680"><span class="lineNum">    3680 </span><span class="lineNoCov">          0 :                 dcn10_dmub_update_cursor_data(pipe_ctx, pipe_ctx-&gt;plane_res.hubp, &amp;param, NULL, attributes);</span></a>
-<a name="3681"><span class="lineNum">    3681 </span>            :         }</a>
-<a name="3682"><span class="lineNum">    3682 </span>            : </a>
-<a name="3683"><span class="lineNum">    3683 </span><span class="lineNoCov">          0 :         pipe_ctx-&gt;plane_res.hubp-&gt;funcs-&gt;set_cursor_attributes(</span></a>
-<a name="3684"><span class="lineNum">    3684 </span>            :                         pipe_ctx-&gt;plane_res.hubp, attributes);</a>
-<a name="3685"><span class="lineNum">    3685 </span><span class="lineNoCov">          0 :         pipe_ctx-&gt;plane_res.dpp-&gt;funcs-&gt;set_cursor_attributes(</span></a>
-<a name="3686"><span class="lineNum">    3686 </span>            :                 pipe_ctx-&gt;plane_res.dpp, attributes);</a>
-<a name="3687"><span class="lineNum">    3687 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="3688"><span class="lineNum">    3688 </span>            : </a>
-<a name="3689"><span class="lineNum">    3689 </span><span class="lineNoCov">          0 : void dcn10_set_cursor_sdr_white_level(struct pipe_ctx *pipe_ctx)</span></a>
-<a name="3690"><span class="lineNum">    3690 </span>            : {</a>
-<a name="3691"><span class="lineNum">    3691 </span><span class="lineNoCov">          0 :         uint32_t sdr_white_level = pipe_ctx-&gt;stream-&gt;cursor_attributes.sdr_white_level;</span></a>
-<a name="3692"><span class="lineNum">    3692 </span>            :         struct fixed31_32 multiplier;</a>
-<a name="3693"><span class="lineNum">    3693 </span><span class="lineNoCov">          0 :         struct dpp_cursor_attributes opt_attr = { 0 };</span></a>
-<a name="3694"><span class="lineNum">    3694 </span><span class="lineNoCov">          0 :         uint32_t hw_scale = 0x3c00; // 1.0 default multiplier</span></a>
-<a name="3695"><span class="lineNum">    3695 </span>            :         struct custom_float_format fmt;</a>
-<a name="3696"><span class="lineNum">    3696 </span>            : </a>
-<a name="3697"><span class="lineNum">    3697 </span><span class="lineNoCov">          0 :         if (!pipe_ctx-&gt;plane_res.dpp-&gt;funcs-&gt;set_optional_cursor_attributes)</span></a>
-<a name="3698"><span class="lineNum">    3698 </span><span class="lineNoCov">          0 :                 return;</span></a>
+<a name="3599"><span class="lineNum">    3599 </span>            :                                                 pipe_ctx-&gt;next_odm_pipe-&gt;plane_res.scl_data.viewport.y;</a>
+<a name="3600"><span class="lineNum">    3600 </span>            :                                 } else {</a>
+<a name="3601"><span class="lineNum">    3601 </span><span class="lineNoCov">          0 :                                         other_pipe_viewport_y =</span></a>
+<a name="3602"><span class="lineNum">    3602 </span><span class="lineNoCov">          0 :                                                 pipe_ctx-&gt;prev_odm_pipe-&gt;plane_res.scl_data.viewport.y;</span></a>
+<a name="3603"><span class="lineNum">    3603 </span>            :                                 }</a>
+<a name="3604"><span class="lineNum">    3604 </span>            :                         }</a>
+<a name="3605"><span class="lineNum">    3605 </span><span class="lineNoCov">          0 :                         pos_cpy_x_offset = (viewport_y &gt; other_pipe_viewport_y) ?</span></a>
+<a name="3606"><span class="lineNum">    3606 </span>            :                                 other_pipe_viewport_y : viewport_y;</a>
+<a name="3607"><span class="lineNum">    3607 </span><span class="lineNoCov">          0 :                         pos_cpy.x -= pos_cpy_x_offset;</span></a>
+<a name="3608"><span class="lineNum">    3608 </span><span class="lineNoCov">          0 :                         if (pos_cpy.x &gt; viewport_height) {</span></a>
+<a name="3609"><span class="lineNum">    3609 </span><span class="lineNoCov">          0 :                                 pos_cpy.x = pos_cpy.x - viewport_height;</span></a>
+<a name="3610"><span class="lineNum">    3610 </span><span class="lineNoCov">          0 :                                 pos_cpy.y = viewport_height - pos_cpy.x;</span></a>
+<a name="3611"><span class="lineNum">    3611 </span>            :                         } else {</a>
+<a name="3612"><span class="lineNum">    3612 </span><span class="lineNoCov">          0 :                                 pos_cpy.y = 2 * viewport_height - pos_cpy.x;</span></a>
+<a name="3613"><span class="lineNum">    3613 </span>            :                         }</a>
+<a name="3614"><span class="lineNum">    3614 </span><span class="lineNoCov">          0 :                         pos_cpy.y += pos_cpy_x_offset;</span></a>
+<a name="3615"><span class="lineNum">    3615 </span>            :                 } else {</a>
+<a name="3616"><span class="lineNum">    3616 </span><span class="lineNoCov">          0 :                         pos_cpy.y = (2 * viewport_y) + viewport_height - pos_cpy.x;</span></a>
+<a name="3617"><span class="lineNum">    3617 </span>            :                 }</a>
+<a name="3618"><span class="lineNum">    3618 </span><span class="lineNoCov">          0 :                 pos_cpy.x = temp_y;</span></a>
+<a name="3619"><span class="lineNum">    3619 </span>            :         }</a>
+<a name="3620"><span class="lineNum">    3620 </span>            :         // Mirror horizontally and vertically</a>
+<a name="3621"><span class="lineNum">    3621 </span><span class="lineNoCov">          0 :         else if (param.rotation == ROTATION_ANGLE_180) {</span></a>
+<a name="3622"><span class="lineNum">    3622 </span><span class="lineNoCov">          0 :                 int viewport_width =</span></a>
+<a name="3623"><span class="lineNum">    3623 </span>            :                         pipe_ctx-&gt;plane_res.scl_data.viewport.width;</a>
+<a name="3624"><span class="lineNum">    3624 </span><span class="lineNoCov">          0 :                 int viewport_x =</span></a>
+<a name="3625"><span class="lineNum">    3625 </span>            :                         pipe_ctx-&gt;plane_res.scl_data.viewport.x;</a>
+<a name="3626"><span class="lineNum">    3626 </span>            : </a>
+<a name="3627"><span class="lineNum">    3627 </span><span class="lineNoCov">          0 :                 if (pipe_split_on || odm_combine_on) {</span></a>
+<a name="3628"><span class="lineNum">    3628 </span><span class="lineNoCov">          0 :                         if (pos_cpy.x &gt;= viewport_width + viewport_x) {</span></a>
+<a name="3629"><span class="lineNum">    3629 </span><span class="lineNoCov">          0 :                                 pos_cpy.x = 2 * viewport_width</span></a>
+<a name="3630"><span class="lineNum">    3630 </span><span class="lineNoCov">          0 :                                                 - pos_cpy.x + 2 * viewport_x;</span></a>
+<a name="3631"><span class="lineNum">    3631 </span>            :                         } else {</a>
+<a name="3632"><span class="lineNum">    3632 </span><span class="lineNoCov">          0 :                                 uint32_t temp_x = pos_cpy.x;</span></a>
+<a name="3633"><span class="lineNum">    3633 </span>            : </a>
+<a name="3634"><span class="lineNum">    3634 </span><span class="lineNoCov">          0 :                                 pos_cpy.x = 2 * viewport_x - pos_cpy.x;</span></a>
+<a name="3635"><span class="lineNum">    3635 </span><span class="lineNoCov">          0 :                                 if (temp_x &gt;= viewport_x +</span></a>
+<a name="3636"><span class="lineNum">    3636 </span><span class="lineNoCov">          0 :                                         (int)hubp-&gt;curs_attr.width || pos_cpy.x</span></a>
+<a name="3637"><span class="lineNum">    3637 </span><span class="lineNoCov">          0 :                                         &lt;= (int)hubp-&gt;curs_attr.width +</span></a>
+<a name="3638"><span class="lineNum">    3638 </span><span class="lineNoCov">          0 :                                         pipe_ctx-&gt;plane_state-&gt;src_rect.x) {</span></a>
+<a name="3639"><span class="lineNum">    3639 </span><span class="lineNoCov">          0 :                                         pos_cpy.x = temp_x + viewport_width;</span></a>
+<a name="3640"><span class="lineNum">    3640 </span>            :                                 }</a>
+<a name="3641"><span class="lineNum">    3641 </span>            :                         }</a>
+<a name="3642"><span class="lineNum">    3642 </span>            :                 } else {</a>
+<a name="3643"><span class="lineNum">    3643 </span><span class="lineNoCov">          0 :                         pos_cpy.x = viewport_width - pos_cpy.x + 2 * viewport_x;</span></a>
+<a name="3644"><span class="lineNum">    3644 </span>            :                 }</a>
+<a name="3645"><span class="lineNum">    3645 </span>            : </a>
+<a name="3646"><span class="lineNum">    3646 </span>            :                 /**</a>
+<a name="3647"><span class="lineNum">    3647 </span>            :                  * Display groups that are 1xnY, have pos_cpy.y &gt; viewport.height</a>
+<a name="3648"><span class="lineNum">    3648 </span>            :                  * Calculation:</a>
+<a name="3649"><span class="lineNum">    3649 </span>            :                  *   delta_from_bottom = viewport.y + viewport.height - pos_cpy.y</a>
+<a name="3650"><span class="lineNum">    3650 </span>            :                  *   pos_cpy.y_new = viewport.y + delta_from_bottom</a>
+<a name="3651"><span class="lineNum">    3651 </span>            :                  * Simplify it as:</a>
+<a name="3652"><span class="lineNum">    3652 </span>            :                  *   pos_cpy.y = viewport.y * 2 + viewport.height - pos_cpy.y</a>
+<a name="3653"><span class="lineNum">    3653 </span>            :                  */</a>
+<a name="3654"><span class="lineNum">    3654 </span><span class="lineNoCov">          0 :                 pos_cpy.y = (2 * pipe_ctx-&gt;plane_res.scl_data.viewport.y) +</span></a>
+<a name="3655"><span class="lineNum">    3655 </span><span class="lineNoCov">          0 :                         pipe_ctx-&gt;plane_res.scl_data.viewport.height - pos_cpy.y;</span></a>
+<a name="3656"><span class="lineNum">    3656 </span>            :         }</a>
+<a name="3657"><span class="lineNum">    3657 </span>            : </a>
+<a name="3658"><span class="lineNum">    3658 </span><span class="lineNoCov">          0 :         dcn10_dmub_update_cursor_data(pipe_ctx, hubp, &amp;param, &amp;pos_cpy, NULL);</span></a>
+<a name="3659"><span class="lineNum">    3659 </span><span class="lineNoCov">          0 :         hubp-&gt;funcs-&gt;set_cursor_position(hubp, &amp;pos_cpy, &amp;param);</span></a>
+<a name="3660"><span class="lineNum">    3660 </span><span class="lineNoCov">          0 :         dpp-&gt;funcs-&gt;set_cursor_position(dpp, &amp;pos_cpy, &amp;param, hubp-&gt;curs_attr.width, hubp-&gt;curs_attr.height);</span></a>
+<a name="3661"><span class="lineNum">    3661 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="3662"><span class="lineNum">    3662 </span>            : </a>
+<a name="3663"><span class="lineNum">    3663 </span><span class="lineNoCov">          0 : void dcn10_set_cursor_attribute(struct pipe_ctx *pipe_ctx)</span></a>
+<a name="3664"><span class="lineNum">    3664 </span>            : {</a>
+<a name="3665"><span class="lineNum">    3665 </span><span class="lineNoCov">          0 :         struct dc_cursor_attributes *attributes = &amp;pipe_ctx-&gt;stream-&gt;cursor_attributes;</span></a>
+<a name="3666"><span class="lineNum">    3666 </span><span class="lineNoCov">          0 :         struct dc_cursor_mi_param param = { 0 };</span></a>
+<a name="3667"><span class="lineNum">    3667 </span>            : </a>
+<a name="3668"><span class="lineNum">    3668 </span>            :         /**</a>
+<a name="3669"><span class="lineNum">    3669 </span>            :          * If enter PSR without cursor attribute update</a>
+<a name="3670"><span class="lineNum">    3670 </span>            :          * the cursor attribute of dmub_restore_plane</a>
+<a name="3671"><span class="lineNum">    3671 </span>            :          * are initial value. call dmub to exit PSR and</a>
+<a name="3672"><span class="lineNum">    3672 </span>            :          * restore plane then update cursor attribute to</a>
+<a name="3673"><span class="lineNum">    3673 </span>            :          * avoid override with initial value</a>
+<a name="3674"><span class="lineNum">    3674 </span>            :          */</a>
+<a name="3675"><span class="lineNum">    3675 </span><span class="lineNoCov">          0 :         if (pipe_ctx-&gt;plane_state != NULL) {</span></a>
+<a name="3676"><span class="lineNum">    3676 </span><span class="lineNoCov">          0 :                 param.pixel_clk_khz = pipe_ctx-&gt;stream-&gt;timing.pix_clk_100hz / 10;</span></a>
+<a name="3677"><span class="lineNum">    3677 </span><span class="lineNoCov">          0 :                 param.ref_clk_khz = pipe_ctx-&gt;stream-&gt;ctx-&gt;dc-&gt;res_pool-&gt;ref_clocks.dchub_ref_clock_inKhz;</span></a>
+<a name="3678"><span class="lineNum">    3678 </span><span class="lineNoCov">          0 :                 param.viewport = pipe_ctx-&gt;plane_res.scl_data.viewport;</span></a>
+<a name="3679"><span class="lineNum">    3679 </span><span class="lineNoCov">          0 :                 param.h_scale_ratio = pipe_ctx-&gt;plane_res.scl_data.ratios.horz;</span></a>
+<a name="3680"><span class="lineNum">    3680 </span><span class="lineNoCov">          0 :                 param.v_scale_ratio = pipe_ctx-&gt;plane_res.scl_data.ratios.vert;</span></a>
+<a name="3681"><span class="lineNum">    3681 </span><span class="lineNoCov">          0 :                 param.rotation = pipe_ctx-&gt;plane_state-&gt;rotation;</span></a>
+<a name="3682"><span class="lineNum">    3682 </span><span class="lineNoCov">          0 :                 param.mirror = pipe_ctx-&gt;plane_state-&gt;horizontal_mirror;</span></a>
+<a name="3683"><span class="lineNum">    3683 </span><span class="lineNoCov">          0 :                 dcn10_dmub_update_cursor_data(pipe_ctx, pipe_ctx-&gt;plane_res.hubp, &amp;param, NULL, attributes);</span></a>
+<a name="3684"><span class="lineNum">    3684 </span>            :         }</a>
+<a name="3685"><span class="lineNum">    3685 </span>            : </a>
+<a name="3686"><span class="lineNum">    3686 </span><span class="lineNoCov">          0 :         pipe_ctx-&gt;plane_res.hubp-&gt;funcs-&gt;set_cursor_attributes(</span></a>
+<a name="3687"><span class="lineNum">    3687 </span>            :                         pipe_ctx-&gt;plane_res.hubp, attributes);</a>
+<a name="3688"><span class="lineNum">    3688 </span><span class="lineNoCov">          0 :         pipe_ctx-&gt;plane_res.dpp-&gt;funcs-&gt;set_cursor_attributes(</span></a>
+<a name="3689"><span class="lineNum">    3689 </span>            :                 pipe_ctx-&gt;plane_res.dpp, attributes);</a>
+<a name="3690"><span class="lineNum">    3690 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="3691"><span class="lineNum">    3691 </span>            : </a>
+<a name="3692"><span class="lineNum">    3692 </span><span class="lineNoCov">          0 : void dcn10_set_cursor_sdr_white_level(struct pipe_ctx *pipe_ctx)</span></a>
+<a name="3693"><span class="lineNum">    3693 </span>            : {</a>
+<a name="3694"><span class="lineNum">    3694 </span><span class="lineNoCov">          0 :         uint32_t sdr_white_level = pipe_ctx-&gt;stream-&gt;cursor_attributes.sdr_white_level;</span></a>
+<a name="3695"><span class="lineNum">    3695 </span>            :         struct fixed31_32 multiplier;</a>
+<a name="3696"><span class="lineNum">    3696 </span><span class="lineNoCov">          0 :         struct dpp_cursor_attributes opt_attr = { 0 };</span></a>
+<a name="3697"><span class="lineNum">    3697 </span><span class="lineNoCov">          0 :         uint32_t hw_scale = 0x3c00; // 1.0 default multiplier</span></a>
+<a name="3698"><span class="lineNum">    3698 </span>            :         struct custom_float_format fmt;</a>
 <a name="3699"><span class="lineNum">    3699 </span>            : </a>
-<a name="3700"><span class="lineNum">    3700 </span><span class="lineNoCov">          0 :         fmt.exponenta_bits = 5;</span></a>
-<a name="3701"><span class="lineNum">    3701 </span><span class="lineNoCov">          0 :         fmt.mantissa_bits = 10;</span></a>
-<a name="3702"><span class="lineNum">    3702 </span><span class="lineNoCov">          0 :         fmt.sign = true;</span></a>
-<a name="3703"><span class="lineNum">    3703 </span>            : </a>
-<a name="3704"><span class="lineNum">    3704 </span><span class="lineNoCov">          0 :         if (sdr_white_level &gt; 80) {</span></a>
-<a name="3705"><span class="lineNum">    3705 </span><span class="lineNoCov">          0 :                 multiplier = dc_fixpt_from_fraction(sdr_white_level, 80);</span></a>
-<a name="3706"><span class="lineNum">    3706 </span><span class="lineNoCov">          0 :                 convert_to_custom_float_format(multiplier, &amp;fmt, &amp;hw_scale);</span></a>
-<a name="3707"><span class="lineNum">    3707 </span>            :         }</a>
-<a name="3708"><span class="lineNum">    3708 </span>            : </a>
-<a name="3709"><span class="lineNum">    3709 </span><span class="lineNoCov">          0 :         opt_attr.scale = hw_scale;</span></a>
-<a name="3710"><span class="lineNum">    3710 </span><span class="lineNoCov">          0 :         opt_attr.bias = 0;</span></a>
+<a name="3700"><span class="lineNum">    3700 </span><span class="lineNoCov">          0 :         if (!pipe_ctx-&gt;plane_res.dpp-&gt;funcs-&gt;set_optional_cursor_attributes)</span></a>
+<a name="3701"><span class="lineNum">    3701 </span><span class="lineNoCov">          0 :                 return;</span></a>
+<a name="3702"><span class="lineNum">    3702 </span>            : </a>
+<a name="3703"><span class="lineNum">    3703 </span><span class="lineNoCov">          0 :         fmt.exponenta_bits = 5;</span></a>
+<a name="3704"><span class="lineNum">    3704 </span><span class="lineNoCov">          0 :         fmt.mantissa_bits = 10;</span></a>
+<a name="3705"><span class="lineNum">    3705 </span><span class="lineNoCov">          0 :         fmt.sign = true;</span></a>
+<a name="3706"><span class="lineNum">    3706 </span>            : </a>
+<a name="3707"><span class="lineNum">    3707 </span><span class="lineNoCov">          0 :         if (sdr_white_level &gt; 80) {</span></a>
+<a name="3708"><span class="lineNum">    3708 </span><span class="lineNoCov">          0 :                 multiplier = dc_fixpt_from_fraction(sdr_white_level, 80);</span></a>
+<a name="3709"><span class="lineNum">    3709 </span><span class="lineNoCov">          0 :                 convert_to_custom_float_format(multiplier, &amp;fmt, &amp;hw_scale);</span></a>
+<a name="3710"><span class="lineNum">    3710 </span>            :         }</a>
 <a name="3711"><span class="lineNum">    3711 </span>            : </a>
-<a name="3712"><span class="lineNum">    3712 </span><span class="lineNoCov">          0 :         pipe_ctx-&gt;plane_res.dpp-&gt;funcs-&gt;set_optional_cursor_attributes(</span></a>
-<a name="3713"><span class="lineNum">    3713 </span>            :                         pipe_ctx-&gt;plane_res.dpp, &amp;opt_attr);</a>
-<a name="3714"><span class="lineNum">    3714 </span>            : }</a>
-<a name="3715"><span class="lineNum">    3715 </span>            : </a>
-<a name="3716"><span class="lineNum">    3716 </span>            : /*</a>
-<a name="3717"><span class="lineNum">    3717 </span>            :  * apply_front_porch_workaround  TODO FPGA still need?</a>
-<a name="3718"><span class="lineNum">    3718 </span>            :  *</a>
-<a name="3719"><span class="lineNum">    3719 </span>            :  * This is a workaround for a bug that has existed since R5xx and has not been</a>
-<a name="3720"><span class="lineNum">    3720 </span>            :  * fixed keep Front porch at minimum 2 for Interlaced mode or 1 for progressive.</a>
-<a name="3721"><span class="lineNum">    3721 </span>            :  */</a>
-<a name="3722"><span class="lineNum">    3722 </span>            : static void apply_front_porch_workaround(</a>
-<a name="3723"><span class="lineNum">    3723 </span>            :         struct dc_crtc_timing *timing)</a>
-<a name="3724"><span class="lineNum">    3724 </span>            : {</a>
-<a name="3725"><span class="lineNum">    3725 </span><span class="lineNoCov">          0 :         if (timing-&gt;flags.INTERLACE == 1) {</span></a>
-<a name="3726"><span class="lineNum">    3726 </span><span class="lineNoCov">          0 :                 if (timing-&gt;v_front_porch &lt; 2)</span></a>
-<a name="3727"><span class="lineNum">    3727 </span><span class="lineNoCov">          0 :                         timing-&gt;v_front_porch = 2;</span></a>
-<a name="3728"><span class="lineNum">    3728 </span>            :         } else {</a>
-<a name="3729"><span class="lineNum">    3729 </span><span class="lineNoCov">          0 :                 if (timing-&gt;v_front_porch &lt; 1)</span></a>
-<a name="3730"><span class="lineNum">    3730 </span><span class="lineNoCov">          0 :                         timing-&gt;v_front_porch = 1;</span></a>
-<a name="3731"><span class="lineNum">    3731 </span>            :         }</a>
-<a name="3732"><span class="lineNum">    3732 </span>            : }</a>
-<a name="3733"><span class="lineNum">    3733 </span>            : </a>
-<a name="3734"><span class="lineNum">    3734 </span><span class="lineNoCov">          0 : int dcn10_get_vupdate_offset_from_vsync(struct pipe_ctx *pipe_ctx)</span></a>
-<a name="3735"><span class="lineNum">    3735 </span>            : {</a>
-<a name="3736"><span class="lineNum">    3736 </span><span class="lineNoCov">          0 :         const struct dc_crtc_timing *dc_crtc_timing = &amp;pipe_ctx-&gt;stream-&gt;timing;</span></a>
-<a name="3737"><span class="lineNum">    3737 </span>            :         struct dc_crtc_timing patched_crtc_timing;</a>
-<a name="3738"><span class="lineNum">    3738 </span>            :         int vesa_sync_start;</a>
-<a name="3739"><span class="lineNum">    3739 </span>            :         int asic_blank_end;</a>
-<a name="3740"><span class="lineNum">    3740 </span>            :         int interlace_factor;</a>
-<a name="3741"><span class="lineNum">    3741 </span>            :         int vertical_line_start;</a>
-<a name="3742"><span class="lineNum">    3742 </span>            : </a>
-<a name="3743"><span class="lineNum">    3743 </span><span class="lineNoCov">          0 :         patched_crtc_timing = *dc_crtc_timing;</span></a>
-<a name="3744"><span class="lineNum">    3744 </span><span class="lineNoCov">          0 :         apply_front_porch_workaround(&amp;patched_crtc_timing);</span></a>
+<a name="3712"><span class="lineNum">    3712 </span><span class="lineNoCov">          0 :         opt_attr.scale = hw_scale;</span></a>
+<a name="3713"><span class="lineNum">    3713 </span><span class="lineNoCov">          0 :         opt_attr.bias = 0;</span></a>
+<a name="3714"><span class="lineNum">    3714 </span>            : </a>
+<a name="3715"><span class="lineNum">    3715 </span><span class="lineNoCov">          0 :         pipe_ctx-&gt;plane_res.dpp-&gt;funcs-&gt;set_optional_cursor_attributes(</span></a>
+<a name="3716"><span class="lineNum">    3716 </span>            :                         pipe_ctx-&gt;plane_res.dpp, &amp;opt_attr);</a>
+<a name="3717"><span class="lineNum">    3717 </span>            : }</a>
+<a name="3718"><span class="lineNum">    3718 </span>            : </a>
+<a name="3719"><span class="lineNum">    3719 </span>            : /*</a>
+<a name="3720"><span class="lineNum">    3720 </span>            :  * apply_front_porch_workaround  TODO FPGA still need?</a>
+<a name="3721"><span class="lineNum">    3721 </span>            :  *</a>
+<a name="3722"><span class="lineNum">    3722 </span>            :  * This is a workaround for a bug that has existed since R5xx and has not been</a>
+<a name="3723"><span class="lineNum">    3723 </span>            :  * fixed keep Front porch at minimum 2 for Interlaced mode or 1 for progressive.</a>
+<a name="3724"><span class="lineNum">    3724 </span>            :  */</a>
+<a name="3725"><span class="lineNum">    3725 </span>            : static void apply_front_porch_workaround(</a>
+<a name="3726"><span class="lineNum">    3726 </span>            :         struct dc_crtc_timing *timing)</a>
+<a name="3727"><span class="lineNum">    3727 </span>            : {</a>
+<a name="3728"><span class="lineNum">    3728 </span><span class="lineNoCov">          0 :         if (timing-&gt;flags.INTERLACE == 1) {</span></a>
+<a name="3729"><span class="lineNum">    3729 </span><span class="lineNoCov">          0 :                 if (timing-&gt;v_front_porch &lt; 2)</span></a>
+<a name="3730"><span class="lineNum">    3730 </span><span class="lineNoCov">          0 :                         timing-&gt;v_front_porch = 2;</span></a>
+<a name="3731"><span class="lineNum">    3731 </span>            :         } else {</a>
+<a name="3732"><span class="lineNum">    3732 </span><span class="lineNoCov">          0 :                 if (timing-&gt;v_front_porch &lt; 1)</span></a>
+<a name="3733"><span class="lineNum">    3733 </span><span class="lineNoCov">          0 :                         timing-&gt;v_front_porch = 1;</span></a>
+<a name="3734"><span class="lineNum">    3734 </span>            :         }</a>
+<a name="3735"><span class="lineNum">    3735 </span>            : }</a>
+<a name="3736"><span class="lineNum">    3736 </span>            : </a>
+<a name="3737"><span class="lineNum">    3737 </span><span class="lineNoCov">          0 : int dcn10_get_vupdate_offset_from_vsync(struct pipe_ctx *pipe_ctx)</span></a>
+<a name="3738"><span class="lineNum">    3738 </span>            : {</a>
+<a name="3739"><span class="lineNum">    3739 </span><span class="lineNoCov">          0 :         const struct dc_crtc_timing *dc_crtc_timing = &amp;pipe_ctx-&gt;stream-&gt;timing;</span></a>
+<a name="3740"><span class="lineNum">    3740 </span>            :         struct dc_crtc_timing patched_crtc_timing;</a>
+<a name="3741"><span class="lineNum">    3741 </span>            :         int vesa_sync_start;</a>
+<a name="3742"><span class="lineNum">    3742 </span>            :         int asic_blank_end;</a>
+<a name="3743"><span class="lineNum">    3743 </span>            :         int interlace_factor;</a>
+<a name="3744"><span class="lineNum">    3744 </span>            :         int vertical_line_start;</a>
 <a name="3745"><span class="lineNum">    3745 </span>            : </a>
-<a name="3746"><span class="lineNum">    3746 </span><span class="lineNoCov">          0 :         interlace_factor = patched_crtc_timing.flags.INTERLACE ? 2 : 1;</span></a>
-<a name="3747"><span class="lineNum">    3747 </span>            : </a>
-<a name="3748"><span class="lineNum">    3748 </span><span class="lineNoCov">          0 :         vesa_sync_start = patched_crtc_timing.v_addressable +</span></a>
-<a name="3749"><span class="lineNum">    3749 </span><span class="lineNoCov">          0 :                         patched_crtc_timing.v_border_bottom +</span></a>
-<a name="3750"><span class="lineNum">    3750 </span>            :                         patched_crtc_timing.v_front_porch;</a>
-<a name="3751"><span class="lineNum">    3751 </span>            : </a>
-<a name="3752"><span class="lineNum">    3752 </span><span class="lineNoCov">          0 :         asic_blank_end = (patched_crtc_timing.v_total -</span></a>
-<a name="3753"><span class="lineNum">    3753 </span><span class="lineNoCov">          0 :                         vesa_sync_start -</span></a>
-<a name="3754"><span class="lineNum">    3754 </span>            :                         patched_crtc_timing.v_border_top)</a>
-<a name="3755"><span class="lineNum">    3755 </span><span class="lineNoCov">          0 :                         * interlace_factor;</span></a>
-<a name="3756"><span class="lineNum">    3756 </span>            : </a>
-<a name="3757"><span class="lineNum">    3757 </span><span class="lineNoCov">          0 :         vertical_line_start = asic_blank_end -</span></a>
-<a name="3758"><span class="lineNum">    3758 </span><span class="lineNoCov">          0 :                         pipe_ctx-&gt;pipe_dlg_param.vstartup_start + 1;</span></a>
+<a name="3746"><span class="lineNum">    3746 </span><span class="lineNoCov">          0 :         patched_crtc_timing = *dc_crtc_timing;</span></a>
+<a name="3747"><span class="lineNum">    3747 </span><span class="lineNoCov">          0 :         apply_front_porch_workaround(&amp;patched_crtc_timing);</span></a>
+<a name="3748"><span class="lineNum">    3748 </span>            : </a>
+<a name="3749"><span class="lineNum">    3749 </span><span class="lineNoCov">          0 :         interlace_factor = patched_crtc_timing.flags.INTERLACE ? 2 : 1;</span></a>
+<a name="3750"><span class="lineNum">    3750 </span>            : </a>
+<a name="3751"><span class="lineNum">    3751 </span><span class="lineNoCov">          0 :         vesa_sync_start = patched_crtc_timing.v_addressable +</span></a>
+<a name="3752"><span class="lineNum">    3752 </span><span class="lineNoCov">          0 :                         patched_crtc_timing.v_border_bottom +</span></a>
+<a name="3753"><span class="lineNum">    3753 </span>            :                         patched_crtc_timing.v_front_porch;</a>
+<a name="3754"><span class="lineNum">    3754 </span>            : </a>
+<a name="3755"><span class="lineNum">    3755 </span><span class="lineNoCov">          0 :         asic_blank_end = (patched_crtc_timing.v_total -</span></a>
+<a name="3756"><span class="lineNum">    3756 </span><span class="lineNoCov">          0 :                         vesa_sync_start -</span></a>
+<a name="3757"><span class="lineNum">    3757 </span>            :                         patched_crtc_timing.v_border_top)</a>
+<a name="3758"><span class="lineNum">    3758 </span><span class="lineNoCov">          0 :                         * interlace_factor;</span></a>
 <a name="3759"><span class="lineNum">    3759 </span>            : </a>
-<a name="3760"><span class="lineNum">    3760 </span><span class="lineNoCov">          0 :         return vertical_line_start;</span></a>
-<a name="3761"><span class="lineNum">    3761 </span>            : }</a>
+<a name="3760"><span class="lineNum">    3760 </span><span class="lineNoCov">          0 :         vertical_line_start = asic_blank_end -</span></a>
+<a name="3761"><span class="lineNum">    3761 </span><span class="lineNoCov">          0 :                         pipe_ctx-&gt;pipe_dlg_param.vstartup_start + 1;</span></a>
 <a name="3762"><span class="lineNum">    3762 </span>            : </a>
-<a name="3763"><span class="lineNum">    3763 </span><span class="lineNoCov">          0 : void dcn10_calc_vupdate_position(</span></a>
-<a name="3764"><span class="lineNum">    3764 </span>            :                 struct dc *dc,</a>
-<a name="3765"><span class="lineNum">    3765 </span>            :                 struct pipe_ctx *pipe_ctx,</a>
-<a name="3766"><span class="lineNum">    3766 </span>            :                 uint32_t *start_line,</a>
-<a name="3767"><span class="lineNum">    3767 </span>            :                 uint32_t *end_line)</a>
-<a name="3768"><span class="lineNum">    3768 </span>            : {</a>
-<a name="3769"><span class="lineNum">    3769 </span><span class="lineNoCov">          0 :         const struct dc_crtc_timing *dc_crtc_timing = &amp;pipe_ctx-&gt;stream-&gt;timing;</span></a>
-<a name="3770"><span class="lineNum">    3770 </span><span class="lineNoCov">          0 :         int vline_int_offset_from_vupdate =</span></a>
-<a name="3771"><span class="lineNum">    3771 </span>            :                         pipe_ctx-&gt;stream-&gt;periodic_interrupt0.lines_offset;</a>
-<a name="3772"><span class="lineNum">    3772 </span><span class="lineNoCov">          0 :         int vupdate_offset_from_vsync = dc-&gt;hwss.get_vupdate_offset_from_vsync(pipe_ctx);</span></a>
-<a name="3773"><span class="lineNum">    3773 </span>            :         int start_position;</a>
-<a name="3774"><span class="lineNum">    3774 </span>            : </a>
-<a name="3775"><span class="lineNum">    3775 </span><span class="lineNoCov">          0 :         if (vline_int_offset_from_vupdate &gt; 0)</span></a>
-<a name="3776"><span class="lineNum">    3776 </span><span class="lineNoCov">          0 :                 vline_int_offset_from_vupdate--;</span></a>
-<a name="3777"><span class="lineNum">    3777 </span><span class="lineNoCov">          0 :         else if (vline_int_offset_from_vupdate &lt; 0)</span></a>
-<a name="3778"><span class="lineNum">    3778 </span><span class="lineNoCov">          0 :                 vline_int_offset_from_vupdate++;</span></a>
-<a name="3779"><span class="lineNum">    3779 </span>            : </a>
-<a name="3780"><span class="lineNum">    3780 </span><span class="lineNoCov">          0 :         start_position = vline_int_offset_from_vupdate + vupdate_offset_from_vsync;</span></a>
-<a name="3781"><span class="lineNum">    3781 </span>            : </a>
-<a name="3782"><span class="lineNum">    3782 </span><span class="lineNoCov">          0 :         if (start_position &gt;= 0)</span></a>
-<a name="3783"><span class="lineNum">    3783 </span><span class="lineNoCov">          0 :                 *start_line = start_position;</span></a>
-<a name="3784"><span class="lineNum">    3784 </span>            :         else</a>
-<a name="3785"><span class="lineNum">    3785 </span><span class="lineNoCov">          0 :                 *start_line = dc_crtc_timing-&gt;v_total + start_position - 1;</span></a>
-<a name="3786"><span class="lineNum">    3786 </span>            : </a>
-<a name="3787"><span class="lineNum">    3787 </span><span class="lineNoCov">          0 :         *end_line = *start_line + 2;</span></a>
-<a name="3788"><span class="lineNum">    3788 </span>            : </a>
-<a name="3789"><span class="lineNum">    3789 </span><span class="lineNoCov">          0 :         if (*end_line &gt;= dc_crtc_timing-&gt;v_total)</span></a>
-<a name="3790"><span class="lineNum">    3790 </span><span class="lineNoCov">          0 :                 *end_line = 2;</span></a>
-<a name="3791"><span class="lineNum">    3791 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="3792"><span class="lineNum">    3792 </span>            : </a>
-<a name="3793"><span class="lineNum">    3793 </span><span class="lineNoCov">          0 : static void dcn10_cal_vline_position(</span></a>
-<a name="3794"><span class="lineNum">    3794 </span>            :                 struct dc *dc,</a>
-<a name="3795"><span class="lineNum">    3795 </span>            :                 struct pipe_ctx *pipe_ctx,</a>
-<a name="3796"><span class="lineNum">    3796 </span>            :                 enum vline_select vline,</a>
-<a name="3797"><span class="lineNum">    3797 </span>            :                 uint32_t *start_line,</a>
-<a name="3798"><span class="lineNum">    3798 </span>            :                 uint32_t *end_line)</a>
-<a name="3799"><span class="lineNum">    3799 </span>            : {</a>
-<a name="3800"><span class="lineNum">    3800 </span><span class="lineNoCov">          0 :         enum vertical_interrupt_ref_point ref_point = INVALID_POINT;</span></a>
-<a name="3801"><span class="lineNum">    3801 </span>            : </a>
-<a name="3802"><span class="lineNum">    3802 </span><span class="lineNoCov">          0 :         if (vline == VLINE0)</span></a>
-<a name="3803"><span class="lineNum">    3803 </span><span class="lineNoCov">          0 :                 ref_point = pipe_ctx-&gt;stream-&gt;periodic_interrupt0.ref_point;</span></a>
-<a name="3804"><span class="lineNum">    3804 </span><span class="lineNoCov">          0 :         else if (vline == VLINE1)</span></a>
-<a name="3805"><span class="lineNum">    3805 </span><span class="lineNoCov">          0 :                 ref_point = pipe_ctx-&gt;stream-&gt;periodic_interrupt1.ref_point;</span></a>
-<a name="3806"><span class="lineNum">    3806 </span>            : </a>
-<a name="3807"><span class="lineNum">    3807 </span><span class="lineNoCov">          0 :         switch (ref_point) {</span></a>
-<a name="3808"><span class="lineNum">    3808 </span>            :         case START_V_UPDATE:</a>
-<a name="3809"><span class="lineNum">    3809 </span><span class="lineNoCov">          0 :                 dcn10_calc_vupdate_position(</span></a>
-<a name="3810"><span class="lineNum">    3810 </span>            :                                 dc,</a>
-<a name="3811"><span class="lineNum">    3811 </span>            :                                 pipe_ctx,</a>
-<a name="3812"><span class="lineNum">    3812 </span>            :                                 start_line,</a>
-<a name="3813"><span class="lineNum">    3813 </span>            :                                 end_line);</a>
-<a name="3814"><span class="lineNum">    3814 </span><span class="lineNoCov">          0 :                 break;</span></a>
-<a name="3815"><span class="lineNum">    3815 </span>            :         case START_V_SYNC:</a>
-<a name="3816"><span class="lineNum">    3816 </span>            :                 // Suppose to do nothing because vsync is 0;</a>
-<a name="3817"><span class="lineNum">    3817 </span>            :                 break;</a>
-<a name="3818"><span class="lineNum">    3818 </span>            :         default:</a>
-<a name="3819"><span class="lineNum">    3819 </span><span class="lineNoCov">          0 :                 ASSERT(0);</span></a>
+<a name="3763"><span class="lineNum">    3763 </span><span class="lineNoCov">          0 :         return vertical_line_start;</span></a>
+<a name="3764"><span class="lineNum">    3764 </span>            : }</a>
+<a name="3765"><span class="lineNum">    3765 </span>            : </a>
+<a name="3766"><span class="lineNum">    3766 </span><span class="lineNoCov">          0 : void dcn10_calc_vupdate_position(</span></a>
+<a name="3767"><span class="lineNum">    3767 </span>            :                 struct dc *dc,</a>
+<a name="3768"><span class="lineNum">    3768 </span>            :                 struct pipe_ctx *pipe_ctx,</a>
+<a name="3769"><span class="lineNum">    3769 </span>            :                 uint32_t *start_line,</a>
+<a name="3770"><span class="lineNum">    3770 </span>            :                 uint32_t *end_line)</a>
+<a name="3771"><span class="lineNum">    3771 </span>            : {</a>
+<a name="3772"><span class="lineNum">    3772 </span><span class="lineNoCov">          0 :         const struct dc_crtc_timing *dc_crtc_timing = &amp;pipe_ctx-&gt;stream-&gt;timing;</span></a>
+<a name="3773"><span class="lineNum">    3773 </span><span class="lineNoCov">          0 :         int vline_int_offset_from_vupdate =</span></a>
+<a name="3774"><span class="lineNum">    3774 </span>            :                         pipe_ctx-&gt;stream-&gt;periodic_interrupt0.lines_offset;</a>
+<a name="3775"><span class="lineNum">    3775 </span><span class="lineNoCov">          0 :         int vupdate_offset_from_vsync = dc-&gt;hwss.get_vupdate_offset_from_vsync(pipe_ctx);</span></a>
+<a name="3776"><span class="lineNum">    3776 </span>            :         int start_position;</a>
+<a name="3777"><span class="lineNum">    3777 </span>            : </a>
+<a name="3778"><span class="lineNum">    3778 </span><span class="lineNoCov">          0 :         if (vline_int_offset_from_vupdate &gt; 0)</span></a>
+<a name="3779"><span class="lineNum">    3779 </span><span class="lineNoCov">          0 :                 vline_int_offset_from_vupdate--;</span></a>
+<a name="3780"><span class="lineNum">    3780 </span><span class="lineNoCov">          0 :         else if (vline_int_offset_from_vupdate &lt; 0)</span></a>
+<a name="3781"><span class="lineNum">    3781 </span><span class="lineNoCov">          0 :                 vline_int_offset_from_vupdate++;</span></a>
+<a name="3782"><span class="lineNum">    3782 </span>            : </a>
+<a name="3783"><span class="lineNum">    3783 </span><span class="lineNoCov">          0 :         start_position = vline_int_offset_from_vupdate + vupdate_offset_from_vsync;</span></a>
+<a name="3784"><span class="lineNum">    3784 </span>            : </a>
+<a name="3785"><span class="lineNum">    3785 </span><span class="lineNoCov">          0 :         if (start_position &gt;= 0)</span></a>
+<a name="3786"><span class="lineNum">    3786 </span><span class="lineNoCov">          0 :                 *start_line = start_position;</span></a>
+<a name="3787"><span class="lineNum">    3787 </span>            :         else</a>
+<a name="3788"><span class="lineNum">    3788 </span><span class="lineNoCov">          0 :                 *start_line = dc_crtc_timing-&gt;v_total + start_position - 1;</span></a>
+<a name="3789"><span class="lineNum">    3789 </span>            : </a>
+<a name="3790"><span class="lineNum">    3790 </span><span class="lineNoCov">          0 :         *end_line = *start_line + 2;</span></a>
+<a name="3791"><span class="lineNum">    3791 </span>            : </a>
+<a name="3792"><span class="lineNum">    3792 </span><span class="lineNoCov">          0 :         if (*end_line &gt;= dc_crtc_timing-&gt;v_total)</span></a>
+<a name="3793"><span class="lineNum">    3793 </span><span class="lineNoCov">          0 :                 *end_line = 2;</span></a>
+<a name="3794"><span class="lineNum">    3794 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="3795"><span class="lineNum">    3795 </span>            : </a>
+<a name="3796"><span class="lineNum">    3796 </span><span class="lineNoCov">          0 : static void dcn10_cal_vline_position(</span></a>
+<a name="3797"><span class="lineNum">    3797 </span>            :                 struct dc *dc,</a>
+<a name="3798"><span class="lineNum">    3798 </span>            :                 struct pipe_ctx *pipe_ctx,</a>
+<a name="3799"><span class="lineNum">    3799 </span>            :                 enum vline_select vline,</a>
+<a name="3800"><span class="lineNum">    3800 </span>            :                 uint32_t *start_line,</a>
+<a name="3801"><span class="lineNum">    3801 </span>            :                 uint32_t *end_line)</a>
+<a name="3802"><span class="lineNum">    3802 </span>            : {</a>
+<a name="3803"><span class="lineNum">    3803 </span><span class="lineNoCov">          0 :         enum vertical_interrupt_ref_point ref_point = INVALID_POINT;</span></a>
+<a name="3804"><span class="lineNum">    3804 </span>            : </a>
+<a name="3805"><span class="lineNum">    3805 </span><span class="lineNoCov">          0 :         if (vline == VLINE0)</span></a>
+<a name="3806"><span class="lineNum">    3806 </span><span class="lineNoCov">          0 :                 ref_point = pipe_ctx-&gt;stream-&gt;periodic_interrupt0.ref_point;</span></a>
+<a name="3807"><span class="lineNum">    3807 </span><span class="lineNoCov">          0 :         else if (vline == VLINE1)</span></a>
+<a name="3808"><span class="lineNum">    3808 </span><span class="lineNoCov">          0 :                 ref_point = pipe_ctx-&gt;stream-&gt;periodic_interrupt1.ref_point;</span></a>
+<a name="3809"><span class="lineNum">    3809 </span>            : </a>
+<a name="3810"><span class="lineNum">    3810 </span><span class="lineNoCov">          0 :         switch (ref_point) {</span></a>
+<a name="3811"><span class="lineNum">    3811 </span>            :         case START_V_UPDATE:</a>
+<a name="3812"><span class="lineNum">    3812 </span><span class="lineNoCov">          0 :                 dcn10_calc_vupdate_position(</span></a>
+<a name="3813"><span class="lineNum">    3813 </span>            :                                 dc,</a>
+<a name="3814"><span class="lineNum">    3814 </span>            :                                 pipe_ctx,</a>
+<a name="3815"><span class="lineNum">    3815 </span>            :                                 start_line,</a>
+<a name="3816"><span class="lineNum">    3816 </span>            :                                 end_line);</a>
+<a name="3817"><span class="lineNum">    3817 </span><span class="lineNoCov">          0 :                 break;</span></a>
+<a name="3818"><span class="lineNum">    3818 </span>            :         case START_V_SYNC:</a>
+<a name="3819"><span class="lineNum">    3819 </span>            :                 // Suppose to do nothing because vsync is 0;</a>
 <a name="3820"><span class="lineNum">    3820 </span>            :                 break;</a>
-<a name="3821"><span class="lineNum">    3821 </span>            :         }</a>
-<a name="3822"><span class="lineNum">    3822 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="3823"><span class="lineNum">    3823 </span>            : </a>
-<a name="3824"><span class="lineNum">    3824 </span><span class="lineNoCov">          0 : void dcn10_setup_periodic_interrupt(</span></a>
-<a name="3825"><span class="lineNum">    3825 </span>            :                 struct dc *dc,</a>
-<a name="3826"><span class="lineNum">    3826 </span>            :                 struct pipe_ctx *pipe_ctx,</a>
-<a name="3827"><span class="lineNum">    3827 </span>            :                 enum vline_select vline)</a>
-<a name="3828"><span class="lineNum">    3828 </span>            : {</a>
-<a name="3829"><span class="lineNum">    3829 </span><span class="lineNoCov">          0 :         struct timing_generator *tg = pipe_ctx-&gt;stream_res.tg;</span></a>
-<a name="3830"><span class="lineNum">    3830 </span>            : </a>
-<a name="3831"><span class="lineNum">    3831 </span><span class="lineNoCov">          0 :         if (vline == VLINE0) {</span></a>
-<a name="3832"><span class="lineNum">    3832 </span><span class="lineNoCov">          0 :                 uint32_t start_line = 0;</span></a>
-<a name="3833"><span class="lineNum">    3833 </span><span class="lineNoCov">          0 :                 uint32_t end_line = 0;</span></a>
-<a name="3834"><span class="lineNum">    3834 </span>            : </a>
-<a name="3835"><span class="lineNum">    3835 </span><span class="lineNoCov">          0 :                 dcn10_cal_vline_position(dc, pipe_ctx, vline, &amp;start_line, &amp;end_line);</span></a>
-<a name="3836"><span class="lineNum">    3836 </span>            : </a>
-<a name="3837"><span class="lineNum">    3837 </span><span class="lineNoCov">          0 :                 tg-&gt;funcs-&gt;setup_vertical_interrupt0(tg, start_line, end_line);</span></a>
-<a name="3838"><span class="lineNum">    3838 </span>            : </a>
-<a name="3839"><span class="lineNum">    3839 </span><span class="lineNoCov">          0 :         } else if (vline == VLINE1) {</span></a>
-<a name="3840"><span class="lineNum">    3840 </span><span class="lineNoCov">          0 :                 pipe_ctx-&gt;stream_res.tg-&gt;funcs-&gt;setup_vertical_interrupt1(</span></a>
-<a name="3841"><span class="lineNum">    3841 </span>            :                                 tg,</a>
-<a name="3842"><span class="lineNum">    3842 </span><span class="lineNoCov">          0 :                                 pipe_ctx-&gt;stream-&gt;periodic_interrupt1.lines_offset);</span></a>
-<a name="3843"><span class="lineNum">    3843 </span>            :         }</a>
-<a name="3844"><span class="lineNum">    3844 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="3845"><span class="lineNum">    3845 </span>            : </a>
-<a name="3846"><span class="lineNum">    3846 </span><span class="lineNoCov">          0 : void dcn10_setup_vupdate_interrupt(struct dc *dc, struct pipe_ctx *pipe_ctx)</span></a>
-<a name="3847"><span class="lineNum">    3847 </span>            : {</a>
-<a name="3848"><span class="lineNum">    3848 </span><span class="lineNoCov">          0 :         struct timing_generator *tg = pipe_ctx-&gt;stream_res.tg;</span></a>
-<a name="3849"><span class="lineNum">    3849 </span><span class="lineNoCov">          0 :         int start_line = dc-&gt;hwss.get_vupdate_offset_from_vsync(pipe_ctx);</span></a>
-<a name="3850"><span class="lineNum">    3850 </span>            : </a>
-<a name="3851"><span class="lineNum">    3851 </span><span class="lineNoCov">          0 :         if (start_line &lt; 0) {</span></a>
-<a name="3852"><span class="lineNum">    3852 </span><span class="lineNoCov">          0 :                 ASSERT(0);</span></a>
-<a name="3853"><span class="lineNum">    3853 </span>            :                 start_line = 0;</a>
-<a name="3854"><span class="lineNum">    3854 </span>            :         }</a>
-<a name="3855"><span class="lineNum">    3855 </span>            : </a>
-<a name="3856"><span class="lineNum">    3856 </span><span class="lineNoCov">          0 :         if (tg-&gt;funcs-&gt;setup_vertical_interrupt2)</span></a>
-<a name="3857"><span class="lineNum">    3857 </span><span class="lineNoCov">          0 :                 tg-&gt;funcs-&gt;setup_vertical_interrupt2(tg, start_line);</span></a>
-<a name="3858"><span class="lineNum">    3858 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="3859"><span class="lineNum">    3859 </span>            : </a>
-<a name="3860"><span class="lineNum">    3860 </span><span class="lineNoCov">          0 : void dcn10_unblank_stream(struct pipe_ctx *pipe_ctx,</span></a>
-<a name="3861"><span class="lineNum">    3861 </span>            :                 struct dc_link_settings *link_settings)</a>
-<a name="3862"><span class="lineNum">    3862 </span>            : {</a>
-<a name="3863"><span class="lineNum">    3863 </span><span class="lineNoCov">          0 :         struct encoder_unblank_param params = {0};</span></a>
-<a name="3864"><span class="lineNum">    3864 </span><span class="lineNoCov">          0 :         struct dc_stream_state *stream = pipe_ctx-&gt;stream;</span></a>
-<a name="3865"><span class="lineNum">    3865 </span><span class="lineNoCov">          0 :         struct dc_link *link = stream-&gt;link;</span></a>
-<a name="3866"><span class="lineNum">    3866 </span><span class="lineNoCov">          0 :         struct dce_hwseq *hws = link-&gt;dc-&gt;hwseq;</span></a>
-<a name="3867"><span class="lineNum">    3867 </span>            : </a>
-<a name="3868"><span class="lineNum">    3868 </span>            :         /* only 3 items below are used by unblank */</a>
-<a name="3869"><span class="lineNum">    3869 </span><span class="lineNoCov">          0 :         params.timing = pipe_ctx-&gt;stream-&gt;timing;</span></a>
+<a name="3821"><span class="lineNum">    3821 </span>            :         default:</a>
+<a name="3822"><span class="lineNum">    3822 </span><span class="lineNoCov">          0 :                 ASSERT(0);</span></a>
+<a name="3823"><span class="lineNum">    3823 </span>            :                 break;</a>
+<a name="3824"><span class="lineNum">    3824 </span>            :         }</a>
+<a name="3825"><span class="lineNum">    3825 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="3826"><span class="lineNum">    3826 </span>            : </a>
+<a name="3827"><span class="lineNum">    3827 </span><span class="lineNoCov">          0 : void dcn10_setup_periodic_interrupt(</span></a>
+<a name="3828"><span class="lineNum">    3828 </span>            :                 struct dc *dc,</a>
+<a name="3829"><span class="lineNum">    3829 </span>            :                 struct pipe_ctx *pipe_ctx,</a>
+<a name="3830"><span class="lineNum">    3830 </span>            :                 enum vline_select vline)</a>
+<a name="3831"><span class="lineNum">    3831 </span>            : {</a>
+<a name="3832"><span class="lineNum">    3832 </span><span class="lineNoCov">          0 :         struct timing_generator *tg = pipe_ctx-&gt;stream_res.tg;</span></a>
+<a name="3833"><span class="lineNum">    3833 </span>            : </a>
+<a name="3834"><span class="lineNum">    3834 </span><span class="lineNoCov">          0 :         if (vline == VLINE0) {</span></a>
+<a name="3835"><span class="lineNum">    3835 </span><span class="lineNoCov">          0 :                 uint32_t start_line = 0;</span></a>
+<a name="3836"><span class="lineNum">    3836 </span><span class="lineNoCov">          0 :                 uint32_t end_line = 0;</span></a>
+<a name="3837"><span class="lineNum">    3837 </span>            : </a>
+<a name="3838"><span class="lineNum">    3838 </span><span class="lineNoCov">          0 :                 dcn10_cal_vline_position(dc, pipe_ctx, vline, &amp;start_line, &amp;end_line);</span></a>
+<a name="3839"><span class="lineNum">    3839 </span>            : </a>
+<a name="3840"><span class="lineNum">    3840 </span><span class="lineNoCov">          0 :                 tg-&gt;funcs-&gt;setup_vertical_interrupt0(tg, start_line, end_line);</span></a>
+<a name="3841"><span class="lineNum">    3841 </span>            : </a>
+<a name="3842"><span class="lineNum">    3842 </span><span class="lineNoCov">          0 :         } else if (vline == VLINE1) {</span></a>
+<a name="3843"><span class="lineNum">    3843 </span><span class="lineNoCov">          0 :                 pipe_ctx-&gt;stream_res.tg-&gt;funcs-&gt;setup_vertical_interrupt1(</span></a>
+<a name="3844"><span class="lineNum">    3844 </span>            :                                 tg,</a>
+<a name="3845"><span class="lineNum">    3845 </span><span class="lineNoCov">          0 :                                 pipe_ctx-&gt;stream-&gt;periodic_interrupt1.lines_offset);</span></a>
+<a name="3846"><span class="lineNum">    3846 </span>            :         }</a>
+<a name="3847"><span class="lineNum">    3847 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="3848"><span class="lineNum">    3848 </span>            : </a>
+<a name="3849"><span class="lineNum">    3849 </span><span class="lineNoCov">          0 : void dcn10_setup_vupdate_interrupt(struct dc *dc, struct pipe_ctx *pipe_ctx)</span></a>
+<a name="3850"><span class="lineNum">    3850 </span>            : {</a>
+<a name="3851"><span class="lineNum">    3851 </span><span class="lineNoCov">          0 :         struct timing_generator *tg = pipe_ctx-&gt;stream_res.tg;</span></a>
+<a name="3852"><span class="lineNum">    3852 </span><span class="lineNoCov">          0 :         int start_line = dc-&gt;hwss.get_vupdate_offset_from_vsync(pipe_ctx);</span></a>
+<a name="3853"><span class="lineNum">    3853 </span>            : </a>
+<a name="3854"><span class="lineNum">    3854 </span><span class="lineNoCov">          0 :         if (start_line &lt; 0) {</span></a>
+<a name="3855"><span class="lineNum">    3855 </span><span class="lineNoCov">          0 :                 ASSERT(0);</span></a>
+<a name="3856"><span class="lineNum">    3856 </span>            :                 start_line = 0;</a>
+<a name="3857"><span class="lineNum">    3857 </span>            :         }</a>
+<a name="3858"><span class="lineNum">    3858 </span>            : </a>
+<a name="3859"><span class="lineNum">    3859 </span><span class="lineNoCov">          0 :         if (tg-&gt;funcs-&gt;setup_vertical_interrupt2)</span></a>
+<a name="3860"><span class="lineNum">    3860 </span><span class="lineNoCov">          0 :                 tg-&gt;funcs-&gt;setup_vertical_interrupt2(tg, start_line);</span></a>
+<a name="3861"><span class="lineNum">    3861 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="3862"><span class="lineNum">    3862 </span>            : </a>
+<a name="3863"><span class="lineNum">    3863 </span><span class="lineNoCov">          0 : void dcn10_unblank_stream(struct pipe_ctx *pipe_ctx,</span></a>
+<a name="3864"><span class="lineNum">    3864 </span>            :                 struct dc_link_settings *link_settings)</a>
+<a name="3865"><span class="lineNum">    3865 </span>            : {</a>
+<a name="3866"><span class="lineNum">    3866 </span><span class="lineNoCov">          0 :         struct encoder_unblank_param params = {0};</span></a>
+<a name="3867"><span class="lineNum">    3867 </span><span class="lineNoCov">          0 :         struct dc_stream_state *stream = pipe_ctx-&gt;stream;</span></a>
+<a name="3868"><span class="lineNum">    3868 </span><span class="lineNoCov">          0 :         struct dc_link *link = stream-&gt;link;</span></a>
+<a name="3869"><span class="lineNum">    3869 </span><span class="lineNoCov">          0 :         struct dce_hwseq *hws = link-&gt;dc-&gt;hwseq;</span></a>
 <a name="3870"><span class="lineNum">    3870 </span>            : </a>
-<a name="3871"><span class="lineNum">    3871 </span><span class="lineNoCov">          0 :         params.link_settings.link_rate = link_settings-&gt;link_rate;</span></a>
-<a name="3872"><span class="lineNum">    3872 </span>            : </a>
-<a name="3873"><span class="lineNum">    3873 </span><span class="lineNoCov">          0 :         if (dc_is_dp_signal(pipe_ctx-&gt;stream-&gt;signal)) {</span></a>
-<a name="3874"><span class="lineNum">    3874 </span><span class="lineNoCov">          0 :                 if (params.timing.pixel_encoding == PIXEL_ENCODING_YCBCR420)</span></a>
-<a name="3875"><span class="lineNum">    3875 </span><span class="lineNoCov">          0 :                         params.timing.pix_clk_100hz /= 2;</span></a>
-<a name="3876"><span class="lineNum">    3876 </span><span class="lineNoCov">          0 :                 pipe_ctx-&gt;stream_res.stream_enc-&gt;funcs-&gt;dp_unblank(link, pipe_ctx-&gt;stream_res.stream_enc, &amp;params);</span></a>
-<a name="3877"><span class="lineNum">    3877 </span>            :         }</a>
-<a name="3878"><span class="lineNum">    3878 </span>            : </a>
-<a name="3879"><span class="lineNum">    3879 </span><span class="lineNoCov">          0 :         if (link-&gt;local_sink &amp;&amp; link-&gt;local_sink-&gt;sink_signal == SIGNAL_TYPE_EDP) {</span></a>
-<a name="3880"><span class="lineNum">    3880 </span><span class="lineNoCov">          0 :                 hws-&gt;funcs.edp_backlight_control(link, true);</span></a>
-<a name="3881"><span class="lineNum">    3881 </span>            :         }</a>
-<a name="3882"><span class="lineNum">    3882 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="3883"><span class="lineNum">    3883 </span>            : </a>
-<a name="3884"><span class="lineNum">    3884 </span><span class="lineNoCov">          0 : void dcn10_send_immediate_sdp_message(struct pipe_ctx *pipe_ctx,</span></a>
-<a name="3885"><span class="lineNum">    3885 </span>            :                                 const uint8_t *custom_sdp_message,</a>
-<a name="3886"><span class="lineNum">    3886 </span>            :                                 unsigned int sdp_message_size)</a>
-<a name="3887"><span class="lineNum">    3887 </span>            : {</a>
-<a name="3888"><span class="lineNum">    3888 </span><span class="lineNoCov">          0 :         if (dc_is_dp_signal(pipe_ctx-&gt;stream-&gt;signal)) {</span></a>
-<a name="3889"><span class="lineNum">    3889 </span><span class="lineNoCov">          0 :                 pipe_ctx-&gt;stream_res.stream_enc-&gt;funcs-&gt;send_immediate_sdp_message(</span></a>
-<a name="3890"><span class="lineNum">    3890 </span>            :                                 pipe_ctx-&gt;stream_res.stream_enc,</a>
-<a name="3891"><span class="lineNum">    3891 </span>            :                                 custom_sdp_message,</a>
-<a name="3892"><span class="lineNum">    3892 </span>            :                                 sdp_message_size);</a>
-<a name="3893"><span class="lineNum">    3893 </span>            :         }</a>
-<a name="3894"><span class="lineNum">    3894 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="3895"><span class="lineNum">    3895 </span><span class="lineNoCov">          0 : enum dc_status dcn10_set_clock(struct dc *dc,</span></a>
-<a name="3896"><span class="lineNum">    3896 </span>            :                         enum dc_clock_type clock_type,</a>
-<a name="3897"><span class="lineNum">    3897 </span>            :                         uint32_t clk_khz,</a>
-<a name="3898"><span class="lineNum">    3898 </span>            :                         uint32_t stepping)</a>
-<a name="3899"><span class="lineNum">    3899 </span>            : {</a>
-<a name="3900"><span class="lineNum">    3900 </span><span class="lineNoCov">          0 :         struct dc_state *context = dc-&gt;current_state;</span></a>
-<a name="3901"><span class="lineNum">    3901 </span><span class="lineNoCov">          0 :         struct dc_clock_config clock_cfg = {0};</span></a>
-<a name="3902"><span class="lineNum">    3902 </span><span class="lineNoCov">          0 :         struct dc_clocks *current_clocks = &amp;context-&gt;bw_ctx.bw.dcn.clk;</span></a>
-<a name="3903"><span class="lineNum">    3903 </span>            : </a>
-<a name="3904"><span class="lineNum">    3904 </span><span class="lineNoCov">          0 :         if (!dc-&gt;clk_mgr || !dc-&gt;clk_mgr-&gt;funcs-&gt;get_clock)</span></a>
-<a name="3905"><span class="lineNum">    3905 </span>            :                 return DC_FAIL_UNSUPPORTED_1;</a>
+<a name="3871"><span class="lineNum">    3871 </span>            :         /* only 3 items below are used by unblank */</a>
+<a name="3872"><span class="lineNum">    3872 </span><span class="lineNoCov">          0 :         params.timing = pipe_ctx-&gt;stream-&gt;timing;</span></a>
+<a name="3873"><span class="lineNum">    3873 </span>            : </a>
+<a name="3874"><span class="lineNum">    3874 </span><span class="lineNoCov">          0 :         params.link_settings.link_rate = link_settings-&gt;link_rate;</span></a>
+<a name="3875"><span class="lineNum">    3875 </span>            : </a>
+<a name="3876"><span class="lineNum">    3876 </span><span class="lineNoCov">          0 :         if (dc_is_dp_signal(pipe_ctx-&gt;stream-&gt;signal)) {</span></a>
+<a name="3877"><span class="lineNum">    3877 </span><span class="lineNoCov">          0 :                 if (params.timing.pixel_encoding == PIXEL_ENCODING_YCBCR420)</span></a>
+<a name="3878"><span class="lineNum">    3878 </span><span class="lineNoCov">          0 :                         params.timing.pix_clk_100hz /= 2;</span></a>
+<a name="3879"><span class="lineNum">    3879 </span><span class="lineNoCov">          0 :                 pipe_ctx-&gt;stream_res.stream_enc-&gt;funcs-&gt;dp_unblank(link, pipe_ctx-&gt;stream_res.stream_enc, &amp;params);</span></a>
+<a name="3880"><span class="lineNum">    3880 </span>            :         }</a>
+<a name="3881"><span class="lineNum">    3881 </span>            : </a>
+<a name="3882"><span class="lineNum">    3882 </span><span class="lineNoCov">          0 :         if (link-&gt;local_sink &amp;&amp; link-&gt;local_sink-&gt;sink_signal == SIGNAL_TYPE_EDP) {</span></a>
+<a name="3883"><span class="lineNum">    3883 </span><span class="lineNoCov">          0 :                 hws-&gt;funcs.edp_backlight_control(link, true);</span></a>
+<a name="3884"><span class="lineNum">    3884 </span>            :         }</a>
+<a name="3885"><span class="lineNum">    3885 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="3886"><span class="lineNum">    3886 </span>            : </a>
+<a name="3887"><span class="lineNum">    3887 </span><span class="lineNoCov">          0 : void dcn10_send_immediate_sdp_message(struct pipe_ctx *pipe_ctx,</span></a>
+<a name="3888"><span class="lineNum">    3888 </span>            :                                 const uint8_t *custom_sdp_message,</a>
+<a name="3889"><span class="lineNum">    3889 </span>            :                                 unsigned int sdp_message_size)</a>
+<a name="3890"><span class="lineNum">    3890 </span>            : {</a>
+<a name="3891"><span class="lineNum">    3891 </span><span class="lineNoCov">          0 :         if (dc_is_dp_signal(pipe_ctx-&gt;stream-&gt;signal)) {</span></a>
+<a name="3892"><span class="lineNum">    3892 </span><span class="lineNoCov">          0 :                 pipe_ctx-&gt;stream_res.stream_enc-&gt;funcs-&gt;send_immediate_sdp_message(</span></a>
+<a name="3893"><span class="lineNum">    3893 </span>            :                                 pipe_ctx-&gt;stream_res.stream_enc,</a>
+<a name="3894"><span class="lineNum">    3894 </span>            :                                 custom_sdp_message,</a>
+<a name="3895"><span class="lineNum">    3895 </span>            :                                 sdp_message_size);</a>
+<a name="3896"><span class="lineNum">    3896 </span>            :         }</a>
+<a name="3897"><span class="lineNum">    3897 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="3898"><span class="lineNum">    3898 </span><span class="lineNoCov">          0 : enum dc_status dcn10_set_clock(struct dc *dc,</span></a>
+<a name="3899"><span class="lineNum">    3899 </span>            :                         enum dc_clock_type clock_type,</a>
+<a name="3900"><span class="lineNum">    3900 </span>            :                         uint32_t clk_khz,</a>
+<a name="3901"><span class="lineNum">    3901 </span>            :                         uint32_t stepping)</a>
+<a name="3902"><span class="lineNum">    3902 </span>            : {</a>
+<a name="3903"><span class="lineNum">    3903 </span><span class="lineNoCov">          0 :         struct dc_state *context = dc-&gt;current_state;</span></a>
+<a name="3904"><span class="lineNum">    3904 </span><span class="lineNoCov">          0 :         struct dc_clock_config clock_cfg = {0};</span></a>
+<a name="3905"><span class="lineNum">    3905 </span><span class="lineNoCov">          0 :         struct dc_clocks *current_clocks = &amp;context-&gt;bw_ctx.bw.dcn.clk;</span></a>
 <a name="3906"><span class="lineNum">    3906 </span>            : </a>
-<a name="3907"><span class="lineNum">    3907 </span><span class="lineNoCov">          0 :         dc-&gt;clk_mgr-&gt;funcs-&gt;get_clock(dc-&gt;clk_mgr,</span></a>
-<a name="3908"><span class="lineNum">    3908 </span>            :                 context, clock_type, &amp;clock_cfg);</a>
+<a name="3907"><span class="lineNum">    3907 </span><span class="lineNoCov">          0 :         if (!dc-&gt;clk_mgr || !dc-&gt;clk_mgr-&gt;funcs-&gt;get_clock)</span></a>
+<a name="3908"><span class="lineNum">    3908 </span>            :                 return DC_FAIL_UNSUPPORTED_1;</a>
 <a name="3909"><span class="lineNum">    3909 </span>            : </a>
-<a name="3910"><span class="lineNum">    3910 </span><span class="lineNoCov">          0 :         if (clk_khz &gt; clock_cfg.max_clock_khz)</span></a>
-<a name="3911"><span class="lineNum">    3911 </span>            :                 return DC_FAIL_CLK_EXCEED_MAX;</a>
+<a name="3910"><span class="lineNum">    3910 </span><span class="lineNoCov">          0 :         dc-&gt;clk_mgr-&gt;funcs-&gt;get_clock(dc-&gt;clk_mgr,</span></a>
+<a name="3911"><span class="lineNum">    3911 </span>            :                 context, clock_type, &amp;clock_cfg);</a>
 <a name="3912"><span class="lineNum">    3912 </span>            : </a>
-<a name="3913"><span class="lineNum">    3913 </span><span class="lineNoCov">          0 :         if (clk_khz &lt; clock_cfg.min_clock_khz)</span></a>
-<a name="3914"><span class="lineNum">    3914 </span>            :                 return DC_FAIL_CLK_BELOW_MIN;</a>
+<a name="3913"><span class="lineNum">    3913 </span><span class="lineNoCov">          0 :         if (clk_khz &gt; clock_cfg.max_clock_khz)</span></a>
+<a name="3914"><span class="lineNum">    3914 </span>            :                 return DC_FAIL_CLK_EXCEED_MAX;</a>
 <a name="3915"><span class="lineNum">    3915 </span>            : </a>
-<a name="3916"><span class="lineNum">    3916 </span><span class="lineNoCov">          0 :         if (clk_khz &lt; clock_cfg.bw_requirequired_clock_khz)</span></a>
-<a name="3917"><span class="lineNum">    3917 </span>            :                 return DC_FAIL_CLK_BELOW_CFG_REQUIRED;</a>
+<a name="3916"><span class="lineNum">    3916 </span><span class="lineNoCov">          0 :         if (clk_khz &lt; clock_cfg.min_clock_khz)</span></a>
+<a name="3917"><span class="lineNum">    3917 </span>            :                 return DC_FAIL_CLK_BELOW_MIN;</a>
 <a name="3918"><span class="lineNum">    3918 </span>            : </a>
-<a name="3919"><span class="lineNum">    3919 </span>            :         /*update internal request clock for update clock use*/</a>
-<a name="3920"><span class="lineNum">    3920 </span><span class="lineNoCov">          0 :         if (clock_type == DC_CLOCK_TYPE_DISPCLK)</span></a>
-<a name="3921"><span class="lineNum">    3921 </span><span class="lineNoCov">          0 :                 current_clocks-&gt;dispclk_khz = clk_khz;</span></a>
-<a name="3922"><span class="lineNum">    3922 </span><span class="lineNoCov">          0 :         else if (clock_type == DC_CLOCK_TYPE_DPPCLK)</span></a>
-<a name="3923"><span class="lineNum">    3923 </span><span class="lineNoCov">          0 :                 current_clocks-&gt;dppclk_khz = clk_khz;</span></a>
-<a name="3924"><span class="lineNum">    3924 </span>            :         else</a>
-<a name="3925"><span class="lineNum">    3925 </span>            :                 return DC_ERROR_UNEXPECTED;</a>
-<a name="3926"><span class="lineNum">    3926 </span>            : </a>
-<a name="3927"><span class="lineNum">    3927 </span><span class="lineNoCov">          0 :         if (dc-&gt;clk_mgr-&gt;funcs-&gt;update_clocks)</span></a>
-<a name="3928"><span class="lineNum">    3928 </span><span class="lineNoCov">          0 :                                 dc-&gt;clk_mgr-&gt;funcs-&gt;update_clocks(dc-&gt;clk_mgr,</span></a>
-<a name="3929"><span class="lineNum">    3929 </span>            :                                 context, true);</a>
-<a name="3930"><span class="lineNum">    3930 </span>            :         return DC_OK;</a>
-<a name="3931"><span class="lineNum">    3931 </span>            : </a>
-<a name="3932"><span class="lineNum">    3932 </span>            : }</a>
-<a name="3933"><span class="lineNum">    3933 </span>            : </a>
-<a name="3934"><span class="lineNum">    3934 </span><span class="lineNoCov">          0 : void dcn10_get_clock(struct dc *dc,</span></a>
-<a name="3935"><span class="lineNum">    3935 </span>            :                         enum dc_clock_type clock_type,</a>
-<a name="3936"><span class="lineNum">    3936 </span>            :                         struct dc_clock_config *clock_cfg)</a>
-<a name="3937"><span class="lineNum">    3937 </span>            : {</a>
-<a name="3938"><span class="lineNum">    3938 </span><span class="lineNoCov">          0 :         struct dc_state *context = dc-&gt;current_state;</span></a>
-<a name="3939"><span class="lineNum">    3939 </span>            : </a>
-<a name="3940"><span class="lineNum">    3940 </span><span class="lineNoCov">          0 :         if (dc-&gt;clk_mgr &amp;&amp; dc-&gt;clk_mgr-&gt;funcs-&gt;get_clock)</span></a>
-<a name="3941"><span class="lineNum">    3941 </span><span class="lineNoCov">          0 :                                 dc-&gt;clk_mgr-&gt;funcs-&gt;get_clock(dc-&gt;clk_mgr, context, clock_type, clock_cfg);</span></a>
+<a name="3919"><span class="lineNum">    3919 </span><span class="lineNoCov">          0 :         if (clk_khz &lt; clock_cfg.bw_requirequired_clock_khz)</span></a>
+<a name="3920"><span class="lineNum">    3920 </span>            :                 return DC_FAIL_CLK_BELOW_CFG_REQUIRED;</a>
+<a name="3921"><span class="lineNum">    3921 </span>            : </a>
+<a name="3922"><span class="lineNum">    3922 </span>            :         /*update internal request clock for update clock use*/</a>
+<a name="3923"><span class="lineNum">    3923 </span><span class="lineNoCov">          0 :         if (clock_type == DC_CLOCK_TYPE_DISPCLK)</span></a>
+<a name="3924"><span class="lineNum">    3924 </span><span class="lineNoCov">          0 :                 current_clocks-&gt;dispclk_khz = clk_khz;</span></a>
+<a name="3925"><span class="lineNum">    3925 </span><span class="lineNoCov">          0 :         else if (clock_type == DC_CLOCK_TYPE_DPPCLK)</span></a>
+<a name="3926"><span class="lineNum">    3926 </span><span class="lineNoCov">          0 :                 current_clocks-&gt;dppclk_khz = clk_khz;</span></a>
+<a name="3927"><span class="lineNum">    3927 </span>            :         else</a>
+<a name="3928"><span class="lineNum">    3928 </span>            :                 return DC_ERROR_UNEXPECTED;</a>
+<a name="3929"><span class="lineNum">    3929 </span>            : </a>
+<a name="3930"><span class="lineNum">    3930 </span><span class="lineNoCov">          0 :         if (dc-&gt;clk_mgr-&gt;funcs-&gt;update_clocks)</span></a>
+<a name="3931"><span class="lineNum">    3931 </span><span class="lineNoCov">          0 :                                 dc-&gt;clk_mgr-&gt;funcs-&gt;update_clocks(dc-&gt;clk_mgr,</span></a>
+<a name="3932"><span class="lineNum">    3932 </span>            :                                 context, true);</a>
+<a name="3933"><span class="lineNum">    3933 </span>            :         return DC_OK;</a>
+<a name="3934"><span class="lineNum">    3934 </span>            : </a>
+<a name="3935"><span class="lineNum">    3935 </span>            : }</a>
+<a name="3936"><span class="lineNum">    3936 </span>            : </a>
+<a name="3937"><span class="lineNum">    3937 </span><span class="lineNoCov">          0 : void dcn10_get_clock(struct dc *dc,</span></a>
+<a name="3938"><span class="lineNum">    3938 </span>            :                         enum dc_clock_type clock_type,</a>
+<a name="3939"><span class="lineNum">    3939 </span>            :                         struct dc_clock_config *clock_cfg)</a>
+<a name="3940"><span class="lineNum">    3940 </span>            : {</a>
+<a name="3941"><span class="lineNum">    3941 </span><span class="lineNoCov">          0 :         struct dc_state *context = dc-&gt;current_state;</span></a>
 <a name="3942"><span class="lineNum">    3942 </span>            : </a>
-<a name="3943"><span class="lineNum">    3943 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="3944"><span class="lineNum">    3944 </span>            : </a>
-<a name="3945"><span class="lineNum">    3945 </span><span class="lineNoCov">          0 : void dcn10_get_dcc_en_bits(struct dc *dc, int *dcc_en_bits)</span></a>
-<a name="3946"><span class="lineNum">    3946 </span>            : {</a>
-<a name="3947"><span class="lineNum">    3947 </span><span class="lineNoCov">          0 :         struct resource_pool *pool = dc-&gt;res_pool;</span></a>
-<a name="3948"><span class="lineNum">    3948 </span>            :         int i;</a>
-<a name="3949"><span class="lineNum">    3949 </span>            : </a>
-<a name="3950"><span class="lineNum">    3950 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; pool-&gt;pipe_count; i++) {</span></a>
-<a name="3951"><span class="lineNum">    3951 </span><span class="lineNoCov">          0 :                 struct hubp *hubp = pool-&gt;hubps[i];</span></a>
-<a name="3952"><span class="lineNum">    3952 </span><span class="lineNoCov">          0 :                 struct dcn_hubp_state *s = &amp;(TO_DCN10_HUBP(hubp)-&gt;state);</span></a>
-<a name="3953"><span class="lineNum">    3953 </span>            : </a>
-<a name="3954"><span class="lineNum">    3954 </span><span class="lineNoCov">          0 :                 hubp-&gt;funcs-&gt;hubp_read_state(hubp);</span></a>
-<a name="3955"><span class="lineNum">    3955 </span>            : </a>
-<a name="3956"><span class="lineNum">    3956 </span><span class="lineNoCov">          0 :                 if (!s-&gt;blank_en)</span></a>
-<a name="3957"><span class="lineNum">    3957 </span><span class="lineNoCov">          0 :                         dcc_en_bits[i] = s-&gt;dcc_en ? 1 : 0;</span></a>
-<a name="3958"><span class="lineNum">    3958 </span>            :         }</a>
-<a name="3959"><span class="lineNum">    3959 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="3943"><span class="lineNum">    3943 </span><span class="lineNoCov">          0 :         if (dc-&gt;clk_mgr &amp;&amp; dc-&gt;clk_mgr-&gt;funcs-&gt;get_clock)</span></a>
+<a name="3944"><span class="lineNum">    3944 </span><span class="lineNoCov">          0 :                                 dc-&gt;clk_mgr-&gt;funcs-&gt;get_clock(dc-&gt;clk_mgr, context, clock_type, clock_cfg);</span></a>
+<a name="3945"><span class="lineNum">    3945 </span>            : </a>
+<a name="3946"><span class="lineNum">    3946 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="3947"><span class="lineNum">    3947 </span>            : </a>
+<a name="3948"><span class="lineNum">    3948 </span><span class="lineNoCov">          0 : void dcn10_get_dcc_en_bits(struct dc *dc, int *dcc_en_bits)</span></a>
+<a name="3949"><span class="lineNum">    3949 </span>            : {</a>
+<a name="3950"><span class="lineNum">    3950 </span><span class="lineNoCov">          0 :         struct resource_pool *pool = dc-&gt;res_pool;</span></a>
+<a name="3951"><span class="lineNum">    3951 </span>            :         int i;</a>
+<a name="3952"><span class="lineNum">    3952 </span>            : </a>
+<a name="3953"><span class="lineNum">    3953 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; pool-&gt;pipe_count; i++) {</span></a>
+<a name="3954"><span class="lineNum">    3954 </span><span class="lineNoCov">          0 :                 struct hubp *hubp = pool-&gt;hubps[i];</span></a>
+<a name="3955"><span class="lineNum">    3955 </span><span class="lineNoCov">          0 :                 struct dcn_hubp_state *s = &amp;(TO_DCN10_HUBP(hubp)-&gt;state);</span></a>
+<a name="3956"><span class="lineNum">    3956 </span>            : </a>
+<a name="3957"><span class="lineNum">    3957 </span><span class="lineNoCov">          0 :                 hubp-&gt;funcs-&gt;hubp_read_state(hubp);</span></a>
+<a name="3958"><span class="lineNum">    3958 </span>            : </a>
+<a name="3959"><span class="lineNum">    3959 </span><span class="lineNoCov">          0 :                 if (!s-&gt;blank_en)</span></a>
+<a name="3960"><span class="lineNum">    3960 </span><span class="lineNoCov">          0 :                         dcc_en_bits[i] = s-&gt;dcc_en ? 1 : 0;</span></a>
+<a name="3961"><span class="lineNum">    3961 </span>            :         }</a>
+<a name="3962"><span class="lineNum">    3962 </span><span class="lineNoCov">          0 : }</span></a>
 </pre>
       </td>
     </tr>

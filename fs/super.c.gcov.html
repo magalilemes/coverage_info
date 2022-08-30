@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">8</td>
@@ -258,19 +258,19 @@
 <a name="196"><span class="lineNum">     196 </span>            :  *      Allocates and initializes a new &amp;struct super_block.  alloc_super()</a>
 <a name="197"><span class="lineNum">     197 </span>            :  *      returns a pointer new superblock or %NULL if allocation had failed.</a>
 <a name="198"><span class="lineNum">     198 </span>            :  */</a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineCov">         20 : static struct super_block *alloc_super(struct file_system_type *type, int flags,</span></a>
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">         10 : static struct super_block *alloc_super(struct file_system_type *type, int flags,</span></a>
 <a name="200"><span class="lineNum">     200 </span>            :                                        struct user_namespace *user_ns)</a>
 <a name="201"><span class="lineNum">     201 </span>            : {</a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">         20 :         struct super_block *s = kzalloc(sizeof(struct super_block),  GFP_USER);</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">         10 :         struct super_block *s = kzalloc(sizeof(struct super_block),  GFP_USER);</span></a>
 <a name="203"><span class="lineNum">     203 </span>            :         static const struct super_operations default_op;</a>
 <a name="204"><span class="lineNum">     204 </span>            :         int i;</a>
 <a name="205"><span class="lineNum">     205 </span>            : </a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineCov">         20 :         if (!s)</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">         10 :         if (!s)</span></a>
 <a name="207"><span class="lineNum">     207 </span>            :                 return NULL;</a>
 <a name="208"><span class="lineNum">     208 </span>            : </a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineCov">         40 :         INIT_LIST_HEAD(&amp;s-&gt;s_mounts);</span></a>
-<a name="210"><span class="lineNum">     210 </span><span class="lineCov">         20 :         s-&gt;s_user_ns = get_user_ns(user_ns);</span></a>
-<a name="211"><span class="lineNum">     211 </span><span class="lineCov">         20 :         init_rwsem(&amp;s-&gt;s_umount);</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineCov">         20 :         INIT_LIST_HEAD(&amp;s-&gt;s_mounts);</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineCov">         10 :         s-&gt;s_user_ns = get_user_ns(user_ns);</span></a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineCov">         10 :         init_rwsem(&amp;s-&gt;s_umount);</span></a>
 <a name="212"><span class="lineNum">     212 </span>            :         lockdep_set_class(&amp;s-&gt;s_umount, &amp;type-&gt;s_umount_key);</a>
 <a name="213"><span class="lineNum">     213 </span>            :         /*</a>
 <a name="214"><span class="lineNum">     214 </span>            :          * sget() can have s_umount recursion.</a>
@@ -287,51 +287,51 @@
 <a name="225"><span class="lineNum">     225 </span>            :          * Annotate this by putting this lock in a different</a>
 <a name="226"><span class="lineNum">     226 </span>            :          * subclass.</a>
 <a name="227"><span class="lineNum">     227 </span>            :          */</a>
-<a name="228"><span class="lineNum">     228 </span><span class="lineCov">         20 :         down_write_nested(&amp;s-&gt;s_umount, SINGLE_DEPTH_NESTING);</span></a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineCov">         10 :         down_write_nested(&amp;s-&gt;s_umount, SINGLE_DEPTH_NESTING);</span></a>
 <a name="229"><span class="lineNum">     229 </span>            : </a>
-<a name="230"><span class="lineNum">     230 </span><span class="lineCov">         20 :         if (security_sb_alloc(s))</span></a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineCov">         10 :         if (security_sb_alloc(s))</span></a>
 <a name="231"><span class="lineNum">     231 </span>            :                 goto fail;</a>
 <a name="232"><span class="lineNum">     232 </span>            : </a>
-<a name="233"><span class="lineNum">     233 </span><span class="lineCov">         80 :         for (i = 0; i &lt; SB_FREEZE_LEVELS; i++) {</span></a>
-<a name="234"><span class="lineNum">     234 </span><span class="lineCov">        120 :                 if (__percpu_init_rwsem(&amp;s-&gt;s_writers.rw_sem[i],</span></a>
-<a name="235"><span class="lineNum">     235 </span><span class="lineCov">         60 :                                         sb_writers_name[i],</span></a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineCov">         40 :         for (i = 0; i &lt; SB_FREEZE_LEVELS; i++) {</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">         60 :                 if (__percpu_init_rwsem(&amp;s-&gt;s_writers.rw_sem[i],</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineCov">         30 :                                         sb_writers_name[i],</span></a>
 <a name="236"><span class="lineNum">     236 </span>            :                                         &amp;type-&gt;s_writers_key[i]))</a>
 <a name="237"><span class="lineNum">     237 </span>            :                         goto fail;</a>
 <a name="238"><span class="lineNum">     238 </span>            :         }</a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineCov">         20 :         init_waitqueue_head(&amp;s-&gt;s_writers.wait_unfrozen);</span></a>
-<a name="240"><span class="lineNum">     240 </span><span class="lineCov">         20 :         s-&gt;s_bdi = &amp;noop_backing_dev_info;</span></a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineCov">         20 :         s-&gt;s_flags = flags;</span></a>
-<a name="242"><span class="lineNum">     242 </span><span class="lineCov">         20 :         if (s-&gt;s_user_ns != &amp;init_user_ns)</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">         10 :         init_waitqueue_head(&amp;s-&gt;s_writers.wait_unfrozen);</span></a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineCov">         10 :         s-&gt;s_bdi = &amp;noop_backing_dev_info;</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">         10 :         s-&gt;s_flags = flags;</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineCov">         10 :         if (s-&gt;s_user_ns != &amp;init_user_ns)</span></a>
 <a name="243"><span class="lineNum">     243 </span><span class="lineNoCov">          0 :                 s-&gt;s_iflags |= SB_I_NODEV;</span></a>
-<a name="244"><span class="lineNum">     244 </span><span class="lineCov">         40 :         INIT_HLIST_NODE(&amp;s-&gt;s_instances);</span></a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineCov">         20 :         INIT_HLIST_BL_HEAD(&amp;s-&gt;s_roots);</span></a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineCov">         20 :         mutex_init(&amp;s-&gt;s_sync_lock);</span></a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineCov">         40 :         INIT_LIST_HEAD(&amp;s-&gt;s_inodes);</span></a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineCov">         20 :         spin_lock_init(&amp;s-&gt;s_inode_list_lock);</span></a>
-<a name="249"><span class="lineNum">     249 </span><span class="lineCov">         40 :         INIT_LIST_HEAD(&amp;s-&gt;s_inodes_wb);</span></a>
-<a name="250"><span class="lineNum">     250 </span><span class="lineCov">         20 :         spin_lock_init(&amp;s-&gt;s_inode_wblist_lock);</span></a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineCov">         20 :         INIT_HLIST_NODE(&amp;s-&gt;s_instances);</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">         10 :         INIT_HLIST_BL_HEAD(&amp;s-&gt;s_roots);</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">         10 :         mutex_init(&amp;s-&gt;s_sync_lock);</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineCov">         20 :         INIT_LIST_HEAD(&amp;s-&gt;s_inodes);</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">         10 :         spin_lock_init(&amp;s-&gt;s_inode_list_lock);</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineCov">         20 :         INIT_LIST_HEAD(&amp;s-&gt;s_inodes_wb);</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineCov">         10 :         spin_lock_init(&amp;s-&gt;s_inode_wblist_lock);</span></a>
 <a name="251"><span class="lineNum">     251 </span>            : </a>
-<a name="252"><span class="lineNum">     252 </span><span class="lineCov">         20 :         s-&gt;s_count = 1;</span></a>
-<a name="253"><span class="lineNum">     253 </span><span class="lineCov">         40 :         atomic_set(&amp;s-&gt;s_active, 1);</span></a>
-<a name="254"><span class="lineNum">     254 </span><span class="lineCov">         20 :         mutex_init(&amp;s-&gt;s_vfs_rename_mutex);</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineCov">         10 :         s-&gt;s_count = 1;</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineCov">         20 :         atomic_set(&amp;s-&gt;s_active, 1);</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">         10 :         mutex_init(&amp;s-&gt;s_vfs_rename_mutex);</span></a>
 <a name="255"><span class="lineNum">     255 </span>            :         lockdep_set_class(&amp;s-&gt;s_vfs_rename_mutex, &amp;type-&gt;s_vfs_rename_key);</a>
-<a name="256"><span class="lineNum">     256 </span><span class="lineCov">         20 :         init_rwsem(&amp;s-&gt;s_dquot.dqio_sem);</span></a>
-<a name="257"><span class="lineNum">     257 </span><span class="lineCov">         20 :         s-&gt;s_maxbytes = MAX_NON_LFS;</span></a>
-<a name="258"><span class="lineNum">     258 </span><span class="lineCov">         20 :         s-&gt;s_op = &amp;default_op;</span></a>
-<a name="259"><span class="lineNum">     259 </span><span class="lineCov">         20 :         s-&gt;s_time_gran = 1000000000;</span></a>
-<a name="260"><span class="lineNum">     260 </span><span class="lineCov">         20 :         s-&gt;s_time_min = TIME64_MIN;</span></a>
-<a name="261"><span class="lineNum">     261 </span><span class="lineCov">         20 :         s-&gt;s_time_max = TIME64_MAX;</span></a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineCov">         10 :         init_rwsem(&amp;s-&gt;s_dquot.dqio_sem);</span></a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineCov">         10 :         s-&gt;s_maxbytes = MAX_NON_LFS;</span></a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineCov">         10 :         s-&gt;s_op = &amp;default_op;</span></a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineCov">         10 :         s-&gt;s_time_gran = 1000000000;</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineCov">         10 :         s-&gt;s_time_min = TIME64_MIN;</span></a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineCov">         10 :         s-&gt;s_time_max = TIME64_MAX;</span></a>
 <a name="262"><span class="lineNum">     262 </span>            : </a>
-<a name="263"><span class="lineNum">     263 </span><span class="lineCov">         20 :         s-&gt;s_shrink.seeks = DEFAULT_SEEKS;</span></a>
-<a name="264"><span class="lineNum">     264 </span><span class="lineCov">         20 :         s-&gt;s_shrink.scan_objects = super_cache_scan;</span></a>
-<a name="265"><span class="lineNum">     265 </span><span class="lineCov">         20 :         s-&gt;s_shrink.count_objects = super_cache_count;</span></a>
-<a name="266"><span class="lineNum">     266 </span><span class="lineCov">         20 :         s-&gt;s_shrink.batch = 1024;</span></a>
-<a name="267"><span class="lineNum">     267 </span><span class="lineCov">         20 :         s-&gt;s_shrink.flags = SHRINKER_NUMA_AWARE | SHRINKER_MEMCG_AWARE;</span></a>
-<a name="268"><span class="lineNum">     268 </span><span class="lineCov">         20 :         if (prealloc_shrinker(&amp;s-&gt;s_shrink))</span></a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineCov">         10 :         s-&gt;s_shrink.seeks = DEFAULT_SEEKS;</span></a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineCov">         10 :         s-&gt;s_shrink.scan_objects = super_cache_scan;</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">         10 :         s-&gt;s_shrink.count_objects = super_cache_count;</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineCov">         10 :         s-&gt;s_shrink.batch = 1024;</span></a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineCov">         10 :         s-&gt;s_shrink.flags = SHRINKER_NUMA_AWARE | SHRINKER_MEMCG_AWARE;</span></a>
+<a name="268"><span class="lineNum">     268 </span><span class="lineCov">         10 :         if (prealloc_shrinker(&amp;s-&gt;s_shrink))</span></a>
 <a name="269"><span class="lineNum">     269 </span>            :                 goto fail;</a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineCov">         20 :         if (list_lru_init_memcg(&amp;s-&gt;s_dentry_lru, &amp;s-&gt;s_shrink))</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineCov">         10 :         if (list_lru_init_memcg(&amp;s-&gt;s_dentry_lru, &amp;s-&gt;s_shrink))</span></a>
 <a name="271"><span class="lineNum">     271 </span>            :                 goto fail;</a>
-<a name="272"><span class="lineNum">     272 </span><span class="lineCov">         20 :         if (list_lru_init_memcg(&amp;s-&gt;s_inode_lru, &amp;s-&gt;s_shrink))</span></a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineCov">         10 :         if (list_lru_init_memcg(&amp;s-&gt;s_inode_lru, &amp;s-&gt;s_shrink))</span></a>
 <a name="273"><span class="lineNum">     273 </span>            :                 goto fail;</a>
 <a name="274"><span class="lineNum">     274 </span>            :         return s;</a>
 <a name="275"><span class="lineNum">     275 </span>            : </a>
@@ -418,13 +418,13 @@
 <a name="356"><span class="lineNum">     356 </span>            :  *      locked by caller.  If we are going to drop the final active reference,</a>
 <a name="357"><span class="lineNum">     357 </span>            :  *      lock will be acquired prior to that.</a>
 <a name="358"><span class="lineNum">     358 </span>            :  */</a>
-<a name="359"><span class="lineNum">     359 </span><span class="lineCov">         20 : void deactivate_super(struct super_block *s)</span></a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineCov">         10 : void deactivate_super(struct super_block *s)</span></a>
 <a name="360"><span class="lineNum">     360 </span>            : {</a>
-<a name="361"><span class="lineNum">     361 </span><span class="lineCov">         40 :         if (!atomic_add_unless(&amp;s-&gt;s_active, -1, 1)) {</span></a>
+<a name="361"><span class="lineNum">     361 </span><span class="lineCov">         20 :         if (!atomic_add_unless(&amp;s-&gt;s_active, -1, 1)) {</span></a>
 <a name="362"><span class="lineNum">     362 </span><span class="lineNoCov">          0 :                 down_write(&amp;s-&gt;s_umount);</span></a>
 <a name="363"><span class="lineNum">     363 </span><span class="lineNoCov">          0 :                 deactivate_locked_super(s);</span></a>
 <a name="364"><span class="lineNum">     364 </span>            :         }</a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineCov">         20 : }</span></a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineCov">         10 : }</span></a>
 <a name="366"><span class="lineNum">     366 </span>            : </a>
 <a name="367"><span class="lineNum">     367 </span>            : EXPORT_SYMBOL(deactivate_super);</a>
 <a name="368"><span class="lineNum">     368 </span>            : </a>
@@ -570,49 +570,49 @@
 <a name="508"><span class="lineNum">     508 </span>            :  * will be returned in a partially constructed state with SB_BORN and SB_ACTIVE</a>
 <a name="509"><span class="lineNum">     509 </span>            :  * as yet unset.</a>
 <a name="510"><span class="lineNum">     510 </span>            :  */</a>
-<a name="511"><span class="lineNum">     511 </span><span class="lineCov">         20 : struct super_block *sget_fc(struct fs_context *fc,</span></a>
+<a name="511"><span class="lineNum">     511 </span><span class="lineCov">         10 : struct super_block *sget_fc(struct fs_context *fc,</span></a>
 <a name="512"><span class="lineNum">     512 </span>            :                             int (*test)(struct super_block *, struct fs_context *),</a>
 <a name="513"><span class="lineNum">     513 </span>            :                             int (*set)(struct super_block *, struct fs_context *))</a>
 <a name="514"><span class="lineNum">     514 </span>            : {</a>
-<a name="515"><span class="lineNum">     515 </span><span class="lineCov">         20 :         struct super_block *s = NULL;</span></a>
+<a name="515"><span class="lineNum">     515 </span><span class="lineCov">         10 :         struct super_block *s = NULL;</span></a>
 <a name="516"><span class="lineNum">     516 </span>            :         struct super_block *old;</a>
-<a name="517"><span class="lineNum">     517 </span><span class="lineCov">         20 :         struct user_namespace *user_ns = fc-&gt;global ? &amp;init_user_ns : fc-&gt;user_ns;</span></a>
+<a name="517"><span class="lineNum">     517 </span><span class="lineCov">         10 :         struct user_namespace *user_ns = fc-&gt;global ? &amp;init_user_ns : fc-&gt;user_ns;</span></a>
 <a name="518"><span class="lineNum">     518 </span>            :         int err;</a>
 <a name="519"><span class="lineNum">     519 </span>            : </a>
 <a name="520"><span class="lineNum">     520 </span>            : retry:</a>
-<a name="521"><span class="lineNum">     521 </span><span class="lineCov">         40 :         spin_lock(&amp;sb_lock);</span></a>
-<a name="522"><span class="lineNum">     522 </span><span class="lineCov">         40 :         if (test) {</span></a>
+<a name="521"><span class="lineNum">     521 </span><span class="lineCov">         20 :         spin_lock(&amp;sb_lock);</span></a>
+<a name="522"><span class="lineNum">     522 </span><span class="lineCov">         20 :         if (test) {</span></a>
 <a name="523"><span class="lineNum">     523 </span><span class="lineNoCov">          0 :                 hlist_for_each_entry(old, &amp;fc-&gt;fs_type-&gt;fs_supers, s_instances) {</span></a>
 <a name="524"><span class="lineNum">     524 </span><span class="lineNoCov">          0 :                         if (test(old, fc))</span></a>
 <a name="525"><span class="lineNum">     525 </span>            :                                 goto share_extant_sb;</a>
 <a name="526"><span class="lineNum">     526 </span>            :                 }</a>
 <a name="527"><span class="lineNum">     527 </span>            :         }</a>
-<a name="528"><span class="lineNum">     528 </span><span class="lineCov">         40 :         if (!s) {</span></a>
-<a name="529"><span class="lineNum">     529 </span><span class="lineCov">         20 :                 spin_unlock(&amp;sb_lock);</span></a>
-<a name="530"><span class="lineNum">     530 </span><span class="lineCov">         20 :                 s = alloc_super(fc-&gt;fs_type, fc-&gt;sb_flags, user_ns);</span></a>
-<a name="531"><span class="lineNum">     531 </span><span class="lineCov">         20 :                 if (!s)</span></a>
+<a name="528"><span class="lineNum">     528 </span><span class="lineCov">         20 :         if (!s) {</span></a>
+<a name="529"><span class="lineNum">     529 </span><span class="lineCov">         10 :                 spin_unlock(&amp;sb_lock);</span></a>
+<a name="530"><span class="lineNum">     530 </span><span class="lineCov">         10 :                 s = alloc_super(fc-&gt;fs_type, fc-&gt;sb_flags, user_ns);</span></a>
+<a name="531"><span class="lineNum">     531 </span><span class="lineCov">         10 :                 if (!s)</span></a>
 <a name="532"><span class="lineNum">     532 </span>            :                         return ERR_PTR(-ENOMEM);</a>
 <a name="533"><span class="lineNum">     533 </span>            :                 goto retry;</a>
 <a name="534"><span class="lineNum">     534 </span>            :         }</a>
 <a name="535"><span class="lineNum">     535 </span>            : </a>
-<a name="536"><span class="lineNum">     536 </span><span class="lineCov">         20 :         s-&gt;s_fs_info = fc-&gt;s_fs_info;</span></a>
-<a name="537"><span class="lineNum">     537 </span><span class="lineCov">         20 :         err = set(s, fc);</span></a>
-<a name="538"><span class="lineNum">     538 </span><span class="lineCov">         20 :         if (err) {</span></a>
+<a name="536"><span class="lineNum">     536 </span><span class="lineCov">         10 :         s-&gt;s_fs_info = fc-&gt;s_fs_info;</span></a>
+<a name="537"><span class="lineNum">     537 </span><span class="lineCov">         10 :         err = set(s, fc);</span></a>
+<a name="538"><span class="lineNum">     538 </span><span class="lineCov">         10 :         if (err) {</span></a>
 <a name="539"><span class="lineNum">     539 </span><span class="lineNoCov">          0 :                 s-&gt;s_fs_info = NULL;</span></a>
 <a name="540"><span class="lineNum">     540 </span><span class="lineNoCov">          0 :                 spin_unlock(&amp;sb_lock);</span></a>
 <a name="541"><span class="lineNum">     541 </span><span class="lineNoCov">          0 :                 destroy_unused_super(s);</span></a>
 <a name="542"><span class="lineNum">     542 </span><span class="lineNoCov">          0 :                 return ERR_PTR(err);</span></a>
 <a name="543"><span class="lineNum">     543 </span>            :         }</a>
-<a name="544"><span class="lineNum">     544 </span><span class="lineCov">         20 :         fc-&gt;s_fs_info = NULL;</span></a>
-<a name="545"><span class="lineNum">     545 </span><span class="lineCov">         20 :         s-&gt;s_type = fc-&gt;fs_type;</span></a>
-<a name="546"><span class="lineNum">     546 </span><span class="lineCov">         20 :         s-&gt;s_iflags |= fc-&gt;s_iflags;</span></a>
-<a name="547"><span class="lineNum">     547 </span><span class="lineCov">         20 :         strlcpy(s-&gt;s_id, s-&gt;s_type-&gt;name, sizeof(s-&gt;s_id));</span></a>
-<a name="548"><span class="lineNum">     548 </span><span class="lineCov">         40 :         list_add_tail(&amp;s-&gt;s_list, &amp;super_blocks);</span></a>
-<a name="549"><span class="lineNum">     549 </span><span class="lineCov">         40 :         hlist_add_head(&amp;s-&gt;s_instances, &amp;s-&gt;s_type-&gt;fs_supers);</span></a>
-<a name="550"><span class="lineNum">     550 </span><span class="lineCov">         20 :         spin_unlock(&amp;sb_lock);</span></a>
-<a name="551"><span class="lineNum">     551 </span><span class="lineCov">         20 :         get_filesystem(s-&gt;s_type);</span></a>
-<a name="552"><span class="lineNum">     552 </span><span class="lineCov">         20 :         register_shrinker_prepared(&amp;s-&gt;s_shrink);</span></a>
-<a name="553"><span class="lineNum">     553 </span><span class="lineCov">         20 :         return s;</span></a>
+<a name="544"><span class="lineNum">     544 </span><span class="lineCov">         10 :         fc-&gt;s_fs_info = NULL;</span></a>
+<a name="545"><span class="lineNum">     545 </span><span class="lineCov">         10 :         s-&gt;s_type = fc-&gt;fs_type;</span></a>
+<a name="546"><span class="lineNum">     546 </span><span class="lineCov">         10 :         s-&gt;s_iflags |= fc-&gt;s_iflags;</span></a>
+<a name="547"><span class="lineNum">     547 </span><span class="lineCov">         10 :         strlcpy(s-&gt;s_id, s-&gt;s_type-&gt;name, sizeof(s-&gt;s_id));</span></a>
+<a name="548"><span class="lineNum">     548 </span><span class="lineCov">         20 :         list_add_tail(&amp;s-&gt;s_list, &amp;super_blocks);</span></a>
+<a name="549"><span class="lineNum">     549 </span><span class="lineCov">         20 :         hlist_add_head(&amp;s-&gt;s_instances, &amp;s-&gt;s_type-&gt;fs_supers);</span></a>
+<a name="550"><span class="lineNum">     550 </span><span class="lineCov">         10 :         spin_unlock(&amp;sb_lock);</span></a>
+<a name="551"><span class="lineNum">     551 </span><span class="lineCov">         10 :         get_filesystem(s-&gt;s_type);</span></a>
+<a name="552"><span class="lineNum">     552 </span><span class="lineCov">         10 :         register_shrinker_prepared(&amp;s-&gt;s_shrink);</span></a>
+<a name="553"><span class="lineNum">     553 </span><span class="lineCov">         10 :         return s;</span></a>
 <a name="554"><span class="lineNum">     554 </span>            : </a>
 <a name="555"><span class="lineNum">     555 </span>            : share_extant_sb:</a>
 <a name="556"><span class="lineNum">     556 </span><span class="lineNoCov">          0 :         if (user_ns != old-&gt;s_user_ns) {</span></a>
@@ -1080,7 +1080,7 @@
 <a name="1018"><span class="lineNum">    1018 </span>            :  * Return: 0 on success, -EMFILE if there are no anonymous bdevs left</a>
 <a name="1019"><span class="lineNum">    1019 </span>            :  * or -ENOMEM if memory allocation failed.</a>
 <a name="1020"><span class="lineNum">    1020 </span>            :  */</a>
-<a name="1021"><span class="lineNum">    1021 </span><span class="lineCov">         20 : int get_anon_bdev(dev_t *p)</span></a>
+<a name="1021"><span class="lineNum">    1021 </span><span class="lineCov">         10 : int get_anon_bdev(dev_t *p)</span></a>
 <a name="1022"><span class="lineNum">    1022 </span>            : {</a>
 <a name="1023"><span class="lineNum">    1023 </span>            :         int dev;</a>
 <a name="1024"><span class="lineNum">    1024 </span>            : </a>
@@ -1088,15 +1088,15 @@
 <a name="1026"><span class="lineNum">    1026 </span>            :          * Many userspace utilities consider an FSID of 0 invalid.</a>
 <a name="1027"><span class="lineNum">    1027 </span>            :          * Always return at least 1 from get_anon_bdev.</a>
 <a name="1028"><span class="lineNum">    1028 </span>            :          */</a>
-<a name="1029"><span class="lineNum">    1029 </span><span class="lineCov">         20 :         dev = ida_alloc_range(&amp;unnamed_dev_ida, 1, (1 &lt;&lt; MINORBITS) - 1,</span></a>
+<a name="1029"><span class="lineNum">    1029 </span><span class="lineCov">         10 :         dev = ida_alloc_range(&amp;unnamed_dev_ida, 1, (1 &lt;&lt; MINORBITS) - 1,</span></a>
 <a name="1030"><span class="lineNum">    1030 </span>            :                         GFP_ATOMIC);</a>
-<a name="1031"><span class="lineNum">    1031 </span><span class="lineCov">         20 :         if (dev == -ENOSPC)</span></a>
+<a name="1031"><span class="lineNum">    1031 </span><span class="lineCov">         10 :         if (dev == -ENOSPC)</span></a>
 <a name="1032"><span class="lineNum">    1032 </span><span class="lineNoCov">          0 :                 dev = -EMFILE;</span></a>
-<a name="1033"><span class="lineNum">    1033 </span><span class="lineCov">         20 :         if (dev &lt; 0)</span></a>
+<a name="1033"><span class="lineNum">    1033 </span><span class="lineCov">         10 :         if (dev &lt; 0)</span></a>
 <a name="1034"><span class="lineNum">    1034 </span>            :                 return dev;</a>
 <a name="1035"><span class="lineNum">    1035 </span>            : </a>
-<a name="1036"><span class="lineNum">    1036 </span><span class="lineCov">         20 :         *p = MKDEV(0, dev);</span></a>
-<a name="1037"><span class="lineNum">    1037 </span><span class="lineCov">         20 :         return 0;</span></a>
+<a name="1036"><span class="lineNum">    1036 </span><span class="lineCov">         10 :         *p = MKDEV(0, dev);</span></a>
+<a name="1037"><span class="lineNum">    1037 </span><span class="lineCov">         10 :         return 0;</span></a>
 <a name="1038"><span class="lineNum">    1038 </span>            : }</a>
 <a name="1039"><span class="lineNum">    1039 </span>            : EXPORT_SYMBOL(get_anon_bdev);</a>
 <a name="1040"><span class="lineNum">    1040 </span>            : </a>
@@ -1108,7 +1108,7 @@
 <a name="1046"><span class="lineNum">    1046 </span>            : </a>
 <a name="1047"><span class="lineNum">    1047 </span><span class="lineNoCov">          0 : int set_anon_super(struct super_block *s, void *data)</span></a>
 <a name="1048"><span class="lineNum">    1048 </span>            : {</a>
-<a name="1049"><span class="lineNum">    1049 </span><span class="lineCov">         20 :         return get_anon_bdev(&amp;s-&gt;s_dev);</span></a>
+<a name="1049"><span class="lineNum">    1049 </span><span class="lineCov">         10 :         return get_anon_bdev(&amp;s-&gt;s_dev);</span></a>
 <a name="1050"><span class="lineNum">    1050 </span>            : }</a>
 <a name="1051"><span class="lineNum">    1051 </span>            : EXPORT_SYMBOL(set_anon_super);</a>
 <a name="1052"><span class="lineNum">    1052 </span>            : </a>
@@ -1128,9 +1128,9 @@
 <a name="1066"><span class="lineNum">    1066 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="1067"><span class="lineNum">    1067 </span>            : EXPORT_SYMBOL(kill_litter_super);</a>
 <a name="1068"><span class="lineNum">    1068 </span>            : </a>
-<a name="1069"><span class="lineNum">    1069 </span><span class="lineCov">         20 : int set_anon_super_fc(struct super_block *sb, struct fs_context *fc)</span></a>
+<a name="1069"><span class="lineNum">    1069 </span><span class="lineCov">         10 : int set_anon_super_fc(struct super_block *sb, struct fs_context *fc)</span></a>
 <a name="1070"><span class="lineNum">    1070 </span>            : {</a>
-<a name="1071"><span class="lineNum">    1071 </span><span class="lineCov">         20 :         return set_anon_super(sb, NULL);</span></a>
+<a name="1071"><span class="lineNum">    1071 </span><span class="lineCov">         10 :         return set_anon_super(sb, NULL);</span></a>
 <a name="1072"><span class="lineNum">    1072 </span>            : }</a>
 <a name="1073"><span class="lineNum">    1073 </span>            : EXPORT_SYMBOL(set_anon_super_fc);</a>
 <a name="1074"><span class="lineNum">    1074 </span>            : </a>
@@ -1169,7 +1169,7 @@
 <a name="1107"><span class="lineNum">    1107 </span>            :  * A permissions check is made by sget_fc() unless we're getting a superblock</a>
 <a name="1108"><span class="lineNum">    1108 </span>            :  * for a kernel-internal mount or a submount.</a>
 <a name="1109"><span class="lineNum">    1109 </span>            :  */</a>
-<a name="1110"><span class="lineNum">    1110 </span><span class="lineCov">         20 : int vfs_get_super(struct fs_context *fc,</span></a>
+<a name="1110"><span class="lineNum">    1110 </span><span class="lineCov">         10 : int vfs_get_super(struct fs_context *fc,</span></a>
 <a name="1111"><span class="lineNum">    1111 </span>            :                   enum vfs_get_super_keying keying,</a>
 <a name="1112"><span class="lineNum">    1112 </span>            :                   int (*fill_super)(struct super_block *sb,</a>
 <a name="1113"><span class="lineNum">    1113 </span>            :                                     struct fs_context *fc))</a>
@@ -1178,7 +1178,7 @@
 <a name="1116"><span class="lineNum">    1116 </span>            :         struct super_block *sb;</a>
 <a name="1117"><span class="lineNum">    1117 </span>            :         int err;</a>
 <a name="1118"><span class="lineNum">    1118 </span>            : </a>
-<a name="1119"><span class="lineNum">    1119 </span><span class="lineCov">         20 :         switch (keying) {</span></a>
+<a name="1119"><span class="lineNum">    1119 </span><span class="lineCov">         10 :         switch (keying) {</span></a>
 <a name="1120"><span class="lineNum">    1120 </span>            :         case vfs_get_single_super:</a>
 <a name="1121"><span class="lineNum">    1121 </span>            :         case vfs_get_single_reconf_super:</a>
 <a name="1122"><span class="lineNum">    1122 </span>            :                 test = test_single_super;</a>
@@ -1187,23 +1187,23 @@
 <a name="1125"><span class="lineNum">    1125 </span><span class="lineNoCov">          0 :                 test = test_keyed_super;</span></a>
 <a name="1126"><span class="lineNum">    1126 </span><span class="lineNoCov">          0 :                 break;</span></a>
 <a name="1127"><span class="lineNum">    1127 </span>            :         case vfs_get_independent_super:</a>
-<a name="1128"><span class="lineNum">    1128 </span><span class="lineCov">         20 :                 test = NULL;</span></a>
-<a name="1129"><span class="lineNum">    1129 </span><span class="lineCov">         20 :                 break;</span></a>
+<a name="1128"><span class="lineNum">    1128 </span><span class="lineCov">         10 :                 test = NULL;</span></a>
+<a name="1129"><span class="lineNum">    1129 </span><span class="lineCov">         10 :                 break;</span></a>
 <a name="1130"><span class="lineNum">    1130 </span>            :         default:</a>
 <a name="1131"><span class="lineNum">    1131 </span><span class="lineNoCov">          0 :                 BUG();</span></a>
 <a name="1132"><span class="lineNum">    1132 </span>            :         }</a>
 <a name="1133"><span class="lineNum">    1133 </span>            : </a>
-<a name="1134"><span class="lineNum">    1134 </span><span class="lineCov">         20 :         sb = sget_fc(fc, test, set_anon_super_fc);</span></a>
-<a name="1135"><span class="lineNum">    1135 </span><span class="lineCov">         20 :         if (IS_ERR(sb))</span></a>
+<a name="1134"><span class="lineNum">    1134 </span><span class="lineCov">         10 :         sb = sget_fc(fc, test, set_anon_super_fc);</span></a>
+<a name="1135"><span class="lineNum">    1135 </span><span class="lineCov">         10 :         if (IS_ERR(sb))</span></a>
 <a name="1136"><span class="lineNum">    1136 </span><span class="lineNoCov">          0 :                 return PTR_ERR(sb);</span></a>
 <a name="1137"><span class="lineNum">    1137 </span>            : </a>
-<a name="1138"><span class="lineNum">    1138 </span><span class="lineCov">         20 :         if (!sb-&gt;s_root) {</span></a>
-<a name="1139"><span class="lineNum">    1139 </span><span class="lineCov">         20 :                 err = fill_super(sb, fc);</span></a>
-<a name="1140"><span class="lineNum">    1140 </span><span class="lineCov">         20 :                 if (err)</span></a>
+<a name="1138"><span class="lineNum">    1138 </span><span class="lineCov">         10 :         if (!sb-&gt;s_root) {</span></a>
+<a name="1139"><span class="lineNum">    1139 </span><span class="lineCov">         10 :                 err = fill_super(sb, fc);</span></a>
+<a name="1140"><span class="lineNum">    1140 </span><span class="lineCov">         10 :                 if (err)</span></a>
 <a name="1141"><span class="lineNum">    1141 </span>            :                         goto error;</a>
 <a name="1142"><span class="lineNum">    1142 </span>            : </a>
-<a name="1143"><span class="lineNum">    1143 </span><span class="lineCov">         20 :                 sb-&gt;s_flags |= SB_ACTIVE;</span></a>
-<a name="1144"><span class="lineNum">    1144 </span><span class="lineCov">         40 :                 fc-&gt;root = dget(sb-&gt;s_root);</span></a>
+<a name="1143"><span class="lineNum">    1143 </span><span class="lineCov">         10 :                 sb-&gt;s_flags |= SB_ACTIVE;</span></a>
+<a name="1144"><span class="lineNum">    1144 </span><span class="lineCov">         20 :                 fc-&gt;root = dget(sb-&gt;s_root);</span></a>
 <a name="1145"><span class="lineNum">    1145 </span>            :         } else {</a>
 <a name="1146"><span class="lineNum">    1146 </span><span class="lineNoCov">          0 :                 fc-&gt;root = dget(sb-&gt;s_root);</span></a>
 <a name="1147"><span class="lineNum">    1147 </span><span class="lineNoCov">          0 :                 if (keying == vfs_get_single_reconf_super) {</span></a>
@@ -1224,11 +1224,11 @@
 <a name="1162"><span class="lineNum">    1162 </span>            : }</a>
 <a name="1163"><span class="lineNum">    1163 </span>            : EXPORT_SYMBOL(vfs_get_super);</a>
 <a name="1164"><span class="lineNum">    1164 </span>            : </a>
-<a name="1165"><span class="lineNum">    1165 </span><span class="lineCov">         20 : int get_tree_nodev(struct fs_context *fc,</span></a>
+<a name="1165"><span class="lineNum">    1165 </span><span class="lineCov">         10 : int get_tree_nodev(struct fs_context *fc,</span></a>
 <a name="1166"><span class="lineNum">    1166 </span>            :                   int (*fill_super)(struct super_block *sb,</a>
 <a name="1167"><span class="lineNum">    1167 </span>            :                                     struct fs_context *fc))</a>
 <a name="1168"><span class="lineNum">    1168 </span>            : {</a>
-<a name="1169"><span class="lineNum">    1169 </span><span class="lineCov">         20 :         return vfs_get_super(fc, vfs_get_independent_super, fill_super);</span></a>
+<a name="1169"><span class="lineNum">    1169 </span><span class="lineCov">         10 :         return vfs_get_super(fc, vfs_get_independent_super, fill_super);</span></a>
 <a name="1170"><span class="lineNum">    1170 </span>            : }</a>
 <a name="1171"><span class="lineNum">    1171 </span>            : EXPORT_SYMBOL(get_tree_nodev);</a>
 <a name="1172"><span class="lineNum">    1172 </span>            : </a>
@@ -1545,22 +1545,22 @@
 <a name="1483"><span class="lineNum">    1483 </span>            :  * be used for mounting.  The filesystem places a pointer to the root to be</a>
 <a name="1484"><span class="lineNum">    1484 </span>            :  * used for mounting in @fc-&gt;root.</a>
 <a name="1485"><span class="lineNum">    1485 </span>            :  */</a>
-<a name="1486"><span class="lineNum">    1486 </span><span class="lineCov">         20 : int vfs_get_tree(struct fs_context *fc)</span></a>
+<a name="1486"><span class="lineNum">    1486 </span><span class="lineCov">         10 : int vfs_get_tree(struct fs_context *fc)</span></a>
 <a name="1487"><span class="lineNum">    1487 </span>            : {</a>
 <a name="1488"><span class="lineNum">    1488 </span>            :         struct super_block *sb;</a>
 <a name="1489"><span class="lineNum">    1489 </span>            :         int error;</a>
 <a name="1490"><span class="lineNum">    1490 </span>            : </a>
-<a name="1491"><span class="lineNum">    1491 </span><span class="lineCov">         20 :         if (fc-&gt;root)</span></a>
+<a name="1491"><span class="lineNum">    1491 </span><span class="lineCov">         10 :         if (fc-&gt;root)</span></a>
 <a name="1492"><span class="lineNum">    1492 </span>            :                 return -EBUSY;</a>
 <a name="1493"><span class="lineNum">    1493 </span>            : </a>
 <a name="1494"><span class="lineNum">    1494 </span>            :         /* Get the mountable root in fc-&gt;root, with a ref on the root and a ref</a>
 <a name="1495"><span class="lineNum">    1495 </span>            :          * on the superblock.</a>
 <a name="1496"><span class="lineNum">    1496 </span>            :          */</a>
-<a name="1497"><span class="lineNum">    1497 </span><span class="lineCov">         20 :         error = fc-&gt;ops-&gt;get_tree(fc);</span></a>
-<a name="1498"><span class="lineNum">    1498 </span><span class="lineCov">         20 :         if (error &lt; 0)</span></a>
+<a name="1497"><span class="lineNum">    1497 </span><span class="lineCov">         10 :         error = fc-&gt;ops-&gt;get_tree(fc);</span></a>
+<a name="1498"><span class="lineNum">    1498 </span><span class="lineCov">         10 :         if (error &lt; 0)</span></a>
 <a name="1499"><span class="lineNum">    1499 </span>            :                 return error;</a>
 <a name="1500"><span class="lineNum">    1500 </span>            : </a>
-<a name="1501"><span class="lineNum">    1501 </span><span class="lineCov">         20 :         if (!fc-&gt;root) {</span></a>
+<a name="1501"><span class="lineNum">    1501 </span><span class="lineCov">         10 :         if (!fc-&gt;root) {</span></a>
 <a name="1502"><span class="lineNum">    1502 </span><span class="lineNoCov">          0 :                 pr_err(&quot;Filesystem %s get_tree() didn't set fc-&gt;root\n&quot;,</span></a>
 <a name="1503"><span class="lineNum">    1503 </span>            :                        fc-&gt;fs_type-&gt;name);</a>
 <a name="1504"><span class="lineNum">    1504 </span>            :                 /* We don't know what the locking state of the superblock is -</a>
@@ -1569,8 +1569,8 @@
 <a name="1507"><span class="lineNum">    1507 </span><span class="lineNoCov">          0 :                 BUG();</span></a>
 <a name="1508"><span class="lineNum">    1508 </span>            :         }</a>
 <a name="1509"><span class="lineNum">    1509 </span>            : </a>
-<a name="1510"><span class="lineNum">    1510 </span><span class="lineCov">         20 :         sb = fc-&gt;root-&gt;d_sb;</span></a>
-<a name="1511"><span class="lineNum">    1511 </span><span class="lineCov">         20 :         WARN_ON(!sb-&gt;s_bdi);</span></a>
+<a name="1510"><span class="lineNum">    1510 </span><span class="lineCov">         10 :         sb = fc-&gt;root-&gt;d_sb;</span></a>
+<a name="1511"><span class="lineNum">    1511 </span><span class="lineCov">         10 :         WARN_ON(!sb-&gt;s_bdi);</span></a>
 <a name="1512"><span class="lineNum">    1512 </span>            : </a>
 <a name="1513"><span class="lineNum">    1513 </span>            :         /*</a>
 <a name="1514"><span class="lineNum">    1514 </span>            :          * Write barrier is for super_cache_count(). We place it before setting</a>
@@ -1578,10 +1578,10 @@
 <a name="1516"><span class="lineNum">    1516 </span>            :          * superblock structure contents that we just set up, not the SB_BORN</a>
 <a name="1517"><span class="lineNum">    1517 </span>            :          * flag.</a>
 <a name="1518"><span class="lineNum">    1518 </span>            :          */</a>
-<a name="1519"><span class="lineNum">    1519 </span><span class="lineCov">         20 :         smp_wmb();</span></a>
-<a name="1520"><span class="lineNum">    1520 </span><span class="lineCov">         20 :         sb-&gt;s_flags |= SB_BORN;</span></a>
+<a name="1519"><span class="lineNum">    1519 </span><span class="lineCov">         10 :         smp_wmb();</span></a>
+<a name="1520"><span class="lineNum">    1520 </span><span class="lineCov">         10 :         sb-&gt;s_flags |= SB_BORN;</span></a>
 <a name="1521"><span class="lineNum">    1521 </span>            : </a>
-<a name="1522"><span class="lineNum">    1522 </span><span class="lineCov">         20 :         error = security_sb_set_mnt_opts(sb, fc-&gt;security, 0, NULL);</span></a>
+<a name="1522"><span class="lineNum">    1522 </span><span class="lineCov">         10 :         error = security_sb_set_mnt_opts(sb, fc-&gt;security, 0, NULL);</span></a>
 <a name="1523"><span class="lineNum">    1523 </span>            :         if (unlikely(error)) {</a>
 <a name="1524"><span class="lineNum">    1524 </span>            :                 fc_drop_locked(fc);</a>
 <a name="1525"><span class="lineNum">    1525 </span>            :                 return error;</a>
@@ -1593,7 +1593,7 @@
 <a name="1531"><span class="lineNum">    1531 </span>            :          * this warning for a little while to try and catch filesystems that</a>
 <a name="1532"><span class="lineNum">    1532 </span>            :          * violate this rule.</a>
 <a name="1533"><span class="lineNum">    1533 </span>            :          */</a>
-<a name="1534"><span class="lineNum">    1534 </span><span class="lineCov">         20 :         WARN((sb-&gt;s_maxbytes &lt; 0), &quot;%s set sb-&gt;s_maxbytes to &quot;</span></a>
+<a name="1534"><span class="lineNum">    1534 </span><span class="lineCov">         10 :         WARN((sb-&gt;s_maxbytes &lt; 0), &quot;%s set sb-&gt;s_maxbytes to &quot;</span></a>
 <a name="1535"><span class="lineNum">    1535 </span>            :                 &quot;negative value (%lld)\n&quot;, fc-&gt;fs_type-&gt;name, sb-&gt;s_maxbytes);</a>
 <a name="1536"><span class="lineNum">    1536 </span>            : </a>
 <a name="1537"><span class="lineNum">    1537 </span>            :         return 0;</a>

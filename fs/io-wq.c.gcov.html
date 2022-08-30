@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -1472,16 +1472,16 @@
 <a name="1410"><span class="lineNum">    1410 </span><span class="lineNoCov">          0 :         return 0;</span></a>
 <a name="1411"><span class="lineNum">    1411 </span>            : }</a>
 <a name="1412"><span class="lineNum">    1412 </span>            : </a>
-<a name="1413"><span class="lineNum">    1413 </span><span class="lineCov">          2 : static __init int io_wq_init(void)</span></a>
+<a name="1413"><span class="lineNum">    1413 </span><span class="lineCov">          1 : static __init int io_wq_init(void)</span></a>
 <a name="1414"><span class="lineNum">    1414 </span>            : {</a>
 <a name="1415"><span class="lineNum">    1415 </span>            :         int ret;</a>
 <a name="1416"><span class="lineNum">    1416 </span>            : </a>
-<a name="1417"><span class="lineNum">    1417 </span><span class="lineCov">          2 :         ret = cpuhp_setup_state_multi(CPUHP_AP_ONLINE_DYN, &quot;io-wq/online&quot;,</span></a>
+<a name="1417"><span class="lineNum">    1417 </span><span class="lineCov">          1 :         ret = cpuhp_setup_state_multi(CPUHP_AP_ONLINE_DYN, &quot;io-wq/online&quot;,</span></a>
 <a name="1418"><span class="lineNum">    1418 </span>            :                                         io_wq_cpu_online, io_wq_cpu_offline);</a>
-<a name="1419"><span class="lineNum">    1419 </span><span class="lineCov">          2 :         if (ret &lt; 0)</span></a>
+<a name="1419"><span class="lineNum">    1419 </span><span class="lineCov">          1 :         if (ret &lt; 0)</span></a>
 <a name="1420"><span class="lineNum">    1420 </span>            :                 return ret;</a>
-<a name="1421"><span class="lineNum">    1421 </span><span class="lineCov">          2 :         io_wq_online = ret;</span></a>
-<a name="1422"><span class="lineNum">    1422 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="1421"><span class="lineNum">    1421 </span><span class="lineCov">          1 :         io_wq_online = ret;</span></a>
+<a name="1422"><span class="lineNum">    1422 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="1423"><span class="lineNum">    1423 </span>            : }</a>
 <a name="1424"><span class="lineNum">    1424 </span>            : subsys_initcall(io_wq_init);</a>
 </pre>

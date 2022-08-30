@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -133,24 +133,24 @@
 <a name="71"><span class="lineNum">      71 </span>            :  *</a>
 <a name="72"><span class="lineNum">      72 </span>            :  * Return: true if the decrement operation was successful, false otherwise</a>
 <a name="73"><span class="lineNum">      73 </span>            :  */</a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">        126 : bool refcount_dec_not_one(refcount_t *r)</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">         92 : bool refcount_dec_not_one(refcount_t *r)</span></a>
 <a name="75"><span class="lineNum">      75 </span>            : {</a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        252 :         unsigned int new, val = atomic_read(&amp;r-&gt;refs);</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        184 :         unsigned int new, val = atomic_read(&amp;r-&gt;refs);</span></a>
 <a name="77"><span class="lineNum">      77 </span>            : </a>
 <a name="78"><span class="lineNum">      78 </span>            :         do {</a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        126 :                 if (unlikely(val == REFCOUNT_SATURATED))</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         92 :                 if (unlikely(val == REFCOUNT_SATURATED))</span></a>
 <a name="80"><span class="lineNum">      80 </span>            :                         return true;</a>
 <a name="81"><span class="lineNum">      81 </span>            : </a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        126 :                 if (val == 1)</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         92 :                 if (val == 1)</span></a>
 <a name="83"><span class="lineNum">      83 </span>            :                         return false;</a>
 <a name="84"><span class="lineNum">      84 </span>            : </a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        126 :                 new = val - 1;</span></a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        126 :                 if (new &gt; val) {</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">         92 :                 new = val - 1;</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">         92 :                 if (new &gt; val) {</span></a>
 <a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 :                         WARN_ONCE(new &gt; val, &quot;refcount_t: underflow; use-after-free.\n&quot;);</span></a>
 <a name="88"><span class="lineNum">      88 </span>            :                         return true;</a>
 <a name="89"><span class="lineNum">      89 </span>            :                 }</a>
 <a name="90"><span class="lineNum">      90 </span>            : </a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">        252 :         } while (!atomic_try_cmpxchg_release(&amp;r-&gt;refs, &amp;val, new));</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">        184 :         } while (!atomic_try_cmpxchg_release(&amp;r-&gt;refs, &amp;val, new));</span></a>
 <a name="92"><span class="lineNum">      92 </span>            : </a>
 <a name="93"><span class="lineNum">      93 </span>            :         return true;</a>
 <a name="94"><span class="lineNum">      94 </span>            : }</a>
@@ -231,10 +231,10 @@
 <a name="169"><span class="lineNum">     169 </span>            :  * Return: true and hold spinlock if able to decrement refcount to 0, false</a>
 <a name="170"><span class="lineNum">     170 </span>            :  *         otherwise</a>
 <a name="171"><span class="lineNum">     171 </span>            :  */</a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">        126 : bool refcount_dec_and_lock_irqsave(refcount_t *r, spinlock_t *lock,</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">         92 : bool refcount_dec_and_lock_irqsave(refcount_t *r, spinlock_t *lock,</span></a>
 <a name="173"><span class="lineNum">     173 </span>            :                                    unsigned long *flags)</a>
 <a name="174"><span class="lineNum">     174 </span>            : {</a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineCov">        126 :         if (refcount_dec_not_one(r))</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">         92 :         if (refcount_dec_not_one(r))</span></a>
 <a name="176"><span class="lineNum">     176 </span>            :                 return false;</a>
 <a name="177"><span class="lineNum">     177 </span>            : </a>
 <a name="178"><span class="lineNum">     178 </span><span class="lineNoCov">          0 :         spin_lock_irqsave(lock, *flags);</span></a>

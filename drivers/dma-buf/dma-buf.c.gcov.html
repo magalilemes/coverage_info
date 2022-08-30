@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -170,15 +170,15 @@
 <a name="108"><span class="lineNum">     108 </span>            : </a>
 <a name="109"><span class="lineNum">     109 </span>            : static struct vfsmount *dma_buf_mnt;</a>
 <a name="110"><span class="lineNum">     110 </span>            : </a>
-<a name="111"><span class="lineNum">     111 </span><span class="lineCov">          2 : static int dma_buf_fs_init_context(struct fs_context *fc)</span></a>
+<a name="111"><span class="lineNum">     111 </span><span class="lineCov">          1 : static int dma_buf_fs_init_context(struct fs_context *fc)</span></a>
 <a name="112"><span class="lineNum">     112 </span>            : {</a>
 <a name="113"><span class="lineNum">     113 </span>            :         struct pseudo_fs_context *ctx;</a>
 <a name="114"><span class="lineNum">     114 </span>            : </a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">          2 :         ctx = init_pseudo(fc, DMA_BUF_MAGIC);</span></a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">          2 :         if (!ctx)</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">          1 :         ctx = init_pseudo(fc, DMA_BUF_MAGIC);</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">          1 :         if (!ctx)</span></a>
 <a name="117"><span class="lineNum">     117 </span>            :                 return -ENOMEM;</a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">          2 :         ctx-&gt;dops = &amp;dma_buf_dentry_ops;</span></a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">          1 :         ctx-&gt;dops = &amp;dma_buf_dentry_ops;</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="120"><span class="lineNum">     120 </span>            : }</a>
 <a name="121"><span class="lineNum">     121 </span>            : </a>
 <a name="122"><span class="lineNum">     122 </span>            : static struct file_system_type dma_buf_fs_type = {</a>
@@ -1510,22 +1510,22 @@
 <a name="1448"><span class="lineNum">    1448 </span>            : }</a>
 <a name="1449"><span class="lineNum">    1449 </span>            : #endif</a>
 <a name="1450"><span class="lineNum">    1450 </span>            : </a>
-<a name="1451"><span class="lineNum">    1451 </span><span class="lineCov">          2 : static int __init dma_buf_init(void)</span></a>
+<a name="1451"><span class="lineNum">    1451 </span><span class="lineCov">          1 : static int __init dma_buf_init(void)</span></a>
 <a name="1452"><span class="lineNum">    1452 </span>            : {</a>
 <a name="1453"><span class="lineNum">    1453 </span>            :         int ret;</a>
 <a name="1454"><span class="lineNum">    1454 </span>            : </a>
-<a name="1455"><span class="lineNum">    1455 </span><span class="lineCov">          2 :         ret = dma_buf_init_sysfs_statistics();</span></a>
+<a name="1455"><span class="lineNum">    1455 </span><span class="lineCov">          1 :         ret = dma_buf_init_sysfs_statistics();</span></a>
 <a name="1456"><span class="lineNum">    1456 </span>            :         if (ret)</a>
 <a name="1457"><span class="lineNum">    1457 </span>            :                 return ret;</a>
 <a name="1458"><span class="lineNum">    1458 </span>            : </a>
-<a name="1459"><span class="lineNum">    1459 </span><span class="lineCov">          2 :         dma_buf_mnt = kern_mount(&amp;dma_buf_fs_type);</span></a>
-<a name="1460"><span class="lineNum">    1460 </span><span class="lineCov">          4 :         if (IS_ERR(dma_buf_mnt))</span></a>
+<a name="1459"><span class="lineNum">    1459 </span><span class="lineCov">          1 :         dma_buf_mnt = kern_mount(&amp;dma_buf_fs_type);</span></a>
+<a name="1460"><span class="lineNum">    1460 </span><span class="lineCov">          2 :         if (IS_ERR(dma_buf_mnt))</span></a>
 <a name="1461"><span class="lineNum">    1461 </span><span class="lineNoCov">          0 :                 return PTR_ERR(dma_buf_mnt);</span></a>
 <a name="1462"><span class="lineNum">    1462 </span>            : </a>
-<a name="1463"><span class="lineNum">    1463 </span><span class="lineCov">          2 :         mutex_init(&amp;db_list.lock);</span></a>
-<a name="1464"><span class="lineNum">    1464 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;db_list.head);</span></a>
+<a name="1463"><span class="lineNum">    1463 </span><span class="lineCov">          1 :         mutex_init(&amp;db_list.lock);</span></a>
+<a name="1464"><span class="lineNum">    1464 </span><span class="lineCov">          1 :         INIT_LIST_HEAD(&amp;db_list.head);</span></a>
 <a name="1465"><span class="lineNum">    1465 </span>            :         dma_buf_init_debugfs();</a>
-<a name="1466"><span class="lineNum">    1466 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="1466"><span class="lineNum">    1466 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="1467"><span class="lineNum">    1467 </span>            : }</a>
 <a name="1468"><span class="lineNum">    1468 </span>            : subsys_initcall(dma_buf_init);</a>
 <a name="1469"><span class="lineNum">    1469 </span>            : </a>

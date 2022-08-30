@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -205,20 +205,20 @@
 <a name="143"><span class="lineNum">     143 </span>            : </a>
 <a name="144"><span class="lineNum">     144 </span>            : static inline void account_softirq_exit(struct task_struct *tsk)</a>
 <a name="145"><span class="lineNum">     145 </span>            : {</a>
-<a name="146"><span class="lineNum">     146 </span><span class="lineCov">        128 :         vtime_account_softirq(tsk);</span></a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineCov">        128 :         irqtime_account_irq(tsk, 0);</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineCov">         93 :         vtime_account_softirq(tsk);</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">         93 :         irqtime_account_irq(tsk, 0);</span></a>
 <a name="148"><span class="lineNum">     148 </span>            : }</a>
 <a name="149"><span class="lineNum">     149 </span>            : </a>
 <a name="150"><span class="lineNum">     150 </span>            : static inline void account_hardirq_enter(struct task_struct *tsk)</a>
 <a name="151"><span class="lineNum">     151 </span>            : {</a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineCov">         17 :         vtime_account_irq(tsk, HARDIRQ_OFFSET);</span></a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineCov">         17 :         irqtime_account_irq(tsk, HARDIRQ_OFFSET);</span></a>
+<a name="152"><span class="lineNum">     152 </span><span class="lineCov">          9 :         vtime_account_irq(tsk, HARDIRQ_OFFSET);</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">          9 :         irqtime_account_irq(tsk, HARDIRQ_OFFSET);</span></a>
 <a name="154"><span class="lineNum">     154 </span>            : }</a>
 <a name="155"><span class="lineNum">     155 </span>            : </a>
 <a name="156"><span class="lineNum">     156 </span>            : static inline void account_hardirq_exit(struct task_struct *tsk)</a>
 <a name="157"><span class="lineNum">     157 </span>            : {</a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">         17 :         vtime_account_hardirq(tsk);</span></a>
-<a name="159"><span class="lineNum">     159 </span><span class="lineCov">         17 :         irqtime_account_irq(tsk, 0);</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">          9 :         vtime_account_hardirq(tsk);</span></a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineCov">          9 :         irqtime_account_irq(tsk, 0);</span></a>
 <a name="160"><span class="lineNum">     160 </span>            : }</a>
 <a name="161"><span class="lineNum">     161 </span>            : </a>
 <a name="162"><span class="lineNum">     162 </span>            : #endif /* _LINUX_KERNEL_VTIME_H */</a>

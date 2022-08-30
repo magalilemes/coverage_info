@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">28</td>
@@ -294,7 +294,7 @@
 <a name="232"><span class="lineNum">     232 </span>            :         mutex_acquire(&amp;console_lock_dep_map, 0, 0, _RET_IP_);\</a>
 <a name="233"><span class="lineNum">     233 </span>            : } while (0)</a>
 <a name="234"><span class="lineNum">     234 </span>            : </a>
-<a name="235"><span class="lineNum">     235 </span><span class="lineCov">        506 : static int __down_trylock_console_sem(unsigned long ip)</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineCov">        293 : static int __down_trylock_console_sem(unsigned long ip)</span></a>
 <a name="236"><span class="lineNum">     236 </span>            : {</a>
 <a name="237"><span class="lineNum">     237 </span>            :         int lock_failed;</a>
 <a name="238"><span class="lineNum">     238 </span>            :         unsigned long flags;</a>
@@ -304,32 +304,32 @@
 <a name="242"><span class="lineNum">     242 </span>            :          * because spindump/WARN/etc from under console -&gt;lock will</a>
 <a name="243"><span class="lineNum">     243 </span>            :          * deadlock in printk()-&gt;down_trylock_console_sem() otherwise.</a>
 <a name="244"><span class="lineNum">     244 </span>            :          */</a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineCov">        506 :         printk_safe_enter_irqsave(flags);</span></a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineCov">        506 :         lock_failed = down_trylock(&amp;console_sem);</span></a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineCov">       1012 :         printk_safe_exit_irqrestore(flags);</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">        293 :         printk_safe_enter_irqsave(flags);</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">        293 :         lock_failed = down_trylock(&amp;console_sem);</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineCov">        586 :         printk_safe_exit_irqrestore(flags);</span></a>
 <a name="248"><span class="lineNum">     248 </span>            : </a>
-<a name="249"><span class="lineNum">     249 </span><span class="lineCov">        506 :         if (lock_failed)</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineCov">        293 :         if (lock_failed)</span></a>
 <a name="250"><span class="lineNum">     250 </span>            :                 return 1;</a>
 <a name="251"><span class="lineNum">     251 </span>            :         mutex_acquire(&amp;console_lock_dep_map, 0, 1, ip);</a>
 <a name="252"><span class="lineNum">     252 </span>            :         return 0;</a>
 <a name="253"><span class="lineNum">     253 </span>            : }</a>
 <a name="254"><span class="lineNum">     254 </span>            : #define down_trylock_console_sem() __down_trylock_console_sem(_RET_IP_)</a>
 <a name="255"><span class="lineNum">     255 </span>            : </a>
-<a name="256"><span class="lineNum">     256 </span><span class="lineCov">        512 : static void __up_console_sem(unsigned long ip)</span></a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineCov">        296 : static void __up_console_sem(unsigned long ip)</span></a>
 <a name="257"><span class="lineNum">     257 </span>            : {</a>
 <a name="258"><span class="lineNum">     258 </span>            :         unsigned long flags;</a>
 <a name="259"><span class="lineNum">     259 </span>            : </a>
 <a name="260"><span class="lineNum">     260 </span>            :         mutex_release(&amp;console_lock_dep_map, ip);</a>
 <a name="261"><span class="lineNum">     261 </span>            : </a>
-<a name="262"><span class="lineNum">     262 </span><span class="lineCov">        512 :         printk_safe_enter_irqsave(flags);</span></a>
-<a name="263"><span class="lineNum">     263 </span><span class="lineCov">        512 :         up(&amp;console_sem);</span></a>
-<a name="264"><span class="lineNum">     264 </span><span class="lineCov">       1024 :         printk_safe_exit_irqrestore(flags);</span></a>
-<a name="265"><span class="lineNum">     265 </span><span class="lineCov">        512 : }</span></a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineCov">        296 :         printk_safe_enter_irqsave(flags);</span></a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineCov">        296 :         up(&amp;console_sem);</span></a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineCov">        592 :         printk_safe_exit_irqrestore(flags);</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">        296 : }</span></a>
 <a name="266"><span class="lineNum">     266 </span>            : #define up_console_sem() __up_console_sem(_RET_IP_)</a>
 <a name="267"><span class="lineNum">     267 </span>            : </a>
 <a name="268"><span class="lineNum">     268 </span>            : static bool panic_in_progress(void)</a>
 <a name="269"><span class="lineNum">     269 </span>            : {</a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineCov">        674 :         return unlikely(atomic_read(&amp;panic_cpu) != PANIC_CPU_INVALID);</span></a>
+<a name="270"><span class="lineNum">     270 </span><span class="lineCov">        377 :         return unlikely(atomic_read(&amp;panic_cpu) != PANIC_CPU_INVALID);</span></a>
 <a name="271"><span class="lineNum">     271 </span>            : }</a>
 <a name="272"><span class="lineNum">     272 </span>            : </a>
 <a name="273"><span class="lineNum">     273 </span>            : /*</a>
@@ -507,7 +507,7 @@
 <a name="445"><span class="lineNum">     445 </span>            : </a>
 <a name="446"><span class="lineNum">     446 </span><span class="lineNoCov">          0 : bool printk_percpu_data_ready(void)</span></a>
 <a name="447"><span class="lineNum">     447 </span>            : {</a>
-<a name="448"><span class="lineNum">     448 </span><span class="lineCov">       1014 :         return __printk_percpu_data_ready;</span></a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineCov">        587 :         return __printk_percpu_data_ready;</span></a>
 <a name="449"><span class="lineNum">     449 </span>            : }</a>
 <a name="450"><span class="lineNum">     450 </span>            : </a>
 <a name="451"><span class="lineNum">     451 </span>            : /* Must be called under syslog_lock. */</a>
@@ -1100,7 +1100,7 @@
 <a name="1038"><span class="lineNum">    1038 </span>            : </a>
 <a name="1039"><span class="lineNum">    1039 </span>            : static void __init set_percpu_data_ready(void)</a>
 <a name="1040"><span class="lineNum">    1040 </span>            : {</a>
-<a name="1041"><span class="lineNum">    1041 </span><span class="lineCov">          2 :         __printk_percpu_data_ready = true;</span></a>
+<a name="1041"><span class="lineNum">    1041 </span><span class="lineCov">          1 :         __printk_percpu_data_ready = true;</span></a>
 <a name="1042"><span class="lineNum">    1042 </span>            : }</a>
 <a name="1043"><span class="lineNum">    1043 </span>            : </a>
 <a name="1044"><span class="lineNum">    1044 </span><span class="lineNoCov">          0 : static unsigned int __init add_to_rb(struct printk_ringbuffer *rb,</span></a>
@@ -1130,7 +1130,7 @@
 <a name="1068"><span class="lineNum">    1068 </span>            : </a>
 <a name="1069"><span class="lineNum">    1069 </span>            : static char setup_text_buf[LOG_LINE_MAX] __initdata;</a>
 <a name="1070"><span class="lineNum">    1070 </span>            : </a>
-<a name="1071"><span class="lineNum">    1071 </span><span class="lineCov">          2 : void __init setup_log_buf(int early)</span></a>
+<a name="1071"><span class="lineNum">    1071 </span><span class="lineCov">          1 : void __init setup_log_buf(int early)</span></a>
 <a name="1072"><span class="lineNum">    1072 </span>            : {</a>
 <a name="1073"><span class="lineNum">    1073 </span>            :         struct printk_info *new_infos;</a>
 <a name="1074"><span class="lineNum">    1074 </span>            :         unsigned int new_descs_count;</a>
@@ -1150,16 +1150,16 @@
 <a name="1088"><span class="lineNum">    1088 </span>            :          * early, e.g. from setup_arch(), and second - when percpu_areas</a>
 <a name="1089"><span class="lineNum">    1089 </span>            :          * are initialised.</a>
 <a name="1090"><span class="lineNum">    1090 </span>            :          */</a>
-<a name="1091"><span class="lineNum">    1091 </span><span class="lineCov">          2 :         if (!early)</span></a>
+<a name="1091"><span class="lineNum">    1091 </span><span class="lineCov">          1 :         if (!early)</span></a>
 <a name="1092"><span class="lineNum">    1092 </span>            :                 set_percpu_data_ready();</a>
 <a name="1093"><span class="lineNum">    1093 </span>            : </a>
-<a name="1094"><span class="lineNum">    1094 </span><span class="lineCov">          2 :         if (log_buf != __log_buf)</span></a>
-<a name="1095"><span class="lineNum">    1095 </span><span class="lineCov">          2 :                 return;</span></a>
+<a name="1094"><span class="lineNum">    1094 </span><span class="lineCov">          1 :         if (log_buf != __log_buf)</span></a>
+<a name="1095"><span class="lineNum">    1095 </span><span class="lineCov">          1 :                 return;</span></a>
 <a name="1096"><span class="lineNum">    1096 </span>            : </a>
 <a name="1097"><span class="lineNum">    1097 </span>            :         if (!early &amp;&amp; !new_log_buf_len)</a>
 <a name="1098"><span class="lineNum">    1098 </span>            :                 log_buf_add_cpu();</a>
 <a name="1099"><span class="lineNum">    1099 </span>            : </a>
-<a name="1100"><span class="lineNum">    1100 </span><span class="lineCov">          2 :         if (!new_log_buf_len)</span></a>
+<a name="1100"><span class="lineNum">    1100 </span><span class="lineCov">          1 :         if (!new_log_buf_len)</span></a>
 <a name="1101"><span class="lineNum">    1101 </span>            :                 return;</a>
 <a name="1102"><span class="lineNum">    1102 </span>            : </a>
 <a name="1103"><span class="lineNum">    1103 </span><span class="lineNoCov">          0 :         new_descs_count = new_log_buf_len &gt;&gt; PRB_AVGBITS;</span></a>
@@ -1263,7 +1263,7 @@
 <a name="1201"><span class="lineNum">    1201 </span>            : </a>
 <a name="1202"><span class="lineNum">    1202 </span>            : static bool suppress_message_printing(int level)</a>
 <a name="1203"><span class="lineNum">    1203 </span>            : {</a>
-<a name="1204"><span class="lineNum">    1204 </span><span class="lineCov">        682 :         return (level &gt;= console_loglevel &amp;&amp; !ignore_loglevel);</span></a>
+<a name="1204"><span class="lineNum">    1204 </span><span class="lineCov">        381 :         return (level &gt;= console_loglevel &amp;&amp; !ignore_loglevel);</span></a>
 <a name="1205"><span class="lineNum">    1205 </span>            : }</a>
 <a name="1206"><span class="lineNum">    1206 </span>            : </a>
 <a name="1207"><span class="lineNum">    1207 </span>            : #ifdef CONFIG_BOOT_PRINTK_DELAY</a>
@@ -1350,25 +1350,25 @@
 <a name="1288"><span class="lineNum">    1288 </span>            : #define print_caller(id, buf) 0</a>
 <a name="1289"><span class="lineNum">    1289 </span>            : #endif</a>
 <a name="1290"><span class="lineNum">    1290 </span>            : </a>
-<a name="1291"><span class="lineNum">    1291 </span><span class="lineCov">        674 : static size_t info_print_prefix(const struct printk_info  *info, bool syslog,</span></a>
+<a name="1291"><span class="lineNum">    1291 </span><span class="lineCov">        377 : static size_t info_print_prefix(const struct printk_info  *info, bool syslog,</span></a>
 <a name="1292"><span class="lineNum">    1292 </span>            :                                 bool time, char *buf)</a>
 <a name="1293"><span class="lineNum">    1293 </span>            : {</a>
-<a name="1294"><span class="lineNum">    1294 </span><span class="lineCov">        674 :         size_t len = 0;</span></a>
+<a name="1294"><span class="lineNum">    1294 </span><span class="lineCov">        377 :         size_t len = 0;</span></a>
 <a name="1295"><span class="lineNum">    1295 </span>            : </a>
-<a name="1296"><span class="lineNum">    1296 </span><span class="lineCov">        674 :         if (syslog)</span></a>
+<a name="1296"><span class="lineNum">    1296 </span><span class="lineCov">        377 :         if (syslog)</span></a>
 <a name="1297"><span class="lineNum">    1297 </span><span class="lineNoCov">          0 :                 len = print_syslog((info-&gt;facility &lt;&lt; 3) | info-&gt;level, buf);</span></a>
 <a name="1298"><span class="lineNum">    1298 </span>            : </a>
-<a name="1299"><span class="lineNum">    1299 </span><span class="lineCov">        674 :         if (time)</span></a>
+<a name="1299"><span class="lineNum">    1299 </span><span class="lineCov">        377 :         if (time)</span></a>
 <a name="1300"><span class="lineNum">    1300 </span><span class="lineNoCov">          0 :                 len += print_time(info-&gt;ts_nsec, buf + len);</span></a>
 <a name="1301"><span class="lineNum">    1301 </span>            : </a>
-<a name="1302"><span class="lineNum">    1302 </span><span class="lineCov">        674 :         len += print_caller(info-&gt;caller_id, buf + len);</span></a>
+<a name="1302"><span class="lineNum">    1302 </span><span class="lineCov">        377 :         len += print_caller(info-&gt;caller_id, buf + len);</span></a>
 <a name="1303"><span class="lineNum">    1303 </span>            : </a>
-<a name="1304"><span class="lineNum">    1304 </span><span class="lineCov">        674 :         if (IS_ENABLED(CONFIG_PRINTK_CALLER) || time) {</span></a>
+<a name="1304"><span class="lineNum">    1304 </span><span class="lineCov">        377 :         if (IS_ENABLED(CONFIG_PRINTK_CALLER) || time) {</span></a>
 <a name="1305"><span class="lineNum">    1305 </span><span class="lineNoCov">          0 :                 buf[len++] = ' ';</span></a>
 <a name="1306"><span class="lineNum">    1306 </span><span class="lineNoCov">          0 :                 buf[len] = '\0';</span></a>
 <a name="1307"><span class="lineNum">    1307 </span>            :         }</a>
 <a name="1308"><span class="lineNum">    1308 </span>            : </a>
-<a name="1309"><span class="lineNum">    1309 </span><span class="lineCov">        674 :         return len;</span></a>
+<a name="1309"><span class="lineNum">    1309 </span><span class="lineCov">        377 :         return len;</span></a>
 <a name="1310"><span class="lineNum">    1310 </span>            : }</a>
 <a name="1311"><span class="lineNum">    1311 </span>            : </a>
 <a name="1312"><span class="lineNum">    1312 </span>            : /*</a>
@@ -1388,27 +1388,27 @@
 <a name="1326"><span class="lineNum">    1326 </span>            :  * prefixes and the newline. The terminator is not counted. The dropped</a>
 <a name="1327"><span class="lineNum">    1327 </span>            :  * line(s) are not counted.</a>
 <a name="1328"><span class="lineNum">    1328 </span>            :  */</a>
-<a name="1329"><span class="lineNum">    1329 </span><span class="lineCov">        674 : static size_t record_print_text(struct printk_record *r, bool syslog,</span></a>
+<a name="1329"><span class="lineNum">    1329 </span><span class="lineCov">        377 : static size_t record_print_text(struct printk_record *r, bool syslog,</span></a>
 <a name="1330"><span class="lineNum">    1330 </span>            :                                 bool time)</a>
 <a name="1331"><span class="lineNum">    1331 </span>            : {</a>
-<a name="1332"><span class="lineNum">    1332 </span><span class="lineCov">        674 :         size_t text_len = r-&gt;info-&gt;text_len;</span></a>
-<a name="1333"><span class="lineNum">    1333 </span><span class="lineCov">        674 :         size_t buf_size = r-&gt;text_buf_size;</span></a>
-<a name="1334"><span class="lineNum">    1334 </span><span class="lineCov">        674 :         char *text = r-&gt;text_buf;</span></a>
+<a name="1332"><span class="lineNum">    1332 </span><span class="lineCov">        377 :         size_t text_len = r-&gt;info-&gt;text_len;</span></a>
+<a name="1333"><span class="lineNum">    1333 </span><span class="lineCov">        377 :         size_t buf_size = r-&gt;text_buf_size;</span></a>
+<a name="1334"><span class="lineNum">    1334 </span><span class="lineCov">        377 :         char *text = r-&gt;text_buf;</span></a>
 <a name="1335"><span class="lineNum">    1335 </span>            :         char prefix[PREFIX_MAX];</a>
-<a name="1336"><span class="lineNum">    1336 </span><span class="lineCov">        674 :         bool truncated = false;</span></a>
+<a name="1336"><span class="lineNum">    1336 </span><span class="lineCov">        377 :         bool truncated = false;</span></a>
 <a name="1337"><span class="lineNum">    1337 </span>            :         size_t prefix_len;</a>
 <a name="1338"><span class="lineNum">    1338 </span>            :         size_t line_len;</a>
-<a name="1339"><span class="lineNum">    1339 </span><span class="lineCov">        674 :         size_t len = 0;</span></a>
+<a name="1339"><span class="lineNum">    1339 </span><span class="lineCov">        377 :         size_t len = 0;</span></a>
 <a name="1340"><span class="lineNum">    1340 </span>            :         char *next;</a>
 <a name="1341"><span class="lineNum">    1341 </span>            : </a>
 <a name="1342"><span class="lineNum">    1342 </span>            :         /*</a>
 <a name="1343"><span class="lineNum">    1343 </span>            :          * If the message was truncated because the buffer was not large</a>
 <a name="1344"><span class="lineNum">    1344 </span>            :          * enough, treat the available text as if it were the full text.</a>
 <a name="1345"><span class="lineNum">    1345 </span>            :          */</a>
-<a name="1346"><span class="lineNum">    1346 </span><span class="lineCov">        674 :         if (text_len &gt; buf_size)</span></a>
+<a name="1346"><span class="lineNum">    1346 </span><span class="lineCov">        377 :         if (text_len &gt; buf_size)</span></a>
 <a name="1347"><span class="lineNum">    1347 </span><span class="lineNoCov">          0 :                 text_len = buf_size;</span></a>
 <a name="1348"><span class="lineNum">    1348 </span>            : </a>
-<a name="1349"><span class="lineNum">    1349 </span><span class="lineCov">        674 :         prefix_len = info_print_prefix(r-&gt;info, syslog, time, prefix);</span></a>
+<a name="1349"><span class="lineNum">    1349 </span><span class="lineCov">        377 :         prefix_len = info_print_prefix(r-&gt;info, syslog, time, prefix);</span></a>
 <a name="1350"><span class="lineNum">    1350 </span>            : </a>
 <a name="1351"><span class="lineNum">    1351 </span>            :         /*</a>
 <a name="1352"><span class="lineNum">    1352 </span>            :          * @text_len: bytes of unprocessed text</a>
@@ -1417,12 +1417,12 @@
 <a name="1355"><span class="lineNum">    1355 </span>            :          * @len:      number of bytes prepared in r-&gt;text_buf</a>
 <a name="1356"><span class="lineNum">    1356 </span>            :          */</a>
 <a name="1357"><span class="lineNum">    1357 </span>            :         for (;;) {</a>
-<a name="1358"><span class="lineNum">    1358 </span><span class="lineCov">        734 :                 next = memchr(text, '\n', text_len);</span></a>
-<a name="1359"><span class="lineNum">    1359 </span><span class="lineCov">        704 :                 if (next) {</span></a>
+<a name="1358"><span class="lineNum">    1358 </span><span class="lineCov">        437 :                 next = memchr(text, '\n', text_len);</span></a>
+<a name="1359"><span class="lineNum">    1359 </span><span class="lineCov">        407 :                 if (next) {</span></a>
 <a name="1360"><span class="lineNum">    1360 </span><span class="lineCov">         30 :                         line_len = next - text;</span></a>
 <a name="1361"><span class="lineNum">    1361 </span>            :                 } else {</a>
 <a name="1362"><span class="lineNum">    1362 </span>            :                         /* Drop truncated line(s). */</a>
-<a name="1363"><span class="lineNum">    1363 </span><span class="lineCov">        674 :                         if (truncated)</span></a>
+<a name="1363"><span class="lineNum">    1363 </span><span class="lineCov">        377 :                         if (truncated)</span></a>
 <a name="1364"><span class="lineNum">    1364 </span>            :                                 break;</a>
 <a name="1365"><span class="lineNum">    1365 </span>            :                         line_len = text_len;</a>
 <a name="1366"><span class="lineNum">    1366 </span>            :                 }</a>
@@ -1431,7 +1431,7 @@
 <a name="1369"><span class="lineNum">    1369 </span>            :                  * Truncate the text if there is not enough space to add the</a>
 <a name="1370"><span class="lineNum">    1370 </span>            :                  * prefix and a trailing newline and a terminator.</a>
 <a name="1371"><span class="lineNum">    1371 </span>            :                  */</a>
-<a name="1372"><span class="lineNum">    1372 </span><span class="lineCov">        704 :                 if (len + prefix_len + text_len + 1 + 1 &gt; buf_size) {</span></a>
+<a name="1372"><span class="lineNum">    1372 </span><span class="lineCov">        407 :                 if (len + prefix_len + text_len + 1 + 1 &gt; buf_size) {</span></a>
 <a name="1373"><span class="lineNum">    1373 </span>            :                         /* Drop even the current line if no space. */</a>
 <a name="1374"><span class="lineNum">    1374 </span><span class="lineNoCov">          0 :                         if (len + prefix_len + line_len + 1 + 1 &gt; buf_size)</span></a>
 <a name="1375"><span class="lineNum">    1375 </span>            :                                 break;</a>
@@ -1440,8 +1440,8 @@
 <a name="1378"><span class="lineNum">    1378 </span><span class="lineNoCov">          0 :                         truncated = true;</span></a>
 <a name="1379"><span class="lineNum">    1379 </span>            :                 }</a>
 <a name="1380"><span class="lineNum">    1380 </span>            : </a>
-<a name="1381"><span class="lineNum">    1381 </span><span class="lineCov">        704 :                 memmove(text + prefix_len, text, text_len);</span></a>
-<a name="1382"><span class="lineNum">    1382 </span><span class="lineCov">        704 :                 memcpy(text, prefix, prefix_len);</span></a>
+<a name="1381"><span class="lineNum">    1381 </span><span class="lineCov">        407 :                 memmove(text + prefix_len, text, text_len);</span></a>
+<a name="1382"><span class="lineNum">    1382 </span><span class="lineCov">        407 :                 memcpy(text, prefix, prefix_len);</span></a>
 <a name="1383"><span class="lineNum">    1383 </span>            : </a>
 <a name="1384"><span class="lineNum">    1384 </span>            :                 /*</a>
 <a name="1385"><span class="lineNum">    1385 </span>            :                  * Increment the prepared length to include the text and</a>
@@ -1449,14 +1449,14 @@
 <a name="1387"><span class="lineNum">    1387 </span>            :                  * newline at the end of this line. If this is the last line,</a>
 <a name="1388"><span class="lineNum">    1388 </span>            :                  * there is no newline, but it will be added immediately below.</a>
 <a name="1389"><span class="lineNum">    1389 </span>            :                  */</a>
-<a name="1390"><span class="lineNum">    1390 </span><span class="lineCov">        704 :                 len += prefix_len + line_len + 1;</span></a>
-<a name="1391"><span class="lineNum">    1391 </span><span class="lineCov">        704 :                 if (text_len == line_len) {</span></a>
+<a name="1390"><span class="lineNum">    1390 </span><span class="lineCov">        407 :                 len += prefix_len + line_len + 1;</span></a>
+<a name="1391"><span class="lineNum">    1391 </span><span class="lineCov">        407 :                 if (text_len == line_len) {</span></a>
 <a name="1392"><span class="lineNum">    1392 </span>            :                         /*</a>
 <a name="1393"><span class="lineNum">    1393 </span>            :                          * This is the last line. Add the trailing newline</a>
 <a name="1394"><span class="lineNum">    1394 </span>            :                          * removed in vprintk_store().</a>
 <a name="1395"><span class="lineNum">    1395 </span>            :                          */</a>
-<a name="1396"><span class="lineNum">    1396 </span><span class="lineCov">        674 :                         text[prefix_len + line_len] = '\n';</span></a>
-<a name="1397"><span class="lineNum">    1397 </span><span class="lineCov">        674 :                         break;</span></a>
+<a name="1396"><span class="lineNum">    1396 </span><span class="lineCov">        377 :                         text[prefix_len + line_len] = '\n';</span></a>
+<a name="1397"><span class="lineNum">    1397 </span><span class="lineCov">        377 :                         break;</span></a>
 <a name="1398"><span class="lineNum">    1398 </span>            :                 }</a>
 <a name="1399"><span class="lineNum">    1399 </span>            : </a>
 <a name="1400"><span class="lineNum">    1400 </span>            :                 /*</a>
@@ -1483,10 +1483,10 @@
 <a name="1421"><span class="lineNum">    1421 </span>            :          * string terminator is guaranteed to be available. The terminator is</a>
 <a name="1422"><span class="lineNum">    1422 </span>            :          * not counted in the return value.</a>
 <a name="1423"><span class="lineNum">    1423 </span>            :          */</a>
-<a name="1424"><span class="lineNum">    1424 </span><span class="lineCov">        674 :         if (buf_size &gt; 0)</span></a>
-<a name="1425"><span class="lineNum">    1425 </span><span class="lineCov">        674 :                 r-&gt;text_buf[len] = 0;</span></a>
+<a name="1424"><span class="lineNum">    1424 </span><span class="lineCov">        377 :         if (buf_size &gt; 0)</span></a>
+<a name="1425"><span class="lineNum">    1425 </span><span class="lineCov">        377 :                 r-&gt;text_buf[len] = 0;</span></a>
 <a name="1426"><span class="lineNum">    1426 </span>            : </a>
-<a name="1427"><span class="lineNum">    1427 </span><span class="lineCov">        674 :         return len;</span></a>
+<a name="1427"><span class="lineNum">    1427 </span><span class="lineCov">        377 :         return len;</span></a>
 <a name="1428"><span class="lineNum">    1428 </span>            : }</a>
 <a name="1429"><span class="lineNum">    1429 </span>            : </a>
 <a name="1430"><span class="lineNum">    1430 </span>            : static size_t get_record_print_text_size(struct printk_info *info,</a>
@@ -1848,9 +1848,9 @@
 <a name="1786"><span class="lineNum">    1786 </span>            :  */</a>
 <a name="1787"><span class="lineNum">    1787 </span>            : static void console_lock_spinning_enable(void)</a>
 <a name="1788"><span class="lineNum">    1788 </span>            : {</a>
-<a name="1789"><span class="lineNum">    1789 </span><span class="lineCov">        674 :         raw_spin_lock(&amp;console_owner_lock);</span></a>
-<a name="1790"><span class="lineNum">    1790 </span><span class="lineCov">        674 :         console_owner = current;</span></a>
-<a name="1791"><span class="lineNum">    1791 </span><span class="lineCov">        674 :         raw_spin_unlock(&amp;console_owner_lock);</span></a>
+<a name="1789"><span class="lineNum">    1789 </span><span class="lineCov">        377 :         raw_spin_lock(&amp;console_owner_lock);</span></a>
+<a name="1790"><span class="lineNum">    1790 </span><span class="lineCov">        377 :         console_owner = current;</span></a>
+<a name="1791"><span class="lineNum">    1791 </span><span class="lineCov">        377 :         raw_spin_unlock(&amp;console_owner_lock);</span></a>
 <a name="1792"><span class="lineNum">    1792 </span>            : </a>
 <a name="1793"><span class="lineNum">    1793 </span>            :         /* The waiter may spin on us after setting console_owner */</a>
 <a name="1794"><span class="lineNum">    1794 </span>            :         spin_acquire(&amp;console_owner_dep_map, 0, 0, _THIS_IP_);</a>
@@ -1875,12 +1875,12 @@
 <a name="1813"><span class="lineNum">    1813 </span>            : {</a>
 <a name="1814"><span class="lineNum">    1814 </span>            :         int waiter;</a>
 <a name="1815"><span class="lineNum">    1815 </span>            : </a>
-<a name="1816"><span class="lineNum">    1816 </span><span class="lineCov">        674 :         raw_spin_lock(&amp;console_owner_lock);</span></a>
-<a name="1817"><span class="lineNum">    1817 </span><span class="lineCov">        674 :         waiter = READ_ONCE(console_waiter);</span></a>
-<a name="1818"><span class="lineNum">    1818 </span><span class="lineCov">        674 :         console_owner = NULL;</span></a>
-<a name="1819"><span class="lineNum">    1819 </span><span class="lineCov">        674 :         raw_spin_unlock(&amp;console_owner_lock);</span></a>
+<a name="1816"><span class="lineNum">    1816 </span><span class="lineCov">        377 :         raw_spin_lock(&amp;console_owner_lock);</span></a>
+<a name="1817"><span class="lineNum">    1817 </span><span class="lineCov">        377 :         waiter = READ_ONCE(console_waiter);</span></a>
+<a name="1818"><span class="lineNum">    1818 </span><span class="lineCov">        377 :         console_owner = NULL;</span></a>
+<a name="1819"><span class="lineNum">    1819 </span><span class="lineCov">        377 :         raw_spin_unlock(&amp;console_owner_lock);</span></a>
 <a name="1820"><span class="lineNum">    1820 </span>            : </a>
-<a name="1821"><span class="lineNum">    1821 </span><span class="lineCov">        674 :         if (!waiter) {</span></a>
+<a name="1821"><span class="lineNum">    1821 </span><span class="lineCov">        377 :         if (!waiter) {</span></a>
 <a name="1822"><span class="lineNum">    1822 </span>            :                 spin_release(&amp;console_owner_dep_map, _THIS_IP_);</a>
 <a name="1823"><span class="lineNum">    1823 </span>            :                 return 0;</a>
 <a name="1824"><span class="lineNum">    1824 </span>            :         }</a>
@@ -1908,14 +1908,14 @@
 <a name="1846"><span class="lineNum">    1846 </span>            :  *</a>
 <a name="1847"><span class="lineNum">    1847 </span>            :  * Return: 1 if we got the lock, 0 othrewise</a>
 <a name="1848"><span class="lineNum">    1848 </span>            :  */</a>
-<a name="1849"><span class="lineNum">    1849 </span><span class="lineCov">        504 : static int console_trylock_spinning(void)</span></a>
+<a name="1849"><span class="lineNum">    1849 </span><span class="lineCov">        292 : static int console_trylock_spinning(void)</span></a>
 <a name="1850"><span class="lineNum">    1850 </span>            : {</a>
-<a name="1851"><span class="lineNum">    1851 </span><span class="lineCov">        504 :         struct task_struct *owner = NULL;</span></a>
+<a name="1851"><span class="lineNum">    1851 </span><span class="lineCov">        292 :         struct task_struct *owner = NULL;</span></a>
 <a name="1852"><span class="lineNum">    1852 </span>            :         bool waiter;</a>
-<a name="1853"><span class="lineNum">    1853 </span><span class="lineCov">        504 :         bool spin = false;</span></a>
+<a name="1853"><span class="lineNum">    1853 </span><span class="lineCov">        292 :         bool spin = false;</span></a>
 <a name="1854"><span class="lineNum">    1854 </span>            :         unsigned long flags;</a>
 <a name="1855"><span class="lineNum">    1855 </span>            : </a>
-<a name="1856"><span class="lineNum">    1856 </span><span class="lineCov">        504 :         if (console_trylock())</span></a>
+<a name="1856"><span class="lineNum">    1856 </span><span class="lineCov">        292 :         if (console_trylock())</span></a>
 <a name="1857"><span class="lineNum">    1857 </span>            :                 return 1;</a>
 <a name="1858"><span class="lineNum">    1858 </span>            : </a>
 <a name="1859"><span class="lineNum">    1859 </span>            :         /*</a>
@@ -1977,41 +1977,41 @@
 <a name="1915"><span class="lineNum">    1915 </span>            :  * log_buf[start] to log_buf[end - 1].</a>
 <a name="1916"><span class="lineNum">    1916 </span>            :  * The console_lock must be held.</a>
 <a name="1917"><span class="lineNum">    1917 </span>            :  */</a>
-<a name="1918"><span class="lineNum">    1918 </span><span class="lineCov">        674 : static void call_console_drivers(const char *ext_text, size_t ext_len,</span></a>
+<a name="1918"><span class="lineNum">    1918 </span><span class="lineCov">        377 : static void call_console_drivers(const char *ext_text, size_t ext_len,</span></a>
 <a name="1919"><span class="lineNum">    1919 </span>            :                                  const char *text, size_t len)</a>
 <a name="1920"><span class="lineNum">    1920 </span>            : {</a>
 <a name="1921"><span class="lineNum">    1921 </span>            :         static char dropped_text[64];</a>
-<a name="1922"><span class="lineNum">    1922 </span><span class="lineCov">        674 :         size_t dropped_len = 0;</span></a>
+<a name="1922"><span class="lineNum">    1922 </span><span class="lineCov">        377 :         size_t dropped_len = 0;</span></a>
 <a name="1923"><span class="lineNum">    1923 </span>            :         struct console *con;</a>
 <a name="1924"><span class="lineNum">    1924 </span>            : </a>
-<a name="1925"><span class="lineNum">    1925 </span><span class="lineCov">        674 :         trace_console_rcuidle(text, len);</span></a>
+<a name="1925"><span class="lineNum">    1925 </span><span class="lineCov">        377 :         trace_console_rcuidle(text, len);</span></a>
 <a name="1926"><span class="lineNum">    1926 </span>            : </a>
-<a name="1927"><span class="lineNum">    1927 </span><span class="lineCov">        674 :         if (!console_drivers)</span></a>
+<a name="1927"><span class="lineNum">    1927 </span><span class="lineCov">        377 :         if (!console_drivers)</span></a>
 <a name="1928"><span class="lineNum">    1928 </span>            :                 return;</a>
 <a name="1929"><span class="lineNum">    1929 </span>            : </a>
-<a name="1930"><span class="lineNum">    1930 </span><span class="lineCov">        464 :         if (console_dropped) {</span></a>
+<a name="1930"><span class="lineNum">    1930 </span><span class="lineCov">        272 :         if (console_dropped) {</span></a>
 <a name="1931"><span class="lineNum">    1931 </span><span class="lineNoCov">          0 :                 dropped_len = snprintf(dropped_text, sizeof(dropped_text),</span></a>
 <a name="1932"><span class="lineNum">    1932 </span>            :                                        &quot;** %lu printk messages dropped **\n&quot;,</a>
 <a name="1933"><span class="lineNum">    1933 </span>            :                                        console_dropped);</a>
 <a name="1934"><span class="lineNum">    1934 </span><span class="lineNoCov">          0 :                 console_dropped = 0;</span></a>
 <a name="1935"><span class="lineNum">    1935 </span>            :         }</a>
 <a name="1936"><span class="lineNum">    1936 </span>            : </a>
-<a name="1937"><span class="lineNum">    1937 </span><span class="lineCov">       1180 :         for_each_console(con) {</span></a>
-<a name="1938"><span class="lineNum">    1938 </span><span class="lineCov">        716 :                 if (exclusive_console &amp;&amp; con != exclusive_console)</span></a>
+<a name="1937"><span class="lineNum">    1937 </span><span class="lineCov">        710 :         for_each_console(con) {</span></a>
+<a name="1938"><span class="lineNum">    1938 </span><span class="lineCov">        438 :                 if (exclusive_console &amp;&amp; con != exclusive_console)</span></a>
 <a name="1939"><span class="lineNum">    1939 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="1940"><span class="lineNum">    1940 </span><span class="lineCov">        716 :                 if (!(con-&gt;flags &amp; CON_ENABLED))</span></a>
+<a name="1940"><span class="lineNum">    1940 </span><span class="lineCov">        438 :                 if (!(con-&gt;flags &amp; CON_ENABLED))</span></a>
 <a name="1941"><span class="lineNum">    1941 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="1942"><span class="lineNum">    1942 </span><span class="lineCov">        716 :                 if (!con-&gt;write)</span></a>
+<a name="1942"><span class="lineNum">    1942 </span><span class="lineCov">        438 :                 if (!con-&gt;write)</span></a>
 <a name="1943"><span class="lineNum">    1943 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="1944"><span class="lineNum">    1944 </span><span class="lineCov">        716 :                 if (!cpu_online(smp_processor_id()) &amp;&amp;</span></a>
+<a name="1944"><span class="lineNum">    1944 </span><span class="lineCov">        438 :                 if (!cpu_online(smp_processor_id()) &amp;&amp;</span></a>
 <a name="1945"><span class="lineNum">    1945 </span>            :                     !(con-&gt;flags &amp; CON_ANYTIME))</a>
 <a name="1946"><span class="lineNum">    1946 </span>            :                         continue;</a>
-<a name="1947"><span class="lineNum">    1947 </span><span class="lineCov">        716 :                 if (con-&gt;flags &amp; CON_EXTENDED)</span></a>
+<a name="1947"><span class="lineNum">    1947 </span><span class="lineCov">        438 :                 if (con-&gt;flags &amp; CON_EXTENDED)</span></a>
 <a name="1948"><span class="lineNum">    1948 </span><span class="lineNoCov">          0 :                         con-&gt;write(con, ext_text, ext_len);</span></a>
 <a name="1949"><span class="lineNum">    1949 </span>            :                 else {</a>
-<a name="1950"><span class="lineNum">    1950 </span><span class="lineCov">        716 :                         if (dropped_len)</span></a>
+<a name="1950"><span class="lineNum">    1950 </span><span class="lineCov">        438 :                         if (dropped_len)</span></a>
 <a name="1951"><span class="lineNum">    1951 </span><span class="lineNoCov">          0 :                                 con-&gt;write(con, dropped_text, dropped_len);</span></a>
-<a name="1952"><span class="lineNum">    1952 </span><span class="lineCov">        716 :                         con-&gt;write(con, text, len);</span></a>
+<a name="1952"><span class="lineNum">    1952 </span><span class="lineCov">        438 :                         con-&gt;write(con, text, len);</span></a>
 <a name="1953"><span class="lineNum">    1953 </span>            :                 }</a>
 <a name="1954"><span class="lineNum">    1954 </span>            :         }</a>
 <a name="1955"><span class="lineNum">    1955 </span>            : }</a>
@@ -2049,7 +2049,7 @@
 <a name="1987"><span class="lineNum">    1987 </span>            :                 return &amp;printk_count_nmi_early;</a>
 <a name="1988"><span class="lineNum">    1988 </span>            :         }</a>
 <a name="1989"><span class="lineNum">    1989 </span>            : #endif</a>
-<a name="1990"><span class="lineNum">    1990 </span><span class="lineCov">        506 :         if (printk_percpu_data_ready())</span></a>
+<a name="1990"><span class="lineNum">    1990 </span><span class="lineCov">        293 :         if (printk_percpu_data_ready())</span></a>
 <a name="1991"><span class="lineNum">    1991 </span>            :                 return this_cpu_ptr(&amp;printk_count);</a>
 <a name="1992"><span class="lineNum">    1992 </span>            :         return &amp;printk_count_early;</a>
 <a name="1993"><span class="lineNum">    1993 </span>            : }</a>
@@ -2090,7 +2090,7 @@
 <a name="2028"><span class="lineNum">    2028 </span>            : </a>
 <a name="2029"><span class="lineNum">    2029 </span>            : static inline void printk_delay(void)</a>
 <a name="2030"><span class="lineNum">    2030 </span>            : {</a>
-<a name="2031"><span class="lineNum">    2031 </span><span class="lineCov">        506 :         if (unlikely(printk_delay_msec)) {</span></a>
+<a name="2031"><span class="lineNum">    2031 </span><span class="lineCov">        293 :         if (unlikely(printk_delay_msec)) {</span></a>
 <a name="2032"><span class="lineNum">    2032 </span>            :                 int m = printk_delay_msec;</a>
 <a name="2033"><span class="lineNum">    2033 </span>            : </a>
 <a name="2034"><span class="lineNum">    2034 </span><span class="lineNoCov">          0 :                 while (m--) {</span></a>
@@ -2102,7 +2102,7 @@
 <a name="2040"><span class="lineNum">    2040 </span>            : </a>
 <a name="2041"><span class="lineNum">    2041 </span>            : static inline u32 printk_caller_id(void)</a>
 <a name="2042"><span class="lineNum">    2042 </span>            : {</a>
-<a name="2043"><span class="lineNum">    2043 </span><span class="lineCov">       1012 :         return in_task() ? task_pid_nr(current) :</span></a>
+<a name="2043"><span class="lineNum">    2043 </span><span class="lineCov">        586 :         return in_task() ? task_pid_nr(current) :</span></a>
 <a name="2044"><span class="lineNum">    2044 </span>            :                 0x80000000 + raw_smp_processor_id();</a>
 <a name="2045"><span class="lineNum">    2045 </span>            : }</a>
 <a name="2046"><span class="lineNum">    2046 </span>            : </a>
@@ -2123,80 +2123,80 @@
 <a name="2061"><span class="lineNum">    2061 </span>            :  *</a>
 <a name="2062"><span class="lineNum">    2062 </span>            :  * Return: The length of the parsed level and control flags.</a>
 <a name="2063"><span class="lineNum">    2063 </span>            :  */</a>
-<a name="2064"><span class="lineNum">    2064 </span><span class="lineCov">       1012 : u16 printk_parse_prefix(const char *text, int *level,</span></a>
+<a name="2064"><span class="lineNum">    2064 </span><span class="lineCov">        586 : u16 printk_parse_prefix(const char *text, int *level,</span></a>
 <a name="2065"><span class="lineNum">    2065 </span>            :                         enum printk_info_flags *flags)</a>
 <a name="2066"><span class="lineNum">    2066 </span>            : {</a>
-<a name="2067"><span class="lineNum">    2067 </span><span class="lineCov">       1012 :         u16 prefix_len = 0;</span></a>
+<a name="2067"><span class="lineNum">    2067 </span><span class="lineCov">        586 :         u16 prefix_len = 0;</span></a>
 <a name="2068"><span class="lineNum">    2068 </span>            :         int kern_level;</a>
 <a name="2069"><span class="lineNum">    2069 </span>            : </a>
-<a name="2070"><span class="lineNum">    2070 </span><span class="lineCov">       2912 :         while (*text) {</span></a>
-<a name="2071"><span class="lineNum">    2071 </span><span class="lineCov">       1900 :                 kern_level = printk_get_level(text);</span></a>
-<a name="2072"><span class="lineNum">    2072 </span><span class="lineCov">       1900 :                 if (!kern_level)</span></a>
+<a name="2070"><span class="lineNum">    2070 </span><span class="lineCov">       1696 :         while (*text) {</span></a>
+<a name="2071"><span class="lineNum">    2071 </span><span class="lineCov">       1110 :                 kern_level = printk_get_level(text);</span></a>
+<a name="2072"><span class="lineNum">    2072 </span><span class="lineCov">       1110 :                 if (!kern_level)</span></a>
 <a name="2073"><span class="lineNum">    2073 </span>            :                         break;</a>
 <a name="2074"><span class="lineNum">    2074 </span>            : </a>
-<a name="2075"><span class="lineNum">    2075 </span><span class="lineCov">        888 :                 switch (kern_level) {</span></a>
+<a name="2075"><span class="lineNum">    2075 </span><span class="lineCov">        524 :                 switch (kern_level) {</span></a>
 <a name="2076"><span class="lineNum">    2076 </span>            :                 case '0' ... '7':</a>
-<a name="2077"><span class="lineNum">    2077 </span><span class="lineCov">        800 :                         if (level &amp;&amp; *level == LOGLEVEL_DEFAULT)</span></a>
-<a name="2078"><span class="lineNum">    2078 </span><span class="lineCov">        400 :                                 *level = kern_level - '0';</span></a>
+<a name="2077"><span class="lineNum">    2077 </span><span class="lineCov">        480 :                         if (level &amp;&amp; *level == LOGLEVEL_DEFAULT)</span></a>
+<a name="2078"><span class="lineNum">    2078 </span><span class="lineCov">        240 :                                 *level = kern_level - '0';</span></a>
 <a name="2079"><span class="lineNum">    2079 </span>            :                         break;</a>
 <a name="2080"><span class="lineNum">    2080 </span>            :                 case 'c':       /* KERN_CONT */</a>
-<a name="2081"><span class="lineNum">    2081 </span><span class="lineCov">         88 :                         if (flags)</span></a>
-<a name="2082"><span class="lineNum">    2082 </span><span class="lineCov">         44 :                                 *flags |= LOG_CONT;</span></a>
+<a name="2081"><span class="lineNum">    2081 </span><span class="lineCov">         44 :                         if (flags)</span></a>
+<a name="2082"><span class="lineNum">    2082 </span><span class="lineCov">         22 :                                 *flags |= LOG_CONT;</span></a>
 <a name="2083"><span class="lineNum">    2083 </span>            :                 }</a>
 <a name="2084"><span class="lineNum">    2084 </span>            : </a>
-<a name="2085"><span class="lineNum">    2085 </span><span class="lineCov">        888 :                 prefix_len += 2;</span></a>
-<a name="2086"><span class="lineNum">    2086 </span><span class="lineCov">        888 :                 text += 2;</span></a>
+<a name="2085"><span class="lineNum">    2085 </span><span class="lineCov">        524 :                 prefix_len += 2;</span></a>
+<a name="2086"><span class="lineNum">    2086 </span><span class="lineCov">        524 :                 text += 2;</span></a>
 <a name="2087"><span class="lineNum">    2087 </span>            :         }</a>
 <a name="2088"><span class="lineNum">    2088 </span>            : </a>
-<a name="2089"><span class="lineNum">    2089 </span><span class="lineCov">       1012 :         return prefix_len;</span></a>
+<a name="2089"><span class="lineNum">    2089 </span><span class="lineCov">        586 :         return prefix_len;</span></a>
 <a name="2090"><span class="lineNum">    2090 </span>            : }</a>
 <a name="2091"><span class="lineNum">    2091 </span>            : </a>
 <a name="2092"><span class="lineNum">    2092 </span>            : __printf(5, 0)</a>
-<a name="2093"><span class="lineNum">    2093 </span><span class="lineCov">        506 : static u16 printk_sprint(char *text, u16 size, int facility,</span></a>
+<a name="2093"><span class="lineNum">    2093 </span><span class="lineCov">        293 : static u16 printk_sprint(char *text, u16 size, int facility,</span></a>
 <a name="2094"><span class="lineNum">    2094 </span>            :                          enum printk_info_flags *flags, const char *fmt,</a>
 <a name="2095"><span class="lineNum">    2095 </span>            :                          va_list args)</a>
 <a name="2096"><span class="lineNum">    2096 </span>            : {</a>
 <a name="2097"><span class="lineNum">    2097 </span>            :         u16 text_len;</a>
 <a name="2098"><span class="lineNum">    2098 </span>            : </a>
-<a name="2099"><span class="lineNum">    2099 </span><span class="lineCov">        506 :         text_len = vscnprintf(text, size, fmt, args);</span></a>
+<a name="2099"><span class="lineNum">    2099 </span><span class="lineCov">        293 :         text_len = vscnprintf(text, size, fmt, args);</span></a>
 <a name="2100"><span class="lineNum">    2100 </span>            : </a>
 <a name="2101"><span class="lineNum">    2101 </span>            :         /* Mark and strip a trailing newline. */</a>
-<a name="2102"><span class="lineNum">    2102 </span><span class="lineCov">        506 :         if (text_len &amp;&amp; text[text_len - 1] == '\n') {</span></a>
-<a name="2103"><span class="lineNum">    2103 </span><span class="lineCov">        238 :                 text_len--;</span></a>
-<a name="2104"><span class="lineNum">    2104 </span><span class="lineCov">        238 :                 *flags |= LOG_NEWLINE;</span></a>
+<a name="2102"><span class="lineNum">    2102 </span><span class="lineCov">        293 :         if (text_len &amp;&amp; text[text_len - 1] == '\n') {</span></a>
+<a name="2103"><span class="lineNum">    2103 </span><span class="lineCov">        119 :                 text_len--;</span></a>
+<a name="2104"><span class="lineNum">    2104 </span><span class="lineCov">        119 :                 *flags |= LOG_NEWLINE;</span></a>
 <a name="2105"><span class="lineNum">    2105 </span>            :         }</a>
 <a name="2106"><span class="lineNum">    2106 </span>            : </a>
 <a name="2107"><span class="lineNum">    2107 </span>            :         /* Strip log level and control flags. */</a>
-<a name="2108"><span class="lineNum">    2108 </span><span class="lineCov">        506 :         if (facility == 0) {</span></a>
+<a name="2108"><span class="lineNum">    2108 </span><span class="lineCov">        293 :         if (facility == 0) {</span></a>
 <a name="2109"><span class="lineNum">    2109 </span>            :                 u16 prefix_len;</a>
 <a name="2110"><span class="lineNum">    2110 </span>            : </a>
-<a name="2111"><span class="lineNum">    2111 </span><span class="lineCov">        506 :                 prefix_len = printk_parse_prefix(text, NULL, NULL);</span></a>
-<a name="2112"><span class="lineNum">    2112 </span><span class="lineCov">        506 :                 if (prefix_len) {</span></a>
-<a name="2113"><span class="lineNum">    2113 </span><span class="lineCov">        444 :                         text_len -= prefix_len;</span></a>
-<a name="2114"><span class="lineNum">    2114 </span><span class="lineCov">        444 :                         memmove(text, text + prefix_len, text_len);</span></a>
+<a name="2111"><span class="lineNum">    2111 </span><span class="lineCov">        293 :                 prefix_len = printk_parse_prefix(text, NULL, NULL);</span></a>
+<a name="2112"><span class="lineNum">    2112 </span><span class="lineCov">        293 :                 if (prefix_len) {</span></a>
+<a name="2113"><span class="lineNum">    2113 </span><span class="lineCov">        262 :                         text_len -= prefix_len;</span></a>
+<a name="2114"><span class="lineNum">    2114 </span><span class="lineCov">        262 :                         memmove(text, text + prefix_len, text_len);</span></a>
 <a name="2115"><span class="lineNum">    2115 </span>            :                 }</a>
 <a name="2116"><span class="lineNum">    2116 </span>            :         }</a>
 <a name="2117"><span class="lineNum">    2117 </span>            : </a>
-<a name="2118"><span class="lineNum">    2118 </span><span class="lineCov">        506 :         return text_len;</span></a>
+<a name="2118"><span class="lineNum">    2118 </span><span class="lineCov">        293 :         return text_len;</span></a>
 <a name="2119"><span class="lineNum">    2119 </span>            : }</a>
 <a name="2120"><span class="lineNum">    2120 </span>            : </a>
 <a name="2121"><span class="lineNum">    2121 </span>            : __printf(4, 0)</a>
-<a name="2122"><span class="lineNum">    2122 </span><span class="lineCov">        506 : int vprintk_store(int facility, int level,</span></a>
+<a name="2122"><span class="lineNum">    2122 </span><span class="lineCov">        293 : int vprintk_store(int facility, int level,</span></a>
 <a name="2123"><span class="lineNum">    2123 </span>            :                   const struct dev_printk_info *dev_info,</a>
 <a name="2124"><span class="lineNum">    2124 </span>            :                   const char *fmt, va_list args)</a>
 <a name="2125"><span class="lineNum">    2125 </span>            : {</a>
-<a name="2126"><span class="lineNum">    2126 </span><span class="lineCov">        506 :         const u32 caller_id = printk_caller_id();</span></a>
+<a name="2126"><span class="lineNum">    2126 </span><span class="lineCov">        293 :         const u32 caller_id = printk_caller_id();</span></a>
 <a name="2127"><span class="lineNum">    2127 </span>            :         struct prb_reserved_entry e;</a>
-<a name="2128"><span class="lineNum">    2128 </span><span class="lineCov">        506 :         enum printk_info_flags flags = 0;</span></a>
+<a name="2128"><span class="lineNum">    2128 </span><span class="lineCov">        293 :         enum printk_info_flags flags = 0;</span></a>
 <a name="2129"><span class="lineNum">    2129 </span>            :         struct printk_record r;</a>
 <a name="2130"><span class="lineNum">    2130 </span>            :         unsigned long irqflags;</a>
-<a name="2131"><span class="lineNum">    2131 </span><span class="lineCov">        506 :         u16 trunc_msg_len = 0;</span></a>
+<a name="2131"><span class="lineNum">    2131 </span><span class="lineCov">        293 :         u16 trunc_msg_len = 0;</span></a>
 <a name="2132"><span class="lineNum">    2132 </span>            :         char prefix_buf[8];</a>
 <a name="2133"><span class="lineNum">    2133 </span>            :         u8 *recursion_ptr;</a>
 <a name="2134"><span class="lineNum">    2134 </span>            :         u16 reserve_size;</a>
 <a name="2135"><span class="lineNum">    2135 </span>            :         va_list args2;</a>
 <a name="2136"><span class="lineNum">    2136 </span>            :         u16 text_len;</a>
-<a name="2137"><span class="lineNum">    2137 </span><span class="lineCov">        506 :         int ret = 0;</span></a>
+<a name="2137"><span class="lineNum">    2137 </span><span class="lineCov">        293 :         int ret = 0;</span></a>
 <a name="2138"><span class="lineNum">    2138 </span>            :         u64 ts_nsec;</a>
 <a name="2139"><span class="lineNum">    2139 </span>            : </a>
 <a name="2140"><span class="lineNum">    2140 </span>            :         /*</a>
@@ -2205,9 +2205,9 @@
 <a name="2143"><span class="lineNum">    2143 </span>            :          * close to the call of printk(). This provides a more deterministic</a>
 <a name="2144"><span class="lineNum">    2144 </span>            :          * timestamp with respect to the caller.</a>
 <a name="2145"><span class="lineNum">    2145 </span>            :          */</a>
-<a name="2146"><span class="lineNum">    2146 </span><span class="lineCov">        506 :         ts_nsec = local_clock();</span></a>
+<a name="2146"><span class="lineNum">    2146 </span><span class="lineCov">        293 :         ts_nsec = local_clock();</span></a>
 <a name="2147"><span class="lineNum">    2147 </span>            : </a>
-<a name="2148"><span class="lineNum">    2148 </span><span class="lineCov">       1518 :         if (!printk_enter_irqsave(recursion_ptr, irqflags))</span></a>
+<a name="2148"><span class="lineNum">    2148 </span><span class="lineCov">        879 :         if (!printk_enter_irqsave(recursion_ptr, irqflags))</span></a>
 <a name="2149"><span class="lineNum">    2149 </span>            :                 return 0;</a>
 <a name="2150"><span class="lineNum">    2150 </span>            : </a>
 <a name="2151"><span class="lineNum">    2151 </span>            :         /*</a>
@@ -2216,39 +2216,39 @@
 <a name="2154"><span class="lineNum">    2154 </span>            :          * later the vscnprintf() into the reserved buffer has room for the</a>
 <a name="2155"><span class="lineNum">    2155 </span>            :          * terminating '\0', which is not counted by vsnprintf().</a>
 <a name="2156"><span class="lineNum">    2156 </span>            :          */</a>
-<a name="2157"><span class="lineNum">    2157 </span><span class="lineCov">        506 :         va_copy(args2, args);</span></a>
-<a name="2158"><span class="lineNum">    2158 </span><span class="lineCov">        506 :         reserve_size = vsnprintf(&amp;prefix_buf[0], sizeof(prefix_buf), fmt, args2) + 1;</span></a>
-<a name="2159"><span class="lineNum">    2159 </span><span class="lineCov">        506 :         va_end(args2);</span></a>
+<a name="2157"><span class="lineNum">    2157 </span><span class="lineCov">        293 :         va_copy(args2, args);</span></a>
+<a name="2158"><span class="lineNum">    2158 </span><span class="lineCov">        293 :         reserve_size = vsnprintf(&amp;prefix_buf[0], sizeof(prefix_buf), fmt, args2) + 1;</span></a>
+<a name="2159"><span class="lineNum">    2159 </span><span class="lineCov">        293 :         va_end(args2);</span></a>
 <a name="2160"><span class="lineNum">    2160 </span>            : </a>
-<a name="2161"><span class="lineNum">    2161 </span><span class="lineCov">        506 :         if (reserve_size &gt; LOG_LINE_MAX)</span></a>
+<a name="2161"><span class="lineNum">    2161 </span><span class="lineCov">        293 :         if (reserve_size &gt; LOG_LINE_MAX)</span></a>
 <a name="2162"><span class="lineNum">    2162 </span><span class="lineNoCov">          0 :                 reserve_size = LOG_LINE_MAX;</span></a>
 <a name="2163"><span class="lineNum">    2163 </span>            : </a>
 <a name="2164"><span class="lineNum">    2164 </span>            :         /* Extract log level or control flags. */</a>
-<a name="2165"><span class="lineNum">    2165 </span><span class="lineCov">        506 :         if (facility == 0)</span></a>
-<a name="2166"><span class="lineNum">    2166 </span><span class="lineCov">        506 :                 printk_parse_prefix(&amp;prefix_buf[0], &amp;level, &amp;flags);</span></a>
+<a name="2165"><span class="lineNum">    2165 </span><span class="lineCov">        293 :         if (facility == 0)</span></a>
+<a name="2166"><span class="lineNum">    2166 </span><span class="lineCov">        293 :                 printk_parse_prefix(&amp;prefix_buf[0], &amp;level, &amp;flags);</span></a>
 <a name="2167"><span class="lineNum">    2167 </span>            : </a>
-<a name="2168"><span class="lineNum">    2168 </span><span class="lineCov">        506 :         if (level == LOGLEVEL_DEFAULT)</span></a>
-<a name="2169"><span class="lineNum">    2169 </span><span class="lineCov">        106 :                 level = default_message_loglevel;</span></a>
+<a name="2168"><span class="lineNum">    2168 </span><span class="lineCov">        293 :         if (level == LOGLEVEL_DEFAULT)</span></a>
+<a name="2169"><span class="lineNum">    2169 </span><span class="lineCov">         53 :                 level = default_message_loglevel;</span></a>
 <a name="2170"><span class="lineNum">    2170 </span>            : </a>
-<a name="2171"><span class="lineNum">    2171 </span><span class="lineCov">        506 :         if (dev_info)</span></a>
+<a name="2171"><span class="lineNum">    2171 </span><span class="lineCov">        293 :         if (dev_info)</span></a>
 <a name="2172"><span class="lineNum">    2172 </span><span class="lineNoCov">          0 :                 flags |= LOG_NEWLINE;</span></a>
 <a name="2173"><span class="lineNum">    2173 </span>            : </a>
-<a name="2174"><span class="lineNum">    2174 </span><span class="lineCov">        506 :         if (flags &amp; LOG_CONT) {</span></a>
-<a name="2175"><span class="lineNum">    2175 </span><span class="lineCov">         88 :                 prb_rec_init_wr(&amp;r, reserve_size);</span></a>
-<a name="2176"><span class="lineNum">    2176 </span><span class="lineCov">         44 :                 if (prb_reserve_in_last(&amp;e, prb, &amp;r, caller_id, LOG_LINE_MAX)) {</span></a>
-<a name="2177"><span class="lineNum">    2177 </span><span class="lineCov">         38 :                         text_len = printk_sprint(&amp;r.text_buf[r.info-&gt;text_len], reserve_size,</span></a>
+<a name="2174"><span class="lineNum">    2174 </span><span class="lineCov">        293 :         if (flags &amp; LOG_CONT) {</span></a>
+<a name="2175"><span class="lineNum">    2175 </span><span class="lineCov">         44 :                 prb_rec_init_wr(&amp;r, reserve_size);</span></a>
+<a name="2176"><span class="lineNum">    2176 </span><span class="lineCov">         22 :                 if (prb_reserve_in_last(&amp;e, prb, &amp;r, caller_id, LOG_LINE_MAX)) {</span></a>
+<a name="2177"><span class="lineNum">    2177 </span><span class="lineCov">         19 :                         text_len = printk_sprint(&amp;r.text_buf[r.info-&gt;text_len], reserve_size,</span></a>
 <a name="2178"><span class="lineNum">    2178 </span>            :                                                  facility, &amp;flags, fmt, args);</a>
-<a name="2179"><span class="lineNum">    2179 </span><span class="lineCov">         38 :                         r.info-&gt;text_len += text_len;</span></a>
+<a name="2179"><span class="lineNum">    2179 </span><span class="lineCov">         19 :                         r.info-&gt;text_len += text_len;</span></a>
 <a name="2180"><span class="lineNum">    2180 </span>            : </a>
-<a name="2181"><span class="lineNum">    2181 </span><span class="lineCov">         38 :                         if (flags &amp; LOG_NEWLINE) {</span></a>
-<a name="2182"><span class="lineNum">    2182 </span><span class="lineCov">         16 :                                 r.info-&gt;flags |= LOG_NEWLINE;</span></a>
-<a name="2183"><span class="lineNum">    2183 </span><span class="lineCov">         16 :                                 prb_final_commit(&amp;e);</span></a>
+<a name="2181"><span class="lineNum">    2181 </span><span class="lineCov">         19 :                         if (flags &amp; LOG_NEWLINE) {</span></a>
+<a name="2182"><span class="lineNum">    2182 </span><span class="lineCov">          8 :                                 r.info-&gt;flags |= LOG_NEWLINE;</span></a>
+<a name="2183"><span class="lineNum">    2183 </span><span class="lineCov">          8 :                                 prb_final_commit(&amp;e);</span></a>
 <a name="2184"><span class="lineNum">    2184 </span>            :                         } else {</a>
-<a name="2185"><span class="lineNum">    2185 </span><span class="lineCov">         22 :                                 prb_commit(&amp;e);</span></a>
+<a name="2185"><span class="lineNum">    2185 </span><span class="lineCov">         11 :                                 prb_commit(&amp;e);</span></a>
 <a name="2186"><span class="lineNum">    2186 </span>            :                         }</a>
 <a name="2187"><span class="lineNum">    2187 </span>            : </a>
-<a name="2188"><span class="lineNum">    2188 </span><span class="lineCov">         38 :                         ret = text_len;</span></a>
-<a name="2189"><span class="lineNum">    2189 </span><span class="lineCov">         38 :                         goto out;</span></a>
+<a name="2188"><span class="lineNum">    2188 </span><span class="lineCov">         19 :                         ret = text_len;</span></a>
+<a name="2189"><span class="lineNum">    2189 </span><span class="lineCov">         19 :                         goto out;</span></a>
 <a name="2190"><span class="lineNum">    2190 </span>            :                 }</a>
 <a name="2191"><span class="lineNum">    2191 </span>            :         }</a>
 <a name="2192"><span class="lineNum">    2192 </span>            : </a>
@@ -2257,8 +2257,8 @@
 <a name="2195"><span class="lineNum">    2195 </span>            :          * prb_reserve_in_last() and prb_reserve() purposely invalidate the</a>
 <a name="2196"><span class="lineNum">    2196 </span>            :          * structure when they fail.</a>
 <a name="2197"><span class="lineNum">    2197 </span>            :          */</a>
-<a name="2198"><span class="lineNum">    2198 </span><span class="lineCov">        936 :         prb_rec_init_wr(&amp;r, reserve_size);</span></a>
-<a name="2199"><span class="lineNum">    2199 </span><span class="lineCov">        468 :         if (!prb_reserve(&amp;e, prb, &amp;r)) {</span></a>
+<a name="2198"><span class="lineNum">    2198 </span><span class="lineCov">        548 :         prb_rec_init_wr(&amp;r, reserve_size);</span></a>
+<a name="2199"><span class="lineNum">    2199 </span><span class="lineCov">        274 :         if (!prb_reserve(&amp;e, prb, &amp;r)) {</span></a>
 <a name="2200"><span class="lineNum">    2200 </span>            :                 /* truncate the message if it is too long for empty buffer */</a>
 <a name="2201"><span class="lineNum">    2201 </span><span class="lineNoCov">          0 :                 truncate_msg(&amp;reserve_size, &amp;trunc_msg_len);</span></a>
 <a name="2202"><span class="lineNum">    2202 </span>            : </a>
@@ -2268,94 +2268,94 @@
 <a name="2206"><span class="lineNum">    2206 </span>            :         }</a>
 <a name="2207"><span class="lineNum">    2207 </span>            : </a>
 <a name="2208"><span class="lineNum">    2208 </span>            :         /* fill message */</a>
-<a name="2209"><span class="lineNum">    2209 </span><span class="lineCov">        468 :         text_len = printk_sprint(&amp;r.text_buf[0], reserve_size, facility, &amp;flags, fmt, args);</span></a>
-<a name="2210"><span class="lineNum">    2210 </span><span class="lineCov">        468 :         if (trunc_msg_len)</span></a>
+<a name="2209"><span class="lineNum">    2209 </span><span class="lineCov">        274 :         text_len = printk_sprint(&amp;r.text_buf[0], reserve_size, facility, &amp;flags, fmt, args);</span></a>
+<a name="2210"><span class="lineNum">    2210 </span><span class="lineCov">        274 :         if (trunc_msg_len)</span></a>
 <a name="2211"><span class="lineNum">    2211 </span><span class="lineNoCov">          0 :                 memcpy(&amp;r.text_buf[text_len], trunc_msg, trunc_msg_len);</span></a>
-<a name="2212"><span class="lineNum">    2212 </span><span class="lineCov">        468 :         r.info-&gt;text_len = text_len + trunc_msg_len;</span></a>
-<a name="2213"><span class="lineNum">    2213 </span><span class="lineCov">        468 :         r.info-&gt;facility = facility;</span></a>
-<a name="2214"><span class="lineNum">    2214 </span><span class="lineCov">        468 :         r.info-&gt;level = level &amp; 7;</span></a>
-<a name="2215"><span class="lineNum">    2215 </span><span class="lineCov">        468 :         r.info-&gt;flags = flags &amp; 0x1f;</span></a>
-<a name="2216"><span class="lineNum">    2216 </span><span class="lineCov">        468 :         r.info-&gt;ts_nsec = ts_nsec;</span></a>
-<a name="2217"><span class="lineNum">    2217 </span><span class="lineCov">        468 :         r.info-&gt;caller_id = caller_id;</span></a>
-<a name="2218"><span class="lineNum">    2218 </span><span class="lineCov">        468 :         if (dev_info)</span></a>
+<a name="2212"><span class="lineNum">    2212 </span><span class="lineCov">        274 :         r.info-&gt;text_len = text_len + trunc_msg_len;</span></a>
+<a name="2213"><span class="lineNum">    2213 </span><span class="lineCov">        274 :         r.info-&gt;facility = facility;</span></a>
+<a name="2214"><span class="lineNum">    2214 </span><span class="lineCov">        274 :         r.info-&gt;level = level &amp; 7;</span></a>
+<a name="2215"><span class="lineNum">    2215 </span><span class="lineCov">        274 :         r.info-&gt;flags = flags &amp; 0x1f;</span></a>
+<a name="2216"><span class="lineNum">    2216 </span><span class="lineCov">        274 :         r.info-&gt;ts_nsec = ts_nsec;</span></a>
+<a name="2217"><span class="lineNum">    2217 </span><span class="lineCov">        274 :         r.info-&gt;caller_id = caller_id;</span></a>
+<a name="2218"><span class="lineNum">    2218 </span><span class="lineCov">        274 :         if (dev_info)</span></a>
 <a name="2219"><span class="lineNum">    2219 </span><span class="lineNoCov">          0 :                 memcpy(&amp;r.info-&gt;dev_info, dev_info, sizeof(r.info-&gt;dev_info));</span></a>
 <a name="2220"><span class="lineNum">    2220 </span>            : </a>
 <a name="2221"><span class="lineNum">    2221 </span>            :         /* A message without a trailing newline can be continued. */</a>
-<a name="2222"><span class="lineNum">    2222 </span><span class="lineCov">        468 :         if (!(flags &amp; LOG_NEWLINE))</span></a>
-<a name="2223"><span class="lineNum">    2223 </span><span class="lineCov">        246 :                 prb_commit(&amp;e);</span></a>
+<a name="2222"><span class="lineNum">    2222 </span><span class="lineCov">        274 :         if (!(flags &amp; LOG_NEWLINE))</span></a>
+<a name="2223"><span class="lineNum">    2223 </span><span class="lineCov">        163 :                 prb_commit(&amp;e);</span></a>
 <a name="2224"><span class="lineNum">    2224 </span>            :         else</a>
-<a name="2225"><span class="lineNum">    2225 </span><span class="lineCov">        222 :                 prb_final_commit(&amp;e);</span></a>
+<a name="2225"><span class="lineNum">    2225 </span><span class="lineCov">        111 :                 prb_final_commit(&amp;e);</span></a>
 <a name="2226"><span class="lineNum">    2226 </span>            : </a>
-<a name="2227"><span class="lineNum">    2227 </span><span class="lineCov">        468 :         ret = text_len + trunc_msg_len;</span></a>
+<a name="2227"><span class="lineNum">    2227 </span><span class="lineCov">        274 :         ret = text_len + trunc_msg_len;</span></a>
 <a name="2228"><span class="lineNum">    2228 </span>            : out:</a>
-<a name="2229"><span class="lineNum">    2229 </span><span class="lineCov">       1012 :         printk_exit_irqrestore(recursion_ptr, irqflags);</span></a>
-<a name="2230"><span class="lineNum">    2230 </span><span class="lineCov">        506 :         return ret;</span></a>
+<a name="2229"><span class="lineNum">    2229 </span><span class="lineCov">        586 :         printk_exit_irqrestore(recursion_ptr, irqflags);</span></a>
+<a name="2230"><span class="lineNum">    2230 </span><span class="lineCov">        293 :         return ret;</span></a>
 <a name="2231"><span class="lineNum">    2231 </span>            : }</a>
 <a name="2232"><span class="lineNum">    2232 </span>            : </a>
-<a name="2233"><span class="lineNum">    2233 </span><span class="lineCov">        506 : asmlinkage int vprintk_emit(int facility, int level,</span></a>
+<a name="2233"><span class="lineNum">    2233 </span><span class="lineCov">        293 : asmlinkage int vprintk_emit(int facility, int level,</span></a>
 <a name="2234"><span class="lineNum">    2234 </span>            :                             const struct dev_printk_info *dev_info,</a>
 <a name="2235"><span class="lineNum">    2235 </span>            :                             const char *fmt, va_list args)</a>
 <a name="2236"><span class="lineNum">    2236 </span>            : {</a>
 <a name="2237"><span class="lineNum">    2237 </span>            :         int printed_len;</a>
-<a name="2238"><span class="lineNum">    2238 </span><span class="lineCov">        506 :         bool in_sched = false;</span></a>
+<a name="2238"><span class="lineNum">    2238 </span><span class="lineCov">        293 :         bool in_sched = false;</span></a>
 <a name="2239"><span class="lineNum">    2239 </span>            : </a>
 <a name="2240"><span class="lineNum">    2240 </span>            :         /* Suppress unimportant messages after panic happens */</a>
-<a name="2241"><span class="lineNum">    2241 </span><span class="lineCov">        506 :         if (unlikely(suppress_printk))</span></a>
+<a name="2241"><span class="lineNum">    2241 </span><span class="lineCov">        293 :         if (unlikely(suppress_printk))</span></a>
 <a name="2242"><span class="lineNum">    2242 </span>            :                 return 0;</a>
 <a name="2243"><span class="lineNum">    2243 </span>            : </a>
-<a name="2244"><span class="lineNum">    2244 </span><span class="lineCov">        506 :         if (unlikely(suppress_panic_printk) &amp;&amp;</span></a>
+<a name="2244"><span class="lineNum">    2244 </span><span class="lineCov">        293 :         if (unlikely(suppress_panic_printk) &amp;&amp;</span></a>
 <a name="2245"><span class="lineNum">    2245 </span><span class="lineNoCov">          0 :             atomic_read(&amp;panic_cpu) != raw_smp_processor_id())</span></a>
 <a name="2246"><span class="lineNum">    2246 </span>            :                 return 0;</a>
 <a name="2247"><span class="lineNum">    2247 </span>            : </a>
-<a name="2248"><span class="lineNum">    2248 </span><span class="lineCov">        506 :         if (level == LOGLEVEL_SCHED) {</span></a>
-<a name="2249"><span class="lineNum">    2249 </span><span class="lineCov">          2 :                 level = LOGLEVEL_DEFAULT;</span></a>
-<a name="2250"><span class="lineNum">    2250 </span><span class="lineCov">          2 :                 in_sched = true;</span></a>
+<a name="2248"><span class="lineNum">    2248 </span><span class="lineCov">        293 :         if (level == LOGLEVEL_SCHED) {</span></a>
+<a name="2249"><span class="lineNum">    2249 </span><span class="lineCov">          1 :                 level = LOGLEVEL_DEFAULT;</span></a>
+<a name="2250"><span class="lineNum">    2250 </span><span class="lineCov">          1 :                 in_sched = true;</span></a>
 <a name="2251"><span class="lineNum">    2251 </span>            :         }</a>
 <a name="2252"><span class="lineNum">    2252 </span>            : </a>
-<a name="2253"><span class="lineNum">    2253 </span><span class="lineCov">        506 :         boot_delay_msec(level);</span></a>
-<a name="2254"><span class="lineNum">    2254 </span><span class="lineCov">        506 :         printk_delay();</span></a>
+<a name="2253"><span class="lineNum">    2253 </span><span class="lineCov">        293 :         boot_delay_msec(level);</span></a>
+<a name="2254"><span class="lineNum">    2254 </span><span class="lineCov">        293 :         printk_delay();</span></a>
 <a name="2255"><span class="lineNum">    2255 </span>            : </a>
-<a name="2256"><span class="lineNum">    2256 </span><span class="lineCov">        506 :         printed_len = vprintk_store(facility, level, dev_info, fmt, args);</span></a>
+<a name="2256"><span class="lineNum">    2256 </span><span class="lineCov">        293 :         printed_len = vprintk_store(facility, level, dev_info, fmt, args);</span></a>
 <a name="2257"><span class="lineNum">    2257 </span>            : </a>
 <a name="2258"><span class="lineNum">    2258 </span>            :         /* If called from the scheduler, we can not call up(). */</a>
-<a name="2259"><span class="lineNum">    2259 </span><span class="lineCov">        506 :         if (!in_sched) {</span></a>
+<a name="2259"><span class="lineNum">    2259 </span><span class="lineCov">        293 :         if (!in_sched) {</span></a>
 <a name="2260"><span class="lineNum">    2260 </span>            :                 /*</a>
 <a name="2261"><span class="lineNum">    2261 </span>            :                  * Disable preemption to avoid being preempted while holding</a>
 <a name="2262"><span class="lineNum">    2262 </span>            :                  * console_sem which would prevent anyone from printing to</a>
 <a name="2263"><span class="lineNum">    2263 </span>            :                  * console</a>
 <a name="2264"><span class="lineNum">    2264 </span>            :                  */</a>
-<a name="2265"><span class="lineNum">    2265 </span><span class="lineCov">        504 :                 preempt_disable();</span></a>
+<a name="2265"><span class="lineNum">    2265 </span><span class="lineCov">        292 :                 preempt_disable();</span></a>
 <a name="2266"><span class="lineNum">    2266 </span>            :                 /*</a>
 <a name="2267"><span class="lineNum">    2267 </span>            :                  * Try to acquire and then immediately release the console</a>
 <a name="2268"><span class="lineNum">    2268 </span>            :                  * semaphore.  The release will print out buffers and wake up</a>
 <a name="2269"><span class="lineNum">    2269 </span>            :                  * /dev/kmsg and syslog() users.</a>
 <a name="2270"><span class="lineNum">    2270 </span>            :                  */</a>
-<a name="2271"><span class="lineNum">    2271 </span><span class="lineCov">        504 :                 if (console_trylock_spinning())</span></a>
-<a name="2272"><span class="lineNum">    2272 </span><span class="lineCov">        504 :                         console_unlock();</span></a>
-<a name="2273"><span class="lineNum">    2273 </span><span class="lineCov">        504 :                 preempt_enable();</span></a>
+<a name="2271"><span class="lineNum">    2271 </span><span class="lineCov">        292 :                 if (console_trylock_spinning())</span></a>
+<a name="2272"><span class="lineNum">    2272 </span><span class="lineCov">        292 :                         console_unlock();</span></a>
+<a name="2273"><span class="lineNum">    2273 </span><span class="lineCov">        292 :                 preempt_enable();</span></a>
 <a name="2274"><span class="lineNum">    2274 </span>            :         }</a>
 <a name="2275"><span class="lineNum">    2275 </span>            : </a>
-<a name="2276"><span class="lineNum">    2276 </span><span class="lineCov">        506 :         wake_up_klogd();</span></a>
-<a name="2277"><span class="lineNum">    2277 </span><span class="lineCov">        506 :         return printed_len;</span></a>
+<a name="2276"><span class="lineNum">    2276 </span><span class="lineCov">        293 :         wake_up_klogd();</span></a>
+<a name="2277"><span class="lineNum">    2277 </span><span class="lineCov">        293 :         return printed_len;</span></a>
 <a name="2278"><span class="lineNum">    2278 </span>            : }</a>
 <a name="2279"><span class="lineNum">    2279 </span>            : EXPORT_SYMBOL(vprintk_emit);</a>
 <a name="2280"><span class="lineNum">    2280 </span>            : </a>
-<a name="2281"><span class="lineNum">    2281 </span><span class="lineCov">        504 : int vprintk_default(const char *fmt, va_list args)</span></a>
+<a name="2281"><span class="lineNum">    2281 </span><span class="lineCov">        292 : int vprintk_default(const char *fmt, va_list args)</span></a>
 <a name="2282"><span class="lineNum">    2282 </span>            : {</a>
-<a name="2283"><span class="lineNum">    2283 </span><span class="lineCov">        504 :         return vprintk_emit(0, LOGLEVEL_DEFAULT, NULL, fmt, args);</span></a>
+<a name="2283"><span class="lineNum">    2283 </span><span class="lineCov">        292 :         return vprintk_emit(0, LOGLEVEL_DEFAULT, NULL, fmt, args);</span></a>
 <a name="2284"><span class="lineNum">    2284 </span>            : }</a>
 <a name="2285"><span class="lineNum">    2285 </span>            : EXPORT_SYMBOL_GPL(vprintk_default);</a>
 <a name="2286"><span class="lineNum">    2286 </span>            : </a>
-<a name="2287"><span class="lineNum">    2287 </span><span class="lineCov">        502 : asmlinkage __visible int _printk(const char *fmt, ...)</span></a>
+<a name="2287"><span class="lineNum">    2287 </span><span class="lineCov">        291 : asmlinkage __visible int _printk(const char *fmt, ...)</span></a>
 <a name="2288"><span class="lineNum">    2288 </span>            : {</a>
 <a name="2289"><span class="lineNum">    2289 </span>            :         va_list args;</a>
 <a name="2290"><span class="lineNum">    2290 </span>            :         int r;</a>
 <a name="2291"><span class="lineNum">    2291 </span>            : </a>
-<a name="2292"><span class="lineNum">    2292 </span><span class="lineCov">        502 :         va_start(args, fmt);</span></a>
-<a name="2293"><span class="lineNum">    2293 </span><span class="lineCov">        502 :         r = vprintk(fmt, args);</span></a>
-<a name="2294"><span class="lineNum">    2294 </span><span class="lineCov">        502 :         va_end(args);</span></a>
+<a name="2292"><span class="lineNum">    2292 </span><span class="lineCov">        291 :         va_start(args, fmt);</span></a>
+<a name="2293"><span class="lineNum">    2293 </span><span class="lineCov">        291 :         r = vprintk(fmt, args);</span></a>
+<a name="2294"><span class="lineNum">    2294 </span><span class="lineCov">        291 :         va_end(args);</span></a>
 <a name="2295"><span class="lineNum">    2295 </span>            : </a>
-<a name="2296"><span class="lineNum">    2296 </span><span class="lineCov">        502 :         return r;</span></a>
+<a name="2296"><span class="lineNum">    2296 </span><span class="lineCov">        291 :         return r;</span></a>
 <a name="2297"><span class="lineNum">    2297 </span>            : }</a>
 <a name="2298"><span class="lineNum">    2298 </span>            : EXPORT_SYMBOL(_printk);</a>
 <a name="2299"><span class="lineNum">    2299 </span>            : </a>
@@ -2415,19 +2415,19 @@
 <a name="2353"><span class="lineNum">    2353 </span>            : </a>
 <a name="2354"><span class="lineNum">    2354 </span>            : static void set_user_specified(struct console_cmdline *c, bool user_specified)</a>
 <a name="2355"><span class="lineNum">    2355 </span>            : {</a>
-<a name="2356"><span class="lineNum">    2356 </span><span class="lineCov">          2 :         if (!user_specified)</span></a>
+<a name="2356"><span class="lineNum">    2356 </span><span class="lineCov">          1 :         if (!user_specified)</span></a>
 <a name="2357"><span class="lineNum">    2357 </span>            :                 return;</a>
 <a name="2358"><span class="lineNum">    2358 </span>            : </a>
 <a name="2359"><span class="lineNum">    2359 </span>            :         /*</a>
 <a name="2360"><span class="lineNum">    2360 </span>            :          * @c console was defined by the user on the command line.</a>
 <a name="2361"><span class="lineNum">    2361 </span>            :          * Do not clear when added twice also by SPCR or the device tree.</a>
 <a name="2362"><span class="lineNum">    2362 </span>            :          */</a>
-<a name="2363"><span class="lineNum">    2363 </span><span class="lineCov">          2 :         c-&gt;user_specified = true;</span></a>
+<a name="2363"><span class="lineNum">    2363 </span><span class="lineCov">          1 :         c-&gt;user_specified = true;</span></a>
 <a name="2364"><span class="lineNum">    2364 </span>            :         /* At least one console defined by the user on the command line. */</a>
-<a name="2365"><span class="lineNum">    2365 </span><span class="lineCov">          2 :         console_set_on_cmdline = 1;</span></a>
+<a name="2365"><span class="lineNum">    2365 </span><span class="lineCov">          1 :         console_set_on_cmdline = 1;</span></a>
 <a name="2366"><span class="lineNum">    2366 </span>            : }</a>
 <a name="2367"><span class="lineNum">    2367 </span>            : </a>
-<a name="2368"><span class="lineNum">    2368 </span><span class="lineCov">          2 : static int __add_preferred_console(char *name, int idx, char *options,</span></a>
+<a name="2368"><span class="lineNum">    2368 </span><span class="lineCov">          1 : static int __add_preferred_console(char *name, int idx, char *options,</span></a>
 <a name="2369"><span class="lineNum">    2369 </span>            :                                    char *brl_options, bool user_specified)</a>
 <a name="2370"><span class="lineNum">    2370 </span>            : {</a>
 <a name="2371"><span class="lineNum">    2371 </span>            :         struct console_cmdline *c;</a>
@@ -2437,8 +2437,8 @@
 <a name="2375"><span class="lineNum">    2375 </span>            :          *      See if this tty is not yet registered, and</a>
 <a name="2376"><span class="lineNum">    2376 </span>            :          *      if we have a slot free.</a>
 <a name="2377"><span class="lineNum">    2377 </span>            :          */</a>
-<a name="2378"><span class="lineNum">    2378 </span><span class="lineCov">          4 :         for (i = 0, c = console_cmdline;</span></a>
-<a name="2379"><span class="lineNum">    2379 </span><span class="lineCov">          2 :              i &lt; MAX_CMDLINECONSOLES &amp;&amp; c-&gt;name[0];</span></a>
+<a name="2378"><span class="lineNum">    2378 </span><span class="lineCov">          2 :         for (i = 0, c = console_cmdline;</span></a>
+<a name="2379"><span class="lineNum">    2379 </span><span class="lineCov">          1 :              i &lt; MAX_CMDLINECONSOLES &amp;&amp; c-&gt;name[0];</span></a>
 <a name="2380"><span class="lineNum">    2380 </span><span class="lineNoCov">          0 :              i++, c++) {</span></a>
 <a name="2381"><span class="lineNum">    2381 </span><span class="lineNoCov">          0 :                 if (strcmp(c-&gt;name, name) == 0 &amp;&amp; c-&gt;index == idx) {</span></a>
 <a name="2382"><span class="lineNum">    2382 </span><span class="lineNoCov">          0 :                         if (!brl_options)</span></a>
@@ -2447,17 +2447,17 @@
 <a name="2385"><span class="lineNum">    2385 </span>            :                         return 0;</a>
 <a name="2386"><span class="lineNum">    2386 </span>            :                 }</a>
 <a name="2387"><span class="lineNum">    2387 </span>            :         }</a>
-<a name="2388"><span class="lineNum">    2388 </span><span class="lineCov">          2 :         if (i == MAX_CMDLINECONSOLES)</span></a>
+<a name="2388"><span class="lineNum">    2388 </span><span class="lineCov">          1 :         if (i == MAX_CMDLINECONSOLES)</span></a>
 <a name="2389"><span class="lineNum">    2389 </span>            :                 return -E2BIG;</a>
-<a name="2390"><span class="lineNum">    2390 </span><span class="lineCov">          2 :         if (!brl_options)</span></a>
-<a name="2391"><span class="lineNum">    2391 </span><span class="lineCov">          2 :                 preferred_console = i;</span></a>
-<a name="2392"><span class="lineNum">    2392 </span><span class="lineCov">          2 :         strlcpy(c-&gt;name, name, sizeof(c-&gt;name));</span></a>
-<a name="2393"><span class="lineNum">    2393 </span><span class="lineCov">          2 :         c-&gt;options = options;</span></a>
-<a name="2394"><span class="lineNum">    2394 </span><span class="lineCov">          4 :         set_user_specified(c, user_specified);</span></a>
-<a name="2395"><span class="lineNum">    2395 </span><span class="lineCov">          2 :         braille_set_options(c, brl_options);</span></a>
+<a name="2390"><span class="lineNum">    2390 </span><span class="lineCov">          1 :         if (!brl_options)</span></a>
+<a name="2391"><span class="lineNum">    2391 </span><span class="lineCov">          1 :                 preferred_console = i;</span></a>
+<a name="2392"><span class="lineNum">    2392 </span><span class="lineCov">          1 :         strlcpy(c-&gt;name, name, sizeof(c-&gt;name));</span></a>
+<a name="2393"><span class="lineNum">    2393 </span><span class="lineCov">          1 :         c-&gt;options = options;</span></a>
+<a name="2394"><span class="lineNum">    2394 </span><span class="lineCov">          2 :         set_user_specified(c, user_specified);</span></a>
+<a name="2395"><span class="lineNum">    2395 </span><span class="lineCov">          1 :         braille_set_options(c, brl_options);</span></a>
 <a name="2396"><span class="lineNum">    2396 </span>            : </a>
-<a name="2397"><span class="lineNum">    2397 </span><span class="lineCov">          2 :         c-&gt;index = idx;</span></a>
-<a name="2398"><span class="lineNum">    2398 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="2397"><span class="lineNum">    2397 </span><span class="lineCov">          1 :         c-&gt;index = idx;</span></a>
+<a name="2398"><span class="lineNum">    2398 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="2399"><span class="lineNum">    2399 </span>            : }</a>
 <a name="2400"><span class="lineNum">    2400 </span>            : </a>
 <a name="2401"><span class="lineNum">    2401 </span><span class="lineNoCov">          0 : static int __init console_msg_format_setup(char *str)</span></a>
@@ -2474,10 +2474,10 @@
 <a name="2412"><span class="lineNum">    2412 </span>            :  * Set up a console.  Called via do_early_param() in init/main.c</a>
 <a name="2413"><span class="lineNum">    2413 </span>            :  * for each &quot;console=&quot; parameter in the boot command line.</a>
 <a name="2414"><span class="lineNum">    2414 </span>            :  */</a>
-<a name="2415"><span class="lineNum">    2415 </span><span class="lineCov">          2 : static int __init console_setup(char *str)</span></a>
+<a name="2415"><span class="lineNum">    2415 </span><span class="lineCov">          1 : static int __init console_setup(char *str)</span></a>
 <a name="2416"><span class="lineNum">    2416 </span>            : {</a>
 <a name="2417"><span class="lineNum">    2417 </span>            :         char buf[sizeof(console_cmdline[0].name) + 4]; /* 4 for &quot;ttyS&quot; */</a>
-<a name="2418"><span class="lineNum">    2418 </span><span class="lineCov">          2 :         char *s, *options, *brl_options = NULL;</span></a>
+<a name="2418"><span class="lineNum">    2418 </span><span class="lineCov">          1 :         char *s, *options, *brl_options = NULL;</span></a>
 <a name="2419"><span class="lineNum">    2419 </span>            :         int idx;</a>
 <a name="2420"><span class="lineNum">    2420 </span>            : </a>
 <a name="2421"><span class="lineNum">    2421 </span>            :         /*</a>
@@ -2485,26 +2485,26 @@
 <a name="2423"><span class="lineNum">    2423 </span>            :          * disable console output. Use ttynull that has been created</a>
 <a name="2424"><span class="lineNum">    2424 </span>            :          * for exactly this purpose.</a>
 <a name="2425"><span class="lineNum">    2425 </span>            :          */</a>
-<a name="2426"><span class="lineNum">    2426 </span><span class="lineCov">          2 :         if (str[0] == 0 || strcmp(str, &quot;null&quot;) == 0) {</span></a>
+<a name="2426"><span class="lineNum">    2426 </span><span class="lineCov">          1 :         if (str[0] == 0 || strcmp(str, &quot;null&quot;) == 0) {</span></a>
 <a name="2427"><span class="lineNum">    2427 </span><span class="lineNoCov">          0 :                 __add_preferred_console(&quot;ttynull&quot;, 0, NULL, NULL, true);</span></a>
 <a name="2428"><span class="lineNum">    2428 </span><span class="lineNoCov">          0 :                 return 1;</span></a>
 <a name="2429"><span class="lineNum">    2429 </span>            :         }</a>
 <a name="2430"><span class="lineNum">    2430 </span>            : </a>
-<a name="2431"><span class="lineNum">    2431 </span><span class="lineCov">          2 :         if (_braille_console_setup(&amp;str, &amp;brl_options))</span></a>
+<a name="2431"><span class="lineNum">    2431 </span><span class="lineCov">          1 :         if (_braille_console_setup(&amp;str, &amp;brl_options))</span></a>
 <a name="2432"><span class="lineNum">    2432 </span>            :                 return 1;</a>
 <a name="2433"><span class="lineNum">    2433 </span>            : </a>
 <a name="2434"><span class="lineNum">    2434 </span>            :         /*</a>
 <a name="2435"><span class="lineNum">    2435 </span>            :          * Decode str into name, index, options.</a>
 <a name="2436"><span class="lineNum">    2436 </span>            :          */</a>
-<a name="2437"><span class="lineNum">    2437 </span><span class="lineCov">          2 :         if (str[0] &gt;= '0' &amp;&amp; str[0] &lt;= '9') {</span></a>
+<a name="2437"><span class="lineNum">    2437 </span><span class="lineCov">          1 :         if (str[0] &gt;= '0' &amp;&amp; str[0] &lt;= '9') {</span></a>
 <a name="2438"><span class="lineNum">    2438 </span><span class="lineNoCov">          0 :                 strcpy(buf, &quot;ttyS&quot;);</span></a>
 <a name="2439"><span class="lineNum">    2439 </span><span class="lineNoCov">          0 :                 strncpy(buf + 4, str, sizeof(buf) - 5);</span></a>
 <a name="2440"><span class="lineNum">    2440 </span>            :         } else {</a>
-<a name="2441"><span class="lineNum">    2441 </span><span class="lineCov">          2 :                 strncpy(buf, str, sizeof(buf) - 1);</span></a>
+<a name="2441"><span class="lineNum">    2441 </span><span class="lineCov">          1 :                 strncpy(buf, str, sizeof(buf) - 1);</span></a>
 <a name="2442"><span class="lineNum">    2442 </span>            :         }</a>
-<a name="2443"><span class="lineNum">    2443 </span><span class="lineCov">          2 :         buf[sizeof(buf) - 1] = 0;</span></a>
-<a name="2444"><span class="lineNum">    2444 </span><span class="lineCov">          2 :         options = strchr(str, ',');</span></a>
-<a name="2445"><span class="lineNum">    2445 </span><span class="lineCov">          2 :         if (options)</span></a>
+<a name="2443"><span class="lineNum">    2443 </span><span class="lineCov">          1 :         buf[sizeof(buf) - 1] = 0;</span></a>
+<a name="2444"><span class="lineNum">    2444 </span><span class="lineCov">          1 :         options = strchr(str, ',');</span></a>
+<a name="2445"><span class="lineNum">    2445 </span><span class="lineCov">          1 :         if (options)</span></a>
 <a name="2446"><span class="lineNum">    2446 </span><span class="lineNoCov">          0 :                 *(options++) = 0;</span></a>
 <a name="2447"><span class="lineNum">    2447 </span>            : #ifdef __sparc__</a>
 <a name="2448"><span class="lineNum">    2448 </span>            :         if (!strcmp(str, &quot;ttya&quot;))</a>
@@ -2512,14 +2512,14 @@
 <a name="2450"><span class="lineNum">    2450 </span>            :         if (!strcmp(str, &quot;ttyb&quot;))</a>
 <a name="2451"><span class="lineNum">    2451 </span>            :                 strcpy(buf, &quot;ttyS1&quot;);</a>
 <a name="2452"><span class="lineNum">    2452 </span>            : #endif</a>
-<a name="2453"><span class="lineNum">    2453 </span><span class="lineCov">          8 :         for (s = buf; *s; s++)</span></a>
-<a name="2454"><span class="lineNum">    2454 </span><span class="lineCov">         12 :                 if (isdigit(*s) || *s == ',')</span></a>
+<a name="2453"><span class="lineNum">    2453 </span><span class="lineCov">          4 :         for (s = buf; *s; s++)</span></a>
+<a name="2454"><span class="lineNum">    2454 </span><span class="lineCov">          6 :                 if (isdigit(*s) || *s == ',')</span></a>
 <a name="2455"><span class="lineNum">    2455 </span>            :                         break;</a>
-<a name="2456"><span class="lineNum">    2456 </span><span class="lineCov">          2 :         idx = simple_strtoul(s, NULL, 10);</span></a>
-<a name="2457"><span class="lineNum">    2457 </span><span class="lineCov">          2 :         *s = 0;</span></a>
+<a name="2456"><span class="lineNum">    2456 </span><span class="lineCov">          1 :         idx = simple_strtoul(s, NULL, 10);</span></a>
+<a name="2457"><span class="lineNum">    2457 </span><span class="lineCov">          1 :         *s = 0;</span></a>
 <a name="2458"><span class="lineNum">    2458 </span>            : </a>
-<a name="2459"><span class="lineNum">    2459 </span><span class="lineCov">          2 :         __add_preferred_console(buf, idx, options, brl_options, true);</span></a>
-<a name="2460"><span class="lineNum">    2460 </span><span class="lineCov">          2 :         return 1;</span></a>
+<a name="2459"><span class="lineNum">    2459 </span><span class="lineCov">          1 :         __add_preferred_console(buf, idx, options, brl_options, true);</span></a>
+<a name="2460"><span class="lineNum">    2460 </span><span class="lineCov">          1 :         return 1;</span></a>
 <a name="2461"><span class="lineNum">    2461 </span>            : }</a>
 <a name="2462"><span class="lineNum">    2462 </span>            : __setup(&quot;console=&quot;, console_setup);</a>
 <a name="2463"><span class="lineNum">    2463 </span>            : </a>
@@ -2622,11 +2622,11 @@
 <a name="2560"><span class="lineNum">    2560 </span>            : {</a>
 <a name="2561"><span class="lineNum">    2561 </span>            :         might_sleep();</a>
 <a name="2562"><span class="lineNum">    2562 </span>            : </a>
-<a name="2563"><span class="lineNum">    2563 </span><span class="lineCov">          6 :         down_console_sem();</span></a>
-<a name="2564"><span class="lineNum">    2564 </span><span class="lineCov">          6 :         if (console_suspended)</span></a>
+<a name="2563"><span class="lineNum">    2563 </span><span class="lineCov">          3 :         down_console_sem();</span></a>
+<a name="2564"><span class="lineNum">    2564 </span><span class="lineCov">          3 :         if (console_suspended)</span></a>
 <a name="2565"><span class="lineNum">    2565 </span>            :                 return;</a>
-<a name="2566"><span class="lineNum">    2566 </span><span class="lineCov">          6 :         console_locked = 1;</span></a>
-<a name="2567"><span class="lineNum">    2567 </span><span class="lineCov">          6 :         console_may_schedule = 1;</span></a>
+<a name="2566"><span class="lineNum">    2566 </span><span class="lineCov">          3 :         console_locked = 1;</span></a>
+<a name="2567"><span class="lineNum">    2567 </span><span class="lineCov">          3 :         console_may_schedule = 1;</span></a>
 <a name="2568"><span class="lineNum">    2568 </span>            : }</a>
 <a name="2569"><span class="lineNum">    2569 </span>            : EXPORT_SYMBOL(console_lock);</a>
 <a name="2570"><span class="lineNum">    2570 </span>            : </a>
@@ -2638,17 +2638,17 @@
 <a name="2576"><span class="lineNum">    2576 </span>            :  *</a>
 <a name="2577"><span class="lineNum">    2577 </span>            :  * returns 1 on success, and 0 on failure to acquire the lock.</a>
 <a name="2578"><span class="lineNum">    2578 </span>            :  */</a>
-<a name="2579"><span class="lineNum">    2579 </span><span class="lineCov">        506 : int console_trylock(void)</span></a>
+<a name="2579"><span class="lineNum">    2579 </span><span class="lineCov">        293 : int console_trylock(void)</span></a>
 <a name="2580"><span class="lineNum">    2580 </span>            : {</a>
-<a name="2581"><span class="lineNum">    2581 </span><span class="lineCov">        506 :         if (down_trylock_console_sem())</span></a>
+<a name="2581"><span class="lineNum">    2581 </span><span class="lineCov">        293 :         if (down_trylock_console_sem())</span></a>
 <a name="2582"><span class="lineNum">    2582 </span>            :                 return 0;</a>
-<a name="2583"><span class="lineNum">    2583 </span><span class="lineCov">        506 :         if (console_suspended) {</span></a>
+<a name="2583"><span class="lineNum">    2583 </span><span class="lineCov">        293 :         if (console_suspended) {</span></a>
 <a name="2584"><span class="lineNum">    2584 </span><span class="lineNoCov">          0 :                 up_console_sem();</span></a>
 <a name="2585"><span class="lineNum">    2585 </span><span class="lineNoCov">          0 :                 return 0;</span></a>
 <a name="2586"><span class="lineNum">    2586 </span>            :         }</a>
-<a name="2587"><span class="lineNum">    2587 </span><span class="lineCov">        506 :         console_locked = 1;</span></a>
-<a name="2588"><span class="lineNum">    2588 </span><span class="lineCov">        506 :         console_may_schedule = 0;</span></a>
-<a name="2589"><span class="lineNum">    2589 </span><span class="lineCov">        506 :         return 1;</span></a>
+<a name="2587"><span class="lineNum">    2587 </span><span class="lineCov">        293 :         console_locked = 1;</span></a>
+<a name="2588"><span class="lineNum">    2588 </span><span class="lineCov">        293 :         console_may_schedule = 0;</span></a>
+<a name="2589"><span class="lineNum">    2589 </span><span class="lineCov">        293 :         return 1;</span></a>
 <a name="2590"><span class="lineNum">    2590 </span>            : }</a>
 <a name="2591"><span class="lineNum">    2591 </span>            : EXPORT_SYMBOL(console_trylock);</a>
 <a name="2592"><span class="lineNum">    2592 </span>            : </a>
@@ -2681,7 +2681,7 @@
 <a name="2619"><span class="lineNum">    2619 </span>            :  */</a>
 <a name="2620"><span class="lineNum">    2620 </span>            : static bool abandon_console_lock_in_panic(void)</a>
 <a name="2621"><span class="lineNum">    2621 </span>            : {</a>
-<a name="2622"><span class="lineNum">    2622 </span><span class="lineCov">        674 :         if (!panic_in_progress())</span></a>
+<a name="2622"><span class="lineNum">    2622 </span><span class="lineCov">        377 :         if (!panic_in_progress())</span></a>
 <a name="2623"><span class="lineNum">    2623 </span>            :                 return false;</a>
 <a name="2624"><span class="lineNum">    2624 </span>            : </a>
 <a name="2625"><span class="lineNum">    2625 </span>            :         /*</a>
@@ -2702,7 +2702,7 @@
 <a name="2640"><span class="lineNum">    2640 </span>            :  */</a>
 <a name="2641"><span class="lineNum">    2641 </span>            : static inline int can_use_console(void)</a>
 <a name="2642"><span class="lineNum">    2642 </span>            : {</a>
-<a name="2643"><span class="lineNum">    2643 </span><span class="lineCov">        512 :         return cpu_online(raw_smp_processor_id()) || have_callable_console();</span></a>
+<a name="2643"><span class="lineNum">    2643 </span><span class="lineCov">        296 :         return cpu_online(raw_smp_processor_id()) || have_callable_console();</span></a>
 <a name="2644"><span class="lineNum">    2644 </span>            : }</a>
 <a name="2645"><span class="lineNum">    2645 </span>            : </a>
 <a name="2646"><span class="lineNum">    2646 </span>            : /**</a>
@@ -2719,7 +2719,7 @@
 <a name="2657"><span class="lineNum">    2657 </span>            :  *</a>
 <a name="2658"><span class="lineNum">    2658 </span>            :  * console_unlock(); may be called from any context.</a>
 <a name="2659"><span class="lineNum">    2659 </span>            :  */</a>
-<a name="2660"><span class="lineNum">    2660 </span><span class="lineCov">        512 : void console_unlock(void)</span></a>
+<a name="2660"><span class="lineNum">    2660 </span><span class="lineCov">        296 : void console_unlock(void)</span></a>
 <a name="2661"><span class="lineNum">    2661 </span>            : {</a>
 <a name="2662"><span class="lineNum">    2662 </span>            :         static char ext_text[CONSOLE_EXT_LOG_MAX];</a>
 <a name="2663"><span class="lineNum">    2663 </span>            :         static char text[CONSOLE_LOG_MAX];</a>
@@ -2730,12 +2730,12 @@
 <a name="2668"><span class="lineNum">    2668 </span>            :         struct printk_record r;</a>
 <a name="2669"><span class="lineNum">    2669 </span>            :         u64 __maybe_unused next_seq;</a>
 <a name="2670"><span class="lineNum">    2670 </span>            : </a>
-<a name="2671"><span class="lineNum">    2671 </span><span class="lineCov">        512 :         if (console_suspended) {</span></a>
+<a name="2671"><span class="lineNum">    2671 </span><span class="lineCov">        296 :         if (console_suspended) {</span></a>
 <a name="2672"><span class="lineNum">    2672 </span><span class="lineNoCov">          0 :                 up_console_sem();</span></a>
 <a name="2673"><span class="lineNum">    2673 </span><span class="lineNoCov">          0 :                 return;</span></a>
 <a name="2674"><span class="lineNum">    2674 </span>            :         }</a>
 <a name="2675"><span class="lineNum">    2675 </span>            : </a>
-<a name="2676"><span class="lineNum">    2676 </span><span class="lineCov">        512 :         prb_rec_init_rd(&amp;r, &amp;info, text, sizeof(text));</span></a>
+<a name="2676"><span class="lineNum">    2676 </span><span class="lineCov">        296 :         prb_rec_init_rd(&amp;r, &amp;info, text, sizeof(text));</span></a>
 <a name="2677"><span class="lineNum">    2677 </span>            : </a>
 <a name="2678"><span class="lineNum">    2678 </span>            :         /*</a>
 <a name="2679"><span class="lineNum">    2679 </span>            :          * Console drivers are called with interrupts disabled, so</a>
@@ -2751,9 +2751,9 @@
 <a name="2689"><span class="lineNum">    2689 </span>            :          * context reliably. Therefore the value must be stored before</a>
 <a name="2690"><span class="lineNum">    2690 </span>            :          * and cleared after the &quot;again&quot; goto label.</a>
 <a name="2691"><span class="lineNum">    2691 </span>            :          */</a>
-<a name="2692"><span class="lineNum">    2692 </span><span class="lineCov">        512 :         do_cond_resched = console_may_schedule;</span></a>
+<a name="2692"><span class="lineNum">    2692 </span><span class="lineCov">        296 :         do_cond_resched = console_may_schedule;</span></a>
 <a name="2693"><span class="lineNum">    2693 </span>            : again:</a>
-<a name="2694"><span class="lineNum">    2694 </span><span class="lineCov">        512 :         console_may_schedule = 0;</span></a>
+<a name="2694"><span class="lineNum">    2694 </span><span class="lineCov">        296 :         console_may_schedule = 0;</span></a>
 <a name="2695"><span class="lineNum">    2695 </span>            : </a>
 <a name="2696"><span class="lineNum">    2696 </span>            :         /*</a>
 <a name="2697"><span class="lineNum">    2697 </span>            :          * We released the console_sem lock, so we need to recheck if</a>
@@ -2767,15 +2767,15 @@
 <a name="2705"><span class="lineNum">    2705 </span>            :         }</a>
 <a name="2706"><span class="lineNum">    2706 </span>            : </a>
 <a name="2707"><span class="lineNum">    2707 </span>            :         for (;;) {</a>
-<a name="2708"><span class="lineNum">    2708 </span><span class="lineCov">       1186 :                 size_t ext_len = 0;</span></a>
+<a name="2708"><span class="lineNum">    2708 </span><span class="lineCov">        673 :                 size_t ext_len = 0;</span></a>
 <a name="2709"><span class="lineNum">    2709 </span>            :                 int handover;</a>
 <a name="2710"><span class="lineNum">    2710 </span>            :                 size_t len;</a>
 <a name="2711"><span class="lineNum">    2711 </span>            : </a>
 <a name="2712"><span class="lineNum">    2712 </span>            : skip:</a>
-<a name="2713"><span class="lineNum">    2713 </span><span class="lineCov">       1194 :                 if (!prb_read_valid(prb, console_seq, &amp;r))</span></a>
+<a name="2713"><span class="lineNum">    2713 </span><span class="lineCov">        677 :                 if (!prb_read_valid(prb, console_seq, &amp;r))</span></a>
 <a name="2714"><span class="lineNum">    2714 </span>            :                         break;</a>
 <a name="2715"><span class="lineNum">    2715 </span>            : </a>
-<a name="2716"><span class="lineNum">    2716 </span><span class="lineCov">        682 :                 if (console_seq != r.info-&gt;seq) {</span></a>
+<a name="2716"><span class="lineNum">    2716 </span><span class="lineCov">        381 :                 if (console_seq != r.info-&gt;seq) {</span></a>
 <a name="2717"><span class="lineNum">    2717 </span><span class="lineNoCov">          0 :                         console_dropped += r.info-&gt;seq - console_seq;</span></a>
 <a name="2718"><span class="lineNum">    2718 </span><span class="lineNoCov">          0 :                         console_seq = r.info-&gt;seq;</span></a>
 <a name="2719"><span class="lineNum">    2719 </span><span class="lineNoCov">          0 :                         if (panic_in_progress() &amp;&amp; panic_console_dropped++ &gt; 10) {</span></a>
@@ -2784,27 +2784,27 @@
 <a name="2722"><span class="lineNum">    2722 </span>            :                         }</a>
 <a name="2723"><span class="lineNum">    2723 </span>            :                 }</a>
 <a name="2724"><span class="lineNum">    2724 </span>            : </a>
-<a name="2725"><span class="lineNum">    2725 </span><span class="lineCov">       1364 :                 if (suppress_message_printing(r.info-&gt;level)) {</span></a>
+<a name="2725"><span class="lineNum">    2725 </span><span class="lineCov">        762 :                 if (suppress_message_printing(r.info-&gt;level)) {</span></a>
 <a name="2726"><span class="lineNum">    2726 </span>            :                         /*</a>
 <a name="2727"><span class="lineNum">    2727 </span>            :                          * Skip record we have buffered and already printed</a>
 <a name="2728"><span class="lineNum">    2728 </span>            :                          * directly to the console when we received it, and</a>
 <a name="2729"><span class="lineNum">    2729 </span>            :                          * record that has level above the console loglevel.</a>
 <a name="2730"><span class="lineNum">    2730 </span>            :                          */</a>
-<a name="2731"><span class="lineNum">    2731 </span><span class="lineCov">          8 :                         console_seq++;</span></a>
-<a name="2732"><span class="lineNum">    2732 </span><span class="lineCov">          8 :                         goto skip;</span></a>
+<a name="2731"><span class="lineNum">    2731 </span><span class="lineCov">          4 :                         console_seq++;</span></a>
+<a name="2732"><span class="lineNum">    2732 </span><span class="lineCov">          4 :                         goto skip;</span></a>
 <a name="2733"><span class="lineNum">    2733 </span>            :                 }</a>
 <a name="2734"><span class="lineNum">    2734 </span>            : </a>
 <a name="2735"><span class="lineNum">    2735 </span>            :                 /* Output to all consoles once old messages replayed. */</a>
-<a name="2736"><span class="lineNum">    2736 </span><span class="lineCov">        674 :                 if (unlikely(exclusive_console &amp;&amp;</span></a>
+<a name="2736"><span class="lineNum">    2736 </span><span class="lineCov">        377 :                 if (unlikely(exclusive_console &amp;&amp;</span></a>
 <a name="2737"><span class="lineNum">    2737 </span>            :                              console_seq &gt;= exclusive_console_stop_seq)) {</a>
-<a name="2738"><span class="lineNum">    2738 </span><span class="lineCov">          2 :                         exclusive_console = NULL;</span></a>
+<a name="2738"><span class="lineNum">    2738 </span><span class="lineCov">          1 :                         exclusive_console = NULL;</span></a>
 <a name="2739"><span class="lineNum">    2739 </span>            :                 }</a>
 <a name="2740"><span class="lineNum">    2740 </span>            : </a>
 <a name="2741"><span class="lineNum">    2741 </span>            :                 /*</a>
 <a name="2742"><span class="lineNum">    2742 </span>            :                  * Handle extended console text first because later</a>
 <a name="2743"><span class="lineNum">    2743 </span>            :                  * record_print_text() will modify the record buffer in-place.</a>
 <a name="2744"><span class="lineNum">    2744 </span>            :                  */</a>
-<a name="2745"><span class="lineNum">    2745 </span><span class="lineCov">        674 :                 if (nr_ext_console_drivers) {</span></a>
+<a name="2745"><span class="lineNum">    2745 </span><span class="lineCov">        377 :                 if (nr_ext_console_drivers) {</span></a>
 <a name="2746"><span class="lineNum">    2746 </span><span class="lineNoCov">          0 :                         ext_len = info_print_ext_header(ext_text,</span></a>
 <a name="2747"><span class="lineNum">    2747 </span>            :                                                 sizeof(ext_text),</a>
 <a name="2748"><span class="lineNum">    2748 </span>            :                                                 r.info);</a>
@@ -2814,10 +2814,10 @@
 <a name="2752"><span class="lineNum">    2752 </span><span class="lineNoCov">          0 :                                                 r.info-&gt;text_len,</span></a>
 <a name="2753"><span class="lineNum">    2753 </span><span class="lineNoCov">          0 :                                                 &amp;r.info-&gt;dev_info);</span></a>
 <a name="2754"><span class="lineNum">    2754 </span>            :                 }</a>
-<a name="2755"><span class="lineNum">    2755 </span><span class="lineCov">       1348 :                 len = record_print_text(&amp;r,</span></a>
-<a name="2756"><span class="lineNum">    2756 </span><span class="lineCov">        674 :                                 console_msg_format &amp; MSG_FORMAT_SYSLOG,</span></a>
+<a name="2755"><span class="lineNum">    2755 </span><span class="lineCov">        754 :                 len = record_print_text(&amp;r,</span></a>
+<a name="2756"><span class="lineNum">    2756 </span><span class="lineCov">        377 :                                 console_msg_format &amp; MSG_FORMAT_SYSLOG,</span></a>
 <a name="2757"><span class="lineNum">    2757 </span>            :                                 printk_time);</a>
-<a name="2758"><span class="lineNum">    2758 </span><span class="lineCov">        674 :                 console_seq++;</span></a>
+<a name="2758"><span class="lineNum">    2758 </span><span class="lineCov">        377 :                 console_seq++;</span></a>
 <a name="2759"><span class="lineNum">    2759 </span>            : </a>
 <a name="2760"><span class="lineNum">    2760 </span>            :                 /*</a>
 <a name="2761"><span class="lineNum">    2761 </span>            :                  * While actively printing out messages, if another printk()</a>
@@ -2829,31 +2829,31 @@
 <a name="2767"><span class="lineNum">    2767 </span>            :                  * must not be interrupted until the hand over is completed</a>
 <a name="2768"><span class="lineNum">    2768 </span>            :                  * (@console_waiter is cleared).</a>
 <a name="2769"><span class="lineNum">    2769 </span>            :                  */</a>
-<a name="2770"><span class="lineNum">    2770 </span><span class="lineCov">        674 :                 printk_safe_enter_irqsave(flags);</span></a>
-<a name="2771"><span class="lineNum">    2771 </span><span class="lineCov">        674 :                 console_lock_spinning_enable();</span></a>
+<a name="2770"><span class="lineNum">    2770 </span><span class="lineCov">        377 :                 printk_safe_enter_irqsave(flags);</span></a>
+<a name="2771"><span class="lineNum">    2771 </span><span class="lineCov">        377 :                 console_lock_spinning_enable();</span></a>
 <a name="2772"><span class="lineNum">    2772 </span>            : </a>
 <a name="2773"><span class="lineNum">    2773 </span>            :                 stop_critical_timings();        /* don't trace print latency */</a>
-<a name="2774"><span class="lineNum">    2774 </span><span class="lineCov">        674 :                 call_console_drivers(ext_text, ext_len, text, len);</span></a>
+<a name="2774"><span class="lineNum">    2774 </span><span class="lineCov">        377 :                 call_console_drivers(ext_text, ext_len, text, len);</span></a>
 <a name="2775"><span class="lineNum">    2775 </span>            :                 start_critical_timings();</a>
 <a name="2776"><span class="lineNum">    2776 </span>            : </a>
-<a name="2777"><span class="lineNum">    2777 </span><span class="lineCov">        674 :                 handover = console_lock_spinning_disable_and_check();</span></a>
-<a name="2778"><span class="lineNum">    2778 </span><span class="lineCov">       1348 :                 printk_safe_exit_irqrestore(flags);</span></a>
-<a name="2779"><span class="lineNum">    2779 </span><span class="lineCov">        674 :                 if (handover)</span></a>
+<a name="2777"><span class="lineNum">    2777 </span><span class="lineCov">        377 :                 handover = console_lock_spinning_disable_and_check();</span></a>
+<a name="2778"><span class="lineNum">    2778 </span><span class="lineCov">        754 :                 printk_safe_exit_irqrestore(flags);</span></a>
+<a name="2779"><span class="lineNum">    2779 </span><span class="lineCov">        377 :                 if (handover)</span></a>
 <a name="2780"><span class="lineNum">    2780 </span>            :                         return;</a>
 <a name="2781"><span class="lineNum">    2781 </span>            : </a>
 <a name="2782"><span class="lineNum">    2782 </span>            :                 /* Allow panic_cpu to take over the consoles safely */</a>
-<a name="2783"><span class="lineNum">    2783 </span><span class="lineCov">        674 :                 if (abandon_console_lock_in_panic())</span></a>
+<a name="2783"><span class="lineNum">    2783 </span><span class="lineCov">        377 :                 if (abandon_console_lock_in_panic())</span></a>
 <a name="2784"><span class="lineNum">    2784 </span>            :                         break;</a>
 <a name="2785"><span class="lineNum">    2785 </span>            : </a>
-<a name="2786"><span class="lineNum">    2786 </span><span class="lineCov">        674 :                 if (do_cond_resched)</span></a>
-<a name="2787"><span class="lineNum">    2787 </span><span class="lineCov">        210 :                         cond_resched();</span></a>
+<a name="2786"><span class="lineNum">    2786 </span><span class="lineCov">        377 :                 if (do_cond_resched)</span></a>
+<a name="2787"><span class="lineNum">    2787 </span><span class="lineCov">        105 :                         cond_resched();</span></a>
 <a name="2788"><span class="lineNum">    2788 </span>            :         }</a>
 <a name="2789"><span class="lineNum">    2789 </span>            : </a>
 <a name="2790"><span class="lineNum">    2790 </span>            :         /* Get consistent value of the next-to-be-used sequence number. */</a>
-<a name="2791"><span class="lineNum">    2791 </span><span class="lineCov">        512 :         next_seq = console_seq;</span></a>
+<a name="2791"><span class="lineNum">    2791 </span><span class="lineCov">        296 :         next_seq = console_seq;</span></a>
 <a name="2792"><span class="lineNum">    2792 </span>            : </a>
-<a name="2793"><span class="lineNum">    2793 </span><span class="lineCov">        512 :         console_locked = 0;</span></a>
-<a name="2794"><span class="lineNum">    2794 </span><span class="lineCov">        512 :         up_console_sem();</span></a>
+<a name="2793"><span class="lineNum">    2793 </span><span class="lineCov">        296 :         console_locked = 0;</span></a>
+<a name="2794"><span class="lineNum">    2794 </span><span class="lineCov">        296 :         up_console_sem();</span></a>
 <a name="2795"><span class="lineNum">    2795 </span>            : </a>
 <a name="2796"><span class="lineNum">    2796 </span>            :         /*</a>
 <a name="2797"><span class="lineNum">    2797 </span>            :          * Someone could have filled up the buffer again, so re-check if there's</a>
@@ -2861,8 +2861,8 @@
 <a name="2799"><span class="lineNum">    2799 </span>            :          * there's a new owner and the console_unlock() from them will do the</a>
 <a name="2800"><span class="lineNum">    2800 </span>            :          * flush, no worries.</a>
 <a name="2801"><span class="lineNum">    2801 </span>            :          */</a>
-<a name="2802"><span class="lineNum">    2802 </span><span class="lineCov">        512 :         retry = prb_read_valid(prb, next_seq, NULL);</span></a>
-<a name="2803"><span class="lineNum">    2803 </span><span class="lineCov">        512 :         if (retry &amp;&amp; !abandon_console_lock_in_panic() &amp;&amp; console_trylock())</span></a>
+<a name="2802"><span class="lineNum">    2802 </span><span class="lineCov">        296 :         retry = prb_read_valid(prb, next_seq, NULL);</span></a>
+<a name="2803"><span class="lineNum">    2803 </span><span class="lineCov">        296 :         if (retry &amp;&amp; !abandon_console_lock_in_panic() &amp;&amp; console_trylock())</span></a>
 <a name="2804"><span class="lineNum">    2804 </span>            :                 goto again;</a>
 <a name="2805"><span class="lineNum">    2805 </span>            : }</a>
 <a name="2806"><span class="lineNum">    2806 </span>            : EXPORT_SYMBOL(console_unlock);</a>
@@ -2990,39 +2990,39 @@
 <a name="2928"><span class="lineNum">    2928 </span>            :  * Care need to be taken with consoles that are statically</a>
 <a name="2929"><span class="lineNum">    2929 </span>            :  * enabled such as netconsole</a>
 <a name="2930"><span class="lineNum">    2930 </span>            :  */</a>
-<a name="2931"><span class="lineNum">    2931 </span><span class="lineCov">          6 : static int try_enable_preferred_console(struct console *newcon,</span></a>
+<a name="2931"><span class="lineNum">    2931 </span><span class="lineCov">          3 : static int try_enable_preferred_console(struct console *newcon,</span></a>
 <a name="2932"><span class="lineNum">    2932 </span>            :                                         bool user_specified)</a>
 <a name="2933"><span class="lineNum">    2933 </span>            : {</a>
 <a name="2934"><span class="lineNum">    2934 </span>            :         struct console_cmdline *c;</a>
 <a name="2935"><span class="lineNum">    2935 </span>            :         int i, err;</a>
 <a name="2936"><span class="lineNum">    2936 </span>            : </a>
-<a name="2937"><span class="lineNum">    2937 </span><span class="lineCov">         16 :         for (i = 0, c = console_cmdline;</span></a>
-<a name="2938"><span class="lineNum">    2938 </span><span class="lineCov">         10 :              i &lt; MAX_CMDLINECONSOLES &amp;&amp; c-&gt;name[0];</span></a>
-<a name="2939"><span class="lineNum">    2939 </span><span class="lineCov">          4 :              i++, c++) {</span></a>
-<a name="2940"><span class="lineNum">    2940 </span><span class="lineCov">          6 :                 if (c-&gt;user_specified != user_specified)</span></a>
-<a name="2941"><span class="lineNum">    2941 </span><span class="lineCov">          2 :                         continue;</span></a>
-<a name="2942"><span class="lineNum">    2942 </span><span class="lineCov">          4 :                 if (!newcon-&gt;match ||</span></a>
+<a name="2937"><span class="lineNum">    2937 </span><span class="lineCov">          8 :         for (i = 0, c = console_cmdline;</span></a>
+<a name="2938"><span class="lineNum">    2938 </span><span class="lineCov">          5 :              i &lt; MAX_CMDLINECONSOLES &amp;&amp; c-&gt;name[0];</span></a>
+<a name="2939"><span class="lineNum">    2939 </span><span class="lineCov">          2 :              i++, c++) {</span></a>
+<a name="2940"><span class="lineNum">    2940 </span><span class="lineCov">          3 :                 if (c-&gt;user_specified != user_specified)</span></a>
+<a name="2941"><span class="lineNum">    2941 </span><span class="lineCov">          1 :                         continue;</span></a>
+<a name="2942"><span class="lineNum">    2942 </span><span class="lineCov">          2 :                 if (!newcon-&gt;match ||</span></a>
 <a name="2943"><span class="lineNum">    2943 </span><span class="lineNoCov">          0 :                     newcon-&gt;match(newcon, c-&gt;name, c-&gt;index, c-&gt;options) != 0) {</span></a>
 <a name="2944"><span class="lineNum">    2944 </span>            :                         /* default matching */</a>
 <a name="2945"><span class="lineNum">    2945 </span>            :                         BUILD_BUG_ON(sizeof(c-&gt;name) != sizeof(newcon-&gt;name));</a>
-<a name="2946"><span class="lineNum">    2946 </span><span class="lineCov">          4 :                         if (strcmp(c-&gt;name, newcon-&gt;name) != 0)</span></a>
-<a name="2947"><span class="lineNum">    2947 </span><span class="lineCov">          2 :                                 continue;</span></a>
-<a name="2948"><span class="lineNum">    2948 </span><span class="lineCov">          2 :                         if (newcon-&gt;index &gt;= 0 &amp;&amp;</span></a>
+<a name="2946"><span class="lineNum">    2946 </span><span class="lineCov">          2 :                         if (strcmp(c-&gt;name, newcon-&gt;name) != 0)</span></a>
+<a name="2947"><span class="lineNum">    2947 </span><span class="lineCov">          1 :                                 continue;</span></a>
+<a name="2948"><span class="lineNum">    2948 </span><span class="lineCov">          1 :                         if (newcon-&gt;index &gt;= 0 &amp;&amp;</span></a>
 <a name="2949"><span class="lineNum">    2949 </span><span class="lineNoCov">          0 :                             newcon-&gt;index != c-&gt;index)</span></a>
 <a name="2950"><span class="lineNum">    2950 </span><span class="lineNoCov">          0 :                                 continue;</span></a>
-<a name="2951"><span class="lineNum">    2951 </span><span class="lineCov">          2 :                         if (newcon-&gt;index &lt; 0)</span></a>
-<a name="2952"><span class="lineNum">    2952 </span><span class="lineCov">          2 :                                 newcon-&gt;index = c-&gt;index;</span></a>
+<a name="2951"><span class="lineNum">    2951 </span><span class="lineCov">          1 :                         if (newcon-&gt;index &lt; 0)</span></a>
+<a name="2952"><span class="lineNum">    2952 </span><span class="lineCov">          1 :                                 newcon-&gt;index = c-&gt;index;</span></a>
 <a name="2953"><span class="lineNum">    2953 </span>            : </a>
-<a name="2954"><span class="lineNum">    2954 </span><span class="lineCov">          2 :                         if (_braille_register_console(newcon, c))</span></a>
+<a name="2954"><span class="lineNum">    2954 </span><span class="lineCov">          1 :                         if (_braille_register_console(newcon, c))</span></a>
 <a name="2955"><span class="lineNum">    2955 </span>            :                                 return 0;</a>
 <a name="2956"><span class="lineNum">    2956 </span>            : </a>
-<a name="2957"><span class="lineNum">    2957 </span><span class="lineCov">          4 :                         if (newcon-&gt;setup &amp;&amp;</span></a>
-<a name="2958"><span class="lineNum">    2958 </span><span class="lineCov">          2 :                             (err = newcon-&gt;setup(newcon, c-&gt;options)) != 0)</span></a>
+<a name="2957"><span class="lineNum">    2957 </span><span class="lineCov">          2 :                         if (newcon-&gt;setup &amp;&amp;</span></a>
+<a name="2958"><span class="lineNum">    2958 </span><span class="lineCov">          1 :                             (err = newcon-&gt;setup(newcon, c-&gt;options)) != 0)</span></a>
 <a name="2959"><span class="lineNum">    2959 </span>            :                                 return err;</a>
 <a name="2960"><span class="lineNum">    2960 </span>            :                 }</a>
-<a name="2961"><span class="lineNum">    2961 </span><span class="lineCov">          2 :                 newcon-&gt;flags |= CON_ENABLED;</span></a>
-<a name="2962"><span class="lineNum">    2962 </span><span class="lineCov">          2 :                 if (i == preferred_console)</span></a>
-<a name="2963"><span class="lineNum">    2963 </span><span class="lineCov">          2 :                         newcon-&gt;flags |= CON_CONSDEV;</span></a>
+<a name="2961"><span class="lineNum">    2961 </span><span class="lineCov">          1 :                 newcon-&gt;flags |= CON_ENABLED;</span></a>
+<a name="2962"><span class="lineNum">    2962 </span><span class="lineCov">          1 :                 if (i == preferred_console)</span></a>
+<a name="2963"><span class="lineNum">    2963 </span><span class="lineCov">          1 :                         newcon-&gt;flags |= CON_CONSDEV;</span></a>
 <a name="2964"><span class="lineNum">    2964 </span>            :                 return 0;</a>
 <a name="2965"><span class="lineNum">    2965 </span>            :         }</a>
 <a name="2966"><span class="lineNum">    2966 </span>            : </a>
@@ -3031,10 +3031,10 @@
 <a name="2969"><span class="lineNum">    2969 </span>            :          * without matching. Accept the pre-enabled consoles only when match()</a>
 <a name="2970"><span class="lineNum">    2970 </span>            :          * and setup() had a chance to be called.</a>
 <a name="2971"><span class="lineNum">    2971 </span>            :          */</a>
-<a name="2972"><span class="lineNum">    2972 </span><span class="lineCov">          4 :         if (newcon-&gt;flags &amp; CON_ENABLED &amp;&amp; c-&gt;user_specified ==       user_specified)</span></a>
+<a name="2972"><span class="lineNum">    2972 </span><span class="lineCov">          2 :         if (newcon-&gt;flags &amp; CON_ENABLED &amp;&amp; c-&gt;user_specified ==       user_specified)</span></a>
 <a name="2973"><span class="lineNum">    2973 </span>            :                 return 0;</a>
 <a name="2974"><span class="lineNum">    2974 </span>            : </a>
-<a name="2975"><span class="lineNum">    2975 </span><span class="lineCov">          2 :         return -ENOENT;</span></a>
+<a name="2975"><span class="lineNum">    2975 </span><span class="lineCov">          1 :         return -ENOENT;</span></a>
 <a name="2976"><span class="lineNum">    2976 </span>            : }</a>
 <a name="2977"><span class="lineNum">    2977 </span>            : </a>
 <a name="2978"><span class="lineNum">    2978 </span>            : /* Try to enable the console unconditionally */</a>
@@ -3071,28 +3071,28 @@
 <a name="3009"><span class="lineNum">    3009 </span>            :  *  - Once a &quot;real&quot; console is registered, any attempt to register a</a>
 <a name="3010"><span class="lineNum">    3010 </span>            :  *    bootconsoles will be rejected</a>
 <a name="3011"><span class="lineNum">    3011 </span>            :  */</a>
-<a name="3012"><span class="lineNum">    3012 </span><span class="lineCov">          4 : void register_console(struct console *newcon)</span></a>
+<a name="3012"><span class="lineNum">    3012 </span><span class="lineCov">          2 : void register_console(struct console *newcon)</span></a>
 <a name="3013"><span class="lineNum">    3013 </span>            : {</a>
 <a name="3014"><span class="lineNum">    3014 </span>            :         struct console *con;</a>
-<a name="3015"><span class="lineNum">    3015 </span><span class="lineCov">          4 :         bool bootcon_enabled = false;</span></a>
-<a name="3016"><span class="lineNum">    3016 </span><span class="lineCov">          4 :         bool realcon_enabled = false;</span></a>
+<a name="3015"><span class="lineNum">    3015 </span><span class="lineCov">          2 :         bool bootcon_enabled = false;</span></a>
+<a name="3016"><span class="lineNum">    3016 </span><span class="lineCov">          2 :         bool realcon_enabled = false;</span></a>
 <a name="3017"><span class="lineNum">    3017 </span>            :         int err;</a>
 <a name="3018"><span class="lineNum">    3018 </span>            : </a>
-<a name="3019"><span class="lineNum">    3019 </span><span class="lineCov">          6 :         for_each_console(con) {</span></a>
-<a name="3020"><span class="lineNum">    3020 </span><span class="lineCov">          2 :                 if (WARN(con == newcon, &quot;console '%s%d' already registered\n&quot;,</span></a>
+<a name="3019"><span class="lineNum">    3019 </span><span class="lineCov">          3 :         for_each_console(con) {</span></a>
+<a name="3020"><span class="lineNum">    3020 </span><span class="lineCov">          1 :                 if (WARN(con == newcon, &quot;console '%s%d' already registered\n&quot;,</span></a>
 <a name="3021"><span class="lineNum">    3021 </span>            :                                          con-&gt;name, con-&gt;index))</a>
 <a name="3022"><span class="lineNum">    3022 </span>            :                         return;</a>
 <a name="3023"><span class="lineNum">    3023 </span>            :         }</a>
 <a name="3024"><span class="lineNum">    3024 </span>            : </a>
-<a name="3025"><span class="lineNum">    3025 </span><span class="lineCov">          6 :         for_each_console(con) {</span></a>
-<a name="3026"><span class="lineNum">    3026 </span><span class="lineCov">          2 :                 if (con-&gt;flags &amp; CON_BOOT)</span></a>
+<a name="3025"><span class="lineNum">    3025 </span><span class="lineCov">          3 :         for_each_console(con) {</span></a>
+<a name="3026"><span class="lineNum">    3026 </span><span class="lineCov">          1 :                 if (con-&gt;flags &amp; CON_BOOT)</span></a>
 <a name="3027"><span class="lineNum">    3027 </span>            :                         bootcon_enabled = true;</a>
 <a name="3028"><span class="lineNum">    3028 </span>            :                 else</a>
-<a name="3029"><span class="lineNum">    3029 </span><span class="lineCov">          2 :                         realcon_enabled = true;</span></a>
+<a name="3029"><span class="lineNum">    3029 </span><span class="lineCov">          1 :                         realcon_enabled = true;</span></a>
 <a name="3030"><span class="lineNum">    3030 </span>            :         }</a>
 <a name="3031"><span class="lineNum">    3031 </span>            : </a>
 <a name="3032"><span class="lineNum">    3032 </span>            :         /* Do not register boot consoles when there already is a real one. */</a>
-<a name="3033"><span class="lineNum">    3033 </span><span class="lineCov">          4 :         if (newcon-&gt;flags &amp; CON_BOOT &amp;&amp; realcon_enabled) {</span></a>
+<a name="3033"><span class="lineNum">    3033 </span><span class="lineCov">          2 :         if (newcon-&gt;flags &amp; CON_BOOT &amp;&amp; realcon_enabled) {</span></a>
 <a name="3034"><span class="lineNum">    3034 </span><span class="lineNoCov">          0 :                 pr_info(&quot;Too late to register bootconsole %s%d\n&quot;,</span></a>
 <a name="3035"><span class="lineNum">    3035 </span>            :                         newcon-&gt;name, newcon-&gt;index);</a>
 <a name="3036"><span class="lineNum">    3036 </span><span class="lineNoCov">          0 :                 return;</span></a>
@@ -3110,7 +3110,7 @@
 <a name="3048"><span class="lineNum">    3048 </span>            :          * Note that a console with tty binding will have CON_CONSDEV</a>
 <a name="3049"><span class="lineNum">    3049 </span>            :          * flag set and will be first in the list.</a>
 <a name="3050"><span class="lineNum">    3050 </span>            :          */</a>
-<a name="3051"><span class="lineNum">    3051 </span><span class="lineCov">          4 :         if (preferred_console &lt; 0) {</span></a>
+<a name="3051"><span class="lineNum">    3051 </span><span class="lineCov">          2 :         if (preferred_console &lt; 0) {</span></a>
 <a name="3052"><span class="lineNum">    3052 </span><span class="lineNoCov">          0 :                 if (!console_drivers || !console_drivers-&gt;device ||</span></a>
 <a name="3053"><span class="lineNum">    3053 </span><span class="lineNoCov">          0 :                     console_drivers-&gt;flags &amp; CON_BOOT) {</span></a>
 <a name="3054"><span class="lineNum">    3054 </span><span class="lineNoCov">          0 :                         try_enable_default_console(newcon);</span></a>
@@ -3118,14 +3118,14 @@
 <a name="3056"><span class="lineNum">    3056 </span>            :         }</a>
 <a name="3057"><span class="lineNum">    3057 </span>            : </a>
 <a name="3058"><span class="lineNum">    3058 </span>            :         /* See if this console matches one we selected on the command line */</a>
-<a name="3059"><span class="lineNum">    3059 </span><span class="lineCov">          4 :         err = try_enable_preferred_console(newcon, true);</span></a>
+<a name="3059"><span class="lineNum">    3059 </span><span class="lineCov">          2 :         err = try_enable_preferred_console(newcon, true);</span></a>
 <a name="3060"><span class="lineNum">    3060 </span>            : </a>
 <a name="3061"><span class="lineNum">    3061 </span>            :         /* If not, try to match against the platform default(s) */</a>
-<a name="3062"><span class="lineNum">    3062 </span><span class="lineCov">          4 :         if (err == -ENOENT)</span></a>
-<a name="3063"><span class="lineNum">    3063 </span><span class="lineCov">          2 :                 err = try_enable_preferred_console(newcon, false);</span></a>
+<a name="3062"><span class="lineNum">    3062 </span><span class="lineCov">          2 :         if (err == -ENOENT)</span></a>
+<a name="3063"><span class="lineNum">    3063 </span><span class="lineCov">          1 :                 err = try_enable_preferred_console(newcon, false);</span></a>
 <a name="3064"><span class="lineNum">    3064 </span>            : </a>
 <a name="3065"><span class="lineNum">    3065 </span>            :         /* printk() messages are not printed to the Braille console. */</a>
-<a name="3066"><span class="lineNum">    3066 </span><span class="lineCov">          4 :         if (err || newcon-&gt;flags &amp; CON_BRL)</span></a>
+<a name="3066"><span class="lineNum">    3066 </span><span class="lineCov">          2 :         if (err || newcon-&gt;flags &amp; CON_BRL)</span></a>
 <a name="3067"><span class="lineNum">    3067 </span>            :                 return;</a>
 <a name="3068"><span class="lineNum">    3068 </span>            : </a>
 <a name="3069"><span class="lineNum">    3069 </span>            :         /*</a>
@@ -3134,7 +3134,7 @@
 <a name="3072"><span class="lineNum">    3072 </span>            :          * the real console are the same physical device, it's annoying to</a>
 <a name="3073"><span class="lineNum">    3073 </span>            :          * see the beginning boot messages twice</a>
 <a name="3074"><span class="lineNum">    3074 </span>            :          */</a>
-<a name="3075"><span class="lineNum">    3075 </span><span class="lineCov">          4 :         if (bootcon_enabled &amp;&amp;</span></a>
+<a name="3075"><span class="lineNum">    3075 </span><span class="lineCov">          2 :         if (bootcon_enabled &amp;&amp;</span></a>
 <a name="3076"><span class="lineNum">    3076 </span>            :             ((newcon-&gt;flags &amp; (CON_CONSDEV | CON_BOOT)) == CON_CONSDEV)) {</a>
 <a name="3077"><span class="lineNum">    3077 </span><span class="lineNoCov">          0 :                 newcon-&gt;flags &amp;= ~CON_PRINTBUFFER;</span></a>
 <a name="3078"><span class="lineNum">    3078 </span>            :         }</a>
@@ -3144,22 +3144,22 @@
 <a name="3082"><span class="lineNum">    3082 </span>            :          *      preferred driver at the head of the list.</a>
 <a name="3083"><span class="lineNum">    3083 </span>            :          */</a>
 <a name="3084"><span class="lineNum">    3084 </span>            :         console_lock();</a>
-<a name="3085"><span class="lineNum">    3085 </span><span class="lineCov">          4 :         if ((newcon-&gt;flags &amp; CON_CONSDEV) || console_drivers == NULL) {</span></a>
-<a name="3086"><span class="lineNum">    3086 </span><span class="lineCov">          2 :                 newcon-&gt;next = console_drivers;</span></a>
-<a name="3087"><span class="lineNum">    3087 </span><span class="lineCov">          2 :                 console_drivers = newcon;</span></a>
-<a name="3088"><span class="lineNum">    3088 </span><span class="lineCov">          2 :                 if (newcon-&gt;next)</span></a>
+<a name="3085"><span class="lineNum">    3085 </span><span class="lineCov">          2 :         if ((newcon-&gt;flags &amp; CON_CONSDEV) || console_drivers == NULL) {</span></a>
+<a name="3086"><span class="lineNum">    3086 </span><span class="lineCov">          1 :                 newcon-&gt;next = console_drivers;</span></a>
+<a name="3087"><span class="lineNum">    3087 </span><span class="lineCov">          1 :                 console_drivers = newcon;</span></a>
+<a name="3088"><span class="lineNum">    3088 </span><span class="lineCov">          1 :                 if (newcon-&gt;next)</span></a>
 <a name="3089"><span class="lineNum">    3089 </span><span class="lineNoCov">          0 :                         newcon-&gt;next-&gt;flags &amp;= ~CON_CONSDEV;</span></a>
 <a name="3090"><span class="lineNum">    3090 </span>            :                 /* Ensure this flag is always set for the head of the list */</a>
-<a name="3091"><span class="lineNum">    3091 </span><span class="lineCov">          2 :                 newcon-&gt;flags |= CON_CONSDEV;</span></a>
+<a name="3091"><span class="lineNum">    3091 </span><span class="lineCov">          1 :                 newcon-&gt;flags |= CON_CONSDEV;</span></a>
 <a name="3092"><span class="lineNum">    3092 </span>            :         } else {</a>
-<a name="3093"><span class="lineNum">    3093 </span><span class="lineCov">          2 :                 newcon-&gt;next = console_drivers-&gt;next;</span></a>
-<a name="3094"><span class="lineNum">    3094 </span><span class="lineCov">          2 :                 console_drivers-&gt;next = newcon;</span></a>
+<a name="3093"><span class="lineNum">    3093 </span><span class="lineCov">          1 :                 newcon-&gt;next = console_drivers-&gt;next;</span></a>
+<a name="3094"><span class="lineNum">    3094 </span><span class="lineCov">          1 :                 console_drivers-&gt;next = newcon;</span></a>
 <a name="3095"><span class="lineNum">    3095 </span>            :         }</a>
 <a name="3096"><span class="lineNum">    3096 </span>            : </a>
-<a name="3097"><span class="lineNum">    3097 </span><span class="lineCov">          4 :         if (newcon-&gt;flags &amp; CON_EXTENDED)</span></a>
+<a name="3097"><span class="lineNum">    3097 </span><span class="lineCov">          2 :         if (newcon-&gt;flags &amp; CON_EXTENDED)</span></a>
 <a name="3098"><span class="lineNum">    3098 </span><span class="lineNoCov">          0 :                 nr_ext_console_drivers++;</span></a>
 <a name="3099"><span class="lineNum">    3099 </span>            : </a>
-<a name="3100"><span class="lineNum">    3100 </span><span class="lineCov">          4 :         if (newcon-&gt;flags &amp; CON_PRINTBUFFER) {</span></a>
+<a name="3100"><span class="lineNum">    3100 </span><span class="lineCov">          2 :         if (newcon-&gt;flags &amp; CON_PRINTBUFFER) {</span></a>
 <a name="3101"><span class="lineNum">    3101 </span>            :                 /*</a>
 <a name="3102"><span class="lineNum">    3102 </span>            :                  * console_unlock(); will print out the buffered messages</a>
 <a name="3103"><span class="lineNum">    3103 </span>            :                  * for us.</a>
@@ -3172,16 +3172,16 @@
 <a name="3110"><span class="lineNum">    3110 </span>            :                  * race window with eventual console_flush_on_panic() that</a>
 <a name="3111"><span class="lineNum">    3111 </span>            :                  * ignores console_lock.</a>
 <a name="3112"><span class="lineNum">    3112 </span>            :                  */</a>
-<a name="3113"><span class="lineNum">    3113 </span><span class="lineCov">          2 :                 exclusive_console = newcon;</span></a>
-<a name="3114"><span class="lineNum">    3114 </span><span class="lineCov">          2 :                 exclusive_console_stop_seq = console_seq;</span></a>
+<a name="3113"><span class="lineNum">    3113 </span><span class="lineCov">          1 :                 exclusive_console = newcon;</span></a>
+<a name="3114"><span class="lineNum">    3114 </span><span class="lineCov">          1 :                 exclusive_console_stop_seq = console_seq;</span></a>
 <a name="3115"><span class="lineNum">    3115 </span>            : </a>
 <a name="3116"><span class="lineNum">    3116 </span>            :                 /* Get a consistent copy of @syslog_seq. */</a>
-<a name="3117"><span class="lineNum">    3117 </span><span class="lineCov">          2 :                 mutex_lock(&amp;syslog_lock);</span></a>
-<a name="3118"><span class="lineNum">    3118 </span><span class="lineCov">          2 :                 console_seq = syslog_seq;</span></a>
-<a name="3119"><span class="lineNum">    3119 </span><span class="lineCov">          2 :                 mutex_unlock(&amp;syslog_lock);</span></a>
+<a name="3117"><span class="lineNum">    3117 </span><span class="lineCov">          1 :                 mutex_lock(&amp;syslog_lock);</span></a>
+<a name="3118"><span class="lineNum">    3118 </span><span class="lineCov">          1 :                 console_seq = syslog_seq;</span></a>
+<a name="3119"><span class="lineNum">    3119 </span><span class="lineCov">          1 :                 mutex_unlock(&amp;syslog_lock);</span></a>
 <a name="3120"><span class="lineNum">    3120 </span>            :         }</a>
-<a name="3121"><span class="lineNum">    3121 </span><span class="lineCov">          4 :         console_unlock();</span></a>
-<a name="3122"><span class="lineNum">    3122 </span><span class="lineCov">          4 :         console_sysfs_notify();</span></a>
+<a name="3121"><span class="lineNum">    3121 </span><span class="lineCov">          2 :         console_unlock();</span></a>
+<a name="3122"><span class="lineNum">    3122 </span><span class="lineCov">          2 :         console_sysfs_notify();</span></a>
 <a name="3123"><span class="lineNum">    3123 </span>            : </a>
 <a name="3124"><span class="lineNum">    3124 </span>            :         /*</a>
 <a name="3125"><span class="lineNum">    3125 </span>            :          * By unregistering the bootconsoles after we enable the real console</a>
@@ -3190,10 +3190,10 @@
 <a name="3128"><span class="lineNum">    3128 </span>            :          * users know there might be something in the kernel's log buffer that</a>
 <a name="3129"><span class="lineNum">    3129 </span>            :          * went to the bootconsole (that they do not see on the real console)</a>
 <a name="3130"><span class="lineNum">    3130 </span>            :          */</a>
-<a name="3131"><span class="lineNum">    3131 </span><span class="lineCov">          4 :         pr_info(&quot;%sconsole [%s%d] enabled\n&quot;,</span></a>
+<a name="3131"><span class="lineNum">    3131 </span><span class="lineCov">          2 :         pr_info(&quot;%sconsole [%s%d] enabled\n&quot;,</span></a>
 <a name="3132"><span class="lineNum">    3132 </span>            :                 (newcon-&gt;flags &amp; CON_BOOT) ? &quot;boot&quot; : &quot;&quot; ,</a>
 <a name="3133"><span class="lineNum">    3133 </span>            :                 newcon-&gt;name, newcon-&gt;index);</a>
-<a name="3134"><span class="lineNum">    3134 </span><span class="lineCov">          4 :         if (bootcon_enabled &amp;&amp;</span></a>
+<a name="3134"><span class="lineNum">    3134 </span><span class="lineCov">          2 :         if (bootcon_enabled &amp;&amp;</span></a>
 <a name="3135"><span class="lineNum">    3135 </span><span class="lineNoCov">          0 :             ((newcon-&gt;flags &amp; (CON_CONSDEV | CON_BOOT)) == CON_CONSDEV) &amp;&amp;</span></a>
 <a name="3136"><span class="lineNum">    3136 </span><span class="lineNoCov">          0 :             !keep_bootcon) {</span></a>
 <a name="3137"><span class="lineNum">    3137 </span>            :                 /* We need to iterate through all boot consoles, to make</a>
@@ -3206,28 +3206,28 @@
 <a name="3144"><span class="lineNum">    3144 </span>            : }</a>
 <a name="3145"><span class="lineNum">    3145 </span>            : EXPORT_SYMBOL(register_console);</a>
 <a name="3146"><span class="lineNum">    3146 </span>            : </a>
-<a name="3147"><span class="lineNum">    3147 </span><span class="lineCov">          2 : int unregister_console(struct console *console)</span></a>
+<a name="3147"><span class="lineNum">    3147 </span><span class="lineCov">          1 : int unregister_console(struct console *console)</span></a>
 <a name="3148"><span class="lineNum">    3148 </span>            : {</a>
 <a name="3149"><span class="lineNum">    3149 </span>            :         struct console *con;</a>
 <a name="3150"><span class="lineNum">    3150 </span>            :         int res;</a>
 <a name="3151"><span class="lineNum">    3151 </span>            : </a>
-<a name="3152"><span class="lineNum">    3152 </span><span class="lineCov">          2 :         pr_info(&quot;%sconsole [%s%d] disabled\n&quot;,</span></a>
+<a name="3152"><span class="lineNum">    3152 </span><span class="lineCov">          1 :         pr_info(&quot;%sconsole [%s%d] disabled\n&quot;,</span></a>
 <a name="3153"><span class="lineNum">    3153 </span>            :                 (console-&gt;flags &amp; CON_BOOT) ? &quot;boot&quot; : &quot;&quot; ,</a>
 <a name="3154"><span class="lineNum">    3154 </span>            :                 console-&gt;name, console-&gt;index);</a>
 <a name="3155"><span class="lineNum">    3155 </span>            : </a>
-<a name="3156"><span class="lineNum">    3156 </span><span class="lineCov">          2 :         res = _braille_unregister_console(console);</span></a>
+<a name="3156"><span class="lineNum">    3156 </span><span class="lineCov">          1 :         res = _braille_unregister_console(console);</span></a>
 <a name="3157"><span class="lineNum">    3157 </span>            :         if (res &lt; 0)</a>
 <a name="3158"><span class="lineNum">    3158 </span>            :                 return res;</a>
 <a name="3159"><span class="lineNum">    3159 </span>            :         if (res &gt; 0)</a>
 <a name="3160"><span class="lineNum">    3160 </span>            :                 return 0;</a>
 <a name="3161"><span class="lineNum">    3161 </span>            : </a>
-<a name="3162"><span class="lineNum">    3162 </span><span class="lineCov">          2 :         res = -ENODEV;</span></a>
+<a name="3162"><span class="lineNum">    3162 </span><span class="lineCov">          1 :         res = -ENODEV;</span></a>
 <a name="3163"><span class="lineNum">    3163 </span>            :         console_lock();</a>
-<a name="3164"><span class="lineNum">    3164 </span><span class="lineCov">          2 :         if (console_drivers == console) {</span></a>
+<a name="3164"><span class="lineNum">    3164 </span><span class="lineCov">          1 :         if (console_drivers == console) {</span></a>
 <a name="3165"><span class="lineNum">    3165 </span><span class="lineNoCov">          0 :                 console_drivers=console-&gt;next;</span></a>
 <a name="3166"><span class="lineNum">    3166 </span><span class="lineNoCov">          0 :                 res = 0;</span></a>
 <a name="3167"><span class="lineNum">    3167 </span>            :         } else {</a>
-<a name="3168"><span class="lineNum">    3168 </span><span class="lineCov">          2 :                 for_each_console(con) {</span></a>
+<a name="3168"><span class="lineNum">    3168 </span><span class="lineCov">          1 :                 for_each_console(con) {</span></a>
 <a name="3169"><span class="lineNum">    3169 </span><span class="lineNoCov">          0 :                         if (con-&gt;next == console) {</span></a>
 <a name="3170"><span class="lineNum">    3170 </span><span class="lineNoCov">          0 :                                 con-&gt;next = console-&gt;next;</span></a>
 <a name="3171"><span class="lineNum">    3171 </span><span class="lineNoCov">          0 :                                 res = 0;</span></a>
@@ -3236,7 +3236,7 @@
 <a name="3174"><span class="lineNum">    3174 </span>            :                 }</a>
 <a name="3175"><span class="lineNum">    3175 </span>            :         }</a>
 <a name="3176"><span class="lineNum">    3176 </span>            : </a>
-<a name="3177"><span class="lineNum">    3177 </span><span class="lineCov">          2 :         if (res)</span></a>
+<a name="3177"><span class="lineNum">    3177 </span><span class="lineCov">          1 :         if (res)</span></a>
 <a name="3178"><span class="lineNum">    3178 </span>            :                 goto out_disable_unlock;</a>
 <a name="3179"><span class="lineNum">    3179 </span>            : </a>
 <a name="3180"><span class="lineNum">    3180 </span><span class="lineNoCov">          0 :         if (console-&gt;flags &amp; CON_EXTENDED)</span></a>
@@ -3259,10 +3259,10 @@
 <a name="3197"><span class="lineNum">    3197 </span>            :         return res;</a>
 <a name="3198"><span class="lineNum">    3198 </span>            : </a>
 <a name="3199"><span class="lineNum">    3199 </span>            : out_disable_unlock:</a>
-<a name="3200"><span class="lineNum">    3200 </span><span class="lineCov">          2 :         console-&gt;flags &amp;= ~CON_ENABLED;</span></a>
-<a name="3201"><span class="lineNum">    3201 </span><span class="lineCov">          2 :         console_unlock();</span></a>
+<a name="3200"><span class="lineNum">    3200 </span><span class="lineCov">          1 :         console-&gt;flags &amp;= ~CON_ENABLED;</span></a>
+<a name="3201"><span class="lineNum">    3201 </span><span class="lineCov">          1 :         console_unlock();</span></a>
 <a name="3202"><span class="lineNum">    3202 </span>            : </a>
-<a name="3203"><span class="lineNum">    3203 </span><span class="lineCov">          2 :         return res;</span></a>
+<a name="3203"><span class="lineNum">    3203 </span><span class="lineCov">          1 :         return res;</span></a>
 <a name="3204"><span class="lineNum">    3204 </span>            : }</a>
 <a name="3205"><span class="lineNum">    3205 </span>            : EXPORT_SYMBOL(unregister_console);</a>
 <a name="3206"><span class="lineNum">    3206 </span>            : </a>
@@ -3272,29 +3272,29 @@
 <a name="3210"><span class="lineNum">    3210 </span>            :  * Just do some early initializations, and do the complex setup</a>
 <a name="3211"><span class="lineNum">    3211 </span>            :  * later.</a>
 <a name="3212"><span class="lineNum">    3212 </span>            :  */</a>
-<a name="3213"><span class="lineNum">    3213 </span><span class="lineCov">          2 : void __init console_init(void)</span></a>
+<a name="3213"><span class="lineNum">    3213 </span><span class="lineCov">          1 : void __init console_init(void)</span></a>
 <a name="3214"><span class="lineNum">    3214 </span>            : {</a>
 <a name="3215"><span class="lineNum">    3215 </span>            :         int ret;</a>
 <a name="3216"><span class="lineNum">    3216 </span>            :         initcall_t call;</a>
 <a name="3217"><span class="lineNum">    3217 </span>            :         initcall_entry_t *ce;</a>
 <a name="3218"><span class="lineNum">    3218 </span>            : </a>
 <a name="3219"><span class="lineNum">    3219 </span>            :         /* Setup the default TTY line discipline. */</a>
-<a name="3220"><span class="lineNum">    3220 </span><span class="lineCov">          2 :         n_tty_init();</span></a>
+<a name="3220"><span class="lineNum">    3220 </span><span class="lineCov">          1 :         n_tty_init();</span></a>
 <a name="3221"><span class="lineNum">    3221 </span>            : </a>
 <a name="3222"><span class="lineNum">    3222 </span>            :         /*</a>
 <a name="3223"><span class="lineNum">    3223 </span>            :          * set up the console device so that later boot sequences can</a>
 <a name="3224"><span class="lineNum">    3224 </span>            :          * inform about problems etc..</a>
 <a name="3225"><span class="lineNum">    3225 </span>            :          */</a>
-<a name="3226"><span class="lineNum">    3226 </span><span class="lineCov">          2 :         ce = __con_initcall_start;</span></a>
-<a name="3227"><span class="lineNum">    3227 </span><span class="lineCov">          2 :         trace_initcall_level(&quot;console&quot;);</span></a>
-<a name="3228"><span class="lineNum">    3228 </span><span class="lineCov">          4 :         while (ce &lt; __con_initcall_end) {</span></a>
-<a name="3229"><span class="lineNum">    3229 </span><span class="lineCov">          2 :                 call = initcall_from_entry(ce);</span></a>
+<a name="3226"><span class="lineNum">    3226 </span><span class="lineCov">          1 :         ce = __con_initcall_start;</span></a>
+<a name="3227"><span class="lineNum">    3227 </span><span class="lineCov">          1 :         trace_initcall_level(&quot;console&quot;);</span></a>
+<a name="3228"><span class="lineNum">    3228 </span><span class="lineCov">          2 :         while (ce &lt; __con_initcall_end) {</span></a>
+<a name="3229"><span class="lineNum">    3229 </span><span class="lineCov">          1 :                 call = initcall_from_entry(ce);</span></a>
 <a name="3230"><span class="lineNum">    3230 </span>            :                 trace_initcall_start(call);</a>
-<a name="3231"><span class="lineNum">    3231 </span><span class="lineCov">          2 :                 ret = call();</span></a>
-<a name="3232"><span class="lineNum">    3232 </span><span class="lineCov">          2 :                 trace_initcall_finish(call, ret);</span></a>
-<a name="3233"><span class="lineNum">    3233 </span><span class="lineCov">          2 :                 ce++;</span></a>
+<a name="3231"><span class="lineNum">    3231 </span><span class="lineCov">          1 :                 ret = call();</span></a>
+<a name="3232"><span class="lineNum">    3232 </span><span class="lineCov">          1 :                 trace_initcall_finish(call, ret);</span></a>
+<a name="3233"><span class="lineNum">    3233 </span><span class="lineCov">          1 :                 ce++;</span></a>
 <a name="3234"><span class="lineNum">    3234 </span>            :         }</a>
-<a name="3235"><span class="lineNum">    3235 </span><span class="lineCov">          2 : }</span></a>
+<a name="3235"><span class="lineNum">    3235 </span><span class="lineCov">          1 : }</span></a>
 <a name="3236"><span class="lineNum">    3236 </span>            : </a>
 <a name="3237"><span class="lineNum">    3237 </span>            : /*</a>
 <a name="3238"><span class="lineNum">    3238 </span>            :  * Some boot consoles access data that is in the init section and which will</a>
@@ -3310,14 +3310,14 @@
 <a name="3248"><span class="lineNum">    3248 </span>            :  * intersects with the init section. Note that all other boot consoles will</a>
 <a name="3249"><span class="lineNum">    3249 </span>            :  * get unregistered when the real preferred console is registered.</a>
 <a name="3250"><span class="lineNum">    3250 </span>            :  */</a>
-<a name="3251"><span class="lineNum">    3251 </span><span class="lineCov">          2 : static int __init printk_late_init(void)</span></a>
+<a name="3251"><span class="lineNum">    3251 </span><span class="lineCov">          1 : static int __init printk_late_init(void)</span></a>
 <a name="3252"><span class="lineNum">    3252 </span>            : {</a>
 <a name="3253"><span class="lineNum">    3253 </span>            :         struct console *con;</a>
 <a name="3254"><span class="lineNum">    3254 </span>            :         int ret;</a>
 <a name="3255"><span class="lineNum">    3255 </span>            : </a>
-<a name="3256"><span class="lineNum">    3256 </span><span class="lineCov">          6 :         for_each_console(con) {</span></a>
-<a name="3257"><span class="lineNum">    3257 </span><span class="lineCov">          4 :                 if (!(con-&gt;flags &amp; CON_BOOT))</span></a>
-<a name="3258"><span class="lineNum">    3258 </span><span class="lineCov">          4 :                         continue;</span></a>
+<a name="3256"><span class="lineNum">    3256 </span><span class="lineCov">          3 :         for_each_console(con) {</span></a>
+<a name="3257"><span class="lineNum">    3257 </span><span class="lineCov">          2 :                 if (!(con-&gt;flags &amp; CON_BOOT))</span></a>
+<a name="3258"><span class="lineNum">    3258 </span><span class="lineCov">          2 :                         continue;</span></a>
 <a name="3259"><span class="lineNum">    3259 </span>            : </a>
 <a name="3260"><span class="lineNum">    3260 </span>            :                 /* Check addresses that might be used for enabled consoles. */</a>
 <a name="3261"><span class="lineNum">    3261 </span><span class="lineNoCov">          0 :                 if (init_section_intersects(con, sizeof(*con)) ||</span></a>
@@ -3335,14 +3335,14 @@
 <a name="3273"><span class="lineNum">    3273 </span><span class="lineNoCov">          0 :                         unregister_console(con);</span></a>
 <a name="3274"><span class="lineNum">    3274 </span>            :                 }</a>
 <a name="3275"><span class="lineNum">    3275 </span>            :         }</a>
-<a name="3276"><span class="lineNum">    3276 </span><span class="lineCov">          2 :         ret = cpuhp_setup_state_nocalls(CPUHP_PRINTK_DEAD, &quot;printk:dead&quot;, NULL,</span></a>
+<a name="3276"><span class="lineNum">    3276 </span><span class="lineCov">          1 :         ret = cpuhp_setup_state_nocalls(CPUHP_PRINTK_DEAD, &quot;printk:dead&quot;, NULL,</span></a>
 <a name="3277"><span class="lineNum">    3277 </span>            :                                         console_cpu_notify);</a>
-<a name="3278"><span class="lineNum">    3278 </span><span class="lineCov">          2 :         WARN_ON(ret &lt; 0);</span></a>
-<a name="3279"><span class="lineNum">    3279 </span><span class="lineCov">          2 :         ret = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, &quot;printk:online&quot;,</span></a>
+<a name="3278"><span class="lineNum">    3278 </span><span class="lineCov">          1 :         WARN_ON(ret &lt; 0);</span></a>
+<a name="3279"><span class="lineNum">    3279 </span><span class="lineCov">          1 :         ret = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, &quot;printk:online&quot;,</span></a>
 <a name="3280"><span class="lineNum">    3280 </span>            :                                         console_cpu_notify, NULL);</a>
-<a name="3281"><span class="lineNum">    3281 </span><span class="lineCov">          2 :         WARN_ON(ret &lt; 0);</span></a>
-<a name="3282"><span class="lineNum">    3282 </span><span class="lineCov">          2 :         printk_sysctl_init();</span></a>
-<a name="3283"><span class="lineNum">    3283 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="3281"><span class="lineNum">    3281 </span><span class="lineCov">          1 :         WARN_ON(ret &lt; 0);</span></a>
+<a name="3282"><span class="lineNum">    3282 </span><span class="lineCov">          1 :         printk_sysctl_init();</span></a>
+<a name="3283"><span class="lineNum">    3283 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="3284"><span class="lineNum">    3284 </span>            : }</a>
 <a name="3285"><span class="lineNum">    3285 </span>            : late_initcall(printk_late_init);</a>
 <a name="3286"><span class="lineNum">    3286 </span>            : </a>
@@ -3355,45 +3355,45 @@
 <a name="3293"><span class="lineNum">    3293 </span>            : </a>
 <a name="3294"><span class="lineNum">    3294 </span>            : static DEFINE_PER_CPU(int, printk_pending);</a>
 <a name="3295"><span class="lineNum">    3295 </span>            : </a>
-<a name="3296"><span class="lineNum">    3296 </span><span class="lineCov">          2 : static void wake_up_klogd_work_func(struct irq_work *irq_work)</span></a>
+<a name="3296"><span class="lineNum">    3296 </span><span class="lineCov">          1 : static void wake_up_klogd_work_func(struct irq_work *irq_work)</span></a>
 <a name="3297"><span class="lineNum">    3297 </span>            : {</a>
-<a name="3298"><span class="lineNum">    3298 </span><span class="lineCov">          6 :         int pending = this_cpu_xchg(printk_pending, 0);</span></a>
+<a name="3298"><span class="lineNum">    3298 </span><span class="lineCov">          3 :         int pending = this_cpu_xchg(printk_pending, 0);</span></a>
 <a name="3299"><span class="lineNum">    3299 </span>            : </a>
-<a name="3300"><span class="lineNum">    3300 </span><span class="lineCov">          2 :         if (pending &amp; PRINTK_PENDING_OUTPUT) {</span></a>
+<a name="3300"><span class="lineNum">    3300 </span><span class="lineCov">          1 :         if (pending &amp; PRINTK_PENDING_OUTPUT) {</span></a>
 <a name="3301"><span class="lineNum">    3301 </span>            :                 /* If trylock fails, someone else is doing the printing */</a>
-<a name="3302"><span class="lineNum">    3302 </span><span class="lineCov">          2 :                 if (console_trylock())</span></a>
-<a name="3303"><span class="lineNum">    3303 </span><span class="lineCov">          2 :                         console_unlock();</span></a>
+<a name="3302"><span class="lineNum">    3302 </span><span class="lineCov">          1 :                 if (console_trylock())</span></a>
+<a name="3303"><span class="lineNum">    3303 </span><span class="lineCov">          1 :                         console_unlock();</span></a>
 <a name="3304"><span class="lineNum">    3304 </span>            :         }</a>
 <a name="3305"><span class="lineNum">    3305 </span>            : </a>
-<a name="3306"><span class="lineNum">    3306 </span><span class="lineCov">          2 :         if (pending &amp; PRINTK_PENDING_WAKEUP)</span></a>
+<a name="3306"><span class="lineNum">    3306 </span><span class="lineCov">          1 :         if (pending &amp; PRINTK_PENDING_WAKEUP)</span></a>
 <a name="3307"><span class="lineNum">    3307 </span><span class="lineNoCov">          0 :                 wake_up_interruptible(&amp;log_wait);</span></a>
-<a name="3308"><span class="lineNum">    3308 </span><span class="lineCov">          2 : }</span></a>
+<a name="3308"><span class="lineNum">    3308 </span><span class="lineCov">          1 : }</span></a>
 <a name="3309"><span class="lineNum">    3309 </span>            : </a>
 <a name="3310"><span class="lineNum">    3310 </span>            : static DEFINE_PER_CPU(struct irq_work, wake_up_klogd_work) =</a>
 <a name="3311"><span class="lineNum">    3311 </span>            :         IRQ_WORK_INIT_LAZY(wake_up_klogd_work_func);</a>
 <a name="3312"><span class="lineNum">    3312 </span>            : </a>
-<a name="3313"><span class="lineNum">    3313 </span><span class="lineCov">        506 : void wake_up_klogd(void)</span></a>
+<a name="3313"><span class="lineNum">    3313 </span><span class="lineCov">        293 : void wake_up_klogd(void)</span></a>
 <a name="3314"><span class="lineNum">    3314 </span>            : {</a>
-<a name="3315"><span class="lineNum">    3315 </span><span class="lineCov">        506 :         if (!printk_percpu_data_ready())</span></a>
+<a name="3315"><span class="lineNum">    3315 </span><span class="lineCov">        293 :         if (!printk_percpu_data_ready())</span></a>
 <a name="3316"><span class="lineNum">    3316 </span>            :                 return;</a>
 <a name="3317"><span class="lineNum">    3317 </span>            : </a>
-<a name="3318"><span class="lineNum">    3318 </span><span class="lineCov">        472 :         preempt_disable();</span></a>
-<a name="3319"><span class="lineNum">    3319 </span><span class="lineCov">        472 :         if (waitqueue_active(&amp;log_wait)) {</span></a>
+<a name="3318"><span class="lineNum">    3318 </span><span class="lineCov">        276 :         preempt_disable();</span></a>
+<a name="3319"><span class="lineNum">    3319 </span><span class="lineCov">        276 :         if (waitqueue_active(&amp;log_wait)) {</span></a>
 <a name="3320"><span class="lineNum">    3320 </span><span class="lineNoCov">          0 :                 this_cpu_or(printk_pending, PRINTK_PENDING_WAKEUP);</span></a>
 <a name="3321"><span class="lineNum">    3321 </span><span class="lineNoCov">          0 :                 irq_work_queue(this_cpu_ptr(&amp;wake_up_klogd_work));</span></a>
 <a name="3322"><span class="lineNum">    3322 </span>            :         }</a>
-<a name="3323"><span class="lineNum">    3323 </span><span class="lineCov">        472 :         preempt_enable();</span></a>
+<a name="3323"><span class="lineNum">    3323 </span><span class="lineCov">        276 :         preempt_enable();</span></a>
 <a name="3324"><span class="lineNum">    3324 </span>            : }</a>
 <a name="3325"><span class="lineNum">    3325 </span>            : </a>
-<a name="3326"><span class="lineNum">    3326 </span><span class="lineCov">          2 : void defer_console_output(void)</span></a>
+<a name="3326"><span class="lineNum">    3326 </span><span class="lineCov">          1 : void defer_console_output(void)</span></a>
 <a name="3327"><span class="lineNum">    3327 </span>            : {</a>
-<a name="3328"><span class="lineNum">    3328 </span><span class="lineCov">          2 :         if (!printk_percpu_data_ready())</span></a>
+<a name="3328"><span class="lineNum">    3328 </span><span class="lineCov">          1 :         if (!printk_percpu_data_ready())</span></a>
 <a name="3329"><span class="lineNum">    3329 </span>            :                 return;</a>
 <a name="3330"><span class="lineNum">    3330 </span>            : </a>
-<a name="3331"><span class="lineNum">    3331 </span><span class="lineCov">          2 :         preempt_disable();</span></a>
-<a name="3332"><span class="lineNum">    3332 </span><span class="lineCov">          6 :         this_cpu_or(printk_pending, PRINTK_PENDING_OUTPUT);</span></a>
-<a name="3333"><span class="lineNum">    3333 </span><span class="lineCov">          2 :         irq_work_queue(this_cpu_ptr(&amp;wake_up_klogd_work));</span></a>
-<a name="3334"><span class="lineNum">    3334 </span><span class="lineCov">          2 :         preempt_enable();</span></a>
+<a name="3331"><span class="lineNum">    3331 </span><span class="lineCov">          1 :         preempt_disable();</span></a>
+<a name="3332"><span class="lineNum">    3332 </span><span class="lineCov">          3 :         this_cpu_or(printk_pending, PRINTK_PENDING_OUTPUT);</span></a>
+<a name="3333"><span class="lineNum">    3333 </span><span class="lineCov">          1 :         irq_work_queue(this_cpu_ptr(&amp;wake_up_klogd_work));</span></a>
+<a name="3334"><span class="lineNum">    3334 </span><span class="lineCov">          1 :         preempt_enable();</span></a>
 <a name="3335"><span class="lineNum">    3335 </span>            : }</a>
 <a name="3336"><span class="lineNum">    3336 </span>            : </a>
 <a name="3337"><span class="lineNum">    3337 </span><span class="lineNoCov">          0 : void printk_trigger_flush(void)</span></a>
@@ -3405,22 +3405,22 @@
 <a name="3343"><span class="lineNum">    3343 </span>            : {</a>
 <a name="3344"><span class="lineNum">    3344 </span>            :         int r;</a>
 <a name="3345"><span class="lineNum">    3345 </span>            : </a>
-<a name="3346"><span class="lineNum">    3346 </span><span class="lineCov">          2 :         r = vprintk_emit(0, LOGLEVEL_SCHED, NULL, fmt, args);</span></a>
-<a name="3347"><span class="lineNum">    3347 </span><span class="lineCov">          2 :         defer_console_output();</span></a>
+<a name="3346"><span class="lineNum">    3346 </span><span class="lineCov">          1 :         r = vprintk_emit(0, LOGLEVEL_SCHED, NULL, fmt, args);</span></a>
+<a name="3347"><span class="lineNum">    3347 </span><span class="lineCov">          1 :         defer_console_output();</span></a>
 <a name="3348"><span class="lineNum">    3348 </span>            : </a>
 <a name="3349"><span class="lineNum">    3349 </span><span class="lineNoCov">          0 :         return r;</span></a>
 <a name="3350"><span class="lineNum">    3350 </span>            : }</a>
 <a name="3351"><span class="lineNum">    3351 </span>            : </a>
-<a name="3352"><span class="lineNum">    3352 </span><span class="lineCov">          2 : int _printk_deferred(const char *fmt, ...)</span></a>
+<a name="3352"><span class="lineNum">    3352 </span><span class="lineCov">          1 : int _printk_deferred(const char *fmt, ...)</span></a>
 <a name="3353"><span class="lineNum">    3353 </span>            : {</a>
 <a name="3354"><span class="lineNum">    3354 </span>            :         va_list args;</a>
 <a name="3355"><span class="lineNum">    3355 </span>            :         int r;</a>
 <a name="3356"><span class="lineNum">    3356 </span>            : </a>
-<a name="3357"><span class="lineNum">    3357 </span><span class="lineCov">          2 :         va_start(args, fmt);</span></a>
-<a name="3358"><span class="lineNum">    3358 </span><span class="lineCov">          2 :         r = vprintk_deferred(fmt, args);</span></a>
-<a name="3359"><span class="lineNum">    3359 </span><span class="lineCov">          2 :         va_end(args);</span></a>
+<a name="3357"><span class="lineNum">    3357 </span><span class="lineCov">          1 :         va_start(args, fmt);</span></a>
+<a name="3358"><span class="lineNum">    3358 </span><span class="lineCov">          1 :         r = vprintk_deferred(fmt, args);</span></a>
+<a name="3359"><span class="lineNum">    3359 </span><span class="lineCov">          1 :         va_end(args);</span></a>
 <a name="3360"><span class="lineNum">    3360 </span>            : </a>
-<a name="3361"><span class="lineNum">    3361 </span><span class="lineCov">          2 :         return r;</span></a>
+<a name="3361"><span class="lineNum">    3361 </span><span class="lineCov">          1 :         return r;</span></a>
 <a name="3362"><span class="lineNum">    3362 </span>            : }</a>
 <a name="3363"><span class="lineNum">    3363 </span>            : </a>
 <a name="3364"><span class="lineNum">    3364 </span>            : /*</a>
@@ -3470,25 +3470,25 @@
 <a name="3408"><span class="lineNum">    3408 </span>            :  * structure will be called when the kernel oopses or panics and must be</a>
 <a name="3409"><span class="lineNum">    3409 </span>            :  * set. Returns zero on success and %-EINVAL or %-EBUSY otherwise.</a>
 <a name="3410"><span class="lineNum">    3410 </span>            :  */</a>
-<a name="3411"><span class="lineNum">    3411 </span><span class="lineCov">          2 : int kmsg_dump_register(struct kmsg_dumper *dumper)</span></a>
+<a name="3411"><span class="lineNum">    3411 </span><span class="lineCov">          1 : int kmsg_dump_register(struct kmsg_dumper *dumper)</span></a>
 <a name="3412"><span class="lineNum">    3412 </span>            : {</a>
 <a name="3413"><span class="lineNum">    3413 </span>            :         unsigned long flags;</a>
-<a name="3414"><span class="lineNum">    3414 </span><span class="lineCov">          2 :         int err = -EBUSY;</span></a>
+<a name="3414"><span class="lineNum">    3414 </span><span class="lineCov">          1 :         int err = -EBUSY;</span></a>
 <a name="3415"><span class="lineNum">    3415 </span>            : </a>
 <a name="3416"><span class="lineNum">    3416 </span>            :         /* The dump callback needs to be set */</a>
-<a name="3417"><span class="lineNum">    3417 </span><span class="lineCov">          2 :         if (!dumper-&gt;dump)</span></a>
+<a name="3417"><span class="lineNum">    3417 </span><span class="lineCov">          1 :         if (!dumper-&gt;dump)</span></a>
 <a name="3418"><span class="lineNum">    3418 </span>            :                 return -EINVAL;</a>
 <a name="3419"><span class="lineNum">    3419 </span>            : </a>
-<a name="3420"><span class="lineNum">    3420 </span><span class="lineCov">          2 :         spin_lock_irqsave(&amp;dump_list_lock, flags);</span></a>
+<a name="3420"><span class="lineNum">    3420 </span><span class="lineCov">          1 :         spin_lock_irqsave(&amp;dump_list_lock, flags);</span></a>
 <a name="3421"><span class="lineNum">    3421 </span>            :         /* Don't allow registering multiple times */</a>
-<a name="3422"><span class="lineNum">    3422 </span><span class="lineCov">          2 :         if (!dumper-&gt;registered) {</span></a>
-<a name="3423"><span class="lineNum">    3423 </span><span class="lineCov">          2 :                 dumper-&gt;registered = 1;</span></a>
-<a name="3424"><span class="lineNum">    3424 </span><span class="lineCov">          4 :                 list_add_tail_rcu(&amp;dumper-&gt;list, &amp;dump_list);</span></a>
-<a name="3425"><span class="lineNum">    3425 </span><span class="lineCov">          2 :                 err = 0;</span></a>
+<a name="3422"><span class="lineNum">    3422 </span><span class="lineCov">          1 :         if (!dumper-&gt;registered) {</span></a>
+<a name="3423"><span class="lineNum">    3423 </span><span class="lineCov">          1 :                 dumper-&gt;registered = 1;</span></a>
+<a name="3424"><span class="lineNum">    3424 </span><span class="lineCov">          2 :                 list_add_tail_rcu(&amp;dumper-&gt;list, &amp;dump_list);</span></a>
+<a name="3425"><span class="lineNum">    3425 </span><span class="lineCov">          1 :                 err = 0;</span></a>
 <a name="3426"><span class="lineNum">    3426 </span>            :         }</a>
-<a name="3427"><span class="lineNum">    3427 </span><span class="lineCov">          2 :         spin_unlock_irqrestore(&amp;dump_list_lock, flags);</span></a>
+<a name="3427"><span class="lineNum">    3427 </span><span class="lineCov">          1 :         spin_unlock_irqrestore(&amp;dump_list_lock, flags);</span></a>
 <a name="3428"><span class="lineNum">    3428 </span>            : </a>
-<a name="3429"><span class="lineNum">    3429 </span><span class="lineCov">          2 :         return err;</span></a>
+<a name="3429"><span class="lineNum">    3429 </span><span class="lineCov">          1 :         return err;</span></a>
 <a name="3430"><span class="lineNum">    3430 </span>            : }</a>
 <a name="3431"><span class="lineNum">    3431 </span>            : EXPORT_SYMBOL_GPL(kmsg_dump_register);</a>
 <a name="3432"><span class="lineNum">    3432 </span>            : </a>
@@ -3545,30 +3545,30 @@
 <a name="3483"><span class="lineNum">    3483 </span>            :  * retrieve the kmsg records with kmsg_dump_get_line() or</a>
 <a name="3484"><span class="lineNum">    3484 </span>            :  * kmsg_dump_get_buffer().</a>
 <a name="3485"><span class="lineNum">    3485 </span>            :  */</a>
-<a name="3486"><span class="lineNum">    3486 </span><span class="lineCov">          2 : void kmsg_dump(enum kmsg_dump_reason reason)</span></a>
+<a name="3486"><span class="lineNum">    3486 </span><span class="lineCov">          1 : void kmsg_dump(enum kmsg_dump_reason reason)</span></a>
 <a name="3487"><span class="lineNum">    3487 </span>            : {</a>
 <a name="3488"><span class="lineNum">    3488 </span>            :         struct kmsg_dumper *dumper;</a>
 <a name="3489"><span class="lineNum">    3489 </span>            : </a>
 <a name="3490"><span class="lineNum">    3490 </span>            :         rcu_read_lock();</a>
-<a name="3491"><span class="lineNum">    3491 </span><span class="lineCov">          4 :         list_for_each_entry_rcu(dumper, &amp;dump_list, list) {</span></a>
-<a name="3492"><span class="lineNum">    3492 </span><span class="lineCov">          2 :                 enum kmsg_dump_reason max_reason = dumper-&gt;max_reason;</span></a>
+<a name="3491"><span class="lineNum">    3491 </span><span class="lineCov">          2 :         list_for_each_entry_rcu(dumper, &amp;dump_list, list) {</span></a>
+<a name="3492"><span class="lineNum">    3492 </span><span class="lineCov">          1 :                 enum kmsg_dump_reason max_reason = dumper-&gt;max_reason;</span></a>
 <a name="3493"><span class="lineNum">    3493 </span>            : </a>
 <a name="3494"><span class="lineNum">    3494 </span>            :                 /*</a>
 <a name="3495"><span class="lineNum">    3495 </span>            :                  * If client has not provided a specific max_reason, default</a>
 <a name="3496"><span class="lineNum">    3496 </span>            :                  * to KMSG_DUMP_OOPS, unless always_kmsg_dump was set.</a>
 <a name="3497"><span class="lineNum">    3497 </span>            :                  */</a>
-<a name="3498"><span class="lineNum">    3498 </span><span class="lineCov">          2 :                 if (max_reason == KMSG_DUMP_UNDEF) {</span></a>
-<a name="3499"><span class="lineNum">    3499 </span><span class="lineCov">          2 :                         max_reason = always_kmsg_dump ? KMSG_DUMP_MAX :</span></a>
+<a name="3498"><span class="lineNum">    3498 </span><span class="lineCov">          1 :                 if (max_reason == KMSG_DUMP_UNDEF) {</span></a>
+<a name="3499"><span class="lineNum">    3499 </span><span class="lineCov">          1 :                         max_reason = always_kmsg_dump ? KMSG_DUMP_MAX :</span></a>
 <a name="3500"><span class="lineNum">    3500 </span>            :                                                         KMSG_DUMP_OOPS;</a>
 <a name="3501"><span class="lineNum">    3501 </span>            :                 }</a>
-<a name="3502"><span class="lineNum">    3502 </span><span class="lineCov">          2 :                 if (reason &gt; max_reason)</span></a>
-<a name="3503"><span class="lineNum">    3503 </span><span class="lineCov">          2 :                         continue;</span></a>
+<a name="3502"><span class="lineNum">    3502 </span><span class="lineCov">          1 :                 if (reason &gt; max_reason)</span></a>
+<a name="3503"><span class="lineNum">    3503 </span><span class="lineCov">          1 :                         continue;</span></a>
 <a name="3504"><span class="lineNum">    3504 </span>            : </a>
 <a name="3505"><span class="lineNum">    3505 </span>            :                 /* invoke dumper which will iterate over records */</a>
 <a name="3506"><span class="lineNum">    3506 </span><span class="lineNoCov">          0 :                 dumper-&gt;dump(dumper, reason);</span></a>
 <a name="3507"><span class="lineNum">    3507 </span>            :         }</a>
 <a name="3508"><span class="lineNum">    3508 </span>            :         rcu_read_unlock();</a>
-<a name="3509"><span class="lineNum">    3509 </span><span class="lineCov">          2 : }</span></a>
+<a name="3509"><span class="lineNum">    3509 </span><span class="lineCov">          1 : }</span></a>
 <a name="3510"><span class="lineNum">    3510 </span>            : </a>
 <a name="3511"><span class="lineNum">    3511 </span>            : /**</a>
 <a name="3512"><span class="lineNum">    3512 </span>            :  * kmsg_dump_get_line - retrieve one kmsg log line</a>

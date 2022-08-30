@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -639,20 +639,20 @@
 <a name="577"><span class="lineNum">     577 </span>            : }</a>
 <a name="578"><span class="lineNum">     578 </span>            : EXPORT_SYMBOL_GPL(fsnotify);</a>
 <a name="579"><span class="lineNum">     579 </span>            : </a>
-<a name="580"><span class="lineNum">     580 </span><span class="lineCov">          2 : static __init int fsnotify_init(void)</span></a>
+<a name="580"><span class="lineNum">     580 </span><span class="lineCov">          1 : static __init int fsnotify_init(void)</span></a>
 <a name="581"><span class="lineNum">     581 </span>            : {</a>
 <a name="582"><span class="lineNum">     582 </span>            :         int ret;</a>
 <a name="583"><span class="lineNum">     583 </span>            : </a>
 <a name="584"><span class="lineNum">     584 </span>            :         BUILD_BUG_ON(HWEIGHT32(ALL_FSNOTIFY_BITS) != 25);</a>
 <a name="585"><span class="lineNum">     585 </span>            : </a>
-<a name="586"><span class="lineNum">     586 </span><span class="lineCov">          2 :         ret = init_srcu_struct(&amp;fsnotify_mark_srcu);</span></a>
-<a name="587"><span class="lineNum">     587 </span><span class="lineCov">          2 :         if (ret)</span></a>
+<a name="586"><span class="lineNum">     586 </span><span class="lineCov">          1 :         ret = init_srcu_struct(&amp;fsnotify_mark_srcu);</span></a>
+<a name="587"><span class="lineNum">     587 </span><span class="lineCov">          1 :         if (ret)</span></a>
 <a name="588"><span class="lineNum">     588 </span><span class="lineNoCov">          0 :                 panic(&quot;initializing fsnotify_mark_srcu&quot;);</span></a>
 <a name="589"><span class="lineNum">     589 </span>            : </a>
-<a name="590"><span class="lineNum">     590 </span><span class="lineCov">          2 :         fsnotify_mark_connector_cachep = KMEM_CACHE(fsnotify_mark_connector,</span></a>
+<a name="590"><span class="lineNum">     590 </span><span class="lineCov">          1 :         fsnotify_mark_connector_cachep = KMEM_CACHE(fsnotify_mark_connector,</span></a>
 <a name="591"><span class="lineNum">     591 </span>            :                                                     SLAB_PANIC);</a>
 <a name="592"><span class="lineNum">     592 </span>            : </a>
-<a name="593"><span class="lineNum">     593 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="593"><span class="lineNum">     593 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="594"><span class="lineNum">     594 </span>            : }</a>
 <a name="595"><span class="lineNum">     595 </span>            : core_initcall(fsnotify_init);</a>
 </pre>

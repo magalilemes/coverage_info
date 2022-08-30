@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -1886,15 +1886,15 @@
 <a name="1824"><span class="lineNum">    1824 </span>            : </a>
 <a name="1825"><span class="lineNum">    1825 </span>            : /* ------------------------------------------------------------------------- */</a>
 <a name="1826"><span class="lineNum">    1826 </span>            : </a>
-<a name="1827"><span class="lineNum">    1827 </span><span class="lineCov">          2 : int i2c_for_each_dev(void *data, int (*fn)(struct device *dev, void *data))</span></a>
+<a name="1827"><span class="lineNum">    1827 </span><span class="lineCov">          1 : int i2c_for_each_dev(void *data, int (*fn)(struct device *dev, void *data))</span></a>
 <a name="1828"><span class="lineNum">    1828 </span>            : {</a>
 <a name="1829"><span class="lineNum">    1829 </span>            :         int res;</a>
 <a name="1830"><span class="lineNum">    1830 </span>            : </a>
-<a name="1831"><span class="lineNum">    1831 </span><span class="lineCov">          2 :         mutex_lock(&amp;core_lock);</span></a>
-<a name="1832"><span class="lineNum">    1832 </span><span class="lineCov">          2 :         res = bus_for_each_dev(&amp;i2c_bus_type, NULL, data, fn);</span></a>
-<a name="1833"><span class="lineNum">    1833 </span><span class="lineCov">          2 :         mutex_unlock(&amp;core_lock);</span></a>
+<a name="1831"><span class="lineNum">    1831 </span><span class="lineCov">          1 :         mutex_lock(&amp;core_lock);</span></a>
+<a name="1832"><span class="lineNum">    1832 </span><span class="lineCov">          1 :         res = bus_for_each_dev(&amp;i2c_bus_type, NULL, data, fn);</span></a>
+<a name="1833"><span class="lineNum">    1833 </span><span class="lineCov">          1 :         mutex_unlock(&amp;core_lock);</span></a>
 <a name="1834"><span class="lineNum">    1834 </span>            : </a>
-<a name="1835"><span class="lineNum">    1835 </span><span class="lineCov">          2 :         return res;</span></a>
+<a name="1835"><span class="lineNum">    1835 </span><span class="lineCov">          1 :         return res;</span></a>
 <a name="1836"><span class="lineNum">    1836 </span>            : }</a>
 <a name="1837"><span class="lineNum">    1837 </span>            : EXPORT_SYMBOL_GPL(i2c_for_each_dev);</a>
 <a name="1838"><span class="lineNum">    1838 </span>            : </a>
@@ -1910,32 +1910,32 @@
 <a name="1848"><span class="lineNum">    1848 </span>            :  * i2c slave chips, on a bus instance associated with some i2c_adapter.</a>
 <a name="1849"><span class="lineNum">    1849 </span>            :  */</a>
 <a name="1850"><span class="lineNum">    1850 </span>            : </a>
-<a name="1851"><span class="lineNum">    1851 </span><span class="lineCov">          2 : int i2c_register_driver(struct module *owner, struct i2c_driver *driver)</span></a>
+<a name="1851"><span class="lineNum">    1851 </span><span class="lineCov">          1 : int i2c_register_driver(struct module *owner, struct i2c_driver *driver)</span></a>
 <a name="1852"><span class="lineNum">    1852 </span>            : {</a>
 <a name="1853"><span class="lineNum">    1853 </span>            :         int res;</a>
 <a name="1854"><span class="lineNum">    1854 </span>            : </a>
 <a name="1855"><span class="lineNum">    1855 </span>            :         /* Can't register until after driver model init */</a>
-<a name="1856"><span class="lineNum">    1856 </span><span class="lineCov">          2 :         if (WARN_ON(!is_registered))</span></a>
+<a name="1856"><span class="lineNum">    1856 </span><span class="lineCov">          1 :         if (WARN_ON(!is_registered))</span></a>
 <a name="1857"><span class="lineNum">    1857 </span>            :                 return -EAGAIN;</a>
 <a name="1858"><span class="lineNum">    1858 </span>            : </a>
 <a name="1859"><span class="lineNum">    1859 </span>            :         /* add the driver to the list of i2c drivers in the driver core */</a>
-<a name="1860"><span class="lineNum">    1860 </span><span class="lineCov">          2 :         driver-&gt;driver.owner = owner;</span></a>
-<a name="1861"><span class="lineNum">    1861 </span><span class="lineCov">          2 :         driver-&gt;driver.bus = &amp;i2c_bus_type;</span></a>
-<a name="1862"><span class="lineNum">    1862 </span><span class="lineCov">          4 :         INIT_LIST_HEAD(&amp;driver-&gt;clients);</span></a>
+<a name="1860"><span class="lineNum">    1860 </span><span class="lineCov">          1 :         driver-&gt;driver.owner = owner;</span></a>
+<a name="1861"><span class="lineNum">    1861 </span><span class="lineCov">          1 :         driver-&gt;driver.bus = &amp;i2c_bus_type;</span></a>
+<a name="1862"><span class="lineNum">    1862 </span><span class="lineCov">          2 :         INIT_LIST_HEAD(&amp;driver-&gt;clients);</span></a>
 <a name="1863"><span class="lineNum">    1863 </span>            : </a>
 <a name="1864"><span class="lineNum">    1864 </span>            :         /* When registration returns, the driver core</a>
 <a name="1865"><span class="lineNum">    1865 </span>            :          * will have called probe() for all matching-but-unbound devices.</a>
 <a name="1866"><span class="lineNum">    1866 </span>            :          */</a>
-<a name="1867"><span class="lineNum">    1867 </span><span class="lineCov">          2 :         res = driver_register(&amp;driver-&gt;driver);</span></a>
-<a name="1868"><span class="lineNum">    1868 </span><span class="lineCov">          2 :         if (res)</span></a>
+<a name="1867"><span class="lineNum">    1867 </span><span class="lineCov">          1 :         res = driver_register(&amp;driver-&gt;driver);</span></a>
+<a name="1868"><span class="lineNum">    1868 </span><span class="lineCov">          1 :         if (res)</span></a>
 <a name="1869"><span class="lineNum">    1869 </span>            :                 return res;</a>
 <a name="1870"><span class="lineNum">    1870 </span>            : </a>
 <a name="1871"><span class="lineNum">    1871 </span>            :         pr_debug(&quot;driver [%s] registered\n&quot;, driver-&gt;driver.name);</a>
 <a name="1872"><span class="lineNum">    1872 </span>            : </a>
 <a name="1873"><span class="lineNum">    1873 </span>            :         /* Walk the adapters that are already present */</a>
-<a name="1874"><span class="lineNum">    1874 </span><span class="lineCov">          2 :         i2c_for_each_dev(driver, __process_new_driver);</span></a>
+<a name="1874"><span class="lineNum">    1874 </span><span class="lineCov">          1 :         i2c_for_each_dev(driver, __process_new_driver);</span></a>
 <a name="1875"><span class="lineNum">    1875 </span>            : </a>
-<a name="1876"><span class="lineNum">    1876 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="1876"><span class="lineNum">    1876 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="1877"><span class="lineNum">    1877 </span>            : }</a>
 <a name="1878"><span class="lineNum">    1878 </span>            : EXPORT_SYMBOL(i2c_register_driver);</a>
 <a name="1879"><span class="lineNum">    1879 </span>            : </a>
@@ -1992,32 +1992,32 @@
 <a name="1930"><span class="lineNum">    1930 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="1931"><span class="lineNum">    1931 </span>            : EXPORT_SYMBOL(i2c_clients_command);</a>
 <a name="1932"><span class="lineNum">    1932 </span>            : </a>
-<a name="1933"><span class="lineNum">    1933 </span><span class="lineCov">          2 : static int __init i2c_init(void)</span></a>
+<a name="1933"><span class="lineNum">    1933 </span><span class="lineCov">          1 : static int __init i2c_init(void)</span></a>
 <a name="1934"><span class="lineNum">    1934 </span>            : {</a>
 <a name="1935"><span class="lineNum">    1935 </span>            :         int retval;</a>
 <a name="1936"><span class="lineNum">    1936 </span>            : </a>
-<a name="1937"><span class="lineNum">    1937 </span><span class="lineCov">          2 :         retval = of_alias_get_highest_id(&quot;i2c&quot;);</span></a>
+<a name="1937"><span class="lineNum">    1937 </span><span class="lineCov">          1 :         retval = of_alias_get_highest_id(&quot;i2c&quot;);</span></a>
 <a name="1938"><span class="lineNum">    1938 </span>            : </a>
-<a name="1939"><span class="lineNum">    1939 </span><span class="lineCov">          2 :         down_write(&amp;__i2c_board_lock);</span></a>
-<a name="1940"><span class="lineNum">    1940 </span><span class="lineCov">          2 :         if (retval &gt;= __i2c_first_dynamic_bus_num)</span></a>
+<a name="1939"><span class="lineNum">    1939 </span><span class="lineCov">          1 :         down_write(&amp;__i2c_board_lock);</span></a>
+<a name="1940"><span class="lineNum">    1940 </span><span class="lineCov">          1 :         if (retval &gt;= __i2c_first_dynamic_bus_num)</span></a>
 <a name="1941"><span class="lineNum">    1941 </span><span class="lineNoCov">          0 :                 __i2c_first_dynamic_bus_num = retval + 1;</span></a>
-<a name="1942"><span class="lineNum">    1942 </span><span class="lineCov">          2 :         up_write(&amp;__i2c_board_lock);</span></a>
+<a name="1942"><span class="lineNum">    1942 </span><span class="lineCov">          1 :         up_write(&amp;__i2c_board_lock);</span></a>
 <a name="1943"><span class="lineNum">    1943 </span>            : </a>
-<a name="1944"><span class="lineNum">    1944 </span><span class="lineCov">          2 :         retval = bus_register(&amp;i2c_bus_type);</span></a>
-<a name="1945"><span class="lineNum">    1945 </span><span class="lineCov">          2 :         if (retval)</span></a>
+<a name="1944"><span class="lineNum">    1944 </span><span class="lineCov">          1 :         retval = bus_register(&amp;i2c_bus_type);</span></a>
+<a name="1945"><span class="lineNum">    1945 </span><span class="lineCov">          1 :         if (retval)</span></a>
 <a name="1946"><span class="lineNum">    1946 </span>            :                 return retval;</a>
 <a name="1947"><span class="lineNum">    1947 </span>            : </a>
-<a name="1948"><span class="lineNum">    1948 </span><span class="lineCov">          2 :         is_registered = true;</span></a>
+<a name="1948"><span class="lineNum">    1948 </span><span class="lineCov">          1 :         is_registered = true;</span></a>
 <a name="1949"><span class="lineNum">    1949 </span>            : </a>
 <a name="1950"><span class="lineNum">    1950 </span>            : #ifdef CONFIG_I2C_COMPAT</a>
-<a name="1951"><span class="lineNum">    1951 </span><span class="lineCov">          2 :         i2c_adapter_compat_class = class_compat_register(&quot;i2c-adapter&quot;);</span></a>
-<a name="1952"><span class="lineNum">    1952 </span><span class="lineCov">          2 :         if (!i2c_adapter_compat_class) {</span></a>
+<a name="1951"><span class="lineNum">    1951 </span><span class="lineCov">          1 :         i2c_adapter_compat_class = class_compat_register(&quot;i2c-adapter&quot;);</span></a>
+<a name="1952"><span class="lineNum">    1952 </span><span class="lineCov">          1 :         if (!i2c_adapter_compat_class) {</span></a>
 <a name="1953"><span class="lineNum">    1953 </span>            :                 retval = -ENOMEM;</a>
 <a name="1954"><span class="lineNum">    1954 </span>            :                 goto bus_err;</a>
 <a name="1955"><span class="lineNum">    1955 </span>            :         }</a>
 <a name="1956"><span class="lineNum">    1956 </span>            : #endif</a>
-<a name="1957"><span class="lineNum">    1957 </span><span class="lineCov">          2 :         retval = i2c_add_driver(&amp;dummy_driver);</span></a>
-<a name="1958"><span class="lineNum">    1958 </span><span class="lineCov">          2 :         if (retval)</span></a>
+<a name="1957"><span class="lineNum">    1957 </span><span class="lineCov">          1 :         retval = i2c_add_driver(&amp;dummy_driver);</span></a>
+<a name="1958"><span class="lineNum">    1958 </span><span class="lineCov">          1 :         if (retval)</span></a>
 <a name="1959"><span class="lineNum">    1959 </span>            :                 goto class_err;</a>
 <a name="1960"><span class="lineNum">    1960 </span>            : </a>
 <a name="1961"><span class="lineNum">    1961 </span>            :         if (IS_ENABLED(CONFIG_OF_DYNAMIC))</a>

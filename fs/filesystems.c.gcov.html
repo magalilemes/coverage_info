@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -97,25 +97,25 @@
 <a name="35"><span class="lineNum">      35 </span>            : static DEFINE_RWLOCK(file_systems_lock);</a>
 <a name="36"><span class="lineNum">      36 </span>            : </a>
 <a name="37"><span class="lineNum">      37 </span>            : /* WARNING: This can be used only if we _already_ own a reference */</a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">         40 : struct file_system_type *get_filesystem(struct file_system_type *fs)</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">         20 : struct file_system_type *get_filesystem(struct file_system_type *fs)</span></a>
 <a name="39"><span class="lineNum">      39 </span>            : {</a>
-<a name="40"><span class="lineNum">      40 </span><span class="lineCov">         40 :         __module_get(fs-&gt;owner);</span></a>
-<a name="41"><span class="lineNum">      41 </span><span class="lineCov">         40 :         return fs;</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">         20 :         __module_get(fs-&gt;owner);</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">         20 :         return fs;</span></a>
 <a name="42"><span class="lineNum">      42 </span>            : }</a>
 <a name="43"><span class="lineNum">      43 </span>            : </a>
-<a name="44"><span class="lineNum">      44 </span><span class="lineCov">         22 : void put_filesystem(struct file_system_type *fs)</span></a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineCov">         11 : void put_filesystem(struct file_system_type *fs)</span></a>
 <a name="45"><span class="lineNum">      45 </span>            : {</a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">         22 :         module_put(fs-&gt;owner);</span></a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">         22 : }</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">         11 :         module_put(fs-&gt;owner);</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">         11 : }</span></a>
 <a name="48"><span class="lineNum">      48 </span>            : </a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">         16 : static struct file_system_type **find_filesystem(const char *name, unsigned len)</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          8 : static struct file_system_type **find_filesystem(const char *name, unsigned len)</span></a>
 <a name="50"><span class="lineNum">      50 </span>            : {</a>
 <a name="51"><span class="lineNum">      51 </span>            :         struct file_system_type **p;</a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">         64 :         for (p = &amp;file_systems; *p; p = &amp;(*p)-&gt;next)</span></a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">         52 :                 if (strncmp((*p)-&gt;name, name, len) == 0 &amp;&amp;</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          2 :                     !(*p)-&gt;name[len])</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">         32 :         for (p = &amp;file_systems; *p; p = &amp;(*p)-&gt;next)</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">         26 :                 if (strncmp((*p)-&gt;name, name, len) == 0 &amp;&amp;</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          1 :                     !(*p)-&gt;name[len])</span></a>
 <a name="55"><span class="lineNum">      55 </span>            :                         break;</a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">         16 :         return p;</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">          8 :         return p;</span></a>
 <a name="57"><span class="lineNum">      57 </span>            : }</a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
 <a name="59"><span class="lineNum">      59 </span>            : /**</a>
@@ -131,26 +131,26 @@
 <a name="69"><span class="lineNum">      69 </span>            :  *      unregistered.</a>
 <a name="70"><span class="lineNum">      70 </span>            :  */</a>
 <a name="71"><span class="lineNum">      71 </span>            :  </a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">         14 : int register_filesystem(struct file_system_type * fs)</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          7 : int register_filesystem(struct file_system_type * fs)</span></a>
 <a name="73"><span class="lineNum">      73 </span>            : {</a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">         14 :         int res = 0;</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          7 :         int res = 0;</span></a>
 <a name="75"><span class="lineNum">      75 </span>            :         struct file_system_type ** p;</a>
 <a name="76"><span class="lineNum">      76 </span>            : </a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">         14 :         if (fs-&gt;parameters &amp;&amp;</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">          7 :         if (fs-&gt;parameters &amp;&amp;</span></a>
 <a name="78"><span class="lineNum">      78 </span>            :             !fs_validate_description(fs-&gt;name, fs-&gt;parameters))</a>
 <a name="79"><span class="lineNum">      79 </span>            :                 return -EINVAL;</a>
 <a name="80"><span class="lineNum">      80 </span>            : </a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">         14 :         BUG_ON(strchr(fs-&gt;name, '.'));</span></a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">         14 :         if (fs-&gt;next)</span></a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">          7 :         BUG_ON(strchr(fs-&gt;name, '.'));</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">          7 :         if (fs-&gt;next)</span></a>
 <a name="83"><span class="lineNum">      83 </span>            :                 return -EBUSY;</a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">         14 :         write_lock(&amp;file_systems_lock);</span></a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">         14 :         p = find_filesystem(fs-&gt;name, strlen(fs-&gt;name));</span></a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">         14 :         if (*p)</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">          7 :         write_lock(&amp;file_systems_lock);</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">          7 :         p = find_filesystem(fs-&gt;name, strlen(fs-&gt;name));</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">          7 :         if (*p)</span></a>
 <a name="87"><span class="lineNum">      87 </span>            :                 res = -EBUSY;</a>
 <a name="88"><span class="lineNum">      88 </span>            :         else</a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">         14 :                 *p = fs;</span></a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineCov">         14 :         write_unlock(&amp;file_systems_lock);</span></a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">         14 :         return res;</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">          7 :                 *p = fs;</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">          7 :         write_unlock(&amp;file_systems_lock);</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">          7 :         return res;</span></a>
 <a name="92"><span class="lineNum">      92 </span>            : }</a>
 <a name="93"><span class="lineNum">      93 </span>            : </a>
 <a name="94"><span class="lineNum">      94 </span>            : EXPORT_SYMBOL(register_filesystem);</a>
@@ -312,10 +312,10 @@
 <a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 :         return 0;</span></a>
 <a name="251"><span class="lineNum">     251 </span>            : }</a>
 <a name="252"><span class="lineNum">     252 </span>            : </a>
-<a name="253"><span class="lineNum">     253 </span><span class="lineCov">          2 : static int __init proc_filesystems_init(void)</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineCov">          1 : static int __init proc_filesystems_init(void)</span></a>
 <a name="254"><span class="lineNum">     254 </span>            : {</a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineCov">          2 :         proc_create_single(&quot;filesystems&quot;, 0, NULL, filesystems_proc_show);</span></a>
-<a name="256"><span class="lineNum">     256 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineCov">          1 :         proc_create_single(&quot;filesystems&quot;, 0, NULL, filesystems_proc_show);</span></a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="257"><span class="lineNum">     257 </span>            : }</a>
 <a name="258"><span class="lineNum">     258 </span>            : module_init(proc_filesystems_init);</a>
 <a name="259"><span class="lineNum">     259 </span>            : #endif</a>
@@ -324,21 +324,21 @@
 <a name="262"><span class="lineNum">     262 </span>            : {</a>
 <a name="263"><span class="lineNum">     263 </span>            :         struct file_system_type *fs;</a>
 <a name="264"><span class="lineNum">     264 </span>            : </a>
-<a name="265"><span class="lineNum">     265 </span><span class="lineCov">          2 :         read_lock(&amp;file_systems_lock);</span></a>
-<a name="266"><span class="lineNum">     266 </span><span class="lineCov">          2 :         fs = *(find_filesystem(name, len));</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">          1 :         read_lock(&amp;file_systems_lock);</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineCov">          1 :         fs = *(find_filesystem(name, len));</span></a>
 <a name="267"><span class="lineNum">     267 </span>            :         if (fs &amp;&amp; !try_module_get(fs-&gt;owner))</a>
 <a name="268"><span class="lineNum">     268 </span>            :                 fs = NULL;</a>
-<a name="269"><span class="lineNum">     269 </span><span class="lineCov">          2 :         read_unlock(&amp;file_systems_lock);</span></a>
+<a name="269"><span class="lineNum">     269 </span><span class="lineCov">          1 :         read_unlock(&amp;file_systems_lock);</span></a>
 <a name="270"><span class="lineNum">     270 </span>            :         return fs;</a>
 <a name="271"><span class="lineNum">     271 </span>            : }</a>
 <a name="272"><span class="lineNum">     272 </span>            : </a>
-<a name="273"><span class="lineNum">     273 </span><span class="lineCov">          2 : struct file_system_type *get_fs_type(const char *name)</span></a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineCov">          1 : struct file_system_type *get_fs_type(const char *name)</span></a>
 <a name="274"><span class="lineNum">     274 </span>            : {</a>
 <a name="275"><span class="lineNum">     275 </span>            :         struct file_system_type *fs;</a>
-<a name="276"><span class="lineNum">     276 </span><span class="lineCov">          2 :         const char *dot = strchr(name, '.');</span></a>
-<a name="277"><span class="lineNum">     277 </span><span class="lineCov">          2 :         int len = dot ? dot - name : strlen(name);</span></a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineCov">          1 :         const char *dot = strchr(name, '.');</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineCov">          1 :         int len = dot ? dot - name : strlen(name);</span></a>
 <a name="278"><span class="lineNum">     278 </span>            : </a>
-<a name="279"><span class="lineNum">     279 </span><span class="lineCov">          2 :         fs = __get_fs_type(name, len);</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineCov">          1 :         fs = __get_fs_type(name, len);</span></a>
 <a name="280"><span class="lineNum">     280 </span>            :         if (!fs &amp;&amp; (request_module(&quot;fs-%.*s&quot;, len, name) == 0)) {</a>
 <a name="281"><span class="lineNum">     281 </span>            :                 fs = __get_fs_type(name, len);</a>
 <a name="282"><span class="lineNum">     282 </span>            :                 if (!fs)</a>
@@ -346,11 +346,11 @@
 <a name="284"><span class="lineNum">     284 </span>            :                                      len, name);</a>
 <a name="285"><span class="lineNum">     285 </span>            :         }</a>
 <a name="286"><span class="lineNum">     286 </span>            : </a>
-<a name="287"><span class="lineNum">     287 </span><span class="lineCov">          2 :         if (dot &amp;&amp; fs &amp;&amp; !(fs-&gt;fs_flags &amp; FS_HAS_SUBTYPE)) {</span></a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineCov">          1 :         if (dot &amp;&amp; fs &amp;&amp; !(fs-&gt;fs_flags &amp; FS_HAS_SUBTYPE)) {</span></a>
 <a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 :                 put_filesystem(fs);</span></a>
 <a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 :                 fs = NULL;</span></a>
 <a name="290"><span class="lineNum">     290 </span>            :         }</a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineCov">          2 :         return fs;</span></a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineCov">          1 :         return fs;</span></a>
 <a name="292"><span class="lineNum">     292 </span>            : }</a>
 <a name="293"><span class="lineNum">     293 </span>            : </a>
 <a name="294"><span class="lineNum">     294 </span>            : EXPORT_SYMBOL(get_fs_type);</a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -807,12 +807,12 @@
 <a name="745"><span class="lineNum">     745 </span>            : </a>
 <a name="746"><span class="lineNum">     746 </span>            : static inline void inode_lock(struct inode *inode)</a>
 <a name="747"><span class="lineNum">     747 </span>            : {</a>
-<a name="748"><span class="lineNum">     748 </span><span class="lineCov">          4 :         down_write(&amp;inode-&gt;i_rwsem);</span></a>
+<a name="748"><span class="lineNum">     748 </span><span class="lineCov">          2 :         down_write(&amp;inode-&gt;i_rwsem);</span></a>
 <a name="749"><span class="lineNum">     749 </span>            : }</a>
 <a name="750"><span class="lineNum">     750 </span>            : </a>
 <a name="751"><span class="lineNum">     751 </span>            : static inline void inode_unlock(struct inode *inode)</a>
 <a name="752"><span class="lineNum">     752 </span>            : {</a>
-<a name="753"><span class="lineNum">     753 </span><span class="lineCov">         10 :         up_write(&amp;inode-&gt;i_rwsem);</span></a>
+<a name="753"><span class="lineNum">     753 </span><span class="lineCov">          5 :         up_write(&amp;inode-&gt;i_rwsem);</span></a>
 <a name="754"><span class="lineNum">     754 </span>            : }</a>
 <a name="755"><span class="lineNum">     755 </span>            : </a>
 <a name="756"><span class="lineNum">     756 </span>            : static inline void inode_lock_shared(struct inode *inode)</a>
@@ -842,7 +842,7 @@
 <a name="780"><span class="lineNum">     780 </span>            : </a>
 <a name="781"><span class="lineNum">     781 </span>            : static inline void inode_lock_nested(struct inode *inode, unsigned subclass)</a>
 <a name="782"><span class="lineNum">     782 </span>            : {</a>
-<a name="783"><span class="lineNum">     783 </span><span class="lineCov">          6 :         down_write_nested(&amp;inode-&gt;i_rwsem, subclass);</span></a>
+<a name="783"><span class="lineNum">     783 </span><span class="lineCov">          3 :         down_write_nested(&amp;inode-&gt;i_rwsem, subclass);</span></a>
 <a name="784"><span class="lineNum">     784 </span>            : }</a>
 <a name="785"><span class="lineNum">     785 </span>            : </a>
 <a name="786"><span class="lineNum">     786 </span>            : static inline void inode_lock_shared_nested(struct inode *inode, unsigned subclass)</a>
@@ -1628,7 +1628,7 @@
 <a name="1566"><span class="lineNum">    1566 </span>            : </a>
 <a name="1567"><span class="lineNum">    1567 </span>            : static inline struct user_namespace *i_user_ns(const struct inode *inode)</a>
 <a name="1568"><span class="lineNum">    1568 </span>            : {</a>
-<a name="1569"><span class="lineNum">    1569 </span><span class="lineCov">         46 :         return inode-&gt;i_sb-&gt;s_user_ns;</span></a>
+<a name="1569"><span class="lineNum">    1569 </span><span class="lineCov">         23 :         return inode-&gt;i_sb-&gt;s_user_ns;</span></a>
 <a name="1570"><span class="lineNum">    1570 </span>            : }</a>
 <a name="1571"><span class="lineNum">    1571 </span>            : </a>
 <a name="1572"><span class="lineNum">    1572 </span>            : /* Helper functions so that in most cases filesystems will</a>
@@ -1648,12 +1648,12 @@
 <a name="1586"><span class="lineNum">    1586 </span>            : </a>
 <a name="1587"><span class="lineNum">    1587 </span>            : static inline void i_uid_write(struct inode *inode, uid_t uid)</a>
 <a name="1588"><span class="lineNum">    1588 </span>            : {</a>
-<a name="1589"><span class="lineNum">    1589 </span><span class="lineCov">         34 :         inode-&gt;i_uid = make_kuid(i_user_ns(inode), uid);</span></a>
+<a name="1589"><span class="lineNum">    1589 </span><span class="lineCov">         17 :         inode-&gt;i_uid = make_kuid(i_user_ns(inode), uid);</span></a>
 <a name="1590"><span class="lineNum">    1590 </span>            : }</a>
 <a name="1591"><span class="lineNum">    1591 </span>            : </a>
 <a name="1592"><span class="lineNum">    1592 </span>            : static inline void i_gid_write(struct inode *inode, gid_t gid)</a>
 <a name="1593"><span class="lineNum">    1593 </span>            : {</a>
-<a name="1594"><span class="lineNum">    1594 </span><span class="lineCov">         34 :         inode-&gt;i_gid = make_kgid(i_user_ns(inode), gid);</span></a>
+<a name="1594"><span class="lineNum">    1594 </span><span class="lineCov">         17 :         inode-&gt;i_gid = make_kgid(i_user_ns(inode), gid);</span></a>
 <a name="1595"><span class="lineNum">    1595 </span>            : }</a>
 <a name="1596"><span class="lineNum">    1596 </span>            : </a>
 <a name="1597"><span class="lineNum">    1597 </span>            : /**</a>
@@ -1667,7 +1667,7 @@
 <a name="1605"><span class="lineNum">    1605 </span>            : static inline kuid_t i_uid_into_mnt(struct user_namespace *mnt_userns,</a>
 <a name="1606"><span class="lineNum">    1606 </span>            :                                     const struct inode *inode)</a>
 <a name="1607"><span class="lineNum">    1607 </span>            : {</a>
-<a name="1608"><span class="lineNum">    1608 </span><span class="lineCov">         78 :         return mapped_kuid_fs(mnt_userns, i_user_ns(inode), inode-&gt;i_uid);</span></a>
+<a name="1608"><span class="lineNum">    1608 </span><span class="lineCov">         39 :         return mapped_kuid_fs(mnt_userns, i_user_ns(inode), inode-&gt;i_uid);</span></a>
 <a name="1609"><span class="lineNum">    1609 </span>            : }</a>
 <a name="1610"><span class="lineNum">    1610 </span>            : </a>
 <a name="1611"><span class="lineNum">    1611 </span>            : /**</a>
@@ -1681,7 +1681,7 @@
 <a name="1619"><span class="lineNum">    1619 </span>            : static inline kgid_t i_gid_into_mnt(struct user_namespace *mnt_userns,</a>
 <a name="1620"><span class="lineNum">    1620 </span>            :                                     const struct inode *inode)</a>
 <a name="1621"><span class="lineNum">    1621 </span>            : {</a>
-<a name="1622"><span class="lineNum">    1622 </span><span class="lineCov">         12 :         return mapped_kgid_fs(mnt_userns, i_user_ns(inode), inode-&gt;i_gid);</span></a>
+<a name="1622"><span class="lineNum">    1622 </span><span class="lineCov">          6 :         return mapped_kgid_fs(mnt_userns, i_user_ns(inode), inode-&gt;i_gid);</span></a>
 <a name="1623"><span class="lineNum">    1623 </span>            : }</a>
 <a name="1624"><span class="lineNum">    1624 </span>            : </a>
 <a name="1625"><span class="lineNum">    1625 </span>            : /**</a>
@@ -1695,7 +1695,7 @@
 <a name="1633"><span class="lineNum">    1633 </span>            : static inline void inode_fsuid_set(struct inode *inode,</a>
 <a name="1634"><span class="lineNum">    1634 </span>            :                                    struct user_namespace *mnt_userns)</a>
 <a name="1635"><span class="lineNum">    1635 </span>            : {</a>
-<a name="1636"><span class="lineNum">    1636 </span><span class="lineCov">         30 :         inode-&gt;i_uid = mapped_fsuid(mnt_userns, i_user_ns(inode));</span></a>
+<a name="1636"><span class="lineNum">    1636 </span><span class="lineCov">         15 :         inode-&gt;i_uid = mapped_fsuid(mnt_userns, i_user_ns(inode));</span></a>
 <a name="1637"><span class="lineNum">    1637 </span>            : }</a>
 <a name="1638"><span class="lineNum">    1638 </span>            : </a>
 <a name="1639"><span class="lineNum">    1639 </span>            : /**</a>
@@ -1709,7 +1709,7 @@
 <a name="1647"><span class="lineNum">    1647 </span>            : static inline void inode_fsgid_set(struct inode *inode,</a>
 <a name="1648"><span class="lineNum">    1648 </span>            :                                    struct user_namespace *mnt_userns)</a>
 <a name="1649"><span class="lineNum">    1649 </span>            : {</a>
-<a name="1650"><span class="lineNum">    1650 </span><span class="lineCov">         30 :         inode-&gt;i_gid = mapped_fsgid(mnt_userns, i_user_ns(inode));</span></a>
+<a name="1650"><span class="lineNum">    1650 </span><span class="lineCov">         15 :         inode-&gt;i_gid = mapped_fsgid(mnt_userns, i_user_ns(inode));</span></a>
 <a name="1651"><span class="lineNum">    1651 </span>            : }</a>
 <a name="1652"><span class="lineNum">    1652 </span>            : </a>
 <a name="1653"><span class="lineNum">    1653 </span>            : /**</a>
@@ -1723,18 +1723,18 @@
 <a name="1661"><span class="lineNum">    1661 </span>            :  *</a>
 <a name="1662"><span class="lineNum">    1662 </span>            :  * Return: true if fsuid and fsgid is mapped, false if not.</a>
 <a name="1663"><span class="lineNum">    1663 </span>            :  */</a>
-<a name="1664"><span class="lineNum">    1664 </span><span class="lineCov">          6 : static inline bool fsuidgid_has_mapping(struct super_block *sb,</span></a>
+<a name="1664"><span class="lineNum">    1664 </span><span class="lineCov">          3 : static inline bool fsuidgid_has_mapping(struct super_block *sb,</span></a>
 <a name="1665"><span class="lineNum">    1665 </span>            :                                         struct user_namespace *mnt_userns)</a>
 <a name="1666"><span class="lineNum">    1666 </span>            : {</a>
-<a name="1667"><span class="lineNum">    1667 </span><span class="lineCov">          6 :         struct user_namespace *fs_userns = sb-&gt;s_user_ns;</span></a>
+<a name="1667"><span class="lineNum">    1667 </span><span class="lineCov">          3 :         struct user_namespace *fs_userns = sb-&gt;s_user_ns;</span></a>
 <a name="1668"><span class="lineNum">    1668 </span>            :         kuid_t kuid;</a>
 <a name="1669"><span class="lineNum">    1669 </span>            :         kgid_t kgid;</a>
 <a name="1670"><span class="lineNum">    1670 </span>            : </a>
-<a name="1671"><span class="lineNum">    1671 </span><span class="lineCov">          6 :         kuid = mapped_fsuid(mnt_userns, fs_userns);</span></a>
-<a name="1672"><span class="lineNum">    1672 </span><span class="lineCov">          6 :         if (!uid_valid(kuid))</span></a>
+<a name="1671"><span class="lineNum">    1671 </span><span class="lineCov">          3 :         kuid = mapped_fsuid(mnt_userns, fs_userns);</span></a>
+<a name="1672"><span class="lineNum">    1672 </span><span class="lineCov">          3 :         if (!uid_valid(kuid))</span></a>
 <a name="1673"><span class="lineNum">    1673 </span>            :                 return false;</a>
-<a name="1674"><span class="lineNum">    1674 </span><span class="lineCov">          6 :         kgid = mapped_fsgid(mnt_userns, fs_userns);</span></a>
-<a name="1675"><span class="lineNum">    1675 </span><span class="lineCov">          6 :         if (!gid_valid(kgid))</span></a>
+<a name="1674"><span class="lineNum">    1674 </span><span class="lineCov">          3 :         kgid = mapped_fsgid(mnt_userns, fs_userns);</span></a>
+<a name="1675"><span class="lineNum">    1675 </span><span class="lineCov">          3 :         if (!gid_valid(kgid))</span></a>
 <a name="1676"><span class="lineNum">    1676 </span>            :                 return false;</a>
 <a name="1677"><span class="lineNum">    1677 </span>            :         return kuid_has_mapping(fs_userns, kuid) &amp;&amp;</a>
 <a name="1678"><span class="lineNum">    1678 </span>            :                kgid_has_mapping(fs_userns, kgid);</a>
@@ -1752,12 +1752,12 @@
 <a name="1690"><span class="lineNum">    1690 </span>            :  */</a>
 <a name="1691"><span class="lineNum">    1691 </span>            : static inline void __sb_end_write(struct super_block *sb, int level)</a>
 <a name="1692"><span class="lineNum">    1692 </span>            : {</a>
-<a name="1693"><span class="lineNum">    1693 </span><span class="lineCov">          6 :         percpu_up_read(sb-&gt;s_writers.rw_sem + level-1);</span></a>
+<a name="1693"><span class="lineNum">    1693 </span><span class="lineCov">          3 :         percpu_up_read(sb-&gt;s_writers.rw_sem + level-1);</span></a>
 <a name="1694"><span class="lineNum">    1694 </span>            : }</a>
 <a name="1695"><span class="lineNum">    1695 </span>            : </a>
 <a name="1696"><span class="lineNum">    1696 </span>            : static inline void __sb_start_write(struct super_block *sb, int level)</a>
 <a name="1697"><span class="lineNum">    1697 </span>            : {</a>
-<a name="1698"><span class="lineNum">    1698 </span><span class="lineCov">          6 :         percpu_down_read(sb-&gt;s_writers.rw_sem + level - 1);</span></a>
+<a name="1698"><span class="lineNum">    1698 </span><span class="lineCov">          3 :         percpu_down_read(sb-&gt;s_writers.rw_sem + level - 1);</span></a>
 <a name="1699"><span class="lineNum">    1699 </span>            : }</a>
 <a name="1700"><span class="lineNum">    1700 </span>            : </a>
 <a name="1701"><span class="lineNum">    1701 </span>            : static inline bool __sb_start_write_trylock(struct super_block *sb, int level)</a>
@@ -1779,7 +1779,7 @@
 <a name="1717"><span class="lineNum">    1717 </span>            :  */</a>
 <a name="1718"><span class="lineNum">    1718 </span>            : static inline void sb_end_write(struct super_block *sb)</a>
 <a name="1719"><span class="lineNum">    1719 </span>            : {</a>
-<a name="1720"><span class="lineNum">    1720 </span><span class="lineCov">          6 :         __sb_end_write(sb, SB_FREEZE_WRITE);</span></a>
+<a name="1720"><span class="lineNum">    1720 </span><span class="lineCov">          3 :         __sb_end_write(sb, SB_FREEZE_WRITE);</span></a>
 <a name="1721"><span class="lineNum">    1721 </span>            : }</a>
 <a name="1722"><span class="lineNum">    1722 </span>            : </a>
 <a name="1723"><span class="lineNum">    1723 </span>            : /**</a>
@@ -1827,7 +1827,7 @@
 <a name="1765"><span class="lineNum">    1765 </span>            :  */</a>
 <a name="1766"><span class="lineNum">    1766 </span>            : static inline void sb_start_write(struct super_block *sb)</a>
 <a name="1767"><span class="lineNum">    1767 </span>            : {</a>
-<a name="1768"><span class="lineNum">    1768 </span><span class="lineCov">          6 :         __sb_start_write(sb, SB_FREEZE_WRITE);</span></a>
+<a name="1768"><span class="lineNum">    1768 </span><span class="lineCov">          3 :         __sb_start_write(sb, SB_FREEZE_WRITE);</span></a>
 <a name="1769"><span class="lineNum">    1769 </span>            : }</a>
 <a name="1770"><span class="lineNum">    1770 </span>            : </a>
 <a name="1771"><span class="lineNum">    1771 </span>            : static inline bool sb_start_write_trylock(struct super_block *sb)</a>
@@ -2216,7 +2216,7 @@
 <a name="2154"><span class="lineNum">    2154 </span>            :  */</a>
 <a name="2155"><span class="lineNum">    2155 </span>            : #define __IS_FLG(inode, flg)    ((inode)-&gt;i_sb-&gt;s_flags &amp; (flg))</a>
 <a name="2156"><span class="lineNum">    2156 </span>            : </a>
-<a name="2157"><span class="lineNum">    2157 </span><span class="lineCov">         12 : static inline bool sb_rdonly(const struct super_block *sb) { return sb-&gt;s_flags &amp; SB_RDONLY; }</span></a>
+<a name="2157"><span class="lineNum">    2157 </span><span class="lineCov">          6 : static inline bool sb_rdonly(const struct super_block *sb) { return sb-&gt;s_flags &amp; SB_RDONLY; }</span></a>
 <a name="2158"><span class="lineNum">    2158 </span>            : #define IS_RDONLY(inode)        sb_rdonly((inode)-&gt;i_sb)</a>
 <a name="2159"><span class="lineNum">    2159 </span>            : #define IS_SYNC(inode)          (__IS_FLG(inode, SB_SYNCHRONOUS) || \</a>
 <a name="2160"><span class="lineNum">    2160 </span>            :                                         ((inode)-&gt;i_flags &amp; S_SYNC))</a>
@@ -2246,11 +2246,11 @@
 <a name="2184"><span class="lineNum">    2184 </span>            : #define IS_WHITEOUT(inode)      (S_ISCHR(inode-&gt;i_mode) &amp;&amp; \</a>
 <a name="2185"><span class="lineNum">    2185 </span>            :                                  (inode)-&gt;i_rdev == WHITEOUT_DEV)</a>
 <a name="2186"><span class="lineNum">    2186 </span>            : </a>
-<a name="2187"><span class="lineNum">    2187 </span><span class="lineCov">          6 : static inline bool HAS_UNMAPPED_ID(struct user_namespace *mnt_userns,</span></a>
+<a name="2187"><span class="lineNum">    2187 </span><span class="lineCov">          3 : static inline bool HAS_UNMAPPED_ID(struct user_namespace *mnt_userns,</span></a>
 <a name="2188"><span class="lineNum">    2188 </span>            :                                    struct inode *inode)</a>
 <a name="2189"><span class="lineNum">    2189 </span>            : {</a>
-<a name="2190"><span class="lineNum">    2190 </span><span class="lineCov">         12 :         return !uid_valid(i_uid_into_mnt(mnt_userns, inode)) ||</span></a>
-<a name="2191"><span class="lineNum">    2191 </span><span class="lineCov">          6 :                !gid_valid(i_gid_into_mnt(mnt_userns, inode));</span></a>
+<a name="2190"><span class="lineNum">    2190 </span><span class="lineCov">          6 :         return !uid_valid(i_uid_into_mnt(mnt_userns, inode)) ||</span></a>
+<a name="2191"><span class="lineNum">    2191 </span><span class="lineCov">          3 :                !gid_valid(i_gid_into_mnt(mnt_userns, inode));</span></a>
 <a name="2192"><span class="lineNum">    2192 </span>            : }</a>
 <a name="2193"><span class="lineNum">    2193 </span>            : </a>
 <a name="2194"><span class="lineNum">    2194 </span>            : static inline int iocb_flags(struct file *file);</a>
@@ -2751,7 +2751,7 @@
 <a name="2689"><span class="lineNum">    2689 </span>            : static inline int register_chrdev(unsigned int major, const char *name,</a>
 <a name="2690"><span class="lineNum">    2690 </span>            :                                   const struct file_operations *fops)</a>
 <a name="2691"><span class="lineNum">    2691 </span>            : {</a>
-<a name="2692"><span class="lineNum">    2692 </span><span class="lineCov">          6 :         return __register_chrdev(major, 0, 256, name, fops);</span></a>
+<a name="2692"><span class="lineNum">    2692 </span><span class="lineCov">          3 :         return __register_chrdev(major, 0, 256, name, fops);</span></a>
 <a name="2693"><span class="lineNum">    2693 </span>            : }</a>
 <a name="2694"><span class="lineNum">    2694 </span>            : </a>
 <a name="2695"><span class="lineNum">    2695 </span>            : static inline void unregister_chrdev(unsigned int major, const char *name)</a>
@@ -3005,7 +3005,7 @@
 <a name="2943"><span class="lineNum">    2943 </span>            :  */</a>
 <a name="2944"><span class="lineNum">    2944 </span>            : static inline bool is_zero_ino(ino_t ino)</a>
 <a name="2945"><span class="lineNum">    2945 </span>            : {</a>
-<a name="2946"><span class="lineNum">    2946 </span><span class="lineCov">          2 :         return (u32)ino == 0;</span></a>
+<a name="2946"><span class="lineNum">    2946 </span><span class="lineCov">          1 :         return (u32)ino == 0;</span></a>
 <a name="2947"><span class="lineNum">    2947 </span>            : }</a>
 <a name="2948"><span class="lineNum">    2948 </span>            : </a>
 <a name="2949"><span class="lineNum">    2949 </span>            : extern void __iget(struct inode * inode);</a>
@@ -3025,7 +3025,7 @@
 <a name="2963"><span class="lineNum">    2963 </span>            : static inline void *</a>
 <a name="2964"><span class="lineNum">    2964 </span>            : alloc_inode_sb(struct super_block *sb, struct kmem_cache *cache, gfp_t gfp)</a>
 <a name="2965"><span class="lineNum">    2965 </span>            : {</a>
-<a name="2966"><span class="lineNum">    2966 </span><span class="lineCov">         34 :         return kmem_cache_alloc_lru(cache, &amp;sb-&gt;s_inode_lru, gfp);</span></a>
+<a name="2966"><span class="lineNum">    2966 </span><span class="lineCov">         17 :         return kmem_cache_alloc_lru(cache, &amp;sb-&gt;s_inode_lru, gfp);</span></a>
 <a name="2967"><span class="lineNum">    2967 </span>            : }</a>
 <a name="2968"><span class="lineNum">    2968 </span>            : </a>
 <a name="2969"><span class="lineNum">    2969 </span>            : extern void __insert_inode_hash(struct inode *, unsigned long hashval);</a>

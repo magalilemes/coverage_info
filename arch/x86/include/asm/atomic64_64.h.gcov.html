@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -81,7 +81,7 @@
 <a name="19"><span class="lineNum">      19 </span>            :  */</a>
 <a name="20"><span class="lineNum">      20 </span>            : static inline s64 arch_atomic64_read(const atomic64_t *v)</a>
 <a name="21"><span class="lineNum">      21 </span>            : {</a>
-<a name="22"><span class="lineNum">      22 </span><span class="lineCov">      14425 :         return __READ_ONCE((v)-&gt;counter);</span></a>
+<a name="22"><span class="lineNum">      22 </span><span class="lineCov">       8164 :         return __READ_ONCE((v)-&gt;counter);</span></a>
 <a name="23"><span class="lineNum">      23 </span>            : }</a>
 <a name="24"><span class="lineNum">      24 </span>            : </a>
 <a name="25"><span class="lineNum">      25 </span>            : /**</a>
@@ -93,7 +93,7 @@
 <a name="31"><span class="lineNum">      31 </span>            :  */</a>
 <a name="32"><span class="lineNum">      32 </span>            : static inline void arch_atomic64_set(atomic64_t *v, s64 i)</a>
 <a name="33"><span class="lineNum">      33 </span>            : {</a>
-<a name="34"><span class="lineNum">      34 </span><span class="lineCov">     115970 :         __WRITE_ONCE(v-&gt;counter, i);</span></a>
+<a name="34"><span class="lineNum">      34 </span><span class="lineCov">      58381 :         __WRITE_ONCE(v-&gt;counter, i);</span></a>
 <a name="35"><span class="lineNum">      35 </span>            : }</a>
 <a name="36"><span class="lineNum">      36 </span>            : </a>
 <a name="37"><span class="lineNum">      37 </span>            : /**</a>
@@ -105,7 +105,7 @@
 <a name="43"><span class="lineNum">      43 </span>            :  */</a>
 <a name="44"><span class="lineNum">      44 </span>            : static __always_inline void arch_atomic64_add(s64 i, atomic64_t *v)</a>
 <a name="45"><span class="lineNum">      45 </span>            : {</a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">       6806 :         asm volatile(LOCK_PREFIX &quot;addq %1,%0&quot;</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">       3876 :         asm volatile(LOCK_PREFIX &quot;addq %1,%0&quot;</span></a>
 <a name="47"><span class="lineNum">      47 </span>            :                      : &quot;=m&quot; (v-&gt;counter)</a>
 <a name="48"><span class="lineNum">      48 </span>            :                      : &quot;er&quot; (i), &quot;m&quot; (v-&gt;counter) : &quot;memory&quot;);</a>
 <a name="49"><span class="lineNum">      49 </span>            : }</a>
@@ -119,7 +119,7 @@
 <a name="57"><span class="lineNum">      57 </span>            :  */</a>
 <a name="58"><span class="lineNum">      58 </span>            : static inline void arch_atomic64_sub(s64 i, atomic64_t *v)</a>
 <a name="59"><span class="lineNum">      59 </span>            : {</a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          6 :         asm volatile(LOCK_PREFIX &quot;subq %1,%0&quot;</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          3 :         asm volatile(LOCK_PREFIX &quot;subq %1,%0&quot;</span></a>
 <a name="61"><span class="lineNum">      61 </span>            :                      : &quot;=m&quot; (v-&gt;counter)</a>
 <a name="62"><span class="lineNum">      62 </span>            :                      : &quot;er&quot; (i), &quot;m&quot; (v-&gt;counter) : &quot;memory&quot;);</a>
 <a name="63"><span class="lineNum">      63 </span>            : }</a>
@@ -147,7 +147,7 @@
 <a name="85"><span class="lineNum">      85 </span>            :  */</a>
 <a name="86"><span class="lineNum">      86 </span>            : static __always_inline void arch_atomic64_inc(atomic64_t *v)</a>
 <a name="87"><span class="lineNum">      87 </span>            : {</a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">        907 :         asm volatile(LOCK_PREFIX &quot;incq %0&quot;</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">        454 :         asm volatile(LOCK_PREFIX &quot;incq %0&quot;</span></a>
 <a name="89"><span class="lineNum">      89 </span>            :                      : &quot;=m&quot; (v-&gt;counter)</a>
 <a name="90"><span class="lineNum">      90 </span>            :                      : &quot;m&quot; (v-&gt;counter) : &quot;memory&quot;);</a>
 <a name="91"><span class="lineNum">      91 </span>            : }</a>
@@ -161,7 +161,7 @@
 <a name="99"><span class="lineNum">      99 </span>            :  */</a>
 <a name="100"><span class="lineNum">     100 </span>            : static __always_inline void arch_atomic64_dec(atomic64_t *v)</a>
 <a name="101"><span class="lineNum">     101 </span>            : {</a>
-<a name="102"><span class="lineNum">     102 </span><span class="lineCov">          6 :         asm volatile(LOCK_PREFIX &quot;decq %0&quot;</span></a>
+<a name="102"><span class="lineNum">     102 </span><span class="lineCov">          3 :         asm volatile(LOCK_PREFIX &quot;decq %0&quot;</span></a>
 <a name="103"><span class="lineNum">     103 </span>            :                      : &quot;=m&quot; (v-&gt;counter)</a>
 <a name="104"><span class="lineNum">     104 </span>            :                      : &quot;m&quot; (v-&gt;counter) : &quot;memory&quot;);</a>
 <a name="105"><span class="lineNum">     105 </span>            : }</a>
@@ -219,19 +219,19 @@
 <a name="157"><span class="lineNum">     157 </span>            :  */</a>
 <a name="158"><span class="lineNum">     158 </span>            : static __always_inline s64 arch_atomic64_add_return(s64 i, atomic64_t *v)</a>
 <a name="159"><span class="lineNum">     159 </span>            : {</a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">       2828 :         return i + xadd(&amp;v-&gt;counter, i);</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">       1472 :         return i + xadd(&amp;v-&gt;counter, i);</span></a>
 <a name="161"><span class="lineNum">     161 </span>            : }</a>
 <a name="162"><span class="lineNum">     162 </span>            : #define arch_atomic64_add_return arch_atomic64_add_return</a>
 <a name="163"><span class="lineNum">     163 </span>            : </a>
 <a name="164"><span class="lineNum">     164 </span>            : static inline s64 arch_atomic64_sub_return(s64 i, atomic64_t *v)</a>
 <a name="165"><span class="lineNum">     165 </span>            : {</a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">        256 :         return arch_atomic64_add_return(-i, v);</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">        186 :         return arch_atomic64_add_return(-i, v);</span></a>
 <a name="167"><span class="lineNum">     167 </span>            : }</a>
 <a name="168"><span class="lineNum">     168 </span>            : #define arch_atomic64_sub_return arch_atomic64_sub_return</a>
 <a name="169"><span class="lineNum">     169 </span>            : </a>
 <a name="170"><span class="lineNum">     170 </span>            : static inline s64 arch_atomic64_fetch_add(s64 i, atomic64_t *v)</a>
 <a name="171"><span class="lineNum">     171 </span>            : {</a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">      53744 :         return xadd(&amp;v-&gt;counter, i);</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">      26872 :         return xadd(&amp;v-&gt;counter, i);</span></a>
 <a name="173"><span class="lineNum">     173 </span>            : }</a>
 <a name="174"><span class="lineNum">     174 </span>            : #define arch_atomic64_fetch_add arch_atomic64_fetch_add</a>
 <a name="175"><span class="lineNum">     175 </span>            : </a>
@@ -243,13 +243,13 @@
 <a name="181"><span class="lineNum">     181 </span>            : </a>
 <a name="182"><span class="lineNum">     182 </span>            : static inline s64 arch_atomic64_cmpxchg(atomic64_t *v, s64 old, s64 new)</a>
 <a name="183"><span class="lineNum">     183 </span>            : {</a>
-<a name="184"><span class="lineNum">     184 </span><span class="lineCov">        468 :         return arch_cmpxchg(&amp;v-&gt;counter, old, new);</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">        274 :         return arch_cmpxchg(&amp;v-&gt;counter, old, new);</span></a>
 <a name="185"><span class="lineNum">     185 </span>            : }</a>
 <a name="186"><span class="lineNum">     186 </span>            : #define arch_atomic64_cmpxchg arch_atomic64_cmpxchg</a>
 <a name="187"><span class="lineNum">     187 </span>            : </a>
 <a name="188"><span class="lineNum">     188 </span>            : static __always_inline bool arch_atomic64_try_cmpxchg(atomic64_t *v, s64 *old, s64 new)</a>
 <a name="189"><span class="lineNum">     189 </span>            : {</a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineCov">      69504 :         return arch_try_cmpxchg(&amp;v-&gt;counter, old, new);</span></a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineCov">      34970 :         return arch_try_cmpxchg(&amp;v-&gt;counter, old, new);</span></a>
 <a name="191"><span class="lineNum">     191 </span>            : }</a>
 <a name="192"><span class="lineNum">     192 </span>            : #define arch_atomic64_try_cmpxchg arch_atomic64_try_cmpxchg</a>
 <a name="193"><span class="lineNum">     193 </span>            : </a>

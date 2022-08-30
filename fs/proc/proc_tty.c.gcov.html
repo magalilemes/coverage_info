@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -192,12 +192,12 @@
 <a name="130"><span class="lineNum">     130 </span>            :  * This function is called by tty_register_driver() to handle</a>
 <a name="131"><span class="lineNum">     131 </span>            :  * registering the driver's /proc handler into /proc/tty/driver/&lt;foo&gt;</a>
 <a name="132"><span class="lineNum">     132 </span>            :  */</a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">         10 : void proc_tty_register_driver(struct tty_driver *driver)</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">          5 : void proc_tty_register_driver(struct tty_driver *driver)</span></a>
 <a name="134"><span class="lineNum">     134 </span>            : {</a>
 <a name="135"><span class="lineNum">     135 </span>            :         struct proc_dir_entry *ent;</a>
 <a name="136"><span class="lineNum">     136 </span>            :                 </a>
-<a name="137"><span class="lineNum">     137 </span><span class="lineCov">         20 :         if (!driver-&gt;driver_name || driver-&gt;proc_entry ||</span></a>
-<a name="138"><span class="lineNum">     138 </span><span class="lineCov">         10 :             !driver-&gt;ops-&gt;proc_show)</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineCov">         10 :         if (!driver-&gt;driver_name || driver-&gt;proc_entry ||</span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">          5 :             !driver-&gt;ops-&gt;proc_show)</span></a>
 <a name="139"><span class="lineNum">     139 </span>            :                 return;</a>
 <a name="140"><span class="lineNum">     140 </span>            : </a>
 <a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 :         ent = proc_create_single_data(driver-&gt;driver_name, 0, proc_tty_driver,</span></a>
@@ -224,20 +224,20 @@
 <a name="162"><span class="lineNum">     162 </span>            : /*</a>
 <a name="163"><span class="lineNum">     163 </span>            :  * Called by proc_root_init() to initialize the /proc/tty subtree</a>
 <a name="164"><span class="lineNum">     164 </span>            :  */</a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">          2 : void __init proc_tty_init(void)</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">          1 : void __init proc_tty_init(void)</span></a>
 <a name="166"><span class="lineNum">     166 </span>            : {</a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">          2 :         if (!proc_mkdir(&quot;tty&quot;, NULL))</span></a>
+<a name="167"><span class="lineNum">     167 </span><span class="lineCov">          1 :         if (!proc_mkdir(&quot;tty&quot;, NULL))</span></a>
 <a name="168"><span class="lineNum">     168 </span>            :                 return;</a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineCov">          2 :         proc_mkdir(&quot;tty/ldisc&quot;, NULL);        /* Preserved: it's userspace visible */</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">          1 :         proc_mkdir(&quot;tty/ldisc&quot;, NULL);        /* Preserved: it's userspace visible */</span></a>
 <a name="170"><span class="lineNum">     170 </span>            :         /*</a>
 <a name="171"><span class="lineNum">     171 </span>            :          * /proc/tty/driver/serial reveals the exact character counts for</a>
 <a name="172"><span class="lineNum">     172 </span>            :          * serial links which is just too easy to abuse for inferring</a>
 <a name="173"><span class="lineNum">     173 </span>            :          * password lengths and inter-keystroke timings during password</a>
 <a name="174"><span class="lineNum">     174 </span>            :          * entry.</a>
 <a name="175"><span class="lineNum">     175 </span>            :          */</a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineCov">          2 :         proc_tty_driver = proc_mkdir_mode(&quot;tty/driver&quot;, S_IRUSR|S_IXUSR, NULL);</span></a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          2 :         proc_create_seq(&quot;tty/ldiscs&quot;, 0, NULL, &amp;tty_ldiscs_seq_ops);</span></a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">          2 :         proc_create_seq(&quot;tty/drivers&quot;, 0, NULL, &amp;tty_drivers_op);</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">          1 :         proc_tty_driver = proc_mkdir_mode(&quot;tty/driver&quot;, S_IRUSR|S_IXUSR, NULL);</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          1 :         proc_create_seq(&quot;tty/ldiscs&quot;, 0, NULL, &amp;tty_ldiscs_seq_ops);</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">          1 :         proc_create_seq(&quot;tty/drivers&quot;, 0, NULL, &amp;tty_drivers_op);</span></a>
 <a name="179"><span class="lineNum">     179 </span>            : }</a>
 </pre>
       </td>

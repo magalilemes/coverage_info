@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -822,12 +822,12 @@
 <a name="760"><span class="lineNum">     760 </span><span class="lineNoCov">          0 :         return 0;</span></a>
 <a name="761"><span class="lineNum">     761 </span>            : }</a>
 <a name="762"><span class="lineNum">     762 </span>            : </a>
-<a name="763"><span class="lineNum">     763 </span><span class="lineCov">       4650 : void kernfs_drain_open_files(struct kernfs_node *kn)</span></a>
+<a name="763"><span class="lineNum">     763 </span><span class="lineCov">       2325 : void kernfs_drain_open_files(struct kernfs_node *kn)</span></a>
 <a name="764"><span class="lineNum">     764 </span>            : {</a>
 <a name="765"><span class="lineNum">     765 </span>            :         struct kernfs_open_node *on;</a>
 <a name="766"><span class="lineNum">     766 </span>            :         struct kernfs_open_file *of;</a>
 <a name="767"><span class="lineNum">     767 </span>            : </a>
-<a name="768"><span class="lineNum">     768 </span><span class="lineCov">       4650 :         if (!(kn-&gt;flags &amp; (KERNFS_HAS_MMAP | KERNFS_HAS_RELEASE)))</span></a>
+<a name="768"><span class="lineNum">     768 </span><span class="lineCov">       2325 :         if (!(kn-&gt;flags &amp; (KERNFS_HAS_MMAP | KERNFS_HAS_RELEASE)))</span></a>
 <a name="769"><span class="lineNum">     769 </span>            :                 return;</a>
 <a name="770"><span class="lineNum">     770 </span>            : </a>
 <a name="771"><span class="lineNum">     771 </span><span class="lineNoCov">          0 :         spin_lock_irq(&amp;kernfs_open_node_lock);</span></a>
@@ -900,28 +900,28 @@
 <a name="838"><span class="lineNum">     838 </span><span class="lineNoCov">          0 :         return ret;</span></a>
 <a name="839"><span class="lineNum">     839 </span>            : }</a>
 <a name="840"><span class="lineNum">     840 </span>            : </a>
-<a name="841"><span class="lineNum">     841 </span><span class="lineCov">          2 : static void kernfs_notify_workfn(struct work_struct *work)</span></a>
+<a name="841"><span class="lineNum">     841 </span><span class="lineCov">          1 : static void kernfs_notify_workfn(struct work_struct *work)</span></a>
 <a name="842"><span class="lineNum">     842 </span>            : {</a>
 <a name="843"><span class="lineNum">     843 </span>            :         struct kernfs_node *kn;</a>
 <a name="844"><span class="lineNum">     844 </span>            :         struct kernfs_super_info *info;</a>
 <a name="845"><span class="lineNum">     845 </span>            :         struct kernfs_root *root;</a>
 <a name="846"><span class="lineNum">     846 </span>            : repeat:</a>
 <a name="847"><span class="lineNum">     847 </span>            :         /* pop one off the notify_list */</a>
-<a name="848"><span class="lineNum">     848 </span><span class="lineCov">          4 :         spin_lock_irq(&amp;kernfs_notify_lock);</span></a>
-<a name="849"><span class="lineNum">     849 </span><span class="lineCov">          4 :         kn = kernfs_notify_list;</span></a>
-<a name="850"><span class="lineNum">     850 </span><span class="lineCov">          4 :         if (kn == KERNFS_NOTIFY_EOL) {</span></a>
-<a name="851"><span class="lineNum">     851 </span><span class="lineCov">          2 :                 spin_unlock_irq(&amp;kernfs_notify_lock);</span></a>
-<a name="852"><span class="lineNum">     852 </span><span class="lineCov">          2 :                 return;</span></a>
+<a name="848"><span class="lineNum">     848 </span><span class="lineCov">          2 :         spin_lock_irq(&amp;kernfs_notify_lock);</span></a>
+<a name="849"><span class="lineNum">     849 </span><span class="lineCov">          2 :         kn = kernfs_notify_list;</span></a>
+<a name="850"><span class="lineNum">     850 </span><span class="lineCov">          2 :         if (kn == KERNFS_NOTIFY_EOL) {</span></a>
+<a name="851"><span class="lineNum">     851 </span><span class="lineCov">          1 :                 spin_unlock_irq(&amp;kernfs_notify_lock);</span></a>
+<a name="852"><span class="lineNum">     852 </span><span class="lineCov">          1 :                 return;</span></a>
 <a name="853"><span class="lineNum">     853 </span>            :         }</a>
-<a name="854"><span class="lineNum">     854 </span><span class="lineCov">          2 :         kernfs_notify_list = kn-&gt;attr.notify_next;</span></a>
-<a name="855"><span class="lineNum">     855 </span><span class="lineCov">          2 :         kn-&gt;attr.notify_next = NULL;</span></a>
-<a name="856"><span class="lineNum">     856 </span><span class="lineCov">          2 :         spin_unlock_irq(&amp;kernfs_notify_lock);</span></a>
+<a name="854"><span class="lineNum">     854 </span><span class="lineCov">          1 :         kernfs_notify_list = kn-&gt;attr.notify_next;</span></a>
+<a name="855"><span class="lineNum">     855 </span><span class="lineCov">          1 :         kn-&gt;attr.notify_next = NULL;</span></a>
+<a name="856"><span class="lineNum">     856 </span><span class="lineCov">          1 :         spin_unlock_irq(&amp;kernfs_notify_lock);</span></a>
 <a name="857"><span class="lineNum">     857 </span>            : </a>
-<a name="858"><span class="lineNum">     858 </span><span class="lineCov">          2 :         root = kernfs_root(kn);</span></a>
+<a name="858"><span class="lineNum">     858 </span><span class="lineCov">          1 :         root = kernfs_root(kn);</span></a>
 <a name="859"><span class="lineNum">     859 </span>            :         /* kick fsnotify */</a>
-<a name="860"><span class="lineNum">     860 </span><span class="lineCov">          2 :         down_write(&amp;root-&gt;kernfs_rwsem);</span></a>
+<a name="860"><span class="lineNum">     860 </span><span class="lineCov">          1 :         down_write(&amp;root-&gt;kernfs_rwsem);</span></a>
 <a name="861"><span class="lineNum">     861 </span>            : </a>
-<a name="862"><span class="lineNum">     862 </span><span class="lineCov">          4 :         list_for_each_entry(info, &amp;kernfs_root(kn)-&gt;supers, node) {</span></a>
+<a name="862"><span class="lineNum">     862 </span><span class="lineCov">          2 :         list_for_each_entry(info, &amp;kernfs_root(kn)-&gt;supers, node) {</span></a>
 <a name="863"><span class="lineNum">     863 </span>            :                 struct kernfs_node *parent;</a>
 <a name="864"><span class="lineNum">     864 </span><span class="lineNoCov">          0 :                 struct inode *p_inode = NULL;</span></a>
 <a name="865"><span class="lineNum">     865 </span>            :                 struct inode *inode;</a>
@@ -957,9 +957,9 @@
 <a name="895"><span class="lineNum">     895 </span><span class="lineNoCov">          0 :                 iput(inode);</span></a>
 <a name="896"><span class="lineNum">     896 </span>            :         }</a>
 <a name="897"><span class="lineNum">     897 </span>            : </a>
-<a name="898"><span class="lineNum">     898 </span><span class="lineCov">          2 :         up_write(&amp;root-&gt;kernfs_rwsem);</span></a>
-<a name="899"><span class="lineNum">     899 </span><span class="lineCov">          2 :         kernfs_put(kn);</span></a>
-<a name="900"><span class="lineNum">     900 </span><span class="lineCov">          2 :         goto repeat;</span></a>
+<a name="898"><span class="lineNum">     898 </span><span class="lineCov">          1 :         up_write(&amp;root-&gt;kernfs_rwsem);</span></a>
+<a name="899"><span class="lineNum">     899 </span><span class="lineCov">          1 :         kernfs_put(kn);</span></a>
+<a name="900"><span class="lineNum">     900 </span><span class="lineCov">          1 :         goto repeat;</span></a>
 <a name="901"><span class="lineNum">     901 </span>            : }</a>
 <a name="902"><span class="lineNum">     902 </span>            : </a>
 <a name="903"><span class="lineNum">     903 </span>            : /**</a>
@@ -969,30 +969,30 @@
 <a name="907"><span class="lineNum">     907 </span>            :  * Notify @kn such that poll(2) on @kn wakes up.  Maybe be called from any</a>
 <a name="908"><span class="lineNum">     908 </span>            :  * context.</a>
 <a name="909"><span class="lineNum">     909 </span>            :  */</a>
-<a name="910"><span class="lineNum">     910 </span><span class="lineCov">          4 : void kernfs_notify(struct kernfs_node *kn)</span></a>
+<a name="910"><span class="lineNum">     910 </span><span class="lineCov">          2 : void kernfs_notify(struct kernfs_node *kn)</span></a>
 <a name="911"><span class="lineNum">     911 </span>            : {</a>
 <a name="912"><span class="lineNum">     912 </span>            :         static DECLARE_WORK(kernfs_notify_work, kernfs_notify_workfn);</a>
 <a name="913"><span class="lineNum">     913 </span>            :         unsigned long flags;</a>
 <a name="914"><span class="lineNum">     914 </span>            :         struct kernfs_open_node *on;</a>
 <a name="915"><span class="lineNum">     915 </span>            : </a>
-<a name="916"><span class="lineNum">     916 </span><span class="lineCov">          8 :         if (WARN_ON(kernfs_type(kn) != KERNFS_FILE))</span></a>
+<a name="916"><span class="lineNum">     916 </span><span class="lineCov">          4 :         if (WARN_ON(kernfs_type(kn) != KERNFS_FILE))</span></a>
 <a name="917"><span class="lineNum">     917 </span>            :                 return;</a>
 <a name="918"><span class="lineNum">     918 </span>            : </a>
 <a name="919"><span class="lineNum">     919 </span>            :         /* kick poll immediately */</a>
-<a name="920"><span class="lineNum">     920 </span><span class="lineCov">          4 :         spin_lock_irqsave(&amp;kernfs_open_node_lock, flags);</span></a>
-<a name="921"><span class="lineNum">     921 </span><span class="lineCov">          4 :         on = kn-&gt;attr.open;</span></a>
-<a name="922"><span class="lineNum">     922 </span><span class="lineCov">          4 :         if (on) {</span></a>
+<a name="920"><span class="lineNum">     920 </span><span class="lineCov">          2 :         spin_lock_irqsave(&amp;kernfs_open_node_lock, flags);</span></a>
+<a name="921"><span class="lineNum">     921 </span><span class="lineCov">          2 :         on = kn-&gt;attr.open;</span></a>
+<a name="922"><span class="lineNum">     922 </span><span class="lineCov">          2 :         if (on) {</span></a>
 <a name="923"><span class="lineNum">     923 </span><span class="lineNoCov">          0 :                 atomic_inc(&amp;on-&gt;event);</span></a>
 <a name="924"><span class="lineNum">     924 </span><span class="lineNoCov">          0 :                 wake_up_interruptible(&amp;on-&gt;poll);</span></a>
 <a name="925"><span class="lineNum">     925 </span>            :         }</a>
-<a name="926"><span class="lineNum">     926 </span><span class="lineCov">          4 :         spin_unlock_irqrestore(&amp;kernfs_open_node_lock, flags);</span></a>
+<a name="926"><span class="lineNum">     926 </span><span class="lineCov">          2 :         spin_unlock_irqrestore(&amp;kernfs_open_node_lock, flags);</span></a>
 <a name="927"><span class="lineNum">     927 </span>            : </a>
 <a name="928"><span class="lineNum">     928 </span>            :         /* schedule work to kick fsnotify */</a>
-<a name="929"><span class="lineNum">     929 </span><span class="lineCov">          4 :         spin_lock_irqsave(&amp;kernfs_notify_lock, flags);</span></a>
-<a name="930"><span class="lineNum">     930 </span><span class="lineCov">          4 :         if (!kn-&gt;attr.notify_next) {</span></a>
-<a name="931"><span class="lineNum">     931 </span><span class="lineCov">          2 :                 kernfs_get(kn);</span></a>
-<a name="932"><span class="lineNum">     932 </span><span class="lineCov">          2 :                 kn-&gt;attr.notify_next = kernfs_notify_list;</span></a>
-<a name="933"><span class="lineNum">     933 </span><span class="lineCov">          2 :                 kernfs_notify_list = kn;</span></a>
+<a name="929"><span class="lineNum">     929 </span><span class="lineCov">          2 :         spin_lock_irqsave(&amp;kernfs_notify_lock, flags);</span></a>
+<a name="930"><span class="lineNum">     930 </span><span class="lineCov">          2 :         if (!kn-&gt;attr.notify_next) {</span></a>
+<a name="931"><span class="lineNum">     931 </span><span class="lineCov">          1 :                 kernfs_get(kn);</span></a>
+<a name="932"><span class="lineNum">     932 </span><span class="lineCov">          1 :                 kn-&gt;attr.notify_next = kernfs_notify_list;</span></a>
+<a name="933"><span class="lineNum">     933 </span><span class="lineCov">          1 :                 kernfs_notify_list = kn;</span></a>
 <a name="934"><span class="lineNum">     934 </span>            :                 schedule_work(&amp;kernfs_notify_work);</a>
 <a name="935"><span class="lineNum">     935 </span>            :         }</a>
 <a name="936"><span class="lineNum">     936 </span>            :         spin_unlock_irqrestore(&amp;kernfs_notify_lock, flags);</a>
@@ -1027,7 +1027,7 @@
 <a name="965"><span class="lineNum">     965 </span>            :  *</a>
 <a name="966"><span class="lineNum">     966 </span>            :  * Returns the created node on success, ERR_PTR() value on error.</a>
 <a name="967"><span class="lineNum">     967 </span>            :  */</a>
-<a name="968"><span class="lineNum">     968 </span><span class="lineCov">      16110 : struct kernfs_node *__kernfs_create_file(struct kernfs_node *parent,</span></a>
+<a name="968"><span class="lineNum">     968 </span><span class="lineCov">       8055 : struct kernfs_node *__kernfs_create_file(struct kernfs_node *parent,</span></a>
 <a name="969"><span class="lineNum">     969 </span>            :                                          const char *name,</a>
 <a name="970"><span class="lineNum">     970 </span>            :                                          umode_t mode, kuid_t uid, kgid_t gid,</a>
 <a name="971"><span class="lineNum">     971 </span>            :                                          loff_t size,</a>
@@ -1039,17 +1039,17 @@
 <a name="977"><span class="lineNum">     977 </span>            :         unsigned flags;</a>
 <a name="978"><span class="lineNum">     978 </span>            :         int rc;</a>
 <a name="979"><span class="lineNum">     979 </span>            : </a>
-<a name="980"><span class="lineNum">     980 </span><span class="lineCov">      16110 :         flags = KERNFS_FILE;</span></a>
+<a name="980"><span class="lineNum">     980 </span><span class="lineCov">       8055 :         flags = KERNFS_FILE;</span></a>
 <a name="981"><span class="lineNum">     981 </span>            : </a>
-<a name="982"><span class="lineNum">     982 </span><span class="lineCov">      16110 :         kn = kernfs_new_node(parent, name, (mode &amp; S_IALLUGO) | S_IFREG,</span></a>
+<a name="982"><span class="lineNum">     982 </span><span class="lineCov">       8055 :         kn = kernfs_new_node(parent, name, (mode &amp; S_IALLUGO) | S_IFREG,</span></a>
 <a name="983"><span class="lineNum">     983 </span>            :                              uid, gid, flags);</a>
-<a name="984"><span class="lineNum">     984 </span><span class="lineCov">      16110 :         if (!kn)</span></a>
+<a name="984"><span class="lineNum">     984 </span><span class="lineCov">       8055 :         if (!kn)</span></a>
 <a name="985"><span class="lineNum">     985 </span>            :                 return ERR_PTR(-ENOMEM);</a>
 <a name="986"><span class="lineNum">     986 </span>            : </a>
-<a name="987"><span class="lineNum">     987 </span><span class="lineCov">      16110 :         kn-&gt;attr.ops = ops;</span></a>
-<a name="988"><span class="lineNum">     988 </span><span class="lineCov">      16110 :         kn-&gt;attr.size = size;</span></a>
-<a name="989"><span class="lineNum">     989 </span><span class="lineCov">      16110 :         kn-&gt;ns = ns;</span></a>
-<a name="990"><span class="lineNum">     990 </span><span class="lineCov">      16110 :         kn-&gt;priv = priv;</span></a>
+<a name="987"><span class="lineNum">     987 </span><span class="lineCov">       8055 :         kn-&gt;attr.ops = ops;</span></a>
+<a name="988"><span class="lineNum">     988 </span><span class="lineCov">       8055 :         kn-&gt;attr.size = size;</span></a>
+<a name="989"><span class="lineNum">     989 </span><span class="lineCov">       8055 :         kn-&gt;ns = ns;</span></a>
+<a name="990"><span class="lineNum">     990 </span><span class="lineCov">       8055 :         kn-&gt;priv = priv;</span></a>
 <a name="991"><span class="lineNum">     991 </span>            : </a>
 <a name="992"><span class="lineNum">     992 </span>            : #ifdef CONFIG_DEBUG_LOCK_ALLOC</a>
 <a name="993"><span class="lineNum">     993 </span>            :         if (key) {</a>
@@ -1063,15 +1063,15 @@
 <a name="1001"><span class="lineNum">    1001 </span>            :          * need to know whether some ops are implemented outside active</a>
 <a name="1002"><span class="lineNum">    1002 </span>            :          * ref.  Cache their existence in flags.</a>
 <a name="1003"><span class="lineNum">    1003 </span>            :          */</a>
-<a name="1004"><span class="lineNum">    1004 </span><span class="lineCov">      16110 :         if (ops-&gt;seq_show)</span></a>
-<a name="1005"><span class="lineNum">    1005 </span><span class="lineCov">      16092 :                 kn-&gt;flags |= KERNFS_HAS_SEQ_SHOW;</span></a>
-<a name="1006"><span class="lineNum">    1006 </span><span class="lineCov">      16110 :         if (ops-&gt;mmap)</span></a>
+<a name="1004"><span class="lineNum">    1004 </span><span class="lineCov">       8055 :         if (ops-&gt;seq_show)</span></a>
+<a name="1005"><span class="lineNum">    1005 </span><span class="lineCov">       8046 :                 kn-&gt;flags |= KERNFS_HAS_SEQ_SHOW;</span></a>
+<a name="1006"><span class="lineNum">    1006 </span><span class="lineCov">       8055 :         if (ops-&gt;mmap)</span></a>
 <a name="1007"><span class="lineNum">    1007 </span><span class="lineNoCov">          0 :                 kn-&gt;flags |= KERNFS_HAS_MMAP;</span></a>
-<a name="1008"><span class="lineNum">    1008 </span><span class="lineCov">      16110 :         if (ops-&gt;release)</span></a>
+<a name="1008"><span class="lineNum">    1008 </span><span class="lineCov">       8055 :         if (ops-&gt;release)</span></a>
 <a name="1009"><span class="lineNum">    1009 </span><span class="lineNoCov">          0 :                 kn-&gt;flags |= KERNFS_HAS_RELEASE;</span></a>
 <a name="1010"><span class="lineNum">    1010 </span>            : </a>
-<a name="1011"><span class="lineNum">    1011 </span><span class="lineCov">      16110 :         rc = kernfs_add_one(kn);</span></a>
-<a name="1012"><span class="lineNum">    1012 </span><span class="lineCov">      16110 :         if (rc) {</span></a>
+<a name="1011"><span class="lineNum">    1011 </span><span class="lineCov">       8055 :         rc = kernfs_add_one(kn);</span></a>
+<a name="1012"><span class="lineNum">    1012 </span><span class="lineCov">       8055 :         if (rc) {</span></a>
 <a name="1013"><span class="lineNum">    1013 </span><span class="lineNoCov">          0 :                 kernfs_put(kn);</span></a>
 <a name="1014"><span class="lineNum">    1014 </span><span class="lineNoCov">          0 :                 return ERR_PTR(rc);</span></a>
 <a name="1015"><span class="lineNum">    1015 </span>            :         }</a>

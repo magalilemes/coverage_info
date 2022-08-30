@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">11</td>
@@ -1249,11 +1249,11 @@
 <a name="1187"><span class="lineNum">    1187 </span>            : static void pty_line_name(struct tty_driver *driver, int index, char *p)</a>
 <a name="1188"><span class="lineNum">    1188 </span>            : {</a>
 <a name="1189"><span class="lineNum">    1189 </span>            :         static const char ptychar[] = &quot;pqrstuvwxyzabcde&quot;;</a>
-<a name="1190"><span class="lineNum">    1190 </span><span class="lineCov">       1024 :         int i = index + driver-&gt;name_base;</span></a>
+<a name="1190"><span class="lineNum">    1190 </span><span class="lineCov">        512 :         int i = index + driver-&gt;name_base;</span></a>
 <a name="1191"><span class="lineNum">    1191 </span>            :         /* -&gt;name is initialized to &quot;ttyp&quot;, but &quot;tty&quot; is expected */</a>
-<a name="1192"><span class="lineNum">    1192 </span><span class="lineCov">       2048 :         sprintf(p, &quot;%s%c%x&quot;,</span></a>
+<a name="1192"><span class="lineNum">    1192 </span><span class="lineCov">       1024 :         sprintf(p, &quot;%s%c%x&quot;,</span></a>
 <a name="1193"><span class="lineNum">    1193 </span>            :                 driver-&gt;subtype == PTY_TYPE_SLAVE ? &quot;tty&quot; : driver-&gt;name,</a>
-<a name="1194"><span class="lineNum">    1194 </span><span class="lineCov">       1024 :                 ptychar[i &gt;&gt; 4 &amp; 0xf], i &amp; 0xf);</span></a>
+<a name="1194"><span class="lineNum">    1194 </span><span class="lineCov">        512 :                 ptychar[i &gt;&gt; 4 &amp; 0xf], i &amp; 0xf);</span></a>
 <a name="1195"><span class="lineNum">    1195 </span>            : }</a>
 <a name="1196"><span class="lineNum">    1196 </span>            : </a>
 <a name="1197"><span class="lineNum">    1197 </span>            : /**</a>
@@ -1267,13 +1267,13 @@
 <a name="1205"><span class="lineNum">    1205 </span>            :  *</a>
 <a name="1206"><span class="lineNum">    1206 </span>            :  * Locking: None</a>
 <a name="1207"><span class="lineNum">    1207 </span>            :  */</a>
-<a name="1208"><span class="lineNum">    1208 </span><span class="lineCov">          2 : static ssize_t tty_line_name(struct tty_driver *driver, int index, char *p)</span></a>
+<a name="1208"><span class="lineNum">    1208 </span><span class="lineCov">          1 : static ssize_t tty_line_name(struct tty_driver *driver, int index, char *p)</span></a>
 <a name="1209"><span class="lineNum">    1209 </span>            : {</a>
-<a name="1210"><span class="lineNum">    1210 </span><span class="lineCov">          2 :         if (driver-&gt;flags &amp; TTY_DRIVER_UNNUMBERED_NODE)</span></a>
+<a name="1210"><span class="lineNum">    1210 </span><span class="lineCov">          1 :         if (driver-&gt;flags &amp; TTY_DRIVER_UNNUMBERED_NODE)</span></a>
 <a name="1211"><span class="lineNum">    1211 </span><span class="lineNoCov">          0 :                 return sprintf(p, &quot;%s&quot;, driver-&gt;name);</span></a>
 <a name="1212"><span class="lineNum">    1212 </span>            :         else</a>
-<a name="1213"><span class="lineNum">    1213 </span><span class="lineCov">          2 :                 return sprintf(p, &quot;%s%d&quot;, driver-&gt;name,</span></a>
-<a name="1214"><span class="lineNum">    1214 </span><span class="lineCov">          2 :                                index + driver-&gt;name_base);</span></a>
+<a name="1213"><span class="lineNum">    1213 </span><span class="lineCov">          1 :                 return sprintf(p, &quot;%s%d&quot;, driver-&gt;name,</span></a>
+<a name="1214"><span class="lineNum">    1214 </span><span class="lineCov">          1 :                                index + driver-&gt;name_base);</span></a>
 <a name="1215"><span class="lineNum">    1215 </span>            : }</a>
 <a name="1216"><span class="lineNum">    1216 </span>            : </a>
 <a name="1217"><span class="lineNum">    1217 </span>            : /**</a>
@@ -1626,11 +1626,11 @@
 <a name="1564"><span class="lineNum">    1564 </span>            :  * Release a reference to the @tty device and if need be let the kref layer</a>
 <a name="1565"><span class="lineNum">    1565 </span>            :  * destruct the object for us.</a>
 <a name="1566"><span class="lineNum">    1566 </span>            :  */</a>
-<a name="1567"><span class="lineNum">    1567 </span><span class="lineCov">        128 : void tty_kref_put(struct tty_struct *tty)</span></a>
+<a name="1567"><span class="lineNum">    1567 </span><span class="lineCov">         93 : void tty_kref_put(struct tty_struct *tty)</span></a>
 <a name="1568"><span class="lineNum">    1568 </span>            : {</a>
-<a name="1569"><span class="lineNum">    1569 </span><span class="lineCov">        128 :         if (tty)</span></a>
+<a name="1569"><span class="lineNum">    1569 </span><span class="lineCov">         93 :         if (tty)</span></a>
 <a name="1570"><span class="lineNum">    1570 </span><span class="lineNoCov">          0 :                 kref_put(&amp;tty-&gt;kref, queue_release_one_tty);</span></a>
-<a name="1571"><span class="lineNum">    1571 </span><span class="lineCov">        128 : }</span></a>
+<a name="1571"><span class="lineNum">    1571 </span><span class="lineCov">         93 : }</span></a>
 <a name="1572"><span class="lineNum">    1572 </span>            : EXPORT_SYMBOL(tty_kref_put);</a>
 <a name="1573"><span class="lineNum">    1573 </span>            : </a>
 <a name="1574"><span class="lineNum">    1574 </span>            : /**</a>
@@ -3209,19 +3209,19 @@
 <a name="3147"><span class="lineNum">    3147 </span>            : </a>
 <a name="3148"><span class="lineNum">    3148 </span>            : struct class *tty_class;</a>
 <a name="3149"><span class="lineNum">    3149 </span>            : </a>
-<a name="3150"><span class="lineNum">    3150 </span><span class="lineCov">         10 : static int tty_cdev_add(struct tty_driver *driver, dev_t dev,</span></a>
+<a name="3150"><span class="lineNum">    3150 </span><span class="lineCov">          5 : static int tty_cdev_add(struct tty_driver *driver, dev_t dev,</span></a>
 <a name="3151"><span class="lineNum">    3151 </span>            :                 unsigned int index, unsigned int count)</a>
 <a name="3152"><span class="lineNum">    3152 </span>            : {</a>
 <a name="3153"><span class="lineNum">    3153 </span>            :         int err;</a>
 <a name="3154"><span class="lineNum">    3154 </span>            : </a>
 <a name="3155"><span class="lineNum">    3155 </span>            :         /* init here, since reused cdevs cause crashes */</a>
-<a name="3156"><span class="lineNum">    3156 </span><span class="lineCov">         10 :         driver-&gt;cdevs[index] = cdev_alloc();</span></a>
-<a name="3157"><span class="lineNum">    3157 </span><span class="lineCov">         10 :         if (!driver-&gt;cdevs[index])</span></a>
+<a name="3156"><span class="lineNum">    3156 </span><span class="lineCov">          5 :         driver-&gt;cdevs[index] = cdev_alloc();</span></a>
+<a name="3157"><span class="lineNum">    3157 </span><span class="lineCov">          5 :         if (!driver-&gt;cdevs[index])</span></a>
 <a name="3158"><span class="lineNum">    3158 </span>            :                 return -ENOMEM;</a>
-<a name="3159"><span class="lineNum">    3159 </span><span class="lineCov">         10 :         driver-&gt;cdevs[index]-&gt;ops = &amp;tty_fops;</span></a>
-<a name="3160"><span class="lineNum">    3160 </span><span class="lineCov">         10 :         driver-&gt;cdevs[index]-&gt;owner = driver-&gt;owner;</span></a>
-<a name="3161"><span class="lineNum">    3161 </span><span class="lineCov">         10 :         err = cdev_add(driver-&gt;cdevs[index], dev, count);</span></a>
-<a name="3162"><span class="lineNum">    3162 </span><span class="lineCov">         10 :         if (err)</span></a>
+<a name="3159"><span class="lineNum">    3159 </span><span class="lineCov">          5 :         driver-&gt;cdevs[index]-&gt;ops = &amp;tty_fops;</span></a>
+<a name="3160"><span class="lineNum">    3160 </span><span class="lineCov">          5 :         driver-&gt;cdevs[index]-&gt;owner = driver-&gt;owner;</span></a>
+<a name="3161"><span class="lineNum">    3161 </span><span class="lineCov">          5 :         err = cdev_add(driver-&gt;cdevs[index], dev, count);</span></a>
+<a name="3162"><span class="lineNum">    3162 </span><span class="lineCov">          5 :         if (err)</span></a>
 <a name="3163"><span class="lineNum">    3163 </span><span class="lineNoCov">          0 :                 kobject_put(&amp;driver-&gt;cdevs[index]-&gt;kobj);</span></a>
 <a name="3164"><span class="lineNum">    3164 </span>            :         return err;</a>
 <a name="3165"><span class="lineNum">    3165 </span>            : }</a>
@@ -3247,7 +3247,7 @@
 <a name="3185"><span class="lineNum">    3185 </span><span class="lineNoCov">          0 : struct device *tty_register_device(struct tty_driver *driver, unsigned index,</span></a>
 <a name="3186"><span class="lineNum">    3186 </span>            :                                    struct device *device)</a>
 <a name="3187"><span class="lineNum">    3187 </span>            : {</a>
-<a name="3188"><span class="lineNum">    3188 </span><span class="lineCov">       1024 :         return tty_register_device_attr(driver, index, device, NULL, NULL);</span></a>
+<a name="3188"><span class="lineNum">    3188 </span><span class="lineCov">        512 :         return tty_register_device_attr(driver, index, device, NULL, NULL);</span></a>
 <a name="3189"><span class="lineNum">    3189 </span>            : }</a>
 <a name="3190"><span class="lineNum">    3190 </span>            : EXPORT_SYMBOL(tty_register_device);</a>
 <a name="3191"><span class="lineNum">    3191 </span>            : </a>
@@ -3276,66 +3276,66 @@
 <a name="3214"><span class="lineNum">    3214 </span>            :  * Return: A pointer to the struct device for this tty device (or</a>
 <a name="3215"><span class="lineNum">    3215 </span>            :  * ERR_PTR(-EFOO) on error).</a>
 <a name="3216"><span class="lineNum">    3216 </span>            :  */</a>
-<a name="3217"><span class="lineNum">    3217 </span><span class="lineCov">       1026 : struct device *tty_register_device_attr(struct tty_driver *driver,</span></a>
+<a name="3217"><span class="lineNum">    3217 </span><span class="lineCov">        513 : struct device *tty_register_device_attr(struct tty_driver *driver,</span></a>
 <a name="3218"><span class="lineNum">    3218 </span>            :                                    unsigned index, struct device *device,</a>
 <a name="3219"><span class="lineNum">    3219 </span>            :                                    void *drvdata,</a>
 <a name="3220"><span class="lineNum">    3220 </span>            :                                    const struct attribute_group **attr_grp)</a>
 <a name="3221"><span class="lineNum">    3221 </span>            : {</a>
 <a name="3222"><span class="lineNum">    3222 </span>            :         char name[64];</a>
-<a name="3223"><span class="lineNum">    3223 </span><span class="lineCov">       1026 :         dev_t devt = MKDEV(driver-&gt;major, driver-&gt;minor_start) + index;</span></a>
+<a name="3223"><span class="lineNum">    3223 </span><span class="lineCov">        513 :         dev_t devt = MKDEV(driver-&gt;major, driver-&gt;minor_start) + index;</span></a>
 <a name="3224"><span class="lineNum">    3224 </span>            :         struct ktermios *tp;</a>
 <a name="3225"><span class="lineNum">    3225 </span>            :         struct device *dev;</a>
 <a name="3226"><span class="lineNum">    3226 </span>            :         int retval;</a>
 <a name="3227"><span class="lineNum">    3227 </span>            : </a>
-<a name="3228"><span class="lineNum">    3228 </span><span class="lineCov">       1026 :         if (index &gt;= driver-&gt;num) {</span></a>
+<a name="3228"><span class="lineNum">    3228 </span><span class="lineCov">        513 :         if (index &gt;= driver-&gt;num) {</span></a>
 <a name="3229"><span class="lineNum">    3229 </span><span class="lineNoCov">          0 :                 pr_err(&quot;%s: Attempt to register invalid tty line number (%d)\n&quot;,</span></a>
 <a name="3230"><span class="lineNum">    3230 </span>            :                        driver-&gt;name, index);</a>
 <a name="3231"><span class="lineNum">    3231 </span><span class="lineNoCov">          0 :                 return ERR_PTR(-EINVAL);</span></a>
 <a name="3232"><span class="lineNum">    3232 </span>            :         }</a>
 <a name="3233"><span class="lineNum">    3233 </span>            : </a>
-<a name="3234"><span class="lineNum">    3234 </span><span class="lineCov">       1026 :         if (driver-&gt;type == TTY_DRIVER_TYPE_PTY)</span></a>
-<a name="3235"><span class="lineNum">    3235 </span><span class="lineCov">       1024 :                 pty_line_name(driver, index, name);</span></a>
+<a name="3234"><span class="lineNum">    3234 </span><span class="lineCov">        513 :         if (driver-&gt;type == TTY_DRIVER_TYPE_PTY)</span></a>
+<a name="3235"><span class="lineNum">    3235 </span><span class="lineCov">        512 :                 pty_line_name(driver, index, name);</span></a>
 <a name="3236"><span class="lineNum">    3236 </span>            :         else</a>
-<a name="3237"><span class="lineNum">    3237 </span><span class="lineCov">          2 :                 tty_line_name(driver, index, name);</span></a>
+<a name="3237"><span class="lineNum">    3237 </span><span class="lineCov">          1 :                 tty_line_name(driver, index, name);</span></a>
 <a name="3238"><span class="lineNum">    3238 </span>            : </a>
-<a name="3239"><span class="lineNum">    3239 </span><span class="lineCov">       1026 :         dev = kzalloc(sizeof(*dev), GFP_KERNEL);</span></a>
-<a name="3240"><span class="lineNum">    3240 </span><span class="lineCov">       1026 :         if (!dev)</span></a>
+<a name="3239"><span class="lineNum">    3239 </span><span class="lineCov">        513 :         dev = kzalloc(sizeof(*dev), GFP_KERNEL);</span></a>
+<a name="3240"><span class="lineNum">    3240 </span><span class="lineCov">        513 :         if (!dev)</span></a>
 <a name="3241"><span class="lineNum">    3241 </span>            :                 return ERR_PTR(-ENOMEM);</a>
 <a name="3242"><span class="lineNum">    3242 </span>            : </a>
-<a name="3243"><span class="lineNum">    3243 </span><span class="lineCov">       1026 :         dev-&gt;devt = devt;</span></a>
-<a name="3244"><span class="lineNum">    3244 </span><span class="lineCov">       1026 :         dev-&gt;class = tty_class;</span></a>
-<a name="3245"><span class="lineNum">    3245 </span><span class="lineCov">       1026 :         dev-&gt;parent = device;</span></a>
-<a name="3246"><span class="lineNum">    3246 </span><span class="lineCov">       1026 :         dev-&gt;release = tty_device_create_release;</span></a>
-<a name="3247"><span class="lineNum">    3247 </span><span class="lineCov">       1026 :         dev_set_name(dev, &quot;%s&quot;, name);</span></a>
-<a name="3248"><span class="lineNum">    3248 </span><span class="lineCov">       1026 :         dev-&gt;groups = attr_grp;</span></a>
-<a name="3249"><span class="lineNum">    3249 </span><span class="lineCov">       2052 :         dev_set_drvdata(dev, drvdata);</span></a>
+<a name="3243"><span class="lineNum">    3243 </span><span class="lineCov">        513 :         dev-&gt;devt = devt;</span></a>
+<a name="3244"><span class="lineNum">    3244 </span><span class="lineCov">        513 :         dev-&gt;class = tty_class;</span></a>
+<a name="3245"><span class="lineNum">    3245 </span><span class="lineCov">        513 :         dev-&gt;parent = device;</span></a>
+<a name="3246"><span class="lineNum">    3246 </span><span class="lineCov">        513 :         dev-&gt;release = tty_device_create_release;</span></a>
+<a name="3247"><span class="lineNum">    3247 </span><span class="lineCov">        513 :         dev_set_name(dev, &quot;%s&quot;, name);</span></a>
+<a name="3248"><span class="lineNum">    3248 </span><span class="lineCov">        513 :         dev-&gt;groups = attr_grp;</span></a>
+<a name="3249"><span class="lineNum">    3249 </span><span class="lineCov">       1026 :         dev_set_drvdata(dev, drvdata);</span></a>
 <a name="3250"><span class="lineNum">    3250 </span>            : </a>
-<a name="3251"><span class="lineNum">    3251 </span><span class="lineCov">       1026 :         dev_set_uevent_suppress(dev, 1);</span></a>
+<a name="3251"><span class="lineNum">    3251 </span><span class="lineCov">        513 :         dev_set_uevent_suppress(dev, 1);</span></a>
 <a name="3252"><span class="lineNum">    3252 </span>            : </a>
-<a name="3253"><span class="lineNum">    3253 </span><span class="lineCov">       1026 :         retval = device_register(dev);</span></a>
-<a name="3254"><span class="lineNum">    3254 </span><span class="lineCov">       1026 :         if (retval)</span></a>
+<a name="3253"><span class="lineNum">    3253 </span><span class="lineCov">        513 :         retval = device_register(dev);</span></a>
+<a name="3254"><span class="lineNum">    3254 </span><span class="lineCov">        513 :         if (retval)</span></a>
 <a name="3255"><span class="lineNum">    3255 </span>            :                 goto err_put;</a>
 <a name="3256"><span class="lineNum">    3256 </span>            : </a>
-<a name="3257"><span class="lineNum">    3257 </span><span class="lineCov">       1026 :         if (!(driver-&gt;flags &amp; TTY_DRIVER_DYNAMIC_ALLOC)) {</span></a>
+<a name="3257"><span class="lineNum">    3257 </span><span class="lineCov">        513 :         if (!(driver-&gt;flags &amp; TTY_DRIVER_DYNAMIC_ALLOC)) {</span></a>
 <a name="3258"><span class="lineNum">    3258 </span>            :                 /*</a>
 <a name="3259"><span class="lineNum">    3259 </span>            :                  * Free any saved termios data so that the termios state is</a>
 <a name="3260"><span class="lineNum">    3260 </span>            :                  * reset when reusing a minor number.</a>
 <a name="3261"><span class="lineNum">    3261 </span>            :                  */</a>
-<a name="3262"><span class="lineNum">    3262 </span><span class="lineCov">          2 :                 tp = driver-&gt;termios[index];</span></a>
-<a name="3263"><span class="lineNum">    3263 </span><span class="lineCov">          2 :                 if (tp) {</span></a>
+<a name="3262"><span class="lineNum">    3262 </span><span class="lineCov">          1 :                 tp = driver-&gt;termios[index];</span></a>
+<a name="3263"><span class="lineNum">    3263 </span><span class="lineCov">          1 :                 if (tp) {</span></a>
 <a name="3264"><span class="lineNum">    3264 </span><span class="lineNoCov">          0 :                         driver-&gt;termios[index] = NULL;</span></a>
 <a name="3265"><span class="lineNum">    3265 </span><span class="lineNoCov">          0 :                         kfree(tp);</span></a>
 <a name="3266"><span class="lineNum">    3266 </span>            :                 }</a>
 <a name="3267"><span class="lineNum">    3267 </span>            : </a>
-<a name="3268"><span class="lineNum">    3268 </span><span class="lineCov">          2 :                 retval = tty_cdev_add(driver, devt, index, 1);</span></a>
-<a name="3269"><span class="lineNum">    3269 </span><span class="lineCov">          2 :                 if (retval)</span></a>
+<a name="3268"><span class="lineNum">    3268 </span><span class="lineCov">          1 :                 retval = tty_cdev_add(driver, devt, index, 1);</span></a>
+<a name="3269"><span class="lineNum">    3269 </span><span class="lineCov">          1 :                 if (retval)</span></a>
 <a name="3270"><span class="lineNum">    3270 </span>            :                         goto err_del;</a>
 <a name="3271"><span class="lineNum">    3271 </span>            :         }</a>
 <a name="3272"><span class="lineNum">    3272 </span>            : </a>
-<a name="3273"><span class="lineNum">    3273 </span><span class="lineCov">       1026 :         dev_set_uevent_suppress(dev, 0);</span></a>
-<a name="3274"><span class="lineNum">    3274 </span><span class="lineCov">       1026 :         kobject_uevent(&amp;dev-&gt;kobj, KOBJ_ADD);</span></a>
+<a name="3273"><span class="lineNum">    3273 </span><span class="lineCov">        513 :         dev_set_uevent_suppress(dev, 0);</span></a>
+<a name="3274"><span class="lineNum">    3274 </span><span class="lineCov">        513 :         kobject_uevent(&amp;dev-&gt;kobj, KOBJ_ADD);</span></a>
 <a name="3275"><span class="lineNum">    3275 </span>            : </a>
-<a name="3276"><span class="lineNum">    3276 </span><span class="lineCov">       1026 :         return dev;</span></a>
+<a name="3276"><span class="lineNum">    3276 </span><span class="lineCov">        513 :         return dev;</span></a>
 <a name="3277"><span class="lineNum">    3277 </span>            : </a>
 <a name="3278"><span class="lineNum">    3278 </span>            : err_del:</a>
 <a name="3279"><span class="lineNum">    3279 </span><span class="lineNoCov">          0 :         device_del(dev);</span></a>
@@ -3376,49 +3376,49 @@
 <a name="3314"><span class="lineNum">    3314 </span>            :  * This should not be called directly, some of the provided macros should be</a>
 <a name="3315"><span class="lineNum">    3315 </span>            :  * used instead. Use IS_ERR() and friends on @retval.</a>
 <a name="3316"><span class="lineNum">    3316 </span>            :  */</a>
-<a name="3317"><span class="lineNum">    3317 </span><span class="lineCov">         10 : struct tty_driver *__tty_alloc_driver(unsigned int lines, struct module *owner,</span></a>
+<a name="3317"><span class="lineNum">    3317 </span><span class="lineCov">          5 : struct tty_driver *__tty_alloc_driver(unsigned int lines, struct module *owner,</span></a>
 <a name="3318"><span class="lineNum">    3318 </span>            :                 unsigned long flags)</a>
 <a name="3319"><span class="lineNum">    3319 </span>            : {</a>
 <a name="3320"><span class="lineNum">    3320 </span>            :         struct tty_driver *driver;</a>
-<a name="3321"><span class="lineNum">    3321 </span><span class="lineCov">         10 :         unsigned int cdevs = 1;</span></a>
+<a name="3321"><span class="lineNum">    3321 </span><span class="lineCov">          5 :         unsigned int cdevs = 1;</span></a>
 <a name="3322"><span class="lineNum">    3322 </span>            :         int err;</a>
 <a name="3323"><span class="lineNum">    3323 </span>            : </a>
-<a name="3324"><span class="lineNum">    3324 </span><span class="lineCov">         10 :         if (!lines || (flags &amp; TTY_DRIVER_UNNUMBERED_NODE &amp;&amp; lines &gt; 1))</span></a>
+<a name="3324"><span class="lineNum">    3324 </span><span class="lineCov">          5 :         if (!lines || (flags &amp; TTY_DRIVER_UNNUMBERED_NODE &amp;&amp; lines &gt; 1))</span></a>
 <a name="3325"><span class="lineNum">    3325 </span>            :                 return ERR_PTR(-EINVAL);</a>
 <a name="3326"><span class="lineNum">    3326 </span>            : </a>
-<a name="3327"><span class="lineNum">    3327 </span><span class="lineCov">         10 :         driver = kzalloc(sizeof(*driver), GFP_KERNEL);</span></a>
-<a name="3328"><span class="lineNum">    3328 </span><span class="lineCov">         10 :         if (!driver)</span></a>
+<a name="3327"><span class="lineNum">    3327 </span><span class="lineCov">          5 :         driver = kzalloc(sizeof(*driver), GFP_KERNEL);</span></a>
+<a name="3328"><span class="lineNum">    3328 </span><span class="lineCov">          5 :         if (!driver)</span></a>
 <a name="3329"><span class="lineNum">    3329 </span>            :                 return ERR_PTR(-ENOMEM);</a>
 <a name="3330"><span class="lineNum">    3330 </span>            : </a>
-<a name="3331"><span class="lineNum">    3331 </span><span class="lineCov">         20 :         kref_init(&amp;driver-&gt;kref);</span></a>
-<a name="3332"><span class="lineNum">    3332 </span><span class="lineCov">         10 :         driver-&gt;magic = TTY_DRIVER_MAGIC;</span></a>
-<a name="3333"><span class="lineNum">    3333 </span><span class="lineCov">         10 :         driver-&gt;num = lines;</span></a>
-<a name="3334"><span class="lineNum">    3334 </span><span class="lineCov">         10 :         driver-&gt;owner = owner;</span></a>
-<a name="3335"><span class="lineNum">    3335 </span><span class="lineCov">         10 :         driver-&gt;flags = flags;</span></a>
+<a name="3331"><span class="lineNum">    3331 </span><span class="lineCov">         10 :         kref_init(&amp;driver-&gt;kref);</span></a>
+<a name="3332"><span class="lineNum">    3332 </span><span class="lineCov">          5 :         driver-&gt;magic = TTY_DRIVER_MAGIC;</span></a>
+<a name="3333"><span class="lineNum">    3333 </span><span class="lineCov">          5 :         driver-&gt;num = lines;</span></a>
+<a name="3334"><span class="lineNum">    3334 </span><span class="lineCov">          5 :         driver-&gt;owner = owner;</span></a>
+<a name="3335"><span class="lineNum">    3335 </span><span class="lineCov">          5 :         driver-&gt;flags = flags;</span></a>
 <a name="3336"><span class="lineNum">    3336 </span>            : </a>
-<a name="3337"><span class="lineNum">    3337 </span><span class="lineCov">         10 :         if (!(flags &amp; TTY_DRIVER_DEVPTS_MEM)) {</span></a>
-<a name="3338"><span class="lineNum">    3338 </span><span class="lineCov">         12 :                 driver-&gt;ttys = kcalloc(lines, sizeof(*driver-&gt;ttys),</span></a>
+<a name="3337"><span class="lineNum">    3337 </span><span class="lineCov">          5 :         if (!(flags &amp; TTY_DRIVER_DEVPTS_MEM)) {</span></a>
+<a name="3338"><span class="lineNum">    3338 </span><span class="lineCov">          6 :                 driver-&gt;ttys = kcalloc(lines, sizeof(*driver-&gt;ttys),</span></a>
 <a name="3339"><span class="lineNum">    3339 </span>            :                                 GFP_KERNEL);</a>
-<a name="3340"><span class="lineNum">    3340 </span><span class="lineCov">         12 :                 driver-&gt;termios = kcalloc(lines, sizeof(*driver-&gt;termios),</span></a>
+<a name="3340"><span class="lineNum">    3340 </span><span class="lineCov">          6 :                 driver-&gt;termios = kcalloc(lines, sizeof(*driver-&gt;termios),</span></a>
 <a name="3341"><span class="lineNum">    3341 </span>            :                                 GFP_KERNEL);</a>
-<a name="3342"><span class="lineNum">    3342 </span><span class="lineCov">          6 :                 if (!driver-&gt;ttys || !driver-&gt;termios) {</span></a>
+<a name="3342"><span class="lineNum">    3342 </span><span class="lineCov">          3 :                 if (!driver-&gt;ttys || !driver-&gt;termios) {</span></a>
 <a name="3343"><span class="lineNum">    3343 </span>            :                         err = -ENOMEM;</a>
 <a name="3344"><span class="lineNum">    3344 </span>            :                         goto err_free_all;</a>
 <a name="3345"><span class="lineNum">    3345 </span>            :                 }</a>
 <a name="3346"><span class="lineNum">    3346 </span>            :         }</a>
 <a name="3347"><span class="lineNum">    3347 </span>            : </a>
-<a name="3348"><span class="lineNum">    3348 </span><span class="lineCov">         10 :         if (!(flags &amp; TTY_DRIVER_DYNAMIC_ALLOC)) {</span></a>
-<a name="3349"><span class="lineNum">    3349 </span><span class="lineCov">          4 :                 driver-&gt;ports = kcalloc(lines, sizeof(*driver-&gt;ports),</span></a>
+<a name="3348"><span class="lineNum">    3348 </span><span class="lineCov">          5 :         if (!(flags &amp; TTY_DRIVER_DYNAMIC_ALLOC)) {</span></a>
+<a name="3349"><span class="lineNum">    3349 </span><span class="lineCov">          2 :                 driver-&gt;ports = kcalloc(lines, sizeof(*driver-&gt;ports),</span></a>
 <a name="3350"><span class="lineNum">    3350 </span>            :                                 GFP_KERNEL);</a>
-<a name="3351"><span class="lineNum">    3351 </span><span class="lineCov">          2 :                 if (!driver-&gt;ports) {</span></a>
+<a name="3351"><span class="lineNum">    3351 </span><span class="lineCov">          1 :                 if (!driver-&gt;ports) {</span></a>
 <a name="3352"><span class="lineNum">    3352 </span>            :                         err = -ENOMEM;</a>
 <a name="3353"><span class="lineNum">    3353 </span>            :                         goto err_free_all;</a>
 <a name="3354"><span class="lineNum">    3354 </span>            :                 }</a>
 <a name="3355"><span class="lineNum">    3355 </span>            :                 cdevs = lines;</a>
 <a name="3356"><span class="lineNum">    3356 </span>            :         }</a>
 <a name="3357"><span class="lineNum">    3357 </span>            : </a>
-<a name="3358"><span class="lineNum">    3358 </span><span class="lineCov">         20 :         driver-&gt;cdevs = kcalloc(cdevs, sizeof(*driver-&gt;cdevs), GFP_KERNEL);</span></a>
-<a name="3359"><span class="lineNum">    3359 </span><span class="lineCov">         10 :         if (!driver-&gt;cdevs) {</span></a>
+<a name="3358"><span class="lineNum">    3358 </span><span class="lineCov">         10 :         driver-&gt;cdevs = kcalloc(cdevs, sizeof(*driver-&gt;cdevs), GFP_KERNEL);</span></a>
+<a name="3359"><span class="lineNum">    3359 </span><span class="lineCov">          5 :         if (!driver-&gt;cdevs) {</span></a>
 <a name="3360"><span class="lineNum">    3360 </span>            :                 err = -ENOMEM;</a>
 <a name="3361"><span class="lineNum">    3361 </span>            :                 goto err_free_all;</a>
 <a name="3362"><span class="lineNum">    3362 </span>            :         }</a>
@@ -3479,14 +3479,14 @@
 <a name="3417"><span class="lineNum">    3417 </span>            :  *</a>
 <a name="3418"><span class="lineNum">    3418 </span>            :  * Called by a tty driver to register itself.</a>
 <a name="3419"><span class="lineNum">    3419 </span>            :  */</a>
-<a name="3420"><span class="lineNum">    3420 </span><span class="lineCov">         10 : int tty_register_driver(struct tty_driver *driver)</span></a>
+<a name="3420"><span class="lineNum">    3420 </span><span class="lineCov">          5 : int tty_register_driver(struct tty_driver *driver)</span></a>
 <a name="3421"><span class="lineNum">    3421 </span>            : {</a>
 <a name="3422"><span class="lineNum">    3422 </span>            :         int error;</a>
 <a name="3423"><span class="lineNum">    3423 </span>            :         int i;</a>
 <a name="3424"><span class="lineNum">    3424 </span>            :         dev_t dev;</a>
 <a name="3425"><span class="lineNum">    3425 </span>            :         struct device *d;</a>
 <a name="3426"><span class="lineNum">    3426 </span>            : </a>
-<a name="3427"><span class="lineNum">    3427 </span><span class="lineCov">         10 :         if (!driver-&gt;major) {</span></a>
+<a name="3427"><span class="lineNum">    3427 </span><span class="lineCov">          5 :         if (!driver-&gt;major) {</span></a>
 <a name="3428"><span class="lineNum">    3428 </span><span class="lineNoCov">          0 :                 error = alloc_chrdev_region(&amp;dev, driver-&gt;minor_start,</span></a>
 <a name="3429"><span class="lineNum">    3429 </span>            :                                                 driver-&gt;num, driver-&gt;name);</a>
 <a name="3430"><span class="lineNum">    3430 </span><span class="lineNoCov">          0 :                 if (!error) {</span></a>
@@ -3494,34 +3494,34 @@
 <a name="3432"><span class="lineNum">    3432 </span><span class="lineNoCov">          0 :                         driver-&gt;minor_start = MINOR(dev);</span></a>
 <a name="3433"><span class="lineNum">    3433 </span>            :                 }</a>
 <a name="3434"><span class="lineNum">    3434 </span>            :         } else {</a>
-<a name="3435"><span class="lineNum">    3435 </span><span class="lineCov">         10 :                 dev = MKDEV(driver-&gt;major, driver-&gt;minor_start);</span></a>
-<a name="3436"><span class="lineNum">    3436 </span><span class="lineCov">         10 :                 error = register_chrdev_region(dev, driver-&gt;num, driver-&gt;name);</span></a>
+<a name="3435"><span class="lineNum">    3435 </span><span class="lineCov">          5 :                 dev = MKDEV(driver-&gt;major, driver-&gt;minor_start);</span></a>
+<a name="3436"><span class="lineNum">    3436 </span><span class="lineCov">          5 :                 error = register_chrdev_region(dev, driver-&gt;num, driver-&gt;name);</span></a>
 <a name="3437"><span class="lineNum">    3437 </span>            :         }</a>
-<a name="3438"><span class="lineNum">    3438 </span><span class="lineCov">         10 :         if (error &lt; 0)</span></a>
+<a name="3438"><span class="lineNum">    3438 </span><span class="lineCov">          5 :         if (error &lt; 0)</span></a>
 <a name="3439"><span class="lineNum">    3439 </span>            :                 goto err;</a>
 <a name="3440"><span class="lineNum">    3440 </span>            : </a>
-<a name="3441"><span class="lineNum">    3441 </span><span class="lineCov">         10 :         if (driver-&gt;flags &amp; TTY_DRIVER_DYNAMIC_ALLOC) {</span></a>
-<a name="3442"><span class="lineNum">    3442 </span><span class="lineCov">          8 :                 error = tty_cdev_add(driver, dev, 0, driver-&gt;num);</span></a>
-<a name="3443"><span class="lineNum">    3443 </span><span class="lineCov">          8 :                 if (error)</span></a>
+<a name="3441"><span class="lineNum">    3441 </span><span class="lineCov">          5 :         if (driver-&gt;flags &amp; TTY_DRIVER_DYNAMIC_ALLOC) {</span></a>
+<a name="3442"><span class="lineNum">    3442 </span><span class="lineCov">          4 :                 error = tty_cdev_add(driver, dev, 0, driver-&gt;num);</span></a>
+<a name="3443"><span class="lineNum">    3443 </span><span class="lineCov">          4 :                 if (error)</span></a>
 <a name="3444"><span class="lineNum">    3444 </span>            :                         goto err_unreg_char;</a>
 <a name="3445"><span class="lineNum">    3445 </span>            :         }</a>
 <a name="3446"><span class="lineNum">    3446 </span>            : </a>
-<a name="3447"><span class="lineNum">    3447 </span><span class="lineCov">         10 :         mutex_lock(&amp;tty_mutex);</span></a>
-<a name="3448"><span class="lineNum">    3448 </span><span class="lineCov">         20 :         list_add(&amp;driver-&gt;tty_drivers, &amp;tty_drivers);</span></a>
-<a name="3449"><span class="lineNum">    3449 </span><span class="lineCov">         10 :         mutex_unlock(&amp;tty_mutex);</span></a>
+<a name="3447"><span class="lineNum">    3447 </span><span class="lineCov">          5 :         mutex_lock(&amp;tty_mutex);</span></a>
+<a name="3448"><span class="lineNum">    3448 </span><span class="lineCov">         10 :         list_add(&amp;driver-&gt;tty_drivers, &amp;tty_drivers);</span></a>
+<a name="3449"><span class="lineNum">    3449 </span><span class="lineCov">          5 :         mutex_unlock(&amp;tty_mutex);</span></a>
 <a name="3450"><span class="lineNum">    3450 </span>            : </a>
-<a name="3451"><span class="lineNum">    3451 </span><span class="lineCov">         10 :         if (!(driver-&gt;flags &amp; TTY_DRIVER_DYNAMIC_DEV)) {</span></a>
-<a name="3452"><span class="lineNum">    3452 </span><span class="lineCov">       1024 :                 for (i = 0; i &lt; driver-&gt;num; i++) {</span></a>
-<a name="3453"><span class="lineNum">    3453 </span><span class="lineCov">       2048 :                         d = tty_register_device(driver, i, NULL);</span></a>
-<a name="3454"><span class="lineNum">    3454 </span><span class="lineCov">       1024 :                         if (IS_ERR(d)) {</span></a>
+<a name="3451"><span class="lineNum">    3451 </span><span class="lineCov">          5 :         if (!(driver-&gt;flags &amp; TTY_DRIVER_DYNAMIC_DEV)) {</span></a>
+<a name="3452"><span class="lineNum">    3452 </span><span class="lineCov">        512 :                 for (i = 0; i &lt; driver-&gt;num; i++) {</span></a>
+<a name="3453"><span class="lineNum">    3453 </span><span class="lineCov">       1024 :                         d = tty_register_device(driver, i, NULL);</span></a>
+<a name="3454"><span class="lineNum">    3454 </span><span class="lineCov">        512 :                         if (IS_ERR(d)) {</span></a>
 <a name="3455"><span class="lineNum">    3455 </span><span class="lineNoCov">          0 :                                 error = PTR_ERR(d);</span></a>
 <a name="3456"><span class="lineNum">    3456 </span>            :                                 goto err_unreg_devs;</a>
 <a name="3457"><span class="lineNum">    3457 </span>            :                         }</a>
 <a name="3458"><span class="lineNum">    3458 </span>            :                 }</a>
 <a name="3459"><span class="lineNum">    3459 </span>            :         }</a>
-<a name="3460"><span class="lineNum">    3460 </span><span class="lineCov">         10 :         proc_tty_register_driver(driver);</span></a>
-<a name="3461"><span class="lineNum">    3461 </span><span class="lineCov">         10 :         driver-&gt;flags |= TTY_DRIVER_INSTALLED;</span></a>
-<a name="3462"><span class="lineNum">    3462 </span><span class="lineCov">         10 :         return 0;</span></a>
+<a name="3460"><span class="lineNum">    3460 </span><span class="lineCov">          5 :         proc_tty_register_driver(driver);</span></a>
+<a name="3461"><span class="lineNum">    3461 </span><span class="lineCov">          5 :         driver-&gt;flags |= TTY_DRIVER_INSTALLED;</span></a>
+<a name="3462"><span class="lineNum">    3462 </span><span class="lineCov">          5 :         return 0;</span></a>
 <a name="3463"><span class="lineNum">    3463 </span>            : </a>
 <a name="3464"><span class="lineNum">    3464 </span>            : err_unreg_devs:</a>
 <a name="3465"><span class="lineNum">    3465 </span><span class="lineNoCov">          0 :         for (i--; i &gt;= 0; i--)</span></a>
@@ -3560,28 +3560,28 @@
 <a name="3498"><span class="lineNum">    3498 </span>            : }</a>
 <a name="3499"><span class="lineNum">    3499 </span>            : EXPORT_SYMBOL(tty_devnum);</a>
 <a name="3500"><span class="lineNum">    3500 </span>            : </a>
-<a name="3501"><span class="lineNum">    3501 </span><span class="lineCov">          2 : void tty_default_fops(struct file_operations *fops)</span></a>
+<a name="3501"><span class="lineNum">    3501 </span><span class="lineCov">          1 : void tty_default_fops(struct file_operations *fops)</span></a>
 <a name="3502"><span class="lineNum">    3502 </span>            : {</a>
-<a name="3503"><span class="lineNum">    3503 </span><span class="lineCov">          2 :         *fops = tty_fops;</span></a>
-<a name="3504"><span class="lineNum">    3504 </span><span class="lineCov">          2 : }</span></a>
+<a name="3503"><span class="lineNum">    3503 </span><span class="lineCov">          1 :         *fops = tty_fops;</span></a>
+<a name="3504"><span class="lineNum">    3504 </span><span class="lineCov">          1 : }</span></a>
 <a name="3505"><span class="lineNum">    3505 </span>            : </a>
-<a name="3506"><span class="lineNum">    3506 </span><span class="lineCov">       1032 : static char *tty_devnode(struct device *dev, umode_t *mode)</span></a>
+<a name="3506"><span class="lineNum">    3506 </span><span class="lineCov">        516 : static char *tty_devnode(struct device *dev, umode_t *mode)</span></a>
 <a name="3507"><span class="lineNum">    3507 </span>            : {</a>
-<a name="3508"><span class="lineNum">    3508 </span><span class="lineCov">       1032 :         if (!mode)</span></a>
+<a name="3508"><span class="lineNum">    3508 </span><span class="lineCov">        516 :         if (!mode)</span></a>
 <a name="3509"><span class="lineNum">    3509 </span>            :                 return NULL;</a>
-<a name="3510"><span class="lineNum">    3510 </span><span class="lineCov">       1032 :         if (dev-&gt;devt == MKDEV(TTYAUX_MAJOR, 0) ||</span></a>
+<a name="3510"><span class="lineNum">    3510 </span><span class="lineCov">        516 :         if (dev-&gt;devt == MKDEV(TTYAUX_MAJOR, 0) ||</span></a>
 <a name="3511"><span class="lineNum">    3511 </span>            :             dev-&gt;devt == MKDEV(TTYAUX_MAJOR, 2))</a>
-<a name="3512"><span class="lineNum">    3512 </span><span class="lineCov">          4 :                 *mode = 0666;</span></a>
+<a name="3512"><span class="lineNum">    3512 </span><span class="lineCov">          2 :                 *mode = 0666;</span></a>
 <a name="3513"><span class="lineNum">    3513 </span>            :         return NULL;</a>
 <a name="3514"><span class="lineNum">    3514 </span>            : }</a>
 <a name="3515"><span class="lineNum">    3515 </span>            : </a>
-<a name="3516"><span class="lineNum">    3516 </span><span class="lineCov">          2 : static int __init tty_class_init(void)</span></a>
+<a name="3516"><span class="lineNum">    3516 </span><span class="lineCov">          1 : static int __init tty_class_init(void)</span></a>
 <a name="3517"><span class="lineNum">    3517 </span>            : {</a>
-<a name="3518"><span class="lineNum">    3518 </span><span class="lineCov">          2 :         tty_class = class_create(THIS_MODULE, &quot;tty&quot;);</span></a>
-<a name="3519"><span class="lineNum">    3519 </span><span class="lineCov">          4 :         if (IS_ERR(tty_class))</span></a>
+<a name="3518"><span class="lineNum">    3518 </span><span class="lineCov">          1 :         tty_class = class_create(THIS_MODULE, &quot;tty&quot;);</span></a>
+<a name="3519"><span class="lineNum">    3519 </span><span class="lineCov">          2 :         if (IS_ERR(tty_class))</span></a>
 <a name="3520"><span class="lineNum">    3520 </span><span class="lineNoCov">          0 :                 return PTR_ERR(tty_class);</span></a>
-<a name="3521"><span class="lineNum">    3521 </span><span class="lineCov">          2 :         tty_class-&gt;devnode = tty_devnode;</span></a>
-<a name="3522"><span class="lineNum">    3522 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="3521"><span class="lineNum">    3521 </span><span class="lineCov">          1 :         tty_class-&gt;devnode = tty_devnode;</span></a>
+<a name="3522"><span class="lineNum">    3522 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="3523"><span class="lineNum">    3523 </span>            : }</a>
 <a name="3524"><span class="lineNum">    3524 </span>            : </a>
 <a name="3525"><span class="lineNum">    3525 </span>            : postcore_initcall(tty_class_init);</a>
@@ -3637,39 +3637,39 @@
 <a name="3575"><span class="lineNum">    3575 </span>            : </a>
 <a name="3576"><span class="lineNum">    3576 </span>            : static struct device *consdev;</a>
 <a name="3577"><span class="lineNum">    3577 </span>            : </a>
-<a name="3578"><span class="lineNum">    3578 </span><span class="lineCov">          4 : void console_sysfs_notify(void)</span></a>
+<a name="3578"><span class="lineNum">    3578 </span><span class="lineCov">          2 : void console_sysfs_notify(void)</span></a>
 <a name="3579"><span class="lineNum">    3579 </span>            : {</a>
-<a name="3580"><span class="lineNum">    3580 </span><span class="lineCov">          4 :         if (consdev)</span></a>
-<a name="3581"><span class="lineNum">    3581 </span><span class="lineCov">          4 :                 sysfs_notify(&amp;consdev-&gt;kobj, NULL, &quot;active&quot;);</span></a>
-<a name="3582"><span class="lineNum">    3582 </span><span class="lineCov">          4 : }</span></a>
+<a name="3580"><span class="lineNum">    3580 </span><span class="lineCov">          2 :         if (consdev)</span></a>
+<a name="3581"><span class="lineNum">    3581 </span><span class="lineCov">          2 :                 sysfs_notify(&amp;consdev-&gt;kobj, NULL, &quot;active&quot;);</span></a>
+<a name="3582"><span class="lineNum">    3582 </span><span class="lineCov">          2 : }</span></a>
 <a name="3583"><span class="lineNum">    3583 </span>            : </a>
 <a name="3584"><span class="lineNum">    3584 </span>            : /*</a>
 <a name="3585"><span class="lineNum">    3585 </span>            :  * Ok, now we can initialize the rest of the tty devices and can count</a>
 <a name="3586"><span class="lineNum">    3586 </span>            :  * on memory allocations, interrupts etc..</a>
 <a name="3587"><span class="lineNum">    3587 </span>            :  */</a>
-<a name="3588"><span class="lineNum">    3588 </span><span class="lineCov">          2 : int __init tty_init(void)</span></a>
+<a name="3588"><span class="lineNum">    3588 </span><span class="lineCov">          1 : int __init tty_init(void)</span></a>
 <a name="3589"><span class="lineNum">    3589 </span>            : {</a>
-<a name="3590"><span class="lineNum">    3590 </span><span class="lineCov">          2 :         tty_sysctl_init();</span></a>
-<a name="3591"><span class="lineNum">    3591 </span><span class="lineCov">          2 :         cdev_init(&amp;tty_cdev, &amp;tty_fops);</span></a>
-<a name="3592"><span class="lineNum">    3592 </span><span class="lineCov">          4 :         if (cdev_add(&amp;tty_cdev, MKDEV(TTYAUX_MAJOR, 0), 1) ||</span></a>
-<a name="3593"><span class="lineNum">    3593 </span><span class="lineCov">          2 :             register_chrdev_region(MKDEV(TTYAUX_MAJOR, 0), 1, &quot;/dev/tty&quot;) &lt; 0)</span></a>
+<a name="3590"><span class="lineNum">    3590 </span><span class="lineCov">          1 :         tty_sysctl_init();</span></a>
+<a name="3591"><span class="lineNum">    3591 </span><span class="lineCov">          1 :         cdev_init(&amp;tty_cdev, &amp;tty_fops);</span></a>
+<a name="3592"><span class="lineNum">    3592 </span><span class="lineCov">          2 :         if (cdev_add(&amp;tty_cdev, MKDEV(TTYAUX_MAJOR, 0), 1) ||</span></a>
+<a name="3593"><span class="lineNum">    3593 </span><span class="lineCov">          1 :             register_chrdev_region(MKDEV(TTYAUX_MAJOR, 0), 1, &quot;/dev/tty&quot;) &lt; 0)</span></a>
 <a name="3594"><span class="lineNum">    3594 </span><span class="lineNoCov">          0 :                 panic(&quot;Couldn't register /dev/tty driver\n&quot;);</span></a>
-<a name="3595"><span class="lineNum">    3595 </span><span class="lineCov">          2 :         device_create(tty_class, NULL, MKDEV(TTYAUX_MAJOR, 0), NULL, &quot;tty&quot;);</span></a>
+<a name="3595"><span class="lineNum">    3595 </span><span class="lineCov">          1 :         device_create(tty_class, NULL, MKDEV(TTYAUX_MAJOR, 0), NULL, &quot;tty&quot;);</span></a>
 <a name="3596"><span class="lineNum">    3596 </span>            : </a>
-<a name="3597"><span class="lineNum">    3597 </span><span class="lineCov">          2 :         cdev_init(&amp;console_cdev, &amp;console_fops);</span></a>
-<a name="3598"><span class="lineNum">    3598 </span><span class="lineCov">          4 :         if (cdev_add(&amp;console_cdev, MKDEV(TTYAUX_MAJOR, 1), 1) ||</span></a>
-<a name="3599"><span class="lineNum">    3599 </span><span class="lineCov">          2 :             register_chrdev_region(MKDEV(TTYAUX_MAJOR, 1), 1, &quot;/dev/console&quot;) &lt; 0)</span></a>
+<a name="3597"><span class="lineNum">    3597 </span><span class="lineCov">          1 :         cdev_init(&amp;console_cdev, &amp;console_fops);</span></a>
+<a name="3598"><span class="lineNum">    3598 </span><span class="lineCov">          2 :         if (cdev_add(&amp;console_cdev, MKDEV(TTYAUX_MAJOR, 1), 1) ||</span></a>
+<a name="3599"><span class="lineNum">    3599 </span><span class="lineCov">          1 :             register_chrdev_region(MKDEV(TTYAUX_MAJOR, 1), 1, &quot;/dev/console&quot;) &lt; 0)</span></a>
 <a name="3600"><span class="lineNum">    3600 </span><span class="lineNoCov">          0 :                 panic(&quot;Couldn't register /dev/console driver\n&quot;);</span></a>
-<a name="3601"><span class="lineNum">    3601 </span><span class="lineCov">          2 :         consdev = device_create_with_groups(tty_class, NULL,</span></a>
+<a name="3601"><span class="lineNum">    3601 </span><span class="lineCov">          1 :         consdev = device_create_with_groups(tty_class, NULL,</span></a>
 <a name="3602"><span class="lineNum">    3602 </span>            :                                             MKDEV(TTYAUX_MAJOR, 1), NULL,</a>
 <a name="3603"><span class="lineNum">    3603 </span>            :                                             cons_dev_groups, &quot;console&quot;);</a>
-<a name="3604"><span class="lineNum">    3604 </span><span class="lineCov">          4 :         if (IS_ERR(consdev))</span></a>
+<a name="3604"><span class="lineNum">    3604 </span><span class="lineCov">          2 :         if (IS_ERR(consdev))</span></a>
 <a name="3605"><span class="lineNum">    3605 </span><span class="lineNoCov">          0 :                 consdev = NULL;</span></a>
 <a name="3606"><span class="lineNum">    3606 </span>            : </a>
 <a name="3607"><span class="lineNum">    3607 </span>            : #ifdef CONFIG_VT</a>
 <a name="3608"><span class="lineNum">    3608 </span>            :         vty_init(&amp;console_fops);</a>
 <a name="3609"><span class="lineNum">    3609 </span>            : #endif</a>
-<a name="3610"><span class="lineNum">    3610 </span><span class="lineCov">          2 :         return 0;</span></a>
+<a name="3610"><span class="lineNum">    3610 </span><span class="lineCov">          1 :         return 0;</span></a>
 <a name="3611"><span class="lineNum">    3611 </span>            : }</a>
 <a name="3612"><span class="lineNum">    3612 </span>            : </a>
 </pre>

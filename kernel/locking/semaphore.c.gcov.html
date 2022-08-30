@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -112,18 +112,18 @@
 <a name="50"><span class="lineNum">      50 </span>            :  * Use of this function is deprecated, please use down_interruptible() or</a>
 <a name="51"><span class="lineNum">      51 </span>            :  * down_killable() instead.</a>
 <a name="52"><span class="lineNum">      52 </span>            :  */</a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          6 : void down(struct semaphore *sem)</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          3 : void down(struct semaphore *sem)</span></a>
 <a name="54"><span class="lineNum">      54 </span>            : {</a>
 <a name="55"><span class="lineNum">      55 </span>            :         unsigned long flags;</a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
 <a name="57"><span class="lineNum">      57 </span>            :         might_sleep();</a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          6 :         raw_spin_lock_irqsave(&amp;sem-&gt;lock, flags);</span></a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">          6 :         if (likely(sem-&gt;count &gt; 0))</span></a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          6 :                 sem-&gt;count--;</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">          3 :         raw_spin_lock_irqsave(&amp;sem-&gt;lock, flags);</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">          3 :         if (likely(sem-&gt;count &gt; 0))</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          3 :                 sem-&gt;count--;</span></a>
 <a name="61"><span class="lineNum">      61 </span>            :         else</a>
 <a name="62"><span class="lineNum">      62 </span><span class="lineNoCov">          0 :                 __down(sem);</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">         12 :         raw_spin_unlock_irqrestore(&amp;sem-&gt;lock, flags);</span></a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          6 : }</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">          6 :         raw_spin_unlock_irqrestore(&amp;sem-&gt;lock, flags);</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          3 : }</span></a>
 <a name="65"><span class="lineNum">      65 </span>            : EXPORT_SYMBOL(down);</a>
 <a name="66"><span class="lineNum">      66 </span>            : </a>
 <a name="67"><span class="lineNum">      67 </span>            : /**</a>
@@ -192,18 +192,18 @@
 <a name="130"><span class="lineNum">     130 </span>            :  * Unlike mutex_trylock, this function can be used from interrupt context,</a>
 <a name="131"><span class="lineNum">     131 </span>            :  * and the semaphore can be released by any task or interrupt.</a>
 <a name="132"><span class="lineNum">     132 </span>            :  */</a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">        506 : int down_trylock(struct semaphore *sem)</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">        293 : int down_trylock(struct semaphore *sem)</span></a>
 <a name="134"><span class="lineNum">     134 </span>            : {</a>
 <a name="135"><span class="lineNum">     135 </span>            :         unsigned long flags;</a>
 <a name="136"><span class="lineNum">     136 </span>            :         int count;</a>
 <a name="137"><span class="lineNum">     137 </span>            : </a>
-<a name="138"><span class="lineNum">     138 </span><span class="lineCov">        506 :         raw_spin_lock_irqsave(&amp;sem-&gt;lock, flags);</span></a>
-<a name="139"><span class="lineNum">     139 </span><span class="lineCov">        506 :         count = sem-&gt;count - 1;</span></a>
-<a name="140"><span class="lineNum">     140 </span><span class="lineCov">        506 :         if (likely(count &gt;= 0))</span></a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineCov">        506 :                 sem-&gt;count = count;</span></a>
-<a name="142"><span class="lineNum">     142 </span><span class="lineCov">       1012 :         raw_spin_unlock_irqrestore(&amp;sem-&gt;lock, flags);</span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">        293 :         raw_spin_lock_irqsave(&amp;sem-&gt;lock, flags);</span></a>
+<a name="139"><span class="lineNum">     139 </span><span class="lineCov">        293 :         count = sem-&gt;count - 1;</span></a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineCov">        293 :         if (likely(count &gt;= 0))</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">        293 :                 sem-&gt;count = count;</span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineCov">        586 :         raw_spin_unlock_irqrestore(&amp;sem-&gt;lock, flags);</span></a>
 <a name="143"><span class="lineNum">     143 </span>            : </a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineCov">        506 :         return (count &lt; 0);</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineCov">        293 :         return (count &lt; 0);</span></a>
 <a name="145"><span class="lineNum">     145 </span>            : }</a>
 <a name="146"><span class="lineNum">     146 </span>            : EXPORT_SYMBOL(down_trylock);</a>
 <a name="147"><span class="lineNum">     147 </span>            : </a>
@@ -241,17 +241,17 @@
 <a name="179"><span class="lineNum">     179 </span>            :  * Release the semaphore.  Unlike mutexes, up() may be called from any</a>
 <a name="180"><span class="lineNum">     180 </span>            :  * context and even by tasks which have never called down().</a>
 <a name="181"><span class="lineNum">     181 </span>            :  */</a>
-<a name="182"><span class="lineNum">     182 </span><span class="lineCov">        512 : void up(struct semaphore *sem)</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineCov">        296 : void up(struct semaphore *sem)</span></a>
 <a name="183"><span class="lineNum">     183 </span>            : {</a>
 <a name="184"><span class="lineNum">     184 </span>            :         unsigned long flags;</a>
 <a name="185"><span class="lineNum">     185 </span>            : </a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineCov">        512 :         raw_spin_lock_irqsave(&amp;sem-&gt;lock, flags);</span></a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">       1024 :         if (likely(list_empty(&amp;sem-&gt;wait_list)))</span></a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineCov">        512 :                 sem-&gt;count++;</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">        296 :         raw_spin_lock_irqsave(&amp;sem-&gt;lock, flags);</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">        592 :         if (likely(list_empty(&amp;sem-&gt;wait_list)))</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineCov">        296 :                 sem-&gt;count++;</span></a>
 <a name="189"><span class="lineNum">     189 </span>            :         else</a>
 <a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :                 __up(sem);</span></a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineCov">       1024 :         raw_spin_unlock_irqrestore(&amp;sem-&gt;lock, flags);</span></a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineCov">        512 : }</span></a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineCov">        592 :         raw_spin_unlock_irqrestore(&amp;sem-&gt;lock, flags);</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">        296 : }</span></a>
 <a name="193"><span class="lineNum">     193 </span>            : EXPORT_SYMBOL(up);</a>
 <a name="194"><span class="lineNum">     194 </span>            : </a>
 <a name="195"><span class="lineNum">     195 </span>            : /* Functions for the contended case */</a>

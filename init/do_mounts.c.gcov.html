@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -356,10 +356,10 @@
 <a name="294"><span class="lineNum">     294 </span>            : }</a>
 <a name="295"><span class="lineNum">     295 </span>            : EXPORT_SYMBOL_GPL(name_to_dev_t);</a>
 <a name="296"><span class="lineNum">     296 </span>            : </a>
-<a name="297"><span class="lineNum">     297 </span><span class="lineCov">          2 : static int __init root_dev_setup(char *line)</span></a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineCov">          1 : static int __init root_dev_setup(char *line)</span></a>
 <a name="298"><span class="lineNum">     298 </span>            : {</a>
-<a name="299"><span class="lineNum">     299 </span><span class="lineCov">          2 :         strlcpy(saved_root_name, line, sizeof(saved_root_name));</span></a>
-<a name="300"><span class="lineNum">     300 </span><span class="lineCov">          2 :         return 1;</span></a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineCov">          1 :         strlcpy(saved_root_name, line, sizeof(saved_root_name));</span></a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineCov">          1 :         return 1;</span></a>
 <a name="301"><span class="lineNum">     301 </span>            : }</a>
 <a name="302"><span class="lineNum">     302 </span>            : </a>
 <a name="303"><span class="lineNum">     303 </span>            : __setup(&quot;root=&quot;, root_dev_setup);</a>
@@ -711,12 +711,12 @@
 <a name="649"><span class="lineNum">     649 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="650"><span class="lineNum">     650 </span>            : </a>
 <a name="651"><span class="lineNum">     651 </span>            : static bool is_tmpfs;</a>
-<a name="652"><span class="lineNum">     652 </span><span class="lineCov">          2 : static int rootfs_init_fs_context(struct fs_context *fc)</span></a>
+<a name="652"><span class="lineNum">     652 </span><span class="lineCov">          1 : static int rootfs_init_fs_context(struct fs_context *fc)</span></a>
 <a name="653"><span class="lineNum">     653 </span>            : {</a>
 <a name="654"><span class="lineNum">     654 </span>            :         if (IS_ENABLED(CONFIG_TMPFS) &amp;&amp; is_tmpfs)</a>
 <a name="655"><span class="lineNum">     655 </span>            :                 return shmem_init_fs_context(fc);</a>
 <a name="656"><span class="lineNum">     656 </span>            : </a>
-<a name="657"><span class="lineNum">     657 </span><span class="lineCov">          2 :         return ramfs_init_fs_context(fc);</span></a>
+<a name="657"><span class="lineNum">     657 </span><span class="lineCov">          1 :         return ramfs_init_fs_context(fc);</span></a>
 <a name="658"><span class="lineNum">     658 </span>            : }</a>
 <a name="659"><span class="lineNum">     659 </span>            : </a>
 <a name="660"><span class="lineNum">     660 </span>            : struct file_system_type rootfs_fs_type = {</a>
@@ -725,12 +725,12 @@
 <a name="663"><span class="lineNum">     663 </span>            :         .kill_sb        = kill_litter_super,</a>
 <a name="664"><span class="lineNum">     664 </span>            : };</a>
 <a name="665"><span class="lineNum">     665 </span>            : </a>
-<a name="666"><span class="lineNum">     666 </span><span class="lineCov">          2 : void __init init_rootfs(void)</span></a>
+<a name="666"><span class="lineNum">     666 </span><span class="lineCov">          1 : void __init init_rootfs(void)</span></a>
 <a name="667"><span class="lineNum">     667 </span>            : {</a>
 <a name="668"><span class="lineNum">     668 </span>            :         if (IS_ENABLED(CONFIG_TMPFS) &amp;&amp; !saved_root_name[0] &amp;&amp;</a>
 <a name="669"><span class="lineNum">     669 </span>            :                 (!root_fs_names || strstr(root_fs_names, &quot;tmpfs&quot;)))</a>
 <a name="670"><span class="lineNum">     670 </span>            :                 is_tmpfs = true;</a>
-<a name="671"><span class="lineNum">     671 </span><span class="lineCov">          2 : }</span></a>
+<a name="671"><span class="lineNum">     671 </span><span class="lineCov">          1 : }</span></a>
 </pre>
       </td>
     </tr>

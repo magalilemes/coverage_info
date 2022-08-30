@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">321</td>
+            <td class="headerCovTableEntry">320</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -566,457 +566,460 @@
 <a name="504"><span class="lineNum">     504 </span>            : {</a>
 <a name="505"><span class="lineNum">     505 </span>            :         int ret;</a>
 <a name="506"><span class="lineNum">     506 </span>            : </a>
-<a name="507"><span class="lineNum">     507 </span>            :         /* Each psp need to set the latest topology */</a>
-<a name="508"><span class="lineNum">     508 </span><span class="lineNoCov">          0 :         ret = psp_xgmi_set_topology_info(&amp;adev-&gt;psp,</span></a>
-<a name="509"><span class="lineNum">     509 </span><span class="lineNoCov">          0 :                                          atomic_read(&amp;hive-&gt;number_devices),</span></a>
-<a name="510"><span class="lineNum">     510 </span>            :                                          &amp;adev-&gt;psp.xgmi_context.top_info);</a>
-<a name="511"><span class="lineNum">     511 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
-<a name="512"><span class="lineNum">     512 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev,</span></a>
-<a name="513"><span class="lineNum">     513 </span>            :                         &quot;XGMI: Set topology failure on device %llx, hive %llx, ret %d&quot;,</a>
-<a name="514"><span class="lineNum">     514 </span>            :                         adev-&gt;gmc.xgmi.node_id,</a>
-<a name="515"><span class="lineNum">     515 </span>            :                         adev-&gt;gmc.xgmi.hive_id, ret);</a>
-<a name="516"><span class="lineNum">     516 </span>            : </a>
-<a name="517"><span class="lineNum">     517 </span><span class="lineNoCov">          0 :         return ret;</span></a>
-<a name="518"><span class="lineNum">     518 </span>            : }</a>
+<a name="507"><span class="lineNum">     507 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
+<a name="508"><span class="lineNum">     508 </span>            :                 return 0;</a>
+<a name="509"><span class="lineNum">     509 </span>            : </a>
+<a name="510"><span class="lineNum">     510 </span>            :         /* Each psp need to set the latest topology */</a>
+<a name="511"><span class="lineNum">     511 </span><span class="lineNoCov">          0 :         ret = psp_xgmi_set_topology_info(&amp;adev-&gt;psp,</span></a>
+<a name="512"><span class="lineNum">     512 </span><span class="lineNoCov">          0 :                                          atomic_read(&amp;hive-&gt;number_devices),</span></a>
+<a name="513"><span class="lineNum">     513 </span>            :                                          &amp;adev-&gt;psp.xgmi_context.top_info);</a>
+<a name="514"><span class="lineNum">     514 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="515"><span class="lineNum">     515 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev,</span></a>
+<a name="516"><span class="lineNum">     516 </span>            :                         &quot;XGMI: Set topology failure on device %llx, hive %llx, ret %d&quot;,</a>
+<a name="517"><span class="lineNum">     517 </span>            :                         adev-&gt;gmc.xgmi.node_id,</a>
+<a name="518"><span class="lineNum">     518 </span>            :                         adev-&gt;gmc.xgmi.hive_id, ret);</a>
 <a name="519"><span class="lineNum">     519 </span>            : </a>
-<a name="520"><span class="lineNum">     520 </span>            : </a>
-<a name="521"><span class="lineNum">     521 </span>            : /*</a>
-<a name="522"><span class="lineNum">     522 </span>            :  * NOTE psp_xgmi_node_info.num_hops layout is as follows:</a>
-<a name="523"><span class="lineNum">     523 </span>            :  * num_hops[7:6] = link type (0 = xGMI2, 1 = xGMI3, 2/3 = reserved)</a>
-<a name="524"><span class="lineNum">     524 </span>            :  * num_hops[5:3] = reserved</a>
-<a name="525"><span class="lineNum">     525 </span>            :  * num_hops[2:0] = number of hops</a>
-<a name="526"><span class="lineNum">     526 </span>            :  */</a>
-<a name="527"><span class="lineNum">     527 </span><span class="lineNoCov">          0 : int amdgpu_xgmi_get_hops_count(struct amdgpu_device *adev,</span></a>
-<a name="528"><span class="lineNum">     528 </span>            :                 struct amdgpu_device *peer_adev)</a>
-<a name="529"><span class="lineNum">     529 </span>            : {</a>
-<a name="530"><span class="lineNum">     530 </span><span class="lineNoCov">          0 :         struct psp_xgmi_topology_info *top = &amp;adev-&gt;psp.xgmi_context.top_info;</span></a>
-<a name="531"><span class="lineNum">     531 </span><span class="lineNoCov">          0 :         uint8_t num_hops_mask = 0x7;</span></a>
-<a name="532"><span class="lineNum">     532 </span>            :         int i;</a>
-<a name="533"><span class="lineNum">     533 </span>            : </a>
-<a name="534"><span class="lineNum">     534 </span><span class="lineNoCov">          0 :         for (i = 0 ; i &lt; top-&gt;num_nodes; ++i)</span></a>
-<a name="535"><span class="lineNum">     535 </span><span class="lineNoCov">          0 :                 if (top-&gt;nodes[i].node_id == peer_adev-&gt;gmc.xgmi.node_id)</span></a>
-<a name="536"><span class="lineNum">     536 </span><span class="lineNoCov">          0 :                         return top-&gt;nodes[i].num_hops &amp; num_hops_mask;</span></a>
-<a name="537"><span class="lineNum">     537 </span>            :         return  -EINVAL;</a>
-<a name="538"><span class="lineNum">     538 </span>            : }</a>
-<a name="539"><span class="lineNum">     539 </span>            : </a>
-<a name="540"><span class="lineNum">     540 </span><span class="lineNoCov">          0 : int amdgpu_xgmi_get_num_links(struct amdgpu_device *adev,</span></a>
-<a name="541"><span class="lineNum">     541 </span>            :                 struct amdgpu_device *peer_adev)</a>
-<a name="542"><span class="lineNum">     542 </span>            : {</a>
-<a name="543"><span class="lineNum">     543 </span><span class="lineNoCov">          0 :         struct psp_xgmi_topology_info *top = &amp;adev-&gt;psp.xgmi_context.top_info;</span></a>
-<a name="544"><span class="lineNum">     544 </span>            :         int i;</a>
-<a name="545"><span class="lineNum">     545 </span>            : </a>
-<a name="546"><span class="lineNum">     546 </span><span class="lineNoCov">          0 :         for (i = 0 ; i &lt; top-&gt;num_nodes; ++i)</span></a>
-<a name="547"><span class="lineNum">     547 </span><span class="lineNoCov">          0 :                 if (top-&gt;nodes[i].node_id == peer_adev-&gt;gmc.xgmi.node_id)</span></a>
-<a name="548"><span class="lineNum">     548 </span><span class="lineNoCov">          0 :                         return top-&gt;nodes[i].num_links;</span></a>
-<a name="549"><span class="lineNum">     549 </span>            :         return  -EINVAL;</a>
-<a name="550"><span class="lineNum">     550 </span>            : }</a>
-<a name="551"><span class="lineNum">     551 </span>            : </a>
-<a name="552"><span class="lineNum">     552 </span>            : /*</a>
-<a name="553"><span class="lineNum">     553 </span>            :  * Devices that support extended data require the entire hive to initialize with</a>
-<a name="554"><span class="lineNum">     554 </span>            :  * the shared memory buffer flag set.</a>
-<a name="555"><span class="lineNum">     555 </span>            :  *</a>
-<a name="556"><span class="lineNum">     556 </span>            :  * Hive locks and conditions apply - see amdgpu_xgmi_add_device</a>
-<a name="557"><span class="lineNum">     557 </span>            :  */</a>
-<a name="558"><span class="lineNum">     558 </span><span class="lineNoCov">          0 : static int amdgpu_xgmi_initialize_hive_get_data_partition(struct amdgpu_hive_info *hive,</span></a>
-<a name="559"><span class="lineNum">     559 </span>            :                                                         bool set_extended_data)</a>
-<a name="560"><span class="lineNum">     560 </span>            : {</a>
-<a name="561"><span class="lineNum">     561 </span>            :         struct amdgpu_device *tmp_adev;</a>
-<a name="562"><span class="lineNum">     562 </span>            :         int ret;</a>
-<a name="563"><span class="lineNum">     563 </span>            : </a>
-<a name="564"><span class="lineNum">     564 </span><span class="lineNoCov">          0 :         list_for_each_entry(tmp_adev, &amp;hive-&gt;device_list, gmc.xgmi.head) {</span></a>
-<a name="565"><span class="lineNum">     565 </span><span class="lineNoCov">          0 :                 ret = psp_xgmi_initialize(&amp;tmp_adev-&gt;psp, set_extended_data, false);</span></a>
-<a name="566"><span class="lineNum">     566 </span><span class="lineNoCov">          0 :                 if (ret) {</span></a>
-<a name="567"><span class="lineNum">     567 </span><span class="lineNoCov">          0 :                         dev_err(tmp_adev-&gt;dev,</span></a>
-<a name="568"><span class="lineNum">     568 </span>            :                                 &quot;XGMI: Failed to initialize xgmi session for data partition %i\n&quot;,</a>
-<a name="569"><span class="lineNum">     569 </span>            :                                 set_extended_data);</a>
-<a name="570"><span class="lineNum">     570 </span><span class="lineNoCov">          0 :                         return ret;</span></a>
-<a name="571"><span class="lineNum">     571 </span>            :                 }</a>
-<a name="572"><span class="lineNum">     572 </span>            : </a>
-<a name="573"><span class="lineNum">     573 </span>            :         }</a>
-<a name="574"><span class="lineNum">     574 </span>            : </a>
-<a name="575"><span class="lineNum">     575 </span>            :         return 0;</a>
-<a name="576"><span class="lineNum">     576 </span>            : }</a>
+<a name="520"><span class="lineNum">     520 </span>            :         return ret;</a>
+<a name="521"><span class="lineNum">     521 </span>            : }</a>
+<a name="522"><span class="lineNum">     522 </span>            : </a>
+<a name="523"><span class="lineNum">     523 </span>            : </a>
+<a name="524"><span class="lineNum">     524 </span>            : /*</a>
+<a name="525"><span class="lineNum">     525 </span>            :  * NOTE psp_xgmi_node_info.num_hops layout is as follows:</a>
+<a name="526"><span class="lineNum">     526 </span>            :  * num_hops[7:6] = link type (0 = xGMI2, 1 = xGMI3, 2/3 = reserved)</a>
+<a name="527"><span class="lineNum">     527 </span>            :  * num_hops[5:3] = reserved</a>
+<a name="528"><span class="lineNum">     528 </span>            :  * num_hops[2:0] = number of hops</a>
+<a name="529"><span class="lineNum">     529 </span>            :  */</a>
+<a name="530"><span class="lineNum">     530 </span><span class="lineNoCov">          0 : int amdgpu_xgmi_get_hops_count(struct amdgpu_device *adev,</span></a>
+<a name="531"><span class="lineNum">     531 </span>            :                 struct amdgpu_device *peer_adev)</a>
+<a name="532"><span class="lineNum">     532 </span>            : {</a>
+<a name="533"><span class="lineNum">     533 </span><span class="lineNoCov">          0 :         struct psp_xgmi_topology_info *top = &amp;adev-&gt;psp.xgmi_context.top_info;</span></a>
+<a name="534"><span class="lineNum">     534 </span><span class="lineNoCov">          0 :         uint8_t num_hops_mask = 0x7;</span></a>
+<a name="535"><span class="lineNum">     535 </span>            :         int i;</a>
+<a name="536"><span class="lineNum">     536 </span>            : </a>
+<a name="537"><span class="lineNum">     537 </span><span class="lineNoCov">          0 :         for (i = 0 ; i &lt; top-&gt;num_nodes; ++i)</span></a>
+<a name="538"><span class="lineNum">     538 </span><span class="lineNoCov">          0 :                 if (top-&gt;nodes[i].node_id == peer_adev-&gt;gmc.xgmi.node_id)</span></a>
+<a name="539"><span class="lineNum">     539 </span><span class="lineNoCov">          0 :                         return top-&gt;nodes[i].num_hops &amp; num_hops_mask;</span></a>
+<a name="540"><span class="lineNum">     540 </span>            :         return  -EINVAL;</a>
+<a name="541"><span class="lineNum">     541 </span>            : }</a>
+<a name="542"><span class="lineNum">     542 </span>            : </a>
+<a name="543"><span class="lineNum">     543 </span><span class="lineNoCov">          0 : int amdgpu_xgmi_get_num_links(struct amdgpu_device *adev,</span></a>
+<a name="544"><span class="lineNum">     544 </span>            :                 struct amdgpu_device *peer_adev)</a>
+<a name="545"><span class="lineNum">     545 </span>            : {</a>
+<a name="546"><span class="lineNum">     546 </span><span class="lineNoCov">          0 :         struct psp_xgmi_topology_info *top = &amp;adev-&gt;psp.xgmi_context.top_info;</span></a>
+<a name="547"><span class="lineNum">     547 </span>            :         int i;</a>
+<a name="548"><span class="lineNum">     548 </span>            : </a>
+<a name="549"><span class="lineNum">     549 </span><span class="lineNoCov">          0 :         for (i = 0 ; i &lt; top-&gt;num_nodes; ++i)</span></a>
+<a name="550"><span class="lineNum">     550 </span><span class="lineNoCov">          0 :                 if (top-&gt;nodes[i].node_id == peer_adev-&gt;gmc.xgmi.node_id)</span></a>
+<a name="551"><span class="lineNum">     551 </span><span class="lineNoCov">          0 :                         return top-&gt;nodes[i].num_links;</span></a>
+<a name="552"><span class="lineNum">     552 </span>            :         return  -EINVAL;</a>
+<a name="553"><span class="lineNum">     553 </span>            : }</a>
+<a name="554"><span class="lineNum">     554 </span>            : </a>
+<a name="555"><span class="lineNum">     555 </span>            : /*</a>
+<a name="556"><span class="lineNum">     556 </span>            :  * Devices that support extended data require the entire hive to initialize with</a>
+<a name="557"><span class="lineNum">     557 </span>            :  * the shared memory buffer flag set.</a>
+<a name="558"><span class="lineNum">     558 </span>            :  *</a>
+<a name="559"><span class="lineNum">     559 </span>            :  * Hive locks and conditions apply - see amdgpu_xgmi_add_device</a>
+<a name="560"><span class="lineNum">     560 </span>            :  */</a>
+<a name="561"><span class="lineNum">     561 </span><span class="lineNoCov">          0 : static int amdgpu_xgmi_initialize_hive_get_data_partition(struct amdgpu_hive_info *hive,</span></a>
+<a name="562"><span class="lineNum">     562 </span>            :                                                         bool set_extended_data)</a>
+<a name="563"><span class="lineNum">     563 </span>            : {</a>
+<a name="564"><span class="lineNum">     564 </span>            :         struct amdgpu_device *tmp_adev;</a>
+<a name="565"><span class="lineNum">     565 </span>            :         int ret;</a>
+<a name="566"><span class="lineNum">     566 </span>            : </a>
+<a name="567"><span class="lineNum">     567 </span><span class="lineNoCov">          0 :         list_for_each_entry(tmp_adev, &amp;hive-&gt;device_list, gmc.xgmi.head) {</span></a>
+<a name="568"><span class="lineNum">     568 </span><span class="lineNoCov">          0 :                 ret = psp_xgmi_initialize(&amp;tmp_adev-&gt;psp, set_extended_data, false);</span></a>
+<a name="569"><span class="lineNum">     569 </span><span class="lineNoCov">          0 :                 if (ret) {</span></a>
+<a name="570"><span class="lineNum">     570 </span><span class="lineNoCov">          0 :                         dev_err(tmp_adev-&gt;dev,</span></a>
+<a name="571"><span class="lineNum">     571 </span>            :                                 &quot;XGMI: Failed to initialize xgmi session for data partition %i\n&quot;,</a>
+<a name="572"><span class="lineNum">     572 </span>            :                                 set_extended_data);</a>
+<a name="573"><span class="lineNum">     573 </span><span class="lineNoCov">          0 :                         return ret;</span></a>
+<a name="574"><span class="lineNum">     574 </span>            :                 }</a>
+<a name="575"><span class="lineNum">     575 </span>            : </a>
+<a name="576"><span class="lineNum">     576 </span>            :         }</a>
 <a name="577"><span class="lineNum">     577 </span>            : </a>
-<a name="578"><span class="lineNum">     578 </span><span class="lineNoCov">          0 : int amdgpu_xgmi_add_device(struct amdgpu_device *adev)</span></a>
-<a name="579"><span class="lineNum">     579 </span>            : {</a>
-<a name="580"><span class="lineNum">     580 </span>            :         struct psp_xgmi_topology_info *top_info;</a>
-<a name="581"><span class="lineNum">     581 </span>            :         struct amdgpu_hive_info *hive;</a>
-<a name="582"><span class="lineNum">     582 </span>            :         struct amdgpu_xgmi      *entry;</a>
-<a name="583"><span class="lineNum">     583 </span><span class="lineNoCov">          0 :         struct amdgpu_device *tmp_adev = NULL;</span></a>
-<a name="584"><span class="lineNum">     584 </span>            : </a>
-<a name="585"><span class="lineNum">     585 </span><span class="lineNoCov">          0 :         int count = 0, ret = 0;</span></a>
-<a name="586"><span class="lineNum">     586 </span>            : </a>
-<a name="587"><span class="lineNum">     587 </span><span class="lineNoCov">          0 :         if (!adev-&gt;gmc.xgmi.supported)</span></a>
-<a name="588"><span class="lineNum">     588 </span>            :                 return 0;</a>
+<a name="578"><span class="lineNum">     578 </span>            :         return 0;</a>
+<a name="579"><span class="lineNum">     579 </span>            : }</a>
+<a name="580"><span class="lineNum">     580 </span>            : </a>
+<a name="581"><span class="lineNum">     581 </span><span class="lineNoCov">          0 : int amdgpu_xgmi_add_device(struct amdgpu_device *adev)</span></a>
+<a name="582"><span class="lineNum">     582 </span>            : {</a>
+<a name="583"><span class="lineNum">     583 </span>            :         struct psp_xgmi_topology_info *top_info;</a>
+<a name="584"><span class="lineNum">     584 </span>            :         struct amdgpu_hive_info *hive;</a>
+<a name="585"><span class="lineNum">     585 </span>            :         struct amdgpu_xgmi      *entry;</a>
+<a name="586"><span class="lineNum">     586 </span><span class="lineNoCov">          0 :         struct amdgpu_device *tmp_adev = NULL;</span></a>
+<a name="587"><span class="lineNum">     587 </span>            : </a>
+<a name="588"><span class="lineNum">     588 </span><span class="lineNoCov">          0 :         int count = 0, ret = 0;</span></a>
 <a name="589"><span class="lineNum">     589 </span>            : </a>
-<a name="590"><span class="lineNum">     590 </span><span class="lineNoCov">          0 :         if (!adev-&gt;gmc.xgmi.pending_reset &amp;&amp;</span></a>
-<a name="591"><span class="lineNum">     591 </span><span class="lineNoCov">          0 :             amdgpu_device_ip_get_ip_block(adev, AMD_IP_BLOCK_TYPE_PSP)) {</span></a>
-<a name="592"><span class="lineNum">     592 </span><span class="lineNoCov">          0 :                 ret = psp_xgmi_initialize(&amp;adev-&gt;psp, false, true);</span></a>
-<a name="593"><span class="lineNum">     593 </span><span class="lineNoCov">          0 :                 if (ret) {</span></a>
-<a name="594"><span class="lineNum">     594 </span><span class="lineNoCov">          0 :                         dev_err(adev-&gt;dev,</span></a>
-<a name="595"><span class="lineNum">     595 </span>            :                                 &quot;XGMI: Failed to initialize xgmi session\n&quot;);</a>
-<a name="596"><span class="lineNum">     596 </span><span class="lineNoCov">          0 :                         return ret;</span></a>
-<a name="597"><span class="lineNum">     597 </span>            :                 }</a>
-<a name="598"><span class="lineNum">     598 </span>            : </a>
-<a name="599"><span class="lineNum">     599 </span><span class="lineNoCov">          0 :                 ret = psp_xgmi_get_hive_id(&amp;adev-&gt;psp, &amp;adev-&gt;gmc.xgmi.hive_id);</span></a>
-<a name="600"><span class="lineNum">     600 </span><span class="lineNoCov">          0 :                 if (ret) {</span></a>
-<a name="601"><span class="lineNum">     601 </span><span class="lineNoCov">          0 :                         dev_err(adev-&gt;dev,</span></a>
-<a name="602"><span class="lineNum">     602 </span>            :                                 &quot;XGMI: Failed to get hive id\n&quot;);</a>
-<a name="603"><span class="lineNum">     603 </span><span class="lineNoCov">          0 :                         return ret;</span></a>
-<a name="604"><span class="lineNum">     604 </span>            :                 }</a>
-<a name="605"><span class="lineNum">     605 </span>            : </a>
-<a name="606"><span class="lineNum">     606 </span><span class="lineNoCov">          0 :                 ret = psp_xgmi_get_node_id(&amp;adev-&gt;psp, &amp;adev-&gt;gmc.xgmi.node_id);</span></a>
-<a name="607"><span class="lineNum">     607 </span><span class="lineNoCov">          0 :                 if (ret) {</span></a>
-<a name="608"><span class="lineNum">     608 </span><span class="lineNoCov">          0 :                         dev_err(adev-&gt;dev,</span></a>
-<a name="609"><span class="lineNum">     609 </span>            :                                 &quot;XGMI: Failed to get node id\n&quot;);</a>
-<a name="610"><span class="lineNum">     610 </span><span class="lineNoCov">          0 :                         return ret;</span></a>
-<a name="611"><span class="lineNum">     611 </span>            :                 }</a>
-<a name="612"><span class="lineNum">     612 </span>            :         } else {</a>
-<a name="613"><span class="lineNum">     613 </span><span class="lineNoCov">          0 :                 adev-&gt;gmc.xgmi.hive_id = 16;</span></a>
-<a name="614"><span class="lineNum">     614 </span><span class="lineNoCov">          0 :                 adev-&gt;gmc.xgmi.node_id = adev-&gt;gmc.xgmi.physical_node_id + 16;</span></a>
-<a name="615"><span class="lineNum">     615 </span>            :         }</a>
-<a name="616"><span class="lineNum">     616 </span>            : </a>
-<a name="617"><span class="lineNum">     617 </span><span class="lineNoCov">          0 :         hive = amdgpu_get_xgmi_hive(adev);</span></a>
-<a name="618"><span class="lineNum">     618 </span><span class="lineNoCov">          0 :         if (!hive) {</span></a>
-<a name="619"><span class="lineNum">     619 </span><span class="lineNoCov">          0 :                 ret = -EINVAL;</span></a>
-<a name="620"><span class="lineNum">     620 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev,</span></a>
-<a name="621"><span class="lineNum">     621 </span>            :                         &quot;XGMI: node 0x%llx, can not match hive 0x%llx in the hive list.\n&quot;,</a>
-<a name="622"><span class="lineNum">     622 </span>            :                         adev-&gt;gmc.xgmi.node_id, adev-&gt;gmc.xgmi.hive_id);</a>
-<a name="623"><span class="lineNum">     623 </span><span class="lineNoCov">          0 :                 goto exit;</span></a>
-<a name="624"><span class="lineNum">     624 </span>            :         }</a>
-<a name="625"><span class="lineNum">     625 </span><span class="lineNoCov">          0 :         mutex_lock(&amp;hive-&gt;hive_lock);</span></a>
-<a name="626"><span class="lineNum">     626 </span>            : </a>
-<a name="627"><span class="lineNum">     627 </span><span class="lineNoCov">          0 :         top_info = &amp;adev-&gt;psp.xgmi_context.top_info;</span></a>
-<a name="628"><span class="lineNum">     628 </span>            : </a>
-<a name="629"><span class="lineNum">     629 </span><span class="lineNoCov">          0 :         list_add_tail(&amp;adev-&gt;gmc.xgmi.head, &amp;hive-&gt;device_list);</span></a>
-<a name="630"><span class="lineNum">     630 </span><span class="lineNoCov">          0 :         list_for_each_entry(entry, &amp;hive-&gt;device_list, head)</span></a>
-<a name="631"><span class="lineNum">     631 </span><span class="lineNoCov">          0 :                 top_info-&gt;nodes[count++].node_id = entry-&gt;node_id;</span></a>
-<a name="632"><span class="lineNum">     632 </span><span class="lineNoCov">          0 :         top_info-&gt;num_nodes = count;</span></a>
-<a name="633"><span class="lineNum">     633 </span><span class="lineNoCov">          0 :         atomic_set(&amp;hive-&gt;number_devices, count);</span></a>
-<a name="634"><span class="lineNum">     634 </span>            : </a>
-<a name="635"><span class="lineNum">     635 </span><span class="lineNoCov">          0 :         task_barrier_add_task(&amp;hive-&gt;tb);</span></a>
-<a name="636"><span class="lineNum">     636 </span>            : </a>
-<a name="637"><span class="lineNum">     637 </span><span class="lineNoCov">          0 :         if (!adev-&gt;gmc.xgmi.pending_reset &amp;&amp;</span></a>
-<a name="638"><span class="lineNum">     638 </span><span class="lineNoCov">          0 :             amdgpu_device_ip_get_ip_block(adev, AMD_IP_BLOCK_TYPE_PSP)) {</span></a>
-<a name="639"><span class="lineNum">     639 </span><span class="lineNoCov">          0 :                 list_for_each_entry(tmp_adev, &amp;hive-&gt;device_list, gmc.xgmi.head) {</span></a>
-<a name="640"><span class="lineNum">     640 </span>            :                         /* update node list for other device in the hive */</a>
-<a name="641"><span class="lineNum">     641 </span><span class="lineNoCov">          0 :                         if (tmp_adev != adev) {</span></a>
-<a name="642"><span class="lineNum">     642 </span><span class="lineNoCov">          0 :                                 top_info = &amp;tmp_adev-&gt;psp.xgmi_context.top_info;</span></a>
-<a name="643"><span class="lineNum">     643 </span><span class="lineNoCov">          0 :                                 top_info-&gt;nodes[count - 1].node_id =</span></a>
-<a name="644"><span class="lineNum">     644 </span><span class="lineNoCov">          0 :                                         adev-&gt;gmc.xgmi.node_id;</span></a>
-<a name="645"><span class="lineNum">     645 </span><span class="lineNoCov">          0 :                                 top_info-&gt;num_nodes = count;</span></a>
-<a name="646"><span class="lineNum">     646 </span>            :                         }</a>
-<a name="647"><span class="lineNum">     647 </span><span class="lineNoCov">          0 :                         ret = amdgpu_xgmi_update_topology(hive, tmp_adev);</span></a>
-<a name="648"><span class="lineNum">     648 </span><span class="lineNoCov">          0 :                         if (ret)</span></a>
-<a name="649"><span class="lineNum">     649 </span>            :                                 goto exit_unlock;</a>
-<a name="650"><span class="lineNum">     650 </span>            :                 }</a>
-<a name="651"><span class="lineNum">     651 </span>            : </a>
-<a name="652"><span class="lineNum">     652 </span>            :                 /* get latest topology info for each device from psp */</a>
-<a name="653"><span class="lineNum">     653 </span><span class="lineNoCov">          0 :                 list_for_each_entry(tmp_adev, &amp;hive-&gt;device_list, gmc.xgmi.head) {</span></a>
-<a name="654"><span class="lineNum">     654 </span><span class="lineNoCov">          0 :                         ret = psp_xgmi_get_topology_info(&amp;tmp_adev-&gt;psp, count,</span></a>
-<a name="655"><span class="lineNum">     655 </span>            :                                         &amp;tmp_adev-&gt;psp.xgmi_context.top_info, false);</a>
-<a name="656"><span class="lineNum">     656 </span><span class="lineNoCov">          0 :                         if (ret) {</span></a>
-<a name="657"><span class="lineNum">     657 </span><span class="lineNoCov">          0 :                                 dev_err(tmp_adev-&gt;dev,</span></a>
-<a name="658"><span class="lineNum">     658 </span>            :                                         &quot;XGMI: Get topology failure on device %llx, hive %llx, ret %d&quot;,</a>
-<a name="659"><span class="lineNum">     659 </span>            :                                         tmp_adev-&gt;gmc.xgmi.node_id,</a>
-<a name="660"><span class="lineNum">     660 </span>            :                                         tmp_adev-&gt;gmc.xgmi.hive_id, ret);</a>
-<a name="661"><span class="lineNum">     661 </span>            :                                 /* To do : continue with some node failed or disable the whole hive */</a>
-<a name="662"><span class="lineNum">     662 </span><span class="lineNoCov">          0 :                                 goto exit_unlock;</span></a>
-<a name="663"><span class="lineNum">     663 </span>            :                         }</a>
-<a name="664"><span class="lineNum">     664 </span>            :                 }</a>
-<a name="665"><span class="lineNum">     665 </span>            : </a>
-<a name="666"><span class="lineNum">     666 </span>            :                 /* get topology again for hives that support extended data */</a>
-<a name="667"><span class="lineNum">     667 </span><span class="lineNoCov">          0 :                 if (adev-&gt;psp.xgmi_context.supports_extended_data) {</span></a>
+<a name="590"><span class="lineNum">     590 </span><span class="lineNoCov">          0 :         if (!adev-&gt;gmc.xgmi.supported)</span></a>
+<a name="591"><span class="lineNum">     591 </span>            :                 return 0;</a>
+<a name="592"><span class="lineNum">     592 </span>            : </a>
+<a name="593"><span class="lineNum">     593 </span><span class="lineNoCov">          0 :         if (!adev-&gt;gmc.xgmi.pending_reset &amp;&amp;</span></a>
+<a name="594"><span class="lineNum">     594 </span><span class="lineNoCov">          0 :             amdgpu_device_ip_get_ip_block(adev, AMD_IP_BLOCK_TYPE_PSP)) {</span></a>
+<a name="595"><span class="lineNum">     595 </span><span class="lineNoCov">          0 :                 ret = psp_xgmi_initialize(&amp;adev-&gt;psp, false, true);</span></a>
+<a name="596"><span class="lineNum">     596 </span><span class="lineNoCov">          0 :                 if (ret) {</span></a>
+<a name="597"><span class="lineNum">     597 </span><span class="lineNoCov">          0 :                         dev_err(adev-&gt;dev,</span></a>
+<a name="598"><span class="lineNum">     598 </span>            :                                 &quot;XGMI: Failed to initialize xgmi session\n&quot;);</a>
+<a name="599"><span class="lineNum">     599 </span><span class="lineNoCov">          0 :                         return ret;</span></a>
+<a name="600"><span class="lineNum">     600 </span>            :                 }</a>
+<a name="601"><span class="lineNum">     601 </span>            : </a>
+<a name="602"><span class="lineNum">     602 </span><span class="lineNoCov">          0 :                 ret = psp_xgmi_get_hive_id(&amp;adev-&gt;psp, &amp;adev-&gt;gmc.xgmi.hive_id);</span></a>
+<a name="603"><span class="lineNum">     603 </span><span class="lineNoCov">          0 :                 if (ret) {</span></a>
+<a name="604"><span class="lineNum">     604 </span><span class="lineNoCov">          0 :                         dev_err(adev-&gt;dev,</span></a>
+<a name="605"><span class="lineNum">     605 </span>            :                                 &quot;XGMI: Failed to get hive id\n&quot;);</a>
+<a name="606"><span class="lineNum">     606 </span><span class="lineNoCov">          0 :                         return ret;</span></a>
+<a name="607"><span class="lineNum">     607 </span>            :                 }</a>
+<a name="608"><span class="lineNum">     608 </span>            : </a>
+<a name="609"><span class="lineNum">     609 </span><span class="lineNoCov">          0 :                 ret = psp_xgmi_get_node_id(&amp;adev-&gt;psp, &amp;adev-&gt;gmc.xgmi.node_id);</span></a>
+<a name="610"><span class="lineNum">     610 </span><span class="lineNoCov">          0 :                 if (ret) {</span></a>
+<a name="611"><span class="lineNum">     611 </span><span class="lineNoCov">          0 :                         dev_err(adev-&gt;dev,</span></a>
+<a name="612"><span class="lineNum">     612 </span>            :                                 &quot;XGMI: Failed to get node id\n&quot;);</a>
+<a name="613"><span class="lineNum">     613 </span><span class="lineNoCov">          0 :                         return ret;</span></a>
+<a name="614"><span class="lineNum">     614 </span>            :                 }</a>
+<a name="615"><span class="lineNum">     615 </span>            :         } else {</a>
+<a name="616"><span class="lineNum">     616 </span><span class="lineNoCov">          0 :                 adev-&gt;gmc.xgmi.hive_id = 16;</span></a>
+<a name="617"><span class="lineNum">     617 </span><span class="lineNoCov">          0 :                 adev-&gt;gmc.xgmi.node_id = adev-&gt;gmc.xgmi.physical_node_id + 16;</span></a>
+<a name="618"><span class="lineNum">     618 </span>            :         }</a>
+<a name="619"><span class="lineNum">     619 </span>            : </a>
+<a name="620"><span class="lineNum">     620 </span><span class="lineNoCov">          0 :         hive = amdgpu_get_xgmi_hive(adev);</span></a>
+<a name="621"><span class="lineNum">     621 </span><span class="lineNoCov">          0 :         if (!hive) {</span></a>
+<a name="622"><span class="lineNum">     622 </span><span class="lineNoCov">          0 :                 ret = -EINVAL;</span></a>
+<a name="623"><span class="lineNum">     623 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev,</span></a>
+<a name="624"><span class="lineNum">     624 </span>            :                         &quot;XGMI: node 0x%llx, can not match hive 0x%llx in the hive list.\n&quot;,</a>
+<a name="625"><span class="lineNum">     625 </span>            :                         adev-&gt;gmc.xgmi.node_id, adev-&gt;gmc.xgmi.hive_id);</a>
+<a name="626"><span class="lineNum">     626 </span><span class="lineNoCov">          0 :                 goto exit;</span></a>
+<a name="627"><span class="lineNum">     627 </span>            :         }</a>
+<a name="628"><span class="lineNum">     628 </span><span class="lineNoCov">          0 :         mutex_lock(&amp;hive-&gt;hive_lock);</span></a>
+<a name="629"><span class="lineNum">     629 </span>            : </a>
+<a name="630"><span class="lineNum">     630 </span><span class="lineNoCov">          0 :         top_info = &amp;adev-&gt;psp.xgmi_context.top_info;</span></a>
+<a name="631"><span class="lineNum">     631 </span>            : </a>
+<a name="632"><span class="lineNum">     632 </span><span class="lineNoCov">          0 :         list_add_tail(&amp;adev-&gt;gmc.xgmi.head, &amp;hive-&gt;device_list);</span></a>
+<a name="633"><span class="lineNum">     633 </span><span class="lineNoCov">          0 :         list_for_each_entry(entry, &amp;hive-&gt;device_list, head)</span></a>
+<a name="634"><span class="lineNum">     634 </span><span class="lineNoCov">          0 :                 top_info-&gt;nodes[count++].node_id = entry-&gt;node_id;</span></a>
+<a name="635"><span class="lineNum">     635 </span><span class="lineNoCov">          0 :         top_info-&gt;num_nodes = count;</span></a>
+<a name="636"><span class="lineNum">     636 </span><span class="lineNoCov">          0 :         atomic_set(&amp;hive-&gt;number_devices, count);</span></a>
+<a name="637"><span class="lineNum">     637 </span>            : </a>
+<a name="638"><span class="lineNum">     638 </span><span class="lineNoCov">          0 :         task_barrier_add_task(&amp;hive-&gt;tb);</span></a>
+<a name="639"><span class="lineNum">     639 </span>            : </a>
+<a name="640"><span class="lineNum">     640 </span><span class="lineNoCov">          0 :         if (!adev-&gt;gmc.xgmi.pending_reset &amp;&amp;</span></a>
+<a name="641"><span class="lineNum">     641 </span><span class="lineNoCov">          0 :             amdgpu_device_ip_get_ip_block(adev, AMD_IP_BLOCK_TYPE_PSP)) {</span></a>
+<a name="642"><span class="lineNum">     642 </span><span class="lineNoCov">          0 :                 list_for_each_entry(tmp_adev, &amp;hive-&gt;device_list, gmc.xgmi.head) {</span></a>
+<a name="643"><span class="lineNum">     643 </span>            :                         /* update node list for other device in the hive */</a>
+<a name="644"><span class="lineNum">     644 </span><span class="lineNoCov">          0 :                         if (tmp_adev != adev) {</span></a>
+<a name="645"><span class="lineNum">     645 </span><span class="lineNoCov">          0 :                                 top_info = &amp;tmp_adev-&gt;psp.xgmi_context.top_info;</span></a>
+<a name="646"><span class="lineNum">     646 </span><span class="lineNoCov">          0 :                                 top_info-&gt;nodes[count - 1].node_id =</span></a>
+<a name="647"><span class="lineNum">     647 </span><span class="lineNoCov">          0 :                                         adev-&gt;gmc.xgmi.node_id;</span></a>
+<a name="648"><span class="lineNum">     648 </span><span class="lineNoCov">          0 :                                 top_info-&gt;num_nodes = count;</span></a>
+<a name="649"><span class="lineNum">     649 </span>            :                         }</a>
+<a name="650"><span class="lineNum">     650 </span><span class="lineNoCov">          0 :                         ret = amdgpu_xgmi_update_topology(hive, tmp_adev);</span></a>
+<a name="651"><span class="lineNum">     651 </span><span class="lineNoCov">          0 :                         if (ret)</span></a>
+<a name="652"><span class="lineNum">     652 </span>            :                                 goto exit_unlock;</a>
+<a name="653"><span class="lineNum">     653 </span>            :                 }</a>
+<a name="654"><span class="lineNum">     654 </span>            : </a>
+<a name="655"><span class="lineNum">     655 </span>            :                 /* get latest topology info for each device from psp */</a>
+<a name="656"><span class="lineNum">     656 </span><span class="lineNoCov">          0 :                 list_for_each_entry(tmp_adev, &amp;hive-&gt;device_list, gmc.xgmi.head) {</span></a>
+<a name="657"><span class="lineNum">     657 </span><span class="lineNoCov">          0 :                         ret = psp_xgmi_get_topology_info(&amp;tmp_adev-&gt;psp, count,</span></a>
+<a name="658"><span class="lineNum">     658 </span>            :                                         &amp;tmp_adev-&gt;psp.xgmi_context.top_info, false);</a>
+<a name="659"><span class="lineNum">     659 </span><span class="lineNoCov">          0 :                         if (ret) {</span></a>
+<a name="660"><span class="lineNum">     660 </span><span class="lineNoCov">          0 :                                 dev_err(tmp_adev-&gt;dev,</span></a>
+<a name="661"><span class="lineNum">     661 </span>            :                                         &quot;XGMI: Get topology failure on device %llx, hive %llx, ret %d&quot;,</a>
+<a name="662"><span class="lineNum">     662 </span>            :                                         tmp_adev-&gt;gmc.xgmi.node_id,</a>
+<a name="663"><span class="lineNum">     663 </span>            :                                         tmp_adev-&gt;gmc.xgmi.hive_id, ret);</a>
+<a name="664"><span class="lineNum">     664 </span>            :                                 /* To do : continue with some node failed or disable the whole hive */</a>
+<a name="665"><span class="lineNum">     665 </span><span class="lineNoCov">          0 :                                 goto exit_unlock;</span></a>
+<a name="666"><span class="lineNum">     666 </span>            :                         }</a>
+<a name="667"><span class="lineNum">     667 </span>            :                 }</a>
 <a name="668"><span class="lineNum">     668 </span>            : </a>
-<a name="669"><span class="lineNum">     669 </span>            :                         /* initialize the hive to get extended data.  */</a>
-<a name="670"><span class="lineNum">     670 </span><span class="lineNoCov">          0 :                         ret = amdgpu_xgmi_initialize_hive_get_data_partition(hive, true);</span></a>
-<a name="671"><span class="lineNum">     671 </span><span class="lineNoCov">          0 :                         if (ret)</span></a>
-<a name="672"><span class="lineNum">     672 </span>            :                                 goto exit_unlock;</a>
-<a name="673"><span class="lineNum">     673 </span>            : </a>
-<a name="674"><span class="lineNum">     674 </span>            :                         /* get the extended data. */</a>
-<a name="675"><span class="lineNum">     675 </span><span class="lineNoCov">          0 :                         list_for_each_entry(tmp_adev, &amp;hive-&gt;device_list, gmc.xgmi.head) {</span></a>
-<a name="676"><span class="lineNum">     676 </span><span class="lineNoCov">          0 :                                 ret = psp_xgmi_get_topology_info(&amp;tmp_adev-&gt;psp, count,</span></a>
-<a name="677"><span class="lineNum">     677 </span>            :                                                 &amp;tmp_adev-&gt;psp.xgmi_context.top_info, true);</a>
-<a name="678"><span class="lineNum">     678 </span><span class="lineNoCov">          0 :                                 if (ret) {</span></a>
-<a name="679"><span class="lineNum">     679 </span><span class="lineNoCov">          0 :                                         dev_err(tmp_adev-&gt;dev,</span></a>
-<a name="680"><span class="lineNum">     680 </span>            :                                                 &quot;XGMI: Get topology for extended data failure on device %llx, hive %llx, ret %d&quot;,</a>
-<a name="681"><span class="lineNum">     681 </span>            :                                                 tmp_adev-&gt;gmc.xgmi.node_id,</a>
-<a name="682"><span class="lineNum">     682 </span>            :                                                 tmp_adev-&gt;gmc.xgmi.hive_id, ret);</a>
-<a name="683"><span class="lineNum">     683 </span><span class="lineNoCov">          0 :                                         goto exit_unlock;</span></a>
-<a name="684"><span class="lineNum">     684 </span>            :                                 }</a>
-<a name="685"><span class="lineNum">     685 </span>            :                         }</a>
-<a name="686"><span class="lineNum">     686 </span>            : </a>
-<a name="687"><span class="lineNum">     687 </span>            :                         /* initialize the hive to get non-extended data for the next round. */</a>
-<a name="688"><span class="lineNum">     688 </span><span class="lineNoCov">          0 :                         ret = amdgpu_xgmi_initialize_hive_get_data_partition(hive, false);</span></a>
-<a name="689"><span class="lineNum">     689 </span><span class="lineNoCov">          0 :                         if (ret)</span></a>
-<a name="690"><span class="lineNum">     690 </span>            :                                 goto exit_unlock;</a>
-<a name="691"><span class="lineNum">     691 </span>            : </a>
-<a name="692"><span class="lineNum">     692 </span>            :                 }</a>
-<a name="693"><span class="lineNum">     693 </span>            :         }</a>
+<a name="669"><span class="lineNum">     669 </span>            :                 /* get topology again for hives that support extended data */</a>
+<a name="670"><span class="lineNum">     670 </span><span class="lineNoCov">          0 :                 if (adev-&gt;psp.xgmi_context.supports_extended_data) {</span></a>
+<a name="671"><span class="lineNum">     671 </span>            : </a>
+<a name="672"><span class="lineNum">     672 </span>            :                         /* initialize the hive to get extended data.  */</a>
+<a name="673"><span class="lineNum">     673 </span><span class="lineNoCov">          0 :                         ret = amdgpu_xgmi_initialize_hive_get_data_partition(hive, true);</span></a>
+<a name="674"><span class="lineNum">     674 </span><span class="lineNoCov">          0 :                         if (ret)</span></a>
+<a name="675"><span class="lineNum">     675 </span>            :                                 goto exit_unlock;</a>
+<a name="676"><span class="lineNum">     676 </span>            : </a>
+<a name="677"><span class="lineNum">     677 </span>            :                         /* get the extended data. */</a>
+<a name="678"><span class="lineNum">     678 </span><span class="lineNoCov">          0 :                         list_for_each_entry(tmp_adev, &amp;hive-&gt;device_list, gmc.xgmi.head) {</span></a>
+<a name="679"><span class="lineNum">     679 </span><span class="lineNoCov">          0 :                                 ret = psp_xgmi_get_topology_info(&amp;tmp_adev-&gt;psp, count,</span></a>
+<a name="680"><span class="lineNum">     680 </span>            :                                                 &amp;tmp_adev-&gt;psp.xgmi_context.top_info, true);</a>
+<a name="681"><span class="lineNum">     681 </span><span class="lineNoCov">          0 :                                 if (ret) {</span></a>
+<a name="682"><span class="lineNum">     682 </span><span class="lineNoCov">          0 :                                         dev_err(tmp_adev-&gt;dev,</span></a>
+<a name="683"><span class="lineNum">     683 </span>            :                                                 &quot;XGMI: Get topology for extended data failure on device %llx, hive %llx, ret %d&quot;,</a>
+<a name="684"><span class="lineNum">     684 </span>            :                                                 tmp_adev-&gt;gmc.xgmi.node_id,</a>
+<a name="685"><span class="lineNum">     685 </span>            :                                                 tmp_adev-&gt;gmc.xgmi.hive_id, ret);</a>
+<a name="686"><span class="lineNum">     686 </span><span class="lineNoCov">          0 :                                         goto exit_unlock;</span></a>
+<a name="687"><span class="lineNum">     687 </span>            :                                 }</a>
+<a name="688"><span class="lineNum">     688 </span>            :                         }</a>
+<a name="689"><span class="lineNum">     689 </span>            : </a>
+<a name="690"><span class="lineNum">     690 </span>            :                         /* initialize the hive to get non-extended data for the next round. */</a>
+<a name="691"><span class="lineNum">     691 </span><span class="lineNoCov">          0 :                         ret = amdgpu_xgmi_initialize_hive_get_data_partition(hive, false);</span></a>
+<a name="692"><span class="lineNum">     692 </span><span class="lineNoCov">          0 :                         if (ret)</span></a>
+<a name="693"><span class="lineNum">     693 </span>            :                                 goto exit_unlock;</a>
 <a name="694"><span class="lineNum">     694 </span>            : </a>
-<a name="695"><span class="lineNum">     695 </span><span class="lineNoCov">          0 :         if (!ret &amp;&amp; !adev-&gt;gmc.xgmi.pending_reset)</span></a>
-<a name="696"><span class="lineNum">     696 </span><span class="lineNoCov">          0 :                 ret = amdgpu_xgmi_sysfs_add_dev_info(adev, hive);</span></a>
+<a name="695"><span class="lineNum">     695 </span>            :                 }</a>
+<a name="696"><span class="lineNum">     696 </span>            :         }</a>
 <a name="697"><span class="lineNum">     697 </span>            : </a>
-<a name="698"><span class="lineNum">     698 </span>            : exit_unlock:</a>
-<a name="699"><span class="lineNum">     699 </span><span class="lineNoCov">          0 :         mutex_unlock(&amp;hive-&gt;hive_lock);</span></a>
-<a name="700"><span class="lineNum">     700 </span>            : exit:</a>
-<a name="701"><span class="lineNum">     701 </span><span class="lineNoCov">          0 :         if (!ret) {</span></a>
-<a name="702"><span class="lineNum">     702 </span><span class="lineNoCov">          0 :                 adev-&gt;hive = hive;</span></a>
-<a name="703"><span class="lineNum">     703 </span><span class="lineNoCov">          0 :                 dev_info(adev-&gt;dev, &quot;XGMI: Add node %d, hive 0x%llx.\n&quot;,</span></a>
-<a name="704"><span class="lineNum">     704 </span>            :                          adev-&gt;gmc.xgmi.physical_node_id, adev-&gt;gmc.xgmi.hive_id);</a>
-<a name="705"><span class="lineNum">     705 </span>            :         } else {</a>
-<a name="706"><span class="lineNum">     706 </span><span class="lineNoCov">          0 :                 amdgpu_put_xgmi_hive(hive);</span></a>
-<a name="707"><span class="lineNum">     707 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev, &quot;XGMI: Failed to add node %d, hive 0x%llx ret: %d\n&quot;,</span></a>
-<a name="708"><span class="lineNum">     708 </span>            :                         adev-&gt;gmc.xgmi.physical_node_id, adev-&gt;gmc.xgmi.hive_id,</a>
-<a name="709"><span class="lineNum">     709 </span>            :                         ret);</a>
-<a name="710"><span class="lineNum">     710 </span>            :         }</a>
-<a name="711"><span class="lineNum">     711 </span>            : </a>
-<a name="712"><span class="lineNum">     712 </span>            :         return ret;</a>
-<a name="713"><span class="lineNum">     713 </span>            : }</a>
+<a name="698"><span class="lineNum">     698 </span><span class="lineNoCov">          0 :         if (!ret &amp;&amp; !adev-&gt;gmc.xgmi.pending_reset)</span></a>
+<a name="699"><span class="lineNum">     699 </span><span class="lineNoCov">          0 :                 ret = amdgpu_xgmi_sysfs_add_dev_info(adev, hive);</span></a>
+<a name="700"><span class="lineNum">     700 </span>            : </a>
+<a name="701"><span class="lineNum">     701 </span>            : exit_unlock:</a>
+<a name="702"><span class="lineNum">     702 </span><span class="lineNoCov">          0 :         mutex_unlock(&amp;hive-&gt;hive_lock);</span></a>
+<a name="703"><span class="lineNum">     703 </span>            : exit:</a>
+<a name="704"><span class="lineNum">     704 </span><span class="lineNoCov">          0 :         if (!ret) {</span></a>
+<a name="705"><span class="lineNum">     705 </span><span class="lineNoCov">          0 :                 adev-&gt;hive = hive;</span></a>
+<a name="706"><span class="lineNum">     706 </span><span class="lineNoCov">          0 :                 dev_info(adev-&gt;dev, &quot;XGMI: Add node %d, hive 0x%llx.\n&quot;,</span></a>
+<a name="707"><span class="lineNum">     707 </span>            :                          adev-&gt;gmc.xgmi.physical_node_id, adev-&gt;gmc.xgmi.hive_id);</a>
+<a name="708"><span class="lineNum">     708 </span>            :         } else {</a>
+<a name="709"><span class="lineNum">     709 </span><span class="lineNoCov">          0 :                 amdgpu_put_xgmi_hive(hive);</span></a>
+<a name="710"><span class="lineNum">     710 </span><span class="lineNoCov">          0 :                 dev_err(adev-&gt;dev, &quot;XGMI: Failed to add node %d, hive 0x%llx ret: %d\n&quot;,</span></a>
+<a name="711"><span class="lineNum">     711 </span>            :                         adev-&gt;gmc.xgmi.physical_node_id, adev-&gt;gmc.xgmi.hive_id,</a>
+<a name="712"><span class="lineNum">     712 </span>            :                         ret);</a>
+<a name="713"><span class="lineNum">     713 </span>            :         }</a>
 <a name="714"><span class="lineNum">     714 </span>            : </a>
-<a name="715"><span class="lineNum">     715 </span><span class="lineNoCov">          0 : int amdgpu_xgmi_remove_device(struct amdgpu_device *adev)</span></a>
-<a name="716"><span class="lineNum">     716 </span>            : {</a>
-<a name="717"><span class="lineNum">     717 </span><span class="lineNoCov">          0 :         struct amdgpu_hive_info *hive = adev-&gt;hive;</span></a>
-<a name="718"><span class="lineNum">     718 </span>            : </a>
-<a name="719"><span class="lineNum">     719 </span><span class="lineNoCov">          0 :         if (!adev-&gt;gmc.xgmi.supported)</span></a>
-<a name="720"><span class="lineNum">     720 </span>            :                 return -EINVAL;</a>
+<a name="715"><span class="lineNum">     715 </span>            :         return ret;</a>
+<a name="716"><span class="lineNum">     716 </span>            : }</a>
+<a name="717"><span class="lineNum">     717 </span>            : </a>
+<a name="718"><span class="lineNum">     718 </span><span class="lineNoCov">          0 : int amdgpu_xgmi_remove_device(struct amdgpu_device *adev)</span></a>
+<a name="719"><span class="lineNum">     719 </span>            : {</a>
+<a name="720"><span class="lineNum">     720 </span><span class="lineNoCov">          0 :         struct amdgpu_hive_info *hive = adev-&gt;hive;</span></a>
 <a name="721"><span class="lineNum">     721 </span>            : </a>
-<a name="722"><span class="lineNum">     722 </span><span class="lineNoCov">          0 :         if (!hive)</span></a>
+<a name="722"><span class="lineNum">     722 </span><span class="lineNoCov">          0 :         if (!adev-&gt;gmc.xgmi.supported)</span></a>
 <a name="723"><span class="lineNum">     723 </span>            :                 return -EINVAL;</a>
 <a name="724"><span class="lineNum">     724 </span>            : </a>
-<a name="725"><span class="lineNum">     725 </span><span class="lineNoCov">          0 :         mutex_lock(&amp;hive-&gt;hive_lock);</span></a>
-<a name="726"><span class="lineNum">     726 </span><span class="lineNoCov">          0 :         task_barrier_rem_task(&amp;hive-&gt;tb);</span></a>
-<a name="727"><span class="lineNum">     727 </span><span class="lineNoCov">          0 :         amdgpu_xgmi_sysfs_rem_dev_info(adev, hive);</span></a>
-<a name="728"><span class="lineNum">     728 </span><span class="lineNoCov">          0 :         if (hive-&gt;hi_req_gpu == adev)</span></a>
-<a name="729"><span class="lineNum">     729 </span><span class="lineNoCov">          0 :                 hive-&gt;hi_req_gpu = NULL;</span></a>
-<a name="730"><span class="lineNum">     730 </span><span class="lineNoCov">          0 :         list_del(&amp;adev-&gt;gmc.xgmi.head);</span></a>
-<a name="731"><span class="lineNum">     731 </span><span class="lineNoCov">          0 :         mutex_unlock(&amp;hive-&gt;hive_lock);</span></a>
-<a name="732"><span class="lineNum">     732 </span>            : </a>
-<a name="733"><span class="lineNum">     733 </span><span class="lineNoCov">          0 :         amdgpu_put_xgmi_hive(hive);</span></a>
-<a name="734"><span class="lineNum">     734 </span><span class="lineNoCov">          0 :         adev-&gt;hive = NULL;</span></a>
+<a name="725"><span class="lineNum">     725 </span><span class="lineNoCov">          0 :         if (!hive)</span></a>
+<a name="726"><span class="lineNum">     726 </span>            :                 return -EINVAL;</a>
+<a name="727"><span class="lineNum">     727 </span>            : </a>
+<a name="728"><span class="lineNum">     728 </span><span class="lineNoCov">          0 :         mutex_lock(&amp;hive-&gt;hive_lock);</span></a>
+<a name="729"><span class="lineNum">     729 </span><span class="lineNoCov">          0 :         task_barrier_rem_task(&amp;hive-&gt;tb);</span></a>
+<a name="730"><span class="lineNum">     730 </span><span class="lineNoCov">          0 :         amdgpu_xgmi_sysfs_rem_dev_info(adev, hive);</span></a>
+<a name="731"><span class="lineNum">     731 </span><span class="lineNoCov">          0 :         if (hive-&gt;hi_req_gpu == adev)</span></a>
+<a name="732"><span class="lineNum">     732 </span><span class="lineNoCov">          0 :                 hive-&gt;hi_req_gpu = NULL;</span></a>
+<a name="733"><span class="lineNum">     733 </span><span class="lineNoCov">          0 :         list_del(&amp;adev-&gt;gmc.xgmi.head);</span></a>
+<a name="734"><span class="lineNum">     734 </span><span class="lineNoCov">          0 :         mutex_unlock(&amp;hive-&gt;hive_lock);</span></a>
 <a name="735"><span class="lineNum">     735 </span>            : </a>
-<a name="736"><span class="lineNum">     736 </span><span class="lineNoCov">          0 :         if (atomic_dec_return(&amp;hive-&gt;number_devices) == 0) {</span></a>
-<a name="737"><span class="lineNum">     737 </span>            :                 /* Remove the hive from global hive list */</a>
-<a name="738"><span class="lineNum">     738 </span><span class="lineNoCov">          0 :                 mutex_lock(&amp;xgmi_mutex);</span></a>
-<a name="739"><span class="lineNum">     739 </span><span class="lineNoCov">          0 :                 list_del(&amp;hive-&gt;node);</span></a>
-<a name="740"><span class="lineNum">     740 </span><span class="lineNoCov">          0 :                 mutex_unlock(&amp;xgmi_mutex);</span></a>
-<a name="741"><span class="lineNum">     741 </span>            : </a>
-<a name="742"><span class="lineNum">     742 </span>            :                 amdgpu_put_xgmi_hive(hive);</a>
-<a name="743"><span class="lineNum">     743 </span>            :         }</a>
+<a name="736"><span class="lineNum">     736 </span><span class="lineNoCov">          0 :         amdgpu_put_xgmi_hive(hive);</span></a>
+<a name="737"><span class="lineNum">     737 </span><span class="lineNoCov">          0 :         adev-&gt;hive = NULL;</span></a>
+<a name="738"><span class="lineNum">     738 </span>            : </a>
+<a name="739"><span class="lineNum">     739 </span><span class="lineNoCov">          0 :         if (atomic_dec_return(&amp;hive-&gt;number_devices) == 0) {</span></a>
+<a name="740"><span class="lineNum">     740 </span>            :                 /* Remove the hive from global hive list */</a>
+<a name="741"><span class="lineNum">     741 </span><span class="lineNoCov">          0 :                 mutex_lock(&amp;xgmi_mutex);</span></a>
+<a name="742"><span class="lineNum">     742 </span><span class="lineNoCov">          0 :                 list_del(&amp;hive-&gt;node);</span></a>
+<a name="743"><span class="lineNum">     743 </span><span class="lineNoCov">          0 :                 mutex_unlock(&amp;xgmi_mutex);</span></a>
 <a name="744"><span class="lineNum">     744 </span>            : </a>
-<a name="745"><span class="lineNum">     745 </span><span class="lineNoCov">          0 :         return psp_xgmi_terminate(&amp;adev-&gt;psp);</span></a>
-<a name="746"><span class="lineNum">     746 </span>            : }</a>
+<a name="745"><span class="lineNum">     745 </span>            :                 amdgpu_put_xgmi_hive(hive);</a>
+<a name="746"><span class="lineNum">     746 </span>            :         }</a>
 <a name="747"><span class="lineNum">     747 </span>            : </a>
-<a name="748"><span class="lineNum">     748 </span><span class="lineNoCov">          0 : static int amdgpu_xgmi_ras_late_init(struct amdgpu_device *adev, struct ras_common_if *ras_block)</span></a>
-<a name="749"><span class="lineNum">     749 </span>            : {</a>
-<a name="750"><span class="lineNum">     750 </span><span class="lineNoCov">          0 :         if (!adev-&gt;gmc.xgmi.supported ||</span></a>
-<a name="751"><span class="lineNum">     751 </span><span class="lineNoCov">          0 :             adev-&gt;gmc.xgmi.num_physical_nodes == 0)</span></a>
-<a name="752"><span class="lineNum">     752 </span>            :                 return 0;</a>
-<a name="753"><span class="lineNum">     753 </span>            : </a>
-<a name="754"><span class="lineNum">     754 </span><span class="lineNoCov">          0 :         adev-&gt;gmc.xgmi.ras-&gt;ras_block.hw_ops-&gt;reset_ras_error_count(adev);</span></a>
-<a name="755"><span class="lineNum">     755 </span>            : </a>
-<a name="756"><span class="lineNum">     756 </span><span class="lineNoCov">          0 :         return amdgpu_ras_block_late_init(adev, ras_block);</span></a>
-<a name="757"><span class="lineNum">     757 </span>            : }</a>
+<a name="748"><span class="lineNum">     748 </span>            :         return 0;</a>
+<a name="749"><span class="lineNum">     749 </span>            : }</a>
+<a name="750"><span class="lineNum">     750 </span>            : </a>
+<a name="751"><span class="lineNum">     751 </span><span class="lineNoCov">          0 : static int amdgpu_xgmi_ras_late_init(struct amdgpu_device *adev, struct ras_common_if *ras_block)</span></a>
+<a name="752"><span class="lineNum">     752 </span>            : {</a>
+<a name="753"><span class="lineNum">     753 </span><span class="lineNoCov">          0 :         if (!adev-&gt;gmc.xgmi.supported ||</span></a>
+<a name="754"><span class="lineNum">     754 </span><span class="lineNoCov">          0 :             adev-&gt;gmc.xgmi.num_physical_nodes == 0)</span></a>
+<a name="755"><span class="lineNum">     755 </span>            :                 return 0;</a>
+<a name="756"><span class="lineNum">     756 </span>            : </a>
+<a name="757"><span class="lineNum">     757 </span><span class="lineNoCov">          0 :         adev-&gt;gmc.xgmi.ras-&gt;ras_block.hw_ops-&gt;reset_ras_error_count(adev);</span></a>
 <a name="758"><span class="lineNum">     758 </span>            : </a>
-<a name="759"><span class="lineNum">     759 </span><span class="lineNoCov">          0 : uint64_t amdgpu_xgmi_get_relative_phy_addr(struct amdgpu_device *adev,</span></a>
-<a name="760"><span class="lineNum">     760 </span>            :                                            uint64_t addr)</a>
-<a name="761"><span class="lineNum">     761 </span>            : {</a>
-<a name="762"><span class="lineNum">     762 </span><span class="lineNoCov">          0 :         struct amdgpu_xgmi *xgmi = &amp;adev-&gt;gmc.xgmi;</span></a>
-<a name="763"><span class="lineNum">     763 </span><span class="lineNoCov">          0 :         return (addr + xgmi-&gt;physical_node_id * xgmi-&gt;node_segment_size);</span></a>
-<a name="764"><span class="lineNum">     764 </span>            : }</a>
-<a name="765"><span class="lineNum">     765 </span>            : </a>
-<a name="766"><span class="lineNum">     766 </span>            : static void pcs_clear_status(struct amdgpu_device *adev, uint32_t pcs_status_reg)</a>
-<a name="767"><span class="lineNum">     767 </span>            : {</a>
-<a name="768"><span class="lineNum">     768 </span><span class="lineNoCov">          0 :         WREG32_PCIE(pcs_status_reg, 0xFFFFFFFF);</span></a>
-<a name="769"><span class="lineNum">     769 </span><span class="lineNoCov">          0 :         WREG32_PCIE(pcs_status_reg, 0);</span></a>
-<a name="770"><span class="lineNum">     770 </span>            : }</a>
-<a name="771"><span class="lineNum">     771 </span>            : </a>
-<a name="772"><span class="lineNum">     772 </span><span class="lineNoCov">          0 : static void amdgpu_xgmi_reset_ras_error_count(struct amdgpu_device *adev)</span></a>
-<a name="773"><span class="lineNum">     773 </span>            : {</a>
-<a name="774"><span class="lineNum">     774 </span>            :         uint32_t i;</a>
-<a name="775"><span class="lineNum">     775 </span>            : </a>
-<a name="776"><span class="lineNum">     776 </span><span class="lineNoCov">          0 :         switch (adev-&gt;asic_type) {</span></a>
-<a name="777"><span class="lineNum">     777 </span>            :         case CHIP_ARCTURUS:</a>
-<a name="778"><span class="lineNum">     778 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(xgmi_pcs_err_status_reg_arct); i++)</span></a>
-<a name="779"><span class="lineNum">     779 </span><span class="lineNoCov">          0 :                         pcs_clear_status(adev,</span></a>
-<a name="780"><span class="lineNum">     780 </span><span class="lineNoCov">          0 :                                          xgmi_pcs_err_status_reg_arct[i]);</span></a>
-<a name="781"><span class="lineNum">     781 </span>            :                 break;</a>
-<a name="782"><span class="lineNum">     782 </span>            :         case CHIP_VEGA20:</a>
-<a name="783"><span class="lineNum">     783 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(xgmi_pcs_err_status_reg_vg20); i++)</span></a>
-<a name="784"><span class="lineNum">     784 </span><span class="lineNoCov">          0 :                         pcs_clear_status(adev,</span></a>
-<a name="785"><span class="lineNum">     785 </span><span class="lineNoCov">          0 :                                          xgmi_pcs_err_status_reg_vg20[i]);</span></a>
-<a name="786"><span class="lineNum">     786 </span>            :                 break;</a>
-<a name="787"><span class="lineNum">     787 </span>            :         case CHIP_ALDEBARAN:</a>
-<a name="788"><span class="lineNum">     788 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(xgmi3x16_pcs_err_status_reg_aldebaran); i++)</span></a>
-<a name="789"><span class="lineNum">     789 </span><span class="lineNoCov">          0 :                         pcs_clear_status(adev,</span></a>
-<a name="790"><span class="lineNum">     790 </span><span class="lineNoCov">          0 :                                          xgmi3x16_pcs_err_status_reg_aldebaran[i]);</span></a>
-<a name="791"><span class="lineNum">     791 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(walf_pcs_err_status_reg_aldebaran); i++)</span></a>
+<a name="759"><span class="lineNum">     759 </span><span class="lineNoCov">          0 :         return amdgpu_ras_block_late_init(adev, ras_block);</span></a>
+<a name="760"><span class="lineNum">     760 </span>            : }</a>
+<a name="761"><span class="lineNum">     761 </span>            : </a>
+<a name="762"><span class="lineNum">     762 </span><span class="lineNoCov">          0 : uint64_t amdgpu_xgmi_get_relative_phy_addr(struct amdgpu_device *adev,</span></a>
+<a name="763"><span class="lineNum">     763 </span>            :                                            uint64_t addr)</a>
+<a name="764"><span class="lineNum">     764 </span>            : {</a>
+<a name="765"><span class="lineNum">     765 </span><span class="lineNoCov">          0 :         struct amdgpu_xgmi *xgmi = &amp;adev-&gt;gmc.xgmi;</span></a>
+<a name="766"><span class="lineNum">     766 </span><span class="lineNoCov">          0 :         return (addr + xgmi-&gt;physical_node_id * xgmi-&gt;node_segment_size);</span></a>
+<a name="767"><span class="lineNum">     767 </span>            : }</a>
+<a name="768"><span class="lineNum">     768 </span>            : </a>
+<a name="769"><span class="lineNum">     769 </span>            : static void pcs_clear_status(struct amdgpu_device *adev, uint32_t pcs_status_reg)</a>
+<a name="770"><span class="lineNum">     770 </span>            : {</a>
+<a name="771"><span class="lineNum">     771 </span><span class="lineNoCov">          0 :         WREG32_PCIE(pcs_status_reg, 0xFFFFFFFF);</span></a>
+<a name="772"><span class="lineNum">     772 </span><span class="lineNoCov">          0 :         WREG32_PCIE(pcs_status_reg, 0);</span></a>
+<a name="773"><span class="lineNum">     773 </span>            : }</a>
+<a name="774"><span class="lineNum">     774 </span>            : </a>
+<a name="775"><span class="lineNum">     775 </span><span class="lineNoCov">          0 : static void amdgpu_xgmi_reset_ras_error_count(struct amdgpu_device *adev)</span></a>
+<a name="776"><span class="lineNum">     776 </span>            : {</a>
+<a name="777"><span class="lineNum">     777 </span>            :         uint32_t i;</a>
+<a name="778"><span class="lineNum">     778 </span>            : </a>
+<a name="779"><span class="lineNum">     779 </span><span class="lineNoCov">          0 :         switch (adev-&gt;asic_type) {</span></a>
+<a name="780"><span class="lineNum">     780 </span>            :         case CHIP_ARCTURUS:</a>
+<a name="781"><span class="lineNum">     781 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(xgmi_pcs_err_status_reg_arct); i++)</span></a>
+<a name="782"><span class="lineNum">     782 </span><span class="lineNoCov">          0 :                         pcs_clear_status(adev,</span></a>
+<a name="783"><span class="lineNum">     783 </span><span class="lineNoCov">          0 :                                          xgmi_pcs_err_status_reg_arct[i]);</span></a>
+<a name="784"><span class="lineNum">     784 </span>            :                 break;</a>
+<a name="785"><span class="lineNum">     785 </span>            :         case CHIP_VEGA20:</a>
+<a name="786"><span class="lineNum">     786 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(xgmi_pcs_err_status_reg_vg20); i++)</span></a>
+<a name="787"><span class="lineNum">     787 </span><span class="lineNoCov">          0 :                         pcs_clear_status(adev,</span></a>
+<a name="788"><span class="lineNum">     788 </span><span class="lineNoCov">          0 :                                          xgmi_pcs_err_status_reg_vg20[i]);</span></a>
+<a name="789"><span class="lineNum">     789 </span>            :                 break;</a>
+<a name="790"><span class="lineNum">     790 </span>            :         case CHIP_ALDEBARAN:</a>
+<a name="791"><span class="lineNum">     791 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(xgmi3x16_pcs_err_status_reg_aldebaran); i++)</span></a>
 <a name="792"><span class="lineNum">     792 </span><span class="lineNoCov">          0 :                         pcs_clear_status(adev,</span></a>
-<a name="793"><span class="lineNum">     793 </span><span class="lineNoCov">          0 :                                          walf_pcs_err_status_reg_aldebaran[i]);</span></a>
-<a name="794"><span class="lineNum">     794 </span>            :                 break;</a>
-<a name="795"><span class="lineNum">     795 </span>            :         default:</a>
-<a name="796"><span class="lineNum">     796 </span>            :                 break;</a>
-<a name="797"><span class="lineNum">     797 </span>            :         }</a>
-<a name="798"><span class="lineNum">     798 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="799"><span class="lineNum">     799 </span>            : </a>
-<a name="800"><span class="lineNum">     800 </span><span class="lineNoCov">          0 : static int amdgpu_xgmi_query_pcs_error_status(struct amdgpu_device *adev,</span></a>
-<a name="801"><span class="lineNum">     801 </span>            :                                               uint32_t value,</a>
-<a name="802"><span class="lineNum">     802 </span>            :                                               uint32_t *ue_count,</a>
-<a name="803"><span class="lineNum">     803 </span>            :                                               uint32_t *ce_count,</a>
-<a name="804"><span class="lineNum">     804 </span>            :                                               bool is_xgmi_pcs)</a>
-<a name="805"><span class="lineNum">     805 </span>            : {</a>
-<a name="806"><span class="lineNum">     806 </span>            :         int i;</a>
-<a name="807"><span class="lineNum">     807 </span>            :         int ue_cnt;</a>
-<a name="808"><span class="lineNum">     808 </span>            : </a>
-<a name="809"><span class="lineNum">     809 </span><span class="lineNoCov">          0 :         if (is_xgmi_pcs) {</span></a>
-<a name="810"><span class="lineNum">     810 </span>            :                 /* query xgmi pcs error status,</a>
-<a name="811"><span class="lineNum">     811 </span>            :                  * only ue is supported */</a>
-<a name="812"><span class="lineNum">     812 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(xgmi_pcs_ras_fields); i ++) {</span></a>
-<a name="813"><span class="lineNum">     813 </span><span class="lineNoCov">          0 :                         ue_cnt = (value &amp;</span></a>
-<a name="814"><span class="lineNum">     814 </span><span class="lineNoCov">          0 :                                   xgmi_pcs_ras_fields[i].pcs_err_mask) &gt;&gt;</span></a>
-<a name="815"><span class="lineNum">     815 </span><span class="lineNoCov">          0 :                                   xgmi_pcs_ras_fields[i].pcs_err_shift;</span></a>
-<a name="816"><span class="lineNum">     816 </span><span class="lineNoCov">          0 :                         if (ue_cnt) {</span></a>
-<a name="817"><span class="lineNum">     817 </span><span class="lineNoCov">          0 :                                 dev_info(adev-&gt;dev, &quot;%s detected\n&quot;,</span></a>
-<a name="818"><span class="lineNum">     818 </span>            :                                          xgmi_pcs_ras_fields[i].err_name);</a>
-<a name="819"><span class="lineNum">     819 </span><span class="lineNoCov">          0 :                                 *ue_count += ue_cnt;</span></a>
-<a name="820"><span class="lineNum">     820 </span>            :                         }</a>
-<a name="821"><span class="lineNum">     821 </span>            :                 }</a>
-<a name="822"><span class="lineNum">     822 </span>            :         } else {</a>
-<a name="823"><span class="lineNum">     823 </span>            :                 /* query wafl pcs error status,</a>
-<a name="824"><span class="lineNum">     824 </span>            :                  * only ue is supported */</a>
-<a name="825"><span class="lineNum">     825 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(wafl_pcs_ras_fields); i++) {</span></a>
-<a name="826"><span class="lineNum">     826 </span><span class="lineNoCov">          0 :                         ue_cnt = (value &amp;</span></a>
-<a name="827"><span class="lineNum">     827 </span><span class="lineNoCov">          0 :                                   wafl_pcs_ras_fields[i].pcs_err_mask) &gt;&gt;</span></a>
-<a name="828"><span class="lineNum">     828 </span><span class="lineNoCov">          0 :                                   wafl_pcs_ras_fields[i].pcs_err_shift;</span></a>
-<a name="829"><span class="lineNum">     829 </span><span class="lineNoCov">          0 :                         if (ue_cnt) {</span></a>
-<a name="830"><span class="lineNum">     830 </span><span class="lineNoCov">          0 :                                 dev_info(adev-&gt;dev, &quot;%s detected\n&quot;,</span></a>
-<a name="831"><span class="lineNum">     831 </span>            :                                          wafl_pcs_ras_fields[i].err_name);</a>
-<a name="832"><span class="lineNum">     832 </span><span class="lineNoCov">          0 :                                 *ue_count += ue_cnt;</span></a>
-<a name="833"><span class="lineNum">     833 </span>            :                         }</a>
-<a name="834"><span class="lineNum">     834 </span>            :                 }</a>
-<a name="835"><span class="lineNum">     835 </span>            :         }</a>
-<a name="836"><span class="lineNum">     836 </span>            : </a>
-<a name="837"><span class="lineNum">     837 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="838"><span class="lineNum">     838 </span>            : }</a>
+<a name="793"><span class="lineNum">     793 </span><span class="lineNoCov">          0 :                                          xgmi3x16_pcs_err_status_reg_aldebaran[i]);</span></a>
+<a name="794"><span class="lineNum">     794 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(walf_pcs_err_status_reg_aldebaran); i++)</span></a>
+<a name="795"><span class="lineNum">     795 </span><span class="lineNoCov">          0 :                         pcs_clear_status(adev,</span></a>
+<a name="796"><span class="lineNum">     796 </span><span class="lineNoCov">          0 :                                          walf_pcs_err_status_reg_aldebaran[i]);</span></a>
+<a name="797"><span class="lineNum">     797 </span>            :                 break;</a>
+<a name="798"><span class="lineNum">     798 </span>            :         default:</a>
+<a name="799"><span class="lineNum">     799 </span>            :                 break;</a>
+<a name="800"><span class="lineNum">     800 </span>            :         }</a>
+<a name="801"><span class="lineNum">     801 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="802"><span class="lineNum">     802 </span>            : </a>
+<a name="803"><span class="lineNum">     803 </span><span class="lineNoCov">          0 : static int amdgpu_xgmi_query_pcs_error_status(struct amdgpu_device *adev,</span></a>
+<a name="804"><span class="lineNum">     804 </span>            :                                               uint32_t value,</a>
+<a name="805"><span class="lineNum">     805 </span>            :                                               uint32_t *ue_count,</a>
+<a name="806"><span class="lineNum">     806 </span>            :                                               uint32_t *ce_count,</a>
+<a name="807"><span class="lineNum">     807 </span>            :                                               bool is_xgmi_pcs)</a>
+<a name="808"><span class="lineNum">     808 </span>            : {</a>
+<a name="809"><span class="lineNum">     809 </span>            :         int i;</a>
+<a name="810"><span class="lineNum">     810 </span>            :         int ue_cnt;</a>
+<a name="811"><span class="lineNum">     811 </span>            : </a>
+<a name="812"><span class="lineNum">     812 </span><span class="lineNoCov">          0 :         if (is_xgmi_pcs) {</span></a>
+<a name="813"><span class="lineNum">     813 </span>            :                 /* query xgmi pcs error status,</a>
+<a name="814"><span class="lineNum">     814 </span>            :                  * only ue is supported */</a>
+<a name="815"><span class="lineNum">     815 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(xgmi_pcs_ras_fields); i ++) {</span></a>
+<a name="816"><span class="lineNum">     816 </span><span class="lineNoCov">          0 :                         ue_cnt = (value &amp;</span></a>
+<a name="817"><span class="lineNum">     817 </span><span class="lineNoCov">          0 :                                   xgmi_pcs_ras_fields[i].pcs_err_mask) &gt;&gt;</span></a>
+<a name="818"><span class="lineNum">     818 </span><span class="lineNoCov">          0 :                                   xgmi_pcs_ras_fields[i].pcs_err_shift;</span></a>
+<a name="819"><span class="lineNum">     819 </span><span class="lineNoCov">          0 :                         if (ue_cnt) {</span></a>
+<a name="820"><span class="lineNum">     820 </span><span class="lineNoCov">          0 :                                 dev_info(adev-&gt;dev, &quot;%s detected\n&quot;,</span></a>
+<a name="821"><span class="lineNum">     821 </span>            :                                          xgmi_pcs_ras_fields[i].err_name);</a>
+<a name="822"><span class="lineNum">     822 </span><span class="lineNoCov">          0 :                                 *ue_count += ue_cnt;</span></a>
+<a name="823"><span class="lineNum">     823 </span>            :                         }</a>
+<a name="824"><span class="lineNum">     824 </span>            :                 }</a>
+<a name="825"><span class="lineNum">     825 </span>            :         } else {</a>
+<a name="826"><span class="lineNum">     826 </span>            :                 /* query wafl pcs error status,</a>
+<a name="827"><span class="lineNum">     827 </span>            :                  * only ue is supported */</a>
+<a name="828"><span class="lineNum">     828 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(wafl_pcs_ras_fields); i++) {</span></a>
+<a name="829"><span class="lineNum">     829 </span><span class="lineNoCov">          0 :                         ue_cnt = (value &amp;</span></a>
+<a name="830"><span class="lineNum">     830 </span><span class="lineNoCov">          0 :                                   wafl_pcs_ras_fields[i].pcs_err_mask) &gt;&gt;</span></a>
+<a name="831"><span class="lineNum">     831 </span><span class="lineNoCov">          0 :                                   wafl_pcs_ras_fields[i].pcs_err_shift;</span></a>
+<a name="832"><span class="lineNum">     832 </span><span class="lineNoCov">          0 :                         if (ue_cnt) {</span></a>
+<a name="833"><span class="lineNum">     833 </span><span class="lineNoCov">          0 :                                 dev_info(adev-&gt;dev, &quot;%s detected\n&quot;,</span></a>
+<a name="834"><span class="lineNum">     834 </span>            :                                          wafl_pcs_ras_fields[i].err_name);</a>
+<a name="835"><span class="lineNum">     835 </span><span class="lineNoCov">          0 :                                 *ue_count += ue_cnt;</span></a>
+<a name="836"><span class="lineNum">     836 </span>            :                         }</a>
+<a name="837"><span class="lineNum">     837 </span>            :                 }</a>
+<a name="838"><span class="lineNum">     838 </span>            :         }</a>
 <a name="839"><span class="lineNum">     839 </span>            : </a>
-<a name="840"><span class="lineNum">     840 </span><span class="lineNoCov">          0 : static void amdgpu_xgmi_query_ras_error_count(struct amdgpu_device *adev,</span></a>
-<a name="841"><span class="lineNum">     841 </span>            :                                              void *ras_error_status)</a>
-<a name="842"><span class="lineNum">     842 </span>            : {</a>
-<a name="843"><span class="lineNum">     843 </span><span class="lineNoCov">          0 :         struct ras_err_data *err_data = (struct ras_err_data *)ras_error_status;</span></a>
-<a name="844"><span class="lineNum">     844 </span>            :         int i;</a>
-<a name="845"><span class="lineNum">     845 </span>            :         uint32_t data;</a>
-<a name="846"><span class="lineNum">     846 </span><span class="lineNoCov">          0 :         uint32_t ue_cnt = 0, ce_cnt = 0;</span></a>
-<a name="847"><span class="lineNum">     847 </span>            : </a>
-<a name="848"><span class="lineNum">     848 </span><span class="lineNoCov">          0 :         if (!amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__XGMI_WAFL))</span></a>
-<a name="849"><span class="lineNum">     849 </span><span class="lineNoCov">          0 :                 return ;</span></a>
+<a name="840"><span class="lineNum">     840 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="841"><span class="lineNum">     841 </span>            : }</a>
+<a name="842"><span class="lineNum">     842 </span>            : </a>
+<a name="843"><span class="lineNum">     843 </span><span class="lineNoCov">          0 : static void amdgpu_xgmi_query_ras_error_count(struct amdgpu_device *adev,</span></a>
+<a name="844"><span class="lineNum">     844 </span>            :                                              void *ras_error_status)</a>
+<a name="845"><span class="lineNum">     845 </span>            : {</a>
+<a name="846"><span class="lineNum">     846 </span><span class="lineNoCov">          0 :         struct ras_err_data *err_data = (struct ras_err_data *)ras_error_status;</span></a>
+<a name="847"><span class="lineNum">     847 </span>            :         int i;</a>
+<a name="848"><span class="lineNum">     848 </span>            :         uint32_t data;</a>
+<a name="849"><span class="lineNum">     849 </span><span class="lineNoCov">          0 :         uint32_t ue_cnt = 0, ce_cnt = 0;</span></a>
 <a name="850"><span class="lineNum">     850 </span>            : </a>
-<a name="851"><span class="lineNum">     851 </span><span class="lineNoCov">          0 :         err_data-&gt;ue_count = 0;</span></a>
-<a name="852"><span class="lineNum">     852 </span><span class="lineNoCov">          0 :         err_data-&gt;ce_count = 0;</span></a>
+<a name="851"><span class="lineNum">     851 </span><span class="lineNoCov">          0 :         if (!amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__XGMI_WAFL))</span></a>
+<a name="852"><span class="lineNum">     852 </span><span class="lineNoCov">          0 :                 return ;</span></a>
 <a name="853"><span class="lineNum">     853 </span>            : </a>
-<a name="854"><span class="lineNum">     854 </span><span class="lineNoCov">          0 :         switch (adev-&gt;asic_type) {</span></a>
-<a name="855"><span class="lineNum">     855 </span>            :         case CHIP_ARCTURUS:</a>
-<a name="856"><span class="lineNum">     856 </span>            :                 /* check xgmi pcs error */</a>
-<a name="857"><span class="lineNum">     857 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(xgmi_pcs_err_status_reg_arct); i++) {</span></a>
-<a name="858"><span class="lineNum">     858 </span><span class="lineNoCov">          0 :                         data = RREG32_PCIE(xgmi_pcs_err_status_reg_arct[i]);</span></a>
-<a name="859"><span class="lineNum">     859 </span><span class="lineNoCov">          0 :                         if (data)</span></a>
-<a name="860"><span class="lineNum">     860 </span><span class="lineNoCov">          0 :                                 amdgpu_xgmi_query_pcs_error_status(adev,</span></a>
-<a name="861"><span class="lineNum">     861 </span>            :                                                 data, &amp;ue_cnt, &amp;ce_cnt, true);</a>
-<a name="862"><span class="lineNum">     862 </span>            :                 }</a>
-<a name="863"><span class="lineNum">     863 </span>            :                 /* check wafl pcs error */</a>
-<a name="864"><span class="lineNum">     864 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(wafl_pcs_err_status_reg_arct); i++) {</span></a>
-<a name="865"><span class="lineNum">     865 </span><span class="lineNoCov">          0 :                         data = RREG32_PCIE(wafl_pcs_err_status_reg_arct[i]);</span></a>
-<a name="866"><span class="lineNum">     866 </span><span class="lineNoCov">          0 :                         if (data)</span></a>
-<a name="867"><span class="lineNum">     867 </span><span class="lineNoCov">          0 :                                 amdgpu_xgmi_query_pcs_error_status(adev,</span></a>
-<a name="868"><span class="lineNum">     868 </span>            :                                                 data, &amp;ue_cnt, &amp;ce_cnt, false);</a>
-<a name="869"><span class="lineNum">     869 </span>            :                 }</a>
-<a name="870"><span class="lineNum">     870 </span>            :                 break;</a>
-<a name="871"><span class="lineNum">     871 </span>            :         case CHIP_VEGA20:</a>
-<a name="872"><span class="lineNum">     872 </span>            :                 /* check xgmi pcs error */</a>
-<a name="873"><span class="lineNum">     873 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(xgmi_pcs_err_status_reg_vg20); i++) {</span></a>
-<a name="874"><span class="lineNum">     874 </span><span class="lineNoCov">          0 :                         data = RREG32_PCIE(xgmi_pcs_err_status_reg_vg20[i]);</span></a>
-<a name="875"><span class="lineNum">     875 </span><span class="lineNoCov">          0 :                         if (data)</span></a>
-<a name="876"><span class="lineNum">     876 </span><span class="lineNoCov">          0 :                                 amdgpu_xgmi_query_pcs_error_status(adev,</span></a>
-<a name="877"><span class="lineNum">     877 </span>            :                                                 data, &amp;ue_cnt, &amp;ce_cnt, true);</a>
-<a name="878"><span class="lineNum">     878 </span>            :                 }</a>
-<a name="879"><span class="lineNum">     879 </span>            :                 /* check wafl pcs error */</a>
-<a name="880"><span class="lineNum">     880 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(wafl_pcs_err_status_reg_vg20); i++) {</span></a>
-<a name="881"><span class="lineNum">     881 </span><span class="lineNoCov">          0 :                         data = RREG32_PCIE(wafl_pcs_err_status_reg_vg20[i]);</span></a>
-<a name="882"><span class="lineNum">     882 </span><span class="lineNoCov">          0 :                         if (data)</span></a>
-<a name="883"><span class="lineNum">     883 </span><span class="lineNoCov">          0 :                                 amdgpu_xgmi_query_pcs_error_status(adev,</span></a>
-<a name="884"><span class="lineNum">     884 </span>            :                                                 data, &amp;ue_cnt, &amp;ce_cnt, false);</a>
-<a name="885"><span class="lineNum">     885 </span>            :                 }</a>
-<a name="886"><span class="lineNum">     886 </span>            :                 break;</a>
-<a name="887"><span class="lineNum">     887 </span>            :         case CHIP_ALDEBARAN:</a>
-<a name="888"><span class="lineNum">     888 </span>            :                 /* check xgmi3x16 pcs error */</a>
-<a name="889"><span class="lineNum">     889 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(xgmi3x16_pcs_err_status_reg_aldebaran); i++) {</span></a>
-<a name="890"><span class="lineNum">     890 </span><span class="lineNoCov">          0 :                         data = RREG32_PCIE(xgmi3x16_pcs_err_status_reg_aldebaran[i]);</span></a>
-<a name="891"><span class="lineNum">     891 </span><span class="lineNoCov">          0 :                         if (data)</span></a>
-<a name="892"><span class="lineNum">     892 </span><span class="lineNoCov">          0 :                                 amdgpu_xgmi_query_pcs_error_status(adev,</span></a>
-<a name="893"><span class="lineNum">     893 </span>            :                                                 data, &amp;ue_cnt, &amp;ce_cnt, true);</a>
-<a name="894"><span class="lineNum">     894 </span>            :                 }</a>
-<a name="895"><span class="lineNum">     895 </span>            :                 /* check wafl pcs error */</a>
-<a name="896"><span class="lineNum">     896 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(walf_pcs_err_status_reg_aldebaran); i++) {</span></a>
-<a name="897"><span class="lineNum">     897 </span><span class="lineNoCov">          0 :                         data = RREG32_PCIE(walf_pcs_err_status_reg_aldebaran[i]);</span></a>
-<a name="898"><span class="lineNum">     898 </span><span class="lineNoCov">          0 :                         if (data)</span></a>
-<a name="899"><span class="lineNum">     899 </span><span class="lineNoCov">          0 :                                 amdgpu_xgmi_query_pcs_error_status(adev,</span></a>
-<a name="900"><span class="lineNum">     900 </span>            :                                                 data, &amp;ue_cnt, &amp;ce_cnt, false);</a>
-<a name="901"><span class="lineNum">     901 </span>            :                 }</a>
-<a name="902"><span class="lineNum">     902 </span>            :                 break;</a>
-<a name="903"><span class="lineNum">     903 </span>            :         default:</a>
-<a name="904"><span class="lineNum">     904 </span><span class="lineNoCov">          0 :                 dev_warn(adev-&gt;dev, &quot;XGMI RAS error query not supported&quot;);</span></a>
-<a name="905"><span class="lineNum">     905 </span><span class="lineNoCov">          0 :                 break;</span></a>
-<a name="906"><span class="lineNum">     906 </span>            :         }</a>
-<a name="907"><span class="lineNum">     907 </span>            : </a>
-<a name="908"><span class="lineNum">     908 </span><span class="lineNoCov">          0 :         adev-&gt;gmc.xgmi.ras-&gt;ras_block.hw_ops-&gt;reset_ras_error_count(adev);</span></a>
-<a name="909"><span class="lineNum">     909 </span>            : </a>
-<a name="910"><span class="lineNum">     910 </span><span class="lineNoCov">          0 :         err_data-&gt;ue_count += ue_cnt;</span></a>
-<a name="911"><span class="lineNum">     911 </span><span class="lineNoCov">          0 :         err_data-&gt;ce_count += ce_cnt;</span></a>
-<a name="912"><span class="lineNum">     912 </span>            : }</a>
-<a name="913"><span class="lineNum">     913 </span>            : </a>
-<a name="914"><span class="lineNum">     914 </span>            : /* Trigger XGMI/WAFL error */</a>
-<a name="915"><span class="lineNum">     915 </span><span class="lineNoCov">          0 : static int amdgpu_ras_error_inject_xgmi(struct amdgpu_device *adev,  void *inject_if)</span></a>
-<a name="916"><span class="lineNum">     916 </span>            : {</a>
-<a name="917"><span class="lineNum">     917 </span><span class="lineNoCov">          0 :         int ret = 0;</span></a>
-<a name="918"><span class="lineNum">     918 </span><span class="lineNoCov">          0 :         struct ta_ras_trigger_error_input *block_info =</span></a>
-<a name="919"><span class="lineNum">     919 </span>            :                                 (struct ta_ras_trigger_error_input *)inject_if;</a>
-<a name="920"><span class="lineNum">     920 </span>            : </a>
-<a name="921"><span class="lineNum">     921 </span><span class="lineNoCov">          0 :         if (amdgpu_dpm_set_df_cstate(adev, DF_CSTATE_DISALLOW))</span></a>
-<a name="922"><span class="lineNum">     922 </span><span class="lineNoCov">          0 :                 dev_warn(adev-&gt;dev, &quot;Failed to disallow df cstate&quot;);</span></a>
+<a name="854"><span class="lineNum">     854 </span><span class="lineNoCov">          0 :         err_data-&gt;ue_count = 0;</span></a>
+<a name="855"><span class="lineNum">     855 </span><span class="lineNoCov">          0 :         err_data-&gt;ce_count = 0;</span></a>
+<a name="856"><span class="lineNum">     856 </span>            : </a>
+<a name="857"><span class="lineNum">     857 </span><span class="lineNoCov">          0 :         switch (adev-&gt;asic_type) {</span></a>
+<a name="858"><span class="lineNum">     858 </span>            :         case CHIP_ARCTURUS:</a>
+<a name="859"><span class="lineNum">     859 </span>            :                 /* check xgmi pcs error */</a>
+<a name="860"><span class="lineNum">     860 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(xgmi_pcs_err_status_reg_arct); i++) {</span></a>
+<a name="861"><span class="lineNum">     861 </span><span class="lineNoCov">          0 :                         data = RREG32_PCIE(xgmi_pcs_err_status_reg_arct[i]);</span></a>
+<a name="862"><span class="lineNum">     862 </span><span class="lineNoCov">          0 :                         if (data)</span></a>
+<a name="863"><span class="lineNum">     863 </span><span class="lineNoCov">          0 :                                 amdgpu_xgmi_query_pcs_error_status(adev,</span></a>
+<a name="864"><span class="lineNum">     864 </span>            :                                                 data, &amp;ue_cnt, &amp;ce_cnt, true);</a>
+<a name="865"><span class="lineNum">     865 </span>            :                 }</a>
+<a name="866"><span class="lineNum">     866 </span>            :                 /* check wafl pcs error */</a>
+<a name="867"><span class="lineNum">     867 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(wafl_pcs_err_status_reg_arct); i++) {</span></a>
+<a name="868"><span class="lineNum">     868 </span><span class="lineNoCov">          0 :                         data = RREG32_PCIE(wafl_pcs_err_status_reg_arct[i]);</span></a>
+<a name="869"><span class="lineNum">     869 </span><span class="lineNoCov">          0 :                         if (data)</span></a>
+<a name="870"><span class="lineNum">     870 </span><span class="lineNoCov">          0 :                                 amdgpu_xgmi_query_pcs_error_status(adev,</span></a>
+<a name="871"><span class="lineNum">     871 </span>            :                                                 data, &amp;ue_cnt, &amp;ce_cnt, false);</a>
+<a name="872"><span class="lineNum">     872 </span>            :                 }</a>
+<a name="873"><span class="lineNum">     873 </span>            :                 break;</a>
+<a name="874"><span class="lineNum">     874 </span>            :         case CHIP_VEGA20:</a>
+<a name="875"><span class="lineNum">     875 </span>            :                 /* check xgmi pcs error */</a>
+<a name="876"><span class="lineNum">     876 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(xgmi_pcs_err_status_reg_vg20); i++) {</span></a>
+<a name="877"><span class="lineNum">     877 </span><span class="lineNoCov">          0 :                         data = RREG32_PCIE(xgmi_pcs_err_status_reg_vg20[i]);</span></a>
+<a name="878"><span class="lineNum">     878 </span><span class="lineNoCov">          0 :                         if (data)</span></a>
+<a name="879"><span class="lineNum">     879 </span><span class="lineNoCov">          0 :                                 amdgpu_xgmi_query_pcs_error_status(adev,</span></a>
+<a name="880"><span class="lineNum">     880 </span>            :                                                 data, &amp;ue_cnt, &amp;ce_cnt, true);</a>
+<a name="881"><span class="lineNum">     881 </span>            :                 }</a>
+<a name="882"><span class="lineNum">     882 </span>            :                 /* check wafl pcs error */</a>
+<a name="883"><span class="lineNum">     883 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(wafl_pcs_err_status_reg_vg20); i++) {</span></a>
+<a name="884"><span class="lineNum">     884 </span><span class="lineNoCov">          0 :                         data = RREG32_PCIE(wafl_pcs_err_status_reg_vg20[i]);</span></a>
+<a name="885"><span class="lineNum">     885 </span><span class="lineNoCov">          0 :                         if (data)</span></a>
+<a name="886"><span class="lineNum">     886 </span><span class="lineNoCov">          0 :                                 amdgpu_xgmi_query_pcs_error_status(adev,</span></a>
+<a name="887"><span class="lineNum">     887 </span>            :                                                 data, &amp;ue_cnt, &amp;ce_cnt, false);</a>
+<a name="888"><span class="lineNum">     888 </span>            :                 }</a>
+<a name="889"><span class="lineNum">     889 </span>            :                 break;</a>
+<a name="890"><span class="lineNum">     890 </span>            :         case CHIP_ALDEBARAN:</a>
+<a name="891"><span class="lineNum">     891 </span>            :                 /* check xgmi3x16 pcs error */</a>
+<a name="892"><span class="lineNum">     892 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(xgmi3x16_pcs_err_status_reg_aldebaran); i++) {</span></a>
+<a name="893"><span class="lineNum">     893 </span><span class="lineNoCov">          0 :                         data = RREG32_PCIE(xgmi3x16_pcs_err_status_reg_aldebaran[i]);</span></a>
+<a name="894"><span class="lineNum">     894 </span><span class="lineNoCov">          0 :                         if (data)</span></a>
+<a name="895"><span class="lineNum">     895 </span><span class="lineNoCov">          0 :                                 amdgpu_xgmi_query_pcs_error_status(adev,</span></a>
+<a name="896"><span class="lineNum">     896 </span>            :                                                 data, &amp;ue_cnt, &amp;ce_cnt, true);</a>
+<a name="897"><span class="lineNum">     897 </span>            :                 }</a>
+<a name="898"><span class="lineNum">     898 </span>            :                 /* check wafl pcs error */</a>
+<a name="899"><span class="lineNum">     899 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(walf_pcs_err_status_reg_aldebaran); i++) {</span></a>
+<a name="900"><span class="lineNum">     900 </span><span class="lineNoCov">          0 :                         data = RREG32_PCIE(walf_pcs_err_status_reg_aldebaran[i]);</span></a>
+<a name="901"><span class="lineNum">     901 </span><span class="lineNoCov">          0 :                         if (data)</span></a>
+<a name="902"><span class="lineNum">     902 </span><span class="lineNoCov">          0 :                                 amdgpu_xgmi_query_pcs_error_status(adev,</span></a>
+<a name="903"><span class="lineNum">     903 </span>            :                                                 data, &amp;ue_cnt, &amp;ce_cnt, false);</a>
+<a name="904"><span class="lineNum">     904 </span>            :                 }</a>
+<a name="905"><span class="lineNum">     905 </span>            :                 break;</a>
+<a name="906"><span class="lineNum">     906 </span>            :         default:</a>
+<a name="907"><span class="lineNum">     907 </span><span class="lineNoCov">          0 :                 dev_warn(adev-&gt;dev, &quot;XGMI RAS error query not supported&quot;);</span></a>
+<a name="908"><span class="lineNum">     908 </span><span class="lineNoCov">          0 :                 break;</span></a>
+<a name="909"><span class="lineNum">     909 </span>            :         }</a>
+<a name="910"><span class="lineNum">     910 </span>            : </a>
+<a name="911"><span class="lineNum">     911 </span><span class="lineNoCov">          0 :         adev-&gt;gmc.xgmi.ras-&gt;ras_block.hw_ops-&gt;reset_ras_error_count(adev);</span></a>
+<a name="912"><span class="lineNum">     912 </span>            : </a>
+<a name="913"><span class="lineNum">     913 </span><span class="lineNoCov">          0 :         err_data-&gt;ue_count += ue_cnt;</span></a>
+<a name="914"><span class="lineNum">     914 </span><span class="lineNoCov">          0 :         err_data-&gt;ce_count += ce_cnt;</span></a>
+<a name="915"><span class="lineNum">     915 </span>            : }</a>
+<a name="916"><span class="lineNum">     916 </span>            : </a>
+<a name="917"><span class="lineNum">     917 </span>            : /* Trigger XGMI/WAFL error */</a>
+<a name="918"><span class="lineNum">     918 </span><span class="lineNoCov">          0 : static int amdgpu_ras_error_inject_xgmi(struct amdgpu_device *adev,  void *inject_if)</span></a>
+<a name="919"><span class="lineNum">     919 </span>            : {</a>
+<a name="920"><span class="lineNum">     920 </span><span class="lineNoCov">          0 :         int ret = 0;</span></a>
+<a name="921"><span class="lineNum">     921 </span><span class="lineNoCov">          0 :         struct ta_ras_trigger_error_input *block_info =</span></a>
+<a name="922"><span class="lineNum">     922 </span>            :                                 (struct ta_ras_trigger_error_input *)inject_if;</a>
 <a name="923"><span class="lineNum">     923 </span>            : </a>
-<a name="924"><span class="lineNum">     924 </span><span class="lineNoCov">          0 :         if (amdgpu_dpm_allow_xgmi_power_down(adev, false))</span></a>
-<a name="925"><span class="lineNum">     925 </span><span class="lineNoCov">          0 :                 dev_warn(adev-&gt;dev, &quot;Failed to disallow XGMI power down&quot;);</span></a>
+<a name="924"><span class="lineNum">     924 </span><span class="lineNoCov">          0 :         if (amdgpu_dpm_set_df_cstate(adev, DF_CSTATE_DISALLOW))</span></a>
+<a name="925"><span class="lineNum">     925 </span><span class="lineNoCov">          0 :                 dev_warn(adev-&gt;dev, &quot;Failed to disallow df cstate&quot;);</span></a>
 <a name="926"><span class="lineNum">     926 </span>            : </a>
-<a name="927"><span class="lineNum">     927 </span><span class="lineNoCov">          0 :         ret = psp_ras_trigger_error(&amp;adev-&gt;psp, block_info);</span></a>
-<a name="928"><span class="lineNum">     928 </span>            : </a>
-<a name="929"><span class="lineNum">     929 </span><span class="lineNoCov">          0 :         if (amdgpu_ras_intr_triggered())</span></a>
-<a name="930"><span class="lineNum">     930 </span>            :                 return ret;</a>
+<a name="927"><span class="lineNum">     927 </span><span class="lineNoCov">          0 :         if (amdgpu_dpm_allow_xgmi_power_down(adev, false))</span></a>
+<a name="928"><span class="lineNum">     928 </span><span class="lineNoCov">          0 :                 dev_warn(adev-&gt;dev, &quot;Failed to disallow XGMI power down&quot;);</span></a>
+<a name="929"><span class="lineNum">     929 </span>            : </a>
+<a name="930"><span class="lineNum">     930 </span><span class="lineNoCov">          0 :         ret = psp_ras_trigger_error(&amp;adev-&gt;psp, block_info);</span></a>
 <a name="931"><span class="lineNum">     931 </span>            : </a>
-<a name="932"><span class="lineNum">     932 </span><span class="lineNoCov">          0 :         if (amdgpu_dpm_allow_xgmi_power_down(adev, true))</span></a>
-<a name="933"><span class="lineNum">     933 </span><span class="lineNoCov">          0 :                 dev_warn(adev-&gt;dev, &quot;Failed to allow XGMI power down&quot;);</span></a>
+<a name="932"><span class="lineNum">     932 </span><span class="lineNoCov">          0 :         if (amdgpu_ras_intr_triggered())</span></a>
+<a name="933"><span class="lineNum">     933 </span>            :                 return ret;</a>
 <a name="934"><span class="lineNum">     934 </span>            : </a>
-<a name="935"><span class="lineNum">     935 </span><span class="lineNoCov">          0 :         if (amdgpu_dpm_set_df_cstate(adev, DF_CSTATE_ALLOW))</span></a>
-<a name="936"><span class="lineNum">     936 </span><span class="lineNoCov">          0 :                 dev_warn(adev-&gt;dev, &quot;Failed to allow df cstate&quot;);</span></a>
+<a name="935"><span class="lineNum">     935 </span><span class="lineNoCov">          0 :         if (amdgpu_dpm_allow_xgmi_power_down(adev, true))</span></a>
+<a name="936"><span class="lineNum">     936 </span><span class="lineNoCov">          0 :                 dev_warn(adev-&gt;dev, &quot;Failed to allow XGMI power down&quot;);</span></a>
 <a name="937"><span class="lineNum">     937 </span>            : </a>
-<a name="938"><span class="lineNum">     938 </span>            :         return ret;</a>
-<a name="939"><span class="lineNum">     939 </span>            : }</a>
+<a name="938"><span class="lineNum">     938 </span><span class="lineNoCov">          0 :         if (amdgpu_dpm_set_df_cstate(adev, DF_CSTATE_ALLOW))</span></a>
+<a name="939"><span class="lineNum">     939 </span><span class="lineNoCov">          0 :                 dev_warn(adev-&gt;dev, &quot;Failed to allow df cstate&quot;);</span></a>
 <a name="940"><span class="lineNum">     940 </span>            : </a>
-<a name="941"><span class="lineNum">     941 </span>            : struct amdgpu_ras_block_hw_ops  xgmi_ras_hw_ops = {</a>
-<a name="942"><span class="lineNum">     942 </span>            :         .query_ras_error_count = amdgpu_xgmi_query_ras_error_count,</a>
-<a name="943"><span class="lineNum">     943 </span>            :         .reset_ras_error_count = amdgpu_xgmi_reset_ras_error_count,</a>
-<a name="944"><span class="lineNum">     944 </span>            :         .ras_error_inject = amdgpu_ras_error_inject_xgmi,</a>
-<a name="945"><span class="lineNum">     945 </span>            : };</a>
-<a name="946"><span class="lineNum">     946 </span>            : </a>
-<a name="947"><span class="lineNum">     947 </span>            : struct amdgpu_xgmi_ras xgmi_ras = {</a>
-<a name="948"><span class="lineNum">     948 </span>            :         .ras_block = {</a>
-<a name="949"><span class="lineNum">     949 </span>            :                 .ras_comm = {</a>
-<a name="950"><span class="lineNum">     950 </span>            :                         .name = &quot;xgmi_wafl&quot;,</a>
-<a name="951"><span class="lineNum">     951 </span>            :                         .block = AMDGPU_RAS_BLOCK__XGMI_WAFL,</a>
-<a name="952"><span class="lineNum">     952 </span>            :                         .type = AMDGPU_RAS_ERROR__MULTI_UNCORRECTABLE,</a>
-<a name="953"><span class="lineNum">     953 </span>            :                 },</a>
-<a name="954"><span class="lineNum">     954 </span>            :                 .hw_ops = &amp;xgmi_ras_hw_ops,</a>
-<a name="955"><span class="lineNum">     955 </span>            :                 .ras_late_init = amdgpu_xgmi_ras_late_init,</a>
-<a name="956"><span class="lineNum">     956 </span>            :         },</a>
-<a name="957"><span class="lineNum">     957 </span>            : };</a>
+<a name="941"><span class="lineNum">     941 </span>            :         return ret;</a>
+<a name="942"><span class="lineNum">     942 </span>            : }</a>
+<a name="943"><span class="lineNum">     943 </span>            : </a>
+<a name="944"><span class="lineNum">     944 </span>            : struct amdgpu_ras_block_hw_ops  xgmi_ras_hw_ops = {</a>
+<a name="945"><span class="lineNum">     945 </span>            :         .query_ras_error_count = amdgpu_xgmi_query_ras_error_count,</a>
+<a name="946"><span class="lineNum">     946 </span>            :         .reset_ras_error_count = amdgpu_xgmi_reset_ras_error_count,</a>
+<a name="947"><span class="lineNum">     947 </span>            :         .ras_error_inject = amdgpu_ras_error_inject_xgmi,</a>
+<a name="948"><span class="lineNum">     948 </span>            : };</a>
+<a name="949"><span class="lineNum">     949 </span>            : </a>
+<a name="950"><span class="lineNum">     950 </span>            : struct amdgpu_xgmi_ras xgmi_ras = {</a>
+<a name="951"><span class="lineNum">     951 </span>            :         .ras_block = {</a>
+<a name="952"><span class="lineNum">     952 </span>            :                 .ras_comm = {</a>
+<a name="953"><span class="lineNum">     953 </span>            :                         .name = &quot;xgmi_wafl&quot;,</a>
+<a name="954"><span class="lineNum">     954 </span>            :                         .block = AMDGPU_RAS_BLOCK__XGMI_WAFL,</a>
+<a name="955"><span class="lineNum">     955 </span>            :                         .type = AMDGPU_RAS_ERROR__MULTI_UNCORRECTABLE,</a>
+<a name="956"><span class="lineNum">     956 </span>            :                 },</a>
+<a name="957"><span class="lineNum">     957 </span>            :                 .hw_ops = &amp;xgmi_ras_hw_ops,</a>
+<a name="958"><span class="lineNum">     958 </span>            :                 .ras_late_init = amdgpu_xgmi_ras_late_init,</a>
+<a name="959"><span class="lineNum">     959 </span>            :         },</a>
+<a name="960"><span class="lineNum">     960 </span>            : };</a>
 </pre>
       </td>
     </tr>

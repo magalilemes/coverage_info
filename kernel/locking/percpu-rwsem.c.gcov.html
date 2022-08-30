@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -72,22 +72,22 @@
 <a name="10"><span class="lineNum">      10 </span>            : #include &lt;linux/sched/debug.h&gt;</a>
 <a name="11"><span class="lineNum">      11 </span>            : #include &lt;linux/errno.h&gt;</a>
 <a name="12"><span class="lineNum">      12 </span>            : </a>
-<a name="13"><span class="lineNum">      13 </span><span class="lineCov">         60 : int __percpu_init_rwsem(struct percpu_rw_semaphore *sem,</span></a>
+<a name="13"><span class="lineNum">      13 </span><span class="lineCov">         30 : int __percpu_init_rwsem(struct percpu_rw_semaphore *sem,</span></a>
 <a name="14"><span class="lineNum">      14 </span>            :                         const char *name, struct lock_class_key *key)</a>
 <a name="15"><span class="lineNum">      15 </span>            : {</a>
-<a name="16"><span class="lineNum">      16 </span><span class="lineCov">         60 :         sem-&gt;read_count = alloc_percpu(int);</span></a>
-<a name="17"><span class="lineNum">      17 </span><span class="lineCov">         60 :         if (unlikely(!sem-&gt;read_count))</span></a>
+<a name="16"><span class="lineNum">      16 </span><span class="lineCov">         30 :         sem-&gt;read_count = alloc_percpu(int);</span></a>
+<a name="17"><span class="lineNum">      17 </span><span class="lineCov">         30 :         if (unlikely(!sem-&gt;read_count))</span></a>
 <a name="18"><span class="lineNum">      18 </span>            :                 return -ENOMEM;</a>
 <a name="19"><span class="lineNum">      19 </span>            : </a>
-<a name="20"><span class="lineNum">      20 </span><span class="lineCov">         60 :         rcu_sync_init(&amp;sem-&gt;rss);</span></a>
-<a name="21"><span class="lineNum">      21 </span><span class="lineCov">        120 :         rcuwait_init(&amp;sem-&gt;writer);</span></a>
-<a name="22"><span class="lineNum">      22 </span><span class="lineCov">         60 :         init_waitqueue_head(&amp;sem-&gt;waiters);</span></a>
-<a name="23"><span class="lineNum">      23 </span><span class="lineCov">        120 :         atomic_set(&amp;sem-&gt;block, 0);</span></a>
+<a name="20"><span class="lineNum">      20 </span><span class="lineCov">         30 :         rcu_sync_init(&amp;sem-&gt;rss);</span></a>
+<a name="21"><span class="lineNum">      21 </span><span class="lineCov">         60 :         rcuwait_init(&amp;sem-&gt;writer);</span></a>
+<a name="22"><span class="lineNum">      22 </span><span class="lineCov">         30 :         init_waitqueue_head(&amp;sem-&gt;waiters);</span></a>
+<a name="23"><span class="lineNum">      23 </span><span class="lineCov">         60 :         atomic_set(&amp;sem-&gt;block, 0);</span></a>
 <a name="24"><span class="lineNum">      24 </span>            : #ifdef CONFIG_DEBUG_LOCK_ALLOC</a>
 <a name="25"><span class="lineNum">      25 </span>            :         debug_check_no_locks_freed((void *)sem, sizeof(*sem));</a>
 <a name="26"><span class="lineNum">      26 </span>            :         lockdep_init_map(&amp;sem-&gt;dep_map, name, key, 0);</a>
 <a name="27"><span class="lineNum">      27 </span>            : #endif</a>
-<a name="28"><span class="lineNum">      28 </span><span class="lineCov">         60 :         return 0;</span></a>
+<a name="28"><span class="lineNum">      28 </span><span class="lineCov">         30 :         return 0;</span></a>
 <a name="29"><span class="lineNum">      29 </span>            : }</a>
 <a name="30"><span class="lineNum">      30 </span>            : EXPORT_SYMBOL_GPL(__percpu_init_rwsem);</a>
 <a name="31"><span class="lineNum">      31 </span>            : </a>

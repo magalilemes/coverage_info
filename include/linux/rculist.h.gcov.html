@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -138,13 +138,13 @@
 <a name="76"><span class="lineNum">      76 </span>            : static inline void __list_add_rcu(struct list_head *new,</a>
 <a name="77"><span class="lineNum">      77 </span>            :                 struct list_head *prev, struct list_head *next)</a>
 <a name="78"><span class="lineNum">      78 </span>            : {</a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        206 :         if (!__list_add_valid(new, prev, next))</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">        132 :         if (!__list_add_valid(new, prev, next))</span></a>
 <a name="80"><span class="lineNum">      80 </span>            :                 return;</a>
 <a name="81"><span class="lineNum">      81 </span>            : </a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        206 :         new-&gt;next = next;</span></a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineCov">        206 :         new-&gt;prev = prev;</span></a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineCov">        206 :         rcu_assign_pointer(list_next_rcu(prev), new);</span></a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        206 :         next-&gt;prev = new;</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">        132 :         new-&gt;next = next;</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">        132 :         new-&gt;prev = prev;</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">        132 :         rcu_assign_pointer(list_next_rcu(prev), new);</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">        132 :         next-&gt;prev = new;</span></a>
 <a name="86"><span class="lineNum">      86 </span>            : }</a>
 <a name="87"><span class="lineNum">      87 </span>            : </a>
 <a name="88"><span class="lineNum">      88 </span>            : /**</a>
@@ -165,7 +165,7 @@
 <a name="103"><span class="lineNum">     103 </span>            :  */</a>
 <a name="104"><span class="lineNum">     104 </span>            : static inline void list_add_rcu(struct list_head *new, struct list_head *head)</a>
 <a name="105"><span class="lineNum">     105 </span>            : {</a>
-<a name="106"><span class="lineNum">     106 </span><span class="lineCov">         48 :         __list_add_rcu(new, head, head-&gt;next);</span></a>
+<a name="106"><span class="lineNum">     106 </span><span class="lineCov">         24 :         __list_add_rcu(new, head, head-&gt;next);</span></a>
 <a name="107"><span class="lineNum">     107 </span>            : }</a>
 <a name="108"><span class="lineNum">     108 </span>            : </a>
 <a name="109"><span class="lineNum">     109 </span>            : /**</a>
@@ -187,7 +187,7 @@
 <a name="125"><span class="lineNum">     125 </span>            : static inline void list_add_tail_rcu(struct list_head *new,</a>
 <a name="126"><span class="lineNum">     126 </span>            :                                         struct list_head *head)</a>
 <a name="127"><span class="lineNum">     127 </span>            : {</a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineCov">        364 :         __list_add_rcu(new, head-&gt;prev, head);</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">        240 :         __list_add_rcu(new, head-&gt;prev, head);</span></a>
 <a name="129"><span class="lineNum">     129 </span>            : }</a>
 <a name="130"><span class="lineNum">     130 </span>            : </a>
 <a name="131"><span class="lineNum">     131 </span>            : /**</a>
@@ -216,8 +216,8 @@
 <a name="154"><span class="lineNum">     154 </span>            :  */</a>
 <a name="155"><span class="lineNum">     155 </span>            : static inline void list_del_rcu(struct list_head *entry)</a>
 <a name="156"><span class="lineNum">     156 </span>            : {</a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">        384 :         __list_del_entry(entry);</span></a>
-<a name="158"><span class="lineNum">     158 </span><span class="lineCov">        384 :         entry-&gt;prev = LIST_POISON2;</span></a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">        279 :         __list_del_entry(entry);</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">        279 :         entry-&gt;prev = LIST_POISON2;</span></a>
 <a name="159"><span class="lineNum">     159 </span>            : }</a>
 <a name="160"><span class="lineNum">     160 </span>            : </a>
 <a name="161"><span class="lineNum">     161 </span>            : /**</a>
@@ -572,8 +572,8 @@
 <a name="510"><span class="lineNum">     510 </span>            :  */</a>
 <a name="511"><span class="lineNum">     511 </span>            : static inline void hlist_del_rcu(struct hlist_node *n)</a>
 <a name="512"><span class="lineNum">     512 </span>            : {</a>
-<a name="513"><span class="lineNum">     513 </span><span class="lineCov">        512 :         __hlist_del(n);</span></a>
-<a name="514"><span class="lineNum">     514 </span><span class="lineCov">        512 :         WRITE_ONCE(n-&gt;pprev, LIST_POISON2);</span></a>
+<a name="513"><span class="lineNum">     513 </span><span class="lineCov">        372 :         __hlist_del(n);</span></a>
+<a name="514"><span class="lineNum">     514 </span><span class="lineCov">        372 :         WRITE_ONCE(n-&gt;pprev, LIST_POISON2);</span></a>
 <a name="515"><span class="lineNum">     515 </span>            : }</a>
 <a name="516"><span class="lineNum">     516 </span>            : </a>
 <a name="517"><span class="lineNum">     517 </span>            : /**</a>
@@ -646,13 +646,13 @@
 <a name="584"><span class="lineNum">     584 </span>            : static inline void hlist_add_head_rcu(struct hlist_node *n,</a>
 <a name="585"><span class="lineNum">     585 </span>            :                                         struct hlist_head *h)</a>
 <a name="586"><span class="lineNum">     586 </span>            : {</a>
-<a name="587"><span class="lineNum">     587 </span><span class="lineCov">        624 :         struct hlist_node *first = h-&gt;first;</span></a>
+<a name="587"><span class="lineNum">     587 </span><span class="lineCov">        428 :         struct hlist_node *first = h-&gt;first;</span></a>
 <a name="588"><span class="lineNum">     588 </span>            : </a>
-<a name="589"><span class="lineNum">     589 </span><span class="lineCov">        624 :         n-&gt;next = first;</span></a>
-<a name="590"><span class="lineNum">     590 </span><span class="lineCov">        624 :         WRITE_ONCE(n-&gt;pprev, &amp;h-&gt;first);</span></a>
-<a name="591"><span class="lineNum">     591 </span><span class="lineCov">        624 :         rcu_assign_pointer(hlist_first_rcu(h), n);</span></a>
-<a name="592"><span class="lineNum">     592 </span><span class="lineCov">        624 :         if (first)</span></a>
-<a name="593"><span class="lineNum">     593 </span><span class="lineCov">        308 :                 WRITE_ONCE(first-&gt;pprev, &amp;n-&gt;next);</span></a>
+<a name="589"><span class="lineNum">     589 </span><span class="lineCov">        428 :         n-&gt;next = first;</span></a>
+<a name="590"><span class="lineNum">     590 </span><span class="lineCov">        428 :         WRITE_ONCE(n-&gt;pprev, &amp;h-&gt;first);</span></a>
+<a name="591"><span class="lineNum">     591 </span><span class="lineCov">        428 :         rcu_assign_pointer(hlist_first_rcu(h), n);</span></a>
+<a name="592"><span class="lineNum">     592 </span><span class="lineCov">        428 :         if (first)</span></a>
+<a name="593"><span class="lineNum">     593 </span><span class="lineCov">        212 :                 WRITE_ONCE(first-&gt;pprev, &amp;n-&gt;next);</span></a>
 <a name="594"><span class="lineNum">     594 </span>            : }</a>
 <a name="595"><span class="lineNum">     595 </span>            : </a>
 <a name="596"><span class="lineNum">     596 </span>            : /**</a>

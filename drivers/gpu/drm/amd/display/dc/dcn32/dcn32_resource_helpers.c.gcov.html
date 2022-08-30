@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -125,7 +125,7 @@
 <a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :                 if (pipe-&gt;stream &amp;&amp; pipe-&gt;plane_state &amp;&amp; !pipe-&gt;top_pipe &amp;&amp;</span></a>
 <a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 :                                 pipe-&gt;stream-&gt;mall_stream_config.type == SUBVP_PHANTOM) {</span></a>
 <a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :                         bytes_per_pixel = pipe-&gt;plane_state-&gt;format &gt;= SURFACE_PIXEL_FORMAT_GRPH_ARGB16161616 ? 8 : 4;</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 :                         mall_region_pixels = pipe-&gt;stream-&gt;timing.h_addressable * pipe-&gt;stream-&gt;timing.v_addressable;</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 :                         mall_region_pixels = pipe-&gt;plane_state-&gt;plane_size.surface_pitch * pipe-&gt;stream-&gt;timing.v_addressable;</span></a>
 <a name="67"><span class="lineNum">      67 </span>            : </a>
 <a name="68"><span class="lineNum">      68 </span>            :                         // For bytes required in MALL, calculate based on number of MBlks required</a>
 <a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :                         num_mblks = (mall_region_pixels * bytes_per_pixel +</span></a>

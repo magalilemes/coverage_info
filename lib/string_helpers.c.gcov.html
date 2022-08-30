@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -843,17 +843,17 @@
 <a name="781"><span class="lineNum">     781 </span>            :  * * The number of characters copied (not including the trailing %NUL)</a>
 <a name="782"><span class="lineNum">     782 </span>            :  * * -E2BIG if count is 0 or @src was truncated.</a>
 <a name="783"><span class="lineNum">     783 </span>            :  */</a>
-<a name="784"><span class="lineNum">     784 </span><span class="lineCov">        154 : ssize_t strscpy_pad(char *dest, const char *src, size_t count)</span></a>
+<a name="784"><span class="lineNum">     784 </span><span class="lineCov">        106 : ssize_t strscpy_pad(char *dest, const char *src, size_t count)</span></a>
 <a name="785"><span class="lineNum">     785 </span>            : {</a>
 <a name="786"><span class="lineNum">     786 </span>            :         ssize_t written;</a>
 <a name="787"><span class="lineNum">     787 </span>            : </a>
-<a name="788"><span class="lineNum">     788 </span><span class="lineCov">        154 :         written = strscpy(dest, src, count);</span></a>
-<a name="789"><span class="lineNum">     789 </span><span class="lineCov">        154 :         if (written &lt; 0 || written == count - 1)</span></a>
+<a name="788"><span class="lineNum">     788 </span><span class="lineCov">        106 :         written = strscpy(dest, src, count);</span></a>
+<a name="789"><span class="lineNum">     789 </span><span class="lineCov">        106 :         if (written &lt; 0 || written == count - 1)</span></a>
 <a name="790"><span class="lineNum">     790 </span>            :                 return written;</a>
 <a name="791"><span class="lineNum">     791 </span>            : </a>
-<a name="792"><span class="lineNum">     792 </span><span class="lineCov">         26 :         memset(dest + written + 1, 0, count - written - 1);</span></a>
+<a name="792"><span class="lineNum">     792 </span><span class="lineCov">         13 :         memset(dest + written + 1, 0, count - written - 1);</span></a>
 <a name="793"><span class="lineNum">     793 </span>            : </a>
-<a name="794"><span class="lineNum">     794 </span><span class="lineCov">         26 :         return written;</span></a>
+<a name="794"><span class="lineNum">     794 </span><span class="lineCov">         13 :         return written;</span></a>
 <a name="795"><span class="lineNum">     795 </span>            : }</a>
 <a name="796"><span class="lineNum">     796 </span>            : EXPORT_SYMBOL(strscpy_pad);</a>
 <a name="797"><span class="lineNum">     797 </span>            : </a>
@@ -863,11 +863,11 @@
 <a name="801"><span class="lineNum">     801 </span>            :  *</a>
 <a name="802"><span class="lineNum">     802 </span>            :  * Returns a pointer to the first non-whitespace character in @str.</a>
 <a name="803"><span class="lineNum">     803 </span>            :  */</a>
-<a name="804"><span class="lineNum">     804 </span><span class="lineCov">        100 : char *skip_spaces(const char *str)</span></a>
+<a name="804"><span class="lineNum">     804 </span><span class="lineCov">         50 : char *skip_spaces(const char *str)</span></a>
 <a name="805"><span class="lineNum">     805 </span>            : {</a>
-<a name="806"><span class="lineNum">     806 </span><span class="lineCov">        200 :         while (isspace(*str))</span></a>
+<a name="806"><span class="lineNum">     806 </span><span class="lineCov">        100 :         while (isspace(*str))</span></a>
 <a name="807"><span class="lineNum">     807 </span><span class="lineNoCov">          0 :                 ++str;</span></a>
-<a name="808"><span class="lineNum">     808 </span><span class="lineCov">        100 :         return (char *)str;</span></a>
+<a name="808"><span class="lineNum">     808 </span><span class="lineCov">         50 :         return (char *)str;</span></a>
 <a name="809"><span class="lineNum">     809 </span>            : }</a>
 <a name="810"><span class="lineNum">     810 </span>            : EXPORT_SYMBOL(skip_spaces);</a>
 <a name="811"><span class="lineNum">     811 </span>            : </a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -545,9 +545,9 @@
 <a name="483"><span class="lineNum">     483 </span><span class="lineNoCov">          0 :         misc_deregister(&amp;rng_miscdev);</span></a>
 <a name="484"><span class="lineNum">     484 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="485"><span class="lineNum">     485 </span>            : </a>
-<a name="486"><span class="lineNum">     486 </span><span class="lineCov">          2 : static int __init register_miscdev(void)</span></a>
+<a name="486"><span class="lineNum">     486 </span><span class="lineCov">          1 : static int __init register_miscdev(void)</span></a>
 <a name="487"><span class="lineNum">     487 </span>            : {</a>
-<a name="488"><span class="lineNum">     488 </span><span class="lineCov">          2 :         return misc_register(&amp;rng_miscdev);</span></a>
+<a name="488"><span class="lineNum">     488 </span><span class="lineCov">          1 :         return misc_register(&amp;rng_miscdev);</span></a>
 <a name="489"><span class="lineNum">     489 </span>            : }</a>
 <a name="490"><span class="lineNum">     490 </span>            : </a>
 <a name="491"><span class="lineNum">     491 </span><span class="lineNoCov">          0 : static int hwrng_fillfn(void *unused)</span></a>
@@ -747,23 +747,23 @@
 <a name="685"><span class="lineNum">     685 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="686"><span class="lineNum">     686 </span>            : EXPORT_SYMBOL_GPL(devm_hwrng_unregister);</a>
 <a name="687"><span class="lineNum">     687 </span>            : </a>
-<a name="688"><span class="lineNum">     688 </span><span class="lineCov">          2 : static int __init hwrng_modinit(void)</span></a>
+<a name="688"><span class="lineNum">     688 </span><span class="lineCov">          1 : static int __init hwrng_modinit(void)</span></a>
 <a name="689"><span class="lineNum">     689 </span>            : {</a>
 <a name="690"><span class="lineNum">     690 </span>            :         int ret;</a>
 <a name="691"><span class="lineNum">     691 </span>            : </a>
 <a name="692"><span class="lineNum">     692 </span>            :         /* kmalloc makes this safe for virt_to_page() in virtio_rng.c */</a>
-<a name="693"><span class="lineNum">     693 </span><span class="lineCov">          4 :         rng_buffer = kmalloc(rng_buffer_size(), GFP_KERNEL);</span></a>
-<a name="694"><span class="lineNum">     694 </span><span class="lineCov">          2 :         if (!rng_buffer)</span></a>
+<a name="693"><span class="lineNum">     693 </span><span class="lineCov">          2 :         rng_buffer = kmalloc(rng_buffer_size(), GFP_KERNEL);</span></a>
+<a name="694"><span class="lineNum">     694 </span><span class="lineCov">          1 :         if (!rng_buffer)</span></a>
 <a name="695"><span class="lineNum">     695 </span>            :                 return -ENOMEM;</a>
 <a name="696"><span class="lineNum">     696 </span>            : </a>
-<a name="697"><span class="lineNum">     697 </span><span class="lineCov">          4 :         rng_fillbuf = kmalloc(rng_buffer_size(), GFP_KERNEL);</span></a>
-<a name="698"><span class="lineNum">     698 </span><span class="lineCov">          2 :         if (!rng_fillbuf) {</span></a>
+<a name="697"><span class="lineNum">     697 </span><span class="lineCov">          2 :         rng_fillbuf = kmalloc(rng_buffer_size(), GFP_KERNEL);</span></a>
+<a name="698"><span class="lineNum">     698 </span><span class="lineCov">          1 :         if (!rng_fillbuf) {</span></a>
 <a name="699"><span class="lineNum">     699 </span><span class="lineNoCov">          0 :                 kfree(rng_buffer);</span></a>
 <a name="700"><span class="lineNum">     700 </span><span class="lineNoCov">          0 :                 return -ENOMEM;</span></a>
 <a name="701"><span class="lineNum">     701 </span>            :         }</a>
 <a name="702"><span class="lineNum">     702 </span>            : </a>
-<a name="703"><span class="lineNum">     703 </span><span class="lineCov">          2 :         ret = register_miscdev();</span></a>
-<a name="704"><span class="lineNum">     704 </span><span class="lineCov">          2 :         if (ret) {</span></a>
+<a name="703"><span class="lineNum">     703 </span><span class="lineCov">          1 :         ret = register_miscdev();</span></a>
+<a name="704"><span class="lineNum">     704 </span><span class="lineCov">          1 :         if (ret) {</span></a>
 <a name="705"><span class="lineNum">     705 </span><span class="lineNoCov">          0 :                 kfree(rng_fillbuf);</span></a>
 <a name="706"><span class="lineNum">     706 </span><span class="lineNoCov">          0 :                 kfree(rng_buffer);</span></a>
 <a name="707"><span class="lineNum">     707 </span>            :         }</a>

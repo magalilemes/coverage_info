@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -362,9 +362,9 @@
 <a name="300"><span class="lineNum">     300 </span><span class="lineNoCov">          0 :         cache_leaves(cpu) = 0;</span></a>
 <a name="301"><span class="lineNum">     301 </span>            : }</a>
 <a name="302"><span class="lineNum">     302 </span>            : </a>
-<a name="303"><span class="lineNum">     303 </span><span class="lineCov">          2 : int __weak init_cache_level(unsigned int cpu)</span></a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineCov">          1 : int __weak init_cache_level(unsigned int cpu)</span></a>
 <a name="304"><span class="lineNum">     304 </span>            : {</a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          2 :         return -ENOENT;</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          1 :         return -ENOENT;</span></a>
 <a name="306"><span class="lineNum">     306 </span>            : }</a>
 <a name="307"><span class="lineNum">     307 </span>            : </a>
 <a name="308"><span class="lineNum">     308 </span><span class="lineNoCov">          0 : int __weak populate_cache_leaves(unsigned int cpu)</span></a>
@@ -372,11 +372,11 @@
 <a name="310"><span class="lineNum">     310 </span><span class="lineNoCov">          0 :         return -ENOENT;</span></a>
 <a name="311"><span class="lineNum">     311 </span>            : }</a>
 <a name="312"><span class="lineNum">     312 </span>            : </a>
-<a name="313"><span class="lineNum">     313 </span><span class="lineCov">          2 : static int detect_cache_attributes(unsigned int cpu)</span></a>
+<a name="313"><span class="lineNum">     313 </span><span class="lineCov">          1 : static int detect_cache_attributes(unsigned int cpu)</span></a>
 <a name="314"><span class="lineNum">     314 </span>            : {</a>
 <a name="315"><span class="lineNum">     315 </span>            :         int ret;</a>
 <a name="316"><span class="lineNum">     316 </span>            : </a>
-<a name="317"><span class="lineNum">     317 </span><span class="lineCov">          2 :         if (init_cache_level(cpu) || !cache_leaves(cpu))</span></a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineCov">          1 :         if (init_cache_level(cpu) || !cache_leaves(cpu))</span></a>
 <a name="318"><span class="lineNum">     318 </span>            :                 return -ENOENT;</a>
 <a name="319"><span class="lineNum">     319 </span>            : </a>
 <a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 :         per_cpu_cacheinfo(cpu) = kcalloc(cache_leaves(cpu),</span></a>
@@ -707,11 +707,11 @@
 <a name="645"><span class="lineNum">     645 </span><span class="lineNoCov">          0 :         return rc;</span></a>
 <a name="646"><span class="lineNum">     646 </span>            : }</a>
 <a name="647"><span class="lineNum">     647 </span>            : </a>
-<a name="648"><span class="lineNum">     648 </span><span class="lineCov">          2 : static int cacheinfo_cpu_online(unsigned int cpu)</span></a>
+<a name="648"><span class="lineNum">     648 </span><span class="lineCov">          1 : static int cacheinfo_cpu_online(unsigned int cpu)</span></a>
 <a name="649"><span class="lineNum">     649 </span>            : {</a>
-<a name="650"><span class="lineNum">     650 </span><span class="lineCov">          2 :         int rc = detect_cache_attributes(cpu);</span></a>
+<a name="650"><span class="lineNum">     650 </span><span class="lineCov">          1 :         int rc = detect_cache_attributes(cpu);</span></a>
 <a name="651"><span class="lineNum">     651 </span>            : </a>
-<a name="652"><span class="lineNum">     652 </span><span class="lineCov">          2 :         if (rc)</span></a>
+<a name="652"><span class="lineNum">     652 </span><span class="lineCov">          1 :         if (rc)</span></a>
 <a name="653"><span class="lineNum">     653 </span>            :                 return rc;</a>
 <a name="654"><span class="lineNum">     654 </span><span class="lineNoCov">          0 :         rc = cache_add_dev(cpu);</span></a>
 <a name="655"><span class="lineNum">     655 </span><span class="lineNoCov">          0 :         if (rc)</span></a>
@@ -728,9 +728,9 @@
 <a name="666"><span class="lineNum">     666 </span><span class="lineNoCov">          0 :         return 0;</span></a>
 <a name="667"><span class="lineNum">     667 </span>            : }</a>
 <a name="668"><span class="lineNum">     668 </span>            : </a>
-<a name="669"><span class="lineNum">     669 </span><span class="lineCov">          2 : static int __init cacheinfo_sysfs_init(void)</span></a>
+<a name="669"><span class="lineNum">     669 </span><span class="lineCov">          1 : static int __init cacheinfo_sysfs_init(void)</span></a>
 <a name="670"><span class="lineNum">     670 </span>            : {</a>
-<a name="671"><span class="lineNum">     671 </span><span class="lineCov">          2 :         return cpuhp_setup_state(CPUHP_AP_BASE_CACHEINFO_ONLINE,</span></a>
+<a name="671"><span class="lineNum">     671 </span><span class="lineCov">          1 :         return cpuhp_setup_state(CPUHP_AP_BASE_CACHEINFO_ONLINE,</span></a>
 <a name="672"><span class="lineNum">     672 </span>            :                                  &quot;base/cacheinfo:online&quot;,</a>
 <a name="673"><span class="lineNum">     673 </span>            :                                  cacheinfo_cpu_online, cacheinfo_cpu_pre_down);</a>
 <a name="674"><span class="lineNum">     674 </span>            : }</a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -205,7 +205,7 @@
 <a name="143"><span class="lineNum">     143 </span>            : {</a>
 <a name="144"><span class="lineNum">     144 </span>            :         VM_BUG_ON_PAGE(PageTail(page), page);</a>
 <a name="145"><span class="lineNum">     145 </span>            :         VM_BUG_ON_PAGE(page_ref_count(page), page);</a>
-<a name="146"><span class="lineNum">     146 </span><span class="lineCov">       1069 :         set_page_count(page, 1);</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineCov">        543 :         set_page_count(page, 1);</span></a>
 <a name="147"><span class="lineNum">     147 </span>            : }</a>
 <a name="148"><span class="lineNum">     148 </span>            : </a>
 <a name="149"><span class="lineNum">     149 </span>            : extern unsigned long highest_memmap_pfn;</a>
@@ -293,7 +293,7 @@
 <a name="231"><span class="lineNum">     231 </span>            : static inline unsigned long</a>
 <a name="232"><span class="lineNum">     232 </span>            : __find_buddy_pfn(unsigned long page_pfn, unsigned int order)</a>
 <a name="233"><span class="lineNum">     233 </span>            : {</a>
-<a name="234"><span class="lineNum">     234 </span><span class="lineCov">         67 :         return page_pfn ^ (1 &lt;&lt; order);</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">         37 :         return page_pfn ^ (1 &lt;&lt; order);</span></a>
 <a name="235"><span class="lineNum">     235 </span>            : }</a>
 <a name="236"><span class="lineNum">     236 </span>            : </a>
 <a name="237"><span class="lineNum">     237 </span>            : extern struct page *__pageblock_pfn_to_page(unsigned long start_pfn,</a>
@@ -409,7 +409,7 @@
 <a name="347"><span class="lineNum">     347 </span>            : static inline unsigned int buddy_order(struct page *page)</a>
 <a name="348"><span class="lineNum">     348 </span>            : {</a>
 <a name="349"><span class="lineNum">     349 </span>            :         /* PageBuddy() must be checked by the caller */</a>
-<a name="350"><span class="lineNum">     350 </span><span class="lineCov">         36 :         return page_private(page);</span></a>
+<a name="350"><span class="lineNum">     350 </span><span class="lineCov">         18 :         return page_private(page);</span></a>
 <a name="351"><span class="lineNum">     351 </span>            : }</a>
 <a name="352"><span class="lineNum">     352 </span>            : </a>
 <a name="353"><span class="lineNum">     353 </span>            : /*</a>

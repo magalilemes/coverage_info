@@ -31,13 +31,13 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">10</td>
             <td class="headerCovTableEntry">36</td>
-            <td class="headerCovTableEntryLo">30.6 %</td>
+            <td class="headerCovTableEntryLo">27.8 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -268,7 +268,7 @@
 <a name="206"><span class="lineNum">     206 </span>            :                                     const char *fmt, ...) __malloc;</a>
 <a name="207"><span class="lineNum">     207 </span>            : static inline void *devm_kzalloc(struct device *dev, size_t size, gfp_t gfp)</a>
 <a name="208"><span class="lineNum">     208 </span>            : {</a>
-<a name="209"><span class="lineNum">     209 </span><span class="lineCov">          3 :         return devm_kmalloc(dev, size, gfp | __GFP_ZERO);</span></a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineNoCov">          0 :         return devm_kmalloc(dev, size, gfp | __GFP_ZERO);</span></a>
 <a name="210"><span class="lineNum">     210 </span>            : }</a>
 <a name="211"><span class="lineNum">     211 </span>            : static inline void *devm_kmalloc_array(struct device *dev,</a>
 <a name="212"><span class="lineNum">     212 </span>            :                                        size_t n, size_t size, gfp_t flags)</a>
@@ -676,7 +676,7 @@
 <a name="614"><span class="lineNum">     614 </span>            : </a>
 <a name="615"><span class="lineNum">     615 </span>            : static inline struct device *kobj_to_dev(struct kobject *kobj)</a>
 <a name="616"><span class="lineNum">     616 </span>            : {</a>
-<a name="617"><span class="lineNum">     617 </span><span class="lineCov">      11764 :         return container_of(kobj, struct device, kobj);</span></a>
+<a name="617"><span class="lineNum">     617 </span><span class="lineCov">       5882 :         return container_of(kobj, struct device, kobj);</span></a>
 <a name="618"><span class="lineNum">     618 </span>            : }</a>
 <a name="619"><span class="lineNum">     619 </span>            : </a>
 <a name="620"><span class="lineNum">     620 </span>            : /**</a>
@@ -695,10 +695,10 @@
 <a name="633"><span class="lineNum">     633 </span>            : static inline const char *dev_name(const struct device *dev)</a>
 <a name="634"><span class="lineNum">     634 </span>            : {</a>
 <a name="635"><span class="lineNum">     635 </span>            :         /* Use the init name until the kobject becomes available */</a>
-<a name="636"><span class="lineNum">     636 </span><span class="lineCov">       5304 :         if (dev-&gt;init_name)</span></a>
+<a name="636"><span class="lineNum">     636 </span><span class="lineCov">       2652 :         if (dev-&gt;init_name)</span></a>
 <a name="637"><span class="lineNum">     637 </span>            :                 return dev-&gt;init_name;</a>
 <a name="638"><span class="lineNum">     638 </span>            : </a>
-<a name="639"><span class="lineNum">     639 </span><span class="lineCov">       5304 :         return kobject_name(&amp;dev-&gt;kobj);</span></a>
+<a name="639"><span class="lineNum">     639 </span><span class="lineCov">       2652 :         return kobject_name(&amp;dev-&gt;kobj);</span></a>
 <a name="640"><span class="lineNum">     640 </span>            : }</a>
 <a name="641"><span class="lineNum">     641 </span>            : </a>
 <a name="642"><span class="lineNum">     642 </span>            : /**</a>
@@ -757,7 +757,7 @@
 <a name="695"><span class="lineNum">     695 </span>            : </a>
 <a name="696"><span class="lineNum">     696 </span>            : static inline void dev_set_drvdata(struct device *dev, void *data)</a>
 <a name="697"><span class="lineNum">     697 </span>            : {</a>
-<a name="698"><span class="lineNum">     698 </span><span class="lineCov">       1052 :         dev-&gt;driver_data = data;</span></a>
+<a name="698"><span class="lineNum">     698 </span><span class="lineCov">        526 :         dev-&gt;driver_data = data;</span></a>
 <a name="699"><span class="lineNum">     699 </span>            : }</a>
 <a name="700"><span class="lineNum">     700 </span>            : </a>
 <a name="701"><span class="lineNum">     701 </span>            : static inline struct pm_subsys_data *dev_to_psd(struct device *dev)</a>
@@ -772,12 +772,12 @@
 <a name="710"><span class="lineNum">     710 </span>            : </a>
 <a name="711"><span class="lineNum">     711 </span>            : static inline void dev_set_uevent_suppress(struct device *dev, int val)</a>
 <a name="712"><span class="lineNum">     712 </span>            : {</a>
-<a name="713"><span class="lineNum">     713 </span><span class="lineCov">       2056 :         dev-&gt;kobj.uevent_suppress = val;</span></a>
+<a name="713"><span class="lineNum">     713 </span><span class="lineCov">       1028 :         dev-&gt;kobj.uevent_suppress = val;</span></a>
 <a name="714"><span class="lineNum">     714 </span>            : }</a>
 <a name="715"><span class="lineNum">     715 </span>            : </a>
 <a name="716"><span class="lineNum">     716 </span>            : static inline int device_is_registered(struct device *dev)</a>
 <a name="717"><span class="lineNum">     717 </span>            : {</a>
-<a name="718"><span class="lineNum">     718 </span><span class="lineCov">          2 :         return dev-&gt;kobj.state_in_sysfs;</span></a>
+<a name="718"><span class="lineNum">     718 </span><span class="lineCov">          1 :         return dev-&gt;kobj.state_in_sysfs;</span></a>
 <a name="719"><span class="lineNum">     719 </span>            : }</a>
 <a name="720"><span class="lineNum">     720 </span>            : </a>
 <a name="721"><span class="lineNum">     721 </span>            : static inline void device_enable_async_suspend(struct device *dev)</a>
@@ -799,7 +799,7 @@
 <a name="737"><span class="lineNum">     737 </span>            : </a>
 <a name="738"><span class="lineNum">     738 </span>            : static inline bool device_pm_not_required(struct device *dev)</a>
 <a name="739"><span class="lineNum">     739 </span>            : {</a>
-<a name="740"><span class="lineNum">     740 </span><span class="lineCov">       2144 :         return dev-&gt;power.no_pm;</span></a>
+<a name="740"><span class="lineNum">     740 </span><span class="lineCov">       1072 :         return dev-&gt;power.no_pm;</span></a>
 <a name="741"><span class="lineNum">     741 </span>            : }</a>
 <a name="742"><span class="lineNum">     742 </span>            : </a>
 <a name="743"><span class="lineNum">     743 </span>            : static inline void device_set_pm_not_required(struct device *dev)</a>
@@ -826,7 +826,7 @@
 <a name="764"><span class="lineNum">     764 </span>            : </a>
 <a name="765"><span class="lineNum">     765 </span>            : static inline void device_lock(struct device *dev)</a>
 <a name="766"><span class="lineNum">     766 </span>            : {</a>
-<a name="767"><span class="lineNum">     767 </span><span class="lineCov">          8 :         mutex_lock(&amp;dev-&gt;mutex);</span></a>
+<a name="767"><span class="lineNum">     767 </span><span class="lineCov">          4 :         mutex_lock(&amp;dev-&gt;mutex);</span></a>
 <a name="768"><span class="lineNum">     768 </span>            : }</a>
 <a name="769"><span class="lineNum">     769 </span>            : </a>
 <a name="770"><span class="lineNum">     770 </span>            : static inline int device_lock_interruptible(struct device *dev)</a>
@@ -841,7 +841,7 @@
 <a name="779"><span class="lineNum">     779 </span>            : </a>
 <a name="780"><span class="lineNum">     780 </span>            : static inline void device_unlock(struct device *dev)</a>
 <a name="781"><span class="lineNum">     781 </span>            : {</a>
-<a name="782"><span class="lineNum">     782 </span><span class="lineCov">       1080 :         mutex_unlock(&amp;dev-&gt;mutex);</span></a>
+<a name="782"><span class="lineNum">     782 </span><span class="lineCov">        540 :         mutex_unlock(&amp;dev-&gt;mutex);</span></a>
 <a name="783"><span class="lineNum">     783 </span>            : }</a>
 <a name="784"><span class="lineNum">     784 </span>            : </a>
 <a name="785"><span class="lineNum">     785 </span>            : static inline void device_lock_assert(struct device *dev)</a>
@@ -909,7 +909,7 @@
 <a name="847"><span class="lineNum">     847 </span>            : </a>
 <a name="848"><span class="lineNum">     848 </span>            : static inline bool device_supports_offline(struct device *dev)</a>
 <a name="849"><span class="lineNum">     849 </span>            : {</a>
-<a name="850"><span class="lineNum">     850 </span><span class="lineCov">       1072 :         return dev-&gt;bus &amp;&amp; dev-&gt;bus-&gt;offline &amp;&amp; dev-&gt;bus-&gt;online;</span></a>
+<a name="850"><span class="lineNum">     850 </span><span class="lineCov">        536 :         return dev-&gt;bus &amp;&amp; dev-&gt;bus-&gt;offline &amp;&amp; dev-&gt;bus-&gt;online;</span></a>
 <a name="851"><span class="lineNum">     851 </span>            : }</a>
 <a name="852"><span class="lineNum">     852 </span>            : </a>
 <a name="853"><span class="lineNum">     853 </span>            : void lock_device_hotplug(void);</a>

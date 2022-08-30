@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -297,23 +297,23 @@
 <a name="235"><span class="lineNum">     235 </span>            :         .attrs = kernel_attrs,</a>
 <a name="236"><span class="lineNum">     236 </span>            : };</a>
 <a name="237"><span class="lineNum">     237 </span>            : </a>
-<a name="238"><span class="lineNum">     238 </span><span class="lineCov">          2 : static int __init ksysfs_init(void)</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">          1 : static int __init ksysfs_init(void)</span></a>
 <a name="239"><span class="lineNum">     239 </span>            : {</a>
 <a name="240"><span class="lineNum">     240 </span>            :         int error;</a>
 <a name="241"><span class="lineNum">     241 </span>            : </a>
-<a name="242"><span class="lineNum">     242 </span><span class="lineCov">          2 :         kernel_kobj = kobject_create_and_add(&quot;kernel&quot;, NULL);</span></a>
-<a name="243"><span class="lineNum">     243 </span><span class="lineCov">          2 :         if (!kernel_kobj) {</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineCov">          1 :         kernel_kobj = kobject_create_and_add(&quot;kernel&quot;, NULL);</span></a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineCov">          1 :         if (!kernel_kobj) {</span></a>
 <a name="244"><span class="lineNum">     244 </span>            :                 error = -ENOMEM;</a>
 <a name="245"><span class="lineNum">     245 </span>            :                 goto exit;</a>
 <a name="246"><span class="lineNum">     246 </span>            :         }</a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineCov">          2 :         error = sysfs_create_group(kernel_kobj, &amp;kernel_attr_group);</span></a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineCov">          2 :         if (error)</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineCov">          1 :         error = sysfs_create_group(kernel_kobj, &amp;kernel_attr_group);</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineCov">          1 :         if (error)</span></a>
 <a name="249"><span class="lineNum">     249 </span>            :                 goto kset_exit;</a>
 <a name="250"><span class="lineNum">     250 </span>            : </a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineCov">          2 :         if (notes_size &gt; 0) {</span></a>
-<a name="252"><span class="lineNum">     252 </span><span class="lineCov">          2 :                 notes_attr.size = notes_size;</span></a>
-<a name="253"><span class="lineNum">     253 </span><span class="lineCov">          2 :                 error = sysfs_create_bin_file(kernel_kobj, &amp;notes_attr);</span></a>
-<a name="254"><span class="lineNum">     254 </span><span class="lineCov">          2 :                 if (error)</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineCov">          1 :         if (notes_size &gt; 0) {</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineCov">          1 :                 notes_attr.size = notes_size;</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineCov">          1 :                 error = sysfs_create_bin_file(kernel_kobj, &amp;notes_attr);</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">          1 :                 if (error)</span></a>
 <a name="255"><span class="lineNum">     255 </span>            :                         goto group_exit;</a>
 <a name="256"><span class="lineNum">     256 </span>            :         }</a>
 <a name="257"><span class="lineNum">     257 </span>            : </a>

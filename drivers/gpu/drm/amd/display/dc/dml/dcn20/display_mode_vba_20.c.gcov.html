@@ -31,18 +31,18 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">53</td>
+            <td class="headerCovTableEntry">117</td>
             <td class="headerCovTableEntry">2651</td>
-            <td class="headerCovTableEntryLo">2.0 %</td>
+            <td class="headerCovTableEntryLo">4.4 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">4</td>
             <td class="headerCovTableEntry">14</td>
-            <td class="headerCovTableEntryLo">7.1 %</td>
+            <td class="headerCovTableEntryLo">28.6 %</td>
           </tr>
           <tr><td><img src="../../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -359,7 +359,7 @@
 <a name="297"><span class="lineNum">     297 </span><span class="lineNoCov">          0 :         return ReturnBW;</span></a>
 <a name="298"><span class="lineNum">     298 </span>            : }</a>
 <a name="299"><span class="lineNum">     299 </span>            : </a>
-<a name="300"><span class="lineNum">     300 </span><span class="lineNoCov">          0 : static unsigned int dscceComputeDelay(</span></a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineCov">         24 : static unsigned int dscceComputeDelay(</span></a>
 <a name="301"><span class="lineNum">     301 </span>            :                 unsigned int bpc,</a>
 <a name="302"><span class="lineNum">     302 </span>            :                 double bpp,</a>
 <a name="303"><span class="lineNum">     303 </span>            :                 unsigned int sliceWidth,</a>
@@ -375,55 +375,55 @@
 <a name="313"><span class="lineNum">     313 </span>            :         //valid pixelFormat = pixel/color format in the set of {:N444_RGB, :S422, :N422, :N420}</a>
 <a name="314"><span class="lineNum">     314 </span>            : </a>
 <a name="315"><span class="lineNum">     315 </span>            :         // fixed value</a>
-<a name="316"><span class="lineNum">     316 </span><span class="lineNoCov">          0 :         unsigned int rcModelSize = 8192;</span></a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineCov">         24 :         unsigned int rcModelSize = 8192;</span></a>
 <a name="317"><span class="lineNum">     317 </span>            : </a>
 <a name="318"><span class="lineNum">     318 </span>            :         // N422/N420 operate at 2 pixels per clock</a>
 <a name="319"><span class="lineNum">     319 </span>            :         unsigned int pixelsPerClock, lstall, D, initalXmitDelay, w, s, ix, wx, p, l0, a, ax, l,</a>
 <a name="320"><span class="lineNum">     320 </span>            :                         Delay, pixels;</a>
 <a name="321"><span class="lineNum">     321 </span>            : </a>
-<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 :         if (pixelFormat == dm_n422 || pixelFormat == dm_420)</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineCov">         24 :         if (pixelFormat == dm_n422 || pixelFormat == dm_420)</span></a>
 <a name="323"><span class="lineNum">     323 </span>            :                 pixelsPerClock = 2;</a>
 <a name="324"><span class="lineNum">     324 </span>            :         // #all other modes operate at 1 pixel per clock</a>
 <a name="325"><span class="lineNum">     325 </span>            :         else</a>
-<a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 :                 pixelsPerClock = 1;</span></a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineCov">         12 :                 pixelsPerClock = 1;</span></a>
 <a name="327"><span class="lineNum">     327 </span>            : </a>
 <a name="328"><span class="lineNum">     328 </span>            :         //initial transmit delay as per PPS</a>
-<a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 :         initalXmitDelay = dml_round(rcModelSize / 2.0 / bpp / pixelsPerClock);</span></a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineCov">         24 :         initalXmitDelay = dml_round(rcModelSize / 2.0 / bpp / pixelsPerClock);</span></a>
 <a name="330"><span class="lineNum">     330 </span>            : </a>
 <a name="331"><span class="lineNum">     331 </span>            :         //compute ssm delay</a>
-<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 :         if (bpc == 8)</span></a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineCov">         24 :         if (bpc == 8)</span></a>
 <a name="333"><span class="lineNum">     333 </span>            :                 D = 81;</a>
-<a name="334"><span class="lineNum">     334 </span><span class="lineNoCov">          0 :         else if (bpc == 10)</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineCov">         16 :         else if (bpc == 10)</span></a>
 <a name="335"><span class="lineNum">     335 </span>            :                 D = 89;</a>
 <a name="336"><span class="lineNum">     336 </span>            :         else</a>
-<a name="337"><span class="lineNum">     337 </span><span class="lineNoCov">          0 :                 D = 113;</span></a>
+<a name="337"><span class="lineNum">     337 </span><span class="lineCov">          8 :                 D = 113;</span></a>
 <a name="338"><span class="lineNum">     338 </span>            : </a>
 <a name="339"><span class="lineNum">     339 </span>            :         //divide by pixel per cycle to compute slice width as seen by DSC</a>
-<a name="340"><span class="lineNum">     340 </span><span class="lineNoCov">          0 :         w = sliceWidth / pixelsPerClock;</span></a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineCov">         24 :         w = sliceWidth / pixelsPerClock;</span></a>
 <a name="341"><span class="lineNum">     341 </span>            : </a>
 <a name="342"><span class="lineNum">     342 </span>            :         //422 mode has an additional cycle of delay</a>
-<a name="343"><span class="lineNum">     343 </span><span class="lineNoCov">          0 :         if (pixelFormat == dm_s422)</span></a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineCov">         24 :         if (pixelFormat == dm_s422)</span></a>
 <a name="344"><span class="lineNum">     344 </span>            :                 s = 1;</a>
 <a name="345"><span class="lineNum">     345 </span>            :         else</a>
-<a name="346"><span class="lineNum">     346 </span><span class="lineNoCov">          0 :                 s = 0;</span></a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineCov">         18 :                 s = 0;</span></a>
 <a name="347"><span class="lineNum">     347 </span>            : </a>
 <a name="348"><span class="lineNum">     348 </span>            :         //main calculation for the dscce</a>
-<a name="349"><span class="lineNum">     349 </span><span class="lineNoCov">          0 :         ix = initalXmitDelay + 45;</span></a>
-<a name="350"><span class="lineNum">     350 </span><span class="lineNoCov">          0 :         wx = (w + 2) / 3;</span></a>
-<a name="351"><span class="lineNum">     351 </span><span class="lineNoCov">          0 :         p = 3 * wx - w;</span></a>
-<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 :         l0 = ix / w;</span></a>
-<a name="353"><span class="lineNum">     353 </span><span class="lineNoCov">          0 :         a = ix + p * l0;</span></a>
-<a name="354"><span class="lineNum">     354 </span><span class="lineNoCov">          0 :         ax = (a + 2) / 3 + D + 6 + 1;</span></a>
-<a name="355"><span class="lineNum">     355 </span><span class="lineNoCov">          0 :         l = (ax + wx - 1) / wx;</span></a>
-<a name="356"><span class="lineNum">     356 </span><span class="lineNoCov">          0 :         if ((ix % w) == 0 &amp;&amp; p != 0)</span></a>
+<a name="349"><span class="lineNum">     349 </span><span class="lineCov">         24 :         ix = initalXmitDelay + 45;</span></a>
+<a name="350"><span class="lineNum">     350 </span><span class="lineCov">         24 :         wx = (w + 2) / 3;</span></a>
+<a name="351"><span class="lineNum">     351 </span><span class="lineCov">         24 :         p = 3 * wx - w;</span></a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineCov">         24 :         l0 = ix / w;</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineCov">         24 :         a = ix + p * l0;</span></a>
+<a name="354"><span class="lineNum">     354 </span><span class="lineCov">         24 :         ax = (a + 2) / 3 + D + 6 + 1;</span></a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineCov">         24 :         l = (ax + wx - 1) / wx;</span></a>
+<a name="356"><span class="lineNum">     356 </span><span class="lineCov">         24 :         if ((ix % w) == 0 &amp;&amp; p != 0)</span></a>
 <a name="357"><span class="lineNum">     357 </span>            :                 lstall = 1;</a>
 <a name="358"><span class="lineNum">     358 </span>            :         else</a>
-<a name="359"><span class="lineNum">     359 </span><span class="lineNoCov">          0 :                 lstall = 0;</span></a>
-<a name="360"><span class="lineNum">     360 </span><span class="lineNoCov">          0 :         Delay = l * wx * (numSlices - 1) + ax + s + lstall + 22;</span></a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineCov">         20 :                 lstall = 0;</span></a>
+<a name="360"><span class="lineNum">     360 </span><span class="lineCov">         24 :         Delay = l * wx * (numSlices - 1) + ax + s + lstall + 22;</span></a>
 <a name="361"><span class="lineNum">     361 </span>            : </a>
 <a name="362"><span class="lineNum">     362 </span>            :         //dsc processes 3 pixel containers per cycle and a container can contain 1 or 2 pixels</a>
-<a name="363"><span class="lineNum">     363 </span><span class="lineNoCov">          0 :         pixels = Delay * 3 * pixelsPerClock;</span></a>
-<a name="364"><span class="lineNum">     364 </span><span class="lineNoCov">          0 :         return pixels;</span></a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineCov">         24 :         pixels = Delay * 3 * pixelsPerClock;</span></a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineCov">         24 :         return pixels;</span></a>
 <a name="365"><span class="lineNum">     365 </span>            : }</a>
 <a name="366"><span class="lineNum">     366 </span>            : </a>
 <a name="367"><span class="lineNum">     367 </span>            : static unsigned int dscComputeDelay(enum output_format_class pixelFormat)</a>
@@ -3037,7 +3037,7 @@
 <a name="2975"><span class="lineNum">    2975 </span>            :         return result;</a>
 <a name="2976"><span class="lineNum">    2976 </span>            : }</a>
 <a name="2977"><span class="lineNum">    2977 </span>            : </a>
-<a name="2978"><span class="lineNum">    2978 </span><span class="lineNoCov">          0 : static double CalculateWriteBackDelay(</span></a>
+<a name="2978"><span class="lineNum">    2978 </span><span class="lineCov">         14 : static double CalculateWriteBackDelay(</span></a>
 <a name="2979"><span class="lineNum">    2979 </span>            :                 enum source_format_class WritebackPixelFormat,</a>
 <a name="2980"><span class="lineNum">    2980 </span>            :                 double WritebackHRatio,</a>
 <a name="2981"><span class="lineNum">    2981 </span>            :                 double WritebackVRatio,</a>
@@ -3047,57 +3047,57 @@
 <a name="2985"><span class="lineNum">    2985 </span>            :                 unsigned int WritebackChromaVTaps,</a>
 <a name="2986"><span class="lineNum">    2986 </span>            :                 unsigned int WritebackDestinationWidth)</a>
 <a name="2987"><span class="lineNum">    2987 </span>            : {</a>
-<a name="2988"><span class="lineNum">    2988 </span><span class="lineNoCov">          0 :         double CalculateWriteBackDelay =</span></a>
-<a name="2989"><span class="lineNum">    2989 </span><span class="lineNoCov">          0 :                         dml_max(</span></a>
-<a name="2990"><span class="lineNum">    2990 </span><span class="lineNoCov">          0 :                                         dml_ceil(WritebackLumaHTaps / 4.0, 1) / WritebackHRatio,</span></a>
-<a name="2991"><span class="lineNum">    2991 </span><span class="lineNoCov">          0 :                                         WritebackLumaVTaps * dml_ceil(1.0 / WritebackVRatio, 1)</span></a>
-<a name="2992"><span class="lineNum">    2992 </span><span class="lineNoCov">          0 :                                                         * dml_ceil(</span></a>
+<a name="2988"><span class="lineNum">    2988 </span><span class="lineCov">         14 :         double CalculateWriteBackDelay =</span></a>
+<a name="2989"><span class="lineNum">    2989 </span><span class="lineCov">         28 :                         dml_max(</span></a>
+<a name="2990"><span class="lineNum">    2990 </span><span class="lineCov">         28 :                                         dml_ceil(WritebackLumaHTaps / 4.0, 1) / WritebackHRatio,</span></a>
+<a name="2991"><span class="lineNum">    2991 </span><span class="lineCov">         28 :                                         WritebackLumaVTaps * dml_ceil(1.0 / WritebackVRatio, 1)</span></a>
+<a name="2992"><span class="lineNum">    2992 </span><span class="lineCov">         28 :                                                         * dml_ceil(</span></a>
 <a name="2993"><span class="lineNum">    2993 </span>            :                                                                         WritebackDestinationWidth</a>
 <a name="2994"><span class="lineNum">    2994 </span>            :                                                                                         / 4.0,</a>
 <a name="2995"><span class="lineNum">    2995 </span>            :                                                                         1)</a>
-<a name="2996"><span class="lineNum">    2996 </span><span class="lineNoCov">          0 :                                                         + dml_ceil(1.0 / WritebackVRatio, 1)</span></a>
-<a name="2997"><span class="lineNum">    2997 </span><span class="lineNoCov">          0 :                                                                         * (dml_ceil(</span></a>
+<a name="2996"><span class="lineNum">    2996 </span><span class="lineCov">         28 :                                                         + dml_ceil(1.0 / WritebackVRatio, 1)</span></a>
+<a name="2997"><span class="lineNum">    2997 </span><span class="lineCov">         42 :                                                                         * (dml_ceil(</span></a>
 <a name="2998"><span class="lineNum">    2998 </span>            :                                                                                         WritebackLumaVTaps</a>
 <a name="2999"><span class="lineNum">    2999 </span>            :                                                                                                         / 4.0,</a>
-<a name="3000"><span class="lineNum">    3000 </span><span class="lineNoCov">          0 :                                                                                         1) + 4));</span></a>
+<a name="3000"><span class="lineNum">    3000 </span><span class="lineCov">         14 :                                                                                         1) + 4));</span></a>
 <a name="3001"><span class="lineNum">    3001 </span>            : </a>
-<a name="3002"><span class="lineNum">    3002 </span><span class="lineNoCov">          0 :         if (WritebackPixelFormat != dm_444_32) {</span></a>
-<a name="3003"><span class="lineNum">    3003 </span><span class="lineNoCov">          0 :                 CalculateWriteBackDelay =</span></a>
-<a name="3004"><span class="lineNum">    3004 </span><span class="lineNoCov">          0 :                                 dml_max(</span></a>
+<a name="3002"><span class="lineNum">    3002 </span><span class="lineCov">         14 :         if (WritebackPixelFormat != dm_444_32) {</span></a>
+<a name="3003"><span class="lineNum">    3003 </span><span class="lineCov">          5 :                 CalculateWriteBackDelay =</span></a>
+<a name="3004"><span class="lineNum">    3004 </span><span class="lineCov">         15 :                                 dml_max(</span></a>
 <a name="3005"><span class="lineNum">    3005 </span>            :                                                 CalculateWriteBackDelay,</a>
 <a name="3006"><span class="lineNum">    3006 </span>            :                                                 dml_max(</a>
-<a name="3007"><span class="lineNum">    3007 </span><span class="lineNoCov">          0 :                                                                 dml_ceil(</span></a>
+<a name="3007"><span class="lineNum">    3007 </span><span class="lineCov">         10 :                                                                 dml_ceil(</span></a>
 <a name="3008"><span class="lineNum">    3008 </span>            :                                                                                 WritebackChromaHTaps</a>
 <a name="3009"><span class="lineNum">    3009 </span>            :                                                                                                 / 2.0,</a>
 <a name="3010"><span class="lineNum">    3010 </span>            :                                                                                 1)</a>
 <a name="3011"><span class="lineNum">    3011 </span>            :                                                                                 / (2</a>
-<a name="3012"><span class="lineNum">    3012 </span><span class="lineNoCov">          0 :                                                                                                 * WritebackHRatio),</span></a>
+<a name="3012"><span class="lineNum">    3012 </span><span class="lineCov">          5 :                                                                                                 * WritebackHRatio),</span></a>
 <a name="3013"><span class="lineNum">    3013 </span>            :                                                                 WritebackChromaVTaps</a>
-<a name="3014"><span class="lineNum">    3014 </span><span class="lineNoCov">          0 :                                                                                 * dml_ceil(</span></a>
+<a name="3014"><span class="lineNum">    3014 </span><span class="lineCov">         15 :                                                                                 * dml_ceil(</span></a>
 <a name="3015"><span class="lineNum">    3015 </span>            :                                                                                                 1</a>
 <a name="3016"><span class="lineNum">    3016 </span>            :                                                                                                                 / (2</a>
-<a name="3017"><span class="lineNum">    3017 </span><span class="lineNoCov">          0 :                                                                                                                                 * WritebackVRatio),</span></a>
+<a name="3017"><span class="lineNum">    3017 </span><span class="lineCov">          5 :                                                                                                                                 * WritebackVRatio),</span></a>
 <a name="3018"><span class="lineNum">    3018 </span>            :                                                                                                 1)</a>
-<a name="3019"><span class="lineNum">    3019 </span><span class="lineNoCov">          0 :                                                                                 * dml_ceil(</span></a>
+<a name="3019"><span class="lineNum">    3019 </span><span class="lineCov">         10 :                                                                                 * dml_ceil(</span></a>
 <a name="3020"><span class="lineNum">    3020 </span>            :                                                                                                 WritebackDestinationWidth</a>
-<a name="3021"><span class="lineNum">    3021 </span><span class="lineNoCov">          0 :                                                                                                                 / 2.0</span></a>
+<a name="3021"><span class="lineNum">    3021 </span><span class="lineCov">          5 :                                                                                                                 / 2.0</span></a>
 <a name="3022"><span class="lineNum">    3022 </span>            :                                                                                                                 / 2.0,</a>
 <a name="3023"><span class="lineNum">    3023 </span>            :                                                                                                 1)</a>
-<a name="3024"><span class="lineNum">    3024 </span><span class="lineNoCov">          0 :                                                                                 + dml_ceil(</span></a>
+<a name="3024"><span class="lineNum">    3024 </span><span class="lineCov">         10 :                                                                                 + dml_ceil(</span></a>
 <a name="3025"><span class="lineNum">    3025 </span>            :                                                                                                 1</a>
 <a name="3026"><span class="lineNum">    3026 </span>            :                                                                                                                 / (2</a>
 <a name="3027"><span class="lineNum">    3027 </span>            :                                                                                                                                 * WritebackVRatio),</a>
 <a name="3028"><span class="lineNum">    3028 </span>            :                                                                                                 1)</a>
-<a name="3029"><span class="lineNum">    3029 </span><span class="lineNoCov">          0 :                                                                                                 * (dml_ceil(</span></a>
+<a name="3029"><span class="lineNum">    3029 </span><span class="lineCov">         15 :                                                                                                 * (dml_ceil(</span></a>
 <a name="3030"><span class="lineNum">    3030 </span>            :                                                                                                                 WritebackChromaVTaps</a>
 <a name="3031"><span class="lineNum">    3031 </span>            :                                                                                                                                 / 4.0,</a>
 <a name="3032"><span class="lineNum">    3032 </span>            :                                                                                                                 1)</a>
-<a name="3033"><span class="lineNum">    3033 </span><span class="lineNoCov">          0 :                                                                                                                 + 4)));</span></a>
+<a name="3033"><span class="lineNum">    3033 </span><span class="lineCov">          5 :                                                                                                                 + 4)));</span></a>
 <a name="3034"><span class="lineNum">    3034 </span>            :         }</a>
-<a name="3035"><span class="lineNum">    3035 </span><span class="lineNoCov">          0 :         return CalculateWriteBackDelay;</span></a>
+<a name="3035"><span class="lineNum">    3035 </span><span class="lineCov">         14 :         return CalculateWriteBackDelay;</span></a>
 <a name="3036"><span class="lineNum">    3036 </span>            : }</a>
 <a name="3037"><span class="lineNum">    3037 </span>            : </a>
-<a name="3038"><span class="lineNum">    3038 </span><span class="lineNoCov">          0 : static void CalculateActiveRowBandwidth(</span></a>
+<a name="3038"><span class="lineNum">    3038 </span><span class="lineCov">         14 : static void CalculateActiveRowBandwidth(</span></a>
 <a name="3039"><span class="lineNum">    3039 </span>            :                 bool GPUVMEnable,</a>
 <a name="3040"><span class="lineNum">    3040 </span>            :                 enum source_format_class SourcePixelFormat,</a>
 <a name="3041"><span class="lineNum">    3041 </span>            :                 double VRatio,</a>
@@ -3115,32 +3115,32 @@
 <a name="3053"><span class="lineNum">    3053 </span>            :                 double *dpte_row_bw,</a>
 <a name="3054"><span class="lineNum">    3054 </span>            :                 double *qual_row_bw)</a>
 <a name="3055"><span class="lineNum">    3055 </span>            : {</a>
-<a name="3056"><span class="lineNum">    3056 </span><span class="lineNoCov">          0 :         if (DCCEnable != true) {</span></a>
-<a name="3057"><span class="lineNum">    3057 </span><span class="lineNoCov">          0 :                 *meta_row_bw = 0;</span></a>
-<a name="3058"><span class="lineNum">    3058 </span><span class="lineNoCov">          0 :         } else if (SourcePixelFormat == dm_420_8 || SourcePixelFormat == dm_420_10) {</span></a>
-<a name="3059"><span class="lineNum">    3059 </span><span class="lineNoCov">          0 :                 *meta_row_bw = VRatio * MetaRowByteLuma / (meta_row_height_luma * LineTime)</span></a>
-<a name="3060"><span class="lineNum">    3060 </span><span class="lineNoCov">          0 :                                 + VRatio / 2 * MetaRowByteChroma</span></a>
-<a name="3061"><span class="lineNum">    3061 </span><span class="lineNoCov">          0 :                                                 / (meta_row_height_chroma * LineTime);</span></a>
+<a name="3056"><span class="lineNum">    3056 </span><span class="lineCov">         14 :         if (DCCEnable != true) {</span></a>
+<a name="3057"><span class="lineNum">    3057 </span><span class="lineCov">          6 :                 *meta_row_bw = 0;</span></a>
+<a name="3058"><span class="lineNum">    3058 </span><span class="lineCov">          8 :         } else if (SourcePixelFormat == dm_420_8 || SourcePixelFormat == dm_420_10) {</span></a>
+<a name="3059"><span class="lineNum">    3059 </span><span class="lineCov">          8 :                 *meta_row_bw = VRatio * MetaRowByteLuma / (meta_row_height_luma * LineTime)</span></a>
+<a name="3060"><span class="lineNum">    3060 </span><span class="lineCov">          8 :                                 + VRatio / 2 * MetaRowByteChroma</span></a>
+<a name="3061"><span class="lineNum">    3061 </span><span class="lineCov">          4 :                                                 / (meta_row_height_chroma * LineTime);</span></a>
 <a name="3062"><span class="lineNum">    3062 </span>            :         } else {</a>
-<a name="3063"><span class="lineNum">    3063 </span><span class="lineNoCov">          0 :                 *meta_row_bw = VRatio * MetaRowByteLuma / (meta_row_height_luma * LineTime);</span></a>
+<a name="3063"><span class="lineNum">    3063 </span><span class="lineCov">          4 :                 *meta_row_bw = VRatio * MetaRowByteLuma / (meta_row_height_luma * LineTime);</span></a>
 <a name="3064"><span class="lineNum">    3064 </span>            :         }</a>
 <a name="3065"><span class="lineNum">    3065 </span>            : </a>
-<a name="3066"><span class="lineNum">    3066 </span><span class="lineNoCov">          0 :         if (GPUVMEnable != true) {</span></a>
-<a name="3067"><span class="lineNum">    3067 </span><span class="lineNoCov">          0 :                 *dpte_row_bw = 0;</span></a>
-<a name="3068"><span class="lineNum">    3068 </span><span class="lineNoCov">          0 :         } else if (SourcePixelFormat == dm_420_8 || SourcePixelFormat == dm_420_10) {</span></a>
-<a name="3069"><span class="lineNum">    3069 </span><span class="lineNoCov">          0 :                 *dpte_row_bw = VRatio * PixelPTEBytesPerRowLuma / (dpte_row_height_luma * LineTime)</span></a>
-<a name="3070"><span class="lineNum">    3070 </span><span class="lineNoCov">          0 :                                 + VRatio / 2 * PixelPTEBytesPerRowChroma</span></a>
-<a name="3071"><span class="lineNum">    3071 </span><span class="lineNoCov">          0 :                                                 / (dpte_row_height_chroma * LineTime);</span></a>
+<a name="3066"><span class="lineNum">    3066 </span><span class="lineCov">         14 :         if (GPUVMEnable != true) {</span></a>
+<a name="3067"><span class="lineNum">    3067 </span><span class="lineCov">          6 :                 *dpte_row_bw = 0;</span></a>
+<a name="3068"><span class="lineNum">    3068 </span><span class="lineCov">          8 :         } else if (SourcePixelFormat == dm_420_8 || SourcePixelFormat == dm_420_10) {</span></a>
+<a name="3069"><span class="lineNum">    3069 </span><span class="lineCov">          8 :                 *dpte_row_bw = VRatio * PixelPTEBytesPerRowLuma / (dpte_row_height_luma * LineTime)</span></a>
+<a name="3070"><span class="lineNum">    3070 </span><span class="lineCov">          8 :                                 + VRatio / 2 * PixelPTEBytesPerRowChroma</span></a>
+<a name="3071"><span class="lineNum">    3071 </span><span class="lineCov">          4 :                                                 / (dpte_row_height_chroma * LineTime);</span></a>
 <a name="3072"><span class="lineNum">    3072 </span>            :         } else {</a>
-<a name="3073"><span class="lineNum">    3073 </span><span class="lineNoCov">          0 :                 *dpte_row_bw = VRatio * PixelPTEBytesPerRowLuma / (dpte_row_height_luma * LineTime);</span></a>
+<a name="3073"><span class="lineNum">    3073 </span><span class="lineCov">          4 :                 *dpte_row_bw = VRatio * PixelPTEBytesPerRowLuma / (dpte_row_height_luma * LineTime);</span></a>
 <a name="3074"><span class="lineNum">    3074 </span>            :         }</a>
 <a name="3075"><span class="lineNum">    3075 </span>            : </a>
-<a name="3076"><span class="lineNum">    3076 </span><span class="lineNoCov">          0 :         if ((SourcePixelFormat == dm_420_8 || SourcePixelFormat == dm_420_10)) {</span></a>
-<a name="3077"><span class="lineNum">    3077 </span><span class="lineNoCov">          0 :                 *qual_row_bw = *meta_row_bw + *dpte_row_bw;</span></a>
+<a name="3076"><span class="lineNum">    3076 </span><span class="lineCov">         14 :         if ((SourcePixelFormat == dm_420_8 || SourcePixelFormat == dm_420_10)) {</span></a>
+<a name="3077"><span class="lineNum">    3077 </span><span class="lineCov">          7 :                 *qual_row_bw = *meta_row_bw + *dpte_row_bw;</span></a>
 <a name="3078"><span class="lineNum">    3078 </span>            :         } else {</a>
-<a name="3079"><span class="lineNum">    3079 </span><span class="lineNoCov">          0 :                 *qual_row_bw = 0;</span></a>
+<a name="3079"><span class="lineNum">    3079 </span><span class="lineCov">          7 :                 *qual_row_bw = 0;</span></a>
 <a name="3080"><span class="lineNum">    3080 </span>            :         }</a>
-<a name="3081"><span class="lineNum">    3081 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="3081"><span class="lineNum">    3081 </span><span class="lineCov">         14 : }</span></a>
 <a name="3082"><span class="lineNum">    3082 </span>            : </a>
 <a name="3083"><span class="lineNum">    3083 </span><span class="lineNoCov">          0 : static void CalculateFlipSchedule(</span></a>
 <a name="3084"><span class="lineNum">    3084 </span>            :                 struct display_mode_lib *mode_lib,</a>

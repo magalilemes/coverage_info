@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-10 13:56:23</td>
+            <td class="headerValue">2022-08-30 20:32:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -106,7 +106,7 @@
 <a name="44"><span class="lineNum">      44 </span>            : static inline bool no_idmapping(const struct user_namespace *mnt_userns,</a>
 <a name="45"><span class="lineNum">      45 </span>            :                                 const struct user_namespace *fs_userns)</a>
 <a name="46"><span class="lineNum">      46 </span>            : {</a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">         64 :         return initial_idmapping(mnt_userns) || mnt_userns == fs_userns;</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">         32 :         return initial_idmapping(mnt_userns) || mnt_userns == fs_userns;</span></a>
 <a name="48"><span class="lineNum">      48 </span>            : }</a>
 <a name="49"><span class="lineNum">      49 </span>            : </a>
 <a name="50"><span class="lineNum">      50 </span>            : /**</a>
@@ -135,7 +135,7 @@
 <a name="73"><span class="lineNum">      73 </span>            : {</a>
 <a name="74"><span class="lineNum">      74 </span>            :         uid_t uid;</a>
 <a name="75"><span class="lineNum">      75 </span>            : </a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">         26 :         if (no_idmapping(mnt_userns, fs_userns))</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">         13 :         if (no_idmapping(mnt_userns, fs_userns))</span></a>
 <a name="77"><span class="lineNum">      77 </span>            :                 return kuid;</a>
 <a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :         if (initial_idmapping(fs_userns))</span></a>
 <a name="79"><span class="lineNum">      79 </span>            :                 uid = __kuid_val(kuid);</a>
@@ -172,7 +172,7 @@
 <a name="110"><span class="lineNum">     110 </span>            : {</a>
 <a name="111"><span class="lineNum">     111 </span>            :         gid_t gid;</a>
 <a name="112"><span class="lineNum">     112 </span>            : </a>
-<a name="113"><span class="lineNum">     113 </span><span class="lineCov">          6 :         if (no_idmapping(mnt_userns, fs_userns))</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">          3 :         if (no_idmapping(mnt_userns, fs_userns))</span></a>
 <a name="114"><span class="lineNum">     114 </span>            :                 return kgid;</a>
 <a name="115"><span class="lineNum">     115 </span><span class="lineNoCov">          0 :         if (initial_idmapping(fs_userns))</span></a>
 <a name="116"><span class="lineNum">     116 </span>            :                 gid = __kgid_val(kgid);</a>
@@ -209,7 +209,7 @@
 <a name="147"><span class="lineNum">     147 </span>            : {</a>
 <a name="148"><span class="lineNum">     148 </span>            :         uid_t uid;</a>
 <a name="149"><span class="lineNum">     149 </span>            : </a>
-<a name="150"><span class="lineNum">     150 </span><span class="lineCov">         16 :         if (no_idmapping(mnt_userns, fs_userns))</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">          8 :         if (no_idmapping(mnt_userns, fs_userns))</span></a>
 <a name="151"><span class="lineNum">     151 </span>            :                 return kuid;</a>
 <a name="152"><span class="lineNum">     152 </span><span class="lineNoCov">          0 :         uid = from_kuid(mnt_userns, kuid);</span></a>
 <a name="153"><span class="lineNum">     153 </span><span class="lineNoCov">          0 :         if (uid == (uid_t)-1)</span></a>
@@ -245,7 +245,7 @@
 <a name="183"><span class="lineNum">     183 </span>            : {</a>
 <a name="184"><span class="lineNum">     184 </span>            :         gid_t gid;</a>
 <a name="185"><span class="lineNum">     185 </span>            : </a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineCov">         16 :         if (no_idmapping(mnt_userns, fs_userns))</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          8 :         if (no_idmapping(mnt_userns, fs_userns))</span></a>
 <a name="187"><span class="lineNum">     187 </span>            :                 return kgid;</a>
 <a name="188"><span class="lineNum">     188 </span><span class="lineNoCov">          0 :         gid = from_kgid(mnt_userns, kgid);</span></a>
 <a name="189"><span class="lineNum">     189 </span><span class="lineNoCov">          0 :         if (gid == (gid_t)-1)</span></a>
@@ -271,7 +271,7 @@
 <a name="209"><span class="lineNum">     209 </span>            : static inline kuid_t mapped_fsuid(struct user_namespace *mnt_userns,</a>
 <a name="210"><span class="lineNum">     210 </span>            :                                   struct user_namespace *fs_userns)</a>
 <a name="211"><span class="lineNum">     211 </span>            : {</a>
-<a name="212"><span class="lineNum">     212 </span><span class="lineCov">         32 :         return mapped_kuid_user(mnt_userns, fs_userns, current_fsuid());</span></a>
+<a name="212"><span class="lineNum">     212 </span><span class="lineCov">         16 :         return mapped_kuid_user(mnt_userns, fs_userns, current_fsuid());</span></a>
 <a name="213"><span class="lineNum">     213 </span>            : }</a>
 <a name="214"><span class="lineNum">     214 </span>            : </a>
 <a name="215"><span class="lineNum">     215 </span>            : /**</a>
@@ -290,7 +290,7 @@
 <a name="228"><span class="lineNum">     228 </span>            : static inline kgid_t mapped_fsgid(struct user_namespace *mnt_userns,</a>
 <a name="229"><span class="lineNum">     229 </span>            :                                   struct user_namespace *fs_userns)</a>
 <a name="230"><span class="lineNum">     230 </span>            : {</a>
-<a name="231"><span class="lineNum">     231 </span><span class="lineCov">         32 :         return mapped_kgid_user(mnt_userns, fs_userns, current_fsgid());</span></a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineCov">         16 :         return mapped_kgid_user(mnt_userns, fs_userns, current_fsgid());</span></a>
 <a name="232"><span class="lineNum">     232 </span>            : }</a>
 <a name="233"><span class="lineNum">     233 </span>            : </a>
 <a name="234"><span class="lineNum">     234 </span>            : #endif /* _LINUX_MNT_IDMAPPING_H */</a>
