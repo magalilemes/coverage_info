@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -236,9 +236,9 @@
 <a name="174"><span class="lineNum">     174 </span>            : </a>
 <a name="175"><span class="lineNum">     175 </span>            : static inline int bad_action_ret(irqreturn_t action_ret)</a>
 <a name="176"><span class="lineNum">     176 </span>            : {</a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          9 :         unsigned int r = action_ret;</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">         13 :         unsigned int r = action_ret;</span></a>
 <a name="178"><span class="lineNum">     178 </span>            : </a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          9 :         if (likely(r &lt;= (IRQ_HANDLED | IRQ_WAKE_THREAD)))</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">         13 :         if (likely(r &lt;= (IRQ_HANDLED | IRQ_WAKE_THREAD)))</span></a>
 <a name="180"><span class="lineNum">     180 </span>            :                 return 0;</a>
 <a name="181"><span class="lineNum">     181 </span>            :         return 1;</a>
 <a name="182"><span class="lineNum">     182 </span>            : }</a>
@@ -300,7 +300,7 @@
 <a name="238"><span class="lineNum">     238 </span>            : {</a>
 <a name="239"><span class="lineNum">     239 </span>            :         struct irqaction *action;</a>
 <a name="240"><span class="lineNum">     240 </span>            : </a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineCov">          9 :         if (!irqfixup)</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineCov">         13 :         if (!irqfixup)</span></a>
 <a name="242"><span class="lineNum">     242 </span>            :                 return 0;</a>
 <a name="243"><span class="lineNum">     243 </span>            : </a>
 <a name="244"><span class="lineNum">     244 </span>            :         /* We didn't actually handle the IRQ - see if it was misrouted? */</a>
@@ -331,15 +331,15 @@
 <a name="269"><span class="lineNum">     269 </span>            : </a>
 <a name="270"><span class="lineNum">     270 </span>            : #define SPURIOUS_DEFERRED       0x80000000</a>
 <a name="271"><span class="lineNum">     271 </span>            : </a>
-<a name="272"><span class="lineNum">     272 </span><span class="lineCov">          9 : void note_interrupt(struct irq_desc *desc, irqreturn_t action_ret)</span></a>
+<a name="272"><span class="lineNum">     272 </span><span class="lineCov">         13 : void note_interrupt(struct irq_desc *desc, irqreturn_t action_ret)</span></a>
 <a name="273"><span class="lineNum">     273 </span>            : {</a>
 <a name="274"><span class="lineNum">     274 </span>            :         unsigned int irq;</a>
 <a name="275"><span class="lineNum">     275 </span>            : </a>
-<a name="276"><span class="lineNum">     276 </span><span class="lineCov">         18 :         if (desc-&gt;istate &amp; IRQS_POLL_INPROGRESS ||</span></a>
-<a name="277"><span class="lineNum">     277 </span><span class="lineCov">          9 :             irq_settings_is_polled(desc))</span></a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineCov">         26 :         if (desc-&gt;istate &amp; IRQS_POLL_INPROGRESS ||</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineCov">         13 :             irq_settings_is_polled(desc))</span></a>
 <a name="278"><span class="lineNum">     278 </span>            :                 return;</a>
 <a name="279"><span class="lineNum">     279 </span>            : </a>
-<a name="280"><span class="lineNum">     280 </span><span class="lineCov">          9 :         if (bad_action_ret(action_ret)) {</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineCov">         13 :         if (bad_action_ret(action_ret)) {</span></a>
 <a name="281"><span class="lineNum">     281 </span>            :                 report_bad_irq(desc, action_ret);</a>
 <a name="282"><span class="lineNum">     282 </span>            :                 return;</a>
 <a name="283"><span class="lineNum">     283 </span>            :         }</a>
@@ -364,7 +364,7 @@
 <a name="302"><span class="lineNum">     302 </span>            :          * add pointless overhead to the straight hardirq interrupts</a>
 <a name="303"><span class="lineNum">     303 </span>            :          * for the sake of a few lines less code.</a>
 <a name="304"><span class="lineNum">     304 </span>            :          */</a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineCov">          9 :         if (action_ret &amp; IRQ_WAKE_THREAD) {</span></a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineCov">         13 :         if (action_ret &amp; IRQ_WAKE_THREAD) {</span></a>
 <a name="306"><span class="lineNum">     306 </span>            :                 /*</a>
 <a name="307"><span class="lineNum">     307 </span>            :                  * There is a thread woken. Check whether one of the</a>
 <a name="308"><span class="lineNum">     308 </span>            :                  * shared primary handlers returned IRQ_HANDLED. If</a>
@@ -444,7 +444,7 @@
 <a name="382"><span class="lineNum">     382 </span>            :                 }</a>
 <a name="383"><span class="lineNum">     383 </span>            :         }</a>
 <a name="384"><span class="lineNum">     384 </span>            : </a>
-<a name="385"><span class="lineNum">     385 </span><span class="lineCov">          9 :         if (unlikely(action_ret == IRQ_NONE)) {</span></a>
+<a name="385"><span class="lineNum">     385 </span><span class="lineCov">         13 :         if (unlikely(action_ret == IRQ_NONE)) {</span></a>
 <a name="386"><span class="lineNum">     386 </span>            :                 /*</a>
 <a name="387"><span class="lineNum">     387 </span>            :                  * If we are seeing only the odd spurious IRQ caused by</a>
 <a name="388"><span class="lineNum">     388 </span>            :                  * bus asynchronicity then don't eventually trigger an error,</a>
@@ -458,14 +458,14 @@
 <a name="396"><span class="lineNum">     396 </span><span class="lineNoCov">          0 :                 desc-&gt;last_unhandled = jiffies;</span></a>
 <a name="397"><span class="lineNum">     397 </span>            :         }</a>
 <a name="398"><span class="lineNum">     398 </span>            : </a>
-<a name="399"><span class="lineNum">     399 </span><span class="lineCov">          9 :         irq = irq_desc_get_irq(desc);</span></a>
-<a name="400"><span class="lineNum">     400 </span><span class="lineCov">         18 :         if (unlikely(try_misrouted_irq(irq, desc, action_ret))) {</span></a>
+<a name="399"><span class="lineNum">     399 </span><span class="lineCov">         13 :         irq = irq_desc_get_irq(desc);</span></a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineCov">         26 :         if (unlikely(try_misrouted_irq(irq, desc, action_ret))) {</span></a>
 <a name="401"><span class="lineNum">     401 </span><span class="lineNoCov">          0 :                 int ok = misrouted_irq(irq);</span></a>
 <a name="402"><span class="lineNum">     402 </span><span class="lineNoCov">          0 :                 if (action_ret == IRQ_NONE)</span></a>
 <a name="403"><span class="lineNum">     403 </span><span class="lineNoCov">          0 :                         desc-&gt;irqs_unhandled -= ok;</span></a>
 <a name="404"><span class="lineNum">     404 </span>            :         }</a>
 <a name="405"><span class="lineNum">     405 </span>            : </a>
-<a name="406"><span class="lineNum">     406 </span><span class="lineCov">          9 :         if (likely(!desc-&gt;irqs_unhandled))</span></a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineCov">         13 :         if (likely(!desc-&gt;irqs_unhandled))</span></a>
 <a name="407"><span class="lineNum">     407 </span>            :                 return;</a>
 <a name="408"><span class="lineNum">     408 </span>            : </a>
 <a name="409"><span class="lineNum">     409 </span>            :         /* Now getting into unhandled irq detection */</a>

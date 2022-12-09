@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -428,9 +428,9 @@
 <a name="366"><span class="lineNum">     366 </span><span class="lineCov">          2 : }</span></a>
 <a name="367"><span class="lineNum">     367 </span>            : </a>
 <a name="368"><span class="lineNum">     368 </span>            : </a>
-<a name="369"><span class="lineNum">     369 </span><span class="lineCov">         16 : u64 ntp_tick_length(void)</span></a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineCov">         24 : u64 ntp_tick_length(void)</span></a>
 <a name="370"><span class="lineNum">     370 </span>            : {</a>
-<a name="371"><span class="lineNum">     371 </span><span class="lineCov">         16 :         return tick_length;</span></a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineCov">         24 :         return tick_length;</span></a>
 <a name="372"><span class="lineNum">     372 </span>            : }</a>
 <a name="373"><span class="lineNum">     373 </span>            : </a>
 <a name="374"><span class="lineNum">     374 </span>            : /**</a>
@@ -439,11 +439,11 @@
 <a name="377"><span class="lineNum">     377 </span>            :  * Provides the time of the next leapsecond against CLOCK_REALTIME in</a>
 <a name="378"><span class="lineNum">     378 </span>            :  * a ktime_t format. Returns KTIME_MAX if no leapsecond is pending.</a>
 <a name="379"><span class="lineNum">     379 </span>            :  */</a>
-<a name="380"><span class="lineNum">     380 </span><span class="lineCov">         10 : ktime_t ntp_get_next_leap(void)</span></a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineCov">         14 : ktime_t ntp_get_next_leap(void)</span></a>
 <a name="381"><span class="lineNum">     381 </span>            : {</a>
 <a name="382"><span class="lineNum">     382 </span>            :         ktime_t ret;</a>
 <a name="383"><span class="lineNum">     383 </span>            : </a>
-<a name="384"><span class="lineNum">     384 </span><span class="lineCov">         10 :         if ((time_state == TIME_INS) &amp;&amp; (time_status &amp; STA_INS))</span></a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineCov">         14 :         if ((time_state == TIME_INS) &amp;&amp; (time_status &amp; STA_INS))</span></a>
 <a name="385"><span class="lineNum">     385 </span><span class="lineNoCov">          0 :                 return ktime_set(ntp_next_leap_sec, 0);</span></a>
 <a name="386"><span class="lineNum">     386 </span>            :         ret = KTIME_MAX;</a>
 <a name="387"><span class="lineNum">     387 </span>            :         return ret;</a>

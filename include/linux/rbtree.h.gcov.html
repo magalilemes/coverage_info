@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -121,10 +121,10 @@
 <a name="59"><span class="lineNum">      59 </span>            : static inline void rb_link_node(struct rb_node *node, struct rb_node *parent,</a>
 <a name="60"><span class="lineNum">      60 </span>            :                                 struct rb_node **rb_link)</a>
 <a name="61"><span class="lineNum">      61 </span>            : {</a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">      12021 :         node-&gt;__rb_parent_color = (unsigned long)parent;</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">      12021 :         node-&gt;rb_left = node-&gt;rb_right = NULL;</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">      12023 :         node-&gt;__rb_parent_color = (unsigned long)parent;</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">      12023 :         node-&gt;rb_left = node-&gt;rb_right = NULL;</span></a>
 <a name="64"><span class="lineNum">      64 </span>            : </a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">      12021 :         *rb_link = node;</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">      12023 :         *rb_link = node;</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : }</a>
 <a name="67"><span class="lineNum">      67 </span>            : </a>
 <a name="68"><span class="lineNum">      68 </span>            : static inline void rb_link_node_rcu(struct rb_node *node, struct rb_node *parent,</a>
@@ -167,27 +167,27 @@
 <a name="105"><span class="lineNum">     105 </span>            : /* Same as rb_first(), but O(1) */</a>
 <a name="106"><span class="lineNum">     106 </span>            : #define rb_first_cached(root) (root)-&gt;rb_leftmost</a>
 <a name="107"><span class="lineNum">     107 </span>            : </a>
-<a name="108"><span class="lineNum">     108 </span><span class="lineCov">        619 : static inline void rb_insert_color_cached(struct rb_node *node,</span></a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineCov">        621 : static inline void rb_insert_color_cached(struct rb_node *node,</span></a>
 <a name="109"><span class="lineNum">     109 </span>            :                                           struct rb_root_cached *root,</a>
 <a name="110"><span class="lineNum">     110 </span>            :                                           bool leftmost)</a>
 <a name="111"><span class="lineNum">     111 </span>            : {</a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineCov">        619 :         if (leftmost)</span></a>
-<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        419 :                 root-&gt;rb_leftmost = node;</span></a>
-<a name="114"><span class="lineNum">     114 </span><span class="lineCov">        619 :         rb_insert_color(node, &amp;root-&gt;rb_root);</span></a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        619 : }</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">        621 :         if (leftmost)</span></a>
+<a name="113"><span class="lineNum">     113 </span><span class="lineCov">        421 :                 root-&gt;rb_leftmost = node;</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineCov">        621 :         rb_insert_color(node, &amp;root-&gt;rb_root);</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">        621 : }</span></a>
 <a name="116"><span class="lineNum">     116 </span>            : </a>
 <a name="117"><span class="lineNum">     117 </span>            : </a>
 <a name="118"><span class="lineNum">     118 </span>            : static inline struct rb_node *</a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineCov">        618 : rb_erase_cached(struct rb_node *node, struct rb_root_cached *root)</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">        620 : rb_erase_cached(struct rb_node *node, struct rb_root_cached *root)</span></a>
 <a name="120"><span class="lineNum">     120 </span>            : {</a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        618 :         struct rb_node *leftmost = NULL;</span></a>
+<a name="121"><span class="lineNum">     121 </span><span class="lineCov">        620 :         struct rb_node *leftmost = NULL;</span></a>
 <a name="122"><span class="lineNum">     122 </span>            : </a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        618 :         if (root-&gt;rb_leftmost == node)</span></a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        618 :                 leftmost = root-&gt;rb_leftmost = rb_next(node);</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">        620 :         if (root-&gt;rb_leftmost == node)</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">        619 :                 leftmost = root-&gt;rb_leftmost = rb_next(node);</span></a>
 <a name="125"><span class="lineNum">     125 </span>            : </a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineCov">        618 :         rb_erase(node, &amp;root-&gt;rb_root);</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">        620 :         rb_erase(node, &amp;root-&gt;rb_root);</span></a>
 <a name="127"><span class="lineNum">     127 </span>            : </a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineCov">        618 :         return leftmost;</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">        620 :         return leftmost;</span></a>
 <a name="129"><span class="lineNum">     129 </span>            : }</a>
 <a name="130"><span class="lineNum">     130 </span>            : </a>
 <a name="131"><span class="lineNum">     131 </span>            : static inline void rb_replace_node_cached(struct rb_node *victim,</a>
@@ -227,22 +227,22 @@
 <a name="165"><span class="lineNum">     165 </span>            : rb_add_cached(struct rb_node *node, struct rb_root_cached *tree,</a>
 <a name="166"><span class="lineNum">     166 </span>            :               bool (*less)(struct rb_node *, const struct rb_node *))</a>
 <a name="167"><span class="lineNum">     167 </span>            : {</a>
-<a name="168"><span class="lineNum">     168 </span><span class="lineCov">        619 :         struct rb_node **link = &amp;tree-&gt;rb_root.rb_node;</span></a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineCov">        619 :         struct rb_node *parent = NULL;</span></a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">        619 :         bool leftmost = true;</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">        621 :         struct rb_node **link = &amp;tree-&gt;rb_root.rb_node;</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">        621 :         struct rb_node *parent = NULL;</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">        621 :         bool leftmost = true;</span></a>
 <a name="171"><span class="lineNum">     171 </span>            : </a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">        845 :         while (*link) {</span></a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineCov">        226 :                 parent = *link;</span></a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineCov">        226 :                 if (less(node, parent)) {</span></a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineCov">         25 :                         link = &amp;parent-&gt;rb_left;</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">        839 :         while (*link) {</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">        218 :                 parent = *link;</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">        218 :                 if (less(node, parent)) {</span></a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">         18 :                         link = &amp;parent-&gt;rb_left;</span></a>
 <a name="176"><span class="lineNum">     176 </span>            :                 } else {</a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineCov">        201 :                         link = &amp;parent-&gt;rb_right;</span></a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">        201 :                         leftmost = false;</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">        200 :                         link = &amp;parent-&gt;rb_right;</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">        200 :                         leftmost = false;</span></a>
 <a name="179"><span class="lineNum">     179 </span>            :                 }</a>
 <a name="180"><span class="lineNum">     180 </span>            :         }</a>
 <a name="181"><span class="lineNum">     181 </span>            : </a>
-<a name="182"><span class="lineNum">     182 </span><span class="lineCov">        619 :         rb_link_node(node, parent, link);</span></a>
-<a name="183"><span class="lineNum">     183 </span><span class="lineCov">        619 :         rb_insert_color_cached(node, tree, leftmost);</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineCov">        621 :         rb_link_node(node, parent, link);</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">        621 :         rb_insert_color_cached(node, tree, leftmost);</span></a>
 <a name="184"><span class="lineNum">     184 </span>            : </a>
 <a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 :         return leftmost ? node : NULL;</span></a>
 <a name="186"><span class="lineNum">     186 </span>            : }</a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -111,18 +111,18 @@
 <a name="49"><span class="lineNum">      49 </span>            : EXPORT_SYMBOL(rcu_barrier);</a>
 <a name="50"><span class="lineNum">      50 </span>            : </a>
 <a name="51"><span class="lineNum">      51 </span>            : /* Record an rcu quiescent state.  */</a>
-<a name="52"><span class="lineNum">      52 </span><span class="lineCov">        809 : void rcu_qs(void)</span></a>
+<a name="52"><span class="lineNum">      52 </span><span class="lineCov">        815 : void rcu_qs(void)</span></a>
 <a name="53"><span class="lineNum">      53 </span>            : {</a>
 <a name="54"><span class="lineNum">      54 </span>            :         unsigned long flags;</a>
 <a name="55"><span class="lineNum">      55 </span>            : </a>
-<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        809 :         local_irq_save(flags);</span></a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        809 :         if (rcu_ctrlblk.donetail != rcu_ctrlblk.curtail) {</span></a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineCov">        815 :         local_irq_save(flags);</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">        815 :         if (rcu_ctrlblk.donetail != rcu_ctrlblk.curtail) {</span></a>
 <a name="58"><span class="lineNum">      58 </span><span class="lineCov">        278 :                 rcu_ctrlblk.donetail = rcu_ctrlblk.curtail;</span></a>
 <a name="59"><span class="lineNum">      59 </span><span class="lineCov">        278 :                 raise_softirq_irqoff(RCU_SOFTIRQ);</span></a>
 <a name="60"><span class="lineNum">      60 </span>            :         }</a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        809 :         WRITE_ONCE(rcu_ctrlblk.gp_seq, rcu_ctrlblk.gp_seq + 1);</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">       1618 :         local_irq_restore(flags);</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        809 : }</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">        815 :         WRITE_ONCE(rcu_ctrlblk.gp_seq, rcu_ctrlblk.gp_seq + 1);</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">       1630 :         local_irq_restore(flags);</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineCov">        815 : }</span></a>
 <a name="64"><span class="lineNum">      64 </span>            : </a>
 <a name="65"><span class="lineNum">      65 </span>            : /*</a>
 <a name="66"><span class="lineNum">      66 </span>            :  * Check to see if the scheduling-clock interrupt came from an extended</a>
@@ -130,15 +130,15 @@
 <a name="68"><span class="lineNum">      68 </span>            :  * be called from hardirq context.  It is normally called from the</a>
 <a name="69"><span class="lineNum">      69 </span>            :  * scheduling-clock interrupt.</a>
 <a name="70"><span class="lineNum">      70 </span>            :  */</a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          9 : void rcu_sched_clock_irq(int user)</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">         13 : void rcu_sched_clock_irq(int user)</span></a>
 <a name="72"><span class="lineNum">      72 </span>            : {</a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          9 :         if (user) {</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          8 :                 rcu_qs();</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">         13 :         if (user) {</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">         12 :                 rcu_qs();</span></a>
 <a name="75"><span class="lineNum">      75 </span><span class="lineCov">          1 :         } else if (rcu_ctrlblk.donetail != rcu_ctrlblk.curtail) {</span></a>
 <a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :                 set_tsk_need_resched(current);</span></a>
 <a name="77"><span class="lineNum">      77 </span>            :                 set_preempt_need_resched();</a>
 <a name="78"><span class="lineNum">      78 </span>            :         }</a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">          9 : }</span></a>
+<a name="79"><span class="lineNum">      79 </span><span class="lineCov">         13 : }</span></a>
 <a name="80"><span class="lineNum">      80 </span>            : </a>
 <a name="81"><span class="lineNum">      81 </span>            : /*</a>
 <a name="82"><span class="lineNum">      82 </span>            :  * Reclaim the specified callback, either by invoking it for non-kfree cases or</a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">38</td>
@@ -611,11 +611,11 @@
 <a name="549"><span class="lineNum">     549 </span>            :         raw_spinlock_t *lock;</a>
 <a name="550"><span class="lineNum">     550 </span>            : </a>
 <a name="551"><span class="lineNum">     551 </span>            :         /* Matches synchronize_rcu() in __sched_core_enable() */</a>
-<a name="552"><span class="lineNum">     552 </span><span class="lineCov">       1457 :         preempt_disable();</span></a>
+<a name="552"><span class="lineNum">     552 </span><span class="lineCov">       1465 :         preempt_disable();</span></a>
 <a name="553"><span class="lineNum">     553 </span>            :         if (sched_core_disabled()) {</a>
-<a name="554"><span class="lineNum">     554 </span><span class="lineCov">       1457 :                 raw_spin_lock_nested(&amp;rq-&gt;__lock, subclass);</span></a>
+<a name="554"><span class="lineNum">     554 </span><span class="lineCov">       1465 :                 raw_spin_lock_nested(&amp;rq-&gt;__lock, subclass);</span></a>
 <a name="555"><span class="lineNum">     555 </span>            :                 /* preempt_count *MUST* be &gt; 1 */</a>
-<a name="556"><span class="lineNum">     556 </span><span class="lineCov">       1457 :                 preempt_enable_no_resched();</span></a>
+<a name="556"><span class="lineNum">     556 </span><span class="lineCov">       1465 :                 preempt_enable_no_resched();</span></a>
 <a name="557"><span class="lineNum">     557 </span>            :                 return;</a>
 <a name="558"><span class="lineNum">     558 </span>            :         }</a>
 <a name="559"><span class="lineNum">     559 </span>            : </a>
@@ -657,7 +657,7 @@
 <a name="595"><span class="lineNum">     595 </span>            : </a>
 <a name="596"><span class="lineNum">     596 </span><span class="lineCov">        107 : void raw_spin_rq_unlock(struct rq *rq)</span></a>
 <a name="597"><span class="lineNum">     597 </span>            : {</a>
-<a name="598"><span class="lineNum">     598 </span><span class="lineCov">       1457 :         raw_spin_unlock(rq_lockp(rq));</span></a>
+<a name="598"><span class="lineNum">     598 </span><span class="lineCov">       1465 :         raw_spin_unlock(rq_lockp(rq));</span></a>
 <a name="599"><span class="lineNum">     599 </span><span class="lineCov">        107 : }</span></a>
 <a name="600"><span class="lineNum">     600 </span>            : </a>
 <a name="601"><span class="lineNum">     601 </span>            : #ifdef CONFIG_SMP</a>
@@ -755,7 +755,7 @@
 <a name="693"><span class="lineNum">     693 </span>            :  * In theory, the compile should just see 0 here, and optimize out the call</a>
 <a name="694"><span class="lineNum">     694 </span>            :  * to sched_rt_avg_update. But I don't trust it...</a>
 <a name="695"><span class="lineNum">     695 </span>            :  */</a>
-<a name="696"><span class="lineNum">     696 </span><span class="lineCov">       1255 :         s64 __maybe_unused steal = 0, irq_delta = 0;</span></a>
+<a name="696"><span class="lineNum">     696 </span><span class="lineCov">       1259 :         s64 __maybe_unused steal = 0, irq_delta = 0;</span></a>
 <a name="697"><span class="lineNum">     697 </span>            : </a>
 <a name="698"><span class="lineNum">     698 </span>            : #ifdef CONFIG_IRQ_TIME_ACCOUNTING</a>
 <a name="699"><span class="lineNum">     699 </span>            :         irq_delta = irq_time_read(cpu_of(rq)) - rq-&gt;prev_irq_time;</a>
@@ -794,35 +794,35 @@
 <a name="732"><span class="lineNum">     732 </span>            :         }</a>
 <a name="733"><span class="lineNum">     733 </span>            : #endif</a>
 <a name="734"><span class="lineNum">     734 </span>            : </a>
-<a name="735"><span class="lineNum">     735 </span><span class="lineCov">       1255 :         rq-&gt;clock_task += delta;</span></a>
+<a name="735"><span class="lineNum">     735 </span><span class="lineCov">       1259 :         rq-&gt;clock_task += delta;</span></a>
 <a name="736"><span class="lineNum">     736 </span>            : </a>
 <a name="737"><span class="lineNum">     737 </span>            : #ifdef CONFIG_HAVE_SCHED_AVG_IRQ</a>
 <a name="738"><span class="lineNum">     738 </span>            :         if ((irq_delta + steal) &amp;&amp; sched_feat(NONTASK_CAPACITY))</a>
 <a name="739"><span class="lineNum">     739 </span>            :                 update_irq_load_avg(rq, irq_delta + steal);</a>
 <a name="740"><span class="lineNum">     740 </span>            : #endif</a>
-<a name="741"><span class="lineNum">     741 </span><span class="lineCov">       1255 :         update_rq_clock_pelt(rq, delta);</span></a>
+<a name="741"><span class="lineNum">     741 </span><span class="lineCov">       1259 :         update_rq_clock_pelt(rq, delta);</span></a>
 <a name="742"><span class="lineNum">     742 </span>            : }</a>
 <a name="743"><span class="lineNum">     743 </span>            : </a>
-<a name="744"><span class="lineNum">     744 </span><span class="lineCov">       1456 : void update_rq_clock(struct rq *rq)</span></a>
+<a name="744"><span class="lineNum">     744 </span><span class="lineCov">       1464 : void update_rq_clock(struct rq *rq)</span></a>
 <a name="745"><span class="lineNum">     745 </span>            : {</a>
 <a name="746"><span class="lineNum">     746 </span>            :         s64 delta;</a>
 <a name="747"><span class="lineNum">     747 </span>            : </a>
-<a name="748"><span class="lineNum">     748 </span><span class="lineCov">       1456 :         lockdep_assert_rq_held(rq);</span></a>
+<a name="748"><span class="lineNum">     748 </span><span class="lineCov">       1464 :         lockdep_assert_rq_held(rq);</span></a>
 <a name="749"><span class="lineNum">     749 </span>            : </a>
-<a name="750"><span class="lineNum">     750 </span><span class="lineCov">       1456 :         if (rq-&gt;clock_update_flags &amp; RQCF_ACT_SKIP)</span></a>
+<a name="750"><span class="lineNum">     750 </span><span class="lineCov">       1464 :         if (rq-&gt;clock_update_flags &amp; RQCF_ACT_SKIP)</span></a>
 <a name="751"><span class="lineNum">     751 </span>            :                 return;</a>
 <a name="752"><span class="lineNum">     752 </span>            : </a>
 <a name="753"><span class="lineNum">     753 </span>            : #ifdef CONFIG_SCHED_DEBUG</a>
-<a name="754"><span class="lineNum">     754 </span><span class="lineCov">       1255 :         if (sched_feat(WARN_DOUBLE_CLOCK))</span></a>
+<a name="754"><span class="lineNum">     754 </span><span class="lineCov">       1259 :         if (sched_feat(WARN_DOUBLE_CLOCK))</span></a>
 <a name="755"><span class="lineNum">     755 </span><span class="lineNoCov">          0 :                 SCHED_WARN_ON(rq-&gt;clock_update_flags &amp; RQCF_UPDATED);</span></a>
-<a name="756"><span class="lineNum">     756 </span><span class="lineCov">       1255 :         rq-&gt;clock_update_flags |= RQCF_UPDATED;</span></a>
+<a name="756"><span class="lineNum">     756 </span><span class="lineCov">       1259 :         rq-&gt;clock_update_flags |= RQCF_UPDATED;</span></a>
 <a name="757"><span class="lineNum">     757 </span>            : #endif</a>
 <a name="758"><span class="lineNum">     758 </span>            : </a>
-<a name="759"><span class="lineNum">     759 </span><span class="lineCov">       1255 :         delta = sched_clock_cpu(cpu_of(rq)) - rq-&gt;clock;</span></a>
-<a name="760"><span class="lineNum">     760 </span><span class="lineCov">       1255 :         if (delta &lt; 0)</span></a>
+<a name="759"><span class="lineNum">     759 </span><span class="lineCov">       1259 :         delta = sched_clock_cpu(cpu_of(rq)) - rq-&gt;clock;</span></a>
+<a name="760"><span class="lineNum">     760 </span><span class="lineCov">       1259 :         if (delta &lt; 0)</span></a>
 <a name="761"><span class="lineNum">     761 </span>            :                 return;</a>
-<a name="762"><span class="lineNum">     762 </span><span class="lineCov">       1255 :         rq-&gt;clock += delta;</span></a>
-<a name="763"><span class="lineNum">     763 </span><span class="lineCov">       1255 :         update_rq_clock_task(rq, delta);</span></a>
+<a name="762"><span class="lineNum">     762 </span><span class="lineCov">       1259 :         rq-&gt;clock += delta;</span></a>
+<a name="763"><span class="lineNum">     763 </span><span class="lineCov">       1259 :         update_rq_clock_task(rq, delta);</span></a>
 <a name="764"><span class="lineNum">     764 </span>            : }</a>
 <a name="765"><span class="lineNum">     765 </span>            : </a>
 <a name="766"><span class="lineNum">     766 </span>            : #ifdef CONFIG_SCHED_HRTICK</a>
@@ -1100,17 +1100,17 @@
 <a name="1038"><span class="lineNum">    1038 </span>            :  * might also involve a cross-CPU call to trigger the scheduler on</a>
 <a name="1039"><span class="lineNum">    1039 </span>            :  * the target CPU.</a>
 <a name="1040"><span class="lineNum">    1040 </span>            :  */</a>
-<a name="1041"><span class="lineNum">    1041 </span><span class="lineCov">        200 : void resched_curr(struct rq *rq)</span></a>
+<a name="1041"><span class="lineNum">    1041 </span><span class="lineCov">        203 : void resched_curr(struct rq *rq)</span></a>
 <a name="1042"><span class="lineNum">    1042 </span>            : {</a>
-<a name="1043"><span class="lineNum">    1043 </span><span class="lineCov">        203 :         struct task_struct *curr = rq-&gt;curr;</span></a>
+<a name="1043"><span class="lineNum">    1043 </span><span class="lineCov">        206 :         struct task_struct *curr = rq-&gt;curr;</span></a>
 <a name="1044"><span class="lineNum">    1044 </span>            :         int cpu;</a>
 <a name="1045"><span class="lineNum">    1045 </span>            : </a>
-<a name="1046"><span class="lineNum">    1046 </span><span class="lineCov">        406 :         lockdep_assert_rq_held(rq);</span></a>
+<a name="1046"><span class="lineNum">    1046 </span><span class="lineCov">        412 :         lockdep_assert_rq_held(rq);</span></a>
 <a name="1047"><span class="lineNum">    1047 </span>            : </a>
-<a name="1048"><span class="lineNum">    1048 </span><span class="lineCov">        203 :         if (test_tsk_need_resched(curr))</span></a>
+<a name="1048"><span class="lineNum">    1048 </span><span class="lineCov">        206 :         if (test_tsk_need_resched(curr))</span></a>
 <a name="1049"><span class="lineNum">    1049 </span>            :                 return;</a>
 <a name="1050"><span class="lineNum">    1050 </span>            : </a>
-<a name="1051"><span class="lineNum">    1051 </span><span class="lineCov">        202 :         cpu = cpu_of(rq);</span></a>
+<a name="1051"><span class="lineNum">    1051 </span><span class="lineCov">        205 :         cpu = cpu_of(rq);</span></a>
 <a name="1052"><span class="lineNum">    1052 </span>            : </a>
 <a name="1053"><span class="lineNum">    1053 </span>            :         if (cpu == smp_processor_id()) {</a>
 <a name="1054"><span class="lineNum">    1054 </span>            :                 set_tsk_need_resched(curr);</a>
@@ -2123,9 +2123,9 @@
 <a name="2061"><span class="lineNum">    2061 </span><span class="lineNoCov">          0 :         return ip;</span></a>
 <a name="2062"><span class="lineNum">    2062 </span>            : }</a>
 <a name="2063"><span class="lineNum">    2063 </span>            : </a>
-<a name="2064"><span class="lineNum">    2064 </span><span class="lineCov">        615 : static inline void enqueue_task(struct rq *rq, struct task_struct *p, int flags)</span></a>
+<a name="2064"><span class="lineNum">    2064 </span><span class="lineCov">        617 : static inline void enqueue_task(struct rq *rq, struct task_struct *p, int flags)</span></a>
 <a name="2065"><span class="lineNum">    2065 </span>            : {</a>
-<a name="2066"><span class="lineNum">    2066 </span><span class="lineCov">        615 :         if (!(flags &amp; ENQUEUE_NOCLOCK))</span></a>
+<a name="2066"><span class="lineNum">    2066 </span><span class="lineCov">        617 :         if (!(flags &amp; ENQUEUE_NOCLOCK))</span></a>
 <a name="2067"><span class="lineNum">    2067 </span><span class="lineNoCov">          0 :                 update_rq_clock(rq);</span></a>
 <a name="2068"><span class="lineNum">    2068 </span>            : </a>
 <a name="2069"><span class="lineNum">    2069 </span>            :         if (!(flags &amp; ENQUEUE_RESTORE)) {</a>
@@ -2133,19 +2133,19 @@
 <a name="2071"><span class="lineNum">    2071 </span>            :                 psi_enqueue(p, flags &amp; ENQUEUE_WAKEUP);</a>
 <a name="2072"><span class="lineNum">    2072 </span>            :         }</a>
 <a name="2073"><span class="lineNum">    2073 </span>            : </a>
-<a name="2074"><span class="lineNum">    2074 </span><span class="lineCov">        618 :         uclamp_rq_inc(rq, p);</span></a>
-<a name="2075"><span class="lineNum">    2075 </span><span class="lineCov">        618 :         p-&gt;sched_class-&gt;enqueue_task(rq, p, flags);</span></a>
+<a name="2074"><span class="lineNum">    2074 </span><span class="lineCov">        620 :         uclamp_rq_inc(rq, p);</span></a>
+<a name="2075"><span class="lineNum">    2075 </span><span class="lineCov">        620 :         p-&gt;sched_class-&gt;enqueue_task(rq, p, flags);</span></a>
 <a name="2076"><span class="lineNum">    2076 </span>            : </a>
-<a name="2077"><span class="lineNum">    2077 </span><span class="lineCov">        618 :         if (sched_core_enabled(rq))</span></a>
+<a name="2077"><span class="lineNum">    2077 </span><span class="lineCov">        620 :         if (sched_core_enabled(rq))</span></a>
 <a name="2078"><span class="lineNum">    2078 </span>            :                 sched_core_enqueue(rq, p);</a>
-<a name="2079"><span class="lineNum">    2079 </span><span class="lineCov">        615 : }</span></a>
+<a name="2079"><span class="lineNum">    2079 </span><span class="lineCov">        617 : }</span></a>
 <a name="2080"><span class="lineNum">    2080 </span>            : </a>
-<a name="2081"><span class="lineNum">    2081 </span><span class="lineCov">        613 : static inline void dequeue_task(struct rq *rq, struct task_struct *p, int flags)</span></a>
+<a name="2081"><span class="lineNum">    2081 </span><span class="lineCov">        615 : static inline void dequeue_task(struct rq *rq, struct task_struct *p, int flags)</span></a>
 <a name="2082"><span class="lineNum">    2082 </span>            : {</a>
-<a name="2083"><span class="lineNum">    2083 </span><span class="lineCov">        616 :         if (sched_core_enabled(rq))</span></a>
+<a name="2083"><span class="lineNum">    2083 </span><span class="lineCov">        618 :         if (sched_core_enabled(rq))</span></a>
 <a name="2084"><span class="lineNum">    2084 </span>            :                 sched_core_dequeue(rq, p, flags);</a>
 <a name="2085"><span class="lineNum">    2085 </span>            : </a>
-<a name="2086"><span class="lineNum">    2086 </span><span class="lineCov">        613 :         if (!(flags &amp; DEQUEUE_NOCLOCK))</span></a>
+<a name="2086"><span class="lineNum">    2086 </span><span class="lineCov">        615 :         if (!(flags &amp; DEQUEUE_NOCLOCK))</span></a>
 <a name="2087"><span class="lineNum">    2087 </span><span class="lineNoCov">          0 :                 update_rq_clock(rq);</span></a>
 <a name="2088"><span class="lineNum">    2088 </span>            : </a>
 <a name="2089"><span class="lineNum">    2089 </span>            :         if (!(flags &amp; DEQUEUE_SAVE)) {</a>
@@ -2153,22 +2153,22 @@
 <a name="2091"><span class="lineNum">    2091 </span>            :                 psi_dequeue(p, flags &amp; DEQUEUE_SLEEP);</a>
 <a name="2092"><span class="lineNum">    2092 </span>            :         }</a>
 <a name="2093"><span class="lineNum">    2093 </span>            : </a>
-<a name="2094"><span class="lineNum">    2094 </span><span class="lineCov">        616 :         uclamp_rq_dec(rq, p);</span></a>
-<a name="2095"><span class="lineNum">    2095 </span><span class="lineCov">        616 :         p-&gt;sched_class-&gt;dequeue_task(rq, p, flags);</span></a>
-<a name="2096"><span class="lineNum">    2096 </span><span class="lineCov">        613 : }</span></a>
+<a name="2094"><span class="lineNum">    2094 </span><span class="lineCov">        618 :         uclamp_rq_dec(rq, p);</span></a>
+<a name="2095"><span class="lineNum">    2095 </span><span class="lineCov">        618 :         p-&gt;sched_class-&gt;dequeue_task(rq, p, flags);</span></a>
+<a name="2096"><span class="lineNum">    2096 </span><span class="lineCov">        615 : }</span></a>
 <a name="2097"><span class="lineNum">    2097 </span>            : </a>
 <a name="2098"><span class="lineNum">    2098 </span><span class="lineNoCov">          0 : void activate_task(struct rq *rq, struct task_struct *p, int flags)</span></a>
 <a name="2099"><span class="lineNum">    2099 </span>            : {</a>
-<a name="2100"><span class="lineNum">    2100 </span><span class="lineCov">        615 :         enqueue_task(rq, p, flags);</span></a>
+<a name="2100"><span class="lineNum">    2100 </span><span class="lineCov">        617 :         enqueue_task(rq, p, flags);</span></a>
 <a name="2101"><span class="lineNum">    2101 </span>            : </a>
-<a name="2102"><span class="lineNum">    2102 </span><span class="lineCov">        615 :         p-&gt;on_rq = TASK_ON_RQ_QUEUED;</span></a>
+<a name="2102"><span class="lineNum">    2102 </span><span class="lineCov">        617 :         p-&gt;on_rq = TASK_ON_RQ_QUEUED;</span></a>
 <a name="2103"><span class="lineNum">    2103 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="2104"><span class="lineNum">    2104 </span>            : </a>
 <a name="2105"><span class="lineNum">    2105 </span><span class="lineNoCov">          0 : void deactivate_task(struct rq *rq, struct task_struct *p, int flags)</span></a>
 <a name="2106"><span class="lineNum">    2106 </span>            : {</a>
-<a name="2107"><span class="lineNum">    2107 </span><span class="lineCov">        613 :         p-&gt;on_rq = (flags &amp; DEQUEUE_SLEEP) ? 0 : TASK_ON_RQ_MIGRATING;</span></a>
+<a name="2107"><span class="lineNum">    2107 </span><span class="lineCov">        615 :         p-&gt;on_rq = (flags &amp; DEQUEUE_SLEEP) ? 0 : TASK_ON_RQ_MIGRATING;</span></a>
 <a name="2108"><span class="lineNum">    2108 </span>            : </a>
-<a name="2109"><span class="lineNum">    2109 </span><span class="lineCov">        613 :         dequeue_task(rq, p, flags);</span></a>
+<a name="2109"><span class="lineNum">    2109 </span><span class="lineCov">        615 :         dequeue_task(rq, p, flags);</span></a>
 <a name="2110"><span class="lineNum">    2110 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="2111"><span class="lineNum">    2111 </span>            : </a>
 <a name="2112"><span class="lineNum">    2112 </span>            : static inline int __normal_prio(int policy, int rt_prio, int nice)</a>
@@ -2248,10 +2248,10 @@
 <a name="2186"><span class="lineNum">    2186 </span><span class="lineNoCov">          0 :                 p-&gt;sched_class-&gt;prio_changed(rq, p, oldprio);</span></a>
 <a name="2187"><span class="lineNum">    2187 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="2188"><span class="lineNum">    2188 </span>            : </a>
-<a name="2189"><span class="lineNum">    2189 </span><span class="lineCov">        615 : void check_preempt_curr(struct rq *rq, struct task_struct *p, int flags)</span></a>
+<a name="2189"><span class="lineNum">    2189 </span><span class="lineCov">        617 : void check_preempt_curr(struct rq *rq, struct task_struct *p, int flags)</span></a>
 <a name="2190"><span class="lineNum">    2190 </span>            : {</a>
-<a name="2191"><span class="lineNum">    2191 </span><span class="lineCov">        615 :         if (p-&gt;sched_class == rq-&gt;curr-&gt;sched_class)</span></a>
-<a name="2192"><span class="lineNum">    2192 </span><span class="lineCov">        612 :                 rq-&gt;curr-&gt;sched_class-&gt;check_preempt_curr(rq, p, flags);</span></a>
+<a name="2191"><span class="lineNum">    2191 </span><span class="lineCov">        617 :         if (p-&gt;sched_class == rq-&gt;curr-&gt;sched_class)</span></a>
+<a name="2192"><span class="lineNum">    2192 </span><span class="lineCov">        614 :                 rq-&gt;curr-&gt;sched_class-&gt;check_preempt_curr(rq, p, flags);</span></a>
 <a name="2193"><span class="lineNum">    2193 </span><span class="lineCov">          3 :         else if (p-&gt;sched_class &gt; rq-&gt;curr-&gt;sched_class)</span></a>
 <a name="2194"><span class="lineNum">    2194 </span>            :                 resched_curr(rq);</a>
 <a name="2195"><span class="lineNum">    2195 </span>            : </a>
@@ -2259,9 +2259,9 @@
 <a name="2197"><span class="lineNum">    2197 </span>            :          * A queue event has occurred, and we're going to schedule.  In</a>
 <a name="2198"><span class="lineNum">    2198 </span>            :          * this case, we can save a useless back to back clock update.</a>
 <a name="2199"><span class="lineNum">    2199 </span>            :          */</a>
-<a name="2200"><span class="lineNum">    2200 </span><span class="lineCov">       1230 :         if (task_on_rq_queued(rq-&gt;curr) &amp;&amp; test_tsk_need_resched(rq-&gt;curr))</span></a>
-<a name="2201"><span class="lineNum">    2201 </span><span class="lineCov">        295 :                 rq_clock_skip_update(rq);</span></a>
-<a name="2202"><span class="lineNum">    2202 </span><span class="lineCov">        615 : }</span></a>
+<a name="2200"><span class="lineNum">    2200 </span><span class="lineCov">       1234 :         if (task_on_rq_queued(rq-&gt;curr) &amp;&amp; test_tsk_need_resched(rq-&gt;curr))</span></a>
+<a name="2201"><span class="lineNum">    2201 </span><span class="lineCov">        301 :                 rq_clock_skip_update(rq);</span></a>
+<a name="2202"><span class="lineNum">    2202 </span><span class="lineCov">        617 : }</span></a>
 <a name="2203"><span class="lineNum">    2203 </span>            : </a>
 <a name="2204"><span class="lineNum">    2204 </span>            : #ifdef CONFIG_SMP</a>
 <a name="2205"><span class="lineNum">    2205 </span>            : </a>
@@ -3685,9 +3685,9 @@
 <a name="3623"><span class="lineNum">    3623 </span>            : static void ttwu_do_wakeup(struct rq *rq, struct task_struct *p, int wake_flags,</a>
 <a name="3624"><span class="lineNum">    3624 </span>            :                            struct rq_flags *rf)</a>
 <a name="3625"><span class="lineNum">    3625 </span>            : {</a>
-<a name="3626"><span class="lineNum">    3626 </span><span class="lineCov">        508 :         check_preempt_curr(rq, p, wake_flags);</span></a>
-<a name="3627"><span class="lineNum">    3627 </span><span class="lineCov">        508 :         WRITE_ONCE(p-&gt;__state, TASK_RUNNING);</span></a>
-<a name="3628"><span class="lineNum">    3628 </span><span class="lineCov">        508 :         trace_sched_wakeup(p);</span></a>
+<a name="3626"><span class="lineNum">    3626 </span><span class="lineCov">        510 :         check_preempt_curr(rq, p, wake_flags);</span></a>
+<a name="3627"><span class="lineNum">    3627 </span><span class="lineCov">        510 :         WRITE_ONCE(p-&gt;__state, TASK_RUNNING);</span></a>
+<a name="3628"><span class="lineNum">    3628 </span><span class="lineCov">        510 :         trace_sched_wakeup(p);</span></a>
 <a name="3629"><span class="lineNum">    3629 </span>            : </a>
 <a name="3630"><span class="lineNum">    3630 </span>            : #ifdef CONFIG_SMP</a>
 <a name="3631"><span class="lineNum">    3631 </span>            :         if (p-&gt;sched_class-&gt;task_woken) {</a>
@@ -3718,14 +3718,14 @@
 <a name="3656"><span class="lineNum">    3656 </span>            : }</a>
 <a name="3657"><span class="lineNum">    3657 </span>            : </a>
 <a name="3658"><span class="lineNum">    3658 </span>            : static void</a>
-<a name="3659"><span class="lineNum">    3659 </span><span class="lineCov">        508 : ttwu_do_activate(struct rq *rq, struct task_struct *p, int wake_flags,</span></a>
+<a name="3659"><span class="lineNum">    3659 </span><span class="lineCov">        510 : ttwu_do_activate(struct rq *rq, struct task_struct *p, int wake_flags,</span></a>
 <a name="3660"><span class="lineNum">    3660 </span>            :                  struct rq_flags *rf)</a>
 <a name="3661"><span class="lineNum">    3661 </span>            : {</a>
-<a name="3662"><span class="lineNum">    3662 </span><span class="lineCov">        508 :         int en_flags = ENQUEUE_WAKEUP | ENQUEUE_NOCLOCK;</span></a>
+<a name="3662"><span class="lineNum">    3662 </span><span class="lineCov">        510 :         int en_flags = ENQUEUE_WAKEUP | ENQUEUE_NOCLOCK;</span></a>
 <a name="3663"><span class="lineNum">    3663 </span>            : </a>
-<a name="3664"><span class="lineNum">    3664 </span><span class="lineCov">        508 :         lockdep_assert_rq_held(rq);</span></a>
+<a name="3664"><span class="lineNum">    3664 </span><span class="lineCov">        510 :         lockdep_assert_rq_held(rq);</span></a>
 <a name="3665"><span class="lineNum">    3665 </span>            : </a>
-<a name="3666"><span class="lineNum">    3666 </span><span class="lineCov">        508 :         if (p-&gt;sched_contributes_to_load)</span></a>
+<a name="3666"><span class="lineNum">    3666 </span><span class="lineCov">        510 :         if (p-&gt;sched_contributes_to_load)</span></a>
 <a name="3667"><span class="lineNum">    3667 </span><span class="lineCov">        307 :                 rq-&gt;nr_uninterruptible--;</span></a>
 <a name="3668"><span class="lineNum">    3668 </span>            : </a>
 <a name="3669"><span class="lineNum">    3669 </span>            : #ifdef CONFIG_SMP</a>
@@ -3733,14 +3733,14 @@
 <a name="3671"><span class="lineNum">    3671 </span>            :                 en_flags |= ENQUEUE_MIGRATED;</a>
 <a name="3672"><span class="lineNum">    3672 </span>            :         else</a>
 <a name="3673"><span class="lineNum">    3673 </span>            : #endif</a>
-<a name="3674"><span class="lineNum">    3674 </span><span class="lineCov">        508 :         if (p-&gt;in_iowait) {</span></a>
+<a name="3674"><span class="lineNum">    3674 </span><span class="lineCov">        510 :         if (p-&gt;in_iowait) {</span></a>
 <a name="3675"><span class="lineNum">    3675 </span><span class="lineNoCov">          0 :                 delayacct_blkio_end(p);</span></a>
 <a name="3676"><span class="lineNum">    3676 </span><span class="lineNoCov">          0 :                 atomic_dec(&amp;task_rq(p)-&gt;nr_iowait);</span></a>
 <a name="3677"><span class="lineNum">    3677 </span>            :         }</a>
 <a name="3678"><span class="lineNum">    3678 </span>            : </a>
-<a name="3679"><span class="lineNum">    3679 </span><span class="lineCov">        508 :         activate_task(rq, p, en_flags);</span></a>
-<a name="3680"><span class="lineNum">    3680 </span><span class="lineCov">       1016 :         ttwu_do_wakeup(rq, p, wake_flags, rf);</span></a>
-<a name="3681"><span class="lineNum">    3681 </span><span class="lineCov">        508 : }</span></a>
+<a name="3679"><span class="lineNum">    3679 </span><span class="lineCov">        510 :         activate_task(rq, p, en_flags);</span></a>
+<a name="3680"><span class="lineNum">    3680 </span><span class="lineCov">       1020 :         ttwu_do_wakeup(rq, p, wake_flags, rf);</span></a>
+<a name="3681"><span class="lineNum">    3681 </span><span class="lineCov">        510 : }</span></a>
 <a name="3682"><span class="lineNum">    3682 </span>            : </a>
 <a name="3683"><span class="lineNum">    3683 </span>            : /*</a>
 <a name="3684"><span class="lineNum">    3684 </span>            :  * Consider @p being inside a wait loop:</a>
@@ -3924,18 +3924,18 @@
 <a name="3862"><span class="lineNum">    3862 </span>            : </a>
 <a name="3863"><span class="lineNum">    3863 </span>            : #endif /* CONFIG_SMP */</a>
 <a name="3864"><span class="lineNum">    3864 </span>            : </a>
-<a name="3865"><span class="lineNum">    3865 </span><span class="lineCov">        508 : static void ttwu_queue(struct task_struct *p, int cpu, int wake_flags)</span></a>
+<a name="3865"><span class="lineNum">    3865 </span><span class="lineCov">        510 : static void ttwu_queue(struct task_struct *p, int cpu, int wake_flags)</span></a>
 <a name="3866"><span class="lineNum">    3866 </span>            : {</a>
-<a name="3867"><span class="lineNum">    3867 </span><span class="lineCov">        508 :         struct rq *rq = cpu_rq(cpu);</span></a>
+<a name="3867"><span class="lineNum">    3867 </span><span class="lineCov">        510 :         struct rq *rq = cpu_rq(cpu);</span></a>
 <a name="3868"><span class="lineNum">    3868 </span>            :         struct rq_flags rf;</a>
 <a name="3869"><span class="lineNum">    3869 </span>            : </a>
-<a name="3870"><span class="lineNum">    3870 </span><span class="lineCov">        508 :         if (ttwu_queue_wakelist(p, cpu, wake_flags))</span></a>
+<a name="3870"><span class="lineNum">    3870 </span><span class="lineCov">        510 :         if (ttwu_queue_wakelist(p, cpu, wake_flags))</span></a>
 <a name="3871"><span class="lineNum">    3871 </span>            :                 return;</a>
 <a name="3872"><span class="lineNum">    3872 </span>            : </a>
-<a name="3873"><span class="lineNum">    3873 </span><span class="lineCov">        508 :         rq_lock(rq, &amp;rf);</span></a>
-<a name="3874"><span class="lineNum">    3874 </span><span class="lineCov">        508 :         update_rq_clock(rq);</span></a>
-<a name="3875"><span class="lineNum">    3875 </span><span class="lineCov">        508 :         ttwu_do_activate(rq, p, wake_flags, &amp;rf);</span></a>
-<a name="3876"><span class="lineNum">    3876 </span><span class="lineCov">        508 :         rq_unlock(rq, &amp;rf);</span></a>
+<a name="3873"><span class="lineNum">    3873 </span><span class="lineCov">        510 :         rq_lock(rq, &amp;rf);</span></a>
+<a name="3874"><span class="lineNum">    3874 </span><span class="lineCov">        510 :         update_rq_clock(rq);</span></a>
+<a name="3875"><span class="lineNum">    3875 </span><span class="lineCov">        510 :         ttwu_do_activate(rq, p, wake_flags, &amp;rf);</span></a>
+<a name="3876"><span class="lineNum">    3876 </span><span class="lineCov">        510 :         rq_unlock(rq, &amp;rf);</span></a>
 <a name="3877"><span class="lineNum">    3877 </span>            : }</a>
 <a name="3878"><span class="lineNum">    3878 </span>            : </a>
 <a name="3879"><span class="lineNum">    3879 </span>            : /*</a>
@@ -3961,7 +3961,7 @@
 <a name="3899"><span class="lineNum">    3899 </span>            :         }</a>
 <a name="3900"><span class="lineNum">    3900 </span>            : </a>
 <a name="3901"><span class="lineNum">    3901 </span><span class="lineCov">        606 :         if (READ_ONCE(p-&gt;__state) &amp; state) {</span></a>
-<a name="3902"><span class="lineNum">    3902 </span><span class="lineCov">        508 :                 *success = 1;</span></a>
+<a name="3902"><span class="lineNum">    3902 </span><span class="lineCov">        510 :                 *success = 1;</span></a>
 <a name="3903"><span class="lineNum">    3903 </span>            :                 return true;</a>
 <a name="3904"><span class="lineNum">    3904 </span>            :         }</a>
 <a name="3905"><span class="lineNum">    3905 </span>            : </a>
@@ -4146,7 +4146,7 @@
 <a name="4084"><span class="lineNum">    4084 </span><span class="lineCov">        605 :         if (!ttwu_state_match(p, state, &amp;success))</span></a>
 <a name="4085"><span class="lineNum">    4085 </span>            :                 goto unlock;</a>
 <a name="4086"><span class="lineNum">    4086 </span>            : </a>
-<a name="4087"><span class="lineNum">    4087 </span><span class="lineCov">        508 :         trace_sched_waking(p);</span></a>
+<a name="4087"><span class="lineNum">    4087 </span><span class="lineCov">        510 :         trace_sched_waking(p);</span></a>
 <a name="4088"><span class="lineNum">    4088 </span>            : </a>
 <a name="4089"><span class="lineNum">    4089 </span>            :         /*</a>
 <a name="4090"><span class="lineNum">    4090 </span>            :          * Ensure we load p-&gt;on_rq _after_ p-&gt;state, otherwise it would</a>
@@ -4170,8 +4170,8 @@
 <a name="4108"><span class="lineNum">    4108 </span>            :          *</a>
 <a name="4109"><span class="lineNum">    4109 </span>            :          * A similar smb_rmb() lives in try_invoke_on_locked_down_task().</a>
 <a name="4110"><span class="lineNum">    4110 </span>            :          */</a>
-<a name="4111"><span class="lineNum">    4111 </span><span class="lineCov">        508 :         smp_rmb();</span></a>
-<a name="4112"><span class="lineNum">    4112 </span><span class="lineCov">        508 :         if (READ_ONCE(p-&gt;on_rq) &amp;&amp; ttwu_runnable(p, wake_flags))</span></a>
+<a name="4111"><span class="lineNum">    4111 </span><span class="lineCov">        510 :         smp_rmb();</span></a>
+<a name="4112"><span class="lineNum">    4112 </span><span class="lineCov">        510 :         if (READ_ONCE(p-&gt;on_rq) &amp;&amp; ttwu_runnable(p, wake_flags))</span></a>
 <a name="4113"><span class="lineNum">    4113 </span>            :                 goto unlock;</a>
 <a name="4114"><span class="lineNum">    4114 </span>            : </a>
 <a name="4115"><span class="lineNum">    4115 </span>            : #ifdef CONFIG_SMP</a>
@@ -4254,10 +4254,10 @@
 <a name="4192"><span class="lineNum">    4192 </span>            :                 set_task_cpu(p, cpu);</a>
 <a name="4193"><span class="lineNum">    4193 </span>            :         }</a>
 <a name="4194"><span class="lineNum">    4194 </span>            : #else</a>
-<a name="4195"><span class="lineNum">    4195 </span><span class="lineCov">        508 :         cpu = task_cpu(p);</span></a>
+<a name="4195"><span class="lineNum">    4195 </span><span class="lineCov">        510 :         cpu = task_cpu(p);</span></a>
 <a name="4196"><span class="lineNum">    4196 </span>            : #endif /* CONFIG_SMP */</a>
 <a name="4197"><span class="lineNum">    4197 </span>            : </a>
-<a name="4198"><span class="lineNum">    4198 </span><span class="lineCov">        508 :         ttwu_queue(p, cpu, wake_flags);</span></a>
+<a name="4198"><span class="lineNum">    4198 </span><span class="lineCov">        510 :         ttwu_queue(p, cpu, wake_flags);</span></a>
 <a name="4199"><span class="lineNum">    4199 </span>            : unlock:</a>
 <a name="4200"><span class="lineNum">    4200 </span><span class="lineCov">       1210 :         raw_spin_unlock_irqrestore(&amp;p-&gt;pi_lock, flags);</span></a>
 <a name="4201"><span class="lineNum">    4201 </span>            : out:</a>
@@ -4875,7 +4875,7 @@
 <a name="4813"><span class="lineNum">    4813 </span>            :          * of the scheduler it's an obvious special-case), so we</a>
 <a name="4814"><span class="lineNum">    4814 </span>            :          * do an early lockdep release here:</a>
 <a name="4815"><span class="lineNum">    4815 </span>            :          */</a>
-<a name="4816"><span class="lineNum">    4816 </span><span class="lineCov">        616 :         rq_unpin_lock(rq, rf);</span></a>
+<a name="4816"><span class="lineNum">    4816 </span><span class="lineCov">        618 :         rq_unpin_lock(rq, rf);</span></a>
 <a name="4817"><span class="lineNum">    4817 </span>            :         spin_release(&amp;__rq_lockp(rq)-&gt;dep_map, _THIS_IP_);</a>
 <a name="4818"><span class="lineNum">    4818 </span>            : #ifdef CONFIG_DEBUG_SPINLOCK</a>
 <a name="4819"><span class="lineNum">    4819 </span>            :         /* this is a valid case when another task releases the spinlock */</a>
@@ -4891,8 +4891,8 @@
 <a name="4829"><span class="lineNum">    4829 </span>            :          * prev into current:</a>
 <a name="4830"><span class="lineNum">    4830 </span>            :          */</a>
 <a name="4831"><span class="lineNum">    4831 </span>            :         spin_acquire(&amp;__rq_lockp(rq)-&gt;dep_map, 0, 0, _THIS_IP_);</a>
-<a name="4832"><span class="lineNum">    4832 </span><span class="lineCov">        616 :         __balance_callbacks(rq);</span></a>
-<a name="4833"><span class="lineNum">    4833 </span><span class="lineCov">        616 :         raw_spin_rq_unlock_irq(rq);</span></a>
+<a name="4832"><span class="lineNum">    4832 </span><span class="lineCov">        618 :         __balance_callbacks(rq);</span></a>
+<a name="4833"><span class="lineNum">    4833 </span><span class="lineCov">        618 :         raw_spin_rq_unlock_irq(rq);</span></a>
 <a name="4834"><span class="lineNum">    4834 </span>            : }</a>
 <a name="4835"><span class="lineNum">    4835 </span>            : </a>
 <a name="4836"><span class="lineNum">    4836 </span>            : /*</a>
@@ -4969,11 +4969,11 @@
 <a name="4907"><span class="lineNum">    4907 </span>            :  * past. prev == current is still correct but we need to recalculate this_rq</a>
 <a name="4908"><span class="lineNum">    4908 </span>            :  * because prev may have moved to another CPU.</a>
 <a name="4909"><span class="lineNum">    4909 </span>            :  */</a>
-<a name="4910"><span class="lineNum">    4910 </span><span class="lineCov">        616 : static struct rq *finish_task_switch(struct task_struct *prev)</span></a>
+<a name="4910"><span class="lineNum">    4910 </span><span class="lineCov">        618 : static struct rq *finish_task_switch(struct task_struct *prev)</span></a>
 <a name="4911"><span class="lineNum">    4911 </span>            :         __releases(rq-&gt;lock)</a>
 <a name="4912"><span class="lineNum">    4912 </span>            : {</a>
-<a name="4913"><span class="lineNum">    4913 </span><span class="lineCov">        616 :         struct rq *rq = this_rq();</span></a>
-<a name="4914"><span class="lineNum">    4914 </span><span class="lineCov">        616 :         struct mm_struct *mm = rq-&gt;prev_mm;</span></a>
+<a name="4913"><span class="lineNum">    4913 </span><span class="lineCov">        618 :         struct rq *rq = this_rq();</span></a>
+<a name="4914"><span class="lineNum">    4914 </span><span class="lineCov">        618 :         struct mm_struct *mm = rq-&gt;prev_mm;</span></a>
 <a name="4915"><span class="lineNum">    4915 </span>            :         unsigned int prev_state;</a>
 <a name="4916"><span class="lineNum">    4916 </span>            : </a>
 <a name="4917"><span class="lineNum">    4917 </span>            :         /*</a>
@@ -4987,12 +4987,12 @@
 <a name="4925"><span class="lineNum">    4925 </span>            :          *</a>
 <a name="4926"><span class="lineNum">    4926 </span>            :          * Also, see FORK_PREEMPT_COUNT.</a>
 <a name="4927"><span class="lineNum">    4927 </span>            :          */</a>
-<a name="4928"><span class="lineNum">    4928 </span><span class="lineCov">        616 :         if (WARN_ONCE(preempt_count() != 2*PREEMPT_DISABLE_OFFSET,</span></a>
+<a name="4928"><span class="lineNum">    4928 </span><span class="lineCov">        618 :         if (WARN_ONCE(preempt_count() != 2*PREEMPT_DISABLE_OFFSET,</span></a>
 <a name="4929"><span class="lineNum">    4929 </span>            :                       &quot;corrupted preempt_count: %s/%d/0x%x\n&quot;,</a>
 <a name="4930"><span class="lineNum">    4930 </span>            :                       current-&gt;comm, current-&gt;pid, preempt_count()))</a>
 <a name="4931"><span class="lineNum">    4931 </span>            :                 preempt_count_set(FORK_PREEMPT_COUNT);</a>
 <a name="4932"><span class="lineNum">    4932 </span>            : </a>
-<a name="4933"><span class="lineNum">    4933 </span><span class="lineCov">        616 :         rq-&gt;prev_mm = NULL;</span></a>
+<a name="4933"><span class="lineNum">    4933 </span><span class="lineCov">        618 :         rq-&gt;prev_mm = NULL;</span></a>
 <a name="4934"><span class="lineNum">    4934 </span>            : </a>
 <a name="4935"><span class="lineNum">    4935 </span>            :         /*</a>
 <a name="4936"><span class="lineNum">    4936 </span>            :          * A task struct has one reference for the use as &quot;current&quot;.</a>
@@ -5005,14 +5005,14 @@
 <a name="4943"><span class="lineNum">    4943 </span>            :          * running on another CPU and we could rave with its RUNNING -&gt; DEAD</a>
 <a name="4944"><span class="lineNum">    4944 </span>            :          * transition, resulting in a double drop.</a>
 <a name="4945"><span class="lineNum">    4945 </span>            :          */</a>
-<a name="4946"><span class="lineNum">    4946 </span><span class="lineCov">        616 :         prev_state = READ_ONCE(prev-&gt;__state);</span></a>
-<a name="4947"><span class="lineNum">    4947 </span><span class="lineCov">        616 :         vtime_task_switch(prev);</span></a>
-<a name="4948"><span class="lineNum">    4948 </span><span class="lineCov">        616 :         perf_event_task_sched_in(prev, current);</span></a>
-<a name="4949"><span class="lineNum">    4949 </span><span class="lineCov">        616 :         finish_task(prev);</span></a>
+<a name="4946"><span class="lineNum">    4946 </span><span class="lineCov">        618 :         prev_state = READ_ONCE(prev-&gt;__state);</span></a>
+<a name="4947"><span class="lineNum">    4947 </span><span class="lineCov">        618 :         vtime_task_switch(prev);</span></a>
+<a name="4948"><span class="lineNum">    4948 </span><span class="lineCov">        618 :         perf_event_task_sched_in(prev, current);</span></a>
+<a name="4949"><span class="lineNum">    4949 </span><span class="lineCov">        618 :         finish_task(prev);</span></a>
 <a name="4950"><span class="lineNum">    4950 </span>            :         tick_nohz_task_switch();</a>
-<a name="4951"><span class="lineNum">    4951 </span><span class="lineCov">        616 :         finish_lock_switch(rq);</span></a>
+<a name="4951"><span class="lineNum">    4951 </span><span class="lineCov">        618 :         finish_lock_switch(rq);</span></a>
 <a name="4952"><span class="lineNum">    4952 </span>            :         finish_arch_post_lock_switch();</a>
-<a name="4953"><span class="lineNum">    4953 </span><span class="lineCov">        616 :         kcov_finish_switch(current);</span></a>
+<a name="4953"><span class="lineNum">    4953 </span><span class="lineCov">        618 :         kcov_finish_switch(current);</span></a>
 <a name="4954"><span class="lineNum">    4954 </span>            :         /*</a>
 <a name="4955"><span class="lineNum">    4955 </span>            :          * kmap_local_sched_out() is invoked with rq::lock held and</a>
 <a name="4956"><span class="lineNum">    4956 </span>            :          * interrupts disabled. There is no requirement for that, but the</a>
@@ -5022,7 +5022,7 @@
 <a name="4960"><span class="lineNum">    4960 </span>            :          */</a>
 <a name="4961"><span class="lineNum">    4961 </span>            :         kmap_local_sched_in();</a>
 <a name="4962"><span class="lineNum">    4962 </span>            : </a>
-<a name="4963"><span class="lineNum">    4963 </span><span class="lineCov">        616 :         fire_sched_in_preempt_notifiers(current);</span></a>
+<a name="4963"><span class="lineNum">    4963 </span><span class="lineCov">        618 :         fire_sched_in_preempt_notifiers(current);</span></a>
 <a name="4964"><span class="lineNum">    4964 </span>            :         /*</a>
 <a name="4965"><span class="lineNum">    4965 </span>            :          * When switching through a kernel thread, the loop in</a>
 <a name="4966"><span class="lineNum">    4966 </span>            :          * membarrier_{private,global}_expedited() may have observed that</a>
@@ -5035,11 +5035,11 @@
 <a name="4973"><span class="lineNum">    4973 </span>            :          *   provided by mmdrop(),</a>
 <a name="4974"><span class="lineNum">    4974 </span>            :          * - a sync_core for SYNC_CORE.</a>
 <a name="4975"><span class="lineNum">    4975 </span>            :          */</a>
-<a name="4976"><span class="lineNum">    4976 </span><span class="lineCov">        616 :         if (mm) {</span></a>
+<a name="4976"><span class="lineNum">    4976 </span><span class="lineCov">        618 :         if (mm) {</span></a>
 <a name="4977"><span class="lineNum">    4977 </span><span class="lineNoCov">          0 :                 membarrier_mm_sync_core_before_usermode(mm);</span></a>
 <a name="4978"><span class="lineNum">    4978 </span>            :                 mmdrop_sched(mm);</a>
 <a name="4979"><span class="lineNum">    4979 </span>            :         }</a>
-<a name="4980"><span class="lineNum">    4980 </span><span class="lineCov">        616 :         if (unlikely(prev_state == TASK_DEAD)) {</span></a>
+<a name="4980"><span class="lineNum">    4980 </span><span class="lineCov">        618 :         if (unlikely(prev_state == TASK_DEAD)) {</span></a>
 <a name="4981"><span class="lineNum">    4981 </span><span class="lineCov">         93 :                 if (prev-&gt;sched_class-&gt;task_dead)</span></a>
 <a name="4982"><span class="lineNum">    4982 </span><span class="lineNoCov">          0 :                         prev-&gt;sched_class-&gt;task_dead(prev);</span></a>
 <a name="4983"><span class="lineNum">    4983 </span>            : </a>
@@ -5049,7 +5049,7 @@
 <a name="4987"><span class="lineNum">    4987 </span><span class="lineCov">         93 :                 put_task_struct_rcu_user(prev);</span></a>
 <a name="4988"><span class="lineNum">    4988 </span>            :         }</a>
 <a name="4989"><span class="lineNum">    4989 </span>            : </a>
-<a name="4990"><span class="lineNum">    4990 </span><span class="lineCov">        616 :         return rq;</span></a>
+<a name="4990"><span class="lineNum">    4990 </span><span class="lineCov">        618 :         return rq;</span></a>
 <a name="4991"><span class="lineNum">    4991 </span>            : }</a>
 <a name="4992"><span class="lineNum">    4992 </span>            : </a>
 <a name="4993"><span class="lineNum">    4993 </span>            : /**</a>
@@ -5084,7 +5084,7 @@
 <a name="5022"><span class="lineNum">    5022 </span>            : context_switch(struct rq *rq, struct task_struct *prev,</a>
 <a name="5023"><span class="lineNum">    5023 </span>            :                struct task_struct *next, struct rq_flags *rf)</a>
 <a name="5024"><span class="lineNum">    5024 </span>            : {</a>
-<a name="5025"><span class="lineNum">    5025 </span><span class="lineCov">        616 :         prepare_task_switch(rq, prev, next);</span></a>
+<a name="5025"><span class="lineNum">    5025 </span><span class="lineCov">        618 :         prepare_task_switch(rq, prev, next);</span></a>
 <a name="5026"><span class="lineNum">    5026 </span>            : </a>
 <a name="5027"><span class="lineNum">    5027 </span>            :         /*</a>
 <a name="5028"><span class="lineNum">    5028 </span>            :          * For paravirt, this is coupled with an exit in switch_to to</a>
@@ -5100,14 +5100,14 @@
 <a name="5038"><span class="lineNum">    5038 </span>            :          * kernel -&gt;   user   switch + mmdrop() active</a>
 <a name="5039"><span class="lineNum">    5039 </span>            :          *   user -&gt;   user   switch</a>
 <a name="5040"><span class="lineNum">    5040 </span>            :          */</a>
-<a name="5041"><span class="lineNum">    5041 </span><span class="lineCov">        616 :         if (!next-&gt;mm) {                                // to kernel</span></a>
-<a name="5042"><span class="lineNum">    5042 </span><span class="lineCov">        616 :                 enter_lazy_tlb(prev-&gt;active_mm, next);</span></a>
+<a name="5041"><span class="lineNum">    5041 </span><span class="lineCov">        618 :         if (!next-&gt;mm) {                                // to kernel</span></a>
+<a name="5042"><span class="lineNum">    5042 </span><span class="lineCov">        618 :                 enter_lazy_tlb(prev-&gt;active_mm, next);</span></a>
 <a name="5043"><span class="lineNum">    5043 </span>            : </a>
-<a name="5044"><span class="lineNum">    5044 </span><span class="lineCov">        616 :                 next-&gt;active_mm = prev-&gt;active_mm;</span></a>
-<a name="5045"><span class="lineNum">    5045 </span><span class="lineCov">        616 :                 if (prev-&gt;mm)                           // from user</span></a>
+<a name="5044"><span class="lineNum">    5044 </span><span class="lineCov">        618 :                 next-&gt;active_mm = prev-&gt;active_mm;</span></a>
+<a name="5045"><span class="lineNum">    5045 </span><span class="lineCov">        618 :                 if (prev-&gt;mm)                           // from user</span></a>
 <a name="5046"><span class="lineNum">    5046 </span><span class="lineNoCov">          0 :                         mmgrab(prev-&gt;active_mm);</span></a>
 <a name="5047"><span class="lineNum">    5047 </span>            :                 else</a>
-<a name="5048"><span class="lineNum">    5048 </span><span class="lineCov">        616 :                         prev-&gt;active_mm = NULL;</span></a>
+<a name="5048"><span class="lineNum">    5048 </span><span class="lineCov">        618 :                         prev-&gt;active_mm = NULL;</span></a>
 <a name="5049"><span class="lineNum">    5049 </span>            :         } else {                                        // to user</a>
 <a name="5050"><span class="lineNum">    5050 </span><span class="lineNoCov">          0 :                 membarrier_switch_mm(rq, prev-&gt;active_mm, next-&gt;mm);</span></a>
 <a name="5051"><span class="lineNum">    5051 </span>            :                 /*</a>
@@ -5127,15 +5127,15 @@
 <a name="5065"><span class="lineNum">    5065 </span>            :                 }</a>
 <a name="5066"><span class="lineNum">    5066 </span>            :         }</a>
 <a name="5067"><span class="lineNum">    5067 </span>            : </a>
-<a name="5068"><span class="lineNum">    5068 </span><span class="lineCov">        616 :         rq-&gt;clock_update_flags &amp;= ~(RQCF_ACT_SKIP|RQCF_REQ_SKIP);</span></a>
+<a name="5068"><span class="lineNum">    5068 </span><span class="lineCov">        618 :         rq-&gt;clock_update_flags &amp;= ~(RQCF_ACT_SKIP|RQCF_REQ_SKIP);</span></a>
 <a name="5069"><span class="lineNum">    5069 </span>            : </a>
-<a name="5070"><span class="lineNum">    5070 </span><span class="lineCov">       1232 :         prepare_lock_switch(rq, next, rf);</span></a>
+<a name="5070"><span class="lineNum">    5070 </span><span class="lineCov">       1236 :         prepare_lock_switch(rq, next, rf);</span></a>
 <a name="5071"><span class="lineNum">    5071 </span>            : </a>
 <a name="5072"><span class="lineNum">    5072 </span>            :         /* Here we just switch the register state and the stack. */</a>
-<a name="5073"><span class="lineNum">    5073 </span><span class="lineCov">        616 :         switch_to(prev, next, prev);</span></a>
-<a name="5074"><span class="lineNum">    5074 </span><span class="lineCov">        509 :         barrier();</span></a>
+<a name="5073"><span class="lineNum">    5073 </span><span class="lineCov">        618 :         switch_to(prev, next, prev);</span></a>
+<a name="5074"><span class="lineNum">    5074 </span><span class="lineCov">        511 :         barrier();</span></a>
 <a name="5075"><span class="lineNum">    5075 </span>            : </a>
-<a name="5076"><span class="lineNum">    5076 </span><span class="lineCov">        509 :         return finish_task_switch(prev);</span></a>
+<a name="5076"><span class="lineNum">    5076 </span><span class="lineCov">        511 :         return finish_task_switch(prev);</span></a>
 <a name="5077"><span class="lineNum">    5077 </span>            : }</a>
 <a name="5078"><span class="lineNum">    5078 </span>            : </a>
 <a name="5079"><span class="lineNum">    5079 </span>            : /*</a>
@@ -5386,32 +5386,32 @@
 <a name="5324"><span class="lineNum">    5324 </span>            :  * This function gets called by the timer code, with HZ frequency.</a>
 <a name="5325"><span class="lineNum">    5325 </span>            :  * We call it with interrupts disabled.</a>
 <a name="5326"><span class="lineNum">    5326 </span>            :  */</a>
-<a name="5327"><span class="lineNum">    5327 </span><span class="lineCov">          9 : void scheduler_tick(void)</span></a>
+<a name="5327"><span class="lineNum">    5327 </span><span class="lineCov">         13 : void scheduler_tick(void)</span></a>
 <a name="5328"><span class="lineNum">    5328 </span>            : {</a>
-<a name="5329"><span class="lineNum">    5329 </span><span class="lineCov">          9 :         int cpu = smp_processor_id();</span></a>
-<a name="5330"><span class="lineNum">    5330 </span><span class="lineCov">          9 :         struct rq *rq = cpu_rq(cpu);</span></a>
-<a name="5331"><span class="lineNum">    5331 </span><span class="lineCov">          9 :         struct task_struct *curr = rq-&gt;curr;</span></a>
+<a name="5329"><span class="lineNum">    5329 </span><span class="lineCov">         13 :         int cpu = smp_processor_id();</span></a>
+<a name="5330"><span class="lineNum">    5330 </span><span class="lineCov">         13 :         struct rq *rq = cpu_rq(cpu);</span></a>
+<a name="5331"><span class="lineNum">    5331 </span><span class="lineCov">         13 :         struct task_struct *curr = rq-&gt;curr;</span></a>
 <a name="5332"><span class="lineNum">    5332 </span>            :         struct rq_flags rf;</a>
 <a name="5333"><span class="lineNum">    5333 </span>            :         unsigned long thermal_pressure;</a>
 <a name="5334"><span class="lineNum">    5334 </span>            :         u64 resched_latency;</a>
 <a name="5335"><span class="lineNum">    5335 </span>            : </a>
 <a name="5336"><span class="lineNum">    5336 </span>            :         arch_scale_freq_tick();</a>
-<a name="5337"><span class="lineNum">    5337 </span><span class="lineCov">          9 :         sched_clock_tick();</span></a>
+<a name="5337"><span class="lineNum">    5337 </span><span class="lineCov">         13 :         sched_clock_tick();</span></a>
 <a name="5338"><span class="lineNum">    5338 </span>            : </a>
-<a name="5339"><span class="lineNum">    5339 </span><span class="lineCov">          9 :         rq_lock(rq, &amp;rf);</span></a>
+<a name="5339"><span class="lineNum">    5339 </span><span class="lineCov">         13 :         rq_lock(rq, &amp;rf);</span></a>
 <a name="5340"><span class="lineNum">    5340 </span>            : </a>
-<a name="5341"><span class="lineNum">    5341 </span><span class="lineCov">          9 :         update_rq_clock(rq);</span></a>
-<a name="5342"><span class="lineNum">    5342 </span><span class="lineCov">          9 :         thermal_pressure = arch_scale_thermal_pressure(cpu_of(rq));</span></a>
-<a name="5343"><span class="lineNum">    5343 </span><span class="lineCov">          9 :         update_thermal_load_avg(rq_clock_thermal(rq), rq, thermal_pressure);</span></a>
-<a name="5344"><span class="lineNum">    5344 </span><span class="lineCov">          9 :         curr-&gt;sched_class-&gt;task_tick(rq, curr, 0);</span></a>
-<a name="5345"><span class="lineNum">    5345 </span><span class="lineCov">          9 :         if (sched_feat(LATENCY_WARN))</span></a>
+<a name="5341"><span class="lineNum">    5341 </span><span class="lineCov">         13 :         update_rq_clock(rq);</span></a>
+<a name="5342"><span class="lineNum">    5342 </span><span class="lineCov">         13 :         thermal_pressure = arch_scale_thermal_pressure(cpu_of(rq));</span></a>
+<a name="5343"><span class="lineNum">    5343 </span><span class="lineCov">         13 :         update_thermal_load_avg(rq_clock_thermal(rq), rq, thermal_pressure);</span></a>
+<a name="5344"><span class="lineNum">    5344 </span><span class="lineCov">         13 :         curr-&gt;sched_class-&gt;task_tick(rq, curr, 0);</span></a>
+<a name="5345"><span class="lineNum">    5345 </span><span class="lineCov">         13 :         if (sched_feat(LATENCY_WARN))</span></a>
 <a name="5346"><span class="lineNum">    5346 </span><span class="lineNoCov">          0 :                 resched_latency = cpu_resched_latency(rq);</span></a>
-<a name="5347"><span class="lineNum">    5347 </span><span class="lineCov">          9 :         calc_global_load_tick(rq);</span></a>
-<a name="5348"><span class="lineNum">    5348 </span><span class="lineCov">          9 :         sched_core_tick(rq);</span></a>
+<a name="5347"><span class="lineNum">    5347 </span><span class="lineCov">         13 :         calc_global_load_tick(rq);</span></a>
+<a name="5348"><span class="lineNum">    5348 </span><span class="lineCov">         13 :         sched_core_tick(rq);</span></a>
 <a name="5349"><span class="lineNum">    5349 </span>            : </a>
-<a name="5350"><span class="lineNum">    5350 </span><span class="lineCov">          9 :         rq_unlock(rq, &amp;rf);</span></a>
+<a name="5350"><span class="lineNum">    5350 </span><span class="lineCov">         13 :         rq_unlock(rq, &amp;rf);</span></a>
 <a name="5351"><span class="lineNum">    5351 </span>            : </a>
-<a name="5352"><span class="lineNum">    5352 </span><span class="lineCov">          9 :         if (sched_feat(LATENCY_WARN) &amp;&amp; resched_latency)</span></a>
+<a name="5352"><span class="lineNum">    5352 </span><span class="lineCov">         13 :         if (sched_feat(LATENCY_WARN) &amp;&amp; resched_latency)</span></a>
 <a name="5353"><span class="lineNum">    5353 </span><span class="lineNoCov">          0 :                 resched_latency_warn(cpu, resched_latency);</span></a>
 <a name="5354"><span class="lineNum">    5354 </span>            : </a>
 <a name="5355"><span class="lineNum">    5355 </span>            :         perf_event_task_tick();</a>
@@ -5420,7 +5420,7 @@
 <a name="5358"><span class="lineNum">    5358 </span>            :         rq-&gt;idle_balance = idle_cpu(cpu);</a>
 <a name="5359"><span class="lineNum">    5359 </span>            :         trigger_load_balance(rq);</a>
 <a name="5360"><span class="lineNum">    5360 </span>            : #endif</a>
-<a name="5361"><span class="lineNum">    5361 </span><span class="lineCov">          9 : }</span></a>
+<a name="5361"><span class="lineNum">    5361 </span><span class="lineCov">         13 : }</span></a>
 <a name="5362"><span class="lineNum">    5362 </span>            : </a>
 <a name="5363"><span class="lineNum">    5363 </span>            : #ifdef CONFIG_NO_HZ_FULL</a>
 <a name="5364"><span class="lineNum">    5364 </span>            : </a>
@@ -5702,14 +5702,14 @@
 <a name="5640"><span class="lineNum">    5640 </span>            :         }</a>
 <a name="5641"><span class="lineNum">    5641 </span>            : #endif</a>
 <a name="5642"><span class="lineNum">    5642 </span>            : </a>
-<a name="5643"><span class="lineNum">    5643 </span><span class="lineCov">        616 :         if (unlikely(in_atomic_preempt_off())) {</span></a>
+<a name="5643"><span class="lineNum">    5643 </span><span class="lineCov">        618 :         if (unlikely(in_atomic_preempt_off())) {</span></a>
 <a name="5644"><span class="lineNum">    5644 </span><span class="lineNoCov">          0 :                 __schedule_bug(prev);</span></a>
 <a name="5645"><span class="lineNum">    5645 </span>            :                 preempt_count_set(PREEMPT_DISABLED);</a>
 <a name="5646"><span class="lineNum">    5646 </span>            :         }</a>
 <a name="5647"><span class="lineNum">    5647 </span>            :         rcu_sleep_check();</a>
-<a name="5648"><span class="lineNum">    5648 </span><span class="lineCov">        616 :         SCHED_WARN_ON(ct_state() == CONTEXT_USER);</span></a>
+<a name="5648"><span class="lineNum">    5648 </span><span class="lineCov">        618 :         SCHED_WARN_ON(ct_state() == CONTEXT_USER);</span></a>
 <a name="5649"><span class="lineNum">    5649 </span>            : </a>
-<a name="5650"><span class="lineNum">    5650 </span><span class="lineCov">        616 :         profile_hit(SCHED_PROFILING, __builtin_return_address(0));</span></a>
+<a name="5650"><span class="lineNum">    5650 </span><span class="lineCov">        618 :         profile_hit(SCHED_PROFILING, __builtin_return_address(0));</span></a>
 <a name="5651"><span class="lineNum">    5651 </span>            : </a>
 <a name="5652"><span class="lineNum">    5652 </span>            :         schedstat_inc(this_rq()-&gt;sched_count);</a>
 <a name="5653"><span class="lineNum">    5653 </span>            : }</a>
@@ -5740,7 +5740,7 @@
 <a name="5678"><span class="lineNum">    5678 </span>            :  * Pick up the highest-prio task:</a>
 <a name="5679"><span class="lineNum">    5679 </span>            :  */</a>
 <a name="5680"><span class="lineNum">    5680 </span>            : static inline struct task_struct *</a>
-<a name="5681"><span class="lineNum">    5681 </span><span class="lineCov">        616 : __pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)</span></a>
+<a name="5681"><span class="lineNum">    5681 </span><span class="lineCov">        618 : __pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)</span></a>
 <a name="5682"><span class="lineNum">    5682 </span>            : {</a>
 <a name="5683"><span class="lineNum">    5683 </span>            :         const struct sched_class *class;</a>
 <a name="5684"><span class="lineNum">    5684 </span>            :         struct task_struct *p;</a>
@@ -5751,15 +5751,15 @@
 <a name="5689"><span class="lineNum">    5689 </span>            :          * higher scheduling class, because otherwise those lose the</a>
 <a name="5690"><span class="lineNum">    5690 </span>            :          * opportunity to pull in more work from other CPUs.</a>
 <a name="5691"><span class="lineNum">    5691 </span>            :          */</a>
-<a name="5692"><span class="lineNum">    5692 </span><span class="lineCov">        616 :         if (likely(prev-&gt;sched_class &lt;= &amp;fair_sched_class &amp;&amp;</span></a>
+<a name="5692"><span class="lineNum">    5692 </span><span class="lineCov">        618 :         if (likely(prev-&gt;sched_class &lt;= &amp;fair_sched_class &amp;&amp;</span></a>
 <a name="5693"><span class="lineNum">    5693 </span>            :                    rq-&gt;nr_running == rq-&gt;cfs.h_nr_running)) {</a>
 <a name="5694"><span class="lineNum">    5694 </span>            : </a>
-<a name="5695"><span class="lineNum">    5695 </span><span class="lineCov">        616 :                 p = pick_next_task_fair(rq, prev, rf);</span></a>
-<a name="5696"><span class="lineNum">    5696 </span><span class="lineCov">        616 :                 if (unlikely(p == RETRY_TASK))</span></a>
+<a name="5695"><span class="lineNum">    5695 </span><span class="lineCov">        618 :                 p = pick_next_task_fair(rq, prev, rf);</span></a>
+<a name="5696"><span class="lineNum">    5696 </span><span class="lineCov">        618 :                 if (unlikely(p == RETRY_TASK))</span></a>
 <a name="5697"><span class="lineNum">    5697 </span>            :                         goto restart;</a>
 <a name="5698"><span class="lineNum">    5698 </span>            : </a>
 <a name="5699"><span class="lineNum">    5699 </span>            :                 /* Assume the next prioritized class is idle_sched_class */</a>
-<a name="5700"><span class="lineNum">    5700 </span><span class="lineCov">        616 :                 if (!p) {</span></a>
+<a name="5700"><span class="lineNum">    5700 </span><span class="lineCov">        618 :                 if (!p) {</span></a>
 <a name="5701"><span class="lineNum">    5701 </span><span class="lineCov">          1 :                         put_prev_task(rq, prev);</span></a>
 <a name="5702"><span class="lineNum">    5702 </span><span class="lineCov">          1 :                         p = pick_next_task_idle(rq);</span></a>
 <a name="5703"><span class="lineNum">    5703 </span>            :                 }</a>
@@ -6263,7 +6263,7 @@
 <a name="6201"><span class="lineNum">    6201 </span>            : static struct task_struct *</a>
 <a name="6202"><span class="lineNum">    6202 </span>            : pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)</a>
 <a name="6203"><span class="lineNum">    6203 </span>            : {</a>
-<a name="6204"><span class="lineNum">    6204 </span><span class="lineCov">        616 :         return __pick_next_task(rq, prev, rf);</span></a>
+<a name="6204"><span class="lineNum">    6204 </span><span class="lineCov">        618 :         return __pick_next_task(rq, prev, rf);</span></a>
 <a name="6205"><span class="lineNum">    6205 </span>            : }</a>
 <a name="6206"><span class="lineNum">    6206 </span>            : </a>
 <a name="6207"><span class="lineNum">    6207 </span>            : #endif /* CONFIG_SCHED_CORE */</a>
@@ -6325,7 +6325,7 @@
 <a name="6263"><span class="lineNum">    6263 </span>            :  *</a>
 <a name="6264"><span class="lineNum">    6264 </span>            :  * WARNING: must be called with preemption disabled!</a>
 <a name="6265"><span class="lineNum">    6265 </span>            :  */</a>
-<a name="6266"><span class="lineNum">    6266 </span><span class="lineCov">        616 : static void __sched notrace __schedule(unsigned int sched_mode)</span></a>
+<a name="6266"><span class="lineNum">    6266 </span><span class="lineCov">        618 : static void __sched notrace __schedule(unsigned int sched_mode)</span></a>
 <a name="6267"><span class="lineNum">    6267 </span>            : {</a>
 <a name="6268"><span class="lineNum">    6268 </span>            :         struct task_struct *prev, *next;</a>
 <a name="6269"><span class="lineNum">    6269 </span>            :         unsigned long *switch_count;</a>
@@ -6334,17 +6334,17 @@
 <a name="6272"><span class="lineNum">    6272 </span>            :         struct rq *rq;</a>
 <a name="6273"><span class="lineNum">    6273 </span>            :         int cpu;</a>
 <a name="6274"><span class="lineNum">    6274 </span>            : </a>
-<a name="6275"><span class="lineNum">    6275 </span><span class="lineCov">        616 :         cpu = smp_processor_id();</span></a>
-<a name="6276"><span class="lineNum">    6276 </span><span class="lineCov">        616 :         rq = cpu_rq(cpu);</span></a>
-<a name="6277"><span class="lineNum">    6277 </span><span class="lineCov">        616 :         prev = rq-&gt;curr;</span></a>
+<a name="6275"><span class="lineNum">    6275 </span><span class="lineCov">        618 :         cpu = smp_processor_id();</span></a>
+<a name="6276"><span class="lineNum">    6276 </span><span class="lineCov">        618 :         rq = cpu_rq(cpu);</span></a>
+<a name="6277"><span class="lineNum">    6277 </span><span class="lineCov">        618 :         prev = rq-&gt;curr;</span></a>
 <a name="6278"><span class="lineNum">    6278 </span>            : </a>
-<a name="6279"><span class="lineNum">    6279 </span><span class="lineCov">       1232 :         schedule_debug(prev, !!sched_mode);</span></a>
+<a name="6279"><span class="lineNum">    6279 </span><span class="lineCov">       1236 :         schedule_debug(prev, !!sched_mode);</span></a>
 <a name="6280"><span class="lineNum">    6280 </span>            : </a>
 <a name="6281"><span class="lineNum">    6281 </span>            :         if (sched_feat(HRTICK) || sched_feat(HRTICK_DL))</a>
 <a name="6282"><span class="lineNum">    6282 </span>            :                 hrtick_clear(rq);</a>
 <a name="6283"><span class="lineNum">    6283 </span>            : </a>
 <a name="6284"><span class="lineNum">    6284 </span>            :         local_irq_disable();</a>
-<a name="6285"><span class="lineNum">    6285 </span><span class="lineCov">        616 :         rcu_note_context_switch(!!sched_mode);</span></a>
+<a name="6285"><span class="lineNum">    6285 </span><span class="lineCov">        618 :         rcu_note_context_switch(!!sched_mode);</span></a>
 <a name="6286"><span class="lineNum">    6286 </span>            : </a>
 <a name="6287"><span class="lineNum">    6287 </span>            :         /*</a>
 <a name="6288"><span class="lineNum">    6288 </span>            :          * Make sure that signal_pending_state()-&gt;signal_pending() below</a>
@@ -6361,14 +6361,14 @@
 <a name="6299"><span class="lineNum">    6299 </span>            :          * Also, the membarrier system call requires a full memory barrier</a>
 <a name="6300"><span class="lineNum">    6300 </span>            :          * after coming from user-space, before storing to rq-&gt;curr.</a>
 <a name="6301"><span class="lineNum">    6301 </span>            :          */</a>
-<a name="6302"><span class="lineNum">    6302 </span><span class="lineCov">        616 :         rq_lock(rq, &amp;rf);</span></a>
+<a name="6302"><span class="lineNum">    6302 </span><span class="lineCov">        618 :         rq_lock(rq, &amp;rf);</span></a>
 <a name="6303"><span class="lineNum">    6303 </span>            :         smp_mb__after_spinlock();</a>
 <a name="6304"><span class="lineNum">    6304 </span>            : </a>
 <a name="6305"><span class="lineNum">    6305 </span>            :         /* Promote REQ to ACT */</a>
-<a name="6306"><span class="lineNum">    6306 </span><span class="lineCov">        616 :         rq-&gt;clock_update_flags &lt;&lt;= 1;</span></a>
-<a name="6307"><span class="lineNum">    6307 </span><span class="lineCov">        616 :         update_rq_clock(rq);</span></a>
+<a name="6306"><span class="lineNum">    6306 </span><span class="lineCov">        618 :         rq-&gt;clock_update_flags &lt;&lt;= 1;</span></a>
+<a name="6307"><span class="lineNum">    6307 </span><span class="lineCov">        618 :         update_rq_clock(rq);</span></a>
 <a name="6308"><span class="lineNum">    6308 </span>            : </a>
-<a name="6309"><span class="lineNum">    6309 </span><span class="lineCov">        616 :         switch_count = &amp;prev-&gt;nivcsw;</span></a>
+<a name="6309"><span class="lineNum">    6309 </span><span class="lineCov">        618 :         switch_count = &amp;prev-&gt;nivcsw;</span></a>
 <a name="6310"><span class="lineNum">    6310 </span>            : </a>
 <a name="6311"><span class="lineNum">    6311 </span>            :         /*</a>
 <a name="6312"><span class="lineNum">    6312 </span>            :          * We must load prev-&gt;state once (task_struct::state is volatile), such</a>
@@ -6377,17 +6377,17 @@
 <a name="6315"><span class="lineNum">    6315 </span>            :          *  - we form a control dependency vs deactivate_task() below.</a>
 <a name="6316"><span class="lineNum">    6316 </span>            :          *  - ptrace_{,un}freeze_traced() can change -&gt;state underneath us.</a>
 <a name="6317"><span class="lineNum">    6317 </span>            :          */</a>
-<a name="6318"><span class="lineNum">    6318 </span><span class="lineCov">        616 :         prev_state = READ_ONCE(prev-&gt;__state);</span></a>
-<a name="6319"><span class="lineNum">    6319 </span><span class="lineCov">        616 :         if (!(sched_mode &amp; SM_MASK_PREEMPT) &amp;&amp; prev_state) {</span></a>
-<a name="6320"><span class="lineNum">    6320 </span><span class="lineCov">        613 :                 if (signal_pending_state(prev_state, prev)) {</span></a>
+<a name="6318"><span class="lineNum">    6318 </span><span class="lineCov">        618 :         prev_state = READ_ONCE(prev-&gt;__state);</span></a>
+<a name="6319"><span class="lineNum">    6319 </span><span class="lineCov">        618 :         if (!(sched_mode &amp; SM_MASK_PREEMPT) &amp;&amp; prev_state) {</span></a>
+<a name="6320"><span class="lineNum">    6320 </span><span class="lineCov">        615 :                 if (signal_pending_state(prev_state, prev)) {</span></a>
 <a name="6321"><span class="lineNum">    6321 </span><span class="lineNoCov">          0 :                         WRITE_ONCE(prev-&gt;__state, TASK_RUNNING);</span></a>
 <a name="6322"><span class="lineNum">    6322 </span>            :                 } else {</a>
-<a name="6323"><span class="lineNum">    6323 </span><span class="lineCov">        613 :                         prev-&gt;sched_contributes_to_load =</span></a>
+<a name="6323"><span class="lineNum">    6323 </span><span class="lineCov">        615 :                         prev-&gt;sched_contributes_to_load =</span></a>
 <a name="6324"><span class="lineNum">    6324 </span>            :                                 (prev_state &amp; TASK_UNINTERRUPTIBLE) &amp;&amp;</a>
-<a name="6325"><span class="lineNum">    6325 </span><span class="lineCov">        920 :                                 !(prev_state &amp; TASK_NOLOAD) &amp;&amp;</span></a>
+<a name="6325"><span class="lineNum">    6325 </span><span class="lineCov">        922 :                                 !(prev_state &amp; TASK_NOLOAD) &amp;&amp;</span></a>
 <a name="6326"><span class="lineNum">    6326 </span><span class="lineCov">        307 :                                 !(prev-&gt;flags &amp; PF_FROZEN);</span></a>
 <a name="6327"><span class="lineNum">    6327 </span>            : </a>
-<a name="6328"><span class="lineNum">    6328 </span><span class="lineCov">        613 :                         if (prev-&gt;sched_contributes_to_load)</span></a>
+<a name="6328"><span class="lineNum">    6328 </span><span class="lineCov">        615 :                         if (prev-&gt;sched_contributes_to_load)</span></a>
 <a name="6329"><span class="lineNum">    6329 </span><span class="lineCov">        307 :                                 rq-&gt;nr_uninterruptible++;</span></a>
 <a name="6330"><span class="lineNum">    6330 </span>            : </a>
 <a name="6331"><span class="lineNum">    6331 </span>            :                         /*</a>
@@ -6401,30 +6401,30 @@
 <a name="6339"><span class="lineNum">    6339 </span>            :                          *</a>
 <a name="6340"><span class="lineNum">    6340 </span>            :                          * After this, schedule() must not care about p-&gt;state any more.</a>
 <a name="6341"><span class="lineNum">    6341 </span>            :                          */</a>
-<a name="6342"><span class="lineNum">    6342 </span><span class="lineCov">        613 :                         deactivate_task(rq, prev, DEQUEUE_SLEEP | DEQUEUE_NOCLOCK);</span></a>
+<a name="6342"><span class="lineNum">    6342 </span><span class="lineCov">        615 :                         deactivate_task(rq, prev, DEQUEUE_SLEEP | DEQUEUE_NOCLOCK);</span></a>
 <a name="6343"><span class="lineNum">    6343 </span>            : </a>
-<a name="6344"><span class="lineNum">    6344 </span><span class="lineCov">        613 :                         if (prev-&gt;in_iowait) {</span></a>
+<a name="6344"><span class="lineNum">    6344 </span><span class="lineCov">        615 :                         if (prev-&gt;in_iowait) {</span></a>
 <a name="6345"><span class="lineNum">    6345 </span><span class="lineNoCov">          0 :                                 atomic_inc(&amp;rq-&gt;nr_iowait);</span></a>
 <a name="6346"><span class="lineNum">    6346 </span>            :                                 delayacct_blkio_start();</a>
 <a name="6347"><span class="lineNum">    6347 </span>            :                         }</a>
 <a name="6348"><span class="lineNum">    6348 </span>            :                 }</a>
-<a name="6349"><span class="lineNum">    6349 </span><span class="lineCov">        613 :                 switch_count = &amp;prev-&gt;nvcsw;</span></a>
+<a name="6349"><span class="lineNum">    6349 </span><span class="lineCov">        615 :                 switch_count = &amp;prev-&gt;nvcsw;</span></a>
 <a name="6350"><span class="lineNum">    6350 </span>            :         }</a>
 <a name="6351"><span class="lineNum">    6351 </span>            : </a>
-<a name="6352"><span class="lineNum">    6352 </span><span class="lineCov">        616 :         next = pick_next_task(rq, prev, &amp;rf);</span></a>
-<a name="6353"><span class="lineNum">    6353 </span><span class="lineCov">        616 :         clear_tsk_need_resched(prev);</span></a>
+<a name="6352"><span class="lineNum">    6352 </span><span class="lineCov">        618 :         next = pick_next_task(rq, prev, &amp;rf);</span></a>
+<a name="6353"><span class="lineNum">    6353 </span><span class="lineCov">        618 :         clear_tsk_need_resched(prev);</span></a>
 <a name="6354"><span class="lineNum">    6354 </span>            :         clear_preempt_need_resched();</a>
 <a name="6355"><span class="lineNum">    6355 </span>            : #ifdef CONFIG_SCHED_DEBUG</a>
-<a name="6356"><span class="lineNum">    6356 </span><span class="lineCov">        616 :         rq-&gt;last_seen_need_resched_ns = 0;</span></a>
+<a name="6356"><span class="lineNum">    6356 </span><span class="lineCov">        618 :         rq-&gt;last_seen_need_resched_ns = 0;</span></a>
 <a name="6357"><span class="lineNum">    6357 </span>            : #endif</a>
 <a name="6358"><span class="lineNum">    6358 </span>            : </a>
-<a name="6359"><span class="lineNum">    6359 </span><span class="lineCov">        616 :         if (likely(prev != next)) {</span></a>
-<a name="6360"><span class="lineNum">    6360 </span><span class="lineCov">        616 :                 rq-&gt;nr_switches++;</span></a>
+<a name="6359"><span class="lineNum">    6359 </span><span class="lineCov">        618 :         if (likely(prev != next)) {</span></a>
+<a name="6360"><span class="lineNum">    6360 </span><span class="lineCov">        618 :                 rq-&gt;nr_switches++;</span></a>
 <a name="6361"><span class="lineNum">    6361 </span>            :                 /*</a>
 <a name="6362"><span class="lineNum">    6362 </span>            :                  * RCU users of rcu_dereference(rq-&gt;curr) may not see</a>
 <a name="6363"><span class="lineNum">    6363 </span>            :                  * changes to task_struct made by pick_next_task().</a>
 <a name="6364"><span class="lineNum">    6364 </span>            :                  */</a>
-<a name="6365"><span class="lineNum">    6365 </span><span class="lineCov">        616 :                 RCU_INIT_POINTER(rq-&gt;curr, next);</span></a>
+<a name="6365"><span class="lineNum">    6365 </span><span class="lineCov">        618 :                 RCU_INIT_POINTER(rq-&gt;curr, next);</span></a>
 <a name="6366"><span class="lineNum">    6366 </span>            :                 /*</a>
 <a name="6367"><span class="lineNum">    6367 </span>            :                  * The membarrier system call requires each architecture</a>
 <a name="6368"><span class="lineNum">    6368 </span>            :                  * to have a full memory barrier after updating</a>
@@ -6439,15 +6439,15 @@
 <a name="6377"><span class="lineNum">    6377 </span>            :                  * - switch_to() for arm64 (weakly-ordered, spin_unlock</a>
 <a name="6378"><span class="lineNum">    6378 </span>            :                  *   is a RELEASE barrier),</a>
 <a name="6379"><span class="lineNum">    6379 </span>            :                  */</a>
-<a name="6380"><span class="lineNum">    6380 </span><span class="lineCov">        616 :                 ++*switch_count;</span></a>
+<a name="6380"><span class="lineNum">    6380 </span><span class="lineCov">        618 :                 ++*switch_count;</span></a>
 <a name="6381"><span class="lineNum">    6381 </span>            : </a>
-<a name="6382"><span class="lineNum">    6382 </span><span class="lineCov">        616 :                 migrate_disable_switch(rq, prev);</span></a>
-<a name="6383"><span class="lineNum">    6383 </span><span class="lineCov">        616 :                 psi_sched_switch(prev, next, !task_on_rq_queued(prev));</span></a>
+<a name="6382"><span class="lineNum">    6382 </span><span class="lineCov">        618 :                 migrate_disable_switch(rq, prev);</span></a>
+<a name="6383"><span class="lineNum">    6383 </span><span class="lineCov">        618 :                 psi_sched_switch(prev, next, !task_on_rq_queued(prev));</span></a>
 <a name="6384"><span class="lineNum">    6384 </span>            : </a>
-<a name="6385"><span class="lineNum">    6385 </span><span class="lineCov">        616 :                 trace_sched_switch(sched_mode &amp; SM_MASK_PREEMPT, prev, next, prev_state);</span></a>
+<a name="6385"><span class="lineNum">    6385 </span><span class="lineCov">        618 :                 trace_sched_switch(sched_mode &amp; SM_MASK_PREEMPT, prev, next, prev_state);</span></a>
 <a name="6386"><span class="lineNum">    6386 </span>            : </a>
 <a name="6387"><span class="lineNum">    6387 </span>            :                 /* Also unlocks the rq: */</a>
-<a name="6388"><span class="lineNum">    6388 </span><span class="lineCov">        509 :                 rq = context_switch(rq, prev, next, &amp;rf);</span></a>
+<a name="6388"><span class="lineNum">    6388 </span><span class="lineCov">        511 :                 rq = context_switch(rq, prev, next, &amp;rf);</span></a>
 <a name="6389"><span class="lineNum">    6389 </span>            :         } else {</a>
 <a name="6390"><span class="lineNum">    6390 </span><span class="lineNoCov">          0 :                 rq-&gt;clock_update_flags &amp;= ~(RQCF_ACT_SKIP|RQCF_REQ_SKIP);</span></a>
 <a name="6391"><span class="lineNum">    6391 </span>            : </a>
@@ -6455,7 +6455,7 @@
 <a name="6393"><span class="lineNum">    6393 </span><span class="lineNoCov">          0 :                 __balance_callbacks(rq);</span></a>
 <a name="6394"><span class="lineNum">    6394 </span><span class="lineNoCov">          0 :                 raw_spin_rq_unlock_irq(rq);</span></a>
 <a name="6395"><span class="lineNum">    6395 </span>            :         }</a>
-<a name="6396"><span class="lineNum">    6396 </span><span class="lineCov">        509 : }</span></a>
+<a name="6396"><span class="lineNum">    6396 </span><span class="lineCov">        511 : }</span></a>
 <a name="6397"><span class="lineNum">    6397 </span>            : </a>
 <a name="6398"><span class="lineNum">    6398 </span><span class="lineCov">         93 : void __noreturn do_task_dead(void)</span></a>
 <a name="6399"><span class="lineNum">    6399 </span>            : {</a>
@@ -6473,57 +6473,57 @@
 <a name="6411"><span class="lineNum">    6411 </span>            :                 cpu_relax();</a>
 <a name="6412"><span class="lineNum">    6412 </span>            : }</a>
 <a name="6413"><span class="lineNum">    6413 </span>            : </a>
-<a name="6414"><span class="lineNum">    6414 </span><span class="lineCov">        521 : static inline void sched_submit_work(struct task_struct *tsk)</span></a>
+<a name="6414"><span class="lineNum">    6414 </span><span class="lineCov">        523 : static inline void sched_submit_work(struct task_struct *tsk)</span></a>
 <a name="6415"><span class="lineNum">    6415 </span>            : {</a>
 <a name="6416"><span class="lineNum">    6416 </span>            :         unsigned int task_flags;</a>
 <a name="6417"><span class="lineNum">    6417 </span>            : </a>
-<a name="6418"><span class="lineNum">    6418 </span><span class="lineCov">        521 :         if (task_is_running(tsk))</span></a>
+<a name="6418"><span class="lineNum">    6418 </span><span class="lineCov">        523 :         if (task_is_running(tsk))</span></a>
 <a name="6419"><span class="lineNum">    6419 </span>            :                 return;</a>
 <a name="6420"><span class="lineNum">    6420 </span>            : </a>
-<a name="6421"><span class="lineNum">    6421 </span><span class="lineCov">        520 :         task_flags = tsk-&gt;flags;</span></a>
+<a name="6421"><span class="lineNum">    6421 </span><span class="lineCov">        522 :         task_flags = tsk-&gt;flags;</span></a>
 <a name="6422"><span class="lineNum">    6422 </span>            :         /*</a>
 <a name="6423"><span class="lineNum">    6423 </span>            :          * If a worker goes to sleep, notify and ask workqueue whether it</a>
 <a name="6424"><span class="lineNum">    6424 </span>            :          * wants to wake up a task to maintain concurrency.</a>
 <a name="6425"><span class="lineNum">    6425 </span>            :          */</a>
-<a name="6426"><span class="lineNum">    6426 </span><span class="lineCov">        520 :         if (task_flags &amp; (PF_WQ_WORKER | PF_IO_WORKER)) {</span></a>
-<a name="6427"><span class="lineNum">    6427 </span><span class="lineCov">         13 :                 if (task_flags &amp; PF_WQ_WORKER)</span></a>
-<a name="6428"><span class="lineNum">    6428 </span><span class="lineCov">         13 :                         wq_worker_sleeping(tsk);</span></a>
+<a name="6426"><span class="lineNum">    6426 </span><span class="lineCov">        522 :         if (task_flags &amp; (PF_WQ_WORKER | PF_IO_WORKER)) {</span></a>
+<a name="6427"><span class="lineNum">    6427 </span><span class="lineCov">         14 :                 if (task_flags &amp; PF_WQ_WORKER)</span></a>
+<a name="6428"><span class="lineNum">    6428 </span><span class="lineCov">         14 :                         wq_worker_sleeping(tsk);</span></a>
 <a name="6429"><span class="lineNum">    6429 </span>            :                 else</a>
 <a name="6430"><span class="lineNum">    6430 </span><span class="lineNoCov">          0 :                         io_wq_worker_sleeping(tsk);</span></a>
 <a name="6431"><span class="lineNum">    6431 </span>            :         }</a>
 <a name="6432"><span class="lineNum">    6432 </span>            : </a>
-<a name="6433"><span class="lineNum">    6433 </span><span class="lineCov">        520 :         if (tsk_is_pi_blocked(tsk))</span></a>
+<a name="6433"><span class="lineNum">    6433 </span><span class="lineCov">        522 :         if (tsk_is_pi_blocked(tsk))</span></a>
 <a name="6434"><span class="lineNum">    6434 </span>            :                 return;</a>
 <a name="6435"><span class="lineNum">    6435 </span>            : </a>
 <a name="6436"><span class="lineNum">    6436 </span>            :         /*</a>
 <a name="6437"><span class="lineNum">    6437 </span>            :          * If we are going to sleep and we have plugged IO queued,</a>
 <a name="6438"><span class="lineNum">    6438 </span>            :          * make sure to submit it to avoid deadlocks.</a>
 <a name="6439"><span class="lineNum">    6439 </span>            :          */</a>
-<a name="6440"><span class="lineNum">    6440 </span><span class="lineCov">        520 :         blk_flush_plug(tsk-&gt;plug, true);</span></a>
+<a name="6440"><span class="lineNum">    6440 </span><span class="lineCov">        522 :         blk_flush_plug(tsk-&gt;plug, true);</span></a>
 <a name="6441"><span class="lineNum">    6441 </span>            : }</a>
 <a name="6442"><span class="lineNum">    6442 </span>            : </a>
-<a name="6443"><span class="lineNum">    6443 </span><span class="lineCov">        507 : static void sched_update_worker(struct task_struct *tsk)</span></a>
+<a name="6443"><span class="lineNum">    6443 </span><span class="lineCov">        509 : static void sched_update_worker(struct task_struct *tsk)</span></a>
 <a name="6444"><span class="lineNum">    6444 </span>            : {</a>
-<a name="6445"><span class="lineNum">    6445 </span><span class="lineCov">        507 :         if (tsk-&gt;flags &amp; (PF_WQ_WORKER | PF_IO_WORKER)) {</span></a>
-<a name="6446"><span class="lineNum">    6446 </span><span class="lineCov">          5 :                 if (tsk-&gt;flags &amp; PF_WQ_WORKER)</span></a>
-<a name="6447"><span class="lineNum">    6447 </span><span class="lineCov">          5 :                         wq_worker_running(tsk);</span></a>
+<a name="6445"><span class="lineNum">    6445 </span><span class="lineCov">        509 :         if (tsk-&gt;flags &amp; (PF_WQ_WORKER | PF_IO_WORKER)) {</span></a>
+<a name="6446"><span class="lineNum">    6446 </span><span class="lineCov">          6 :                 if (tsk-&gt;flags &amp; PF_WQ_WORKER)</span></a>
+<a name="6447"><span class="lineNum">    6447 </span><span class="lineCov">          6 :                         wq_worker_running(tsk);</span></a>
 <a name="6448"><span class="lineNum">    6448 </span>            :                 else</a>
 <a name="6449"><span class="lineNum">    6449 </span><span class="lineNoCov">          0 :                         io_wq_worker_running(tsk);</span></a>
 <a name="6450"><span class="lineNum">    6450 </span>            :         }</a>
-<a name="6451"><span class="lineNum">    6451 </span><span class="lineCov">        507 : }</span></a>
+<a name="6451"><span class="lineNum">    6451 </span><span class="lineCov">        509 : }</span></a>
 <a name="6452"><span class="lineNum">    6452 </span>            : </a>
-<a name="6453"><span class="lineNum">    6453 </span><span class="lineCov">        521 : asmlinkage __visible void __sched schedule(void)</span></a>
+<a name="6453"><span class="lineNum">    6453 </span><span class="lineCov">        523 : asmlinkage __visible void __sched schedule(void)</span></a>
 <a name="6454"><span class="lineNum">    6454 </span>            : {</a>
-<a name="6455"><span class="lineNum">    6455 </span><span class="lineCov">        521 :         struct task_struct *tsk = current;</span></a>
+<a name="6455"><span class="lineNum">    6455 </span><span class="lineCov">        523 :         struct task_struct *tsk = current;</span></a>
 <a name="6456"><span class="lineNum">    6456 </span>            : </a>
-<a name="6457"><span class="lineNum">    6457 </span><span class="lineCov">        521 :         sched_submit_work(tsk);</span></a>
+<a name="6457"><span class="lineNum">    6457 </span><span class="lineCov">        523 :         sched_submit_work(tsk);</span></a>
 <a name="6458"><span class="lineNum">    6458 </span>            :         do {</a>
-<a name="6459"><span class="lineNum">    6459 </span><span class="lineCov">        521 :                 preempt_disable();</span></a>
-<a name="6460"><span class="lineNum">    6460 </span><span class="lineCov">        521 :                 __schedule(SM_NONE);</span></a>
-<a name="6461"><span class="lineNum">    6461 </span><span class="lineCov">        507 :                 sched_preempt_enable_no_resched();</span></a>
-<a name="6462"><span class="lineNum">    6462 </span><span class="lineCov">        507 :         } while (need_resched());</span></a>
-<a name="6463"><span class="lineNum">    6463 </span><span class="lineCov">        507 :         sched_update_worker(tsk);</span></a>
-<a name="6464"><span class="lineNum">    6464 </span><span class="lineCov">        507 : }</span></a>
+<a name="6459"><span class="lineNum">    6459 </span><span class="lineCov">        523 :                 preempt_disable();</span></a>
+<a name="6460"><span class="lineNum">    6460 </span><span class="lineCov">        523 :                 __schedule(SM_NONE);</span></a>
+<a name="6461"><span class="lineNum">    6461 </span><span class="lineCov">        509 :                 sched_preempt_enable_no_resched();</span></a>
+<a name="6462"><span class="lineNum">    6462 </span><span class="lineCov">        509 :         } while (need_resched());</span></a>
+<a name="6463"><span class="lineNum">    6463 </span><span class="lineCov">        509 :         sched_update_worker(tsk);</span></a>
+<a name="6464"><span class="lineNum">    6464 </span><span class="lineCov">        509 : }</span></a>
 <a name="6465"><span class="lineNum">    6465 </span>            : EXPORT_SYMBOL(schedule);</a>
 <a name="6466"><span class="lineNum">    6466 </span>            : </a>
 <a name="6467"><span class="lineNum">    6467 </span>            : /*</a>
@@ -8216,9 +8216,9 @@
 <a name="8154"><span class="lineNum">    8154 </span>            : }</a>
 <a name="8155"><span class="lineNum">    8155 </span>            : </a>
 <a name="8156"><span class="lineNum">    8156 </span>            : #if !defined(CONFIG_PREEMPTION) || defined(CONFIG_PREEMPT_DYNAMIC)</a>
-<a name="8157"><span class="lineNum">    8157 </span><span class="lineCov">        747 : int __sched __cond_resched(void)</span></a>
+<a name="8157"><span class="lineNum">    8157 </span><span class="lineCov">        739 : int __sched __cond_resched(void)</span></a>
 <a name="8158"><span class="lineNum">    8158 </span>            : {</a>
-<a name="8159"><span class="lineNum">    8159 </span><span class="lineCov">        747 :         if (should_resched(0)) {</span></a>
+<a name="8159"><span class="lineNum">    8159 </span><span class="lineCov">        739 :         if (should_resched(0)) {</span></a>
 <a name="8160"><span class="lineNum">    8160 </span>            :                 preempt_schedule_common();</a>
 <a name="8161"><span class="lineNum">    8161 </span>            :                 return 1;</a>
 <a name="8162"><span class="lineNum">    8162 </span>            :         }</a>
@@ -8236,7 +8236,7 @@
 <a name="8174"><span class="lineNum">    8174 </span>            : #ifndef CONFIG_PREEMPT_RCU</a>
 <a name="8175"><span class="lineNum">    8175 </span>            :         rcu_all_qs();</a>
 <a name="8176"><span class="lineNum">    8176 </span>            : #endif</a>
-<a name="8177"><span class="lineNum">    8177 </span><span class="lineCov">        745 :         return 0;</span></a>
+<a name="8177"><span class="lineNum">    8177 </span><span class="lineCov">        737 :         return 0;</span></a>
 <a name="8178"><span class="lineNum">    8178 </span>            : }</a>
 <a name="8179"><span class="lineNum">    8179 </span>            : EXPORT_SYMBOL(__cond_resched);</a>
 <a name="8180"><span class="lineNum">    8180 </span>            : #endif</a>

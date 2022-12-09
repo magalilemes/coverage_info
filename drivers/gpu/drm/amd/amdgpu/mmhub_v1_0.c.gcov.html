@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">277</td>
+            <td class="headerCovTableEntry">276</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -238,626 +238,627 @@
 <a name="176"><span class="lineNum">     176 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_CNTL2, INVALIDATE_L2_CACHE, 1);</span></a>
 <a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_L2_CNTL2, tmp);</span></a>
 <a name="178"><span class="lineNum">     178 </span>            : </a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 :         if (adev-&gt;gmc.translate_further) {</span></a>
-<a name="180"><span class="lineNum">     180 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_L2_CNTL3, BANK_SELECT, 12);</span></a>
-<a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_L2_CNTL3,</span></a>
-<a name="182"><span class="lineNum">     182 </span>            :                                     L2_CACHE_BIGK_FRAGMENT_SIZE, 9);</a>
-<a name="183"><span class="lineNum">     183 </span>            :         } else {</a>
-<a name="184"><span class="lineNum">     184 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_L2_CNTL3, BANK_SELECT, 9);</span></a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_L2_CNTL3,</span></a>
-<a name="186"><span class="lineNum">     186 </span>            :                                     L2_CACHE_BIGK_FRAGMENT_SIZE, 6);</a>
-<a name="187"><span class="lineNum">     187 </span>            :         }</a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_L2_CNTL3, tmp);</span></a>
-<a name="189"><span class="lineNum">     189 </span>            : </a>
-<a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :         tmp = mmVM_L2_CNTL4_DEFAULT;</span></a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_CNTL4, VMC_TAP_PDE_REQUEST_PHYSICAL, 0);</span></a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_CNTL4, VMC_TAP_PTE_REQUEST_PHYSICAL, 0);</span></a>
-<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_L2_CNTL4, tmp);</span></a>
-<a name="194"><span class="lineNum">     194 </span>            : }</a>
-<a name="195"><span class="lineNum">     195 </span>            : </a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_enable_system_domain(struct amdgpu_device *adev)</span></a>
-<a name="197"><span class="lineNum">     197 </span>            : {</a>
-<a name="198"><span class="lineNum">     198 </span>            :         uint32_t tmp;</a>
-<a name="199"><span class="lineNum">     199 </span>            : </a>
-<a name="200"><span class="lineNum">     200 </span><span class="lineNoCov">          0 :         tmp = RREG32_SOC15(MMHUB, 0, mmVM_CONTEXT0_CNTL);</span></a>
-<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_CONTEXT0_CNTL, ENABLE_CONTEXT, 1);</span></a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_CONTEXT0_CNTL, PAGE_TABLE_DEPTH, 0);</span></a>
-<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_CONTEXT0_CNTL,</span></a>
-<a name="204"><span class="lineNum">     204 </span>            :                             RETRY_PERMISSION_OR_INVALID_PAGE_FAULT, 0);</a>
-<a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_CONTEXT0_CNTL, tmp);</span></a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="207"><span class="lineNum">     207 </span>            : </a>
-<a name="208"><span class="lineNum">     208 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_disable_identity_aperture(struct amdgpu_device *adev)</span></a>
-<a name="209"><span class="lineNum">     209 </span>            : {</a>
-<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
-<a name="211"><span class="lineNum">     211 </span>            :                 return;</a>
-<a name="212"><span class="lineNum">     212 </span>            : </a>
-<a name="213"><span class="lineNum">     213 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_L2_CONTEXT1_IDENTITY_APERTURE_LOW_ADDR_LO32,</span></a>
-<a name="214"><span class="lineNum">     214 </span>            :                      0XFFFFFFFF);</a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_L2_CONTEXT1_IDENTITY_APERTURE_LOW_ADDR_HI32,</span></a>
-<a name="216"><span class="lineNum">     216 </span>            :                      0x0000000F);</a>
-<a name="217"><span class="lineNum">     217 </span>            : </a>
-<a name="218"><span class="lineNum">     218 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0,</span></a>
-<a name="219"><span class="lineNum">     219 </span>            :                      mmVM_L2_CONTEXT1_IDENTITY_APERTURE_HIGH_ADDR_LO32, 0);</a>
-<a name="220"><span class="lineNum">     220 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0,</span></a>
-<a name="221"><span class="lineNum">     221 </span>            :                      mmVM_L2_CONTEXT1_IDENTITY_APERTURE_HIGH_ADDR_HI32, 0);</a>
-<a name="222"><span class="lineNum">     222 </span>            : </a>
-<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_L2_CONTEXT_IDENTITY_PHYSICAL_OFFSET_LO32,</span></a>
-<a name="224"><span class="lineNum">     224 </span>            :                      0);</a>
-<a name="225"><span class="lineNum">     225 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_L2_CONTEXT_IDENTITY_PHYSICAL_OFFSET_HI32,</span></a>
-<a name="226"><span class="lineNum">     226 </span>            :                      0);</a>
-<a name="227"><span class="lineNum">     227 </span>            : }</a>
-<a name="228"><span class="lineNum">     228 </span>            : </a>
-<a name="229"><span class="lineNum">     229 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_setup_vmid_config(struct amdgpu_device *adev)</span></a>
-<a name="230"><span class="lineNum">     230 </span>            : {</a>
-<a name="231"><span class="lineNum">     231 </span><span class="lineNoCov">          0 :         struct amdgpu_vmhub *hub = &amp;adev-&gt;vmhub[AMDGPU_MMHUB_0];</span></a>
-<a name="232"><span class="lineNum">     232 </span>            :         unsigned num_level, block_size;</a>
-<a name="233"><span class="lineNum">     233 </span>            :         uint32_t tmp;</a>
-<a name="234"><span class="lineNum">     234 </span>            :         int i;</a>
-<a name="235"><span class="lineNum">     235 </span>            : </a>
-<a name="236"><span class="lineNum">     236 </span><span class="lineNoCov">          0 :         num_level = adev-&gt;vm_manager.num_level;</span></a>
-<a name="237"><span class="lineNum">     237 </span><span class="lineNoCov">          0 :         block_size = adev-&gt;vm_manager.block_size;</span></a>
-<a name="238"><span class="lineNum">     238 </span><span class="lineNoCov">          0 :         if (adev-&gt;gmc.translate_further)</span></a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineNoCov">          0 :                 num_level -= 1;</span></a>
-<a name="240"><span class="lineNum">     240 </span>            :         else</a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineNoCov">          0 :                 block_size -= 9;</span></a>
-<a name="242"><span class="lineNum">     242 </span>            : </a>
-<a name="243"><span class="lineNum">     243 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt;= 14; i++) {</span></a>
-<a name="244"><span class="lineNum">     244 </span><span class="lineNoCov">          0 :                 tmp = RREG32_SOC15_OFFSET(MMHUB, 0, mmVM_CONTEXT1_CNTL, i);</span></a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL, ENABLE_CONTEXT, 1);</span></a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL, PAGE_TABLE_DEPTH,</span></a>
-<a name="247"><span class="lineNum">     247 </span>            :                                     num_level);</a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
-<a name="249"><span class="lineNum">     249 </span>            :                                     RANGE_PROTECTION_FAULT_ENABLE_DEFAULT, 1);</a>
-<a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
-<a name="251"><span class="lineNum">     251 </span>            :                                     DUMMY_PAGE_PROTECTION_FAULT_ENABLE_DEFAULT,</a>
-<a name="252"><span class="lineNum">     252 </span>            :                                     1);</a>
-<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
-<a name="254"><span class="lineNum">     254 </span>            :                                     PDE0_PROTECTION_FAULT_ENABLE_DEFAULT, 1);</a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
-<a name="256"><span class="lineNum">     256 </span>            :                                     VALID_PROTECTION_FAULT_ENABLE_DEFAULT, 1);</a>
-<a name="257"><span class="lineNum">     257 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
-<a name="258"><span class="lineNum">     258 </span>            :                                     READ_PROTECTION_FAULT_ENABLE_DEFAULT, 1);</a>
-<a name="259"><span class="lineNum">     259 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
-<a name="260"><span class="lineNum">     260 </span>            :                                     WRITE_PROTECTION_FAULT_ENABLE_DEFAULT, 1);</a>
-<a name="261"><span class="lineNum">     261 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
-<a name="262"><span class="lineNum">     262 </span>            :                                     EXECUTE_PROTECTION_FAULT_ENABLE_DEFAULT, 1);</a>
-<a name="263"><span class="lineNum">     263 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
-<a name="264"><span class="lineNum">     264 </span>            :                                     PAGE_TABLE_BLOCK_SIZE,</a>
-<a name="265"><span class="lineNum">     265 </span>            :                                     block_size);</a>
-<a name="266"><span class="lineNum">     266 </span>            :                 /* Send no-retry XNACK on fault to suppress VM fault storm. */</a>
-<a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
-<a name="268"><span class="lineNum">     268 </span>            :                                     RETRY_PERMISSION_OR_INVALID_PAGE_FAULT,</a>
-<a name="269"><span class="lineNum">     269 </span>            :                                     !adev-&gt;gmc.noretry);</a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_CONTEXT1_CNTL,</span></a>
-<a name="271"><span class="lineNum">     271 </span>            :                                     i * hub-&gt;ctx_distance, tmp);</a>
-<a name="272"><span class="lineNum">     272 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_CONTEXT1_PAGE_TABLE_START_ADDR_LO32,</span></a>
-<a name="273"><span class="lineNum">     273 </span>            :                                     i * hub-&gt;ctx_addr_distance, 0);</a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_CONTEXT1_PAGE_TABLE_START_ADDR_HI32,</span></a>
-<a name="275"><span class="lineNum">     275 </span>            :                                     i * hub-&gt;ctx_addr_distance, 0);</a>
-<a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_CONTEXT1_PAGE_TABLE_END_ADDR_LO32,</span></a>
-<a name="277"><span class="lineNum">     277 </span>            :                                     i * hub-&gt;ctx_addr_distance,</a>
-<a name="278"><span class="lineNum">     278 </span>            :                                     lower_32_bits(adev-&gt;vm_manager.max_pfn - 1));</a>
-<a name="279"><span class="lineNum">     279 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_CONTEXT1_PAGE_TABLE_END_ADDR_HI32,</span></a>
-<a name="280"><span class="lineNum">     280 </span>            :                                     i * hub-&gt;ctx_addr_distance,</a>
-<a name="281"><span class="lineNum">     281 </span>            :                                     upper_32_bits(adev-&gt;vm_manager.max_pfn - 1));</a>
-<a name="282"><span class="lineNum">     282 </span>            :         }</a>
-<a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="284"><span class="lineNum">     284 </span>            : </a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_program_invalidation(struct amdgpu_device *adev)</span></a>
-<a name="286"><span class="lineNum">     286 </span>            : {</a>
-<a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :         struct amdgpu_vmhub *hub = &amp;adev-&gt;vmhub[AMDGPU_MMHUB_0];</span></a>
-<a name="288"><span class="lineNum">     288 </span>            :         unsigned i;</a>
-<a name="289"><span class="lineNum">     289 </span>            : </a>
-<a name="290"><span class="lineNum">     290 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; 18; ++i) {</span></a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_INVALIDATE_ENG0_ADDR_RANGE_LO32,</span></a>
-<a name="292"><span class="lineNum">     292 </span>            :                                     i * hub-&gt;eng_addr_distance, 0xffffffff);</a>
-<a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_INVALIDATE_ENG0_ADDR_RANGE_HI32,</span></a>
-<a name="294"><span class="lineNum">     294 </span>            :                                     i * hub-&gt;eng_addr_distance, 0x1f);</a>
-<a name="295"><span class="lineNum">     295 </span>            :         }</a>
-<a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="297"><span class="lineNum">     297 </span>            : </a>
-<a name="298"><span class="lineNum">     298 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_update_power_gating(struct amdgpu_device *adev,</span></a>
-<a name="299"><span class="lineNum">     299 </span>            :                                 bool enable)</a>
-<a name="300"><span class="lineNum">     300 </span>            : {</a>
-<a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
-<a name="302"><span class="lineNum">     302 </span>            :                 return;</a>
-<a name="303"><span class="lineNum">     303 </span>            : </a>
-<a name="304"><span class="lineNum">     304 </span><span class="lineNoCov">          0 :         if (adev-&gt;pg_flags &amp; AMD_PG_SUPPORT_MMHUB)</span></a>
-<a name="305"><span class="lineNum">     305 </span><span class="lineNoCov">          0 :                 amdgpu_dpm_set_powergating_by_smu(adev,</span></a>
-<a name="306"><span class="lineNum">     306 </span>            :                                                   AMD_IP_BLOCK_TYPE_GMC,</a>
-<a name="307"><span class="lineNum">     307 </span>            :                                                   enable);</a>
-<a name="308"><span class="lineNum">     308 </span>            : }</a>
-<a name="309"><span class="lineNum">     309 </span>            : </a>
-<a name="310"><span class="lineNum">     310 </span><span class="lineNoCov">          0 : static int mmhub_v1_0_gart_enable(struct amdgpu_device *adev)</span></a>
-<a name="311"><span class="lineNum">     311 </span>            : {</a>
-<a name="312"><span class="lineNum">     312 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev)) {</span></a>
-<a name="313"><span class="lineNum">     313 </span>            :                 /*</a>
-<a name="314"><span class="lineNum">     314 </span>            :                  * MC_VM_FB_LOCATION_BASE/TOP is NULL for VF, becuase they are</a>
-<a name="315"><span class="lineNum">     315 </span>            :                  * VF copy registers so vbios post doesn't program them, for</a>
-<a name="316"><span class="lineNum">     316 </span>            :                  * SRIOV driver need to program them</a>
-<a name="317"><span class="lineNum">     317 </span>            :                  */</a>
-<a name="318"><span class="lineNum">     318 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, mmMC_VM_FB_LOCATION_BASE,</span></a>
-<a name="319"><span class="lineNum">     319 </span>            :                              adev-&gt;gmc.vram_start &gt;&gt; 24);</a>
-<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, mmMC_VM_FB_LOCATION_TOP,</span></a>
-<a name="321"><span class="lineNum">     321 </span>            :                              adev-&gt;gmc.vram_end &gt;&gt; 24);</a>
-<a name="322"><span class="lineNum">     322 </span>            :         }</a>
-<a name="323"><span class="lineNum">     323 </span>            : </a>
-<a name="324"><span class="lineNum">     324 </span>            :         /* GART Enable. */</a>
-<a name="325"><span class="lineNum">     325 </span><span class="lineNoCov">          0 :         mmhub_v1_0_init_gart_aperture_regs(adev);</span></a>
-<a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 :         mmhub_v1_0_init_system_aperture_regs(adev);</span></a>
-<a name="327"><span class="lineNum">     327 </span><span class="lineNoCov">          0 :         mmhub_v1_0_init_tlb_regs(adev);</span></a>
-<a name="328"><span class="lineNum">     328 </span><span class="lineNoCov">          0 :         mmhub_v1_0_init_cache_regs(adev);</span></a>
-<a name="329"><span class="lineNum">     329 </span>            : </a>
-<a name="330"><span class="lineNum">     330 </span><span class="lineNoCov">          0 :         mmhub_v1_0_enable_system_domain(adev);</span></a>
-<a name="331"><span class="lineNum">     331 </span><span class="lineNoCov">          0 :         mmhub_v1_0_disable_identity_aperture(adev);</span></a>
-<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 :         mmhub_v1_0_setup_vmid_config(adev);</span></a>
-<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 :         mmhub_v1_0_program_invalidation(adev);</span></a>
-<a name="334"><span class="lineNum">     334 </span>            : </a>
-<a name="335"><span class="lineNum">     335 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="336"><span class="lineNum">     336 </span>            : }</a>
-<a name="337"><span class="lineNum">     337 </span>            : </a>
-<a name="338"><span class="lineNum">     338 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_gart_disable(struct amdgpu_device *adev)</span></a>
-<a name="339"><span class="lineNum">     339 </span>            : {</a>
-<a name="340"><span class="lineNum">     340 </span><span class="lineNoCov">          0 :         struct amdgpu_vmhub *hub = &amp;adev-&gt;vmhub[AMDGPU_MMHUB_0];</span></a>
-<a name="341"><span class="lineNum">     341 </span>            :         u32 tmp;</a>
-<a name="342"><span class="lineNum">     342 </span>            :         u32 i;</a>
-<a name="343"><span class="lineNum">     343 </span>            : </a>
-<a name="344"><span class="lineNum">     344 </span>            :         /* Disable all tables */</a>
-<a name="345"><span class="lineNum">     345 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; AMDGPU_NUM_VMID; i++)</span></a>
-<a name="346"><span class="lineNum">     346 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_CONTEXT0_CNTL,</span></a>
-<a name="347"><span class="lineNum">     347 </span>            :                                     i * hub-&gt;ctx_distance, 0);</a>
-<a name="348"><span class="lineNum">     348 </span>            : </a>
-<a name="349"><span class="lineNum">     349 </span>            :         /* Setup TLB control */</a>
-<a name="350"><span class="lineNum">     350 </span><span class="lineNoCov">          0 :         tmp = RREG32_SOC15(MMHUB, 0, mmMC_VM_MX_L1_TLB_CNTL);</span></a>
-<a name="351"><span class="lineNum">     351 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, MC_VM_MX_L1_TLB_CNTL, ENABLE_L1_TLB, 0);</span></a>
-<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp,</span></a>
-<a name="353"><span class="lineNum">     353 </span>            :                                 MC_VM_MX_L1_TLB_CNTL,</a>
-<a name="354"><span class="lineNum">     354 </span>            :                                 ENABLE_ADVANCED_DRIVER_MODEL,</a>
-<a name="355"><span class="lineNum">     355 </span>            :                                 0);</a>
-<a name="356"><span class="lineNum">     356 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmMC_VM_MX_L1_TLB_CNTL, tmp);</span></a>
-<a name="357"><span class="lineNum">     357 </span>            : </a>
-<a name="358"><span class="lineNum">     358 </span><span class="lineNoCov">          0 :         if (!amdgpu_sriov_vf(adev)) {</span></a>
-<a name="359"><span class="lineNum">     359 </span>            :                 /* Setup L2 cache */</a>
-<a name="360"><span class="lineNum">     360 </span><span class="lineNoCov">          0 :                 tmp = RREG32_SOC15(MMHUB, 0, mmVM_L2_CNTL);</span></a>
-<a name="361"><span class="lineNum">     361 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_L2_CNTL, ENABLE_L2_CACHE, 0);</span></a>
-<a name="362"><span class="lineNum">     362 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, mmVM_L2_CNTL, tmp);</span></a>
-<a name="363"><span class="lineNum">     363 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, mmVM_L2_CNTL3, 0);</span></a>
-<a name="364"><span class="lineNum">     364 </span>            :         }</a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="366"><span class="lineNum">     366 </span>            : </a>
-<a name="367"><span class="lineNum">     367 </span>            : /**</a>
-<a name="368"><span class="lineNum">     368 </span>            :  * mmhub_v1_0_set_fault_enable_default - update GART/VM fault handling</a>
-<a name="369"><span class="lineNum">     369 </span>            :  *</a>
-<a name="370"><span class="lineNum">     370 </span>            :  * @adev: amdgpu_device pointer</a>
-<a name="371"><span class="lineNum">     371 </span>            :  * @value: true redirects VM faults to the default page</a>
-<a name="372"><span class="lineNum">     372 </span>            :  */</a>
-<a name="373"><span class="lineNum">     373 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_set_fault_enable_default(struct amdgpu_device *adev, bool value)</span></a>
-<a name="374"><span class="lineNum">     374 </span>            : {</a>
-<a name="375"><span class="lineNum">     375 </span>            :         u32 tmp;</a>
-<a name="376"><span class="lineNum">     376 </span>            : </a>
-<a name="377"><span class="lineNum">     377 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
-<a name="378"><span class="lineNum">     378 </span>            :                 return;</a>
-<a name="379"><span class="lineNum">     379 </span>            : </a>
-<a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 :         tmp = RREG32_SOC15(MMHUB, 0, mmVM_L2_PROTECTION_FAULT_CNTL);</span></a>
-<a name="381"><span class="lineNum">     381 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
-<a name="382"><span class="lineNum">     382 </span>            :                         RANGE_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
-<a name="383"><span class="lineNum">     383 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
-<a name="384"><span class="lineNum">     384 </span>            :                         PDE0_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
-<a name="385"><span class="lineNum">     385 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
-<a name="386"><span class="lineNum">     386 </span>            :                         PDE1_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
-<a name="387"><span class="lineNum">     387 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
-<a name="388"><span class="lineNum">     388 </span>            :                         PDE2_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
-<a name="389"><span class="lineNum">     389 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp,</span></a>
-<a name="390"><span class="lineNum">     390 </span>            :                         VM_L2_PROTECTION_FAULT_CNTL,</a>
-<a name="391"><span class="lineNum">     391 </span>            :                         TRANSLATE_FURTHER_PROTECTION_FAULT_ENABLE_DEFAULT,</a>
-<a name="392"><span class="lineNum">     392 </span>            :                         value);</a>
-<a name="393"><span class="lineNum">     393 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
-<a name="394"><span class="lineNum">     394 </span>            :                         NACK_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
-<a name="395"><span class="lineNum">     395 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
-<a name="396"><span class="lineNum">     396 </span>            :                         DUMMY_PAGE_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
-<a name="397"><span class="lineNum">     397 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
-<a name="398"><span class="lineNum">     398 </span>            :                         VALID_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
-<a name="399"><span class="lineNum">     399 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
-<a name="400"><span class="lineNum">     400 </span>            :                         READ_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
-<a name="401"><span class="lineNum">     401 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
-<a name="402"><span class="lineNum">     402 </span>            :                         WRITE_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
-<a name="403"><span class="lineNum">     403 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
-<a name="404"><span class="lineNum">     404 </span>            :                         EXECUTE_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
-<a name="405"><span class="lineNum">     405 </span><span class="lineNoCov">          0 :         if (!value) {</span></a>
-<a name="406"><span class="lineNum">     406 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
-<a name="407"><span class="lineNum">     407 </span>            :                                 CRASH_ON_NO_RETRY_FAULT, 1);</a>
-<a name="408"><span class="lineNum">     408 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
-<a name="409"><span class="lineNum">     409 </span>            :                                 CRASH_ON_RETRY_FAULT, 1);</a>
-<a name="410"><span class="lineNum">     410 </span>            :         }</a>
-<a name="411"><span class="lineNum">     411 </span>            : </a>
-<a name="412"><span class="lineNum">     412 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_L2_PROTECTION_FAULT_CNTL, tmp);</span></a>
-<a name="413"><span class="lineNum">     413 </span>            : }</a>
-<a name="414"><span class="lineNum">     414 </span>            : </a>
-<a name="415"><span class="lineNum">     415 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_init(struct amdgpu_device *adev)</span></a>
-<a name="416"><span class="lineNum">     416 </span>            : {</a>
-<a name="417"><span class="lineNum">     417 </span><span class="lineNoCov">          0 :         struct amdgpu_vmhub *hub = &amp;adev-&gt;vmhub[AMDGPU_MMHUB_0];</span></a>
-<a name="418"><span class="lineNum">     418 </span>            : </a>
-<a name="419"><span class="lineNum">     419 </span><span class="lineNoCov">          0 :         hub-&gt;ctx0_ptb_addr_lo32 =</span></a>
-<a name="420"><span class="lineNum">     420 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0,</span></a>
-<a name="421"><span class="lineNum">     421 </span>            :                                  mmVM_CONTEXT0_PAGE_TABLE_BASE_ADDR_LO32);</a>
-<a name="422"><span class="lineNum">     422 </span><span class="lineNoCov">          0 :         hub-&gt;ctx0_ptb_addr_hi32 =</span></a>
-<a name="423"><span class="lineNum">     423 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0,</span></a>
-<a name="424"><span class="lineNum">     424 </span>            :                                  mmVM_CONTEXT0_PAGE_TABLE_BASE_ADDR_HI32);</a>
-<a name="425"><span class="lineNum">     425 </span><span class="lineNoCov">          0 :         hub-&gt;vm_inv_eng0_sem =</span></a>
-<a name="426"><span class="lineNum">     426 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0, mmVM_INVALIDATE_ENG0_SEM);</span></a>
-<a name="427"><span class="lineNum">     427 </span><span class="lineNoCov">          0 :         hub-&gt;vm_inv_eng0_req =</span></a>
-<a name="428"><span class="lineNum">     428 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0, mmVM_INVALIDATE_ENG0_REQ);</span></a>
-<a name="429"><span class="lineNum">     429 </span><span class="lineNoCov">          0 :         hub-&gt;vm_inv_eng0_ack =</span></a>
-<a name="430"><span class="lineNum">     430 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0, mmVM_INVALIDATE_ENG0_ACK);</span></a>
-<a name="431"><span class="lineNum">     431 </span><span class="lineNoCov">          0 :         hub-&gt;vm_context0_cntl =</span></a>
-<a name="432"><span class="lineNum">     432 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0, mmVM_CONTEXT0_CNTL);</span></a>
-<a name="433"><span class="lineNum">     433 </span><span class="lineNoCov">          0 :         hub-&gt;vm_l2_pro_fault_status =</span></a>
-<a name="434"><span class="lineNum">     434 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0, mmVM_L2_PROTECTION_FAULT_STATUS);</span></a>
-<a name="435"><span class="lineNum">     435 </span><span class="lineNoCov">          0 :         hub-&gt;vm_l2_pro_fault_cntl =</span></a>
-<a name="436"><span class="lineNum">     436 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0, mmVM_L2_PROTECTION_FAULT_CNTL);</span></a>
-<a name="437"><span class="lineNum">     437 </span>            : </a>
-<a name="438"><span class="lineNum">     438 </span><span class="lineNoCov">          0 :         hub-&gt;ctx_distance = mmVM_CONTEXT1_CNTL - mmVM_CONTEXT0_CNTL;</span></a>
-<a name="439"><span class="lineNum">     439 </span><span class="lineNoCov">          0 :         hub-&gt;ctx_addr_distance = mmVM_CONTEXT1_PAGE_TABLE_BASE_ADDR_LO32 -</span></a>
-<a name="440"><span class="lineNum">     440 </span>            :                 mmVM_CONTEXT0_PAGE_TABLE_BASE_ADDR_LO32;</a>
-<a name="441"><span class="lineNum">     441 </span><span class="lineNoCov">          0 :         hub-&gt;eng_distance = mmVM_INVALIDATE_ENG1_REQ - mmVM_INVALIDATE_ENG0_REQ;</span></a>
-<a name="442"><span class="lineNum">     442 </span><span class="lineNoCov">          0 :         hub-&gt;eng_addr_distance = mmVM_INVALIDATE_ENG1_ADDR_RANGE_LO32 -</span></a>
-<a name="443"><span class="lineNum">     443 </span>            :                 mmVM_INVALIDATE_ENG0_ADDR_RANGE_LO32;</a>
-<a name="444"><span class="lineNum">     444 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="445"><span class="lineNum">     445 </span>            : </a>
-<a name="446"><span class="lineNum">     446 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_update_medium_grain_clock_gating(struct amdgpu_device *adev,</span></a>
-<a name="447"><span class="lineNum">     447 </span>            :                                                         bool enable)</a>
-<a name="448"><span class="lineNum">     448 </span>            : {</a>
-<a name="449"><span class="lineNum">     449 </span><span class="lineNoCov">          0 :         uint32_t def, data, def1, data1, def2 = 0, data2 = 0;</span></a>
-<a name="450"><span class="lineNum">     450 </span>            : </a>
-<a name="451"><span class="lineNum">     451 </span><span class="lineNoCov">          0 :         def  = data  = RREG32_SOC15(MMHUB, 0, mmATC_L2_MISC_CG);</span></a>
-<a name="452"><span class="lineNum">     452 </span>            : </a>
-<a name="453"><span class="lineNum">     453 </span><span class="lineNoCov">          0 :         if (adev-&gt;asic_type != CHIP_RAVEN) {</span></a>
-<a name="454"><span class="lineNum">     454 </span><span class="lineNoCov">          0 :                 def1 = data1 = RREG32_SOC15(MMHUB, 0, mmDAGB0_CNTL_MISC2);</span></a>
-<a name="455"><span class="lineNum">     455 </span><span class="lineNoCov">          0 :                 def2 = data2 = RREG32_SOC15(MMHUB, 0, mmDAGB1_CNTL_MISC2);</span></a>
-<a name="456"><span class="lineNum">     456 </span>            :         } else</a>
-<a name="457"><span class="lineNum">     457 </span><span class="lineNoCov">          0 :                 def1 = data1 = RREG32_SOC15(MMHUB, 0, mmDAGB0_CNTL_MISC2_RV);</span></a>
-<a name="458"><span class="lineNum">     458 </span>            : </a>
-<a name="459"><span class="lineNum">     459 </span><span class="lineNoCov">          0 :         if (enable &amp;&amp; (adev-&gt;cg_flags &amp; AMD_CG_SUPPORT_MC_MGCG)) {</span></a>
-<a name="460"><span class="lineNum">     460 </span><span class="lineNoCov">          0 :                 data |= ATC_L2_MISC_CG__ENABLE_MASK;</span></a>
-<a name="461"><span class="lineNum">     461 </span>            : </a>
-<a name="462"><span class="lineNum">     462 </span><span class="lineNoCov">          0 :                 data1 &amp;= ~(DAGB0_CNTL_MISC2__DISABLE_WRREQ_CG_MASK |</span></a>
-<a name="463"><span class="lineNum">     463 </span>            :                            DAGB0_CNTL_MISC2__DISABLE_WRRET_CG_MASK |</a>
-<a name="464"><span class="lineNum">     464 </span>            :                            DAGB0_CNTL_MISC2__DISABLE_RDREQ_CG_MASK |</a>
-<a name="465"><span class="lineNum">     465 </span>            :                            DAGB0_CNTL_MISC2__DISABLE_RDRET_CG_MASK |</a>
-<a name="466"><span class="lineNum">     466 </span>            :                            DAGB0_CNTL_MISC2__DISABLE_TLBWR_CG_MASK |</a>
-<a name="467"><span class="lineNum">     467 </span>            :                            DAGB0_CNTL_MISC2__DISABLE_TLBRD_CG_MASK);</a>
-<a name="468"><span class="lineNum">     468 </span>            : </a>
-<a name="469"><span class="lineNum">     469 </span><span class="lineNoCov">          0 :                 if (adev-&gt;asic_type != CHIP_RAVEN)</span></a>
-<a name="470"><span class="lineNum">     470 </span><span class="lineNoCov">          0 :                         data2 &amp;= ~(DAGB1_CNTL_MISC2__DISABLE_WRREQ_CG_MASK |</span></a>
-<a name="471"><span class="lineNum">     471 </span>            :                                    DAGB1_CNTL_MISC2__DISABLE_WRRET_CG_MASK |</a>
-<a name="472"><span class="lineNum">     472 </span>            :                                    DAGB1_CNTL_MISC2__DISABLE_RDREQ_CG_MASK |</a>
-<a name="473"><span class="lineNum">     473 </span>            :                                    DAGB1_CNTL_MISC2__DISABLE_RDRET_CG_MASK |</a>
-<a name="474"><span class="lineNum">     474 </span>            :                                    DAGB1_CNTL_MISC2__DISABLE_TLBWR_CG_MASK |</a>
-<a name="475"><span class="lineNum">     475 </span>            :                                    DAGB1_CNTL_MISC2__DISABLE_TLBRD_CG_MASK);</a>
-<a name="476"><span class="lineNum">     476 </span>            :         } else {</a>
-<a name="477"><span class="lineNum">     477 </span><span class="lineNoCov">          0 :                 data &amp;= ~ATC_L2_MISC_CG__ENABLE_MASK;</span></a>
-<a name="478"><span class="lineNum">     478 </span>            : </a>
-<a name="479"><span class="lineNum">     479 </span><span class="lineNoCov">          0 :                 data1 |= (DAGB0_CNTL_MISC2__DISABLE_WRREQ_CG_MASK |</span></a>
-<a name="480"><span class="lineNum">     480 </span>            :                           DAGB0_CNTL_MISC2__DISABLE_WRRET_CG_MASK |</a>
-<a name="481"><span class="lineNum">     481 </span>            :                           DAGB0_CNTL_MISC2__DISABLE_RDREQ_CG_MASK |</a>
-<a name="482"><span class="lineNum">     482 </span>            :                           DAGB0_CNTL_MISC2__DISABLE_RDRET_CG_MASK |</a>
-<a name="483"><span class="lineNum">     483 </span>            :                           DAGB0_CNTL_MISC2__DISABLE_TLBWR_CG_MASK |</a>
-<a name="484"><span class="lineNum">     484 </span>            :                           DAGB0_CNTL_MISC2__DISABLE_TLBRD_CG_MASK);</a>
-<a name="485"><span class="lineNum">     485 </span>            : </a>
-<a name="486"><span class="lineNum">     486 </span><span class="lineNoCov">          0 :                 if (adev-&gt;asic_type != CHIP_RAVEN)</span></a>
-<a name="487"><span class="lineNum">     487 </span><span class="lineNoCov">          0 :                         data2 |= (DAGB1_CNTL_MISC2__DISABLE_WRREQ_CG_MASK |</span></a>
-<a name="488"><span class="lineNum">     488 </span>            :                                   DAGB1_CNTL_MISC2__DISABLE_WRRET_CG_MASK |</a>
-<a name="489"><span class="lineNum">     489 </span>            :                                   DAGB1_CNTL_MISC2__DISABLE_RDREQ_CG_MASK |</a>
-<a name="490"><span class="lineNum">     490 </span>            :                                   DAGB1_CNTL_MISC2__DISABLE_RDRET_CG_MASK |</a>
-<a name="491"><span class="lineNum">     491 </span>            :                                   DAGB1_CNTL_MISC2__DISABLE_TLBWR_CG_MASK |</a>
-<a name="492"><span class="lineNum">     492 </span>            :                                   DAGB1_CNTL_MISC2__DISABLE_TLBRD_CG_MASK);</a>
-<a name="493"><span class="lineNum">     493 </span>            :         }</a>
-<a name="494"><span class="lineNum">     494 </span>            : </a>
-<a name="495"><span class="lineNum">     495 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="496"><span class="lineNum">     496 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, mmATC_L2_MISC_CG, data);</span></a>
-<a name="497"><span class="lineNum">     497 </span>            : </a>
-<a name="498"><span class="lineNum">     498 </span><span class="lineNoCov">          0 :         if (def1 != data1) {</span></a>
-<a name="499"><span class="lineNum">     499 </span><span class="lineNoCov">          0 :                 if (adev-&gt;asic_type != CHIP_RAVEN)</span></a>
-<a name="500"><span class="lineNum">     500 </span><span class="lineNoCov">          0 :                         WREG32_SOC15(MMHUB, 0, mmDAGB0_CNTL_MISC2, data1);</span></a>
-<a name="501"><span class="lineNum">     501 </span>            :                 else</a>
-<a name="502"><span class="lineNum">     502 </span><span class="lineNoCov">          0 :                         WREG32_SOC15(MMHUB, 0, mmDAGB0_CNTL_MISC2_RV, data1);</span></a>
-<a name="503"><span class="lineNum">     503 </span>            :         }</a>
-<a name="504"><span class="lineNum">     504 </span>            : </a>
-<a name="505"><span class="lineNum">     505 </span><span class="lineNoCov">          0 :         if (adev-&gt;asic_type != CHIP_RAVEN &amp;&amp; def2 != data2)</span></a>
-<a name="506"><span class="lineNum">     506 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, mmDAGB1_CNTL_MISC2, data2);</span></a>
-<a name="507"><span class="lineNum">     507 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="508"><span class="lineNum">     508 </span>            : </a>
-<a name="509"><span class="lineNum">     509 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_update_medium_grain_light_sleep(struct amdgpu_device *adev,</span></a>
-<a name="510"><span class="lineNum">     510 </span>            :                                                        bool enable)</a>
-<a name="511"><span class="lineNum">     511 </span>            : {</a>
-<a name="512"><span class="lineNum">     512 </span>            :         uint32_t def, data;</a>
-<a name="513"><span class="lineNum">     513 </span>            : </a>
-<a name="514"><span class="lineNum">     514 </span><span class="lineNoCov">          0 :         def = data = RREG32_SOC15(MMHUB, 0, mmATC_L2_MISC_CG);</span></a>
-<a name="515"><span class="lineNum">     515 </span>            : </a>
-<a name="516"><span class="lineNum">     516 </span><span class="lineNoCov">          0 :         if (enable &amp;&amp; (adev-&gt;cg_flags &amp; AMD_CG_SUPPORT_MC_LS))</span></a>
-<a name="517"><span class="lineNum">     517 </span><span class="lineNoCov">          0 :                 data |= ATC_L2_MISC_CG__MEM_LS_ENABLE_MASK;</span></a>
-<a name="518"><span class="lineNum">     518 </span>            :         else</a>
-<a name="519"><span class="lineNum">     519 </span><span class="lineNoCov">          0 :                 data &amp;= ~ATC_L2_MISC_CG__MEM_LS_ENABLE_MASK;</span></a>
-<a name="520"><span class="lineNum">     520 </span>            : </a>
-<a name="521"><span class="lineNum">     521 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="522"><span class="lineNum">     522 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, mmATC_L2_MISC_CG, data);</span></a>
-<a name="523"><span class="lineNum">     523 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="524"><span class="lineNum">     524 </span>            : </a>
-<a name="525"><span class="lineNum">     525 </span><span class="lineNoCov">          0 : static int mmhub_v1_0_set_clockgating(struct amdgpu_device *adev,</span></a>
-<a name="526"><span class="lineNum">     526 </span>            :                                enum amd_clockgating_state state)</a>
-<a name="527"><span class="lineNum">     527 </span>            : {</a>
-<a name="528"><span class="lineNum">     528 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
-<a name="529"><span class="lineNum">     529 </span>            :                 return 0;</a>
-<a name="530"><span class="lineNum">     530 </span>            : </a>
-<a name="531"><span class="lineNum">     531 </span><span class="lineNoCov">          0 :         switch (adev-&gt;asic_type) {</span></a>
-<a name="532"><span class="lineNum">     532 </span>            :         case CHIP_VEGA10:</a>
-<a name="533"><span class="lineNum">     533 </span>            :         case CHIP_VEGA12:</a>
-<a name="534"><span class="lineNum">     534 </span>            :         case CHIP_VEGA20:</a>
-<a name="535"><span class="lineNum">     535 </span>            :         case CHIP_RAVEN:</a>
-<a name="536"><span class="lineNum">     536 </span>            :         case CHIP_RENOIR:</a>
-<a name="537"><span class="lineNum">     537 </span><span class="lineNoCov">          0 :                 mmhub_v1_0_update_medium_grain_clock_gating(adev,</span></a>
-<a name="538"><span class="lineNum">     538 </span>            :                                 state == AMD_CG_STATE_GATE);</a>
-<a name="539"><span class="lineNum">     539 </span><span class="lineNoCov">          0 :                 mmhub_v1_0_update_medium_grain_light_sleep(adev,</span></a>
-<a name="540"><span class="lineNum">     540 </span>            :                                 state == AMD_CG_STATE_GATE);</a>
-<a name="541"><span class="lineNum">     541 </span><span class="lineNoCov">          0 :                 break;</span></a>
-<a name="542"><span class="lineNum">     542 </span>            :         default:</a>
-<a name="543"><span class="lineNum">     543 </span>            :                 break;</a>
-<a name="544"><span class="lineNum">     544 </span>            :         }</a>
-<a name="545"><span class="lineNum">     545 </span>            : </a>
-<a name="546"><span class="lineNum">     546 </span>            :         return 0;</a>
-<a name="547"><span class="lineNum">     547 </span>            : }</a>
-<a name="548"><span class="lineNum">     548 </span>            : </a>
-<a name="549"><span class="lineNum">     549 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_get_clockgating(struct amdgpu_device *adev, u64 *flags)</span></a>
-<a name="550"><span class="lineNum">     550 </span>            : {</a>
-<a name="551"><span class="lineNum">     551 </span>            :         int data, data1;</a>
-<a name="552"><span class="lineNum">     552 </span>            : </a>
-<a name="553"><span class="lineNum">     553 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
-<a name="554"><span class="lineNum">     554 </span><span class="lineNoCov">          0 :                 *flags = 0;</span></a>
-<a name="555"><span class="lineNum">     555 </span>            : </a>
-<a name="556"><span class="lineNum">     556 </span><span class="lineNoCov">          0 :         data = RREG32_SOC15(MMHUB, 0, mmATC_L2_MISC_CG);</span></a>
-<a name="557"><span class="lineNum">     557 </span>            : </a>
-<a name="558"><span class="lineNum">     558 </span><span class="lineNoCov">          0 :         data1 = RREG32_SOC15(MMHUB, 0, mmDAGB0_CNTL_MISC2);</span></a>
-<a name="559"><span class="lineNum">     559 </span>            : </a>
-<a name="560"><span class="lineNum">     560 </span>            :         /* AMD_CG_SUPPORT_MC_MGCG */</a>
-<a name="561"><span class="lineNum">     561 </span><span class="lineNoCov">          0 :         if ((data &amp; ATC_L2_MISC_CG__ENABLE_MASK) &amp;&amp;</span></a>
-<a name="562"><span class="lineNum">     562 </span>            :             !(data1 &amp; (DAGB0_CNTL_MISC2__DISABLE_WRREQ_CG_MASK |</a>
-<a name="563"><span class="lineNum">     563 </span>            :                        DAGB0_CNTL_MISC2__DISABLE_WRRET_CG_MASK |</a>
-<a name="564"><span class="lineNum">     564 </span>            :                        DAGB0_CNTL_MISC2__DISABLE_RDREQ_CG_MASK |</a>
-<a name="565"><span class="lineNum">     565 </span>            :                        DAGB0_CNTL_MISC2__DISABLE_RDRET_CG_MASK |</a>
-<a name="566"><span class="lineNum">     566 </span>            :                        DAGB0_CNTL_MISC2__DISABLE_TLBWR_CG_MASK |</a>
-<a name="567"><span class="lineNum">     567 </span>            :                        DAGB0_CNTL_MISC2__DISABLE_TLBRD_CG_MASK)))</a>
-<a name="568"><span class="lineNum">     568 </span><span class="lineNoCov">          0 :                 *flags |= AMD_CG_SUPPORT_MC_MGCG;</span></a>
-<a name="569"><span class="lineNum">     569 </span>            : </a>
-<a name="570"><span class="lineNum">     570 </span>            :         /* AMD_CG_SUPPORT_MC_LS */</a>
-<a name="571"><span class="lineNum">     571 </span><span class="lineNoCov">          0 :         if (data &amp; ATC_L2_MISC_CG__MEM_LS_ENABLE_MASK)</span></a>
-<a name="572"><span class="lineNum">     572 </span><span class="lineNoCov">          0 :                 *flags |= AMD_CG_SUPPORT_MC_LS;</span></a>
-<a name="573"><span class="lineNum">     573 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="574"><span class="lineNum">     574 </span>            : </a>
-<a name="575"><span class="lineNum">     575 </span>            : static const struct soc15_ras_field_entry mmhub_v1_0_ras_fields[] = {</a>
-<a name="576"><span class="lineNum">     576 </span>            :         { &quot;MMEA0_DRAMRD_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
-<a name="577"><span class="lineNum">     577 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMRD_CMDMEM_SEC_COUNT),</a>
-<a name="578"><span class="lineNum">     578 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMRD_CMDMEM_DED_COUNT),</a>
-<a name="579"><span class="lineNum">     579 </span>            :         },</a>
-<a name="580"><span class="lineNum">     580 </span>            :         { &quot;MMEA0_DRAMWR_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
-<a name="581"><span class="lineNum">     581 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMWR_CMDMEM_SEC_COUNT),</a>
-<a name="582"><span class="lineNum">     582 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMWR_CMDMEM_DED_COUNT),</a>
-<a name="583"><span class="lineNum">     583 </span>            :         },</a>
-<a name="584"><span class="lineNum">     584 </span>            :         { &quot;MMEA0_DRAMWR_DATAMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
-<a name="585"><span class="lineNum">     585 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMWR_DATAMEM_SEC_COUNT),</a>
-<a name="586"><span class="lineNum">     586 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMWR_DATAMEM_DED_COUNT),</a>
-<a name="587"><span class="lineNum">     587 </span>            :         },</a>
-<a name="588"><span class="lineNum">     588 </span>            :         { &quot;MMEA0_RRET_TAGMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
-<a name="589"><span class="lineNum">     589 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, RRET_TAGMEM_SEC_COUNT),</a>
-<a name="590"><span class="lineNum">     590 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, RRET_TAGMEM_DED_COUNT),</a>
-<a name="591"><span class="lineNum">     591 </span>            :         },</a>
-<a name="592"><span class="lineNum">     592 </span>            :         { &quot;MMEA0_WRET_TAGMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
-<a name="593"><span class="lineNum">     593 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, WRET_TAGMEM_SEC_COUNT),</a>
-<a name="594"><span class="lineNum">     594 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, WRET_TAGMEM_DED_COUNT),</a>
-<a name="595"><span class="lineNum">     595 </span>            :         },</a>
-<a name="596"><span class="lineNum">     596 </span>            :         { &quot;MMEA0_DRAMRD_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
-<a name="597"><span class="lineNum">     597 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMRD_PAGEMEM_SED_COUNT),</a>
-<a name="598"><span class="lineNum">     598 </span>            :         0, 0,</a>
-<a name="599"><span class="lineNum">     599 </span>            :         },</a>
-<a name="600"><span class="lineNum">     600 </span>            :         { &quot;MMEA0_DRAMWR_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
-<a name="601"><span class="lineNum">     601 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMWR_PAGEMEM_SED_COUNT),</a>
-<a name="602"><span class="lineNum">     602 </span>            :         0, 0,</a>
-<a name="603"><span class="lineNum">     603 </span>            :         },</a>
-<a name="604"><span class="lineNum">     604 </span>            :         { &quot;MMEA0_IORD_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
-<a name="605"><span class="lineNum">     605 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, IORD_CMDMEM_SED_COUNT),</a>
-<a name="606"><span class="lineNum">     606 </span>            :         0, 0,</a>
-<a name="607"><span class="lineNum">     607 </span>            :         },</a>
-<a name="608"><span class="lineNum">     608 </span>            :         { &quot;MMEA0_IOWR_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
-<a name="609"><span class="lineNum">     609 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, IOWR_CMDMEM_SED_COUNT),</a>
-<a name="610"><span class="lineNum">     610 </span>            :         0, 0,</a>
-<a name="611"><span class="lineNum">     611 </span>            :         },</a>
-<a name="612"><span class="lineNum">     612 </span>            :         { &quot;MMEA0_IOWR_DATAMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
-<a name="613"><span class="lineNum">     613 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, IOWR_DATAMEM_SED_COUNT),</a>
-<a name="614"><span class="lineNum">     614 </span>            :         0, 0,</a>
-<a name="615"><span class="lineNum">     615 </span>            :         },</a>
-<a name="616"><span class="lineNum">     616 </span>            :         { &quot;MMEA0_GMIRD_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT2_VG20),</a>
-<a name="617"><span class="lineNum">     617 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIRD_CMDMEM_SEC_COUNT),</a>
-<a name="618"><span class="lineNum">     618 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIRD_CMDMEM_DED_COUNT),</a>
-<a name="619"><span class="lineNum">     619 </span>            :         },</a>
-<a name="620"><span class="lineNum">     620 </span>            :         { &quot;MMEA0_GMIWR_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT2_VG20),</a>
-<a name="621"><span class="lineNum">     621 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIWR_CMDMEM_SEC_COUNT),</a>
-<a name="622"><span class="lineNum">     622 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIWR_CMDMEM_DED_COUNT),</a>
-<a name="623"><span class="lineNum">     623 </span>            :         },</a>
-<a name="624"><span class="lineNum">     624 </span>            :         { &quot;MMEA0_GMIWR_DATAMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT2_VG20),</a>
-<a name="625"><span class="lineNum">     625 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIWR_DATAMEM_SEC_COUNT),</a>
-<a name="626"><span class="lineNum">     626 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIWR_DATAMEM_DED_COUNT),</a>
-<a name="627"><span class="lineNum">     627 </span>            :         },</a>
-<a name="628"><span class="lineNum">     628 </span>            :         { &quot;MMEA0_GMIRD_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT2_VG20),</a>
-<a name="629"><span class="lineNum">     629 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIRD_PAGEMEM_SED_COUNT),</a>
-<a name="630"><span class="lineNum">     630 </span>            :         0, 0,</a>
-<a name="631"><span class="lineNum">     631 </span>            :         },</a>
-<a name="632"><span class="lineNum">     632 </span>            :         { &quot;MMEA0_GMIWR_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT2_VG20),</a>
-<a name="633"><span class="lineNum">     633 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIWR_PAGEMEM_SED_COUNT),</a>
-<a name="634"><span class="lineNum">     634 </span>            :         0, 0,</a>
-<a name="635"><span class="lineNum">     635 </span>            :         },</a>
-<a name="636"><span class="lineNum">     636 </span>            :         { &quot;MMEA1_DRAMRD_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
-<a name="637"><span class="lineNum">     637 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMRD_CMDMEM_SEC_COUNT),</a>
-<a name="638"><span class="lineNum">     638 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMRD_CMDMEM_DED_COUNT),</a>
-<a name="639"><span class="lineNum">     639 </span>            :         },</a>
-<a name="640"><span class="lineNum">     640 </span>            :         { &quot;MMEA1_DRAMWR_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
-<a name="641"><span class="lineNum">     641 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMWR_CMDMEM_SEC_COUNT),</a>
-<a name="642"><span class="lineNum">     642 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMWR_CMDMEM_DED_COUNT),</a>
-<a name="643"><span class="lineNum">     643 </span>            :         },</a>
-<a name="644"><span class="lineNum">     644 </span>            :         { &quot;MMEA1_DRAMWR_DATAMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
-<a name="645"><span class="lineNum">     645 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMWR_DATAMEM_SEC_COUNT),</a>
-<a name="646"><span class="lineNum">     646 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMWR_DATAMEM_DED_COUNT),</a>
-<a name="647"><span class="lineNum">     647 </span>            :         },</a>
-<a name="648"><span class="lineNum">     648 </span>            :         { &quot;MMEA1_RRET_TAGMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
-<a name="649"><span class="lineNum">     649 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, RRET_TAGMEM_SEC_COUNT),</a>
-<a name="650"><span class="lineNum">     650 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, RRET_TAGMEM_DED_COUNT),</a>
-<a name="651"><span class="lineNum">     651 </span>            :         },</a>
-<a name="652"><span class="lineNum">     652 </span>            :         { &quot;MMEA1_WRET_TAGMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
-<a name="653"><span class="lineNum">     653 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, WRET_TAGMEM_SEC_COUNT),</a>
-<a name="654"><span class="lineNum">     654 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, WRET_TAGMEM_DED_COUNT),</a>
-<a name="655"><span class="lineNum">     655 </span>            :         },</a>
-<a name="656"><span class="lineNum">     656 </span>            :         { &quot;MMEA1_DRAMRD_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
-<a name="657"><span class="lineNum">     657 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMRD_PAGEMEM_SED_COUNT),</a>
-<a name="658"><span class="lineNum">     658 </span>            :         0, 0,</a>
-<a name="659"><span class="lineNum">     659 </span>            :         },</a>
-<a name="660"><span class="lineNum">     660 </span>            :         { &quot;MMEA1_DRAMWR_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
-<a name="661"><span class="lineNum">     661 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMWR_PAGEMEM_SED_COUNT),</a>
-<a name="662"><span class="lineNum">     662 </span>            :         0, 0,</a>
-<a name="663"><span class="lineNum">     663 </span>            :         },</a>
-<a name="664"><span class="lineNum">     664 </span>            :         { &quot;MMEA1_IORD_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
-<a name="665"><span class="lineNum">     665 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, IORD_CMDMEM_SED_COUNT),</a>
-<a name="666"><span class="lineNum">     666 </span>            :         0, 0,</a>
-<a name="667"><span class="lineNum">     667 </span>            :         },</a>
-<a name="668"><span class="lineNum">     668 </span>            :         { &quot;MMEA1_IOWR_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
-<a name="669"><span class="lineNum">     669 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, IOWR_CMDMEM_SED_COUNT),</a>
-<a name="670"><span class="lineNum">     670 </span>            :         0, 0,</a>
-<a name="671"><span class="lineNum">     671 </span>            :         },</a>
-<a name="672"><span class="lineNum">     672 </span>            :         { &quot;MMEA1_IOWR_DATAMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
-<a name="673"><span class="lineNum">     673 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, IOWR_DATAMEM_SED_COUNT),</a>
-<a name="674"><span class="lineNum">     674 </span>            :         0, 0,</a>
-<a name="675"><span class="lineNum">     675 </span>            :         },</a>
-<a name="676"><span class="lineNum">     676 </span>            :         { &quot;MMEA1_GMIRD_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT2_VG20),</a>
-<a name="677"><span class="lineNum">     677 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIRD_CMDMEM_SEC_COUNT),</a>
-<a name="678"><span class="lineNum">     678 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIRD_CMDMEM_DED_COUNT),</a>
-<a name="679"><span class="lineNum">     679 </span>            :         },</a>
-<a name="680"><span class="lineNum">     680 </span>            :         { &quot;MMEA1_GMIWR_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT2_VG20),</a>
-<a name="681"><span class="lineNum">     681 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIWR_CMDMEM_SEC_COUNT),</a>
-<a name="682"><span class="lineNum">     682 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIWR_CMDMEM_DED_COUNT),</a>
-<a name="683"><span class="lineNum">     683 </span>            :         },</a>
-<a name="684"><span class="lineNum">     684 </span>            :         { &quot;MMEA1_GMIWR_DATAMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT2_VG20),</a>
-<a name="685"><span class="lineNum">     685 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIWR_DATAMEM_SEC_COUNT),</a>
-<a name="686"><span class="lineNum">     686 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIWR_DATAMEM_DED_COUNT),</a>
-<a name="687"><span class="lineNum">     687 </span>            :         },</a>
-<a name="688"><span class="lineNum">     688 </span>            :         { &quot;MMEA1_GMIRD_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT2_VG20),</a>
-<a name="689"><span class="lineNum">     689 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIRD_PAGEMEM_SED_COUNT),</a>
-<a name="690"><span class="lineNum">     690 </span>            :         0, 0,</a>
-<a name="691"><span class="lineNum">     691 </span>            :         },</a>
-<a name="692"><span class="lineNum">     692 </span>            :         { &quot;MMEA1_GMIWR_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT2_VG20),</a>
-<a name="693"><span class="lineNum">     693 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIWR_PAGEMEM_SED_COUNT),</a>
-<a name="694"><span class="lineNum">     694 </span>            :         0, 0,</a>
-<a name="695"><span class="lineNum">     695 </span>            :         }</a>
-<a name="696"><span class="lineNum">     696 </span>            : };</a>
-<a name="697"><span class="lineNum">     697 </span>            : </a>
-<a name="698"><span class="lineNum">     698 </span>            : static const struct soc15_reg_entry mmhub_v1_0_edc_cnt_regs[] = {</a>
-<a name="699"><span class="lineNum">     699 </span>            :    { SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20), 0, 0, 0},</a>
-<a name="700"><span class="lineNum">     700 </span>            :    { SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT2_VG20), 0, 0, 0},</a>
-<a name="701"><span class="lineNum">     701 </span>            :    { SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20), 0, 0, 0},</a>
-<a name="702"><span class="lineNum">     702 </span>            :    { SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT2_VG20), 0, 0, 0},</a>
-<a name="703"><span class="lineNum">     703 </span>            : };</a>
-<a name="704"><span class="lineNum">     704 </span>            : </a>
-<a name="705"><span class="lineNum">     705 </span><span class="lineNoCov">          0 : static int mmhub_v1_0_get_ras_error_count(struct amdgpu_device *adev,</span></a>
-<a name="706"><span class="lineNum">     706 </span>            :         const struct soc15_reg_entry *reg,</a>
-<a name="707"><span class="lineNum">     707 </span>            :         uint32_t value, uint32_t *sec_count, uint32_t *ded_count)</a>
-<a name="708"><span class="lineNum">     708 </span>            : {</a>
-<a name="709"><span class="lineNum">     709 </span>            :         uint32_t i;</a>
-<a name="710"><span class="lineNum">     710 </span>            :         uint32_t sec_cnt, ded_cnt;</a>
-<a name="711"><span class="lineNum">     711 </span>            : </a>
-<a name="712"><span class="lineNum">     712 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; ARRAY_SIZE(mmhub_v1_0_ras_fields); i++) {</span></a>
-<a name="713"><span class="lineNum">     713 </span><span class="lineNoCov">          0 :                 if (mmhub_v1_0_ras_fields[i].reg_offset != reg-&gt;reg_offset)</span></a>
-<a name="714"><span class="lineNum">     714 </span><span class="lineNoCov">          0 :                         continue;</span></a>
-<a name="715"><span class="lineNum">     715 </span>            : </a>
-<a name="716"><span class="lineNum">     716 </span><span class="lineNoCov">          0 :                 sec_cnt = (value &amp;</span></a>
-<a name="717"><span class="lineNum">     717 </span><span class="lineNoCov">          0 :                                 mmhub_v1_0_ras_fields[i].sec_count_mask) &gt;&gt;</span></a>
-<a name="718"><span class="lineNum">     718 </span><span class="lineNoCov">          0 :                                 mmhub_v1_0_ras_fields[i].sec_count_shift;</span></a>
-<a name="719"><span class="lineNum">     719 </span><span class="lineNoCov">          0 :                 if (sec_cnt) {</span></a>
-<a name="720"><span class="lineNum">     720 </span><span class="lineNoCov">          0 :                         dev_info(adev-&gt;dev,</span></a>
-<a name="721"><span class="lineNum">     721 </span>            :                                 &quot;MMHUB SubBlock %s, SEC %d\n&quot;,</a>
-<a name="722"><span class="lineNum">     722 </span>            :                                 mmhub_v1_0_ras_fields[i].name,</a>
-<a name="723"><span class="lineNum">     723 </span>            :                                 sec_cnt);</a>
-<a name="724"><span class="lineNum">     724 </span><span class="lineNoCov">          0 :                         *sec_count += sec_cnt;</span></a>
-<a name="725"><span class="lineNum">     725 </span>            :                 }</a>
-<a name="726"><span class="lineNum">     726 </span>            : </a>
-<a name="727"><span class="lineNum">     727 </span><span class="lineNoCov">          0 :                 ded_cnt = (value &amp;</span></a>
-<a name="728"><span class="lineNum">     728 </span><span class="lineNoCov">          0 :                                 mmhub_v1_0_ras_fields[i].ded_count_mask) &gt;&gt;</span></a>
-<a name="729"><span class="lineNum">     729 </span><span class="lineNoCov">          0 :                                 mmhub_v1_0_ras_fields[i].ded_count_shift;</span></a>
-<a name="730"><span class="lineNum">     730 </span><span class="lineNoCov">          0 :                 if (ded_cnt) {</span></a>
-<a name="731"><span class="lineNum">     731 </span><span class="lineNoCov">          0 :                         dev_info(adev-&gt;dev,</span></a>
-<a name="732"><span class="lineNum">     732 </span>            :                                 &quot;MMHUB SubBlock %s, DED %d\n&quot;,</a>
-<a name="733"><span class="lineNum">     733 </span>            :                                 mmhub_v1_0_ras_fields[i].name,</a>
-<a name="734"><span class="lineNum">     734 </span>            :                                 ded_cnt);</a>
-<a name="735"><span class="lineNum">     735 </span><span class="lineNoCov">          0 :                         *ded_count += ded_cnt;</span></a>
-<a name="736"><span class="lineNum">     736 </span>            :                 }</a>
-<a name="737"><span class="lineNum">     737 </span>            :         }</a>
-<a name="738"><span class="lineNum">     738 </span>            : </a>
-<a name="739"><span class="lineNum">     739 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="740"><span class="lineNum">     740 </span>            : }</a>
-<a name="741"><span class="lineNum">     741 </span>            : </a>
-<a name="742"><span class="lineNum">     742 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_query_ras_error_count(struct amdgpu_device *adev,</span></a>
-<a name="743"><span class="lineNum">     743 </span>            :                                            void *ras_error_status)</a>
-<a name="744"><span class="lineNum">     744 </span>            : {</a>
-<a name="745"><span class="lineNum">     745 </span><span class="lineNoCov">          0 :         struct ras_err_data *err_data = (struct ras_err_data *)ras_error_status;</span></a>
-<a name="746"><span class="lineNum">     746 </span><span class="lineNoCov">          0 :         uint32_t sec_count = 0, ded_count = 0;</span></a>
-<a name="747"><span class="lineNum">     747 </span>            :         uint32_t i;</a>
-<a name="748"><span class="lineNum">     748 </span>            :         uint32_t reg_value;</a>
-<a name="749"><span class="lineNum">     749 </span>            : </a>
-<a name="750"><span class="lineNum">     750 </span><span class="lineNoCov">          0 :         err_data-&gt;ue_count = 0;</span></a>
-<a name="751"><span class="lineNum">     751 </span><span class="lineNoCov">          0 :         err_data-&gt;ce_count = 0;</span></a>
-<a name="752"><span class="lineNum">     752 </span>            : </a>
-<a name="753"><span class="lineNum">     753 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; ARRAY_SIZE(mmhub_v1_0_edc_cnt_regs); i++) {</span></a>
-<a name="754"><span class="lineNum">     754 </span><span class="lineNoCov">          0 :                 reg_value =</span></a>
-<a name="755"><span class="lineNum">     755 </span><span class="lineNoCov">          0 :                         RREG32(SOC15_REG_ENTRY_OFFSET(mmhub_v1_0_edc_cnt_regs[i]));</span></a>
-<a name="756"><span class="lineNum">     756 </span><span class="lineNoCov">          0 :                 if (reg_value)</span></a>
-<a name="757"><span class="lineNum">     757 </span><span class="lineNoCov">          0 :                         mmhub_v1_0_get_ras_error_count(adev,</span></a>
-<a name="758"><span class="lineNum">     758 </span>            :                                 &amp;mmhub_v1_0_edc_cnt_regs[i],</a>
-<a name="759"><span class="lineNum">     759 </span>            :                                 reg_value, &amp;sec_count, &amp;ded_count);</a>
-<a name="760"><span class="lineNum">     760 </span>            :         }</a>
-<a name="761"><span class="lineNum">     761 </span>            : </a>
-<a name="762"><span class="lineNum">     762 </span><span class="lineNoCov">          0 :         err_data-&gt;ce_count += sec_count;</span></a>
-<a name="763"><span class="lineNum">     763 </span><span class="lineNoCov">          0 :         err_data-&gt;ue_count += ded_count;</span></a>
-<a name="764"><span class="lineNum">     764 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="765"><span class="lineNum">     765 </span>            : </a>
-<a name="766"><span class="lineNum">     766 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_reset_ras_error_count(struct amdgpu_device *adev)</span></a>
-<a name="767"><span class="lineNum">     767 </span>            : {</a>
-<a name="768"><span class="lineNum">     768 </span>            :         uint32_t i;</a>
-<a name="769"><span class="lineNum">     769 </span>            : </a>
-<a name="770"><span class="lineNum">     770 </span>            :         /* read back edc counter registers to reset the counters to 0 */</a>
-<a name="771"><span class="lineNum">     771 </span><span class="lineNoCov">          0 :         if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__MMHUB)) {</span></a>
-<a name="772"><span class="lineNum">     772 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(mmhub_v1_0_edc_cnt_regs); i++)</span></a>
-<a name="773"><span class="lineNum">     773 </span><span class="lineNoCov">          0 :                         RREG32(SOC15_REG_ENTRY_OFFSET(mmhub_v1_0_edc_cnt_regs[i]));</span></a>
-<a name="774"><span class="lineNum">     774 </span>            :         }</a>
-<a name="775"><span class="lineNum">     775 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="776"><span class="lineNum">     776 </span>            : </a>
-<a name="777"><span class="lineNum">     777 </span>            : struct amdgpu_ras_block_hw_ops mmhub_v1_0_ras_hw_ops = {</a>
-<a name="778"><span class="lineNum">     778 </span>            :         .query_ras_error_count = mmhub_v1_0_query_ras_error_count,</a>
-<a name="779"><span class="lineNum">     779 </span>            :         .reset_ras_error_count = mmhub_v1_0_reset_ras_error_count,</a>
-<a name="780"><span class="lineNum">     780 </span>            : };</a>
-<a name="781"><span class="lineNum">     781 </span>            : </a>
-<a name="782"><span class="lineNum">     782 </span>            : struct amdgpu_mmhub_ras mmhub_v1_0_ras = {</a>
-<a name="783"><span class="lineNum">     783 </span>            :         .ras_block = {</a>
-<a name="784"><span class="lineNum">     784 </span>            :                 .hw_ops = &amp;mmhub_v1_0_ras_hw_ops,</a>
-<a name="785"><span class="lineNum">     785 </span>            :         },</a>
-<a name="786"><span class="lineNum">     786 </span>            : };</a>
-<a name="787"><span class="lineNum">     787 </span>            : </a>
-<a name="788"><span class="lineNum">     788 </span>            : const struct amdgpu_mmhub_funcs mmhub_v1_0_funcs = {</a>
-<a name="789"><span class="lineNum">     789 </span>            :         .get_fb_location = mmhub_v1_0_get_fb_location,</a>
-<a name="790"><span class="lineNum">     790 </span>            :         .init = mmhub_v1_0_init,</a>
-<a name="791"><span class="lineNum">     791 </span>            :         .gart_enable = mmhub_v1_0_gart_enable,</a>
-<a name="792"><span class="lineNum">     792 </span>            :         .set_fault_enable_default = mmhub_v1_0_set_fault_enable_default,</a>
-<a name="793"><span class="lineNum">     793 </span>            :         .gart_disable = mmhub_v1_0_gart_disable,</a>
-<a name="794"><span class="lineNum">     794 </span>            :         .set_clockgating = mmhub_v1_0_set_clockgating,</a>
-<a name="795"><span class="lineNum">     795 </span>            :         .get_clockgating = mmhub_v1_0_get_clockgating,</a>
-<a name="796"><span class="lineNum">     796 </span>            :         .setup_vm_pt_regs = mmhub_v1_0_setup_vm_pt_regs,</a>
-<a name="797"><span class="lineNum">     797 </span>            :         .update_power_gating = mmhub_v1_0_update_power_gating,</a>
-<a name="798"><span class="lineNum">     798 </span>            : };</a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 :         tmp = mmVM_L2_CNTL3_DEFAULT;</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineNoCov">          0 :         if (adev-&gt;gmc.translate_further) {</span></a>
+<a name="181"><span class="lineNum">     181 </span>            :                 tmp = REG_SET_FIELD(tmp, VM_L2_CNTL3, BANK_SELECT, 12);</a>
+<a name="182"><span class="lineNum">     182 </span>            :                 tmp = REG_SET_FIELD(tmp, VM_L2_CNTL3,</a>
+<a name="183"><span class="lineNum">     183 </span>            :                                     L2_CACHE_BIGK_FRAGMENT_SIZE, 9);</a>
+<a name="184"><span class="lineNum">     184 </span>            :         } else {</a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_L2_CNTL3, BANK_SELECT, 9);</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_L2_CNTL3,</span></a>
+<a name="187"><span class="lineNum">     187 </span>            :                                     L2_CACHE_BIGK_FRAGMENT_SIZE, 6);</a>
+<a name="188"><span class="lineNum">     188 </span>            :         }</a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_L2_CNTL3, tmp);</span></a>
+<a name="190"><span class="lineNum">     190 </span>            : </a>
+<a name="191"><span class="lineNum">     191 </span><span class="lineNoCov">          0 :         tmp = mmVM_L2_CNTL4_DEFAULT;</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_CNTL4, VMC_TAP_PDE_REQUEST_PHYSICAL, 0);</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_CNTL4, VMC_TAP_PTE_REQUEST_PHYSICAL, 0);</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_L2_CNTL4, tmp);</span></a>
+<a name="195"><span class="lineNum">     195 </span>            : }</a>
+<a name="196"><span class="lineNum">     196 </span>            : </a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_enable_system_domain(struct amdgpu_device *adev)</span></a>
+<a name="198"><span class="lineNum">     198 </span>            : {</a>
+<a name="199"><span class="lineNum">     199 </span>            :         uint32_t tmp;</a>
+<a name="200"><span class="lineNum">     200 </span>            : </a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 :         tmp = RREG32_SOC15(MMHUB, 0, mmVM_CONTEXT0_CNTL);</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_CONTEXT0_CNTL, ENABLE_CONTEXT, 1);</span></a>
+<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_CONTEXT0_CNTL, PAGE_TABLE_DEPTH, 0);</span></a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_CONTEXT0_CNTL,</span></a>
+<a name="205"><span class="lineNum">     205 </span>            :                             RETRY_PERMISSION_OR_INVALID_PAGE_FAULT, 0);</a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_CONTEXT0_CNTL, tmp);</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="208"><span class="lineNum">     208 </span>            : </a>
+<a name="209"><span class="lineNum">     209 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_disable_identity_aperture(struct amdgpu_device *adev)</span></a>
+<a name="210"><span class="lineNum">     210 </span>            : {</a>
+<a name="211"><span class="lineNum">     211 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
+<a name="212"><span class="lineNum">     212 </span>            :                 return;</a>
+<a name="213"><span class="lineNum">     213 </span>            : </a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_L2_CONTEXT1_IDENTITY_APERTURE_LOW_ADDR_LO32,</span></a>
+<a name="215"><span class="lineNum">     215 </span>            :                      0XFFFFFFFF);</a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_L2_CONTEXT1_IDENTITY_APERTURE_LOW_ADDR_HI32,</span></a>
+<a name="217"><span class="lineNum">     217 </span>            :                      0x0000000F);</a>
+<a name="218"><span class="lineNum">     218 </span>            : </a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0,</span></a>
+<a name="220"><span class="lineNum">     220 </span>            :                      mmVM_L2_CONTEXT1_IDENTITY_APERTURE_HIGH_ADDR_LO32, 0);</a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0,</span></a>
+<a name="222"><span class="lineNum">     222 </span>            :                      mmVM_L2_CONTEXT1_IDENTITY_APERTURE_HIGH_ADDR_HI32, 0);</a>
+<a name="223"><span class="lineNum">     223 </span>            : </a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_L2_CONTEXT_IDENTITY_PHYSICAL_OFFSET_LO32,</span></a>
+<a name="225"><span class="lineNum">     225 </span>            :                      0);</a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_L2_CONTEXT_IDENTITY_PHYSICAL_OFFSET_HI32,</span></a>
+<a name="227"><span class="lineNum">     227 </span>            :                      0);</a>
+<a name="228"><span class="lineNum">     228 </span>            : }</a>
+<a name="229"><span class="lineNum">     229 </span>            : </a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_setup_vmid_config(struct amdgpu_device *adev)</span></a>
+<a name="231"><span class="lineNum">     231 </span>            : {</a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineNoCov">          0 :         struct amdgpu_vmhub *hub = &amp;adev-&gt;vmhub[AMDGPU_MMHUB_0];</span></a>
+<a name="233"><span class="lineNum">     233 </span>            :         unsigned num_level, block_size;</a>
+<a name="234"><span class="lineNum">     234 </span>            :         uint32_t tmp;</a>
+<a name="235"><span class="lineNum">     235 </span>            :         int i;</a>
+<a name="236"><span class="lineNum">     236 </span>            : </a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineNoCov">          0 :         num_level = adev-&gt;vm_manager.num_level;</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineNoCov">          0 :         block_size = adev-&gt;vm_manager.block_size;</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineNoCov">          0 :         if (adev-&gt;gmc.translate_further)</span></a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 :                 num_level -= 1;</span></a>
+<a name="241"><span class="lineNum">     241 </span>            :         else</a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineNoCov">          0 :                 block_size -= 9;</span></a>
+<a name="243"><span class="lineNum">     243 </span>            : </a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt;= 14; i++) {</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineNoCov">          0 :                 tmp = RREG32_SOC15_OFFSET(MMHUB, 0, mmVM_CONTEXT1_CNTL, i);</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL, ENABLE_CONTEXT, 1);</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL, PAGE_TABLE_DEPTH,</span></a>
+<a name="248"><span class="lineNum">     248 </span>            :                                     num_level);</a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
+<a name="250"><span class="lineNum">     250 </span>            :                                     RANGE_PROTECTION_FAULT_ENABLE_DEFAULT, 1);</a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
+<a name="252"><span class="lineNum">     252 </span>            :                                     DUMMY_PAGE_PROTECTION_FAULT_ENABLE_DEFAULT,</a>
+<a name="253"><span class="lineNum">     253 </span>            :                                     1);</a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
+<a name="255"><span class="lineNum">     255 </span>            :                                     PDE0_PROTECTION_FAULT_ENABLE_DEFAULT, 1);</a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
+<a name="257"><span class="lineNum">     257 </span>            :                                     VALID_PROTECTION_FAULT_ENABLE_DEFAULT, 1);</a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
+<a name="259"><span class="lineNum">     259 </span>            :                                     READ_PROTECTION_FAULT_ENABLE_DEFAULT, 1);</a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
+<a name="261"><span class="lineNum">     261 </span>            :                                     WRITE_PROTECTION_FAULT_ENABLE_DEFAULT, 1);</a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
+<a name="263"><span class="lineNum">     263 </span>            :                                     EXECUTE_PROTECTION_FAULT_ENABLE_DEFAULT, 1);</a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
+<a name="265"><span class="lineNum">     265 </span>            :                                     PAGE_TABLE_BLOCK_SIZE,</a>
+<a name="266"><span class="lineNum">     266 </span>            :                                     block_size);</a>
+<a name="267"><span class="lineNum">     267 </span>            :                 /* Send no-retry XNACK on fault to suppress VM fault storm. */</a>
+<a name="268"><span class="lineNum">     268 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,</span></a>
+<a name="269"><span class="lineNum">     269 </span>            :                                     RETRY_PERMISSION_OR_INVALID_PAGE_FAULT,</a>
+<a name="270"><span class="lineNum">     270 </span>            :                                     !adev-&gt;gmc.noretry);</a>
+<a name="271"><span class="lineNum">     271 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_CONTEXT1_CNTL,</span></a>
+<a name="272"><span class="lineNum">     272 </span>            :                                     i * hub-&gt;ctx_distance, tmp);</a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_CONTEXT1_PAGE_TABLE_START_ADDR_LO32,</span></a>
+<a name="274"><span class="lineNum">     274 </span>            :                                     i * hub-&gt;ctx_addr_distance, 0);</a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_CONTEXT1_PAGE_TABLE_START_ADDR_HI32,</span></a>
+<a name="276"><span class="lineNum">     276 </span>            :                                     i * hub-&gt;ctx_addr_distance, 0);</a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_CONTEXT1_PAGE_TABLE_END_ADDR_LO32,</span></a>
+<a name="278"><span class="lineNum">     278 </span>            :                                     i * hub-&gt;ctx_addr_distance,</a>
+<a name="279"><span class="lineNum">     279 </span>            :                                     lower_32_bits(adev-&gt;vm_manager.max_pfn - 1));</a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_CONTEXT1_PAGE_TABLE_END_ADDR_HI32,</span></a>
+<a name="281"><span class="lineNum">     281 </span>            :                                     i * hub-&gt;ctx_addr_distance,</a>
+<a name="282"><span class="lineNum">     282 </span>            :                                     upper_32_bits(adev-&gt;vm_manager.max_pfn - 1));</a>
+<a name="283"><span class="lineNum">     283 </span>            :         }</a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="285"><span class="lineNum">     285 </span>            : </a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_program_invalidation(struct amdgpu_device *adev)</span></a>
+<a name="287"><span class="lineNum">     287 </span>            : {</a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 :         struct amdgpu_vmhub *hub = &amp;adev-&gt;vmhub[AMDGPU_MMHUB_0];</span></a>
+<a name="289"><span class="lineNum">     289 </span>            :         unsigned i;</a>
+<a name="290"><span class="lineNum">     290 </span>            : </a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; 18; ++i) {</span></a>
+<a name="292"><span class="lineNum">     292 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_INVALIDATE_ENG0_ADDR_RANGE_LO32,</span></a>
+<a name="293"><span class="lineNum">     293 </span>            :                                     i * hub-&gt;eng_addr_distance, 0xffffffff);</a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_INVALIDATE_ENG0_ADDR_RANGE_HI32,</span></a>
+<a name="295"><span class="lineNum">     295 </span>            :                                     i * hub-&gt;eng_addr_distance, 0x1f);</a>
+<a name="296"><span class="lineNum">     296 </span>            :         }</a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="298"><span class="lineNum">     298 </span>            : </a>
+<a name="299"><span class="lineNum">     299 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_update_power_gating(struct amdgpu_device *adev,</span></a>
+<a name="300"><span class="lineNum">     300 </span>            :                                 bool enable)</a>
+<a name="301"><span class="lineNum">     301 </span>            : {</a>
+<a name="302"><span class="lineNum">     302 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
+<a name="303"><span class="lineNum">     303 </span>            :                 return;</a>
+<a name="304"><span class="lineNum">     304 </span>            : </a>
+<a name="305"><span class="lineNum">     305 </span><span class="lineNoCov">          0 :         if (adev-&gt;pg_flags &amp; AMD_PG_SUPPORT_MMHUB)</span></a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineNoCov">          0 :                 amdgpu_dpm_set_powergating_by_smu(adev,</span></a>
+<a name="307"><span class="lineNum">     307 </span>            :                                                   AMD_IP_BLOCK_TYPE_GMC,</a>
+<a name="308"><span class="lineNum">     308 </span>            :                                                   enable);</a>
+<a name="309"><span class="lineNum">     309 </span>            : }</a>
+<a name="310"><span class="lineNum">     310 </span>            : </a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineNoCov">          0 : static int mmhub_v1_0_gart_enable(struct amdgpu_device *adev)</span></a>
+<a name="312"><span class="lineNum">     312 </span>            : {</a>
+<a name="313"><span class="lineNum">     313 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev)) {</span></a>
+<a name="314"><span class="lineNum">     314 </span>            :                 /*</a>
+<a name="315"><span class="lineNum">     315 </span>            :                  * MC_VM_FB_LOCATION_BASE/TOP is NULL for VF, becuase they are</a>
+<a name="316"><span class="lineNum">     316 </span>            :                  * VF copy registers so vbios post doesn't program them, for</a>
+<a name="317"><span class="lineNum">     317 </span>            :                  * SRIOV driver need to program them</a>
+<a name="318"><span class="lineNum">     318 </span>            :                  */</a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, mmMC_VM_FB_LOCATION_BASE,</span></a>
+<a name="320"><span class="lineNum">     320 </span>            :                              adev-&gt;gmc.vram_start &gt;&gt; 24);</a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, mmMC_VM_FB_LOCATION_TOP,</span></a>
+<a name="322"><span class="lineNum">     322 </span>            :                              adev-&gt;gmc.vram_end &gt;&gt; 24);</a>
+<a name="323"><span class="lineNum">     323 </span>            :         }</a>
+<a name="324"><span class="lineNum">     324 </span>            : </a>
+<a name="325"><span class="lineNum">     325 </span>            :         /* GART Enable. */</a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 :         mmhub_v1_0_init_gart_aperture_regs(adev);</span></a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineNoCov">          0 :         mmhub_v1_0_init_system_aperture_regs(adev);</span></a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineNoCov">          0 :         mmhub_v1_0_init_tlb_regs(adev);</span></a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 :         mmhub_v1_0_init_cache_regs(adev);</span></a>
+<a name="330"><span class="lineNum">     330 </span>            : </a>
+<a name="331"><span class="lineNum">     331 </span><span class="lineNoCov">          0 :         mmhub_v1_0_enable_system_domain(adev);</span></a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 :         mmhub_v1_0_disable_identity_aperture(adev);</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 :         mmhub_v1_0_setup_vmid_config(adev);</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineNoCov">          0 :         mmhub_v1_0_program_invalidation(adev);</span></a>
+<a name="335"><span class="lineNum">     335 </span>            : </a>
+<a name="336"><span class="lineNum">     336 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="337"><span class="lineNum">     337 </span>            : }</a>
+<a name="338"><span class="lineNum">     338 </span>            : </a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_gart_disable(struct amdgpu_device *adev)</span></a>
+<a name="340"><span class="lineNum">     340 </span>            : {</a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineNoCov">          0 :         struct amdgpu_vmhub *hub = &amp;adev-&gt;vmhub[AMDGPU_MMHUB_0];</span></a>
+<a name="342"><span class="lineNum">     342 </span>            :         u32 tmp;</a>
+<a name="343"><span class="lineNum">     343 </span>            :         u32 i;</a>
+<a name="344"><span class="lineNum">     344 </span>            : </a>
+<a name="345"><span class="lineNum">     345 </span>            :         /* Disable all tables */</a>
+<a name="346"><span class="lineNum">     346 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; AMDGPU_NUM_VMID; i++)</span></a>
+<a name="347"><span class="lineNum">     347 </span><span class="lineNoCov">          0 :                 WREG32_SOC15_OFFSET(MMHUB, 0, mmVM_CONTEXT0_CNTL,</span></a>
+<a name="348"><span class="lineNum">     348 </span>            :                                     i * hub-&gt;ctx_distance, 0);</a>
+<a name="349"><span class="lineNum">     349 </span>            : </a>
+<a name="350"><span class="lineNum">     350 </span>            :         /* Setup TLB control */</a>
+<a name="351"><span class="lineNum">     351 </span><span class="lineNoCov">          0 :         tmp = RREG32_SOC15(MMHUB, 0, mmMC_VM_MX_L1_TLB_CNTL);</span></a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, MC_VM_MX_L1_TLB_CNTL, ENABLE_L1_TLB, 0);</span></a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp,</span></a>
+<a name="354"><span class="lineNum">     354 </span>            :                                 MC_VM_MX_L1_TLB_CNTL,</a>
+<a name="355"><span class="lineNum">     355 </span>            :                                 ENABLE_ADVANCED_DRIVER_MODEL,</a>
+<a name="356"><span class="lineNum">     356 </span>            :                                 0);</a>
+<a name="357"><span class="lineNum">     357 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmMC_VM_MX_L1_TLB_CNTL, tmp);</span></a>
+<a name="358"><span class="lineNum">     358 </span>            : </a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineNoCov">          0 :         if (!amdgpu_sriov_vf(adev)) {</span></a>
+<a name="360"><span class="lineNum">     360 </span>            :                 /* Setup L2 cache */</a>
+<a name="361"><span class="lineNum">     361 </span><span class="lineNoCov">          0 :                 tmp = RREG32_SOC15(MMHUB, 0, mmVM_L2_CNTL);</span></a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_L2_CNTL, ENABLE_L2_CACHE, 0);</span></a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, mmVM_L2_CNTL, tmp);</span></a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, mmVM_L2_CNTL3, 0);</span></a>
+<a name="365"><span class="lineNum">     365 </span>            :         }</a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="367"><span class="lineNum">     367 </span>            : </a>
+<a name="368"><span class="lineNum">     368 </span>            : /**</a>
+<a name="369"><span class="lineNum">     369 </span>            :  * mmhub_v1_0_set_fault_enable_default - update GART/VM fault handling</a>
+<a name="370"><span class="lineNum">     370 </span>            :  *</a>
+<a name="371"><span class="lineNum">     371 </span>            :  * @adev: amdgpu_device pointer</a>
+<a name="372"><span class="lineNum">     372 </span>            :  * @value: true redirects VM faults to the default page</a>
+<a name="373"><span class="lineNum">     373 </span>            :  */</a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_set_fault_enable_default(struct amdgpu_device *adev, bool value)</span></a>
+<a name="375"><span class="lineNum">     375 </span>            : {</a>
+<a name="376"><span class="lineNum">     376 </span>            :         u32 tmp;</a>
+<a name="377"><span class="lineNum">     377 </span>            : </a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
+<a name="379"><span class="lineNum">     379 </span>            :                 return;</a>
+<a name="380"><span class="lineNum">     380 </span>            : </a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineNoCov">          0 :         tmp = RREG32_SOC15(MMHUB, 0, mmVM_L2_PROTECTION_FAULT_CNTL);</span></a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
+<a name="383"><span class="lineNum">     383 </span>            :                         RANGE_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
+<a name="385"><span class="lineNum">     385 </span>            :                         PDE0_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
+<a name="387"><span class="lineNum">     387 </span>            :                         PDE1_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
+<a name="388"><span class="lineNum">     388 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
+<a name="389"><span class="lineNum">     389 </span>            :                         PDE2_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp,</span></a>
+<a name="391"><span class="lineNum">     391 </span>            :                         VM_L2_PROTECTION_FAULT_CNTL,</a>
+<a name="392"><span class="lineNum">     392 </span>            :                         TRANSLATE_FURTHER_PROTECTION_FAULT_ENABLE_DEFAULT,</a>
+<a name="393"><span class="lineNum">     393 </span>            :                         value);</a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
+<a name="395"><span class="lineNum">     395 </span>            :                         NACK_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
+<a name="396"><span class="lineNum">     396 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
+<a name="397"><span class="lineNum">     397 </span>            :                         DUMMY_PAGE_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
+<a name="398"><span class="lineNum">     398 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
+<a name="399"><span class="lineNum">     399 </span>            :                         VALID_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
+<a name="401"><span class="lineNum">     401 </span>            :                         READ_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
+<a name="403"><span class="lineNum">     403 </span>            :                         WRITE_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
+<a name="404"><span class="lineNum">     404 </span><span class="lineNoCov">          0 :         tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
+<a name="405"><span class="lineNum">     405 </span>            :                         EXECUTE_PROTECTION_FAULT_ENABLE_DEFAULT, value);</a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineNoCov">          0 :         if (!value) {</span></a>
+<a name="407"><span class="lineNum">     407 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
+<a name="408"><span class="lineNum">     408 </span>            :                                 CRASH_ON_NO_RETRY_FAULT, 1);</a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineNoCov">          0 :                 tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,</span></a>
+<a name="410"><span class="lineNum">     410 </span>            :                                 CRASH_ON_RETRY_FAULT, 1);</a>
+<a name="411"><span class="lineNum">     411 </span>            :         }</a>
+<a name="412"><span class="lineNum">     412 </span>            : </a>
+<a name="413"><span class="lineNum">     413 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, mmVM_L2_PROTECTION_FAULT_CNTL, tmp);</span></a>
+<a name="414"><span class="lineNum">     414 </span>            : }</a>
+<a name="415"><span class="lineNum">     415 </span>            : </a>
+<a name="416"><span class="lineNum">     416 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_init(struct amdgpu_device *adev)</span></a>
+<a name="417"><span class="lineNum">     417 </span>            : {</a>
+<a name="418"><span class="lineNum">     418 </span><span class="lineNoCov">          0 :         struct amdgpu_vmhub *hub = &amp;adev-&gt;vmhub[AMDGPU_MMHUB_0];</span></a>
+<a name="419"><span class="lineNum">     419 </span>            : </a>
+<a name="420"><span class="lineNum">     420 </span><span class="lineNoCov">          0 :         hub-&gt;ctx0_ptb_addr_lo32 =</span></a>
+<a name="421"><span class="lineNum">     421 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0,</span></a>
+<a name="422"><span class="lineNum">     422 </span>            :                                  mmVM_CONTEXT0_PAGE_TABLE_BASE_ADDR_LO32);</a>
+<a name="423"><span class="lineNum">     423 </span><span class="lineNoCov">          0 :         hub-&gt;ctx0_ptb_addr_hi32 =</span></a>
+<a name="424"><span class="lineNum">     424 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0,</span></a>
+<a name="425"><span class="lineNum">     425 </span>            :                                  mmVM_CONTEXT0_PAGE_TABLE_BASE_ADDR_HI32);</a>
+<a name="426"><span class="lineNum">     426 </span><span class="lineNoCov">          0 :         hub-&gt;vm_inv_eng0_sem =</span></a>
+<a name="427"><span class="lineNum">     427 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0, mmVM_INVALIDATE_ENG0_SEM);</span></a>
+<a name="428"><span class="lineNum">     428 </span><span class="lineNoCov">          0 :         hub-&gt;vm_inv_eng0_req =</span></a>
+<a name="429"><span class="lineNum">     429 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0, mmVM_INVALIDATE_ENG0_REQ);</span></a>
+<a name="430"><span class="lineNum">     430 </span><span class="lineNoCov">          0 :         hub-&gt;vm_inv_eng0_ack =</span></a>
+<a name="431"><span class="lineNum">     431 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0, mmVM_INVALIDATE_ENG0_ACK);</span></a>
+<a name="432"><span class="lineNum">     432 </span><span class="lineNoCov">          0 :         hub-&gt;vm_context0_cntl =</span></a>
+<a name="433"><span class="lineNum">     433 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0, mmVM_CONTEXT0_CNTL);</span></a>
+<a name="434"><span class="lineNum">     434 </span><span class="lineNoCov">          0 :         hub-&gt;vm_l2_pro_fault_status =</span></a>
+<a name="435"><span class="lineNum">     435 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0, mmVM_L2_PROTECTION_FAULT_STATUS);</span></a>
+<a name="436"><span class="lineNum">     436 </span><span class="lineNoCov">          0 :         hub-&gt;vm_l2_pro_fault_cntl =</span></a>
+<a name="437"><span class="lineNum">     437 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(MMHUB, 0, mmVM_L2_PROTECTION_FAULT_CNTL);</span></a>
+<a name="438"><span class="lineNum">     438 </span>            : </a>
+<a name="439"><span class="lineNum">     439 </span><span class="lineNoCov">          0 :         hub-&gt;ctx_distance = mmVM_CONTEXT1_CNTL - mmVM_CONTEXT0_CNTL;</span></a>
+<a name="440"><span class="lineNum">     440 </span><span class="lineNoCov">          0 :         hub-&gt;ctx_addr_distance = mmVM_CONTEXT1_PAGE_TABLE_BASE_ADDR_LO32 -</span></a>
+<a name="441"><span class="lineNum">     441 </span>            :                 mmVM_CONTEXT0_PAGE_TABLE_BASE_ADDR_LO32;</a>
+<a name="442"><span class="lineNum">     442 </span><span class="lineNoCov">          0 :         hub-&gt;eng_distance = mmVM_INVALIDATE_ENG1_REQ - mmVM_INVALIDATE_ENG0_REQ;</span></a>
+<a name="443"><span class="lineNum">     443 </span><span class="lineNoCov">          0 :         hub-&gt;eng_addr_distance = mmVM_INVALIDATE_ENG1_ADDR_RANGE_LO32 -</span></a>
+<a name="444"><span class="lineNum">     444 </span>            :                 mmVM_INVALIDATE_ENG0_ADDR_RANGE_LO32;</a>
+<a name="445"><span class="lineNum">     445 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="446"><span class="lineNum">     446 </span>            : </a>
+<a name="447"><span class="lineNum">     447 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_update_medium_grain_clock_gating(struct amdgpu_device *adev,</span></a>
+<a name="448"><span class="lineNum">     448 </span>            :                                                         bool enable)</a>
+<a name="449"><span class="lineNum">     449 </span>            : {</a>
+<a name="450"><span class="lineNum">     450 </span><span class="lineNoCov">          0 :         uint32_t def, data, def1, data1, def2 = 0, data2 = 0;</span></a>
+<a name="451"><span class="lineNum">     451 </span>            : </a>
+<a name="452"><span class="lineNum">     452 </span><span class="lineNoCov">          0 :         def  = data  = RREG32_SOC15(MMHUB, 0, mmATC_L2_MISC_CG);</span></a>
+<a name="453"><span class="lineNum">     453 </span>            : </a>
+<a name="454"><span class="lineNum">     454 </span><span class="lineNoCov">          0 :         if (adev-&gt;asic_type != CHIP_RAVEN) {</span></a>
+<a name="455"><span class="lineNum">     455 </span><span class="lineNoCov">          0 :                 def1 = data1 = RREG32_SOC15(MMHUB, 0, mmDAGB0_CNTL_MISC2);</span></a>
+<a name="456"><span class="lineNum">     456 </span><span class="lineNoCov">          0 :                 def2 = data2 = RREG32_SOC15(MMHUB, 0, mmDAGB1_CNTL_MISC2);</span></a>
+<a name="457"><span class="lineNum">     457 </span>            :         } else</a>
+<a name="458"><span class="lineNum">     458 </span><span class="lineNoCov">          0 :                 def1 = data1 = RREG32_SOC15(MMHUB, 0, mmDAGB0_CNTL_MISC2_RV);</span></a>
+<a name="459"><span class="lineNum">     459 </span>            : </a>
+<a name="460"><span class="lineNum">     460 </span><span class="lineNoCov">          0 :         if (enable &amp;&amp; (adev-&gt;cg_flags &amp; AMD_CG_SUPPORT_MC_MGCG)) {</span></a>
+<a name="461"><span class="lineNum">     461 </span><span class="lineNoCov">          0 :                 data |= ATC_L2_MISC_CG__ENABLE_MASK;</span></a>
+<a name="462"><span class="lineNum">     462 </span>            : </a>
+<a name="463"><span class="lineNum">     463 </span><span class="lineNoCov">          0 :                 data1 &amp;= ~(DAGB0_CNTL_MISC2__DISABLE_WRREQ_CG_MASK |</span></a>
+<a name="464"><span class="lineNum">     464 </span>            :                            DAGB0_CNTL_MISC2__DISABLE_WRRET_CG_MASK |</a>
+<a name="465"><span class="lineNum">     465 </span>            :                            DAGB0_CNTL_MISC2__DISABLE_RDREQ_CG_MASK |</a>
+<a name="466"><span class="lineNum">     466 </span>            :                            DAGB0_CNTL_MISC2__DISABLE_RDRET_CG_MASK |</a>
+<a name="467"><span class="lineNum">     467 </span>            :                            DAGB0_CNTL_MISC2__DISABLE_TLBWR_CG_MASK |</a>
+<a name="468"><span class="lineNum">     468 </span>            :                            DAGB0_CNTL_MISC2__DISABLE_TLBRD_CG_MASK);</a>
+<a name="469"><span class="lineNum">     469 </span>            : </a>
+<a name="470"><span class="lineNum">     470 </span><span class="lineNoCov">          0 :                 if (adev-&gt;asic_type != CHIP_RAVEN)</span></a>
+<a name="471"><span class="lineNum">     471 </span><span class="lineNoCov">          0 :                         data2 &amp;= ~(DAGB1_CNTL_MISC2__DISABLE_WRREQ_CG_MASK |</span></a>
+<a name="472"><span class="lineNum">     472 </span>            :                                    DAGB1_CNTL_MISC2__DISABLE_WRRET_CG_MASK |</a>
+<a name="473"><span class="lineNum">     473 </span>            :                                    DAGB1_CNTL_MISC2__DISABLE_RDREQ_CG_MASK |</a>
+<a name="474"><span class="lineNum">     474 </span>            :                                    DAGB1_CNTL_MISC2__DISABLE_RDRET_CG_MASK |</a>
+<a name="475"><span class="lineNum">     475 </span>            :                                    DAGB1_CNTL_MISC2__DISABLE_TLBWR_CG_MASK |</a>
+<a name="476"><span class="lineNum">     476 </span>            :                                    DAGB1_CNTL_MISC2__DISABLE_TLBRD_CG_MASK);</a>
+<a name="477"><span class="lineNum">     477 </span>            :         } else {</a>
+<a name="478"><span class="lineNum">     478 </span><span class="lineNoCov">          0 :                 data &amp;= ~ATC_L2_MISC_CG__ENABLE_MASK;</span></a>
+<a name="479"><span class="lineNum">     479 </span>            : </a>
+<a name="480"><span class="lineNum">     480 </span><span class="lineNoCov">          0 :                 data1 |= (DAGB0_CNTL_MISC2__DISABLE_WRREQ_CG_MASK |</span></a>
+<a name="481"><span class="lineNum">     481 </span>            :                           DAGB0_CNTL_MISC2__DISABLE_WRRET_CG_MASK |</a>
+<a name="482"><span class="lineNum">     482 </span>            :                           DAGB0_CNTL_MISC2__DISABLE_RDREQ_CG_MASK |</a>
+<a name="483"><span class="lineNum">     483 </span>            :                           DAGB0_CNTL_MISC2__DISABLE_RDRET_CG_MASK |</a>
+<a name="484"><span class="lineNum">     484 </span>            :                           DAGB0_CNTL_MISC2__DISABLE_TLBWR_CG_MASK |</a>
+<a name="485"><span class="lineNum">     485 </span>            :                           DAGB0_CNTL_MISC2__DISABLE_TLBRD_CG_MASK);</a>
+<a name="486"><span class="lineNum">     486 </span>            : </a>
+<a name="487"><span class="lineNum">     487 </span><span class="lineNoCov">          0 :                 if (adev-&gt;asic_type != CHIP_RAVEN)</span></a>
+<a name="488"><span class="lineNum">     488 </span><span class="lineNoCov">          0 :                         data2 |= (DAGB1_CNTL_MISC2__DISABLE_WRREQ_CG_MASK |</span></a>
+<a name="489"><span class="lineNum">     489 </span>            :                                   DAGB1_CNTL_MISC2__DISABLE_WRRET_CG_MASK |</a>
+<a name="490"><span class="lineNum">     490 </span>            :                                   DAGB1_CNTL_MISC2__DISABLE_RDREQ_CG_MASK |</a>
+<a name="491"><span class="lineNum">     491 </span>            :                                   DAGB1_CNTL_MISC2__DISABLE_RDRET_CG_MASK |</a>
+<a name="492"><span class="lineNum">     492 </span>            :                                   DAGB1_CNTL_MISC2__DISABLE_TLBWR_CG_MASK |</a>
+<a name="493"><span class="lineNum">     493 </span>            :                                   DAGB1_CNTL_MISC2__DISABLE_TLBRD_CG_MASK);</a>
+<a name="494"><span class="lineNum">     494 </span>            :         }</a>
+<a name="495"><span class="lineNum">     495 </span>            : </a>
+<a name="496"><span class="lineNum">     496 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="497"><span class="lineNum">     497 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, mmATC_L2_MISC_CG, data);</span></a>
+<a name="498"><span class="lineNum">     498 </span>            : </a>
+<a name="499"><span class="lineNum">     499 </span><span class="lineNoCov">          0 :         if (def1 != data1) {</span></a>
+<a name="500"><span class="lineNum">     500 </span><span class="lineNoCov">          0 :                 if (adev-&gt;asic_type != CHIP_RAVEN)</span></a>
+<a name="501"><span class="lineNum">     501 </span><span class="lineNoCov">          0 :                         WREG32_SOC15(MMHUB, 0, mmDAGB0_CNTL_MISC2, data1);</span></a>
+<a name="502"><span class="lineNum">     502 </span>            :                 else</a>
+<a name="503"><span class="lineNum">     503 </span><span class="lineNoCov">          0 :                         WREG32_SOC15(MMHUB, 0, mmDAGB0_CNTL_MISC2_RV, data1);</span></a>
+<a name="504"><span class="lineNum">     504 </span>            :         }</a>
+<a name="505"><span class="lineNum">     505 </span>            : </a>
+<a name="506"><span class="lineNum">     506 </span><span class="lineNoCov">          0 :         if (adev-&gt;asic_type != CHIP_RAVEN &amp;&amp; def2 != data2)</span></a>
+<a name="507"><span class="lineNum">     507 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, mmDAGB1_CNTL_MISC2, data2);</span></a>
+<a name="508"><span class="lineNum">     508 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="509"><span class="lineNum">     509 </span>            : </a>
+<a name="510"><span class="lineNum">     510 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_update_medium_grain_light_sleep(struct amdgpu_device *adev,</span></a>
+<a name="511"><span class="lineNum">     511 </span>            :                                                        bool enable)</a>
+<a name="512"><span class="lineNum">     512 </span>            : {</a>
+<a name="513"><span class="lineNum">     513 </span>            :         uint32_t def, data;</a>
+<a name="514"><span class="lineNum">     514 </span>            : </a>
+<a name="515"><span class="lineNum">     515 </span><span class="lineNoCov">          0 :         def = data = RREG32_SOC15(MMHUB, 0, mmATC_L2_MISC_CG);</span></a>
+<a name="516"><span class="lineNum">     516 </span>            : </a>
+<a name="517"><span class="lineNum">     517 </span><span class="lineNoCov">          0 :         if (enable &amp;&amp; (adev-&gt;cg_flags &amp; AMD_CG_SUPPORT_MC_LS))</span></a>
+<a name="518"><span class="lineNum">     518 </span><span class="lineNoCov">          0 :                 data |= ATC_L2_MISC_CG__MEM_LS_ENABLE_MASK;</span></a>
+<a name="519"><span class="lineNum">     519 </span>            :         else</a>
+<a name="520"><span class="lineNum">     520 </span><span class="lineNoCov">          0 :                 data &amp;= ~ATC_L2_MISC_CG__MEM_LS_ENABLE_MASK;</span></a>
+<a name="521"><span class="lineNum">     521 </span>            : </a>
+<a name="522"><span class="lineNum">     522 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="523"><span class="lineNum">     523 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, mmATC_L2_MISC_CG, data);</span></a>
+<a name="524"><span class="lineNum">     524 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="525"><span class="lineNum">     525 </span>            : </a>
+<a name="526"><span class="lineNum">     526 </span><span class="lineNoCov">          0 : static int mmhub_v1_0_set_clockgating(struct amdgpu_device *adev,</span></a>
+<a name="527"><span class="lineNum">     527 </span>            :                                enum amd_clockgating_state state)</a>
+<a name="528"><span class="lineNum">     528 </span>            : {</a>
+<a name="529"><span class="lineNum">     529 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
+<a name="530"><span class="lineNum">     530 </span>            :                 return 0;</a>
+<a name="531"><span class="lineNum">     531 </span>            : </a>
+<a name="532"><span class="lineNum">     532 </span><span class="lineNoCov">          0 :         switch (adev-&gt;asic_type) {</span></a>
+<a name="533"><span class="lineNum">     533 </span>            :         case CHIP_VEGA10:</a>
+<a name="534"><span class="lineNum">     534 </span>            :         case CHIP_VEGA12:</a>
+<a name="535"><span class="lineNum">     535 </span>            :         case CHIP_VEGA20:</a>
+<a name="536"><span class="lineNum">     536 </span>            :         case CHIP_RAVEN:</a>
+<a name="537"><span class="lineNum">     537 </span>            :         case CHIP_RENOIR:</a>
+<a name="538"><span class="lineNum">     538 </span><span class="lineNoCov">          0 :                 mmhub_v1_0_update_medium_grain_clock_gating(adev,</span></a>
+<a name="539"><span class="lineNum">     539 </span>            :                                 state == AMD_CG_STATE_GATE);</a>
+<a name="540"><span class="lineNum">     540 </span><span class="lineNoCov">          0 :                 mmhub_v1_0_update_medium_grain_light_sleep(adev,</span></a>
+<a name="541"><span class="lineNum">     541 </span>            :                                 state == AMD_CG_STATE_GATE);</a>
+<a name="542"><span class="lineNum">     542 </span><span class="lineNoCov">          0 :                 break;</span></a>
+<a name="543"><span class="lineNum">     543 </span>            :         default:</a>
+<a name="544"><span class="lineNum">     544 </span>            :                 break;</a>
+<a name="545"><span class="lineNum">     545 </span>            :         }</a>
+<a name="546"><span class="lineNum">     546 </span>            : </a>
+<a name="547"><span class="lineNum">     547 </span>            :         return 0;</a>
+<a name="548"><span class="lineNum">     548 </span>            : }</a>
+<a name="549"><span class="lineNum">     549 </span>            : </a>
+<a name="550"><span class="lineNum">     550 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_get_clockgating(struct amdgpu_device *adev, u64 *flags)</span></a>
+<a name="551"><span class="lineNum">     551 </span>            : {</a>
+<a name="552"><span class="lineNum">     552 </span>            :         int data, data1;</a>
+<a name="553"><span class="lineNum">     553 </span>            : </a>
+<a name="554"><span class="lineNum">     554 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
+<a name="555"><span class="lineNum">     555 </span><span class="lineNoCov">          0 :                 *flags = 0;</span></a>
+<a name="556"><span class="lineNum">     556 </span>            : </a>
+<a name="557"><span class="lineNum">     557 </span><span class="lineNoCov">          0 :         data = RREG32_SOC15(MMHUB, 0, mmATC_L2_MISC_CG);</span></a>
+<a name="558"><span class="lineNum">     558 </span>            : </a>
+<a name="559"><span class="lineNum">     559 </span><span class="lineNoCov">          0 :         data1 = RREG32_SOC15(MMHUB, 0, mmDAGB0_CNTL_MISC2);</span></a>
+<a name="560"><span class="lineNum">     560 </span>            : </a>
+<a name="561"><span class="lineNum">     561 </span>            :         /* AMD_CG_SUPPORT_MC_MGCG */</a>
+<a name="562"><span class="lineNum">     562 </span><span class="lineNoCov">          0 :         if ((data &amp; ATC_L2_MISC_CG__ENABLE_MASK) &amp;&amp;</span></a>
+<a name="563"><span class="lineNum">     563 </span>            :             !(data1 &amp; (DAGB0_CNTL_MISC2__DISABLE_WRREQ_CG_MASK |</a>
+<a name="564"><span class="lineNum">     564 </span>            :                        DAGB0_CNTL_MISC2__DISABLE_WRRET_CG_MASK |</a>
+<a name="565"><span class="lineNum">     565 </span>            :                        DAGB0_CNTL_MISC2__DISABLE_RDREQ_CG_MASK |</a>
+<a name="566"><span class="lineNum">     566 </span>            :                        DAGB0_CNTL_MISC2__DISABLE_RDRET_CG_MASK |</a>
+<a name="567"><span class="lineNum">     567 </span>            :                        DAGB0_CNTL_MISC2__DISABLE_TLBWR_CG_MASK |</a>
+<a name="568"><span class="lineNum">     568 </span>            :                        DAGB0_CNTL_MISC2__DISABLE_TLBRD_CG_MASK)))</a>
+<a name="569"><span class="lineNum">     569 </span><span class="lineNoCov">          0 :                 *flags |= AMD_CG_SUPPORT_MC_MGCG;</span></a>
+<a name="570"><span class="lineNum">     570 </span>            : </a>
+<a name="571"><span class="lineNum">     571 </span>            :         /* AMD_CG_SUPPORT_MC_LS */</a>
+<a name="572"><span class="lineNum">     572 </span><span class="lineNoCov">          0 :         if (data &amp; ATC_L2_MISC_CG__MEM_LS_ENABLE_MASK)</span></a>
+<a name="573"><span class="lineNum">     573 </span><span class="lineNoCov">          0 :                 *flags |= AMD_CG_SUPPORT_MC_LS;</span></a>
+<a name="574"><span class="lineNum">     574 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="575"><span class="lineNum">     575 </span>            : </a>
+<a name="576"><span class="lineNum">     576 </span>            : static const struct soc15_ras_field_entry mmhub_v1_0_ras_fields[] = {</a>
+<a name="577"><span class="lineNum">     577 </span>            :         { &quot;MMEA0_DRAMRD_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
+<a name="578"><span class="lineNum">     578 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMRD_CMDMEM_SEC_COUNT),</a>
+<a name="579"><span class="lineNum">     579 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMRD_CMDMEM_DED_COUNT),</a>
+<a name="580"><span class="lineNum">     580 </span>            :         },</a>
+<a name="581"><span class="lineNum">     581 </span>            :         { &quot;MMEA0_DRAMWR_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
+<a name="582"><span class="lineNum">     582 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMWR_CMDMEM_SEC_COUNT),</a>
+<a name="583"><span class="lineNum">     583 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMWR_CMDMEM_DED_COUNT),</a>
+<a name="584"><span class="lineNum">     584 </span>            :         },</a>
+<a name="585"><span class="lineNum">     585 </span>            :         { &quot;MMEA0_DRAMWR_DATAMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
+<a name="586"><span class="lineNum">     586 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMWR_DATAMEM_SEC_COUNT),</a>
+<a name="587"><span class="lineNum">     587 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMWR_DATAMEM_DED_COUNT),</a>
+<a name="588"><span class="lineNum">     588 </span>            :         },</a>
+<a name="589"><span class="lineNum">     589 </span>            :         { &quot;MMEA0_RRET_TAGMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
+<a name="590"><span class="lineNum">     590 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, RRET_TAGMEM_SEC_COUNT),</a>
+<a name="591"><span class="lineNum">     591 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, RRET_TAGMEM_DED_COUNT),</a>
+<a name="592"><span class="lineNum">     592 </span>            :         },</a>
+<a name="593"><span class="lineNum">     593 </span>            :         { &quot;MMEA0_WRET_TAGMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
+<a name="594"><span class="lineNum">     594 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, WRET_TAGMEM_SEC_COUNT),</a>
+<a name="595"><span class="lineNum">     595 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, WRET_TAGMEM_DED_COUNT),</a>
+<a name="596"><span class="lineNum">     596 </span>            :         },</a>
+<a name="597"><span class="lineNum">     597 </span>            :         { &quot;MMEA0_DRAMRD_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
+<a name="598"><span class="lineNum">     598 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMRD_PAGEMEM_SED_COUNT),</a>
+<a name="599"><span class="lineNum">     599 </span>            :         0, 0,</a>
+<a name="600"><span class="lineNum">     600 </span>            :         },</a>
+<a name="601"><span class="lineNum">     601 </span>            :         { &quot;MMEA0_DRAMWR_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
+<a name="602"><span class="lineNum">     602 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, DRAMWR_PAGEMEM_SED_COUNT),</a>
+<a name="603"><span class="lineNum">     603 </span>            :         0, 0,</a>
+<a name="604"><span class="lineNum">     604 </span>            :         },</a>
+<a name="605"><span class="lineNum">     605 </span>            :         { &quot;MMEA0_IORD_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
+<a name="606"><span class="lineNum">     606 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, IORD_CMDMEM_SED_COUNT),</a>
+<a name="607"><span class="lineNum">     607 </span>            :         0, 0,</a>
+<a name="608"><span class="lineNum">     608 </span>            :         },</a>
+<a name="609"><span class="lineNum">     609 </span>            :         { &quot;MMEA0_IOWR_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
+<a name="610"><span class="lineNum">     610 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, IOWR_CMDMEM_SED_COUNT),</a>
+<a name="611"><span class="lineNum">     611 </span>            :         0, 0,</a>
+<a name="612"><span class="lineNum">     612 </span>            :         },</a>
+<a name="613"><span class="lineNum">     613 </span>            :         { &quot;MMEA0_IOWR_DATAMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20),</a>
+<a name="614"><span class="lineNum">     614 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT_VG20, IOWR_DATAMEM_SED_COUNT),</a>
+<a name="615"><span class="lineNum">     615 </span>            :         0, 0,</a>
+<a name="616"><span class="lineNum">     616 </span>            :         },</a>
+<a name="617"><span class="lineNum">     617 </span>            :         { &quot;MMEA0_GMIRD_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT2_VG20),</a>
+<a name="618"><span class="lineNum">     618 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIRD_CMDMEM_SEC_COUNT),</a>
+<a name="619"><span class="lineNum">     619 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIRD_CMDMEM_DED_COUNT),</a>
+<a name="620"><span class="lineNum">     620 </span>            :         },</a>
+<a name="621"><span class="lineNum">     621 </span>            :         { &quot;MMEA0_GMIWR_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT2_VG20),</a>
+<a name="622"><span class="lineNum">     622 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIWR_CMDMEM_SEC_COUNT),</a>
+<a name="623"><span class="lineNum">     623 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIWR_CMDMEM_DED_COUNT),</a>
+<a name="624"><span class="lineNum">     624 </span>            :         },</a>
+<a name="625"><span class="lineNum">     625 </span>            :         { &quot;MMEA0_GMIWR_DATAMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT2_VG20),</a>
+<a name="626"><span class="lineNum">     626 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIWR_DATAMEM_SEC_COUNT),</a>
+<a name="627"><span class="lineNum">     627 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIWR_DATAMEM_DED_COUNT),</a>
+<a name="628"><span class="lineNum">     628 </span>            :         },</a>
+<a name="629"><span class="lineNum">     629 </span>            :         { &quot;MMEA0_GMIRD_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT2_VG20),</a>
+<a name="630"><span class="lineNum">     630 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIRD_PAGEMEM_SED_COUNT),</a>
+<a name="631"><span class="lineNum">     631 </span>            :         0, 0,</a>
+<a name="632"><span class="lineNum">     632 </span>            :         },</a>
+<a name="633"><span class="lineNum">     633 </span>            :         { &quot;MMEA0_GMIWR_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT2_VG20),</a>
+<a name="634"><span class="lineNum">     634 </span>            :         SOC15_REG_FIELD(MMEA0_EDC_CNT2_VG20, GMIWR_PAGEMEM_SED_COUNT),</a>
+<a name="635"><span class="lineNum">     635 </span>            :         0, 0,</a>
+<a name="636"><span class="lineNum">     636 </span>            :         },</a>
+<a name="637"><span class="lineNum">     637 </span>            :         { &quot;MMEA1_DRAMRD_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
+<a name="638"><span class="lineNum">     638 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMRD_CMDMEM_SEC_COUNT),</a>
+<a name="639"><span class="lineNum">     639 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMRD_CMDMEM_DED_COUNT),</a>
+<a name="640"><span class="lineNum">     640 </span>            :         },</a>
+<a name="641"><span class="lineNum">     641 </span>            :         { &quot;MMEA1_DRAMWR_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
+<a name="642"><span class="lineNum">     642 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMWR_CMDMEM_SEC_COUNT),</a>
+<a name="643"><span class="lineNum">     643 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMWR_CMDMEM_DED_COUNT),</a>
+<a name="644"><span class="lineNum">     644 </span>            :         },</a>
+<a name="645"><span class="lineNum">     645 </span>            :         { &quot;MMEA1_DRAMWR_DATAMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
+<a name="646"><span class="lineNum">     646 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMWR_DATAMEM_SEC_COUNT),</a>
+<a name="647"><span class="lineNum">     647 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMWR_DATAMEM_DED_COUNT),</a>
+<a name="648"><span class="lineNum">     648 </span>            :         },</a>
+<a name="649"><span class="lineNum">     649 </span>            :         { &quot;MMEA1_RRET_TAGMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
+<a name="650"><span class="lineNum">     650 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, RRET_TAGMEM_SEC_COUNT),</a>
+<a name="651"><span class="lineNum">     651 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, RRET_TAGMEM_DED_COUNT),</a>
+<a name="652"><span class="lineNum">     652 </span>            :         },</a>
+<a name="653"><span class="lineNum">     653 </span>            :         { &quot;MMEA1_WRET_TAGMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
+<a name="654"><span class="lineNum">     654 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, WRET_TAGMEM_SEC_COUNT),</a>
+<a name="655"><span class="lineNum">     655 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, WRET_TAGMEM_DED_COUNT),</a>
+<a name="656"><span class="lineNum">     656 </span>            :         },</a>
+<a name="657"><span class="lineNum">     657 </span>            :         { &quot;MMEA1_DRAMRD_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
+<a name="658"><span class="lineNum">     658 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMRD_PAGEMEM_SED_COUNT),</a>
+<a name="659"><span class="lineNum">     659 </span>            :         0, 0,</a>
+<a name="660"><span class="lineNum">     660 </span>            :         },</a>
+<a name="661"><span class="lineNum">     661 </span>            :         { &quot;MMEA1_DRAMWR_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
+<a name="662"><span class="lineNum">     662 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, DRAMWR_PAGEMEM_SED_COUNT),</a>
+<a name="663"><span class="lineNum">     663 </span>            :         0, 0,</a>
+<a name="664"><span class="lineNum">     664 </span>            :         },</a>
+<a name="665"><span class="lineNum">     665 </span>            :         { &quot;MMEA1_IORD_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
+<a name="666"><span class="lineNum">     666 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, IORD_CMDMEM_SED_COUNT),</a>
+<a name="667"><span class="lineNum">     667 </span>            :         0, 0,</a>
+<a name="668"><span class="lineNum">     668 </span>            :         },</a>
+<a name="669"><span class="lineNum">     669 </span>            :         { &quot;MMEA1_IOWR_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
+<a name="670"><span class="lineNum">     670 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, IOWR_CMDMEM_SED_COUNT),</a>
+<a name="671"><span class="lineNum">     671 </span>            :         0, 0,</a>
+<a name="672"><span class="lineNum">     672 </span>            :         },</a>
+<a name="673"><span class="lineNum">     673 </span>            :         { &quot;MMEA1_IOWR_DATAMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20),</a>
+<a name="674"><span class="lineNum">     674 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT_VG20, IOWR_DATAMEM_SED_COUNT),</a>
+<a name="675"><span class="lineNum">     675 </span>            :         0, 0,</a>
+<a name="676"><span class="lineNum">     676 </span>            :         },</a>
+<a name="677"><span class="lineNum">     677 </span>            :         { &quot;MMEA1_GMIRD_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT2_VG20),</a>
+<a name="678"><span class="lineNum">     678 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIRD_CMDMEM_SEC_COUNT),</a>
+<a name="679"><span class="lineNum">     679 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIRD_CMDMEM_DED_COUNT),</a>
+<a name="680"><span class="lineNum">     680 </span>            :         },</a>
+<a name="681"><span class="lineNum">     681 </span>            :         { &quot;MMEA1_GMIWR_CMDMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT2_VG20),</a>
+<a name="682"><span class="lineNum">     682 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIWR_CMDMEM_SEC_COUNT),</a>
+<a name="683"><span class="lineNum">     683 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIWR_CMDMEM_DED_COUNT),</a>
+<a name="684"><span class="lineNum">     684 </span>            :         },</a>
+<a name="685"><span class="lineNum">     685 </span>            :         { &quot;MMEA1_GMIWR_DATAMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT2_VG20),</a>
+<a name="686"><span class="lineNum">     686 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIWR_DATAMEM_SEC_COUNT),</a>
+<a name="687"><span class="lineNum">     687 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIWR_DATAMEM_DED_COUNT),</a>
+<a name="688"><span class="lineNum">     688 </span>            :         },</a>
+<a name="689"><span class="lineNum">     689 </span>            :         { &quot;MMEA1_GMIRD_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT2_VG20),</a>
+<a name="690"><span class="lineNum">     690 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIRD_PAGEMEM_SED_COUNT),</a>
+<a name="691"><span class="lineNum">     691 </span>            :         0, 0,</a>
+<a name="692"><span class="lineNum">     692 </span>            :         },</a>
+<a name="693"><span class="lineNum">     693 </span>            :         { &quot;MMEA1_GMIWR_PAGEMEM&quot;, SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT2_VG20),</a>
+<a name="694"><span class="lineNum">     694 </span>            :         SOC15_REG_FIELD(MMEA1_EDC_CNT2_VG20, GMIWR_PAGEMEM_SED_COUNT),</a>
+<a name="695"><span class="lineNum">     695 </span>            :         0, 0,</a>
+<a name="696"><span class="lineNum">     696 </span>            :         }</a>
+<a name="697"><span class="lineNum">     697 </span>            : };</a>
+<a name="698"><span class="lineNum">     698 </span>            : </a>
+<a name="699"><span class="lineNum">     699 </span>            : static const struct soc15_reg_entry mmhub_v1_0_edc_cnt_regs[] = {</a>
+<a name="700"><span class="lineNum">     700 </span>            :    { SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT_VG20), 0, 0, 0},</a>
+<a name="701"><span class="lineNum">     701 </span>            :    { SOC15_REG_ENTRY(MMHUB, 0, mmMMEA0_EDC_CNT2_VG20), 0, 0, 0},</a>
+<a name="702"><span class="lineNum">     702 </span>            :    { SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT_VG20), 0, 0, 0},</a>
+<a name="703"><span class="lineNum">     703 </span>            :    { SOC15_REG_ENTRY(MMHUB, 0, mmMMEA1_EDC_CNT2_VG20), 0, 0, 0},</a>
+<a name="704"><span class="lineNum">     704 </span>            : };</a>
+<a name="705"><span class="lineNum">     705 </span>            : </a>
+<a name="706"><span class="lineNum">     706 </span><span class="lineNoCov">          0 : static int mmhub_v1_0_get_ras_error_count(struct amdgpu_device *adev,</span></a>
+<a name="707"><span class="lineNum">     707 </span>            :         const struct soc15_reg_entry *reg,</a>
+<a name="708"><span class="lineNum">     708 </span>            :         uint32_t value, uint32_t *sec_count, uint32_t *ded_count)</a>
+<a name="709"><span class="lineNum">     709 </span>            : {</a>
+<a name="710"><span class="lineNum">     710 </span>            :         uint32_t i;</a>
+<a name="711"><span class="lineNum">     711 </span>            :         uint32_t sec_cnt, ded_cnt;</a>
+<a name="712"><span class="lineNum">     712 </span>            : </a>
+<a name="713"><span class="lineNum">     713 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; ARRAY_SIZE(mmhub_v1_0_ras_fields); i++) {</span></a>
+<a name="714"><span class="lineNum">     714 </span><span class="lineNoCov">          0 :                 if (mmhub_v1_0_ras_fields[i].reg_offset != reg-&gt;reg_offset)</span></a>
+<a name="715"><span class="lineNum">     715 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="716"><span class="lineNum">     716 </span>            : </a>
+<a name="717"><span class="lineNum">     717 </span><span class="lineNoCov">          0 :                 sec_cnt = (value &amp;</span></a>
+<a name="718"><span class="lineNum">     718 </span><span class="lineNoCov">          0 :                                 mmhub_v1_0_ras_fields[i].sec_count_mask) &gt;&gt;</span></a>
+<a name="719"><span class="lineNum">     719 </span><span class="lineNoCov">          0 :                                 mmhub_v1_0_ras_fields[i].sec_count_shift;</span></a>
+<a name="720"><span class="lineNum">     720 </span><span class="lineNoCov">          0 :                 if (sec_cnt) {</span></a>
+<a name="721"><span class="lineNum">     721 </span><span class="lineNoCov">          0 :                         dev_info(adev-&gt;dev,</span></a>
+<a name="722"><span class="lineNum">     722 </span>            :                                 &quot;MMHUB SubBlock %s, SEC %d\n&quot;,</a>
+<a name="723"><span class="lineNum">     723 </span>            :                                 mmhub_v1_0_ras_fields[i].name,</a>
+<a name="724"><span class="lineNum">     724 </span>            :                                 sec_cnt);</a>
+<a name="725"><span class="lineNum">     725 </span><span class="lineNoCov">          0 :                         *sec_count += sec_cnt;</span></a>
+<a name="726"><span class="lineNum">     726 </span>            :                 }</a>
+<a name="727"><span class="lineNum">     727 </span>            : </a>
+<a name="728"><span class="lineNum">     728 </span><span class="lineNoCov">          0 :                 ded_cnt = (value &amp;</span></a>
+<a name="729"><span class="lineNum">     729 </span><span class="lineNoCov">          0 :                                 mmhub_v1_0_ras_fields[i].ded_count_mask) &gt;&gt;</span></a>
+<a name="730"><span class="lineNum">     730 </span><span class="lineNoCov">          0 :                                 mmhub_v1_0_ras_fields[i].ded_count_shift;</span></a>
+<a name="731"><span class="lineNum">     731 </span><span class="lineNoCov">          0 :                 if (ded_cnt) {</span></a>
+<a name="732"><span class="lineNum">     732 </span><span class="lineNoCov">          0 :                         dev_info(adev-&gt;dev,</span></a>
+<a name="733"><span class="lineNum">     733 </span>            :                                 &quot;MMHUB SubBlock %s, DED %d\n&quot;,</a>
+<a name="734"><span class="lineNum">     734 </span>            :                                 mmhub_v1_0_ras_fields[i].name,</a>
+<a name="735"><span class="lineNum">     735 </span>            :                                 ded_cnt);</a>
+<a name="736"><span class="lineNum">     736 </span><span class="lineNoCov">          0 :                         *ded_count += ded_cnt;</span></a>
+<a name="737"><span class="lineNum">     737 </span>            :                 }</a>
+<a name="738"><span class="lineNum">     738 </span>            :         }</a>
+<a name="739"><span class="lineNum">     739 </span>            : </a>
+<a name="740"><span class="lineNum">     740 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="741"><span class="lineNum">     741 </span>            : }</a>
+<a name="742"><span class="lineNum">     742 </span>            : </a>
+<a name="743"><span class="lineNum">     743 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_query_ras_error_count(struct amdgpu_device *adev,</span></a>
+<a name="744"><span class="lineNum">     744 </span>            :                                            void *ras_error_status)</a>
+<a name="745"><span class="lineNum">     745 </span>            : {</a>
+<a name="746"><span class="lineNum">     746 </span><span class="lineNoCov">          0 :         struct ras_err_data *err_data = (struct ras_err_data *)ras_error_status;</span></a>
+<a name="747"><span class="lineNum">     747 </span><span class="lineNoCov">          0 :         uint32_t sec_count = 0, ded_count = 0;</span></a>
+<a name="748"><span class="lineNum">     748 </span>            :         uint32_t i;</a>
+<a name="749"><span class="lineNum">     749 </span>            :         uint32_t reg_value;</a>
+<a name="750"><span class="lineNum">     750 </span>            : </a>
+<a name="751"><span class="lineNum">     751 </span><span class="lineNoCov">          0 :         err_data-&gt;ue_count = 0;</span></a>
+<a name="752"><span class="lineNum">     752 </span><span class="lineNoCov">          0 :         err_data-&gt;ce_count = 0;</span></a>
+<a name="753"><span class="lineNum">     753 </span>            : </a>
+<a name="754"><span class="lineNum">     754 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; ARRAY_SIZE(mmhub_v1_0_edc_cnt_regs); i++) {</span></a>
+<a name="755"><span class="lineNum">     755 </span><span class="lineNoCov">          0 :                 reg_value =</span></a>
+<a name="756"><span class="lineNum">     756 </span><span class="lineNoCov">          0 :                         RREG32(SOC15_REG_ENTRY_OFFSET(mmhub_v1_0_edc_cnt_regs[i]));</span></a>
+<a name="757"><span class="lineNum">     757 </span><span class="lineNoCov">          0 :                 if (reg_value)</span></a>
+<a name="758"><span class="lineNum">     758 </span><span class="lineNoCov">          0 :                         mmhub_v1_0_get_ras_error_count(adev,</span></a>
+<a name="759"><span class="lineNum">     759 </span>            :                                 &amp;mmhub_v1_0_edc_cnt_regs[i],</a>
+<a name="760"><span class="lineNum">     760 </span>            :                                 reg_value, &amp;sec_count, &amp;ded_count);</a>
+<a name="761"><span class="lineNum">     761 </span>            :         }</a>
+<a name="762"><span class="lineNum">     762 </span>            : </a>
+<a name="763"><span class="lineNum">     763 </span><span class="lineNoCov">          0 :         err_data-&gt;ce_count += sec_count;</span></a>
+<a name="764"><span class="lineNum">     764 </span><span class="lineNoCov">          0 :         err_data-&gt;ue_count += ded_count;</span></a>
+<a name="765"><span class="lineNum">     765 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="766"><span class="lineNum">     766 </span>            : </a>
+<a name="767"><span class="lineNum">     767 </span><span class="lineNoCov">          0 : static void mmhub_v1_0_reset_ras_error_count(struct amdgpu_device *adev)</span></a>
+<a name="768"><span class="lineNum">     768 </span>            : {</a>
+<a name="769"><span class="lineNum">     769 </span>            :         uint32_t i;</a>
+<a name="770"><span class="lineNum">     770 </span>            : </a>
+<a name="771"><span class="lineNum">     771 </span>            :         /* read back edc counter registers to reset the counters to 0 */</a>
+<a name="772"><span class="lineNum">     772 </span><span class="lineNoCov">          0 :         if (amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__MMHUB)) {</span></a>
+<a name="773"><span class="lineNum">     773 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; ARRAY_SIZE(mmhub_v1_0_edc_cnt_regs); i++)</span></a>
+<a name="774"><span class="lineNum">     774 </span><span class="lineNoCov">          0 :                         RREG32(SOC15_REG_ENTRY_OFFSET(mmhub_v1_0_edc_cnt_regs[i]));</span></a>
+<a name="775"><span class="lineNum">     775 </span>            :         }</a>
+<a name="776"><span class="lineNum">     776 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="777"><span class="lineNum">     777 </span>            : </a>
+<a name="778"><span class="lineNum">     778 </span>            : struct amdgpu_ras_block_hw_ops mmhub_v1_0_ras_hw_ops = {</a>
+<a name="779"><span class="lineNum">     779 </span>            :         .query_ras_error_count = mmhub_v1_0_query_ras_error_count,</a>
+<a name="780"><span class="lineNum">     780 </span>            :         .reset_ras_error_count = mmhub_v1_0_reset_ras_error_count,</a>
+<a name="781"><span class="lineNum">     781 </span>            : };</a>
+<a name="782"><span class="lineNum">     782 </span>            : </a>
+<a name="783"><span class="lineNum">     783 </span>            : struct amdgpu_mmhub_ras mmhub_v1_0_ras = {</a>
+<a name="784"><span class="lineNum">     784 </span>            :         .ras_block = {</a>
+<a name="785"><span class="lineNum">     785 </span>            :                 .hw_ops = &amp;mmhub_v1_0_ras_hw_ops,</a>
+<a name="786"><span class="lineNum">     786 </span>            :         },</a>
+<a name="787"><span class="lineNum">     787 </span>            : };</a>
+<a name="788"><span class="lineNum">     788 </span>            : </a>
+<a name="789"><span class="lineNum">     789 </span>            : const struct amdgpu_mmhub_funcs mmhub_v1_0_funcs = {</a>
+<a name="790"><span class="lineNum">     790 </span>            :         .get_fb_location = mmhub_v1_0_get_fb_location,</a>
+<a name="791"><span class="lineNum">     791 </span>            :         .init = mmhub_v1_0_init,</a>
+<a name="792"><span class="lineNum">     792 </span>            :         .gart_enable = mmhub_v1_0_gart_enable,</a>
+<a name="793"><span class="lineNum">     793 </span>            :         .set_fault_enable_default = mmhub_v1_0_set_fault_enable_default,</a>
+<a name="794"><span class="lineNum">     794 </span>            :         .gart_disable = mmhub_v1_0_gart_disable,</a>
+<a name="795"><span class="lineNum">     795 </span>            :         .set_clockgating = mmhub_v1_0_set_clockgating,</a>
+<a name="796"><span class="lineNum">     796 </span>            :         .get_clockgating = mmhub_v1_0_get_clockgating,</a>
+<a name="797"><span class="lineNum">     797 </span>            :         .setup_vm_pt_regs = mmhub_v1_0_setup_vm_pt_regs,</a>
+<a name="798"><span class="lineNum">     798 </span>            :         .update_power_gating = mmhub_v1_0_update_power_gating,</a>
+<a name="799"><span class="lineNum">     799 </span>            : };</a>
 </pre>
       </td>
     </tr>

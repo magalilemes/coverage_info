@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">21</td>
@@ -134,8 +134,8 @@
 <a name="72"><span class="lineNum">      72 </span>            : </a>
 <a name="73"><span class="lineNum">      73 </span>            : static inline struct kthread *to_kthread(struct task_struct *k)</a>
 <a name="74"><span class="lineNum">      74 </span>            : {</a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        898 :         WARN_ON(!(k-&gt;flags &amp; PF_KTHREAD));</span></a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        898 :         return k-&gt;worker_private;</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">        900 :         WARN_ON(!(k-&gt;flags &amp; PF_KTHREAD));</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        900 :         return k-&gt;worker_private;</span></a>
 <a name="77"><span class="lineNum">      77 </span>            : }</a>
 <a name="78"><span class="lineNum">      78 </span>            : </a>
 <a name="79"><span class="lineNum">      79 </span>            : /*</a>
@@ -291,9 +291,9 @@
 <a name="229"><span class="lineNum">     229 </span>            :  * The caller is responsible for ensuring the validity of @task when</a>
 <a name="230"><span class="lineNum">     230 </span>            :  * calling this function.</a>
 <a name="231"><span class="lineNum">     231 </span>            :  */</a>
-<a name="232"><span class="lineNum">     232 </span><span class="lineCov">         18 : void *kthread_data(struct task_struct *task)</span></a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineCov">         20 : void *kthread_data(struct task_struct *task)</span></a>
 <a name="233"><span class="lineNum">     233 </span>            : {</a>
-<a name="234"><span class="lineNum">     234 </span><span class="lineCov">         36 :         return to_kthread(task)-&gt;data;</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineCov">         40 :         return to_kthread(task)-&gt;data;</span></a>
 <a name="235"><span class="lineNum">     235 </span>            : }</a>
 <a name="236"><span class="lineNum">     236 </span>            : EXPORT_SYMBOL_GPL(kthread_data);</a>
 <a name="237"><span class="lineNum">     237 </span>            : </a>
@@ -790,13 +790,13 @@
 <a name="728"><span class="lineNum">     728 </span>            :         cgroup_init_kthreadd();</a>
 <a name="729"><span class="lineNum">     729 </span>            : </a>
 <a name="730"><span class="lineNum">     730 </span>            :         for (;;) {</a>
-<a name="731"><span class="lineNum">     731 </span><span class="lineCov">        105 :                 set_current_state(TASK_INTERRUPTIBLE);</span></a>
-<a name="732"><span class="lineNum">     732 </span><span class="lineCov">        105 :                 if (list_empty(&amp;kthread_create_list))</span></a>
-<a name="733"><span class="lineNum">     733 </span><span class="lineCov">        105 :                         schedule();</span></a>
-<a name="734"><span class="lineNum">     734 </span><span class="lineCov">        104 :                 __set_current_state(TASK_RUNNING);</span></a>
+<a name="731"><span class="lineNum">     731 </span><span class="lineCov">        106 :                 set_current_state(TASK_INTERRUPTIBLE);</span></a>
+<a name="732"><span class="lineNum">     732 </span><span class="lineCov">        106 :                 if (list_empty(&amp;kthread_create_list))</span></a>
+<a name="733"><span class="lineNum">     733 </span><span class="lineCov">        106 :                         schedule();</span></a>
+<a name="734"><span class="lineNum">     734 </span><span class="lineCov">        105 :                 __set_current_state(TASK_RUNNING);</span></a>
 <a name="735"><span class="lineNum">     735 </span>            : </a>
 <a name="736"><span class="lineNum">     736 </span>            :                 spin_lock(&amp;kthread_create_lock);</a>
-<a name="737"><span class="lineNum">     737 </span><span class="lineCov">        209 :                 while (!list_empty(&amp;kthread_create_list)) {</span></a>
+<a name="737"><span class="lineNum">     737 </span><span class="lineCov">        210 :                 while (!list_empty(&amp;kthread_create_list)) {</span></a>
 <a name="738"><span class="lineNum">     738 </span>            :                         struct kthread_create_info *create;</a>
 <a name="739"><span class="lineNum">     739 </span>            : </a>
 <a name="740"><span class="lineNum">     740 </span><span class="lineCov">        105 :                         create = list_entry(kthread_create_list.next,</span></a>

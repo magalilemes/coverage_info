@@ -32,16 +32,16 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">195</td>
+            <td class="headerCovTableEntry">203</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">22</td>
+            <td class="headerCovTableEntry">26</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -550,6 +550,50 @@
 <a name="488"><span class="lineNum">     488 </span>            :         .get_rom_offset = nbio_v4_3_get_rom_offset,</a>
 <a name="489"><span class="lineNum">     489 </span>            :         .program_aspm = nbio_v4_3_program_aspm,</a>
 <a name="490"><span class="lineNum">     490 </span>            : };</a>
+<a name="491"><span class="lineNum">     491 </span>            : </a>
+<a name="492"><span class="lineNum">     492 </span>            : </a>
+<a name="493"><span class="lineNum">     493 </span><span class="lineNoCov">          0 : static void nbio_v4_3_sriov_ih_doorbell_range(struct amdgpu_device *adev,</span></a>
+<a name="494"><span class="lineNum">     494 </span>            :                                         bool use_doorbell, int doorbell_index)</a>
+<a name="495"><span class="lineNum">     495 </span>            : {</a>
+<a name="496"><span class="lineNum">     496 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="497"><span class="lineNum">     497 </span>            : </a>
+<a name="498"><span class="lineNum">     498 </span><span class="lineNoCov">          0 : static void nbio_v4_3_sriov_sdma_doorbell_range(struct amdgpu_device *adev, int instance,</span></a>
+<a name="499"><span class="lineNum">     499 </span>            :                                           bool use_doorbell, int doorbell_index,</a>
+<a name="500"><span class="lineNum">     500 </span>            :                                           int doorbell_size)</a>
+<a name="501"><span class="lineNum">     501 </span>            : {</a>
+<a name="502"><span class="lineNum">     502 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="503"><span class="lineNum">     503 </span>            : </a>
+<a name="504"><span class="lineNum">     504 </span><span class="lineNoCov">          0 : static void nbio_v4_3_sriov_vcn_doorbell_range(struct amdgpu_device *adev, bool use_doorbell,</span></a>
+<a name="505"><span class="lineNum">     505 </span>            :                                          int doorbell_index, int instance)</a>
+<a name="506"><span class="lineNum">     506 </span>            : {</a>
+<a name="507"><span class="lineNum">     507 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="508"><span class="lineNum">     508 </span>            : </a>
+<a name="509"><span class="lineNum">     509 </span><span class="lineNoCov">          0 : static void nbio_v4_3_sriov_gc_doorbell_init(struct amdgpu_device *adev)</span></a>
+<a name="510"><span class="lineNum">     510 </span>            : {</a>
+<a name="511"><span class="lineNum">     511 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="512"><span class="lineNum">     512 </span>            : </a>
+<a name="513"><span class="lineNum">     513 </span>            : const struct amdgpu_nbio_funcs nbio_v4_3_sriov_funcs = {</a>
+<a name="514"><span class="lineNum">     514 </span>            :         .get_hdp_flush_req_offset = nbio_v4_3_get_hdp_flush_req_offset,</a>
+<a name="515"><span class="lineNum">     515 </span>            :         .get_hdp_flush_done_offset = nbio_v4_3_get_hdp_flush_done_offset,</a>
+<a name="516"><span class="lineNum">     516 </span>            :         .get_pcie_index_offset = nbio_v4_3_get_pcie_index_offset,</a>
+<a name="517"><span class="lineNum">     517 </span>            :         .get_pcie_data_offset = nbio_v4_3_get_pcie_data_offset,</a>
+<a name="518"><span class="lineNum">     518 </span>            :         .get_rev_id = nbio_v4_3_get_rev_id,</a>
+<a name="519"><span class="lineNum">     519 </span>            :         .mc_access_enable = nbio_v4_3_mc_access_enable,</a>
+<a name="520"><span class="lineNum">     520 </span>            :         .get_memsize = nbio_v4_3_get_memsize,</a>
+<a name="521"><span class="lineNum">     521 </span>            :         .sdma_doorbell_range = nbio_v4_3_sriov_sdma_doorbell_range,</a>
+<a name="522"><span class="lineNum">     522 </span>            :         .vcn_doorbell_range = nbio_v4_3_sriov_vcn_doorbell_range,</a>
+<a name="523"><span class="lineNum">     523 </span>            :         .gc_doorbell_init = nbio_v4_3_sriov_gc_doorbell_init,</a>
+<a name="524"><span class="lineNum">     524 </span>            :         .enable_doorbell_aperture = nbio_v4_3_enable_doorbell_aperture,</a>
+<a name="525"><span class="lineNum">     525 </span>            :         .enable_doorbell_selfring_aperture = nbio_v4_3_enable_doorbell_selfring_aperture,</a>
+<a name="526"><span class="lineNum">     526 </span>            :         .ih_doorbell_range = nbio_v4_3_sriov_ih_doorbell_range,</a>
+<a name="527"><span class="lineNum">     527 </span>            :         .update_medium_grain_clock_gating = nbio_v4_3_update_medium_grain_clock_gating,</a>
+<a name="528"><span class="lineNum">     528 </span>            :         .update_medium_grain_light_sleep = nbio_v4_3_update_medium_grain_light_sleep,</a>
+<a name="529"><span class="lineNum">     529 </span>            :         .get_clockgating_state = nbio_v4_3_get_clockgating_state,</a>
+<a name="530"><span class="lineNum">     530 </span>            :         .ih_control = nbio_v4_3_ih_control,</a>
+<a name="531"><span class="lineNum">     531 </span>            :         .init_registers = nbio_v4_3_init_registers,</a>
+<a name="532"><span class="lineNum">     532 </span>            :         .remap_hdp_registers = nbio_v4_3_remap_hdp_registers,</a>
+<a name="533"><span class="lineNum">     533 </span>            :         .get_rom_offset = nbio_v4_3_get_rom_offset,</a>
+<a name="534"><span class="lineNum">     534 </span>            : };</a>
 </pre>
       </td>
     </tr>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -366,8 +366,8 @@
 <a name="304"><span class="lineNum">     304 </span>            : </a>
 <a name="305"><span class="lineNum">     305 </span>            : static __always_inline int PageCompound(struct page *page)</a>
 <a name="306"><span class="lineNum">     306 </span>            : {</a>
-<a name="307"><span class="lineNum">     307 </span><span class="lineCov">        787 :         return test_bit(PG_head, &amp;page-&gt;flags) ||</span></a>
-<a name="308"><span class="lineNum">     308 </span><span class="lineCov">        255 :                READ_ONCE(page-&gt;compound_head) &amp; 1;</span></a>
+<a name="307"><span class="lineNum">     307 </span><span class="lineCov">        781 :         return test_bit(PG_head, &amp;page-&gt;flags) ||</span></a>
+<a name="308"><span class="lineNum">     308 </span><span class="lineCov">        253 :                READ_ONCE(page-&gt;compound_head) &amp; 1;</span></a>
 <a name="309"><span class="lineNum">     309 </span>            : }</a>
 <a name="310"><span class="lineNum">     310 </span>            : </a>
 <a name="311"><span class="lineNum">     311 </span>            : #define PAGE_POISON_PATTERN     -1l</a>
@@ -569,8 +569,8 @@
 <a name="507"><span class="lineNum">     507 </span>            :         TESTCLEARFLAG(XenRemapped, xen_remapped, PF_NO_COMPOUND)</a>
 <a name="508"><span class="lineNum">     508 </span>            : </a>
 <a name="509"><span class="lineNum">     509 </span><span class="lineNoCov">          0 : PAGEFLAG(Reserved, reserved, PF_NO_COMPOUND)</span></a>
-<a name="510"><span class="lineNum">     510 </span><span class="lineCov">     502012 :         __CLEARPAGEFLAG(Reserved, reserved, PF_NO_COMPOUND)</span></a>
-<a name="511"><span class="lineNum">     511 </span><span class="lineCov">      37100 :         __SETPAGEFLAG(Reserved, reserved, PF_NO_COMPOUND)</span></a>
+<a name="510"><span class="lineNum">     510 </span><span class="lineCov">     502096 :         __CLEARPAGEFLAG(Reserved, reserved, PF_NO_COMPOUND)</span></a>
+<a name="511"><span class="lineNum">     511 </span><span class="lineCov">      30170 :         __SETPAGEFLAG(Reserved, reserved, PF_NO_COMPOUND)</span></a>
 <a name="512"><span class="lineNum">     512 </span><span class="lineNoCov">          0 : PAGEFLAG(SwapBacked, swapbacked, PF_NO_TAIL)</span></a>
 <a name="513"><span class="lineNum">     513 </span>            :         __CLEARPAGEFLAG(SwapBacked, swapbacked, PF_NO_TAIL)</a>
 <a name="514"><span class="lineNum">     514 </span><span class="lineNoCov">          0 :         __SETPAGEFLAG(SwapBacked, swapbacked, PF_NO_TAIL)</span></a>
@@ -705,7 +705,7 @@
 <a name="643"><span class="lineNum">     643 </span>            : </a>
 <a name="644"><span class="lineNum">     644 </span>            : static __always_inline int PageMappingFlags(struct page *page)</a>
 <a name="645"><span class="lineNum">     645 </span>            : {</a>
-<a name="646"><span class="lineNum">     646 </span><span class="lineCov">        268 :         return ((unsigned long)page-&gt;mapping &amp; PAGE_MAPPING_FLAGS) != 0;</span></a>
+<a name="646"><span class="lineNum">     646 </span><span class="lineCov">        266 :         return ((unsigned long)page-&gt;mapping &amp; PAGE_MAPPING_FLAGS) != 0;</span></a>
 <a name="647"><span class="lineNum">     647 </span>            : }</a>
 <a name="648"><span class="lineNum">     648 </span>            : </a>
 <a name="649"><span class="lineNum">     649 </span>            : static __always_inline bool folio_test_anon(struct folio *folio)</a>
@@ -1019,7 +1019,7 @@
 <a name="957"><span class="lineNum">     957 </span>            :  * PageBuddy() indicates that the page is free and in the buddy system</a>
 <a name="958"><span class="lineNum">     958 </span>            :  * (see mm/page_alloc.c).</a>
 <a name="959"><span class="lineNum">     959 </span>            :  */</a>
-<a name="960"><span class="lineNum">     960 </span><span class="lineCov">       1700 : PAGE_TYPE_OPS(Buddy, buddy)</span></a>
+<a name="960"><span class="lineNum">     960 </span><span class="lineCov">       1696 : PAGE_TYPE_OPS(Buddy, buddy)</span></a>
 <a name="961"><span class="lineNum">     961 </span>            : </a>
 <a name="962"><span class="lineNum">     962 </span>            : /*</a>
 <a name="963"><span class="lineNum">     963 </span>            :  * PageOffline() indicates that the page is logically offline although the</a>

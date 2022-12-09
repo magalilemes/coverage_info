@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">5</td>
@@ -187,9 +187,9 @@
 <a name="125"><span class="lineNum">     125 </span>            :  * syscalls, and also breaks with clone(), which does not unshare the TLS.</a>
 <a name="126"><span class="lineNum">     126 </span>            :  */</a>
 <a name="127"><span class="lineNum">     127 </span>            : </a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineCov">         80 : int os_getpid(void)</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">         16 : int os_getpid(void)</span></a>
 <a name="129"><span class="lineNum">     129 </span>            : {</a>
-<a name="130"><span class="lineNum">     130 </span><span class="lineCov">         80 :         return syscall(__NR_getpid);</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineCov">         16 :         return syscall(__NR_getpid);</span></a>
 <a name="131"><span class="lineNum">     131 </span>            : }</a>
 <a name="132"><span class="lineNum">     132 </span>            : </a>
 <a name="133"><span class="lineNum">     133 </span><span class="lineNoCov">          0 : int os_getpgrp(void)</span></a>
@@ -197,18 +197,18 @@
 <a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 :         return getpgrp();</span></a>
 <a name="136"><span class="lineNum">     136 </span>            : }</a>
 <a name="137"><span class="lineNum">     137 </span>            : </a>
-<a name="138"><span class="lineNum">     138 </span><span class="lineCov">        294 : int os_map_memory(void *virt, int fd, unsigned long long off, unsigned long len,</span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineCov">         62 : int os_map_memory(void *virt, int fd, unsigned long long off, unsigned long len,</span></a>
 <a name="139"><span class="lineNum">     139 </span>            :                   int r, int w, int x)</a>
 <a name="140"><span class="lineNum">     140 </span>            : {</a>
 <a name="141"><span class="lineNum">     141 </span>            :         void *loc;</a>
 <a name="142"><span class="lineNum">     142 </span>            :         int prot;</a>
 <a name="143"><span class="lineNum">     143 </span>            : </a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineCov">        588 :         prot = (r ? PROT_READ : 0) | (w ? PROT_WRITE : 0) |</span></a>
-<a name="145"><span class="lineNum">     145 </span><span class="lineCov">        294 :                 (x ? PROT_EXEC : 0);</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineCov">        124 :         prot = (r ? PROT_READ : 0) | (w ? PROT_WRITE : 0) |</span></a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineCov">         62 :                 (x ? PROT_EXEC : 0);</span></a>
 <a name="146"><span class="lineNum">     146 </span>            : </a>
-<a name="147"><span class="lineNum">     147 </span><span class="lineCov">        294 :         loc = mmap64((void *) virt, len, prot, MAP_SHARED | MAP_FIXED,</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineCov">         62 :         loc = mmap64((void *) virt, len, prot, MAP_SHARED | MAP_FIXED,</span></a>
 <a name="148"><span class="lineNum">     148 </span>            :                      fd, off);</a>
-<a name="149"><span class="lineNum">     149 </span><span class="lineCov">        294 :         if (loc == MAP_FAILED)</span></a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineCov">         62 :         if (loc == MAP_FAILED)</span></a>
 <a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 :                 return -errno;</span></a>
 <a name="151"><span class="lineNum">     151 </span>            :         return 0;</a>
 <a name="152"><span class="lineNum">     152 </span>            : }</a>
@@ -224,12 +224,12 @@
 <a name="162"><span class="lineNum">     162 </span>            :         return 0;</a>
 <a name="163"><span class="lineNum">     163 </span>            : }</a>
 <a name="164"><span class="lineNum">     164 </span>            : </a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineCov">        284 : int os_unmap_memory(void *addr, int len)</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">         60 : int os_unmap_memory(void *addr, int len)</span></a>
 <a name="166"><span class="lineNum">     166 </span>            : {</a>
 <a name="167"><span class="lineNum">     167 </span>            :         int err;</a>
 <a name="168"><span class="lineNum">     168 </span>            : </a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineCov">        284 :         err = munmap(addr, len);</span></a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineCov">        284 :         if (err &lt; 0)</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">         60 :         err = munmap(addr, len);</span></a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">         60 :         if (err &lt; 0)</span></a>
 <a name="171"><span class="lineNum">     171 </span><span class="lineNoCov">          0 :                 return -errno;</span></a>
 <a name="172"><span class="lineNum">     172 </span>            :         return 0;</a>
 <a name="173"><span class="lineNum">     173 </span>            : }</a>
@@ -248,41 +248,41 @@
 <a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :         return err;</span></a>
 <a name="187"><span class="lineNum">     187 </span>            : }</a>
 <a name="188"><span class="lineNum">     188 </span>            : </a>
-<a name="189"><span class="lineNum">     189 </span><span class="lineCov">          5 : int __init can_drop_memory(void)</span></a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineCov">          1 : int __init can_drop_memory(void)</span></a>
 <a name="190"><span class="lineNum">     190 </span>            : {</a>
 <a name="191"><span class="lineNum">     191 </span>            :         void *addr;</a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineCov">          5 :         int fd, ok = 0;</span></a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">          1 :         int fd, ok = 0;</span></a>
 <a name="193"><span class="lineNum">     193 </span>            : </a>
-<a name="194"><span class="lineNum">     194 </span><span class="lineCov">          5 :         printk(UM_KERN_INFO &quot;Checking host MADV_REMOVE support...&quot;);</span></a>
-<a name="195"><span class="lineNum">     195 </span><span class="lineCov">          5 :         fd = create_mem_file(UM_KERN_PAGE_SIZE);</span></a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineCov">          5 :         if (fd &lt; 0) {</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineCov">          1 :         printk(UM_KERN_INFO &quot;Checking host MADV_REMOVE support...&quot;);</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineCov">          1 :         fd = create_mem_file(UM_KERN_PAGE_SIZE);</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineCov">          1 :         if (fd &lt; 0) {</span></a>
 <a name="197"><span class="lineNum">     197 </span><span class="lineNoCov">          0 :                 printk(UM_KERN_ERR &quot;Creating test memory file failed, &quot;</span></a>
 <a name="198"><span class="lineNum">     198 </span>            :                        &quot;err = %d\n&quot;, -fd);</a>
 <a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :                 goto out;</span></a>
 <a name="200"><span class="lineNum">     200 </span>            :         }</a>
 <a name="201"><span class="lineNum">     201 </span>            : </a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineCov">          5 :         addr = mmap64(NULL, UM_KERN_PAGE_SIZE, PROT_READ | PROT_WRITE,</span></a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineCov">          1 :         addr = mmap64(NULL, UM_KERN_PAGE_SIZE, PROT_READ | PROT_WRITE,</span></a>
 <a name="203"><span class="lineNum">     203 </span>            :                       MAP_SHARED, fd, 0);</a>
-<a name="204"><span class="lineNum">     204 </span><span class="lineCov">          5 :         if (addr == MAP_FAILED) {</span></a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineCov">          1 :         if (addr == MAP_FAILED) {</span></a>
 <a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 :                 printk(UM_KERN_ERR &quot;Mapping test memory file failed, &quot;</span></a>
 <a name="206"><span class="lineNum">     206 </span>            :                        &quot;err = %d\n&quot;, -errno);</a>
 <a name="207"><span class="lineNum">     207 </span><span class="lineNoCov">          0 :                 goto out_close;</span></a>
 <a name="208"><span class="lineNum">     208 </span>            :         }</a>
 <a name="209"><span class="lineNum">     209 </span>            : </a>
-<a name="210"><span class="lineNum">     210 </span><span class="lineCov">          5 :         if (madvise(addr, UM_KERN_PAGE_SIZE, MADV_REMOVE) != 0) {</span></a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineCov">          1 :         if (madvise(addr, UM_KERN_PAGE_SIZE, MADV_REMOVE) != 0) {</span></a>
 <a name="211"><span class="lineNum">     211 </span><span class="lineNoCov">          0 :                 printk(UM_KERN_ERR &quot;MADV_REMOVE failed, err = %d\n&quot;, -errno);</span></a>
 <a name="212"><span class="lineNum">     212 </span><span class="lineNoCov">          0 :                 goto out_unmap;</span></a>
 <a name="213"><span class="lineNum">     213 </span>            :         }</a>
 <a name="214"><span class="lineNum">     214 </span>            : </a>
-<a name="215"><span class="lineNum">     215 </span><span class="lineCov">          5 :         printk(UM_KERN_CONT &quot;OK\n&quot;);</span></a>
-<a name="216"><span class="lineNum">     216 </span><span class="lineCov">          5 :         ok = 1;</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineCov">          1 :         printk(UM_KERN_CONT &quot;OK\n&quot;);</span></a>
+<a name="216"><span class="lineNum">     216 </span><span class="lineCov">          1 :         ok = 1;</span></a>
 <a name="217"><span class="lineNum">     217 </span>            : </a>
 <a name="218"><span class="lineNum">     218 </span>            : out_unmap:</a>
-<a name="219"><span class="lineNum">     219 </span><span class="lineCov">          5 :         munmap(addr, UM_KERN_PAGE_SIZE);</span></a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineCov">          1 :         munmap(addr, UM_KERN_PAGE_SIZE);</span></a>
 <a name="220"><span class="lineNum">     220 </span>            : out_close:</a>
-<a name="221"><span class="lineNum">     221 </span><span class="lineCov">          5 :         close(fd);</span></a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineCov">          1 :         close(fd);</span></a>
 <a name="222"><span class="lineNum">     222 </span>            : out:</a>
-<a name="223"><span class="lineNum">     223 </span><span class="lineCov">          5 :         return ok;</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineCov">          1 :         return ok;</span></a>
 <a name="224"><span class="lineNum">     224 </span>            : }</a>
 <a name="225"><span class="lineNum">     225 </span>            : </a>
 <a name="226"><span class="lineNum">     226 </span><span class="lineNoCov">          0 : static int os_page_mincore(void *addr)</span></a>
@@ -336,17 +336,17 @@
 <a name="274"><span class="lineNum">     274 </span><span class="lineNoCov">          0 :         return ret;</span></a>
 <a name="275"><span class="lineNum">     275 </span>            : }</a>
 <a name="276"><span class="lineNum">     276 </span>            : </a>
-<a name="277"><span class="lineNum">     277 </span><span class="lineCov">          5 : void init_new_thread_signals(void)</span></a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineCov">          1 : void init_new_thread_signals(void)</span></a>
 <a name="278"><span class="lineNum">     278 </span>            : {</a>
-<a name="279"><span class="lineNum">     279 </span><span class="lineCov">          5 :         set_handler(SIGSEGV);</span></a>
-<a name="280"><span class="lineNum">     280 </span><span class="lineCov">          5 :         set_handler(SIGTRAP);</span></a>
-<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          5 :         set_handler(SIGFPE);</span></a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineCov">          5 :         set_handler(SIGILL);</span></a>
-<a name="283"><span class="lineNum">     283 </span><span class="lineCov">          5 :         set_handler(SIGBUS);</span></a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          5 :         signal(SIGHUP, SIG_IGN);</span></a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineCov">          5 :         set_handler(SIGIO);</span></a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          5 :         signal(SIGWINCH, SIG_IGN);</span></a>
-<a name="287"><span class="lineNum">     287 </span><span class="lineCov">          5 : }</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineCov">          1 :         set_handler(SIGSEGV);</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineCov">          1 :         set_handler(SIGTRAP);</span></a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          1 :         set_handler(SIGFPE);</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineCov">          1 :         set_handler(SIGILL);</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineCov">          1 :         set_handler(SIGBUS);</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          1 :         signal(SIGHUP, SIG_IGN);</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">          1 :         set_handler(SIGIO);</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          1 :         signal(SIGWINCH, SIG_IGN);</span></a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineCov">          1 : }</span></a>
 </pre>
       </td>
     </tr>

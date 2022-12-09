@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">737</td>
+            <td class="headerCovTableEntry">736</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -1475,537 +1475,534 @@
 <a name="1413"><span class="lineNum">    1413 </span>            : </a>
 <a name="1414"><span class="lineNum">    1414 </span><span class="lineNoCov">          0 : static int sdma_v5_2_hw_init(void *handle)</span></a>
 <a name="1415"><span class="lineNum">    1415 </span>            : {</a>
-<a name="1416"><span class="lineNum">    1416 </span>            :         int r;</a>
-<a name="1417"><span class="lineNum">    1417 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
-<a name="1418"><span class="lineNum">    1418 </span>            : </a>
-<a name="1419"><span class="lineNum">    1419 </span><span class="lineNoCov">          0 :         r = sdma_v5_2_start(adev);</span></a>
+<a name="1416"><span class="lineNum">    1416 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1417"><span class="lineNum">    1417 </span>            : </a>
+<a name="1418"><span class="lineNum">    1418 </span><span class="lineNoCov">          0 :         return sdma_v5_2_start(adev);</span></a>
+<a name="1419"><span class="lineNum">    1419 </span>            : }</a>
 <a name="1420"><span class="lineNum">    1420 </span>            : </a>
-<a name="1421"><span class="lineNum">    1421 </span><span class="lineNoCov">          0 :         return r;</span></a>
-<a name="1422"><span class="lineNum">    1422 </span>            : }</a>
-<a name="1423"><span class="lineNum">    1423 </span>            : </a>
-<a name="1424"><span class="lineNum">    1424 </span><span class="lineNoCov">          0 : static int sdma_v5_2_hw_fini(void *handle)</span></a>
-<a name="1425"><span class="lineNum">    1425 </span>            : {</a>
-<a name="1426"><span class="lineNum">    1426 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1421"><span class="lineNum">    1421 </span><span class="lineNoCov">          0 : static int sdma_v5_2_hw_fini(void *handle)</span></a>
+<a name="1422"><span class="lineNum">    1422 </span>            : {</a>
+<a name="1423"><span class="lineNum">    1423 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1424"><span class="lineNum">    1424 </span>            : </a>
+<a name="1425"><span class="lineNum">    1425 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
+<a name="1426"><span class="lineNum">    1426 </span>            :                 return 0;</a>
 <a name="1427"><span class="lineNum">    1427 </span>            : </a>
-<a name="1428"><span class="lineNum">    1428 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
-<a name="1429"><span class="lineNum">    1429 </span>            :                 return 0;</a>
+<a name="1428"><span class="lineNum">    1428 </span><span class="lineNoCov">          0 :         sdma_v5_2_ctx_switch_enable(adev, false);</span></a>
+<a name="1429"><span class="lineNum">    1429 </span><span class="lineNoCov">          0 :         sdma_v5_2_enable(adev, false);</span></a>
 <a name="1430"><span class="lineNum">    1430 </span>            : </a>
-<a name="1431"><span class="lineNum">    1431 </span><span class="lineNoCov">          0 :         sdma_v5_2_ctx_switch_enable(adev, false);</span></a>
-<a name="1432"><span class="lineNum">    1432 </span><span class="lineNoCov">          0 :         sdma_v5_2_enable(adev, false);</span></a>
+<a name="1431"><span class="lineNum">    1431 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="1432"><span class="lineNum">    1432 </span>            : }</a>
 <a name="1433"><span class="lineNum">    1433 </span>            : </a>
-<a name="1434"><span class="lineNum">    1434 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="1435"><span class="lineNum">    1435 </span>            : }</a>
-<a name="1436"><span class="lineNum">    1436 </span>            : </a>
-<a name="1437"><span class="lineNum">    1437 </span><span class="lineNoCov">          0 : static int sdma_v5_2_suspend(void *handle)</span></a>
-<a name="1438"><span class="lineNum">    1438 </span>            : {</a>
-<a name="1439"><span class="lineNum">    1439 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1434"><span class="lineNum">    1434 </span><span class="lineNoCov">          0 : static int sdma_v5_2_suspend(void *handle)</span></a>
+<a name="1435"><span class="lineNum">    1435 </span>            : {</a>
+<a name="1436"><span class="lineNum">    1436 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1437"><span class="lineNum">    1437 </span>            : </a>
+<a name="1438"><span class="lineNum">    1438 </span><span class="lineNoCov">          0 :         return sdma_v5_2_hw_fini(adev);</span></a>
+<a name="1439"><span class="lineNum">    1439 </span>            : }</a>
 <a name="1440"><span class="lineNum">    1440 </span>            : </a>
-<a name="1441"><span class="lineNum">    1441 </span><span class="lineNoCov">          0 :         return sdma_v5_2_hw_fini(adev);</span></a>
-<a name="1442"><span class="lineNum">    1442 </span>            : }</a>
-<a name="1443"><span class="lineNum">    1443 </span>            : </a>
-<a name="1444"><span class="lineNum">    1444 </span><span class="lineNoCov">          0 : static int sdma_v5_2_resume(void *handle)</span></a>
-<a name="1445"><span class="lineNum">    1445 </span>            : {</a>
-<a name="1446"><span class="lineNum">    1446 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1441"><span class="lineNum">    1441 </span><span class="lineNoCov">          0 : static int sdma_v5_2_resume(void *handle)</span></a>
+<a name="1442"><span class="lineNum">    1442 </span>            : {</a>
+<a name="1443"><span class="lineNum">    1443 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1444"><span class="lineNum">    1444 </span>            : </a>
+<a name="1445"><span class="lineNum">    1445 </span><span class="lineNoCov">          0 :         return sdma_v5_2_hw_init(adev);</span></a>
+<a name="1446"><span class="lineNum">    1446 </span>            : }</a>
 <a name="1447"><span class="lineNum">    1447 </span>            : </a>
-<a name="1448"><span class="lineNum">    1448 </span><span class="lineNoCov">          0 :         return sdma_v5_2_hw_init(adev);</span></a>
-<a name="1449"><span class="lineNum">    1449 </span>            : }</a>
-<a name="1450"><span class="lineNum">    1450 </span>            : </a>
-<a name="1451"><span class="lineNum">    1451 </span><span class="lineNoCov">          0 : static bool sdma_v5_2_is_idle(void *handle)</span></a>
-<a name="1452"><span class="lineNum">    1452 </span>            : {</a>
-<a name="1453"><span class="lineNum">    1453 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
-<a name="1454"><span class="lineNum">    1454 </span>            :         u32 i;</a>
+<a name="1448"><span class="lineNum">    1448 </span><span class="lineNoCov">          0 : static bool sdma_v5_2_is_idle(void *handle)</span></a>
+<a name="1449"><span class="lineNum">    1449 </span>            : {</a>
+<a name="1450"><span class="lineNum">    1450 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1451"><span class="lineNum">    1451 </span>            :         u32 i;</a>
+<a name="1452"><span class="lineNum">    1452 </span>            : </a>
+<a name="1453"><span class="lineNum">    1453 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;sdma.num_instances; i++) {</span></a>
+<a name="1454"><span class="lineNum">    1454 </span><span class="lineNoCov">          0 :                 u32 tmp = RREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_STATUS_REG));</span></a>
 <a name="1455"><span class="lineNum">    1455 </span>            : </a>
-<a name="1456"><span class="lineNum">    1456 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;sdma.num_instances; i++) {</span></a>
-<a name="1457"><span class="lineNum">    1457 </span><span class="lineNoCov">          0 :                 u32 tmp = RREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_STATUS_REG));</span></a>
-<a name="1458"><span class="lineNum">    1458 </span>            : </a>
-<a name="1459"><span class="lineNum">    1459 </span><span class="lineNoCov">          0 :                 if (!(tmp &amp; SDMA0_STATUS_REG__IDLE_MASK))</span></a>
-<a name="1460"><span class="lineNum">    1460 </span>            :                         return false;</a>
-<a name="1461"><span class="lineNum">    1461 </span>            :         }</a>
+<a name="1456"><span class="lineNum">    1456 </span><span class="lineNoCov">          0 :                 if (!(tmp &amp; SDMA0_STATUS_REG__IDLE_MASK))</span></a>
+<a name="1457"><span class="lineNum">    1457 </span>            :                         return false;</a>
+<a name="1458"><span class="lineNum">    1458 </span>            :         }</a>
+<a name="1459"><span class="lineNum">    1459 </span>            : </a>
+<a name="1460"><span class="lineNum">    1460 </span>            :         return true;</a>
+<a name="1461"><span class="lineNum">    1461 </span>            : }</a>
 <a name="1462"><span class="lineNum">    1462 </span>            : </a>
-<a name="1463"><span class="lineNum">    1463 </span>            :         return true;</a>
-<a name="1464"><span class="lineNum">    1464 </span>            : }</a>
-<a name="1465"><span class="lineNum">    1465 </span>            : </a>
-<a name="1466"><span class="lineNum">    1466 </span><span class="lineNoCov">          0 : static int sdma_v5_2_wait_for_idle(void *handle)</span></a>
-<a name="1467"><span class="lineNum">    1467 </span>            : {</a>
-<a name="1468"><span class="lineNum">    1468 </span>            :         unsigned i;</a>
-<a name="1469"><span class="lineNum">    1469 </span>            :         u32 sdma0, sdma1, sdma2, sdma3;</a>
-<a name="1470"><span class="lineNum">    1470 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
-<a name="1471"><span class="lineNum">    1471 </span>            : </a>
-<a name="1472"><span class="lineNum">    1472 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;usec_timeout; i++) {</span></a>
-<a name="1473"><span class="lineNum">    1473 </span><span class="lineNoCov">          0 :                 sdma0 = RREG32(sdma_v5_2_get_reg_offset(adev, 0, mmSDMA0_STATUS_REG));</span></a>
-<a name="1474"><span class="lineNum">    1474 </span><span class="lineNoCov">          0 :                 sdma1 = RREG32(sdma_v5_2_get_reg_offset(adev, 1, mmSDMA0_STATUS_REG));</span></a>
-<a name="1475"><span class="lineNum">    1475 </span><span class="lineNoCov">          0 :                 sdma2 = RREG32(sdma_v5_2_get_reg_offset(adev, 2, mmSDMA0_STATUS_REG));</span></a>
-<a name="1476"><span class="lineNum">    1476 </span><span class="lineNoCov">          0 :                 sdma3 = RREG32(sdma_v5_2_get_reg_offset(adev, 3, mmSDMA0_STATUS_REG));</span></a>
-<a name="1477"><span class="lineNum">    1477 </span>            : </a>
-<a name="1478"><span class="lineNum">    1478 </span><span class="lineNoCov">          0 :                 if (sdma0 &amp; sdma1 &amp; sdma2 &amp; sdma3 &amp; SDMA0_STATUS_REG__IDLE_MASK)</span></a>
-<a name="1479"><span class="lineNum">    1479 </span>            :                         return 0;</a>
-<a name="1480"><span class="lineNum">    1480 </span><span class="lineNoCov">          0 :                 udelay(1);</span></a>
-<a name="1481"><span class="lineNum">    1481 </span>            :         }</a>
-<a name="1482"><span class="lineNum">    1482 </span>            :         return -ETIMEDOUT;</a>
-<a name="1483"><span class="lineNum">    1483 </span>            : }</a>
-<a name="1484"><span class="lineNum">    1484 </span>            : </a>
-<a name="1485"><span class="lineNum">    1485 </span><span class="lineNoCov">          0 : static int sdma_v5_2_ring_preempt_ib(struct amdgpu_ring *ring)</span></a>
-<a name="1486"><span class="lineNum">    1486 </span>            : {</a>
-<a name="1487"><span class="lineNum">    1487 </span><span class="lineNoCov">          0 :         int i, r = 0;</span></a>
-<a name="1488"><span class="lineNum">    1488 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = ring-&gt;adev;</span></a>
-<a name="1489"><span class="lineNum">    1489 </span><span class="lineNoCov">          0 :         u32 index = 0;</span></a>
-<a name="1490"><span class="lineNum">    1490 </span>            :         u64 sdma_gfx_preempt;</a>
-<a name="1491"><span class="lineNum">    1491 </span>            : </a>
-<a name="1492"><span class="lineNum">    1492 </span><span class="lineNoCov">          0 :         amdgpu_sdma_get_index_from_ring(ring, &amp;index);</span></a>
-<a name="1493"><span class="lineNum">    1493 </span><span class="lineNoCov">          0 :         sdma_gfx_preempt =</span></a>
-<a name="1494"><span class="lineNum">    1494 </span><span class="lineNoCov">          0 :                 sdma_v5_2_get_reg_offset(adev, index, mmSDMA0_GFX_PREEMPT);</span></a>
+<a name="1463"><span class="lineNum">    1463 </span><span class="lineNoCov">          0 : static int sdma_v5_2_wait_for_idle(void *handle)</span></a>
+<a name="1464"><span class="lineNum">    1464 </span>            : {</a>
+<a name="1465"><span class="lineNum">    1465 </span>            :         unsigned i;</a>
+<a name="1466"><span class="lineNum">    1466 </span>            :         u32 sdma0, sdma1, sdma2, sdma3;</a>
+<a name="1467"><span class="lineNum">    1467 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1468"><span class="lineNum">    1468 </span>            : </a>
+<a name="1469"><span class="lineNum">    1469 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;usec_timeout; i++) {</span></a>
+<a name="1470"><span class="lineNum">    1470 </span><span class="lineNoCov">          0 :                 sdma0 = RREG32(sdma_v5_2_get_reg_offset(adev, 0, mmSDMA0_STATUS_REG));</span></a>
+<a name="1471"><span class="lineNum">    1471 </span><span class="lineNoCov">          0 :                 sdma1 = RREG32(sdma_v5_2_get_reg_offset(adev, 1, mmSDMA0_STATUS_REG));</span></a>
+<a name="1472"><span class="lineNum">    1472 </span><span class="lineNoCov">          0 :                 sdma2 = RREG32(sdma_v5_2_get_reg_offset(adev, 2, mmSDMA0_STATUS_REG));</span></a>
+<a name="1473"><span class="lineNum">    1473 </span><span class="lineNoCov">          0 :                 sdma3 = RREG32(sdma_v5_2_get_reg_offset(adev, 3, mmSDMA0_STATUS_REG));</span></a>
+<a name="1474"><span class="lineNum">    1474 </span>            : </a>
+<a name="1475"><span class="lineNum">    1475 </span><span class="lineNoCov">          0 :                 if (sdma0 &amp; sdma1 &amp; sdma2 &amp; sdma3 &amp; SDMA0_STATUS_REG__IDLE_MASK)</span></a>
+<a name="1476"><span class="lineNum">    1476 </span>            :                         return 0;</a>
+<a name="1477"><span class="lineNum">    1477 </span><span class="lineNoCov">          0 :                 udelay(1);</span></a>
+<a name="1478"><span class="lineNum">    1478 </span>            :         }</a>
+<a name="1479"><span class="lineNum">    1479 </span>            :         return -ETIMEDOUT;</a>
+<a name="1480"><span class="lineNum">    1480 </span>            : }</a>
+<a name="1481"><span class="lineNum">    1481 </span>            : </a>
+<a name="1482"><span class="lineNum">    1482 </span><span class="lineNoCov">          0 : static int sdma_v5_2_ring_preempt_ib(struct amdgpu_ring *ring)</span></a>
+<a name="1483"><span class="lineNum">    1483 </span>            : {</a>
+<a name="1484"><span class="lineNum">    1484 </span><span class="lineNoCov">          0 :         int i, r = 0;</span></a>
+<a name="1485"><span class="lineNum">    1485 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = ring-&gt;adev;</span></a>
+<a name="1486"><span class="lineNum">    1486 </span><span class="lineNoCov">          0 :         u32 index = 0;</span></a>
+<a name="1487"><span class="lineNum">    1487 </span>            :         u64 sdma_gfx_preempt;</a>
+<a name="1488"><span class="lineNum">    1488 </span>            : </a>
+<a name="1489"><span class="lineNum">    1489 </span><span class="lineNoCov">          0 :         amdgpu_sdma_get_index_from_ring(ring, &amp;index);</span></a>
+<a name="1490"><span class="lineNum">    1490 </span><span class="lineNoCov">          0 :         sdma_gfx_preempt =</span></a>
+<a name="1491"><span class="lineNum">    1491 </span><span class="lineNoCov">          0 :                 sdma_v5_2_get_reg_offset(adev, index, mmSDMA0_GFX_PREEMPT);</span></a>
+<a name="1492"><span class="lineNum">    1492 </span>            : </a>
+<a name="1493"><span class="lineNum">    1493 </span>            :         /* assert preemption condition */</a>
+<a name="1494"><span class="lineNum">    1494 </span><span class="lineNoCov">          0 :         amdgpu_ring_set_preempt_cond_exec(ring, false);</span></a>
 <a name="1495"><span class="lineNum">    1495 </span>            : </a>
-<a name="1496"><span class="lineNum">    1496 </span>            :         /* assert preemption condition */</a>
-<a name="1497"><span class="lineNum">    1497 </span><span class="lineNoCov">          0 :         amdgpu_ring_set_preempt_cond_exec(ring, false);</span></a>
-<a name="1498"><span class="lineNum">    1498 </span>            : </a>
-<a name="1499"><span class="lineNum">    1499 </span>            :         /* emit the trailing fence */</a>
-<a name="1500"><span class="lineNum">    1500 </span><span class="lineNoCov">          0 :         ring-&gt;trail_seq += 1;</span></a>
-<a name="1501"><span class="lineNum">    1501 </span><span class="lineNoCov">          0 :         amdgpu_ring_alloc(ring, 10);</span></a>
-<a name="1502"><span class="lineNum">    1502 </span><span class="lineNoCov">          0 :         sdma_v5_2_ring_emit_fence(ring, ring-&gt;trail_fence_gpu_addr,</span></a>
-<a name="1503"><span class="lineNum">    1503 </span><span class="lineNoCov">          0 :                                   ring-&gt;trail_seq, 0);</span></a>
-<a name="1504"><span class="lineNum">    1504 </span><span class="lineNoCov">          0 :         amdgpu_ring_commit(ring);</span></a>
+<a name="1496"><span class="lineNum">    1496 </span>            :         /* emit the trailing fence */</a>
+<a name="1497"><span class="lineNum">    1497 </span><span class="lineNoCov">          0 :         ring-&gt;trail_seq += 1;</span></a>
+<a name="1498"><span class="lineNum">    1498 </span><span class="lineNoCov">          0 :         amdgpu_ring_alloc(ring, 10);</span></a>
+<a name="1499"><span class="lineNum">    1499 </span><span class="lineNoCov">          0 :         sdma_v5_2_ring_emit_fence(ring, ring-&gt;trail_fence_gpu_addr,</span></a>
+<a name="1500"><span class="lineNum">    1500 </span><span class="lineNoCov">          0 :                                   ring-&gt;trail_seq, 0);</span></a>
+<a name="1501"><span class="lineNum">    1501 </span><span class="lineNoCov">          0 :         amdgpu_ring_commit(ring);</span></a>
+<a name="1502"><span class="lineNum">    1502 </span>            : </a>
+<a name="1503"><span class="lineNum">    1503 </span>            :         /* assert IB preemption */</a>
+<a name="1504"><span class="lineNum">    1504 </span><span class="lineNoCov">          0 :         WREG32(sdma_gfx_preempt, 1);</span></a>
 <a name="1505"><span class="lineNum">    1505 </span>            : </a>
-<a name="1506"><span class="lineNum">    1506 </span>            :         /* assert IB preemption */</a>
-<a name="1507"><span class="lineNum">    1507 </span><span class="lineNoCov">          0 :         WREG32(sdma_gfx_preempt, 1);</span></a>
-<a name="1508"><span class="lineNum">    1508 </span>            : </a>
-<a name="1509"><span class="lineNum">    1509 </span>            :         /* poll the trailing fence */</a>
-<a name="1510"><span class="lineNum">    1510 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;usec_timeout; i++) {</span></a>
-<a name="1511"><span class="lineNum">    1511 </span><span class="lineNoCov">          0 :                 if (ring-&gt;trail_seq ==</span></a>
-<a name="1512"><span class="lineNum">    1512 </span><span class="lineNoCov">          0 :                     le32_to_cpu(*(ring-&gt;trail_fence_cpu_addr)))</span></a>
-<a name="1513"><span class="lineNum">    1513 </span>            :                         break;</a>
-<a name="1514"><span class="lineNum">    1514 </span><span class="lineNoCov">          0 :                 udelay(1);</span></a>
-<a name="1515"><span class="lineNum">    1515 </span>            :         }</a>
-<a name="1516"><span class="lineNum">    1516 </span>            : </a>
-<a name="1517"><span class="lineNum">    1517 </span><span class="lineNoCov">          0 :         if (i &gt;= adev-&gt;usec_timeout) {</span></a>
-<a name="1518"><span class="lineNum">    1518 </span><span class="lineNoCov">          0 :                 r = -EINVAL;</span></a>
-<a name="1519"><span class="lineNum">    1519 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;ring %d failed to be preempted\n&quot;, ring-&gt;idx);</span></a>
-<a name="1520"><span class="lineNum">    1520 </span>            :         }</a>
+<a name="1506"><span class="lineNum">    1506 </span>            :         /* poll the trailing fence */</a>
+<a name="1507"><span class="lineNum">    1507 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;usec_timeout; i++) {</span></a>
+<a name="1508"><span class="lineNum">    1508 </span><span class="lineNoCov">          0 :                 if (ring-&gt;trail_seq ==</span></a>
+<a name="1509"><span class="lineNum">    1509 </span><span class="lineNoCov">          0 :                     le32_to_cpu(*(ring-&gt;trail_fence_cpu_addr)))</span></a>
+<a name="1510"><span class="lineNum">    1510 </span>            :                         break;</a>
+<a name="1511"><span class="lineNum">    1511 </span><span class="lineNoCov">          0 :                 udelay(1);</span></a>
+<a name="1512"><span class="lineNum">    1512 </span>            :         }</a>
+<a name="1513"><span class="lineNum">    1513 </span>            : </a>
+<a name="1514"><span class="lineNum">    1514 </span><span class="lineNoCov">          0 :         if (i &gt;= adev-&gt;usec_timeout) {</span></a>
+<a name="1515"><span class="lineNum">    1515 </span><span class="lineNoCov">          0 :                 r = -EINVAL;</span></a>
+<a name="1516"><span class="lineNum">    1516 </span><span class="lineNoCov">          0 :                 DRM_ERROR(&quot;ring %d failed to be preempted\n&quot;, ring-&gt;idx);</span></a>
+<a name="1517"><span class="lineNum">    1517 </span>            :         }</a>
+<a name="1518"><span class="lineNum">    1518 </span>            : </a>
+<a name="1519"><span class="lineNum">    1519 </span>            :         /* deassert IB preemption */</a>
+<a name="1520"><span class="lineNum">    1520 </span><span class="lineNoCov">          0 :         WREG32(sdma_gfx_preempt, 0);</span></a>
 <a name="1521"><span class="lineNum">    1521 </span>            : </a>
-<a name="1522"><span class="lineNum">    1522 </span>            :         /* deassert IB preemption */</a>
-<a name="1523"><span class="lineNum">    1523 </span><span class="lineNoCov">          0 :         WREG32(sdma_gfx_preempt, 0);</span></a>
-<a name="1524"><span class="lineNum">    1524 </span>            : </a>
-<a name="1525"><span class="lineNum">    1525 </span>            :         /* deassert the preemption condition */</a>
-<a name="1526"><span class="lineNum">    1526 </span><span class="lineNoCov">          0 :         amdgpu_ring_set_preempt_cond_exec(ring, true);</span></a>
-<a name="1527"><span class="lineNum">    1527 </span><span class="lineNoCov">          0 :         return r;</span></a>
-<a name="1528"><span class="lineNum">    1528 </span>            : }</a>
-<a name="1529"><span class="lineNum">    1529 </span>            : </a>
-<a name="1530"><span class="lineNum">    1530 </span><span class="lineNoCov">          0 : static int sdma_v5_2_set_trap_irq_state(struct amdgpu_device *adev,</span></a>
-<a name="1531"><span class="lineNum">    1531 </span>            :                                         struct amdgpu_irq_src *source,</a>
-<a name="1532"><span class="lineNum">    1532 </span>            :                                         unsigned type,</a>
-<a name="1533"><span class="lineNum">    1533 </span>            :                                         enum amdgpu_interrupt_state state)</a>
-<a name="1534"><span class="lineNum">    1534 </span>            : {</a>
-<a name="1535"><span class="lineNum">    1535 </span>            :         u32 sdma_cntl;</a>
-<a name="1536"><span class="lineNum">    1536 </span><span class="lineNoCov">          0 :         u32 reg_offset = sdma_v5_2_get_reg_offset(adev, type, mmSDMA0_CNTL);</span></a>
-<a name="1537"><span class="lineNum">    1537 </span>            : </a>
-<a name="1538"><span class="lineNum">    1538 </span><span class="lineNoCov">          0 :         if (!amdgpu_sriov_vf(adev)) {</span></a>
-<a name="1539"><span class="lineNum">    1539 </span><span class="lineNoCov">          0 :                 sdma_cntl = RREG32(reg_offset);</span></a>
-<a name="1540"><span class="lineNum">    1540 </span><span class="lineNoCov">          0 :                 sdma_cntl = REG_SET_FIELD(sdma_cntl, SDMA0_CNTL, TRAP_ENABLE,</span></a>
-<a name="1541"><span class="lineNum">    1541 </span>            :                                state == AMDGPU_IRQ_STATE_ENABLE ? 1 : 0);</a>
-<a name="1542"><span class="lineNum">    1542 </span><span class="lineNoCov">          0 :                 WREG32(reg_offset, sdma_cntl);</span></a>
-<a name="1543"><span class="lineNum">    1543 </span>            :         }</a>
+<a name="1522"><span class="lineNum">    1522 </span>            :         /* deassert the preemption condition */</a>
+<a name="1523"><span class="lineNum">    1523 </span><span class="lineNoCov">          0 :         amdgpu_ring_set_preempt_cond_exec(ring, true);</span></a>
+<a name="1524"><span class="lineNum">    1524 </span><span class="lineNoCov">          0 :         return r;</span></a>
+<a name="1525"><span class="lineNum">    1525 </span>            : }</a>
+<a name="1526"><span class="lineNum">    1526 </span>            : </a>
+<a name="1527"><span class="lineNum">    1527 </span><span class="lineNoCov">          0 : static int sdma_v5_2_set_trap_irq_state(struct amdgpu_device *adev,</span></a>
+<a name="1528"><span class="lineNum">    1528 </span>            :                                         struct amdgpu_irq_src *source,</a>
+<a name="1529"><span class="lineNum">    1529 </span>            :                                         unsigned type,</a>
+<a name="1530"><span class="lineNum">    1530 </span>            :                                         enum amdgpu_interrupt_state state)</a>
+<a name="1531"><span class="lineNum">    1531 </span>            : {</a>
+<a name="1532"><span class="lineNum">    1532 </span>            :         u32 sdma_cntl;</a>
+<a name="1533"><span class="lineNum">    1533 </span><span class="lineNoCov">          0 :         u32 reg_offset = sdma_v5_2_get_reg_offset(adev, type, mmSDMA0_CNTL);</span></a>
+<a name="1534"><span class="lineNum">    1534 </span>            : </a>
+<a name="1535"><span class="lineNum">    1535 </span><span class="lineNoCov">          0 :         if (!amdgpu_sriov_vf(adev)) {</span></a>
+<a name="1536"><span class="lineNum">    1536 </span><span class="lineNoCov">          0 :                 sdma_cntl = RREG32(reg_offset);</span></a>
+<a name="1537"><span class="lineNum">    1537 </span><span class="lineNoCov">          0 :                 sdma_cntl = REG_SET_FIELD(sdma_cntl, SDMA0_CNTL, TRAP_ENABLE,</span></a>
+<a name="1538"><span class="lineNum">    1538 </span>            :                                state == AMDGPU_IRQ_STATE_ENABLE ? 1 : 0);</a>
+<a name="1539"><span class="lineNum">    1539 </span><span class="lineNoCov">          0 :                 WREG32(reg_offset, sdma_cntl);</span></a>
+<a name="1540"><span class="lineNum">    1540 </span>            :         }</a>
+<a name="1541"><span class="lineNum">    1541 </span>            : </a>
+<a name="1542"><span class="lineNum">    1542 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="1543"><span class="lineNum">    1543 </span>            : }</a>
 <a name="1544"><span class="lineNum">    1544 </span>            : </a>
-<a name="1545"><span class="lineNum">    1545 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="1546"><span class="lineNum">    1546 </span>            : }</a>
-<a name="1547"><span class="lineNum">    1547 </span>            : </a>
-<a name="1548"><span class="lineNum">    1548 </span><span class="lineNoCov">          0 : static int sdma_v5_2_process_trap_irq(struct amdgpu_device *adev,</span></a>
-<a name="1549"><span class="lineNum">    1549 </span>            :                                       struct amdgpu_irq_src *source,</a>
-<a name="1550"><span class="lineNum">    1550 </span>            :                                       struct amdgpu_iv_entry *entry)</a>
-<a name="1551"><span class="lineNum">    1551 </span>            : {</a>
-<a name="1552"><span class="lineNum">    1552 </span><span class="lineNoCov">          0 :         uint32_t mes_queue_id = entry-&gt;src_data[0];</span></a>
-<a name="1553"><span class="lineNum">    1553 </span>            : </a>
-<a name="1554"><span class="lineNum">    1554 </span><span class="lineNoCov">          0 :         DRM_DEBUG(&quot;IH: SDMA trap\n&quot;);</span></a>
+<a name="1545"><span class="lineNum">    1545 </span><span class="lineNoCov">          0 : static int sdma_v5_2_process_trap_irq(struct amdgpu_device *adev,</span></a>
+<a name="1546"><span class="lineNum">    1546 </span>            :                                       struct amdgpu_irq_src *source,</a>
+<a name="1547"><span class="lineNum">    1547 </span>            :                                       struct amdgpu_iv_entry *entry)</a>
+<a name="1548"><span class="lineNum">    1548 </span>            : {</a>
+<a name="1549"><span class="lineNum">    1549 </span><span class="lineNoCov">          0 :         uint32_t mes_queue_id = entry-&gt;src_data[0];</span></a>
+<a name="1550"><span class="lineNum">    1550 </span>            : </a>
+<a name="1551"><span class="lineNum">    1551 </span><span class="lineNoCov">          0 :         DRM_DEBUG(&quot;IH: SDMA trap\n&quot;);</span></a>
+<a name="1552"><span class="lineNum">    1552 </span>            : </a>
+<a name="1553"><span class="lineNum">    1553 </span><span class="lineNoCov">          0 :         if (adev-&gt;enable_mes &amp;&amp; (mes_queue_id &amp; AMDGPU_FENCE_MES_QUEUE_FLAG)) {</span></a>
+<a name="1554"><span class="lineNum">    1554 </span>            :                 struct amdgpu_mes_queue *queue;</a>
 <a name="1555"><span class="lineNum">    1555 </span>            : </a>
-<a name="1556"><span class="lineNum">    1556 </span><span class="lineNoCov">          0 :         if (adev-&gt;enable_mes &amp;&amp; (mes_queue_id &amp; AMDGPU_FENCE_MES_QUEUE_FLAG)) {</span></a>
-<a name="1557"><span class="lineNum">    1557 </span>            :                 struct amdgpu_mes_queue *queue;</a>
-<a name="1558"><span class="lineNum">    1558 </span>            : </a>
-<a name="1559"><span class="lineNum">    1559 </span><span class="lineNoCov">          0 :                 mes_queue_id &amp;= AMDGPU_FENCE_MES_QUEUE_ID_MASK;</span></a>
-<a name="1560"><span class="lineNum">    1560 </span>            : </a>
-<a name="1561"><span class="lineNum">    1561 </span><span class="lineNoCov">          0 :                 spin_lock(&amp;adev-&gt;mes.queue_id_lock);</span></a>
-<a name="1562"><span class="lineNum">    1562 </span><span class="lineNoCov">          0 :                 queue = idr_find(&amp;adev-&gt;mes.queue_id_idr, mes_queue_id);</span></a>
-<a name="1563"><span class="lineNum">    1563 </span><span class="lineNoCov">          0 :                 if (queue) {</span></a>
-<a name="1564"><span class="lineNum">    1564 </span><span class="lineNoCov">          0 :                         DRM_DEBUG(&quot;process smda queue id = %d\n&quot;, mes_queue_id);</span></a>
-<a name="1565"><span class="lineNum">    1565 </span><span class="lineNoCov">          0 :                         amdgpu_fence_process(queue-&gt;ring);</span></a>
-<a name="1566"><span class="lineNum">    1566 </span>            :                 }</a>
-<a name="1567"><span class="lineNum">    1567 </span><span class="lineNoCov">          0 :                 spin_unlock(&amp;adev-&gt;mes.queue_id_lock);</span></a>
-<a name="1568"><span class="lineNum">    1568 </span><span class="lineNoCov">          0 :                 return 0;</span></a>
-<a name="1569"><span class="lineNum">    1569 </span>            :         }</a>
-<a name="1570"><span class="lineNum">    1570 </span>            : </a>
-<a name="1571"><span class="lineNum">    1571 </span><span class="lineNoCov">          0 :         switch (entry-&gt;client_id) {</span></a>
-<a name="1572"><span class="lineNum">    1572 </span>            :         case SOC15_IH_CLIENTID_SDMA0:</a>
-<a name="1573"><span class="lineNum">    1573 </span><span class="lineNoCov">          0 :                 switch (entry-&gt;ring_id) {</span></a>
-<a name="1574"><span class="lineNum">    1574 </span>            :                 case 0:</a>
-<a name="1575"><span class="lineNum">    1575 </span><span class="lineNoCov">          0 :                         amdgpu_fence_process(&amp;adev-&gt;sdma.instance[0].ring);</span></a>
-<a name="1576"><span class="lineNum">    1576 </span><span class="lineNoCov">          0 :                         break;</span></a>
-<a name="1577"><span class="lineNum">    1577 </span>            :                 case 1:</a>
+<a name="1556"><span class="lineNum">    1556 </span><span class="lineNoCov">          0 :                 mes_queue_id &amp;= AMDGPU_FENCE_MES_QUEUE_ID_MASK;</span></a>
+<a name="1557"><span class="lineNum">    1557 </span>            : </a>
+<a name="1558"><span class="lineNum">    1558 </span><span class="lineNoCov">          0 :                 spin_lock(&amp;adev-&gt;mes.queue_id_lock);</span></a>
+<a name="1559"><span class="lineNum">    1559 </span><span class="lineNoCov">          0 :                 queue = idr_find(&amp;adev-&gt;mes.queue_id_idr, mes_queue_id);</span></a>
+<a name="1560"><span class="lineNum">    1560 </span><span class="lineNoCov">          0 :                 if (queue) {</span></a>
+<a name="1561"><span class="lineNum">    1561 </span><span class="lineNoCov">          0 :                         DRM_DEBUG(&quot;process smda queue id = %d\n&quot;, mes_queue_id);</span></a>
+<a name="1562"><span class="lineNum">    1562 </span><span class="lineNoCov">          0 :                         amdgpu_fence_process(queue-&gt;ring);</span></a>
+<a name="1563"><span class="lineNum">    1563 </span>            :                 }</a>
+<a name="1564"><span class="lineNum">    1564 </span><span class="lineNoCov">          0 :                 spin_unlock(&amp;adev-&gt;mes.queue_id_lock);</span></a>
+<a name="1565"><span class="lineNum">    1565 </span><span class="lineNoCov">          0 :                 return 0;</span></a>
+<a name="1566"><span class="lineNum">    1566 </span>            :         }</a>
+<a name="1567"><span class="lineNum">    1567 </span>            : </a>
+<a name="1568"><span class="lineNum">    1568 </span><span class="lineNoCov">          0 :         switch (entry-&gt;client_id) {</span></a>
+<a name="1569"><span class="lineNum">    1569 </span>            :         case SOC15_IH_CLIENTID_SDMA0:</a>
+<a name="1570"><span class="lineNum">    1570 </span><span class="lineNoCov">          0 :                 switch (entry-&gt;ring_id) {</span></a>
+<a name="1571"><span class="lineNum">    1571 </span>            :                 case 0:</a>
+<a name="1572"><span class="lineNum">    1572 </span><span class="lineNoCov">          0 :                         amdgpu_fence_process(&amp;adev-&gt;sdma.instance[0].ring);</span></a>
+<a name="1573"><span class="lineNum">    1573 </span><span class="lineNoCov">          0 :                         break;</span></a>
+<a name="1574"><span class="lineNum">    1574 </span>            :                 case 1:</a>
+<a name="1575"><span class="lineNum">    1575 </span>            :                         /* XXX compute */</a>
+<a name="1576"><span class="lineNum">    1576 </span>            :                         break;</a>
+<a name="1577"><span class="lineNum">    1577 </span>            :                 case 2:</a>
 <a name="1578"><span class="lineNum">    1578 </span>            :                         /* XXX compute */</a>
 <a name="1579"><span class="lineNum">    1579 </span>            :                         break;</a>
-<a name="1580"><span class="lineNum">    1580 </span>            :                 case 2:</a>
-<a name="1581"><span class="lineNum">    1581 </span>            :                         /* XXX compute */</a>
+<a name="1580"><span class="lineNum">    1580 </span>            :                 case 3:</a>
+<a name="1581"><span class="lineNum">    1581 </span>            :                         /* XXX page queue*/</a>
 <a name="1582"><span class="lineNum">    1582 </span>            :                         break;</a>
-<a name="1583"><span class="lineNum">    1583 </span>            :                 case 3:</a>
-<a name="1584"><span class="lineNum">    1584 </span>            :                         /* XXX page queue*/</a>
-<a name="1585"><span class="lineNum">    1585 </span>            :                         break;</a>
-<a name="1586"><span class="lineNum">    1586 </span>            :                 }</a>
-<a name="1587"><span class="lineNum">    1587 </span>            :                 break;</a>
-<a name="1588"><span class="lineNum">    1588 </span>            :         case SOC15_IH_CLIENTID_SDMA1:</a>
-<a name="1589"><span class="lineNum">    1589 </span><span class="lineNoCov">          0 :                 switch (entry-&gt;ring_id) {</span></a>
-<a name="1590"><span class="lineNum">    1590 </span>            :                 case 0:</a>
-<a name="1591"><span class="lineNum">    1591 </span><span class="lineNoCov">          0 :                         amdgpu_fence_process(&amp;adev-&gt;sdma.instance[1].ring);</span></a>
-<a name="1592"><span class="lineNum">    1592 </span><span class="lineNoCov">          0 :                         break;</span></a>
-<a name="1593"><span class="lineNum">    1593 </span>            :                 case 1:</a>
+<a name="1583"><span class="lineNum">    1583 </span>            :                 }</a>
+<a name="1584"><span class="lineNum">    1584 </span>            :                 break;</a>
+<a name="1585"><span class="lineNum">    1585 </span>            :         case SOC15_IH_CLIENTID_SDMA1:</a>
+<a name="1586"><span class="lineNum">    1586 </span><span class="lineNoCov">          0 :                 switch (entry-&gt;ring_id) {</span></a>
+<a name="1587"><span class="lineNum">    1587 </span>            :                 case 0:</a>
+<a name="1588"><span class="lineNum">    1588 </span><span class="lineNoCov">          0 :                         amdgpu_fence_process(&amp;adev-&gt;sdma.instance[1].ring);</span></a>
+<a name="1589"><span class="lineNum">    1589 </span><span class="lineNoCov">          0 :                         break;</span></a>
+<a name="1590"><span class="lineNum">    1590 </span>            :                 case 1:</a>
+<a name="1591"><span class="lineNum">    1591 </span>            :                         /* XXX compute */</a>
+<a name="1592"><span class="lineNum">    1592 </span>            :                         break;</a>
+<a name="1593"><span class="lineNum">    1593 </span>            :                 case 2:</a>
 <a name="1594"><span class="lineNum">    1594 </span>            :                         /* XXX compute */</a>
 <a name="1595"><span class="lineNum">    1595 </span>            :                         break;</a>
-<a name="1596"><span class="lineNum">    1596 </span>            :                 case 2:</a>
-<a name="1597"><span class="lineNum">    1597 </span>            :                         /* XXX compute */</a>
+<a name="1596"><span class="lineNum">    1596 </span>            :                 case 3:</a>
+<a name="1597"><span class="lineNum">    1597 </span>            :                         /* XXX page queue*/</a>
 <a name="1598"><span class="lineNum">    1598 </span>            :                         break;</a>
-<a name="1599"><span class="lineNum">    1599 </span>            :                 case 3:</a>
-<a name="1600"><span class="lineNum">    1600 </span>            :                         /* XXX page queue*/</a>
-<a name="1601"><span class="lineNum">    1601 </span>            :                         break;</a>
-<a name="1602"><span class="lineNum">    1602 </span>            :                 }</a>
-<a name="1603"><span class="lineNum">    1603 </span>            :                 break;</a>
-<a name="1604"><span class="lineNum">    1604 </span>            :         case SOC15_IH_CLIENTID_SDMA2:</a>
-<a name="1605"><span class="lineNum">    1605 </span><span class="lineNoCov">          0 :                 switch (entry-&gt;ring_id) {</span></a>
-<a name="1606"><span class="lineNum">    1606 </span>            :                 case 0:</a>
-<a name="1607"><span class="lineNum">    1607 </span><span class="lineNoCov">          0 :                         amdgpu_fence_process(&amp;adev-&gt;sdma.instance[2].ring);</span></a>
-<a name="1608"><span class="lineNum">    1608 </span><span class="lineNoCov">          0 :                         break;</span></a>
-<a name="1609"><span class="lineNum">    1609 </span>            :                 case 1:</a>
+<a name="1599"><span class="lineNum">    1599 </span>            :                 }</a>
+<a name="1600"><span class="lineNum">    1600 </span>            :                 break;</a>
+<a name="1601"><span class="lineNum">    1601 </span>            :         case SOC15_IH_CLIENTID_SDMA2:</a>
+<a name="1602"><span class="lineNum">    1602 </span><span class="lineNoCov">          0 :                 switch (entry-&gt;ring_id) {</span></a>
+<a name="1603"><span class="lineNum">    1603 </span>            :                 case 0:</a>
+<a name="1604"><span class="lineNum">    1604 </span><span class="lineNoCov">          0 :                         amdgpu_fence_process(&amp;adev-&gt;sdma.instance[2].ring);</span></a>
+<a name="1605"><span class="lineNum">    1605 </span><span class="lineNoCov">          0 :                         break;</span></a>
+<a name="1606"><span class="lineNum">    1606 </span>            :                 case 1:</a>
+<a name="1607"><span class="lineNum">    1607 </span>            :                         /* XXX compute */</a>
+<a name="1608"><span class="lineNum">    1608 </span>            :                         break;</a>
+<a name="1609"><span class="lineNum">    1609 </span>            :                 case 2:</a>
 <a name="1610"><span class="lineNum">    1610 </span>            :                         /* XXX compute */</a>
 <a name="1611"><span class="lineNum">    1611 </span>            :                         break;</a>
-<a name="1612"><span class="lineNum">    1612 </span>            :                 case 2:</a>
-<a name="1613"><span class="lineNum">    1613 </span>            :                         /* XXX compute */</a>
+<a name="1612"><span class="lineNum">    1612 </span>            :                 case 3:</a>
+<a name="1613"><span class="lineNum">    1613 </span>            :                         /* XXX page queue*/</a>
 <a name="1614"><span class="lineNum">    1614 </span>            :                         break;</a>
-<a name="1615"><span class="lineNum">    1615 </span>            :                 case 3:</a>
-<a name="1616"><span class="lineNum">    1616 </span>            :                         /* XXX page queue*/</a>
-<a name="1617"><span class="lineNum">    1617 </span>            :                         break;</a>
-<a name="1618"><span class="lineNum">    1618 </span>            :                 }</a>
-<a name="1619"><span class="lineNum">    1619 </span>            :                 break;</a>
-<a name="1620"><span class="lineNum">    1620 </span>            :         case SOC15_IH_CLIENTID_SDMA3_Sienna_Cichlid:</a>
-<a name="1621"><span class="lineNum">    1621 </span><span class="lineNoCov">          0 :                 switch (entry-&gt;ring_id) {</span></a>
-<a name="1622"><span class="lineNum">    1622 </span>            :                 case 0:</a>
-<a name="1623"><span class="lineNum">    1623 </span><span class="lineNoCov">          0 :                         amdgpu_fence_process(&amp;adev-&gt;sdma.instance[3].ring);</span></a>
-<a name="1624"><span class="lineNum">    1624 </span><span class="lineNoCov">          0 :                         break;</span></a>
-<a name="1625"><span class="lineNum">    1625 </span>            :                 case 1:</a>
+<a name="1615"><span class="lineNum">    1615 </span>            :                 }</a>
+<a name="1616"><span class="lineNum">    1616 </span>            :                 break;</a>
+<a name="1617"><span class="lineNum">    1617 </span>            :         case SOC15_IH_CLIENTID_SDMA3_Sienna_Cichlid:</a>
+<a name="1618"><span class="lineNum">    1618 </span><span class="lineNoCov">          0 :                 switch (entry-&gt;ring_id) {</span></a>
+<a name="1619"><span class="lineNum">    1619 </span>            :                 case 0:</a>
+<a name="1620"><span class="lineNum">    1620 </span><span class="lineNoCov">          0 :                         amdgpu_fence_process(&amp;adev-&gt;sdma.instance[3].ring);</span></a>
+<a name="1621"><span class="lineNum">    1621 </span><span class="lineNoCov">          0 :                         break;</span></a>
+<a name="1622"><span class="lineNum">    1622 </span>            :                 case 1:</a>
+<a name="1623"><span class="lineNum">    1623 </span>            :                         /* XXX compute */</a>
+<a name="1624"><span class="lineNum">    1624 </span>            :                         break;</a>
+<a name="1625"><span class="lineNum">    1625 </span>            :                 case 2:</a>
 <a name="1626"><span class="lineNum">    1626 </span>            :                         /* XXX compute */</a>
 <a name="1627"><span class="lineNum">    1627 </span>            :                         break;</a>
-<a name="1628"><span class="lineNum">    1628 </span>            :                 case 2:</a>
-<a name="1629"><span class="lineNum">    1629 </span>            :                         /* XXX compute */</a>
+<a name="1628"><span class="lineNum">    1628 </span>            :                 case 3:</a>
+<a name="1629"><span class="lineNum">    1629 </span>            :                         /* XXX page queue*/</a>
 <a name="1630"><span class="lineNum">    1630 </span>            :                         break;</a>
-<a name="1631"><span class="lineNum">    1631 </span>            :                 case 3:</a>
-<a name="1632"><span class="lineNum">    1632 </span>            :                         /* XXX page queue*/</a>
-<a name="1633"><span class="lineNum">    1633 </span>            :                         break;</a>
-<a name="1634"><span class="lineNum">    1634 </span>            :                 }</a>
-<a name="1635"><span class="lineNum">    1635 </span>            :                 break;</a>
-<a name="1636"><span class="lineNum">    1636 </span>            :         }</a>
-<a name="1637"><span class="lineNum">    1637 </span>            :         return 0;</a>
-<a name="1638"><span class="lineNum">    1638 </span>            : }</a>
-<a name="1639"><span class="lineNum">    1639 </span>            : </a>
-<a name="1640"><span class="lineNum">    1640 </span><span class="lineNoCov">          0 : static int sdma_v5_2_process_illegal_inst_irq(struct amdgpu_device *adev,</span></a>
-<a name="1641"><span class="lineNum">    1641 </span>            :                                               struct amdgpu_irq_src *source,</a>
-<a name="1642"><span class="lineNum">    1642 </span>            :                                               struct amdgpu_iv_entry *entry)</a>
-<a name="1643"><span class="lineNum">    1643 </span>            : {</a>
-<a name="1644"><span class="lineNum">    1644 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="1645"><span class="lineNum">    1645 </span>            : }</a>
-<a name="1646"><span class="lineNum">    1646 </span>            : </a>
-<a name="1647"><span class="lineNum">    1647 </span><span class="lineNoCov">          0 : static void sdma_v5_2_update_medium_grain_clock_gating(struct amdgpu_device *adev,</span></a>
-<a name="1648"><span class="lineNum">    1648 </span>            :                                                        bool enable)</a>
-<a name="1649"><span class="lineNum">    1649 </span>            : {</a>
-<a name="1650"><span class="lineNum">    1650 </span>            :         uint32_t data, def;</a>
-<a name="1651"><span class="lineNum">    1651 </span>            :         int i;</a>
-<a name="1652"><span class="lineNum">    1652 </span>            : </a>
-<a name="1653"><span class="lineNum">    1653 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;sdma.num_instances; i++) {</span></a>
+<a name="1631"><span class="lineNum">    1631 </span>            :                 }</a>
+<a name="1632"><span class="lineNum">    1632 </span>            :                 break;</a>
+<a name="1633"><span class="lineNum">    1633 </span>            :         }</a>
+<a name="1634"><span class="lineNum">    1634 </span>            :         return 0;</a>
+<a name="1635"><span class="lineNum">    1635 </span>            : }</a>
+<a name="1636"><span class="lineNum">    1636 </span>            : </a>
+<a name="1637"><span class="lineNum">    1637 </span><span class="lineNoCov">          0 : static int sdma_v5_2_process_illegal_inst_irq(struct amdgpu_device *adev,</span></a>
+<a name="1638"><span class="lineNum">    1638 </span>            :                                               struct amdgpu_irq_src *source,</a>
+<a name="1639"><span class="lineNum">    1639 </span>            :                                               struct amdgpu_iv_entry *entry)</a>
+<a name="1640"><span class="lineNum">    1640 </span>            : {</a>
+<a name="1641"><span class="lineNum">    1641 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="1642"><span class="lineNum">    1642 </span>            : }</a>
+<a name="1643"><span class="lineNum">    1643 </span>            : </a>
+<a name="1644"><span class="lineNum">    1644 </span><span class="lineNoCov">          0 : static void sdma_v5_2_update_medium_grain_clock_gating(struct amdgpu_device *adev,</span></a>
+<a name="1645"><span class="lineNum">    1645 </span>            :                                                        bool enable)</a>
+<a name="1646"><span class="lineNum">    1646 </span>            : {</a>
+<a name="1647"><span class="lineNum">    1647 </span>            :         uint32_t data, def;</a>
+<a name="1648"><span class="lineNum">    1648 </span>            :         int i;</a>
+<a name="1649"><span class="lineNum">    1649 </span>            : </a>
+<a name="1650"><span class="lineNum">    1650 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;sdma.num_instances; i++) {</span></a>
+<a name="1651"><span class="lineNum">    1651 </span>            : </a>
+<a name="1652"><span class="lineNum">    1652 </span><span class="lineNoCov">          0 :                 if (adev-&gt;sdma.instance[i].fw_version &lt; 70 &amp;&amp; adev-&gt;ip_versions[SDMA0_HWIP][0] == IP_VERSION(5, 2, 1))</span></a>
+<a name="1653"><span class="lineNum">    1653 </span><span class="lineNoCov">          0 :                         adev-&gt;cg_flags &amp;= ~AMD_CG_SUPPORT_SDMA_MGCG;</span></a>
 <a name="1654"><span class="lineNum">    1654 </span>            : </a>
-<a name="1655"><span class="lineNum">    1655 </span><span class="lineNoCov">          0 :                 if (adev-&gt;sdma.instance[i].fw_version &lt; 70 &amp;&amp; adev-&gt;ip_versions[SDMA0_HWIP][0] == IP_VERSION(5, 2, 1))</span></a>
-<a name="1656"><span class="lineNum">    1656 </span><span class="lineNoCov">          0 :                         adev-&gt;cg_flags &amp;= ~AMD_CG_SUPPORT_SDMA_MGCG;</span></a>
-<a name="1657"><span class="lineNum">    1657 </span>            : </a>
-<a name="1658"><span class="lineNum">    1658 </span><span class="lineNoCov">          0 :                 if (enable &amp;&amp; (adev-&gt;cg_flags &amp; AMD_CG_SUPPORT_SDMA_MGCG)) {</span></a>
-<a name="1659"><span class="lineNum">    1659 </span>            :                         /* Enable sdma clock gating */</a>
-<a name="1660"><span class="lineNum">    1660 </span><span class="lineNoCov">          0 :                         def = data = RREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_CLK_CTRL));</span></a>
-<a name="1661"><span class="lineNum">    1661 </span><span class="lineNoCov">          0 :                         data &amp;= ~(SDMA0_CLK_CTRL__SOFT_OVERRIDE4_MASK |</span></a>
-<a name="1662"><span class="lineNum">    1662 </span>            :                                   SDMA0_CLK_CTRL__SOFT_OVERRIDE3_MASK |</a>
-<a name="1663"><span class="lineNum">    1663 </span>            :                                   SDMA0_CLK_CTRL__SOFT_OVERRIDE2_MASK |</a>
-<a name="1664"><span class="lineNum">    1664 </span>            :                                   SDMA0_CLK_CTRL__SOFT_OVERRIDE1_MASK |</a>
-<a name="1665"><span class="lineNum">    1665 </span>            :                                   SDMA0_CLK_CTRL__SOFT_OVERRIDE0_MASK |</a>
-<a name="1666"><span class="lineNum">    1666 </span>            :                                   SDMA0_CLK_CTRL__SOFT_OVERRIDER_REG_MASK);</a>
-<a name="1667"><span class="lineNum">    1667 </span><span class="lineNoCov">          0 :                         if (def != data)</span></a>
-<a name="1668"><span class="lineNum">    1668 </span><span class="lineNoCov">          0 :                                 WREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_CLK_CTRL), data);</span></a>
-<a name="1669"><span class="lineNum">    1669 </span>            :                 } else {</a>
-<a name="1670"><span class="lineNum">    1670 </span>            :                         /* Disable sdma clock gating */</a>
-<a name="1671"><span class="lineNum">    1671 </span><span class="lineNoCov">          0 :                         def = data = RREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_CLK_CTRL));</span></a>
-<a name="1672"><span class="lineNum">    1672 </span><span class="lineNoCov">          0 :                         data |= (SDMA0_CLK_CTRL__SOFT_OVERRIDE4_MASK |</span></a>
-<a name="1673"><span class="lineNum">    1673 </span>            :                                  SDMA0_CLK_CTRL__SOFT_OVERRIDE3_MASK |</a>
-<a name="1674"><span class="lineNum">    1674 </span>            :                                  SDMA0_CLK_CTRL__SOFT_OVERRIDE2_MASK |</a>
-<a name="1675"><span class="lineNum">    1675 </span>            :                                  SDMA0_CLK_CTRL__SOFT_OVERRIDE1_MASK |</a>
-<a name="1676"><span class="lineNum">    1676 </span>            :                                  SDMA0_CLK_CTRL__SOFT_OVERRIDE0_MASK |</a>
-<a name="1677"><span class="lineNum">    1677 </span>            :                                  SDMA0_CLK_CTRL__SOFT_OVERRIDER_REG_MASK);</a>
-<a name="1678"><span class="lineNum">    1678 </span><span class="lineNoCov">          0 :                         if (def != data)</span></a>
-<a name="1679"><span class="lineNum">    1679 </span><span class="lineNoCov">          0 :                                 WREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_CLK_CTRL), data);</span></a>
-<a name="1680"><span class="lineNum">    1680 </span>            :                 }</a>
-<a name="1681"><span class="lineNum">    1681 </span>            :         }</a>
-<a name="1682"><span class="lineNum">    1682 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="1683"><span class="lineNum">    1683 </span>            : </a>
-<a name="1684"><span class="lineNum">    1684 </span><span class="lineNoCov">          0 : static void sdma_v5_2_update_medium_grain_light_sleep(struct amdgpu_device *adev,</span></a>
-<a name="1685"><span class="lineNum">    1685 </span>            :                                                       bool enable)</a>
-<a name="1686"><span class="lineNum">    1686 </span>            : {</a>
-<a name="1687"><span class="lineNum">    1687 </span>            :         uint32_t data, def;</a>
-<a name="1688"><span class="lineNum">    1688 </span>            :         int i;</a>
-<a name="1689"><span class="lineNum">    1689 </span>            : </a>
-<a name="1690"><span class="lineNum">    1690 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;sdma.num_instances; i++) {</span></a>
+<a name="1655"><span class="lineNum">    1655 </span><span class="lineNoCov">          0 :                 if (enable &amp;&amp; (adev-&gt;cg_flags &amp; AMD_CG_SUPPORT_SDMA_MGCG)) {</span></a>
+<a name="1656"><span class="lineNum">    1656 </span>            :                         /* Enable sdma clock gating */</a>
+<a name="1657"><span class="lineNum">    1657 </span><span class="lineNoCov">          0 :                         def = data = RREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_CLK_CTRL));</span></a>
+<a name="1658"><span class="lineNum">    1658 </span><span class="lineNoCov">          0 :                         data &amp;= ~(SDMA0_CLK_CTRL__SOFT_OVERRIDE4_MASK |</span></a>
+<a name="1659"><span class="lineNum">    1659 </span>            :                                   SDMA0_CLK_CTRL__SOFT_OVERRIDE3_MASK |</a>
+<a name="1660"><span class="lineNum">    1660 </span>            :                                   SDMA0_CLK_CTRL__SOFT_OVERRIDE2_MASK |</a>
+<a name="1661"><span class="lineNum">    1661 </span>            :                                   SDMA0_CLK_CTRL__SOFT_OVERRIDE1_MASK |</a>
+<a name="1662"><span class="lineNum">    1662 </span>            :                                   SDMA0_CLK_CTRL__SOFT_OVERRIDE0_MASK |</a>
+<a name="1663"><span class="lineNum">    1663 </span>            :                                   SDMA0_CLK_CTRL__SOFT_OVERRIDER_REG_MASK);</a>
+<a name="1664"><span class="lineNum">    1664 </span><span class="lineNoCov">          0 :                         if (def != data)</span></a>
+<a name="1665"><span class="lineNum">    1665 </span><span class="lineNoCov">          0 :                                 WREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_CLK_CTRL), data);</span></a>
+<a name="1666"><span class="lineNum">    1666 </span>            :                 } else {</a>
+<a name="1667"><span class="lineNum">    1667 </span>            :                         /* Disable sdma clock gating */</a>
+<a name="1668"><span class="lineNum">    1668 </span><span class="lineNoCov">          0 :                         def = data = RREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_CLK_CTRL));</span></a>
+<a name="1669"><span class="lineNum">    1669 </span><span class="lineNoCov">          0 :                         data |= (SDMA0_CLK_CTRL__SOFT_OVERRIDE4_MASK |</span></a>
+<a name="1670"><span class="lineNum">    1670 </span>            :                                  SDMA0_CLK_CTRL__SOFT_OVERRIDE3_MASK |</a>
+<a name="1671"><span class="lineNum">    1671 </span>            :                                  SDMA0_CLK_CTRL__SOFT_OVERRIDE2_MASK |</a>
+<a name="1672"><span class="lineNum">    1672 </span>            :                                  SDMA0_CLK_CTRL__SOFT_OVERRIDE1_MASK |</a>
+<a name="1673"><span class="lineNum">    1673 </span>            :                                  SDMA0_CLK_CTRL__SOFT_OVERRIDE0_MASK |</a>
+<a name="1674"><span class="lineNum">    1674 </span>            :                                  SDMA0_CLK_CTRL__SOFT_OVERRIDER_REG_MASK);</a>
+<a name="1675"><span class="lineNum">    1675 </span><span class="lineNoCov">          0 :                         if (def != data)</span></a>
+<a name="1676"><span class="lineNum">    1676 </span><span class="lineNoCov">          0 :                                 WREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_CLK_CTRL), data);</span></a>
+<a name="1677"><span class="lineNum">    1677 </span>            :                 }</a>
+<a name="1678"><span class="lineNum">    1678 </span>            :         }</a>
+<a name="1679"><span class="lineNum">    1679 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1680"><span class="lineNum">    1680 </span>            : </a>
+<a name="1681"><span class="lineNum">    1681 </span><span class="lineNoCov">          0 : static void sdma_v5_2_update_medium_grain_light_sleep(struct amdgpu_device *adev,</span></a>
+<a name="1682"><span class="lineNum">    1682 </span>            :                                                       bool enable)</a>
+<a name="1683"><span class="lineNum">    1683 </span>            : {</a>
+<a name="1684"><span class="lineNum">    1684 </span>            :         uint32_t data, def;</a>
+<a name="1685"><span class="lineNum">    1685 </span>            :         int i;</a>
+<a name="1686"><span class="lineNum">    1686 </span>            : </a>
+<a name="1687"><span class="lineNum">    1687 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;sdma.num_instances; i++) {</span></a>
+<a name="1688"><span class="lineNum">    1688 </span>            : </a>
+<a name="1689"><span class="lineNum">    1689 </span><span class="lineNoCov">          0 :                 if (adev-&gt;sdma.instance[i].fw_version &lt; 70 &amp;&amp; adev-&gt;ip_versions[SDMA0_HWIP][0] == IP_VERSION(5, 2, 1))</span></a>
+<a name="1690"><span class="lineNum">    1690 </span><span class="lineNoCov">          0 :                         adev-&gt;cg_flags &amp;= ~AMD_CG_SUPPORT_SDMA_LS;</span></a>
 <a name="1691"><span class="lineNum">    1691 </span>            : </a>
-<a name="1692"><span class="lineNum">    1692 </span><span class="lineNoCov">          0 :                 if (adev-&gt;sdma.instance[i].fw_version &lt; 70 &amp;&amp; adev-&gt;ip_versions[SDMA0_HWIP][0] == IP_VERSION(5, 2, 1))</span></a>
-<a name="1693"><span class="lineNum">    1693 </span><span class="lineNoCov">          0 :                         adev-&gt;cg_flags &amp;= ~AMD_CG_SUPPORT_SDMA_LS;</span></a>
-<a name="1694"><span class="lineNum">    1694 </span>            : </a>
-<a name="1695"><span class="lineNum">    1695 </span><span class="lineNoCov">          0 :                 if (enable &amp;&amp; (adev-&gt;cg_flags &amp; AMD_CG_SUPPORT_SDMA_LS)) {</span></a>
-<a name="1696"><span class="lineNum">    1696 </span>            :                         /* Enable sdma mem light sleep */</a>
-<a name="1697"><span class="lineNum">    1697 </span><span class="lineNoCov">          0 :                         def = data = RREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_POWER_CNTL));</span></a>
-<a name="1698"><span class="lineNum">    1698 </span><span class="lineNoCov">          0 :                         data |= SDMA0_POWER_CNTL__MEM_POWER_OVERRIDE_MASK;</span></a>
-<a name="1699"><span class="lineNum">    1699 </span><span class="lineNoCov">          0 :                         if (def != data)</span></a>
-<a name="1700"><span class="lineNum">    1700 </span><span class="lineNoCov">          0 :                                 WREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_POWER_CNTL), data);</span></a>
-<a name="1701"><span class="lineNum">    1701 </span>            : </a>
-<a name="1702"><span class="lineNum">    1702 </span>            :                 } else {</a>
-<a name="1703"><span class="lineNum">    1703 </span>            :                         /* Disable sdma mem light sleep */</a>
-<a name="1704"><span class="lineNum">    1704 </span><span class="lineNoCov">          0 :                         def = data = RREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_POWER_CNTL));</span></a>
-<a name="1705"><span class="lineNum">    1705 </span><span class="lineNoCov">          0 :                         data &amp;= ~SDMA0_POWER_CNTL__MEM_POWER_OVERRIDE_MASK;</span></a>
-<a name="1706"><span class="lineNum">    1706 </span><span class="lineNoCov">          0 :                         if (def != data)</span></a>
-<a name="1707"><span class="lineNum">    1707 </span><span class="lineNoCov">          0 :                                 WREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_POWER_CNTL), data);</span></a>
-<a name="1708"><span class="lineNum">    1708 </span>            : </a>
-<a name="1709"><span class="lineNum">    1709 </span>            :                 }</a>
-<a name="1710"><span class="lineNum">    1710 </span>            :         }</a>
-<a name="1711"><span class="lineNum">    1711 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="1712"><span class="lineNum">    1712 </span>            : </a>
-<a name="1713"><span class="lineNum">    1713 </span><span class="lineNoCov">          0 : static int sdma_v5_2_set_clockgating_state(void *handle,</span></a>
-<a name="1714"><span class="lineNum">    1714 </span>            :                                            enum amd_clockgating_state state)</a>
-<a name="1715"><span class="lineNum">    1715 </span>            : {</a>
-<a name="1716"><span class="lineNum">    1716 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1692"><span class="lineNum">    1692 </span><span class="lineNoCov">          0 :                 if (enable &amp;&amp; (adev-&gt;cg_flags &amp; AMD_CG_SUPPORT_SDMA_LS)) {</span></a>
+<a name="1693"><span class="lineNum">    1693 </span>            :                         /* Enable sdma mem light sleep */</a>
+<a name="1694"><span class="lineNum">    1694 </span><span class="lineNoCov">          0 :                         def = data = RREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_POWER_CNTL));</span></a>
+<a name="1695"><span class="lineNum">    1695 </span><span class="lineNoCov">          0 :                         data |= SDMA0_POWER_CNTL__MEM_POWER_OVERRIDE_MASK;</span></a>
+<a name="1696"><span class="lineNum">    1696 </span><span class="lineNoCov">          0 :                         if (def != data)</span></a>
+<a name="1697"><span class="lineNum">    1697 </span><span class="lineNoCov">          0 :                                 WREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_POWER_CNTL), data);</span></a>
+<a name="1698"><span class="lineNum">    1698 </span>            : </a>
+<a name="1699"><span class="lineNum">    1699 </span>            :                 } else {</a>
+<a name="1700"><span class="lineNum">    1700 </span>            :                         /* Disable sdma mem light sleep */</a>
+<a name="1701"><span class="lineNum">    1701 </span><span class="lineNoCov">          0 :                         def = data = RREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_POWER_CNTL));</span></a>
+<a name="1702"><span class="lineNum">    1702 </span><span class="lineNoCov">          0 :                         data &amp;= ~SDMA0_POWER_CNTL__MEM_POWER_OVERRIDE_MASK;</span></a>
+<a name="1703"><span class="lineNum">    1703 </span><span class="lineNoCov">          0 :                         if (def != data)</span></a>
+<a name="1704"><span class="lineNum">    1704 </span><span class="lineNoCov">          0 :                                 WREG32(sdma_v5_2_get_reg_offset(adev, i, mmSDMA0_POWER_CNTL), data);</span></a>
+<a name="1705"><span class="lineNum">    1705 </span>            : </a>
+<a name="1706"><span class="lineNum">    1706 </span>            :                 }</a>
+<a name="1707"><span class="lineNum">    1707 </span>            :         }</a>
+<a name="1708"><span class="lineNum">    1708 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1709"><span class="lineNum">    1709 </span>            : </a>
+<a name="1710"><span class="lineNum">    1710 </span><span class="lineNoCov">          0 : static int sdma_v5_2_set_clockgating_state(void *handle,</span></a>
+<a name="1711"><span class="lineNum">    1711 </span>            :                                            enum amd_clockgating_state state)</a>
+<a name="1712"><span class="lineNum">    1712 </span>            : {</a>
+<a name="1713"><span class="lineNum">    1713 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1714"><span class="lineNum">    1714 </span>            : </a>
+<a name="1715"><span class="lineNum">    1715 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
+<a name="1716"><span class="lineNum">    1716 </span>            :                 return 0;</a>
 <a name="1717"><span class="lineNum">    1717 </span>            : </a>
-<a name="1718"><span class="lineNum">    1718 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
-<a name="1719"><span class="lineNum">    1719 </span>            :                 return 0;</a>
-<a name="1720"><span class="lineNum">    1720 </span>            : </a>
-<a name="1721"><span class="lineNum">    1721 </span><span class="lineNoCov">          0 :         switch (adev-&gt;ip_versions[SDMA0_HWIP][0]) {</span></a>
-<a name="1722"><span class="lineNum">    1722 </span>            :         case IP_VERSION(5, 2, 0):</a>
-<a name="1723"><span class="lineNum">    1723 </span>            :         case IP_VERSION(5, 2, 2):</a>
-<a name="1724"><span class="lineNum">    1724 </span>            :         case IP_VERSION(5, 2, 1):</a>
-<a name="1725"><span class="lineNum">    1725 </span>            :         case IP_VERSION(5, 2, 4):</a>
-<a name="1726"><span class="lineNum">    1726 </span>            :         case IP_VERSION(5, 2, 5):</a>
-<a name="1727"><span class="lineNum">    1727 </span>            :         case IP_VERSION(5, 2, 6):</a>
-<a name="1728"><span class="lineNum">    1728 </span>            :         case IP_VERSION(5, 2, 3):</a>
-<a name="1729"><span class="lineNum">    1729 </span><span class="lineNoCov">          0 :                 sdma_v5_2_update_medium_grain_clock_gating(adev,</span></a>
-<a name="1730"><span class="lineNum">    1730 </span>            :                                 state == AMD_CG_STATE_GATE);</a>
-<a name="1731"><span class="lineNum">    1731 </span><span class="lineNoCov">          0 :                 sdma_v5_2_update_medium_grain_light_sleep(adev,</span></a>
-<a name="1732"><span class="lineNum">    1732 </span>            :                                 state == AMD_CG_STATE_GATE);</a>
-<a name="1733"><span class="lineNum">    1733 </span><span class="lineNoCov">          0 :                 break;</span></a>
-<a name="1734"><span class="lineNum">    1734 </span>            :         default:</a>
-<a name="1735"><span class="lineNum">    1735 </span>            :                 break;</a>
-<a name="1736"><span class="lineNum">    1736 </span>            :         }</a>
+<a name="1718"><span class="lineNum">    1718 </span><span class="lineNoCov">          0 :         switch (adev-&gt;ip_versions[SDMA0_HWIP][0]) {</span></a>
+<a name="1719"><span class="lineNum">    1719 </span>            :         case IP_VERSION(5, 2, 0):</a>
+<a name="1720"><span class="lineNum">    1720 </span>            :         case IP_VERSION(5, 2, 2):</a>
+<a name="1721"><span class="lineNum">    1721 </span>            :         case IP_VERSION(5, 2, 1):</a>
+<a name="1722"><span class="lineNum">    1722 </span>            :         case IP_VERSION(5, 2, 4):</a>
+<a name="1723"><span class="lineNum">    1723 </span>            :         case IP_VERSION(5, 2, 5):</a>
+<a name="1724"><span class="lineNum">    1724 </span>            :         case IP_VERSION(5, 2, 6):</a>
+<a name="1725"><span class="lineNum">    1725 </span>            :         case IP_VERSION(5, 2, 3):</a>
+<a name="1726"><span class="lineNum">    1726 </span><span class="lineNoCov">          0 :                 sdma_v5_2_update_medium_grain_clock_gating(adev,</span></a>
+<a name="1727"><span class="lineNum">    1727 </span>            :                                 state == AMD_CG_STATE_GATE);</a>
+<a name="1728"><span class="lineNum">    1728 </span><span class="lineNoCov">          0 :                 sdma_v5_2_update_medium_grain_light_sleep(adev,</span></a>
+<a name="1729"><span class="lineNum">    1729 </span>            :                                 state == AMD_CG_STATE_GATE);</a>
+<a name="1730"><span class="lineNum">    1730 </span><span class="lineNoCov">          0 :                 break;</span></a>
+<a name="1731"><span class="lineNum">    1731 </span>            :         default:</a>
+<a name="1732"><span class="lineNum">    1732 </span>            :                 break;</a>
+<a name="1733"><span class="lineNum">    1733 </span>            :         }</a>
+<a name="1734"><span class="lineNum">    1734 </span>            : </a>
+<a name="1735"><span class="lineNum">    1735 </span>            :         return 0;</a>
+<a name="1736"><span class="lineNum">    1736 </span>            : }</a>
 <a name="1737"><span class="lineNum">    1737 </span>            : </a>
-<a name="1738"><span class="lineNum">    1738 </span>            :         return 0;</a>
-<a name="1739"><span class="lineNum">    1739 </span>            : }</a>
-<a name="1740"><span class="lineNum">    1740 </span>            : </a>
-<a name="1741"><span class="lineNum">    1741 </span><span class="lineNoCov">          0 : static int sdma_v5_2_set_powergating_state(void *handle,</span></a>
-<a name="1742"><span class="lineNum">    1742 </span>            :                                           enum amd_powergating_state state)</a>
-<a name="1743"><span class="lineNum">    1743 </span>            : {</a>
-<a name="1744"><span class="lineNum">    1744 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="1745"><span class="lineNum">    1745 </span>            : }</a>
-<a name="1746"><span class="lineNum">    1746 </span>            : </a>
-<a name="1747"><span class="lineNum">    1747 </span><span class="lineNoCov">          0 : static void sdma_v5_2_get_clockgating_state(void *handle, u64 *flags)</span></a>
-<a name="1748"><span class="lineNum">    1748 </span>            : {</a>
-<a name="1749"><span class="lineNum">    1749 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
-<a name="1750"><span class="lineNum">    1750 </span>            :         int data;</a>
+<a name="1738"><span class="lineNum">    1738 </span><span class="lineNoCov">          0 : static int sdma_v5_2_set_powergating_state(void *handle,</span></a>
+<a name="1739"><span class="lineNum">    1739 </span>            :                                           enum amd_powergating_state state)</a>
+<a name="1740"><span class="lineNum">    1740 </span>            : {</a>
+<a name="1741"><span class="lineNum">    1741 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="1742"><span class="lineNum">    1742 </span>            : }</a>
+<a name="1743"><span class="lineNum">    1743 </span>            : </a>
+<a name="1744"><span class="lineNum">    1744 </span><span class="lineNoCov">          0 : static void sdma_v5_2_get_clockgating_state(void *handle, u64 *flags)</span></a>
+<a name="1745"><span class="lineNum">    1745 </span>            : {</a>
+<a name="1746"><span class="lineNum">    1746 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = (struct amdgpu_device *)handle;</span></a>
+<a name="1747"><span class="lineNum">    1747 </span>            :         int data;</a>
+<a name="1748"><span class="lineNum">    1748 </span>            : </a>
+<a name="1749"><span class="lineNum">    1749 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
+<a name="1750"><span class="lineNum">    1750 </span><span class="lineNoCov">          0 :                 *flags = 0;</span></a>
 <a name="1751"><span class="lineNum">    1751 </span>            : </a>
-<a name="1752"><span class="lineNum">    1752 </span><span class="lineNoCov">          0 :         if (amdgpu_sriov_vf(adev))</span></a>
-<a name="1753"><span class="lineNum">    1753 </span><span class="lineNoCov">          0 :                 *flags = 0;</span></a>
-<a name="1754"><span class="lineNum">    1754 </span>            : </a>
-<a name="1755"><span class="lineNum">    1755 </span>            :         /* AMD_CG_SUPPORT_SDMA_MGCG */</a>
-<a name="1756"><span class="lineNum">    1756 </span><span class="lineNoCov">          0 :         data = RREG32(sdma_v5_2_get_reg_offset(adev, 0, mmSDMA0_CLK_CTRL));</span></a>
-<a name="1757"><span class="lineNum">    1757 </span><span class="lineNoCov">          0 :         if (!(data &amp; SDMA0_CLK_CTRL__CGCG_EN_OVERRIDE_MASK))</span></a>
-<a name="1758"><span class="lineNum">    1758 </span><span class="lineNoCov">          0 :                 *flags |= AMD_CG_SUPPORT_SDMA_MGCG;</span></a>
-<a name="1759"><span class="lineNum">    1759 </span>            : </a>
-<a name="1760"><span class="lineNum">    1760 </span>            :         /* AMD_CG_SUPPORT_SDMA_LS */</a>
-<a name="1761"><span class="lineNum">    1761 </span><span class="lineNoCov">          0 :         data = RREG32_KIQ(sdma_v5_2_get_reg_offset(adev, 0, mmSDMA0_POWER_CNTL));</span></a>
-<a name="1762"><span class="lineNum">    1762 </span><span class="lineNoCov">          0 :         if (data &amp; SDMA0_POWER_CNTL__MEM_POWER_OVERRIDE_MASK)</span></a>
-<a name="1763"><span class="lineNum">    1763 </span><span class="lineNoCov">          0 :                 *flags |= AMD_CG_SUPPORT_SDMA_LS;</span></a>
-<a name="1764"><span class="lineNum">    1764 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="1765"><span class="lineNum">    1765 </span>            : </a>
-<a name="1766"><span class="lineNum">    1766 </span>            : const struct amd_ip_funcs sdma_v5_2_ip_funcs = {</a>
-<a name="1767"><span class="lineNum">    1767 </span>            :         .name = &quot;sdma_v5_2&quot;,</a>
-<a name="1768"><span class="lineNum">    1768 </span>            :         .early_init = sdma_v5_2_early_init,</a>
-<a name="1769"><span class="lineNum">    1769 </span>            :         .late_init = NULL,</a>
-<a name="1770"><span class="lineNum">    1770 </span>            :         .sw_init = sdma_v5_2_sw_init,</a>
-<a name="1771"><span class="lineNum">    1771 </span>            :         .sw_fini = sdma_v5_2_sw_fini,</a>
-<a name="1772"><span class="lineNum">    1772 </span>            :         .hw_init = sdma_v5_2_hw_init,</a>
-<a name="1773"><span class="lineNum">    1773 </span>            :         .hw_fini = sdma_v5_2_hw_fini,</a>
-<a name="1774"><span class="lineNum">    1774 </span>            :         .suspend = sdma_v5_2_suspend,</a>
-<a name="1775"><span class="lineNum">    1775 </span>            :         .resume = sdma_v5_2_resume,</a>
-<a name="1776"><span class="lineNum">    1776 </span>            :         .is_idle = sdma_v5_2_is_idle,</a>
-<a name="1777"><span class="lineNum">    1777 </span>            :         .wait_for_idle = sdma_v5_2_wait_for_idle,</a>
-<a name="1778"><span class="lineNum">    1778 </span>            :         .soft_reset = sdma_v5_2_soft_reset,</a>
-<a name="1779"><span class="lineNum">    1779 </span>            :         .set_clockgating_state = sdma_v5_2_set_clockgating_state,</a>
-<a name="1780"><span class="lineNum">    1780 </span>            :         .set_powergating_state = sdma_v5_2_set_powergating_state,</a>
-<a name="1781"><span class="lineNum">    1781 </span>            :         .get_clockgating_state = sdma_v5_2_get_clockgating_state,</a>
-<a name="1782"><span class="lineNum">    1782 </span>            : };</a>
-<a name="1783"><span class="lineNum">    1783 </span>            : </a>
-<a name="1784"><span class="lineNum">    1784 </span>            : static const struct amdgpu_ring_funcs sdma_v5_2_ring_funcs = {</a>
-<a name="1785"><span class="lineNum">    1785 </span>            :         .type = AMDGPU_RING_TYPE_SDMA,</a>
-<a name="1786"><span class="lineNum">    1786 </span>            :         .align_mask = 0xf,</a>
-<a name="1787"><span class="lineNum">    1787 </span>            :         .nop = SDMA_PKT_NOP_HEADER_OP(SDMA_OP_NOP),</a>
-<a name="1788"><span class="lineNum">    1788 </span>            :         .support_64bit_ptrs = true,</a>
-<a name="1789"><span class="lineNum">    1789 </span>            :         .secure_submission_supported = true,</a>
-<a name="1790"><span class="lineNum">    1790 </span>            :         .vmhub = AMDGPU_GFXHUB_0,</a>
-<a name="1791"><span class="lineNum">    1791 </span>            :         .get_rptr = sdma_v5_2_ring_get_rptr,</a>
-<a name="1792"><span class="lineNum">    1792 </span>            :         .get_wptr = sdma_v5_2_ring_get_wptr,</a>
-<a name="1793"><span class="lineNum">    1793 </span>            :         .set_wptr = sdma_v5_2_ring_set_wptr,</a>
-<a name="1794"><span class="lineNum">    1794 </span>            :         .emit_frame_size =</a>
-<a name="1795"><span class="lineNum">    1795 </span>            :                 5 + /* sdma_v5_2_ring_init_cond_exec */</a>
-<a name="1796"><span class="lineNum">    1796 </span>            :                 6 + /* sdma_v5_2_ring_emit_hdp_flush */</a>
-<a name="1797"><span class="lineNum">    1797 </span>            :                 3 + /* hdp_invalidate */</a>
-<a name="1798"><span class="lineNum">    1798 </span>            :                 6 + /* sdma_v5_2_ring_emit_pipeline_sync */</a>
-<a name="1799"><span class="lineNum">    1799 </span>            :                 /* sdma_v5_2_ring_emit_vm_flush */</a>
-<a name="1800"><span class="lineNum">    1800 </span>            :                 SOC15_FLUSH_GPU_TLB_NUM_WREG * 3 +</a>
-<a name="1801"><span class="lineNum">    1801 </span>            :                 SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 6 +</a>
-<a name="1802"><span class="lineNum">    1802 </span>            :                 10 + 10 + 10, /* sdma_v5_2_ring_emit_fence x3 for user fence, vm fence */</a>
-<a name="1803"><span class="lineNum">    1803 </span>            :         .emit_ib_size = 7 + 6, /* sdma_v5_2_ring_emit_ib */</a>
-<a name="1804"><span class="lineNum">    1804 </span>            :         .emit_ib = sdma_v5_2_ring_emit_ib,</a>
-<a name="1805"><span class="lineNum">    1805 </span>            :         .emit_mem_sync = sdma_v5_2_ring_emit_mem_sync,</a>
-<a name="1806"><span class="lineNum">    1806 </span>            :         .emit_fence = sdma_v5_2_ring_emit_fence,</a>
-<a name="1807"><span class="lineNum">    1807 </span>            :         .emit_pipeline_sync = sdma_v5_2_ring_emit_pipeline_sync,</a>
-<a name="1808"><span class="lineNum">    1808 </span>            :         .emit_vm_flush = sdma_v5_2_ring_emit_vm_flush,</a>
-<a name="1809"><span class="lineNum">    1809 </span>            :         .emit_hdp_flush = sdma_v5_2_ring_emit_hdp_flush,</a>
-<a name="1810"><span class="lineNum">    1810 </span>            :         .test_ring = sdma_v5_2_ring_test_ring,</a>
-<a name="1811"><span class="lineNum">    1811 </span>            :         .test_ib = sdma_v5_2_ring_test_ib,</a>
-<a name="1812"><span class="lineNum">    1812 </span>            :         .insert_nop = sdma_v5_2_ring_insert_nop,</a>
-<a name="1813"><span class="lineNum">    1813 </span>            :         .pad_ib = sdma_v5_2_ring_pad_ib,</a>
-<a name="1814"><span class="lineNum">    1814 </span>            :         .emit_wreg = sdma_v5_2_ring_emit_wreg,</a>
-<a name="1815"><span class="lineNum">    1815 </span>            :         .emit_reg_wait = sdma_v5_2_ring_emit_reg_wait,</a>
-<a name="1816"><span class="lineNum">    1816 </span>            :         .emit_reg_write_reg_wait = sdma_v5_2_ring_emit_reg_write_reg_wait,</a>
-<a name="1817"><span class="lineNum">    1817 </span>            :         .init_cond_exec = sdma_v5_2_ring_init_cond_exec,</a>
-<a name="1818"><span class="lineNum">    1818 </span>            :         .patch_cond_exec = sdma_v5_2_ring_patch_cond_exec,</a>
-<a name="1819"><span class="lineNum">    1819 </span>            :         .preempt_ib = sdma_v5_2_ring_preempt_ib,</a>
-<a name="1820"><span class="lineNum">    1820 </span>            : };</a>
-<a name="1821"><span class="lineNum">    1821 </span>            : </a>
-<a name="1822"><span class="lineNum">    1822 </span>            : static void sdma_v5_2_set_ring_funcs(struct amdgpu_device *adev)</a>
-<a name="1823"><span class="lineNum">    1823 </span>            : {</a>
-<a name="1824"><span class="lineNum">    1824 </span>            :         int i;</a>
-<a name="1825"><span class="lineNum">    1825 </span>            : </a>
-<a name="1826"><span class="lineNum">    1826 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;sdma.num_instances; i++) {</span></a>
-<a name="1827"><span class="lineNum">    1827 </span><span class="lineNoCov">          0 :                 adev-&gt;sdma.instance[i].ring.funcs = &amp;sdma_v5_2_ring_funcs;</span></a>
-<a name="1828"><span class="lineNum">    1828 </span><span class="lineNoCov">          0 :                 adev-&gt;sdma.instance[i].ring.me = i;</span></a>
-<a name="1829"><span class="lineNum">    1829 </span>            :         }</a>
-<a name="1830"><span class="lineNum">    1830 </span>            : }</a>
-<a name="1831"><span class="lineNum">    1831 </span>            : </a>
-<a name="1832"><span class="lineNum">    1832 </span>            : static const struct amdgpu_irq_src_funcs sdma_v5_2_trap_irq_funcs = {</a>
-<a name="1833"><span class="lineNum">    1833 </span>            :         .set = sdma_v5_2_set_trap_irq_state,</a>
-<a name="1834"><span class="lineNum">    1834 </span>            :         .process = sdma_v5_2_process_trap_irq,</a>
-<a name="1835"><span class="lineNum">    1835 </span>            : };</a>
-<a name="1836"><span class="lineNum">    1836 </span>            : </a>
-<a name="1837"><span class="lineNum">    1837 </span>            : static const struct amdgpu_irq_src_funcs sdma_v5_2_illegal_inst_irq_funcs = {</a>
-<a name="1838"><span class="lineNum">    1838 </span>            :         .process = sdma_v5_2_process_illegal_inst_irq,</a>
-<a name="1839"><span class="lineNum">    1839 </span>            : };</a>
-<a name="1840"><span class="lineNum">    1840 </span>            : </a>
-<a name="1841"><span class="lineNum">    1841 </span>            : static void sdma_v5_2_set_irq_funcs(struct amdgpu_device *adev)</a>
-<a name="1842"><span class="lineNum">    1842 </span>            : {</a>
-<a name="1843"><span class="lineNum">    1843 </span><span class="lineNoCov">          0 :         adev-&gt;sdma.trap_irq.num_types = AMDGPU_SDMA_IRQ_INSTANCE0 +</span></a>
-<a name="1844"><span class="lineNum">    1844 </span>            :                                         adev-&gt;sdma.num_instances;</a>
-<a name="1845"><span class="lineNum">    1845 </span><span class="lineNoCov">          0 :         adev-&gt;sdma.trap_irq.funcs = &amp;sdma_v5_2_trap_irq_funcs;</span></a>
-<a name="1846"><span class="lineNum">    1846 </span><span class="lineNoCov">          0 :         adev-&gt;sdma.illegal_inst_irq.funcs = &amp;sdma_v5_2_illegal_inst_irq_funcs;</span></a>
-<a name="1847"><span class="lineNum">    1847 </span>            : }</a>
-<a name="1848"><span class="lineNum">    1848 </span>            : </a>
-<a name="1849"><span class="lineNum">    1849 </span>            : /**</a>
-<a name="1850"><span class="lineNum">    1850 </span>            :  * sdma_v5_2_emit_copy_buffer - copy buffer using the sDMA engine</a>
-<a name="1851"><span class="lineNum">    1851 </span>            :  *</a>
-<a name="1852"><span class="lineNum">    1852 </span>            :  * @ib: indirect buffer to copy to</a>
-<a name="1853"><span class="lineNum">    1853 </span>            :  * @src_offset: src GPU address</a>
-<a name="1854"><span class="lineNum">    1854 </span>            :  * @dst_offset: dst GPU address</a>
-<a name="1855"><span class="lineNum">    1855 </span>            :  * @byte_count: number of bytes to xfer</a>
-<a name="1856"><span class="lineNum">    1856 </span>            :  * @tmz: if a secure copy should be used</a>
-<a name="1857"><span class="lineNum">    1857 </span>            :  *</a>
-<a name="1858"><span class="lineNum">    1858 </span>            :  * Copy GPU buffers using the DMA engine.</a>
-<a name="1859"><span class="lineNum">    1859 </span>            :  * Used by the amdgpu ttm implementation to move pages if</a>
-<a name="1860"><span class="lineNum">    1860 </span>            :  * registered as the asic copy callback.</a>
-<a name="1861"><span class="lineNum">    1861 </span>            :  */</a>
-<a name="1862"><span class="lineNum">    1862 </span><span class="lineNoCov">          0 : static void sdma_v5_2_emit_copy_buffer(struct amdgpu_ib *ib,</span></a>
-<a name="1863"><span class="lineNum">    1863 </span>            :                                        uint64_t src_offset,</a>
-<a name="1864"><span class="lineNum">    1864 </span>            :                                        uint64_t dst_offset,</a>
-<a name="1865"><span class="lineNum">    1865 </span>            :                                        uint32_t byte_count,</a>
-<a name="1866"><span class="lineNum">    1866 </span>            :                                        bool tmz)</a>
-<a name="1867"><span class="lineNum">    1867 </span>            : {</a>
-<a name="1868"><span class="lineNum">    1868 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = SDMA_PKT_HEADER_OP(SDMA_OP_COPY) |</span></a>
-<a name="1869"><span class="lineNum">    1869 </span><span class="lineNoCov">          0 :                 SDMA_PKT_HEADER_SUB_OP(SDMA_SUBOP_COPY_LINEAR) |</span></a>
-<a name="1870"><span class="lineNum">    1870 </span>            :                 SDMA_PKT_COPY_LINEAR_HEADER_TMZ(tmz ? 1 : 0);</a>
-<a name="1871"><span class="lineNum">    1871 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = byte_count - 1;</span></a>
-<a name="1872"><span class="lineNum">    1872 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = 0; /* src/dst endian swap */</span></a>
-<a name="1873"><span class="lineNum">    1873 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = lower_32_bits(src_offset);</span></a>
-<a name="1874"><span class="lineNum">    1874 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = upper_32_bits(src_offset);</span></a>
-<a name="1875"><span class="lineNum">    1875 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = lower_32_bits(dst_offset);</span></a>
-<a name="1876"><span class="lineNum">    1876 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = upper_32_bits(dst_offset);</span></a>
-<a name="1877"><span class="lineNum">    1877 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="1878"><span class="lineNum">    1878 </span>            : </a>
-<a name="1879"><span class="lineNum">    1879 </span>            : /**</a>
-<a name="1880"><span class="lineNum">    1880 </span>            :  * sdma_v5_2_emit_fill_buffer - fill buffer using the sDMA engine</a>
-<a name="1881"><span class="lineNum">    1881 </span>            :  *</a>
-<a name="1882"><span class="lineNum">    1882 </span>            :  * @ib: indirect buffer to fill</a>
-<a name="1883"><span class="lineNum">    1883 </span>            :  * @src_data: value to write to buffer</a>
-<a name="1884"><span class="lineNum">    1884 </span>            :  * @dst_offset: dst GPU address</a>
-<a name="1885"><span class="lineNum">    1885 </span>            :  * @byte_count: number of bytes to xfer</a>
-<a name="1886"><span class="lineNum">    1886 </span>            :  *</a>
-<a name="1887"><span class="lineNum">    1887 </span>            :  * Fill GPU buffers using the DMA engine.</a>
-<a name="1888"><span class="lineNum">    1888 </span>            :  */</a>
-<a name="1889"><span class="lineNum">    1889 </span><span class="lineNoCov">          0 : static void sdma_v5_2_emit_fill_buffer(struct amdgpu_ib *ib,</span></a>
-<a name="1890"><span class="lineNum">    1890 </span>            :                                        uint32_t src_data,</a>
-<a name="1891"><span class="lineNum">    1891 </span>            :                                        uint64_t dst_offset,</a>
-<a name="1892"><span class="lineNum">    1892 </span>            :                                        uint32_t byte_count)</a>
-<a name="1893"><span class="lineNum">    1893 </span>            : {</a>
-<a name="1894"><span class="lineNum">    1894 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = SDMA_PKT_HEADER_OP(SDMA_OP_CONST_FILL);</span></a>
-<a name="1895"><span class="lineNum">    1895 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = lower_32_bits(dst_offset);</span></a>
-<a name="1896"><span class="lineNum">    1896 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = upper_32_bits(dst_offset);</span></a>
-<a name="1897"><span class="lineNum">    1897 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = src_data;</span></a>
-<a name="1898"><span class="lineNum">    1898 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = byte_count - 1;</span></a>
-<a name="1899"><span class="lineNum">    1899 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="1900"><span class="lineNum">    1900 </span>            : </a>
-<a name="1901"><span class="lineNum">    1901 </span>            : static const struct amdgpu_buffer_funcs sdma_v5_2_buffer_funcs = {</a>
-<a name="1902"><span class="lineNum">    1902 </span>            :         .copy_max_bytes = 0x400000,</a>
-<a name="1903"><span class="lineNum">    1903 </span>            :         .copy_num_dw = 7,</a>
-<a name="1904"><span class="lineNum">    1904 </span>            :         .emit_copy_buffer = sdma_v5_2_emit_copy_buffer,</a>
-<a name="1905"><span class="lineNum">    1905 </span>            : </a>
-<a name="1906"><span class="lineNum">    1906 </span>            :         .fill_max_bytes = 0x400000,</a>
-<a name="1907"><span class="lineNum">    1907 </span>            :         .fill_num_dw = 5,</a>
-<a name="1908"><span class="lineNum">    1908 </span>            :         .emit_fill_buffer = sdma_v5_2_emit_fill_buffer,</a>
-<a name="1909"><span class="lineNum">    1909 </span>            : };</a>
-<a name="1910"><span class="lineNum">    1910 </span>            : </a>
-<a name="1911"><span class="lineNum">    1911 </span>            : static void sdma_v5_2_set_buffer_funcs(struct amdgpu_device *adev)</a>
-<a name="1912"><span class="lineNum">    1912 </span>            : {</a>
-<a name="1913"><span class="lineNum">    1913 </span><span class="lineNoCov">          0 :         if (adev-&gt;mman.buffer_funcs == NULL) {</span></a>
-<a name="1914"><span class="lineNum">    1914 </span><span class="lineNoCov">          0 :                 adev-&gt;mman.buffer_funcs = &amp;sdma_v5_2_buffer_funcs;</span></a>
-<a name="1915"><span class="lineNum">    1915 </span><span class="lineNoCov">          0 :                 adev-&gt;mman.buffer_funcs_ring = &amp;adev-&gt;sdma.instance[0].ring;</span></a>
-<a name="1916"><span class="lineNum">    1916 </span>            :         }</a>
-<a name="1917"><span class="lineNum">    1917 </span>            : }</a>
-<a name="1918"><span class="lineNum">    1918 </span>            : </a>
-<a name="1919"><span class="lineNum">    1919 </span>            : static const struct amdgpu_vm_pte_funcs sdma_v5_2_vm_pte_funcs = {</a>
-<a name="1920"><span class="lineNum">    1920 </span>            :         .copy_pte_num_dw = 7,</a>
-<a name="1921"><span class="lineNum">    1921 </span>            :         .copy_pte = sdma_v5_2_vm_copy_pte,</a>
-<a name="1922"><span class="lineNum">    1922 </span>            :         .write_pte = sdma_v5_2_vm_write_pte,</a>
-<a name="1923"><span class="lineNum">    1923 </span>            :         .set_pte_pde = sdma_v5_2_vm_set_pte_pde,</a>
-<a name="1924"><span class="lineNum">    1924 </span>            : };</a>
-<a name="1925"><span class="lineNum">    1925 </span>            : </a>
-<a name="1926"><span class="lineNum">    1926 </span>            : static void sdma_v5_2_set_vm_pte_funcs(struct amdgpu_device *adev)</a>
-<a name="1927"><span class="lineNum">    1927 </span>            : {</a>
-<a name="1928"><span class="lineNum">    1928 </span>            :         unsigned i;</a>
-<a name="1929"><span class="lineNum">    1929 </span>            : </a>
-<a name="1930"><span class="lineNum">    1930 </span><span class="lineNoCov">          0 :         if (adev-&gt;vm_manager.vm_pte_funcs == NULL) {</span></a>
-<a name="1931"><span class="lineNum">    1931 </span><span class="lineNoCov">          0 :                 adev-&gt;vm_manager.vm_pte_funcs = &amp;sdma_v5_2_vm_pte_funcs;</span></a>
-<a name="1932"><span class="lineNum">    1932 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; adev-&gt;sdma.num_instances; i++) {</span></a>
-<a name="1933"><span class="lineNum">    1933 </span><span class="lineNoCov">          0 :                         adev-&gt;vm_manager.vm_pte_scheds[i] =</span></a>
-<a name="1934"><span class="lineNum">    1934 </span><span class="lineNoCov">          0 :                                 &amp;adev-&gt;sdma.instance[i].ring.sched;</span></a>
-<a name="1935"><span class="lineNum">    1935 </span>            :                 }</a>
-<a name="1936"><span class="lineNum">    1936 </span><span class="lineNoCov">          0 :                 adev-&gt;vm_manager.vm_pte_num_scheds = adev-&gt;sdma.num_instances;</span></a>
-<a name="1937"><span class="lineNum">    1937 </span>            :         }</a>
-<a name="1938"><span class="lineNum">    1938 </span>            : }</a>
-<a name="1939"><span class="lineNum">    1939 </span>            : </a>
-<a name="1940"><span class="lineNum">    1940 </span>            : const struct amdgpu_ip_block_version sdma_v5_2_ip_block = {</a>
-<a name="1941"><span class="lineNum">    1941 </span>            :         .type = AMD_IP_BLOCK_TYPE_SDMA,</a>
-<a name="1942"><span class="lineNum">    1942 </span>            :         .major = 5,</a>
-<a name="1943"><span class="lineNum">    1943 </span>            :         .minor = 2,</a>
-<a name="1944"><span class="lineNum">    1944 </span>            :         .rev = 0,</a>
-<a name="1945"><span class="lineNum">    1945 </span>            :         .funcs = &amp;sdma_v5_2_ip_funcs,</a>
-<a name="1946"><span class="lineNum">    1946 </span>            : };</a>
+<a name="1752"><span class="lineNum">    1752 </span>            :         /* AMD_CG_SUPPORT_SDMA_MGCG */</a>
+<a name="1753"><span class="lineNum">    1753 </span><span class="lineNoCov">          0 :         data = RREG32(sdma_v5_2_get_reg_offset(adev, 0, mmSDMA0_CLK_CTRL));</span></a>
+<a name="1754"><span class="lineNum">    1754 </span><span class="lineNoCov">          0 :         if (!(data &amp; SDMA0_CLK_CTRL__CGCG_EN_OVERRIDE_MASK))</span></a>
+<a name="1755"><span class="lineNum">    1755 </span><span class="lineNoCov">          0 :                 *flags |= AMD_CG_SUPPORT_SDMA_MGCG;</span></a>
+<a name="1756"><span class="lineNum">    1756 </span>            : </a>
+<a name="1757"><span class="lineNum">    1757 </span>            :         /* AMD_CG_SUPPORT_SDMA_LS */</a>
+<a name="1758"><span class="lineNum">    1758 </span><span class="lineNoCov">          0 :         data = RREG32_KIQ(sdma_v5_2_get_reg_offset(adev, 0, mmSDMA0_POWER_CNTL));</span></a>
+<a name="1759"><span class="lineNum">    1759 </span><span class="lineNoCov">          0 :         if (data &amp; SDMA0_POWER_CNTL__MEM_POWER_OVERRIDE_MASK)</span></a>
+<a name="1760"><span class="lineNum">    1760 </span><span class="lineNoCov">          0 :                 *flags |= AMD_CG_SUPPORT_SDMA_LS;</span></a>
+<a name="1761"><span class="lineNum">    1761 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1762"><span class="lineNum">    1762 </span>            : </a>
+<a name="1763"><span class="lineNum">    1763 </span>            : const struct amd_ip_funcs sdma_v5_2_ip_funcs = {</a>
+<a name="1764"><span class="lineNum">    1764 </span>            :         .name = &quot;sdma_v5_2&quot;,</a>
+<a name="1765"><span class="lineNum">    1765 </span>            :         .early_init = sdma_v5_2_early_init,</a>
+<a name="1766"><span class="lineNum">    1766 </span>            :         .late_init = NULL,</a>
+<a name="1767"><span class="lineNum">    1767 </span>            :         .sw_init = sdma_v5_2_sw_init,</a>
+<a name="1768"><span class="lineNum">    1768 </span>            :         .sw_fini = sdma_v5_2_sw_fini,</a>
+<a name="1769"><span class="lineNum">    1769 </span>            :         .hw_init = sdma_v5_2_hw_init,</a>
+<a name="1770"><span class="lineNum">    1770 </span>            :         .hw_fini = sdma_v5_2_hw_fini,</a>
+<a name="1771"><span class="lineNum">    1771 </span>            :         .suspend = sdma_v5_2_suspend,</a>
+<a name="1772"><span class="lineNum">    1772 </span>            :         .resume = sdma_v5_2_resume,</a>
+<a name="1773"><span class="lineNum">    1773 </span>            :         .is_idle = sdma_v5_2_is_idle,</a>
+<a name="1774"><span class="lineNum">    1774 </span>            :         .wait_for_idle = sdma_v5_2_wait_for_idle,</a>
+<a name="1775"><span class="lineNum">    1775 </span>            :         .soft_reset = sdma_v5_2_soft_reset,</a>
+<a name="1776"><span class="lineNum">    1776 </span>            :         .set_clockgating_state = sdma_v5_2_set_clockgating_state,</a>
+<a name="1777"><span class="lineNum">    1777 </span>            :         .set_powergating_state = sdma_v5_2_set_powergating_state,</a>
+<a name="1778"><span class="lineNum">    1778 </span>            :         .get_clockgating_state = sdma_v5_2_get_clockgating_state,</a>
+<a name="1779"><span class="lineNum">    1779 </span>            : };</a>
+<a name="1780"><span class="lineNum">    1780 </span>            : </a>
+<a name="1781"><span class="lineNum">    1781 </span>            : static const struct amdgpu_ring_funcs sdma_v5_2_ring_funcs = {</a>
+<a name="1782"><span class="lineNum">    1782 </span>            :         .type = AMDGPU_RING_TYPE_SDMA,</a>
+<a name="1783"><span class="lineNum">    1783 </span>            :         .align_mask = 0xf,</a>
+<a name="1784"><span class="lineNum">    1784 </span>            :         .nop = SDMA_PKT_NOP_HEADER_OP(SDMA_OP_NOP),</a>
+<a name="1785"><span class="lineNum">    1785 </span>            :         .support_64bit_ptrs = true,</a>
+<a name="1786"><span class="lineNum">    1786 </span>            :         .secure_submission_supported = true,</a>
+<a name="1787"><span class="lineNum">    1787 </span>            :         .vmhub = AMDGPU_GFXHUB_0,</a>
+<a name="1788"><span class="lineNum">    1788 </span>            :         .get_rptr = sdma_v5_2_ring_get_rptr,</a>
+<a name="1789"><span class="lineNum">    1789 </span>            :         .get_wptr = sdma_v5_2_ring_get_wptr,</a>
+<a name="1790"><span class="lineNum">    1790 </span>            :         .set_wptr = sdma_v5_2_ring_set_wptr,</a>
+<a name="1791"><span class="lineNum">    1791 </span>            :         .emit_frame_size =</a>
+<a name="1792"><span class="lineNum">    1792 </span>            :                 5 + /* sdma_v5_2_ring_init_cond_exec */</a>
+<a name="1793"><span class="lineNum">    1793 </span>            :                 6 + /* sdma_v5_2_ring_emit_hdp_flush */</a>
+<a name="1794"><span class="lineNum">    1794 </span>            :                 3 + /* hdp_invalidate */</a>
+<a name="1795"><span class="lineNum">    1795 </span>            :                 6 + /* sdma_v5_2_ring_emit_pipeline_sync */</a>
+<a name="1796"><span class="lineNum">    1796 </span>            :                 /* sdma_v5_2_ring_emit_vm_flush */</a>
+<a name="1797"><span class="lineNum">    1797 </span>            :                 SOC15_FLUSH_GPU_TLB_NUM_WREG * 3 +</a>
+<a name="1798"><span class="lineNum">    1798 </span>            :                 SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 6 +</a>
+<a name="1799"><span class="lineNum">    1799 </span>            :                 10 + 10 + 10, /* sdma_v5_2_ring_emit_fence x3 for user fence, vm fence */</a>
+<a name="1800"><span class="lineNum">    1800 </span>            :         .emit_ib_size = 7 + 6, /* sdma_v5_2_ring_emit_ib */</a>
+<a name="1801"><span class="lineNum">    1801 </span>            :         .emit_ib = sdma_v5_2_ring_emit_ib,</a>
+<a name="1802"><span class="lineNum">    1802 </span>            :         .emit_mem_sync = sdma_v5_2_ring_emit_mem_sync,</a>
+<a name="1803"><span class="lineNum">    1803 </span>            :         .emit_fence = sdma_v5_2_ring_emit_fence,</a>
+<a name="1804"><span class="lineNum">    1804 </span>            :         .emit_pipeline_sync = sdma_v5_2_ring_emit_pipeline_sync,</a>
+<a name="1805"><span class="lineNum">    1805 </span>            :         .emit_vm_flush = sdma_v5_2_ring_emit_vm_flush,</a>
+<a name="1806"><span class="lineNum">    1806 </span>            :         .emit_hdp_flush = sdma_v5_2_ring_emit_hdp_flush,</a>
+<a name="1807"><span class="lineNum">    1807 </span>            :         .test_ring = sdma_v5_2_ring_test_ring,</a>
+<a name="1808"><span class="lineNum">    1808 </span>            :         .test_ib = sdma_v5_2_ring_test_ib,</a>
+<a name="1809"><span class="lineNum">    1809 </span>            :         .insert_nop = sdma_v5_2_ring_insert_nop,</a>
+<a name="1810"><span class="lineNum">    1810 </span>            :         .pad_ib = sdma_v5_2_ring_pad_ib,</a>
+<a name="1811"><span class="lineNum">    1811 </span>            :         .emit_wreg = sdma_v5_2_ring_emit_wreg,</a>
+<a name="1812"><span class="lineNum">    1812 </span>            :         .emit_reg_wait = sdma_v5_2_ring_emit_reg_wait,</a>
+<a name="1813"><span class="lineNum">    1813 </span>            :         .emit_reg_write_reg_wait = sdma_v5_2_ring_emit_reg_write_reg_wait,</a>
+<a name="1814"><span class="lineNum">    1814 </span>            :         .init_cond_exec = sdma_v5_2_ring_init_cond_exec,</a>
+<a name="1815"><span class="lineNum">    1815 </span>            :         .patch_cond_exec = sdma_v5_2_ring_patch_cond_exec,</a>
+<a name="1816"><span class="lineNum">    1816 </span>            :         .preempt_ib = sdma_v5_2_ring_preempt_ib,</a>
+<a name="1817"><span class="lineNum">    1817 </span>            : };</a>
+<a name="1818"><span class="lineNum">    1818 </span>            : </a>
+<a name="1819"><span class="lineNum">    1819 </span>            : static void sdma_v5_2_set_ring_funcs(struct amdgpu_device *adev)</a>
+<a name="1820"><span class="lineNum">    1820 </span>            : {</a>
+<a name="1821"><span class="lineNum">    1821 </span>            :         int i;</a>
+<a name="1822"><span class="lineNum">    1822 </span>            : </a>
+<a name="1823"><span class="lineNum">    1823 </span><span class="lineNoCov">          0 :         for (i = 0; i &lt; adev-&gt;sdma.num_instances; i++) {</span></a>
+<a name="1824"><span class="lineNum">    1824 </span><span class="lineNoCov">          0 :                 adev-&gt;sdma.instance[i].ring.funcs = &amp;sdma_v5_2_ring_funcs;</span></a>
+<a name="1825"><span class="lineNum">    1825 </span><span class="lineNoCov">          0 :                 adev-&gt;sdma.instance[i].ring.me = i;</span></a>
+<a name="1826"><span class="lineNum">    1826 </span>            :         }</a>
+<a name="1827"><span class="lineNum">    1827 </span>            : }</a>
+<a name="1828"><span class="lineNum">    1828 </span>            : </a>
+<a name="1829"><span class="lineNum">    1829 </span>            : static const struct amdgpu_irq_src_funcs sdma_v5_2_trap_irq_funcs = {</a>
+<a name="1830"><span class="lineNum">    1830 </span>            :         .set = sdma_v5_2_set_trap_irq_state,</a>
+<a name="1831"><span class="lineNum">    1831 </span>            :         .process = sdma_v5_2_process_trap_irq,</a>
+<a name="1832"><span class="lineNum">    1832 </span>            : };</a>
+<a name="1833"><span class="lineNum">    1833 </span>            : </a>
+<a name="1834"><span class="lineNum">    1834 </span>            : static const struct amdgpu_irq_src_funcs sdma_v5_2_illegal_inst_irq_funcs = {</a>
+<a name="1835"><span class="lineNum">    1835 </span>            :         .process = sdma_v5_2_process_illegal_inst_irq,</a>
+<a name="1836"><span class="lineNum">    1836 </span>            : };</a>
+<a name="1837"><span class="lineNum">    1837 </span>            : </a>
+<a name="1838"><span class="lineNum">    1838 </span>            : static void sdma_v5_2_set_irq_funcs(struct amdgpu_device *adev)</a>
+<a name="1839"><span class="lineNum">    1839 </span>            : {</a>
+<a name="1840"><span class="lineNum">    1840 </span><span class="lineNoCov">          0 :         adev-&gt;sdma.trap_irq.num_types = AMDGPU_SDMA_IRQ_INSTANCE0 +</span></a>
+<a name="1841"><span class="lineNum">    1841 </span>            :                                         adev-&gt;sdma.num_instances;</a>
+<a name="1842"><span class="lineNum">    1842 </span><span class="lineNoCov">          0 :         adev-&gt;sdma.trap_irq.funcs = &amp;sdma_v5_2_trap_irq_funcs;</span></a>
+<a name="1843"><span class="lineNum">    1843 </span><span class="lineNoCov">          0 :         adev-&gt;sdma.illegal_inst_irq.funcs = &amp;sdma_v5_2_illegal_inst_irq_funcs;</span></a>
+<a name="1844"><span class="lineNum">    1844 </span>            : }</a>
+<a name="1845"><span class="lineNum">    1845 </span>            : </a>
+<a name="1846"><span class="lineNum">    1846 </span>            : /**</a>
+<a name="1847"><span class="lineNum">    1847 </span>            :  * sdma_v5_2_emit_copy_buffer - copy buffer using the sDMA engine</a>
+<a name="1848"><span class="lineNum">    1848 </span>            :  *</a>
+<a name="1849"><span class="lineNum">    1849 </span>            :  * @ib: indirect buffer to copy to</a>
+<a name="1850"><span class="lineNum">    1850 </span>            :  * @src_offset: src GPU address</a>
+<a name="1851"><span class="lineNum">    1851 </span>            :  * @dst_offset: dst GPU address</a>
+<a name="1852"><span class="lineNum">    1852 </span>            :  * @byte_count: number of bytes to xfer</a>
+<a name="1853"><span class="lineNum">    1853 </span>            :  * @tmz: if a secure copy should be used</a>
+<a name="1854"><span class="lineNum">    1854 </span>            :  *</a>
+<a name="1855"><span class="lineNum">    1855 </span>            :  * Copy GPU buffers using the DMA engine.</a>
+<a name="1856"><span class="lineNum">    1856 </span>            :  * Used by the amdgpu ttm implementation to move pages if</a>
+<a name="1857"><span class="lineNum">    1857 </span>            :  * registered as the asic copy callback.</a>
+<a name="1858"><span class="lineNum">    1858 </span>            :  */</a>
+<a name="1859"><span class="lineNum">    1859 </span><span class="lineNoCov">          0 : static void sdma_v5_2_emit_copy_buffer(struct amdgpu_ib *ib,</span></a>
+<a name="1860"><span class="lineNum">    1860 </span>            :                                        uint64_t src_offset,</a>
+<a name="1861"><span class="lineNum">    1861 </span>            :                                        uint64_t dst_offset,</a>
+<a name="1862"><span class="lineNum">    1862 </span>            :                                        uint32_t byte_count,</a>
+<a name="1863"><span class="lineNum">    1863 </span>            :                                        bool tmz)</a>
+<a name="1864"><span class="lineNum">    1864 </span>            : {</a>
+<a name="1865"><span class="lineNum">    1865 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = SDMA_PKT_HEADER_OP(SDMA_OP_COPY) |</span></a>
+<a name="1866"><span class="lineNum">    1866 </span><span class="lineNoCov">          0 :                 SDMA_PKT_HEADER_SUB_OP(SDMA_SUBOP_COPY_LINEAR) |</span></a>
+<a name="1867"><span class="lineNum">    1867 </span>            :                 SDMA_PKT_COPY_LINEAR_HEADER_TMZ(tmz ? 1 : 0);</a>
+<a name="1868"><span class="lineNum">    1868 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = byte_count - 1;</span></a>
+<a name="1869"><span class="lineNum">    1869 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = 0; /* src/dst endian swap */</span></a>
+<a name="1870"><span class="lineNum">    1870 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = lower_32_bits(src_offset);</span></a>
+<a name="1871"><span class="lineNum">    1871 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = upper_32_bits(src_offset);</span></a>
+<a name="1872"><span class="lineNum">    1872 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = lower_32_bits(dst_offset);</span></a>
+<a name="1873"><span class="lineNum">    1873 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = upper_32_bits(dst_offset);</span></a>
+<a name="1874"><span class="lineNum">    1874 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1875"><span class="lineNum">    1875 </span>            : </a>
+<a name="1876"><span class="lineNum">    1876 </span>            : /**</a>
+<a name="1877"><span class="lineNum">    1877 </span>            :  * sdma_v5_2_emit_fill_buffer - fill buffer using the sDMA engine</a>
+<a name="1878"><span class="lineNum">    1878 </span>            :  *</a>
+<a name="1879"><span class="lineNum">    1879 </span>            :  * @ib: indirect buffer to fill</a>
+<a name="1880"><span class="lineNum">    1880 </span>            :  * @src_data: value to write to buffer</a>
+<a name="1881"><span class="lineNum">    1881 </span>            :  * @dst_offset: dst GPU address</a>
+<a name="1882"><span class="lineNum">    1882 </span>            :  * @byte_count: number of bytes to xfer</a>
+<a name="1883"><span class="lineNum">    1883 </span>            :  *</a>
+<a name="1884"><span class="lineNum">    1884 </span>            :  * Fill GPU buffers using the DMA engine.</a>
+<a name="1885"><span class="lineNum">    1885 </span>            :  */</a>
+<a name="1886"><span class="lineNum">    1886 </span><span class="lineNoCov">          0 : static void sdma_v5_2_emit_fill_buffer(struct amdgpu_ib *ib,</span></a>
+<a name="1887"><span class="lineNum">    1887 </span>            :                                        uint32_t src_data,</a>
+<a name="1888"><span class="lineNum">    1888 </span>            :                                        uint64_t dst_offset,</a>
+<a name="1889"><span class="lineNum">    1889 </span>            :                                        uint32_t byte_count)</a>
+<a name="1890"><span class="lineNum">    1890 </span>            : {</a>
+<a name="1891"><span class="lineNum">    1891 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = SDMA_PKT_HEADER_OP(SDMA_OP_CONST_FILL);</span></a>
+<a name="1892"><span class="lineNum">    1892 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = lower_32_bits(dst_offset);</span></a>
+<a name="1893"><span class="lineNum">    1893 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = upper_32_bits(dst_offset);</span></a>
+<a name="1894"><span class="lineNum">    1894 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = src_data;</span></a>
+<a name="1895"><span class="lineNum">    1895 </span><span class="lineNoCov">          0 :         ib-&gt;ptr[ib-&gt;length_dw++] = byte_count - 1;</span></a>
+<a name="1896"><span class="lineNum">    1896 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1897"><span class="lineNum">    1897 </span>            : </a>
+<a name="1898"><span class="lineNum">    1898 </span>            : static const struct amdgpu_buffer_funcs sdma_v5_2_buffer_funcs = {</a>
+<a name="1899"><span class="lineNum">    1899 </span>            :         .copy_max_bytes = 0x400000,</a>
+<a name="1900"><span class="lineNum">    1900 </span>            :         .copy_num_dw = 7,</a>
+<a name="1901"><span class="lineNum">    1901 </span>            :         .emit_copy_buffer = sdma_v5_2_emit_copy_buffer,</a>
+<a name="1902"><span class="lineNum">    1902 </span>            : </a>
+<a name="1903"><span class="lineNum">    1903 </span>            :         .fill_max_bytes = 0x400000,</a>
+<a name="1904"><span class="lineNum">    1904 </span>            :         .fill_num_dw = 5,</a>
+<a name="1905"><span class="lineNum">    1905 </span>            :         .emit_fill_buffer = sdma_v5_2_emit_fill_buffer,</a>
+<a name="1906"><span class="lineNum">    1906 </span>            : };</a>
+<a name="1907"><span class="lineNum">    1907 </span>            : </a>
+<a name="1908"><span class="lineNum">    1908 </span>            : static void sdma_v5_2_set_buffer_funcs(struct amdgpu_device *adev)</a>
+<a name="1909"><span class="lineNum">    1909 </span>            : {</a>
+<a name="1910"><span class="lineNum">    1910 </span><span class="lineNoCov">          0 :         if (adev-&gt;mman.buffer_funcs == NULL) {</span></a>
+<a name="1911"><span class="lineNum">    1911 </span><span class="lineNoCov">          0 :                 adev-&gt;mman.buffer_funcs = &amp;sdma_v5_2_buffer_funcs;</span></a>
+<a name="1912"><span class="lineNum">    1912 </span><span class="lineNoCov">          0 :                 adev-&gt;mman.buffer_funcs_ring = &amp;adev-&gt;sdma.instance[0].ring;</span></a>
+<a name="1913"><span class="lineNum">    1913 </span>            :         }</a>
+<a name="1914"><span class="lineNum">    1914 </span>            : }</a>
+<a name="1915"><span class="lineNum">    1915 </span>            : </a>
+<a name="1916"><span class="lineNum">    1916 </span>            : static const struct amdgpu_vm_pte_funcs sdma_v5_2_vm_pte_funcs = {</a>
+<a name="1917"><span class="lineNum">    1917 </span>            :         .copy_pte_num_dw = 7,</a>
+<a name="1918"><span class="lineNum">    1918 </span>            :         .copy_pte = sdma_v5_2_vm_copy_pte,</a>
+<a name="1919"><span class="lineNum">    1919 </span>            :         .write_pte = sdma_v5_2_vm_write_pte,</a>
+<a name="1920"><span class="lineNum">    1920 </span>            :         .set_pte_pde = sdma_v5_2_vm_set_pte_pde,</a>
+<a name="1921"><span class="lineNum">    1921 </span>            : };</a>
+<a name="1922"><span class="lineNum">    1922 </span>            : </a>
+<a name="1923"><span class="lineNum">    1923 </span>            : static void sdma_v5_2_set_vm_pte_funcs(struct amdgpu_device *adev)</a>
+<a name="1924"><span class="lineNum">    1924 </span>            : {</a>
+<a name="1925"><span class="lineNum">    1925 </span>            :         unsigned i;</a>
+<a name="1926"><span class="lineNum">    1926 </span>            : </a>
+<a name="1927"><span class="lineNum">    1927 </span><span class="lineNoCov">          0 :         if (adev-&gt;vm_manager.vm_pte_funcs == NULL) {</span></a>
+<a name="1928"><span class="lineNum">    1928 </span><span class="lineNoCov">          0 :                 adev-&gt;vm_manager.vm_pte_funcs = &amp;sdma_v5_2_vm_pte_funcs;</span></a>
+<a name="1929"><span class="lineNum">    1929 </span><span class="lineNoCov">          0 :                 for (i = 0; i &lt; adev-&gt;sdma.num_instances; i++) {</span></a>
+<a name="1930"><span class="lineNum">    1930 </span><span class="lineNoCov">          0 :                         adev-&gt;vm_manager.vm_pte_scheds[i] =</span></a>
+<a name="1931"><span class="lineNum">    1931 </span><span class="lineNoCov">          0 :                                 &amp;adev-&gt;sdma.instance[i].ring.sched;</span></a>
+<a name="1932"><span class="lineNum">    1932 </span>            :                 }</a>
+<a name="1933"><span class="lineNum">    1933 </span><span class="lineNoCov">          0 :                 adev-&gt;vm_manager.vm_pte_num_scheds = adev-&gt;sdma.num_instances;</span></a>
+<a name="1934"><span class="lineNum">    1934 </span>            :         }</a>
+<a name="1935"><span class="lineNum">    1935 </span>            : }</a>
+<a name="1936"><span class="lineNum">    1936 </span>            : </a>
+<a name="1937"><span class="lineNum">    1937 </span>            : const struct amdgpu_ip_block_version sdma_v5_2_ip_block = {</a>
+<a name="1938"><span class="lineNum">    1938 </span>            :         .type = AMD_IP_BLOCK_TYPE_SDMA,</a>
+<a name="1939"><span class="lineNum">    1939 </span>            :         .major = 5,</a>
+<a name="1940"><span class="lineNum">    1940 </span>            :         .minor = 2,</a>
+<a name="1941"><span class="lineNum">    1941 </span>            :         .rev = 0,</a>
+<a name="1942"><span class="lineNum">    1942 </span>            :         .funcs = &amp;sdma_v5_2_ip_funcs,</a>
+<a name="1943"><span class="lineNum">    1943 </span>            : };</a>
 </pre>
       </td>
     </tr>

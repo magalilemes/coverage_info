@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -213,9 +213,9 @@
 <a name="151"><span class="lineNum">     151 </span>            : /* Check whether all cache entries contain U64_MAX, i.e. eternal expiry time */</a>
 <a name="152"><span class="lineNum">     152 </span>            : static inline bool expiry_cache_is_inactive(const struct posix_cputimers *pct)</a>
 <a name="153"><span class="lineNum">     153 </span>            : {</a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineCov">         18 :         return !(~pct-&gt;bases[CPUCLOCK_PROF].nextevt |</span></a>
-<a name="155"><span class="lineNum">     155 </span><span class="lineCov">         18 :                  ~pct-&gt;bases[CPUCLOCK_VIRT].nextevt |</span></a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">          9 :                  ~pct-&gt;bases[CPUCLOCK_SCHED].nextevt);</span></a>
+<a name="154"><span class="lineNum">     154 </span><span class="lineCov">         26 :         return !(~pct-&gt;bases[CPUCLOCK_PROF].nextevt |</span></a>
+<a name="155"><span class="lineNum">     155 </span><span class="lineCov">         26 :                  ~pct-&gt;bases[CPUCLOCK_VIRT].nextevt |</span></a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineCov">         13 :                  ~pct-&gt;bases[CPUCLOCK_SCHED].nextevt);</span></a>
 <a name="157"><span class="lineNum">     157 </span>            : }</a>
 <a name="158"><span class="lineNum">     158 </span>            : </a>
 <a name="159"><span class="lineNum">     159 </span>            : static int</a>
@@ -1173,12 +1173,12 @@
 <a name="1111"><span class="lineNum">    1111 </span>            :  * timers and compare them with the corresponding expiration times.  Return</a>
 <a name="1112"><span class="lineNum">    1112 </span>            :  * true if a timer has expired, else return false.</a>
 <a name="1113"><span class="lineNum">    1113 </span>            :  */</a>
-<a name="1114"><span class="lineNum">    1114 </span><span class="lineCov">          9 : static inline bool fastpath_timer_check(struct task_struct *tsk)</span></a>
+<a name="1114"><span class="lineNum">    1114 </span><span class="lineCov">         13 : static inline bool fastpath_timer_check(struct task_struct *tsk)</span></a>
 <a name="1115"><span class="lineNum">    1115 </span>            : {</a>
-<a name="1116"><span class="lineNum">    1116 </span><span class="lineCov">          9 :         struct posix_cputimers *pct = &amp;tsk-&gt;posix_cputimers;</span></a>
+<a name="1116"><span class="lineNum">    1116 </span><span class="lineCov">         13 :         struct posix_cputimers *pct = &amp;tsk-&gt;posix_cputimers;</span></a>
 <a name="1117"><span class="lineNum">    1117 </span>            :         struct signal_struct *sig;</a>
 <a name="1118"><span class="lineNum">    1118 </span>            : </a>
-<a name="1119"><span class="lineNum">    1119 </span><span class="lineCov">          9 :         if (!expiry_cache_is_inactive(pct)) {</span></a>
+<a name="1119"><span class="lineNum">    1119 </span><span class="lineCov">         13 :         if (!expiry_cache_is_inactive(pct)) {</span></a>
 <a name="1120"><span class="lineNum">    1120 </span>            :                 u64 samples[CPUCLOCK_MAX];</a>
 <a name="1121"><span class="lineNum">    1121 </span>            : </a>
 <a name="1122"><span class="lineNum">    1122 </span>            :                 task_sample_cputime(tsk, samples);</a>
@@ -1186,8 +1186,8 @@
 <a name="1124"><span class="lineNum">    1124 </span><span class="lineNoCov">          0 :                         return true;</span></a>
 <a name="1125"><span class="lineNum">    1125 </span>            :         }</a>
 <a name="1126"><span class="lineNum">    1126 </span>            : </a>
-<a name="1127"><span class="lineNum">    1127 </span><span class="lineCov">          9 :         sig = tsk-&gt;signal;</span></a>
-<a name="1128"><span class="lineNum">    1128 </span><span class="lineCov">          9 :         pct = &amp;sig-&gt;posix_cputimers;</span></a>
+<a name="1127"><span class="lineNum">    1127 </span><span class="lineCov">         13 :         sig = tsk-&gt;signal;</span></a>
+<a name="1128"><span class="lineNum">    1128 </span><span class="lineCov">         13 :         pct = &amp;sig-&gt;posix_cputimers;</span></a>
 <a name="1129"><span class="lineNum">    1129 </span>            :         /*</a>
 <a name="1130"><span class="lineNum">    1130 </span>            :          * Check if thread group timers expired when timers are active and</a>
 <a name="1131"><span class="lineNum">    1131 </span>            :          * no other thread in the group is already handling expiry for</a>
@@ -1203,7 +1203,7 @@
 <a name="1141"><span class="lineNum">    1141 </span>            :          * timer. This isn't an issue in practice because these types of</a>
 <a name="1142"><span class="lineNum">    1142 </span>            :          * delays with signals actually getting sent are expected.</a>
 <a name="1143"><span class="lineNum">    1143 </span>            :          */</a>
-<a name="1144"><span class="lineNum">    1144 </span><span class="lineCov">          9 :         if (READ_ONCE(pct-&gt;timers_active) &amp;&amp; !READ_ONCE(pct-&gt;expiry_active)) {</span></a>
+<a name="1144"><span class="lineNum">    1144 </span><span class="lineCov">         13 :         if (READ_ONCE(pct-&gt;timers_active) &amp;&amp; !READ_ONCE(pct-&gt;expiry_active)) {</span></a>
 <a name="1145"><span class="lineNum">    1145 </span>            :                 u64 samples[CPUCLOCK_MAX];</a>
 <a name="1146"><span class="lineNum">    1146 </span>            : </a>
 <a name="1147"><span class="lineNum">    1147 </span><span class="lineNoCov">          0 :                 proc_sample_cputime_atomic(&amp;sig-&gt;cputimer.cputime_atomic,</span></a>
@@ -1213,10 +1213,10 @@
 <a name="1151"><span class="lineNum">    1151 </span><span class="lineNoCov">          0 :                         return true;</span></a>
 <a name="1152"><span class="lineNum">    1152 </span>            :         }</a>
 <a name="1153"><span class="lineNum">    1153 </span>            : </a>
-<a name="1154"><span class="lineNum">    1154 </span><span class="lineCov">         18 :         if (dl_task(tsk) &amp;&amp; tsk-&gt;dl.dl_overrun)</span></a>
+<a name="1154"><span class="lineNum">    1154 </span><span class="lineCov">         26 :         if (dl_task(tsk) &amp;&amp; tsk-&gt;dl.dl_overrun)</span></a>
 <a name="1155"><span class="lineNum">    1155 </span>            :                 return true;</a>
 <a name="1156"><span class="lineNum">    1156 </span>            : </a>
-<a name="1157"><span class="lineNum">    1157 </span><span class="lineCov">          9 :         return false;</span></a>
+<a name="1157"><span class="lineNum">    1157 </span><span class="lineCov">         13 :         return false;</span></a>
 <a name="1158"><span class="lineNum">    1158 </span>            : }</a>
 <a name="1159"><span class="lineNum">    1159 </span>            : </a>
 <a name="1160"><span class="lineNum">    1160 </span>            : static void handle_posix_cpu_timers(struct task_struct *tsk);</a>
@@ -1435,9 +1435,9 @@
 <a name="1373"><span class="lineNum">    1373 </span>            :  * already updated our counts.  We need to check if any timers fire now.</a>
 <a name="1374"><span class="lineNum">    1374 </span>            :  * Interrupts are disabled.</a>
 <a name="1375"><span class="lineNum">    1375 </span>            :  */</a>
-<a name="1376"><span class="lineNum">    1376 </span><span class="lineCov">          9 : void run_posix_cpu_timers(void)</span></a>
+<a name="1376"><span class="lineNum">    1376 </span><span class="lineCov">         13 : void run_posix_cpu_timers(void)</span></a>
 <a name="1377"><span class="lineNum">    1377 </span>            : {</a>
-<a name="1378"><span class="lineNum">    1378 </span><span class="lineCov">          9 :         struct task_struct *tsk = current;</span></a>
+<a name="1378"><span class="lineNum">    1378 </span><span class="lineCov">         13 :         struct task_struct *tsk = current;</span></a>
 <a name="1379"><span class="lineNum">    1379 </span>            : </a>
 <a name="1380"><span class="lineNum">    1380 </span>            :         lockdep_assert_irqs_disabled();</a>
 <a name="1381"><span class="lineNum">    1381 </span>            : </a>
@@ -1445,14 +1445,14 @@
 <a name="1383"><span class="lineNum">    1383 </span>            :          * If the actual expiry is deferred to task work context and the</a>
 <a name="1384"><span class="lineNum">    1384 </span>            :          * work is already scheduled there is no point to do anything here.</a>
 <a name="1385"><span class="lineNum">    1385 </span>            :          */</a>
-<a name="1386"><span class="lineNum">    1386 </span><span class="lineCov">          9 :         if (posix_cpu_timers_work_scheduled(tsk))</span></a>
+<a name="1386"><span class="lineNum">    1386 </span><span class="lineCov">         13 :         if (posix_cpu_timers_work_scheduled(tsk))</span></a>
 <a name="1387"><span class="lineNum">    1387 </span>            :                 return;</a>
 <a name="1388"><span class="lineNum">    1388 </span>            : </a>
 <a name="1389"><span class="lineNum">    1389 </span>            :         /*</a>
 <a name="1390"><span class="lineNum">    1390 </span>            :          * The fast path checks that there are no expired thread or thread</a>
 <a name="1391"><span class="lineNum">    1391 </span>            :          * group timers.  If that's so, just return.</a>
 <a name="1392"><span class="lineNum">    1392 </span>            :          */</a>
-<a name="1393"><span class="lineNum">    1393 </span><span class="lineCov">          9 :         if (!fastpath_timer_check(tsk))</span></a>
+<a name="1393"><span class="lineNum">    1393 </span><span class="lineCov">         13 :         if (!fastpath_timer_check(tsk))</span></a>
 <a name="1394"><span class="lineNum">    1394 </span>            :                 return;</a>
 <a name="1395"><span class="lineNum">    1395 </span>            : </a>
 <a name="1396"><span class="lineNum">    1396 </span>            :         __run_posix_cpu_timers(tsk);</a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -102,11 +102,11 @@
 <a name="40"><span class="lineNum">      40 </span>            : static inline struct thread_info *current_thread_info(void)</a>
 <a name="41"><span class="lineNum">      41 </span>            : {</a>
 <a name="42"><span class="lineNum">      42 </span>            :         struct thread_info *ti;</a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineCov">      63470 :         unsigned long mask = THREAD_SIZE - 1;</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">      63561 :         unsigned long mask = THREAD_SIZE - 1;</span></a>
 <a name="44"><span class="lineNum">      44 </span>            :         void *p;</a>
 <a name="45"><span class="lineNum">      45 </span>            : </a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">      63470 :         asm volatile (&quot;&quot; : &quot;=r&quot; (p) : &quot;0&quot; (&amp;ti));</span></a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">      62940 :         ti = (struct thread_info *) (((unsigned long)p) &amp; ~mask);</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">      63561 :         asm volatile (&quot;&quot; : &quot;=r&quot; (p) : &quot;0&quot; (&amp;ti));</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">      63023 :         ti = (struct thread_info *) (((unsigned long)p) &amp; ~mask);</span></a>
 <a name="48"><span class="lineNum">      48 </span>            :         return ti;</a>
 <a name="49"><span class="lineNum">      49 </span>            : }</a>
 <a name="50"><span class="lineNum">      50 </span>            : </a>

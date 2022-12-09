@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -96,8 +96,8 @@
 <a name="34"><span class="lineNum">      34 </span>            :  */</a>
 <a name="35"><span class="lineNum">      35 </span>            : static inline void INIT_LIST_HEAD(struct list_head *list)</a>
 <a name="36"><span class="lineNum">      36 </span>            : {</a>
-<a name="37"><span class="lineNum">      37 </span><span class="lineCov">     302270 :         WRITE_ONCE(list-&gt;next, list);</span></a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">     302268 :         list-&gt;prev = list;</span></a>
+<a name="37"><span class="lineNum">      37 </span><span class="lineCov">     295383 :         WRITE_ONCE(list-&gt;next, list);</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">     295381 :         list-&gt;prev = list;</span></a>
 <a name="39"><span class="lineNum">      39 </span>            : }</a>
 <a name="40"><span class="lineNum">      40 </span>            : </a>
 <a name="41"><span class="lineNum">      41 </span>            : #ifdef CONFIG_DEBUG_LIST</a>
@@ -128,13 +128,13 @@
 <a name="66"><span class="lineNum">      66 </span>            :                               struct list_head *prev,</a>
 <a name="67"><span class="lineNum">      67 </span>            :                               struct list_head *next)</a>
 <a name="68"><span class="lineNum">      68 </span>            : {</a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">       4485 :         if (!__list_add_valid(new, prev, next))</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">       4484 :         if (!__list_add_valid(new, prev, next))</span></a>
 <a name="70"><span class="lineNum">      70 </span>            :                 return;</a>
 <a name="71"><span class="lineNum">      71 </span>            : </a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">       4485 :         next-&gt;prev = new;</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">       4485 :         new-&gt;next = next;</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">       4485 :         new-&gt;prev = prev;</span></a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineCov">       4485 :         WRITE_ONCE(prev-&gt;next, new);</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">       4484 :         next-&gt;prev = new;</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">       4484 :         new-&gt;next = next;</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">       4484 :         new-&gt;prev = prev;</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">       4484 :         WRITE_ONCE(prev-&gt;next, new);</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : }</a>
 <a name="77"><span class="lineNum">      77 </span>            : </a>
 <a name="78"><span class="lineNum">      78 </span>            : /**</a>
@@ -147,7 +147,7 @@
 <a name="85"><span class="lineNum">      85 </span>            :  */</a>
 <a name="86"><span class="lineNum">      86 </span>            : static inline void list_add(struct list_head *new, struct list_head *head)</a>
 <a name="87"><span class="lineNum">      87 </span>            : {</a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">       1900 :         __list_add(new, head, head-&gt;next);</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">       1902 :         __list_add(new, head, head-&gt;next);</span></a>
 <a name="89"><span class="lineNum">      89 </span>            : }</a>
 <a name="90"><span class="lineNum">      90 </span>            : </a>
 <a name="91"><span class="lineNum">      91 </span>            : </a>
@@ -161,7 +161,7 @@
 <a name="99"><span class="lineNum">      99 </span>            :  */</a>
 <a name="100"><span class="lineNum">     100 </span>            : static inline void list_add_tail(struct list_head *new, struct list_head *head)</a>
 <a name="101"><span class="lineNum">     101 </span>            : {</a>
-<a name="102"><span class="lineNum">     102 </span><span class="lineCov">       7070 :         __list_add(new, head-&gt;prev, head);</span></a>
+<a name="102"><span class="lineNum">     102 </span><span class="lineCov">       7066 :         __list_add(new, head-&gt;prev, head);</span></a>
 <a name="103"><span class="lineNum">     103 </span>            : }</a>
 <a name="104"><span class="lineNum">     104 </span>            : </a>
 <a name="105"><span class="lineNum">     105 </span>            : /*</a>
@@ -173,8 +173,8 @@
 <a name="111"><span class="lineNum">     111 </span>            :  */</a>
 <a name="112"><span class="lineNum">     112 </span>            : static inline void __list_del(struct list_head * prev, struct list_head * next)</a>
 <a name="113"><span class="lineNum">     113 </span>            : {</a>
-<a name="114"><span class="lineNum">     114 </span><span class="lineCov">       2915 :         next-&gt;prev = prev;</span></a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">       2915 :         WRITE_ONCE(prev-&gt;next, next);</span></a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineCov">       2916 :         next-&gt;prev = prev;</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">       2916 :         WRITE_ONCE(prev-&gt;next, next);</span></a>
 <a name="116"><span class="lineNum">     116 </span>            : }</a>
 <a name="117"><span class="lineNum">     117 </span>            : </a>
 <a name="118"><span class="lineNum">     118 </span>            : /*</a>
@@ -193,10 +193,10 @@
 <a name="131"><span class="lineNum">     131 </span>            : </a>
 <a name="132"><span class="lineNum">     132 </span>            : static inline void __list_del_entry(struct list_head *entry)</a>
 <a name="133"><span class="lineNum">     133 </span>            : {</a>
-<a name="134"><span class="lineNum">     134 </span><span class="lineCov">       2915 :         if (!__list_del_entry_valid(entry))</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineCov">       2916 :         if (!__list_del_entry_valid(entry))</span></a>
 <a name="135"><span class="lineNum">     135 </span>            :                 return;</a>
 <a name="136"><span class="lineNum">     136 </span>            : </a>
-<a name="137"><span class="lineNum">     137 </span><span class="lineCov">       2915 :         __list_del(entry-&gt;prev, entry-&gt;next);</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineCov">       2916 :         __list_del(entry-&gt;prev, entry-&gt;next);</span></a>
 <a name="138"><span class="lineNum">     138 </span>            : }</a>
 <a name="139"><span class="lineNum">     139 </span>            : </a>
 <a name="140"><span class="lineNum">     140 </span>            : /**</a>
@@ -265,8 +265,8 @@
 <a name="203"><span class="lineNum">     203 </span>            :  */</a>
 <a name="204"><span class="lineNum">     204 </span>            : static inline void list_del_init(struct list_head *entry)</a>
 <a name="205"><span class="lineNum">     205 </span>            : {</a>
-<a name="206"><span class="lineNum">     206 </span><span class="lineCov">       1046 :         __list_del_entry(entry);</span></a>
-<a name="207"><span class="lineNum">     207 </span><span class="lineCov">       1046 :         INIT_LIST_HEAD(entry);</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">       1047 :         __list_del_entry(entry);</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">       1047 :         INIT_LIST_HEAD(entry);</span></a>
 <a name="208"><span class="lineNum">     208 </span>            : }</a>
 <a name="209"><span class="lineNum">     209 </span>            : </a>
 <a name="210"><span class="lineNum">     210 </span>            : /**</a>
@@ -351,7 +351,7 @@
 <a name="289"><span class="lineNum">     289 </span>            :  */</a>
 <a name="290"><span class="lineNum">     290 </span>            : static inline int list_empty(const struct list_head *head)</a>
 <a name="291"><span class="lineNum">     291 </span>            : {</a>
-<a name="292"><span class="lineNum">     292 </span><span class="lineCov">       5381 :         return READ_ONCE(head-&gt;next) == head;</span></a>
+<a name="292"><span class="lineNum">     292 </span><span class="lineCov">       5378 :         return READ_ONCE(head-&gt;next) == head;</span></a>
 <a name="293"><span class="lineNum">     293 </span>            : }</a>
 <a name="294"><span class="lineNum">     294 </span>            : </a>
 <a name="295"><span class="lineNum">     295 </span>            : /**</a>
@@ -909,7 +909,7 @@
 <a name="847"><span class="lineNum">     847 </span>            : </a>
 <a name="848"><span class="lineNum">     848 </span><span class="lineCov">        580 :         WRITE_ONCE(*pprev, next);</span></a>
 <a name="849"><span class="lineNum">     849 </span><span class="lineCov">        580 :         if (next)</span></a>
-<a name="850"><span class="lineNum">     850 </span><span class="lineCov">        187 :                 WRITE_ONCE(next-&gt;pprev, pprev);</span></a>
+<a name="850"><span class="lineNum">     850 </span><span class="lineCov">        186 :                 WRITE_ONCE(next-&gt;pprev, pprev);</span></a>
 <a name="851"><span class="lineNum">     851 </span>            : }</a>
 <a name="852"><span class="lineNum">     852 </span>            : </a>
 <a name="853"><span class="lineNum">     853 </span>            : /**</a>
@@ -953,7 +953,7 @@
 <a name="891"><span class="lineNum">     891 </span><span class="lineCov">        241 :         struct hlist_node *first = h-&gt;first;</span></a>
 <a name="892"><span class="lineNum">     892 </span><span class="lineCov">        241 :         WRITE_ONCE(n-&gt;next, first);</span></a>
 <a name="893"><span class="lineNum">     893 </span><span class="lineCov">        241 :         if (first)</span></a>
-<a name="894"><span class="lineNum">     894 </span><span class="lineCov">          2 :                 WRITE_ONCE(first-&gt;pprev, &amp;n-&gt;next);</span></a>
+<a name="894"><span class="lineNum">     894 </span><span class="lineCov">          1 :                 WRITE_ONCE(first-&gt;pprev, &amp;n-&gt;next);</span></a>
 <a name="895"><span class="lineNum">     895 </span><span class="lineCov">        241 :         WRITE_ONCE(h-&gt;first, n);</span></a>
 <a name="896"><span class="lineNum">     896 </span><span class="lineCov">        241 :         WRITE_ONCE(n-&gt;pprev, &amp;h-&gt;first);</span></a>
 <a name="897"><span class="lineNum">     897 </span>            : }</a>

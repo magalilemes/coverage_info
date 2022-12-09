@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -71,9 +71,9 @@
 <a name="9"><span class="lineNum">       9 </span>            : #include &lt;linux/delay.h&gt;</a>
 <a name="10"><span class="lineNum">      10 </span>            : #include &lt;asm/param.h&gt;</a>
 <a name="11"><span class="lineNum">      11 </span>            : </a>
-<a name="12"><span class="lineNum">      12 </span><span class="lineCov">        939 : void __delay(unsigned long loops)</span></a>
+<a name="12"><span class="lineNum">      12 </span><span class="lineCov">        688 : void __delay(unsigned long loops)</span></a>
 <a name="13"><span class="lineNum">      13 </span>            : {</a>
-<a name="14"><span class="lineNum">      14 </span><span class="lineCov">        939 :         asm volatile(</span></a>
+<a name="14"><span class="lineNum">      14 </span><span class="lineCov">        688 :         asm volatile(</span></a>
 <a name="15"><span class="lineNum">      15 </span>            :                 &quot;test %0,%0\n&quot;</a>
 <a name="16"><span class="lineNum">      16 </span>            :                 &quot;jz 3f\n&quot;</a>
 <a name="17"><span class="lineNum">      17 </span>            :                 &quot;jmp 1f\n&quot;</a>
@@ -89,7 +89,7 @@
 <a name="27"><span class="lineNum">      27 </span>            :                 : /* we don't need output */</a>
 <a name="28"><span class="lineNum">      28 </span>            :                 : &quot;a&quot; (loops)</a>
 <a name="29"><span class="lineNum">      29 </span>            :         );</a>
-<a name="30"><span class="lineNum">      30 </span><span class="lineCov">        939 : }</span></a>
+<a name="30"><span class="lineNum">      30 </span><span class="lineCov">        688 : }</span></a>
 <a name="31"><span class="lineNum">      31 </span>            : EXPORT_SYMBOL(__delay);</a>
 <a name="32"><span class="lineNum">      32 </span>            : </a>
 <a name="33"><span class="lineNum">      33 </span><span class="lineNoCov">          0 : inline void __const_udelay(unsigned long xloops)</span></a>

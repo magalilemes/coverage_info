@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -156,7 +156,7 @@
 <a name="94"><span class="lineNum">      94 </span>            :  */</a>
 <a name="95"><span class="lineNum">      95 </span>            : static inline int ktime_compare(const ktime_t cmp1, const ktime_t cmp2)</a>
 <a name="96"><span class="lineNum">      96 </span>            : {</a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineCov">          9 :         if (cmp1 &lt; cmp2)</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">         13 :         if (cmp1 &lt; cmp2)</span></a>
 <a name="98"><span class="lineNum">      98 </span>            :                 return -1;</a>
 <a name="99"><span class="lineNum">      99 </span><span class="lineNoCov">          0 :         if (cmp1 &gt; cmp2)</span></a>
 <a name="100"><span class="lineNum">     100 </span>            :                 return 1;</a>
@@ -184,7 +184,7 @@
 <a name="122"><span class="lineNum">     122 </span>            :  */</a>
 <a name="123"><span class="lineNum">     123 </span>            : static inline bool ktime_before(const ktime_t cmp1, const ktime_t cmp2)</a>
 <a name="124"><span class="lineNum">     124 </span>            : {</a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineCov">          9 :         return ktime_compare(cmp1, cmp2) &lt; 0;</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">         13 :         return ktime_compare(cmp1, cmp2) &lt; 0;</span></a>
 <a name="126"><span class="lineNum">     126 </span>            : }</a>
 <a name="127"><span class="lineNum">     127 </span>            : </a>
 <a name="128"><span class="lineNum">     128 </span>            : #if BITS_PER_LONG &lt; 64</a>
@@ -283,7 +283,7 @@
 <a name="221"><span class="lineNum">     221 </span>            : </a>
 <a name="222"><span class="lineNum">     222 </span>            : static inline ktime_t ns_to_ktime(u64 ns)</a>
 <a name="223"><span class="lineNum">     223 </span>            : {</a>
-<a name="224"><span class="lineNum">     224 </span><span class="lineCov">         21 :         return ns;</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineCov">         29 :         return ns;</span></a>
 <a name="225"><span class="lineNum">     225 </span>            : }</a>
 <a name="226"><span class="lineNum">     226 </span>            : </a>
 <a name="227"><span class="lineNum">     227 </span>            : static inline ktime_t ms_to_ktime(u64 ms)</a>

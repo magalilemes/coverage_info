@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">57</td>
@@ -857,7 +857,7 @@
 <a name="795"><span class="lineNum">     795 </span>            :  */</a>
 <a name="796"><span class="lineNum">     796 </span>            : static bool need_more_worker(struct worker_pool *pool)</a>
 <a name="797"><span class="lineNum">     797 </span>            : {</a>
-<a name="798"><span class="lineNum">     798 </span><span class="lineCov">         36 :         return !list_empty(&amp;pool-&gt;worklist) &amp;&amp; __need_more_worker(pool);</span></a>
+<a name="798"><span class="lineNum">     798 </span><span class="lineCov">         38 :         return !list_empty(&amp;pool-&gt;worklist) &amp;&amp; __need_more_worker(pool);</span></a>
 <a name="799"><span class="lineNum">     799 </span>            : }</a>
 <a name="800"><span class="lineNum">     800 </span>            : </a>
 <a name="801"><span class="lineNum">     801 </span>            : /* Can I start working?  Called from busy but !running workers. */</a>
@@ -881,11 +881,11 @@
 <a name="819"><span class="lineNum">     819 </span>            : /* Do we have too many workers and should some go away? */</a>
 <a name="820"><span class="lineNum">     820 </span>            : static bool too_many_workers(struct worker_pool *pool)</a>
 <a name="821"><span class="lineNum">     821 </span>            : {</a>
-<a name="822"><span class="lineNum">     822 </span><span class="lineCov">         13 :         bool managing = pool-&gt;flags &amp; POOL_MANAGER_ACTIVE;</span></a>
-<a name="823"><span class="lineNum">     823 </span><span class="lineCov">         13 :         int nr_idle = pool-&gt;nr_idle + managing; /* manager is considered idle */</span></a>
-<a name="824"><span class="lineNum">     824 </span><span class="lineCov">         13 :         int nr_busy = pool-&gt;nr_workers - nr_idle;</span></a>
+<a name="822"><span class="lineNum">     822 </span><span class="lineCov">         14 :         bool managing = pool-&gt;flags &amp; POOL_MANAGER_ACTIVE;</span></a>
+<a name="823"><span class="lineNum">     823 </span><span class="lineCov">         14 :         int nr_idle = pool-&gt;nr_idle + managing; /* manager is considered idle */</span></a>
+<a name="824"><span class="lineNum">     824 </span><span class="lineCov">         14 :         int nr_busy = pool-&gt;nr_workers - nr_idle;</span></a>
 <a name="825"><span class="lineNum">     825 </span>            : </a>
-<a name="826"><span class="lineNum">     826 </span><span class="lineCov">         13 :         return nr_idle &gt; 2 &amp;&amp; (nr_idle - 2) * MAX_IDLE_WORKERS_RATIO &gt;= nr_busy;</span></a>
+<a name="826"><span class="lineNum">     826 </span><span class="lineCov">         14 :         return nr_idle &gt; 2 &amp;&amp; (nr_idle - 2) * MAX_IDLE_WORKERS_RATIO &gt;= nr_busy;</span></a>
 <a name="827"><span class="lineNum">     827 </span>            : }</a>
 <a name="828"><span class="lineNum">     828 </span>            : </a>
 <a name="829"><span class="lineNum">     829 </span>            : /*</a>
@@ -924,11 +924,11 @@
 <a name="862"><span class="lineNum">     862 </span>            :  *</a>
 <a name="863"><span class="lineNum">     863 </span>            :  * This function is called when a worker returns from schedule()</a>
 <a name="864"><span class="lineNum">     864 </span>            :  */</a>
-<a name="865"><span class="lineNum">     865 </span><span class="lineCov">          5 : void wq_worker_running(struct task_struct *task)</span></a>
+<a name="865"><span class="lineNum">     865 </span><span class="lineCov">          6 : void wq_worker_running(struct task_struct *task)</span></a>
 <a name="866"><span class="lineNum">     866 </span>            : {</a>
-<a name="867"><span class="lineNum">     867 </span><span class="lineCov">          5 :         struct worker *worker = kthread_data(task);</span></a>
+<a name="867"><span class="lineNum">     867 </span><span class="lineCov">          6 :         struct worker *worker = kthread_data(task);</span></a>
 <a name="868"><span class="lineNum">     868 </span>            : </a>
-<a name="869"><span class="lineNum">     869 </span><span class="lineCov">          5 :         if (!worker-&gt;sleeping)</span></a>
+<a name="869"><span class="lineNum">     869 </span><span class="lineCov">          6 :         if (!worker-&gt;sleeping)</span></a>
 <a name="870"><span class="lineNum">     870 </span>            :                 return;</a>
 <a name="871"><span class="lineNum">     871 </span>            : </a>
 <a name="872"><span class="lineNum">     872 </span>            :         /*</a>
@@ -951,9 +951,9 @@
 <a name="889"><span class="lineNum">     889 </span>            :  * This function is called from schedule() when a busy worker is</a>
 <a name="890"><span class="lineNum">     890 </span>            :  * going to sleep.</a>
 <a name="891"><span class="lineNum">     891 </span>            :  */</a>
-<a name="892"><span class="lineNum">     892 </span><span class="lineCov">         13 : void wq_worker_sleeping(struct task_struct *task)</span></a>
+<a name="892"><span class="lineNum">     892 </span><span class="lineCov">         14 : void wq_worker_sleeping(struct task_struct *task)</span></a>
 <a name="893"><span class="lineNum">     893 </span>            : {</a>
-<a name="894"><span class="lineNum">     894 </span><span class="lineCov">         13 :         struct worker *worker = kthread_data(task);</span></a>
+<a name="894"><span class="lineNum">     894 </span><span class="lineCov">         14 :         struct worker *worker = kthread_data(task);</span></a>
 <a name="895"><span class="lineNum">     895 </span>            :         struct worker_pool *pool;</a>
 <a name="896"><span class="lineNum">     896 </span>            : </a>
 <a name="897"><span class="lineNum">     897 </span>            :         /*</a>
@@ -961,7 +961,7 @@
 <a name="899"><span class="lineNum">     899 </span>            :          * workers, also reach here, let's not access anything before</a>
 <a name="900"><span class="lineNum">     900 </span>            :          * checking NOT_RUNNING.</a>
 <a name="901"><span class="lineNum">     901 </span>            :          */</a>
-<a name="902"><span class="lineNum">     902 </span><span class="lineCov">         13 :         if (worker-&gt;flags &amp; WORKER_NOT_RUNNING)</span></a>
+<a name="902"><span class="lineNum">     902 </span><span class="lineCov">         14 :         if (worker-&gt;flags &amp; WORKER_NOT_RUNNING)</span></a>
 <a name="903"><span class="lineNum">     903 </span>            :                 return;</a>
 <a name="904"><span class="lineNum">     904 </span>            : </a>
 <a name="905"><span class="lineNum">     905 </span><span class="lineNoCov">          0 :         pool = worker-&gt;pool;</span></a>
@@ -1030,20 +1030,20 @@
 <a name="968"><span class="lineNum">     968 </span>            :  * CONTEXT:</a>
 <a name="969"><span class="lineNum">     969 </span>            :  * raw_spin_lock_irq(pool-&gt;lock)</a>
 <a name="970"><span class="lineNum">     970 </span>            :  */</a>
-<a name="971"><span class="lineNum">     971 </span><span class="lineCov">          3 : static inline void worker_set_flags(struct worker *worker, unsigned int flags)</span></a>
+<a name="971"><span class="lineNum">     971 </span><span class="lineCov">          4 : static inline void worker_set_flags(struct worker *worker, unsigned int flags)</span></a>
 <a name="972"><span class="lineNum">     972 </span>            : {</a>
-<a name="973"><span class="lineNum">     973 </span><span class="lineCov">          3 :         struct worker_pool *pool = worker-&gt;pool;</span></a>
+<a name="973"><span class="lineNum">     973 </span><span class="lineCov">          4 :         struct worker_pool *pool = worker-&gt;pool;</span></a>
 <a name="974"><span class="lineNum">     974 </span>            : </a>
-<a name="975"><span class="lineNum">     975 </span><span class="lineCov">          6 :         WARN_ON_ONCE(worker-&gt;task != current);</span></a>
+<a name="975"><span class="lineNum">     975 </span><span class="lineCov">          8 :         WARN_ON_ONCE(worker-&gt;task != current);</span></a>
 <a name="976"><span class="lineNum">     976 </span>            : </a>
 <a name="977"><span class="lineNum">     977 </span>            :         /* If transitioning into NOT_RUNNING, adjust nr_running. */</a>
-<a name="978"><span class="lineNum">     978 </span><span class="lineCov">          6 :         if ((flags &amp; WORKER_NOT_RUNNING) &amp;&amp;</span></a>
-<a name="979"><span class="lineNum">     979 </span><span class="lineCov">          3 :             !(worker-&gt;flags &amp; WORKER_NOT_RUNNING)) {</span></a>
-<a name="980"><span class="lineNum">     980 </span><span class="lineCov">          1 :                 pool-&gt;nr_running--;</span></a>
+<a name="978"><span class="lineNum">     978 </span><span class="lineCov">          8 :         if ((flags &amp; WORKER_NOT_RUNNING) &amp;&amp;</span></a>
+<a name="979"><span class="lineNum">     979 </span><span class="lineCov">          4 :             !(worker-&gt;flags &amp; WORKER_NOT_RUNNING)) {</span></a>
+<a name="980"><span class="lineNum">     980 </span><span class="lineCov">          2 :                 pool-&gt;nr_running--;</span></a>
 <a name="981"><span class="lineNum">     981 </span>            :         }</a>
 <a name="982"><span class="lineNum">     982 </span>            : </a>
-<a name="983"><span class="lineNum">     983 </span><span class="lineCov">          3 :         worker-&gt;flags |= flags;</span></a>
-<a name="984"><span class="lineNum">     984 </span><span class="lineCov">          3 : }</span></a>
+<a name="983"><span class="lineNum">     983 </span><span class="lineCov">          4 :         worker-&gt;flags |= flags;</span></a>
+<a name="984"><span class="lineNum">     984 </span><span class="lineCov">          4 : }</span></a>
 <a name="985"><span class="lineNum">     985 </span>            : </a>
 <a name="986"><span class="lineNum">     986 </span>            : /**</a>
 <a name="987"><span class="lineNum">     987 </span>            :  * worker_clr_flags - clear worker flags and adjust nr_running accordingly</a>
@@ -1055,24 +1055,24 @@
 <a name="993"><span class="lineNum">     993 </span>            :  * CONTEXT:</a>
 <a name="994"><span class="lineNum">     994 </span>            :  * raw_spin_lock_irq(pool-&gt;lock)</a>
 <a name="995"><span class="lineNum">     995 </span>            :  */</a>
-<a name="996"><span class="lineNum">     996 </span><span class="lineCov">         11 : static inline void worker_clr_flags(struct worker *worker, unsigned int flags)</span></a>
+<a name="996"><span class="lineNum">     996 </span><span class="lineCov">         13 : static inline void worker_clr_flags(struct worker *worker, unsigned int flags)</span></a>
 <a name="997"><span class="lineNum">     997 </span>            : {</a>
-<a name="998"><span class="lineNum">     998 </span><span class="lineCov">         11 :         struct worker_pool *pool = worker-&gt;pool;</span></a>
-<a name="999"><span class="lineNum">     999 </span><span class="lineCov">         11 :         unsigned int oflags = worker-&gt;flags;</span></a>
+<a name="998"><span class="lineNum">     998 </span><span class="lineCov">         13 :         struct worker_pool *pool = worker-&gt;pool;</span></a>
+<a name="999"><span class="lineNum">     999 </span><span class="lineCov">         13 :         unsigned int oflags = worker-&gt;flags;</span></a>
 <a name="1000"><span class="lineNum">    1000 </span>            : </a>
-<a name="1001"><span class="lineNum">    1001 </span><span class="lineCov">         22 :         WARN_ON_ONCE(worker-&gt;task != current);</span></a>
+<a name="1001"><span class="lineNum">    1001 </span><span class="lineCov">         26 :         WARN_ON_ONCE(worker-&gt;task != current);</span></a>
 <a name="1002"><span class="lineNum">    1002 </span>            : </a>
-<a name="1003"><span class="lineNum">    1003 </span><span class="lineCov">         11 :         worker-&gt;flags &amp;= ~flags;</span></a>
+<a name="1003"><span class="lineNum">    1003 </span><span class="lineCov">         13 :         worker-&gt;flags &amp;= ~flags;</span></a>
 <a name="1004"><span class="lineNum">    1004 </span>            : </a>
 <a name="1005"><span class="lineNum">    1005 </span>            :         /*</a>
 <a name="1006"><span class="lineNum">    1006 </span>            :          * If transitioning out of NOT_RUNNING, increment nr_running.  Note</a>
 <a name="1007"><span class="lineNum">    1007 </span>            :          * that the nested NOT_RUNNING is not a noop.  NOT_RUNNING is mask</a>
 <a name="1008"><span class="lineNum">    1008 </span>            :          * of multiple flags, not a single flag.</a>
 <a name="1009"><span class="lineNum">    1009 </span>            :          */</a>
-<a name="1010"><span class="lineNum">    1010 </span><span class="lineCov">         11 :         if ((flags &amp; WORKER_NOT_RUNNING) &amp;&amp; (oflags &amp; WORKER_NOT_RUNNING))</span></a>
-<a name="1011"><span class="lineNum">    1011 </span><span class="lineCov">          3 :                 if (!(worker-&gt;flags &amp; WORKER_NOT_RUNNING))</span></a>
-<a name="1012"><span class="lineNum">    1012 </span><span class="lineCov">          1 :                         pool-&gt;nr_running++;</span></a>
-<a name="1013"><span class="lineNum">    1013 </span><span class="lineCov">         11 : }</span></a>
+<a name="1010"><span class="lineNum">    1010 </span><span class="lineCov">         13 :         if ((flags &amp; WORKER_NOT_RUNNING) &amp;&amp; (oflags &amp; WORKER_NOT_RUNNING))</span></a>
+<a name="1011"><span class="lineNum">    1011 </span><span class="lineCov">          4 :                 if (!(worker-&gt;flags &amp; WORKER_NOT_RUNNING))</span></a>
+<a name="1012"><span class="lineNum">    1012 </span><span class="lineCov">          2 :                         pool-&gt;nr_running++;</span></a>
+<a name="1013"><span class="lineNum">    1013 </span><span class="lineCov">         13 : }</span></a>
 <a name="1014"><span class="lineNum">    1014 </span>            : </a>
 <a name="1015"><span class="lineNum">    1015 </span>            : /**</a>
 <a name="1016"><span class="lineNum">    1016 </span>            :  * find_worker_executing_work - find worker which is executing a work</a>
@@ -1569,7 +1569,7 @@
 <a name="1507"><span class="lineNum">    1507 </span><span class="lineCov">          4 :                 pwq-&gt;nr_active++;</span></a>
 <a name="1508"><span class="lineNum">    1508 </span><span class="lineCov">          4 :                 worklist = &amp;pwq-&gt;pool-&gt;worklist;</span></a>
 <a name="1509"><span class="lineNum">    1509 </span><span class="lineCov">          4 :                 if (list_empty(worklist))</span></a>
-<a name="1510"><span class="lineNum">    1510 </span><span class="lineCov">          3 :                         pwq-&gt;pool-&gt;watchdog_ts = jiffies;</span></a>
+<a name="1510"><span class="lineNum">    1510 </span><span class="lineCov">          4 :                         pwq-&gt;pool-&gt;watchdog_ts = jiffies;</span></a>
 <a name="1511"><span class="lineNum">    1511 </span>            :         } else {</a>
 <a name="1512"><span class="lineNum">    1512 </span><span class="lineNoCov">          0 :                 work_flags |= WORK_STRUCT_INACTIVE;</span></a>
 <a name="1513"><span class="lineNum">    1513 </span><span class="lineNoCov">          0 :                 worklist = &amp;pwq-&gt;inactive_works;</span></a>
@@ -1851,28 +1851,28 @@
 <a name="1789"><span class="lineNum">    1789 </span>            :  * LOCKING:</a>
 <a name="1790"><span class="lineNum">    1790 </span>            :  * raw_spin_lock_irq(pool-&gt;lock).</a>
 <a name="1791"><span class="lineNum">    1791 </span>            :  */</a>
-<a name="1792"><span class="lineNum">    1792 </span><span class="lineCov">         13 : static void worker_enter_idle(struct worker *worker)</span></a>
+<a name="1792"><span class="lineNum">    1792 </span><span class="lineCov">         14 : static void worker_enter_idle(struct worker *worker)</span></a>
 <a name="1793"><span class="lineNum">    1793 </span>            : {</a>
-<a name="1794"><span class="lineNum">    1794 </span><span class="lineCov">         13 :         struct worker_pool *pool = worker-&gt;pool;</span></a>
+<a name="1794"><span class="lineNum">    1794 </span><span class="lineCov">         14 :         struct worker_pool *pool = worker-&gt;pool;</span></a>
 <a name="1795"><span class="lineNum">    1795 </span>            : </a>
-<a name="1796"><span class="lineNum">    1796 </span><span class="lineCov">         26 :         if (WARN_ON_ONCE(worker-&gt;flags &amp; WORKER_IDLE) ||</span></a>
-<a name="1797"><span class="lineNum">    1797 </span><span class="lineCov">         26 :             WARN_ON_ONCE(!list_empty(&amp;worker-&gt;entry) &amp;&amp;</span></a>
+<a name="1796"><span class="lineNum">    1796 </span><span class="lineCov">         28 :         if (WARN_ON_ONCE(worker-&gt;flags &amp; WORKER_IDLE) ||</span></a>
+<a name="1797"><span class="lineNum">    1797 </span><span class="lineCov">         28 :             WARN_ON_ONCE(!list_empty(&amp;worker-&gt;entry) &amp;&amp;</span></a>
 <a name="1798"><span class="lineNum">    1798 </span>            :                          (worker-&gt;hentry.next || worker-&gt;hentry.pprev)))</a>
 <a name="1799"><span class="lineNum">    1799 </span>            :                 return;</a>
 <a name="1800"><span class="lineNum">    1800 </span>            : </a>
 <a name="1801"><span class="lineNum">    1801 </span>            :         /* can't use worker_set_flags(), also called from create_worker() */</a>
-<a name="1802"><span class="lineNum">    1802 </span><span class="lineCov">         13 :         worker-&gt;flags |= WORKER_IDLE;</span></a>
-<a name="1803"><span class="lineNum">    1803 </span><span class="lineCov">         13 :         pool-&gt;nr_idle++;</span></a>
-<a name="1804"><span class="lineNum">    1804 </span><span class="lineCov">         13 :         worker-&gt;last_active = jiffies;</span></a>
+<a name="1802"><span class="lineNum">    1802 </span><span class="lineCov">         14 :         worker-&gt;flags |= WORKER_IDLE;</span></a>
+<a name="1803"><span class="lineNum">    1803 </span><span class="lineCov">         14 :         pool-&gt;nr_idle++;</span></a>
+<a name="1804"><span class="lineNum">    1804 </span><span class="lineCov">         14 :         worker-&gt;last_active = jiffies;</span></a>
 <a name="1805"><span class="lineNum">    1805 </span>            : </a>
 <a name="1806"><span class="lineNum">    1806 </span>            :         /* idle_list is LIFO */</a>
-<a name="1807"><span class="lineNum">    1807 </span><span class="lineCov">         26 :         list_add(&amp;worker-&gt;entry, &amp;pool-&gt;idle_list);</span></a>
+<a name="1807"><span class="lineNum">    1807 </span><span class="lineCov">         28 :         list_add(&amp;worker-&gt;entry, &amp;pool-&gt;idle_list);</span></a>
 <a name="1808"><span class="lineNum">    1808 </span>            : </a>
-<a name="1809"><span class="lineNum">    1809 </span><span class="lineCov">         26 :         if (too_many_workers(pool) &amp;&amp; !timer_pending(&amp;pool-&gt;idle_timer))</span></a>
+<a name="1809"><span class="lineNum">    1809 </span><span class="lineCov">         28 :         if (too_many_workers(pool) &amp;&amp; !timer_pending(&amp;pool-&gt;idle_timer))</span></a>
 <a name="1810"><span class="lineNum">    1810 </span><span class="lineNoCov">          0 :                 mod_timer(&amp;pool-&gt;idle_timer, jiffies + IDLE_WORKER_TIMEOUT);</span></a>
 <a name="1811"><span class="lineNum">    1811 </span>            : </a>
 <a name="1812"><span class="lineNum">    1812 </span>            :         /* Sanity check nr_running. */</a>
-<a name="1813"><span class="lineNum">    1813 </span><span class="lineCov">         13 :         WARN_ON_ONCE(pool-&gt;nr_workers == pool-&gt;nr_idle &amp;&amp; pool-&gt;nr_running);</span></a>
+<a name="1813"><span class="lineNum">    1813 </span><span class="lineCov">         14 :         WARN_ON_ONCE(pool-&gt;nr_workers == pool-&gt;nr_idle &amp;&amp; pool-&gt;nr_running);</span></a>
 <a name="1814"><span class="lineNum">    1814 </span>            : }</a>
 <a name="1815"><span class="lineNum">    1815 </span>            : </a>
 <a name="1816"><span class="lineNum">    1816 </span>            : /**</a>
@@ -1884,15 +1884,15 @@
 <a name="1822"><span class="lineNum">    1822 </span>            :  * LOCKING:</a>
 <a name="1823"><span class="lineNum">    1823 </span>            :  * raw_spin_lock_irq(pool-&gt;lock).</a>
 <a name="1824"><span class="lineNum">    1824 </span>            :  */</a>
-<a name="1825"><span class="lineNum">    1825 </span><span class="lineCov">          8 : static void worker_leave_idle(struct worker *worker)</span></a>
+<a name="1825"><span class="lineNum">    1825 </span><span class="lineCov">          9 : static void worker_leave_idle(struct worker *worker)</span></a>
 <a name="1826"><span class="lineNum">    1826 </span>            : {</a>
-<a name="1827"><span class="lineNum">    1827 </span><span class="lineCov">          8 :         struct worker_pool *pool = worker-&gt;pool;</span></a>
+<a name="1827"><span class="lineNum">    1827 </span><span class="lineCov">          9 :         struct worker_pool *pool = worker-&gt;pool;</span></a>
 <a name="1828"><span class="lineNum">    1828 </span>            : </a>
-<a name="1829"><span class="lineNum">    1829 </span><span class="lineCov">          8 :         if (WARN_ON_ONCE(!(worker-&gt;flags &amp; WORKER_IDLE)))</span></a>
+<a name="1829"><span class="lineNum">    1829 </span><span class="lineCov">          9 :         if (WARN_ON_ONCE(!(worker-&gt;flags &amp; WORKER_IDLE)))</span></a>
 <a name="1830"><span class="lineNum">    1830 </span>            :                 return;</a>
-<a name="1831"><span class="lineNum">    1831 </span><span class="lineCov">          8 :         worker_clr_flags(worker, WORKER_IDLE);</span></a>
-<a name="1832"><span class="lineNum">    1832 </span><span class="lineCov">          8 :         pool-&gt;nr_idle--;</span></a>
-<a name="1833"><span class="lineNum">    1833 </span><span class="lineCov">          8 :         list_del_init(&amp;worker-&gt;entry);</span></a>
+<a name="1831"><span class="lineNum">    1831 </span><span class="lineCov">          9 :         worker_clr_flags(worker, WORKER_IDLE);</span></a>
+<a name="1832"><span class="lineNum">    1832 </span><span class="lineCov">          9 :         pool-&gt;nr_idle--;</span></a>
+<a name="1833"><span class="lineNum">    1833 </span><span class="lineCov">          9 :         list_del_init(&amp;worker-&gt;entry);</span></a>
 <a name="1834"><span class="lineNum">    1834 </span>            : }</a>
 <a name="1835"><span class="lineNum">    1835 </span>            : </a>
 <a name="1836"><span class="lineNum">    1836 </span><span class="lineCov">          8 : static struct worker *alloc_worker(int node)</span></a>
@@ -2445,10 +2445,10 @@
 <a name="2383"><span class="lineNum">    2383 </span>            :         /* tell the scheduler that this is a workqueue worker */</a>
 <a name="2384"><span class="lineNum">    2384 </span><span class="lineCov">          5 :         set_pf_worker(true);</span></a>
 <a name="2385"><span class="lineNum">    2385 </span>            : woke_up:</a>
-<a name="2386"><span class="lineNum">    2386 </span><span class="lineCov">          8 :         raw_spin_lock_irq(&amp;pool-&gt;lock);</span></a>
+<a name="2386"><span class="lineNum">    2386 </span><span class="lineCov">          9 :         raw_spin_lock_irq(&amp;pool-&gt;lock);</span></a>
 <a name="2387"><span class="lineNum">    2387 </span>            : </a>
 <a name="2388"><span class="lineNum">    2388 </span>            :         /* am I supposed to die? */</a>
-<a name="2389"><span class="lineNum">    2389 </span><span class="lineCov">          8 :         if (unlikely(worker-&gt;flags &amp; WORKER_DIE)) {</span></a>
+<a name="2389"><span class="lineNum">    2389 </span><span class="lineCov">          9 :         if (unlikely(worker-&gt;flags &amp; WORKER_DIE)) {</span></a>
 <a name="2390"><span class="lineNum">    2390 </span><span class="lineNoCov">          0 :                 raw_spin_unlock_irq(&amp;pool-&gt;lock);</span></a>
 <a name="2391"><span class="lineNum">    2391 </span><span class="lineNoCov">          0 :                 WARN_ON_ONCE(!list_empty(&amp;worker-&gt;entry));</span></a>
 <a name="2392"><span class="lineNum">    2392 </span><span class="lineNoCov">          0 :                 set_pf_worker(false);</span></a>
@@ -2460,14 +2460,14 @@
 <a name="2398"><span class="lineNum">    2398 </span><span class="lineNoCov">          0 :                 return 0;</span></a>
 <a name="2399"><span class="lineNum">    2399 </span>            :         }</a>
 <a name="2400"><span class="lineNum">    2400 </span>            : </a>
-<a name="2401"><span class="lineNum">    2401 </span><span class="lineCov">          8 :         worker_leave_idle(worker);</span></a>
+<a name="2401"><span class="lineNum">    2401 </span><span class="lineCov">          9 :         worker_leave_idle(worker);</span></a>
 <a name="2402"><span class="lineNum">    2402 </span>            : recheck:</a>
 <a name="2403"><span class="lineNum">    2403 </span>            :         /* no more worker necessary? */</a>
-<a name="2404"><span class="lineNum">    2404 </span><span class="lineCov">         10 :         if (!need_more_worker(pool))</span></a>
+<a name="2404"><span class="lineNum">    2404 </span><span class="lineCov">         11 :         if (!need_more_worker(pool))</span></a>
 <a name="2405"><span class="lineNum">    2405 </span>            :                 goto sleep;</a>
 <a name="2406"><span class="lineNum">    2406 </span>            : </a>
 <a name="2407"><span class="lineNum">    2407 </span>            :         /* do we need to manage? */</a>
-<a name="2408"><span class="lineNum">    2408 </span><span class="lineCov">          5 :         if (unlikely(!may_start_working(pool)) &amp;&amp; manage_workers(worker))</span></a>
+<a name="2408"><span class="lineNum">    2408 </span><span class="lineCov">          6 :         if (unlikely(!may_start_working(pool)) &amp;&amp; manage_workers(worker))</span></a>
 <a name="2409"><span class="lineNum">    2409 </span>            :                 goto recheck;</a>
 <a name="2410"><span class="lineNum">    2410 </span>            : </a>
 <a name="2411"><span class="lineNum">    2411 </span>            :         /*</a>
@@ -2475,7 +2475,7 @@
 <a name="2413"><span class="lineNum">    2413 </span>            :          * preparing to process a work or actually processing it.</a>
 <a name="2414"><span class="lineNum">    2414 </span>            :          * Make sure nobody diddled with it while I was sleeping.</a>
 <a name="2415"><span class="lineNum">    2415 </span>            :          */</a>
-<a name="2416"><span class="lineNum">    2416 </span><span class="lineCov">          6 :         WARN_ON_ONCE(!list_empty(&amp;worker-&gt;scheduled));</span></a>
+<a name="2416"><span class="lineNum">    2416 </span><span class="lineCov">          8 :         WARN_ON_ONCE(!list_empty(&amp;worker-&gt;scheduled));</span></a>
 <a name="2417"><span class="lineNum">    2417 </span>            : </a>
 <a name="2418"><span class="lineNum">    2418 </span>            :         /*</a>
 <a name="2419"><span class="lineNum">    2419 </span>            :          * Finish PREP stage.  We're guaranteed to have at least one idle</a>
@@ -2484,7 +2484,7 @@
 <a name="2422"><span class="lineNum">    2422 </span>            :          * management if applicable and concurrency management is restored</a>
 <a name="2423"><span class="lineNum">    2423 </span>            :          * after being rebound.  See rebind_workers() for details.</a>
 <a name="2424"><span class="lineNum">    2424 </span>            :          */</a>
-<a name="2425"><span class="lineNum">    2425 </span><span class="lineCov">          3 :         worker_clr_flags(worker, WORKER_PREP | WORKER_REBOUND);</span></a>
+<a name="2425"><span class="lineNum">    2425 </span><span class="lineCov">          4 :         worker_clr_flags(worker, WORKER_PREP | WORKER_REBOUND);</span></a>
 <a name="2426"><span class="lineNum">    2426 </span>            : </a>
 <a name="2427"><span class="lineNum">    2427 </span>            :         do {</a>
 <a name="2428"><span class="lineNum">    2428 </span><span class="lineCov">          4 :                 struct work_struct *work =</span></a>
@@ -2504,7 +2504,7 @@
 <a name="2442"><span class="lineNum">    2442 </span>            :                 }</a>
 <a name="2443"><span class="lineNum">    2443 </span><span class="lineCov">          4 :         } while (keep_working(pool));</span></a>
 <a name="2444"><span class="lineNum">    2444 </span>            : </a>
-<a name="2445"><span class="lineNum">    2445 </span><span class="lineCov">          3 :         worker_set_flags(worker, WORKER_PREP);</span></a>
+<a name="2445"><span class="lineNum">    2445 </span><span class="lineCov">          4 :         worker_set_flags(worker, WORKER_PREP);</span></a>
 <a name="2446"><span class="lineNum">    2446 </span>            : sleep:</a>
 <a name="2447"><span class="lineNum">    2447 </span>            :         /*</a>
 <a name="2448"><span class="lineNum">    2448 </span>            :          * pool-&gt;lock is held and there's no work to process and no need to</a>
@@ -2513,11 +2513,11 @@
 <a name="2451"><span class="lineNum">    2451 </span>            :          * before releasing pool-&gt;lock is enough to prevent losing any</a>
 <a name="2452"><span class="lineNum">    2452 </span>            :          * event.</a>
 <a name="2453"><span class="lineNum">    2453 </span>            :          */</a>
-<a name="2454"><span class="lineNum">    2454 </span><span class="lineCov">          8 :         worker_enter_idle(worker);</span></a>
-<a name="2455"><span class="lineNum">    2455 </span><span class="lineCov">          8 :         __set_current_state(TASK_IDLE);</span></a>
-<a name="2456"><span class="lineNum">    2456 </span><span class="lineCov">          8 :         raw_spin_unlock_irq(&amp;pool-&gt;lock);</span></a>
-<a name="2457"><span class="lineNum">    2457 </span><span class="lineCov">          8 :         schedule();</span></a>
-<a name="2458"><span class="lineNum">    2458 </span><span class="lineCov">          3 :         goto woke_up;</span></a>
+<a name="2454"><span class="lineNum">    2454 </span><span class="lineCov">          9 :         worker_enter_idle(worker);</span></a>
+<a name="2455"><span class="lineNum">    2455 </span><span class="lineCov">          9 :         __set_current_state(TASK_IDLE);</span></a>
+<a name="2456"><span class="lineNum">    2456 </span><span class="lineCov">          9 :         raw_spin_unlock_irq(&amp;pool-&gt;lock);</span></a>
+<a name="2457"><span class="lineNum">    2457 </span><span class="lineCov">          9 :         schedule();</span></a>
+<a name="2458"><span class="lineNum">    2458 </span><span class="lineCov">          4 :         goto woke_up;</span></a>
 <a name="2459"><span class="lineNum">    2459 </span>            : }</a>
 <a name="2460"><span class="lineNum">    2460 </span>            : </a>
 <a name="2461"><span class="lineNum">    2461 </span>            : /**</a>

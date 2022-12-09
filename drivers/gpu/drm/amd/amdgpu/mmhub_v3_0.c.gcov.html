@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -231,17 +231,17 @@
 <a name="169"><span class="lineNum">     169 </span>            :         uint64_t value;</a>
 <a name="170"><span class="lineNum">     170 </span>            :         uint32_t tmp;</a>
 <a name="171"><span class="lineNum">     171 </span>            : </a>
-<a name="172"><span class="lineNum">     172 </span>            :         /* Disable AGP. */</a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, regMMMC_VM_AGP_BASE, 0);</span></a>
-<a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, regMMMC_VM_AGP_TOP, 0);</span></a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineNoCov">          0 :         WREG32_SOC15(MMHUB, 0, regMMMC_VM_AGP_BOT, 0x00FFFFFF);</span></a>
-<a name="176"><span class="lineNum">     176 </span>            : </a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 :         if (!amdgpu_sriov_vf(adev)) {</span></a>
-<a name="178"><span class="lineNum">     178 </span>            :                 /*</a>
-<a name="179"><span class="lineNum">     179 </span>            :                  * the new L1 policy will block SRIOV guest from writing</a>
-<a name="180"><span class="lineNum">     180 </span>            :                  * these regs, and they will be programed at host.</a>
-<a name="181"><span class="lineNum">     181 </span>            :                  * so skip programing these regs.</a>
-<a name="182"><span class="lineNum">     182 </span>            :                  */</a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineNoCov">          0 :         if (!amdgpu_sriov_vf(adev)) {</span></a>
+<a name="173"><span class="lineNum">     173 </span>            :                 /*</a>
+<a name="174"><span class="lineNum">     174 </span>            :                  * the new L1 policy will block SRIOV guest from writing</a>
+<a name="175"><span class="lineNum">     175 </span>            :                  * these regs, and they will be programed at host.</a>
+<a name="176"><span class="lineNum">     176 </span>            :                  * so skip programing these regs.</a>
+<a name="177"><span class="lineNum">     177 </span>            :                  */</a>
+<a name="178"><span class="lineNum">     178 </span>            :                 /* Disable AGP. */</a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, regMMMC_VM_AGP_BASE, 0);</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, regMMMC_VM_AGP_TOP, 0);</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, regMMMC_VM_AGP_BOT, 0x00FFFFFF);</span></a>
+<a name="182"><span class="lineNum">     182 </span>            : </a>
 <a name="183"><span class="lineNum">     183 </span>            :                 /* Program the system aperture low logical page number. */</a>
 <a name="184"><span class="lineNum">     184 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(MMHUB, 0, regMMMC_VM_SYSTEM_APERTURE_LOW_ADDR,</span></a>
 <a name="185"><span class="lineNum">     185 </span>            :                              adev-&gt;gmc.vram_start &gt;&gt; 18);</a>

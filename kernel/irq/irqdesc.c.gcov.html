@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">6</td>
@@ -646,7 +646,7 @@
 <a name="584"><span class="lineNum">     584 </span>            : </a>
 <a name="585"><span class="lineNum">     585 </span><span class="lineCov">        134 : struct irq_desc *irq_to_desc(unsigned int irq)</span></a>
 <a name="586"><span class="lineNum">     586 </span>            : {</a>
-<a name="587"><span class="lineNum">     587 </span><span class="lineCov">        271 :         return (irq &lt; NR_IRQS) ? irq_desc + irq : NULL;</span></a>
+<a name="587"><span class="lineNum">     587 </span><span class="lineCov">        275 :         return (irq &lt; NR_IRQS) ? irq_desc + irq : NULL;</span></a>
 <a name="588"><span class="lineNum">     588 </span>            : }</a>
 <a name="589"><span class="lineNum">     589 </span>            : EXPORT_SYMBOL(irq_to_desc);</a>
 <a name="590"><span class="lineNum">     590 </span>            : </a>
@@ -700,14 +700,14 @@
 <a name="638"><span class="lineNum">     638 </span>            : {</a>
 <a name="639"><span class="lineNum">     639 </span>            :         struct irq_data *data;</a>
 <a name="640"><span class="lineNum">     640 </span>            : </a>
-<a name="641"><span class="lineNum">     641 </span><span class="lineCov">          9 :         if (!desc)</span></a>
+<a name="641"><span class="lineNum">     641 </span><span class="lineCov">         13 :         if (!desc)</span></a>
 <a name="642"><span class="lineNum">     642 </span>            :                 return -EINVAL;</a>
 <a name="643"><span class="lineNum">     643 </span>            : </a>
-<a name="644"><span class="lineNum">     644 </span><span class="lineCov">          9 :         data = irq_desc_get_irq_data(desc);</span></a>
-<a name="645"><span class="lineNum">     645 </span><span class="lineCov">          9 :         if (WARN_ON_ONCE(!in_hardirq() &amp;&amp; handle_enforce_irqctx(data)))</span></a>
+<a name="644"><span class="lineNum">     644 </span><span class="lineCov">         13 :         data = irq_desc_get_irq_data(desc);</span></a>
+<a name="645"><span class="lineNum">     645 </span><span class="lineCov">         13 :         if (WARN_ON_ONCE(!in_hardirq() &amp;&amp; handle_enforce_irqctx(data)))</span></a>
 <a name="646"><span class="lineNum">     646 </span>            :                 return -EPERM;</a>
 <a name="647"><span class="lineNum">     647 </span>            : </a>
-<a name="648"><span class="lineNum">     648 </span><span class="lineCov">          9 :         generic_handle_irq_desc(desc);</span></a>
+<a name="648"><span class="lineNum">     648 </span><span class="lineCov">         13 :         generic_handle_irq_desc(desc);</span></a>
 <a name="649"><span class="lineNum">     649 </span><span class="lineNoCov">          0 :         return 0;</span></a>
 <a name="650"><span class="lineNum">     650 </span>            : }</a>
 <a name="651"><span class="lineNum">     651 </span>            : </a>
@@ -720,9 +720,9 @@
 <a name="658"><span class="lineNum">     658 </span>            :  *              This function must be called from an IRQ context with irq regs</a>
 <a name="659"><span class="lineNum">     659 </span>            :  *              initialized.</a>
 <a name="660"><span class="lineNum">     660 </span>            :   */</a>
-<a name="661"><span class="lineNum">     661 </span><span class="lineCov">          9 : int generic_handle_irq(unsigned int irq)</span></a>
+<a name="661"><span class="lineNum">     661 </span><span class="lineCov">         13 : int generic_handle_irq(unsigned int irq)</span></a>
 <a name="662"><span class="lineNum">     662 </span>            : {</a>
-<a name="663"><span class="lineNum">     663 </span><span class="lineCov">         18 :         return handle_irq_desc(irq_to_desc(irq));</span></a>
+<a name="663"><span class="lineNum">     663 </span><span class="lineCov">         26 :         return handle_irq_desc(irq_to_desc(irq));</span></a>
 <a name="664"><span class="lineNum">     664 </span>            : }</a>
 <a name="665"><span class="lineNum">     665 </span>            : EXPORT_SYMBOL_GPL(generic_handle_irq);</a>
 <a name="666"><span class="lineNum">     666 </span>            : </a>

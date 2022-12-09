@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -333,7 +333,7 @@
 <a name="271"><span class="lineNum">     271 </span>            : </a>
 <a name="272"><span class="lineNum">     272 </span>            : #define __SEQ_RT        IS_ENABLED(CONFIG_PREEMPT_RT)</a>
 <a name="273"><span class="lineNum">     273 </span>            : </a>
-<a name="274"><span class="lineNum">     274 </span><span class="lineCov">        433 : SEQCOUNT_LOCKNAME(raw_spinlock, raw_spinlock_t,  false,    s-&gt;lock,        raw_spin, raw_spin_lock(s-&gt;lock))</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineCov">        437 : SEQCOUNT_LOCKNAME(raw_spinlock, raw_spinlock_t,  false,    s-&gt;lock,        raw_spin, raw_spin_lock(s-&gt;lock))</span></a>
 <a name="275"><span class="lineNum">     275 </span><span class="lineCov">         53 : SEQCOUNT_LOCKNAME(spinlock,     spinlock_t,      __SEQ_RT, s-&gt;lock,        spin,     spin_lock(s-&gt;lock))</span></a>
 <a name="276"><span class="lineNum">     276 </span>            : SEQCOUNT_LOCKNAME(rwlock,       rwlock_t,        __SEQ_RT, s-&gt;lock,        read,     read_lock(s-&gt;lock))</a>
 <a name="277"><span class="lineNum">     277 </span>            : SEQCOUNT_LOCKNAME(mutex,        struct mutex,    true,     s-&gt;lock,        mutex,    mutex_lock(s-&gt;lock))</a>
@@ -487,8 +487,8 @@
 <a name="425"><span class="lineNum">     425 </span>            : </a>
 <a name="426"><span class="lineNum">     426 </span>            : static inline int do___read_seqcount_retry(const seqcount_t *s, unsigned start)</a>
 <a name="427"><span class="lineNum">     427 </span>            : {</a>
-<a name="428"><span class="lineNum">     428 </span><span class="lineCov">        360 :         kcsan_atomic_next(0);</span></a>
-<a name="429"><span class="lineNum">     429 </span><span class="lineCov">        360 :         return unlikely(READ_ONCE(s-&gt;sequence) != start);</span></a>
+<a name="428"><span class="lineNum">     428 </span><span class="lineCov">        364 :         kcsan_atomic_next(0);</span></a>
+<a name="429"><span class="lineNum">     429 </span><span class="lineCov">        364 :         return unlikely(READ_ONCE(s-&gt;sequence) != start);</span></a>
 <a name="430"><span class="lineNum">     430 </span>            : }</a>
 <a name="431"><span class="lineNum">     431 </span>            : </a>
 <a name="432"><span class="lineNum">     432 </span>            : /**</a>
@@ -507,8 +507,8 @@
 <a name="445"><span class="lineNum">     445 </span>            : </a>
 <a name="446"><span class="lineNum">     446 </span>            : static inline int do_read_seqcount_retry(const seqcount_t *s, unsigned start)</a>
 <a name="447"><span class="lineNum">     447 </span>            : {</a>
-<a name="448"><span class="lineNum">     448 </span><span class="lineCov">        359 :         smp_rmb();</span></a>
-<a name="449"><span class="lineNum">     449 </span><span class="lineCov">        359 :         return do___read_seqcount_retry(s, start);</span></a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineCov">        363 :         smp_rmb();</span></a>
+<a name="449"><span class="lineNum">     449 </span><span class="lineCov">        363 :         return do___read_seqcount_retry(s, start);</span></a>
 <a name="450"><span class="lineNum">     450 </span>            : }</a>
 <a name="451"><span class="lineNum">     451 </span>            : </a>
 <a name="452"><span class="lineNum">     452 </span>            : /**</a>
@@ -528,8 +528,8 @@
 <a name="466"><span class="lineNum">     466 </span>            : static inline void do_raw_write_seqcount_begin(seqcount_t *s)</a>
 <a name="467"><span class="lineNum">     467 </span>            : {</a>
 <a name="468"><span class="lineNum">     468 </span>            :         kcsan_nestable_atomic_begin();</a>
-<a name="469"><span class="lineNum">     469 </span><span class="lineCov">        140 :         s-&gt;sequence++;</span></a>
-<a name="470"><span class="lineNum">     470 </span><span class="lineCov">        140 :         smp_wmb();</span></a>
+<a name="469"><span class="lineNum">     469 </span><span class="lineCov">        148 :         s-&gt;sequence++;</span></a>
+<a name="470"><span class="lineNum">     470 </span><span class="lineCov">        148 :         smp_wmb();</span></a>
 <a name="471"><span class="lineNum">     471 </span>            : }</a>
 <a name="472"><span class="lineNum">     472 </span>            : </a>
 <a name="473"><span class="lineNum">     473 </span>            : /**</a>
@@ -548,8 +548,8 @@
 <a name="486"><span class="lineNum">     486 </span>            : </a>
 <a name="487"><span class="lineNum">     487 </span>            : static inline void do_raw_write_seqcount_end(seqcount_t *s)</a>
 <a name="488"><span class="lineNum">     488 </span>            : {</a>
-<a name="489"><span class="lineNum">     489 </span><span class="lineCov">        140 :         smp_wmb();</span></a>
-<a name="490"><span class="lineNum">     490 </span><span class="lineCov">        140 :         s-&gt;sequence++;</span></a>
+<a name="489"><span class="lineNum">     489 </span><span class="lineCov">        148 :         smp_wmb();</span></a>
+<a name="490"><span class="lineNum">     490 </span><span class="lineCov">        148 :         s-&gt;sequence++;</span></a>
 <a name="491"><span class="lineNum">     491 </span>            :         kcsan_nestable_atomic_end();</a>
 <a name="492"><span class="lineNum">     492 </span>            : }</a>
 <a name="493"><span class="lineNum">     493 </span>            : </a>
@@ -574,7 +574,7 @@
 <a name="512"><span class="lineNum">     512 </span>            : </a>
 <a name="513"><span class="lineNum">     513 </span>            : static inline void do_write_seqcount_begin_nested(seqcount_t *s, int subclass)</a>
 <a name="514"><span class="lineNum">     514 </span>            : {</a>
-<a name="515"><span class="lineNum">     515 </span><span class="lineCov">        125 :         do_raw_write_seqcount_begin(s);</span></a>
+<a name="515"><span class="lineNum">     515 </span><span class="lineCov">        133 :         do_raw_write_seqcount_begin(s);</span></a>
 <a name="516"><span class="lineNum">     516 </span>            :         seqcount_acquire(&amp;s-&gt;dep_map, subclass, 0, _RET_IP_);</a>
 <a name="517"><span class="lineNum">     517 </span>            : }</a>
 <a name="518"><span class="lineNum">     518 </span>            : </a>
@@ -600,7 +600,7 @@
 <a name="538"><span class="lineNum">     538 </span>            : </a>
 <a name="539"><span class="lineNum">     539 </span>            : static inline void do_write_seqcount_begin(seqcount_t *s)</a>
 <a name="540"><span class="lineNum">     540 </span>            : {</a>
-<a name="541"><span class="lineNum">     541 </span><span class="lineCov">        250 :         do_write_seqcount_begin_nested(s, 0);</span></a>
+<a name="541"><span class="lineNum">     541 </span><span class="lineCov">        266 :         do_write_seqcount_begin_nested(s, 0);</span></a>
 <a name="542"><span class="lineNum">     542 </span>            : }</a>
 <a name="543"><span class="lineNum">     543 </span>            : </a>
 <a name="544"><span class="lineNum">     544 </span>            : /**</a>
@@ -621,7 +621,7 @@
 <a name="559"><span class="lineNum">     559 </span>            : static inline void do_write_seqcount_end(seqcount_t *s)</a>
 <a name="560"><span class="lineNum">     560 </span>            : {</a>
 <a name="561"><span class="lineNum">     561 </span>            :         seqcount_release(&amp;s-&gt;dep_map, _RET_IP_);</a>
-<a name="562"><span class="lineNum">     562 </span><span class="lineCov">        125 :         do_raw_write_seqcount_end(s);</span></a>
+<a name="562"><span class="lineNum">     562 </span><span class="lineCov">        133 :         do_raw_write_seqcount_end(s);</span></a>
 <a name="563"><span class="lineNum">     563 </span>            : }</a>
 <a name="564"><span class="lineNum">     564 </span>            : </a>
 <a name="565"><span class="lineNum">     565 </span>            : /**</a>
@@ -840,9 +840,9 @@
 <a name="778"><span class="lineNum">     778 </span>            :  */</a>
 <a name="779"><span class="lineNum">     779 </span>            : static inline void raw_write_seqcount_latch(seqcount_latch_t *s)</a>
 <a name="780"><span class="lineNum">     780 </span>            : {</a>
-<a name="781"><span class="lineNum">     781 </span><span class="lineCov">         40 :         smp_wmb();      /* prior stores before incrementing &quot;sequence&quot; */</span></a>
-<a name="782"><span class="lineNum">     782 </span><span class="lineCov">         40 :         s-&gt;seqcount.sequence++;</span></a>
-<a name="783"><span class="lineNum">     783 </span><span class="lineCov">         40 :         smp_wmb();      /* increment &quot;sequence&quot; before following stores */</span></a>
+<a name="781"><span class="lineNum">     781 </span><span class="lineCov">         56 :         smp_wmb();      /* prior stores before incrementing &quot;sequence&quot; */</span></a>
+<a name="782"><span class="lineNum">     782 </span><span class="lineCov">         56 :         s-&gt;seqcount.sequence++;</span></a>
+<a name="783"><span class="lineNum">     783 </span><span class="lineCov">         56 :         smp_wmb();      /* increment &quot;sequence&quot; before following stores */</span></a>
 <a name="784"><span class="lineNum">     784 </span>            : }</a>
 <a name="785"><span class="lineNum">     785 </span>            : </a>
 <a name="786"><span class="lineNum">     786 </span>            : /*</a>

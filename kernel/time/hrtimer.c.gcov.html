@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">9</td>
@@ -549,7 +549,7 @@
 <a name="487"><span class="lineNum">     487 </span>            : {</a>
 <a name="488"><span class="lineNum">     488 </span>            :         unsigned int idx;</a>
 <a name="489"><span class="lineNum">     489 </span>            : </a>
-<a name="490"><span class="lineNum">     490 </span><span class="lineCov">          9 :         if (!*active)</span></a>
+<a name="490"><span class="lineNum">     490 </span><span class="lineCov">         13 :         if (!*active)</span></a>
 <a name="491"><span class="lineNum">     491 </span>            :                 return NULL;</a>
 <a name="492"><span class="lineNum">     492 </span>            : </a>
 <a name="493"><span class="lineNum">     493 </span><span class="lineNoCov">          0 :         idx = __ffs(*active);</span></a>
@@ -686,16 +686,16 @@
 <a name="624"><span class="lineNum">     624 </span>            : </a>
 <a name="625"><span class="lineNum">     625 </span>            : static inline ktime_t hrtimer_update_base(struct hrtimer_cpu_base *base)</a>
 <a name="626"><span class="lineNum">     626 </span>            : {</a>
-<a name="627"><span class="lineNum">     627 </span><span class="lineCov">          9 :         ktime_t *offs_real = &amp;base-&gt;clock_base[HRTIMER_BASE_REALTIME].offset;</span></a>
-<a name="628"><span class="lineNum">     628 </span><span class="lineCov">          9 :         ktime_t *offs_boot = &amp;base-&gt;clock_base[HRTIMER_BASE_BOOTTIME].offset;</span></a>
-<a name="629"><span class="lineNum">     629 </span><span class="lineCov">          9 :         ktime_t *offs_tai = &amp;base-&gt;clock_base[HRTIMER_BASE_TAI].offset;</span></a>
+<a name="627"><span class="lineNum">     627 </span><span class="lineCov">         13 :         ktime_t *offs_real = &amp;base-&gt;clock_base[HRTIMER_BASE_REALTIME].offset;</span></a>
+<a name="628"><span class="lineNum">     628 </span><span class="lineCov">         13 :         ktime_t *offs_boot = &amp;base-&gt;clock_base[HRTIMER_BASE_BOOTTIME].offset;</span></a>
+<a name="629"><span class="lineNum">     629 </span><span class="lineCov">         13 :         ktime_t *offs_tai = &amp;base-&gt;clock_base[HRTIMER_BASE_TAI].offset;</span></a>
 <a name="630"><span class="lineNum">     630 </span>            : </a>
-<a name="631"><span class="lineNum">     631 </span><span class="lineCov">          9 :         ktime_t now = ktime_get_update_offsets_now(&amp;base-&gt;clock_was_set_seq,</span></a>
+<a name="631"><span class="lineNum">     631 </span><span class="lineCov">         13 :         ktime_t now = ktime_get_update_offsets_now(&amp;base-&gt;clock_was_set_seq,</span></a>
 <a name="632"><span class="lineNum">     632 </span>            :                                             offs_real, offs_boot, offs_tai);</a>
 <a name="633"><span class="lineNum">     633 </span>            : </a>
-<a name="634"><span class="lineNum">     634 </span><span class="lineCov">          9 :         base-&gt;clock_base[HRTIMER_BASE_REALTIME_SOFT].offset = *offs_real;</span></a>
-<a name="635"><span class="lineNum">     635 </span><span class="lineCov">          9 :         base-&gt;clock_base[HRTIMER_BASE_BOOTTIME_SOFT].offset = *offs_boot;</span></a>
-<a name="636"><span class="lineNum">     636 </span><span class="lineCov">          9 :         base-&gt;clock_base[HRTIMER_BASE_TAI_SOFT].offset = *offs_tai;</span></a>
+<a name="634"><span class="lineNum">     634 </span><span class="lineCov">         13 :         base-&gt;clock_base[HRTIMER_BASE_REALTIME_SOFT].offset = *offs_real;</span></a>
+<a name="635"><span class="lineNum">     635 </span><span class="lineCov">         13 :         base-&gt;clock_base[HRTIMER_BASE_BOOTTIME_SOFT].offset = *offs_boot;</span></a>
+<a name="636"><span class="lineNum">     636 </span><span class="lineCov">         13 :         base-&gt;clock_base[HRTIMER_BASE_TAI_SOFT].offset = *offs_tai;</span></a>
 <a name="637"><span class="lineNum">     637 </span>            : </a>
 <a name="638"><span class="lineNum">     638 </span>            :         return now;</a>
 <a name="639"><span class="lineNum">     639 </span>            : }</a>
@@ -1776,13 +1776,13 @@
 <a name="1714"><span class="lineNum">    1714 </span><span class="lineNoCov">          0 :         base-&gt;running = NULL;</span></a>
 <a name="1715"><span class="lineNum">    1715 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="1716"><span class="lineNum">    1716 </span>            : </a>
-<a name="1717"><span class="lineNum">    1717 </span><span class="lineCov">          9 : static void __hrtimer_run_queues(struct hrtimer_cpu_base *cpu_base, ktime_t now,</span></a>
+<a name="1717"><span class="lineNum">    1717 </span><span class="lineCov">         13 : static void __hrtimer_run_queues(struct hrtimer_cpu_base *cpu_base, ktime_t now,</span></a>
 <a name="1718"><span class="lineNum">    1718 </span>            :                                  unsigned long flags, unsigned int active_mask)</a>
 <a name="1719"><span class="lineNum">    1719 </span>            : {</a>
 <a name="1720"><span class="lineNum">    1720 </span>            :         struct hrtimer_clock_base *base;</a>
-<a name="1721"><span class="lineNum">    1721 </span><span class="lineCov">          9 :         unsigned int active = cpu_base-&gt;active_bases &amp; active_mask;</span></a>
+<a name="1721"><span class="lineNum">    1721 </span><span class="lineCov">         13 :         unsigned int active = cpu_base-&gt;active_bases &amp; active_mask;</span></a>
 <a name="1722"><span class="lineNum">    1722 </span>            : </a>
-<a name="1723"><span class="lineNum">    1723 </span><span class="lineCov">         18 :         for_each_active_base(base, cpu_base, active) {</span></a>
+<a name="1723"><span class="lineNum">    1723 </span><span class="lineCov">         26 :         for_each_active_base(base, cpu_base, active) {</span></a>
 <a name="1724"><span class="lineNum">    1724 </span>            :                 struct timerqueue_node *node;</a>
 <a name="1725"><span class="lineNum">    1725 </span>            :                 ktime_t basenow;</a>
 <a name="1726"><span class="lineNum">    1726 </span>            : </a>
@@ -1813,7 +1813,7 @@
 <a name="1751"><span class="lineNum">    1751 </span>            :                                 hrtimer_sync_wait_running(cpu_base, flags);</a>
 <a name="1752"><span class="lineNum">    1752 </span>            :                 }</a>
 <a name="1753"><span class="lineNum">    1753 </span>            :         }</a>
-<a name="1754"><span class="lineNum">    1754 </span><span class="lineCov">          9 : }</span></a>
+<a name="1754"><span class="lineNum">    1754 </span><span class="lineCov">         13 : }</span></a>
 <a name="1755"><span class="lineNum">    1755 </span>            : </a>
 <a name="1756"><span class="lineNum">    1756 </span><span class="lineNoCov">          0 : static __latent_entropy void hrtimer_run_softirq(struct softirq_action *h)</span></a>
 <a name="1757"><span class="lineNum">    1757 </span>            : {</a>
@@ -1953,13 +1953,13 @@
 <a name="1891"><span class="lineNum">    1891 </span>            : /*</a>
 <a name="1892"><span class="lineNum">    1892 </span>            :  * Called from run_local_timers in hardirq context every jiffy</a>
 <a name="1893"><span class="lineNum">    1893 </span>            :  */</a>
-<a name="1894"><span class="lineNum">    1894 </span><span class="lineCov">          9 : void hrtimer_run_queues(void)</span></a>
+<a name="1894"><span class="lineNum">    1894 </span><span class="lineCov">         13 : void hrtimer_run_queues(void)</span></a>
 <a name="1895"><span class="lineNum">    1895 </span>            : {</a>
-<a name="1896"><span class="lineNum">    1896 </span><span class="lineCov">          9 :         struct hrtimer_cpu_base *cpu_base = this_cpu_ptr(&amp;hrtimer_bases);</span></a>
+<a name="1896"><span class="lineNum">    1896 </span><span class="lineCov">         13 :         struct hrtimer_cpu_base *cpu_base = this_cpu_ptr(&amp;hrtimer_bases);</span></a>
 <a name="1897"><span class="lineNum">    1897 </span>            :         unsigned long flags;</a>
 <a name="1898"><span class="lineNum">    1898 </span>            :         ktime_t now;</a>
 <a name="1899"><span class="lineNum">    1899 </span>            : </a>
-<a name="1900"><span class="lineNum">    1900 </span><span class="lineCov">          9 :         if (__hrtimer_hres_active(cpu_base))</span></a>
+<a name="1900"><span class="lineNum">    1900 </span><span class="lineCov">         13 :         if (__hrtimer_hres_active(cpu_base))</span></a>
 <a name="1901"><span class="lineNum">    1901 </span>            :                 return;</a>
 <a name="1902"><span class="lineNum">    1902 </span>            : </a>
 <a name="1903"><span class="lineNum">    1903 </span>            :         /*</a>
@@ -1969,22 +1969,22 @@
 <a name="1907"><span class="lineNum">    1907 </span>            :          * there only sets the check bit in the tick_oneshot code,</a>
 <a name="1908"><span class="lineNum">    1908 </span>            :          * otherwise we might deadlock vs. xtime_lock.</a>
 <a name="1909"><span class="lineNum">    1909 </span>            :          */</a>
-<a name="1910"><span class="lineNum">    1910 </span><span class="lineCov">          9 :         if (tick_check_oneshot_change(!hrtimer_is_hres_enabled())) {</span></a>
+<a name="1910"><span class="lineNum">    1910 </span><span class="lineCov">         13 :         if (tick_check_oneshot_change(!hrtimer_is_hres_enabled())) {</span></a>
 <a name="1911"><span class="lineNum">    1911 </span>            :                 hrtimer_switch_to_hres();</a>
 <a name="1912"><span class="lineNum">    1912 </span>            :                 return;</a>
 <a name="1913"><span class="lineNum">    1913 </span>            :         }</a>
 <a name="1914"><span class="lineNum">    1914 </span>            : </a>
-<a name="1915"><span class="lineNum">    1915 </span><span class="lineCov">          9 :         raw_spin_lock_irqsave(&amp;cpu_base-&gt;lock, flags);</span></a>
-<a name="1916"><span class="lineNum">    1916 </span><span class="lineCov">          9 :         now = hrtimer_update_base(cpu_base);</span></a>
+<a name="1915"><span class="lineNum">    1915 </span><span class="lineCov">         13 :         raw_spin_lock_irqsave(&amp;cpu_base-&gt;lock, flags);</span></a>
+<a name="1916"><span class="lineNum">    1916 </span><span class="lineCov">         13 :         now = hrtimer_update_base(cpu_base);</span></a>
 <a name="1917"><span class="lineNum">    1917 </span>            : </a>
-<a name="1918"><span class="lineNum">    1918 </span><span class="lineCov">         18 :         if (!ktime_before(now, cpu_base-&gt;softirq_expires_next)) {</span></a>
+<a name="1918"><span class="lineNum">    1918 </span><span class="lineCov">         26 :         if (!ktime_before(now, cpu_base-&gt;softirq_expires_next)) {</span></a>
 <a name="1919"><span class="lineNum">    1919 </span><span class="lineNoCov">          0 :                 cpu_base-&gt;softirq_expires_next = KTIME_MAX;</span></a>
 <a name="1920"><span class="lineNum">    1920 </span><span class="lineNoCov">          0 :                 cpu_base-&gt;softirq_activated = 1;</span></a>
 <a name="1921"><span class="lineNum">    1921 </span><span class="lineNoCov">          0 :                 raise_softirq_irqoff(HRTIMER_SOFTIRQ);</span></a>
 <a name="1922"><span class="lineNum">    1922 </span>            :         }</a>
 <a name="1923"><span class="lineNum">    1923 </span>            : </a>
-<a name="1924"><span class="lineNum">    1924 </span><span class="lineCov">          9 :         __hrtimer_run_queues(cpu_base, now, flags, HRTIMER_ACTIVE_HARD);</span></a>
-<a name="1925"><span class="lineNum">    1925 </span><span class="lineCov">         18 :         raw_spin_unlock_irqrestore(&amp;cpu_base-&gt;lock, flags);</span></a>
+<a name="1924"><span class="lineNum">    1924 </span><span class="lineCov">         13 :         __hrtimer_run_queues(cpu_base, now, flags, HRTIMER_ACTIVE_HARD);</span></a>
+<a name="1925"><span class="lineNum">    1925 </span><span class="lineCov">         26 :         raw_spin_unlock_irqrestore(&amp;cpu_base-&gt;lock, flags);</span></a>
 <a name="1926"><span class="lineNum">    1926 </span>            : }</a>
 <a name="1927"><span class="lineNum">    1927 </span>            : </a>
 <a name="1928"><span class="lineNum">    1928 </span>            : /*</a>

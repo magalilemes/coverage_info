@@ -31,13 +31,13 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">1012</td>
+            <td class="headerCovTableEntry">1013</td>
             <td class="headerCovTableEntry">2036</td>
-            <td class="headerCovTableEntryLo">49.7 %</td>
+            <td class="headerCovTableEntryLo">49.8 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">90</td>
@@ -516,7 +516,7 @@
 <a name="454"><span class="lineNum">     454 </span>            : #ifdef CONFIG_SPARSEMEM</a>
 <a name="455"><span class="lineNum">     455 </span>            :         return section_to_usemap(__pfn_to_section(pfn));</a>
 <a name="456"><span class="lineNum">     456 </span>            : #else</a>
-<a name="457"><span class="lineNum">     457 </span><span class="lineCov">        536 :         return page_zone(page)-&gt;pageblock_flags;</span></a>
+<a name="457"><span class="lineNum">     457 </span><span class="lineCov">        530 :         return page_zone(page)-&gt;pageblock_flags;</span></a>
 <a name="458"><span class="lineNum">     458 </span>            : #endif /* CONFIG_SPARSEMEM */</a>
 <a name="459"><span class="lineNum">     459 </span>            : }</a>
 <a name="460"><span class="lineNum">     460 </span>            : </a>
@@ -525,9 +525,9 @@
 <a name="463"><span class="lineNum">     463 </span>            : #ifdef CONFIG_SPARSEMEM</a>
 <a name="464"><span class="lineNum">     464 </span>            :         pfn &amp;= (PAGES_PER_SECTION-1);</a>
 <a name="465"><span class="lineNum">     465 </span>            : #else</a>
-<a name="466"><span class="lineNum">     466 </span><span class="lineCov">        536 :         pfn = pfn - round_down(page_zone(page)-&gt;zone_start_pfn, pageblock_nr_pages);</span></a>
+<a name="466"><span class="lineNum">     466 </span><span class="lineCov">        530 :         pfn = pfn - round_down(page_zone(page)-&gt;zone_start_pfn, pageblock_nr_pages);</span></a>
 <a name="467"><span class="lineNum">     467 </span>            : #endif /* CONFIG_SPARSEMEM */</a>
-<a name="468"><span class="lineNum">     468 </span><span class="lineCov">        536 :         return (pfn &gt;&gt; pageblock_order) * NR_PAGEBLOCK_BITS;</span></a>
+<a name="468"><span class="lineNum">     468 </span><span class="lineCov">        530 :         return (pfn &gt;&gt; pageblock_order) * NR_PAGEBLOCK_BITS;</span></a>
 <a name="469"><span class="lineNum">     469 </span>            : }</a>
 <a name="470"><span class="lineNum">     470 </span>            : </a>
 <a name="471"><span class="lineNum">     471 </span>            : static __always_inline</a>
@@ -539,13 +539,13 @@
 <a name="477"><span class="lineNum">     477 </span>            :         unsigned long bitidx, word_bitidx;</a>
 <a name="478"><span class="lineNum">     478 </span>            :         unsigned long word;</a>
 <a name="479"><span class="lineNum">     479 </span>            : </a>
-<a name="480"><span class="lineNum">     480 </span><span class="lineCov">        540 :         bitmap = get_pageblock_bitmap(page, pfn);</span></a>
-<a name="481"><span class="lineNum">     481 </span><span class="lineCov">        270 :         bitidx = pfn_to_bitidx(page, pfn);</span></a>
-<a name="482"><span class="lineNum">     482 </span><span class="lineCov">        270 :         word_bitidx = bitidx / BITS_PER_LONG;</span></a>
-<a name="483"><span class="lineNum">     483 </span><span class="lineCov">        270 :         bitidx &amp;= (BITS_PER_LONG-1);</span></a>
+<a name="480"><span class="lineNum">     480 </span><span class="lineCov">        536 :         bitmap = get_pageblock_bitmap(page, pfn);</span></a>
+<a name="481"><span class="lineNum">     481 </span><span class="lineCov">        268 :         bitidx = pfn_to_bitidx(page, pfn);</span></a>
+<a name="482"><span class="lineNum">     482 </span><span class="lineCov">        268 :         word_bitidx = bitidx / BITS_PER_LONG;</span></a>
+<a name="483"><span class="lineNum">     483 </span><span class="lineCov">        268 :         bitidx &amp;= (BITS_PER_LONG-1);</span></a>
 <a name="484"><span class="lineNum">     484 </span>            : </a>
-<a name="485"><span class="lineNum">     485 </span><span class="lineCov">        270 :         word = bitmap[word_bitidx];</span></a>
-<a name="486"><span class="lineNum">     486 </span><span class="lineCov">        270 :         return (word &gt;&gt; bitidx) &amp; mask;</span></a>
+<a name="485"><span class="lineNum">     485 </span><span class="lineCov">        268 :         word = bitmap[word_bitidx];</span></a>
+<a name="486"><span class="lineNum">     486 </span><span class="lineCov">        268 :         return (word &gt;&gt; bitidx) &amp; mask;</span></a>
 <a name="487"><span class="lineNum">     487 </span>            : }</a>
 <a name="488"><span class="lineNum">     488 </span>            : </a>
 <a name="489"><span class="lineNum">     489 </span>            : /**</a>
@@ -565,7 +565,7 @@
 <a name="503"><span class="lineNum">     503 </span>            : static __always_inline int get_pfnblock_migratetype(const struct page *page,</a>
 <a name="504"><span class="lineNum">     504 </span>            :                                         unsigned long pfn)</a>
 <a name="505"><span class="lineNum">     505 </span>            : {</a>
-<a name="506"><span class="lineNum">     506 </span><span class="lineCov">        268 :         return __get_pfnblock_flags_mask(page, pfn, MIGRATETYPE_MASK);</span></a>
+<a name="506"><span class="lineNum">     506 </span><span class="lineCov">        266 :         return __get_pfnblock_flags_mask(page, pfn, MIGRATETYPE_MASK);</span></a>
 <a name="507"><span class="lineNum">     507 </span>            : }</a>
 <a name="508"><span class="lineNum">     508 </span>            : </a>
 <a name="509"><span class="lineNum">     509 </span>            : /**</a>
@@ -575,7 +575,7 @@
 <a name="513"><span class="lineNum">     513 </span>            :  * @pfn: The target page frame number</a>
 <a name="514"><span class="lineNum">     514 </span>            :  * @mask: mask of bits that the caller is interested in</a>
 <a name="515"><span class="lineNum">     515 </span>            :  */</a>
-<a name="516"><span class="lineNum">     516 </span><span class="lineCov">        266 : void set_pfnblock_flags_mask(struct page *page, unsigned long flags,</span></a>
+<a name="516"><span class="lineNum">     516 </span><span class="lineCov">        262 : void set_pfnblock_flags_mask(struct page *page, unsigned long flags,</span></a>
 <a name="517"><span class="lineNum">     517 </span>            :                                         unsigned long pfn,</a>
 <a name="518"><span class="lineNum">     518 </span>            :                                         unsigned long mask)</a>
 <a name="519"><span class="lineNum">     519 </span>            : {</a>
@@ -586,34 +586,34 @@
 <a name="524"><span class="lineNum">     524 </span>            :         BUILD_BUG_ON(NR_PAGEBLOCK_BITS != 4);</a>
 <a name="525"><span class="lineNum">     525 </span>            :         BUILD_BUG_ON(MIGRATE_TYPES &gt; (1 &lt;&lt; PB_migratetype_bits));</a>
 <a name="526"><span class="lineNum">     526 </span>            : </a>
-<a name="527"><span class="lineNum">     527 </span><span class="lineCov">        532 :         bitmap = get_pageblock_bitmap(page, pfn);</span></a>
-<a name="528"><span class="lineNum">     528 </span><span class="lineCov">        266 :         bitidx = pfn_to_bitidx(page, pfn);</span></a>
-<a name="529"><span class="lineNum">     529 </span><span class="lineCov">        266 :         word_bitidx = bitidx / BITS_PER_LONG;</span></a>
-<a name="530"><span class="lineNum">     530 </span><span class="lineCov">        266 :         bitidx &amp;= (BITS_PER_LONG-1);</span></a>
+<a name="527"><span class="lineNum">     527 </span><span class="lineCov">        524 :         bitmap = get_pageblock_bitmap(page, pfn);</span></a>
+<a name="528"><span class="lineNum">     528 </span><span class="lineCov">        262 :         bitidx = pfn_to_bitidx(page, pfn);</span></a>
+<a name="529"><span class="lineNum">     529 </span><span class="lineCov">        262 :         word_bitidx = bitidx / BITS_PER_LONG;</span></a>
+<a name="530"><span class="lineNum">     530 </span><span class="lineCov">        262 :         bitidx &amp;= (BITS_PER_LONG-1);</span></a>
 <a name="531"><span class="lineNum">     531 </span>            : </a>
 <a name="532"><span class="lineNum">     532 </span>            :         VM_BUG_ON_PAGE(!zone_spans_pfn(page_zone(page), pfn), page);</a>
 <a name="533"><span class="lineNum">     533 </span>            : </a>
-<a name="534"><span class="lineNum">     534 </span><span class="lineCov">        266 :         mask &lt;&lt;= bitidx;</span></a>
-<a name="535"><span class="lineNum">     535 </span><span class="lineCov">        266 :         flags &lt;&lt;= bitidx;</span></a>
+<a name="534"><span class="lineNum">     534 </span><span class="lineCov">        262 :         mask &lt;&lt;= bitidx;</span></a>
+<a name="535"><span class="lineNum">     535 </span><span class="lineCov">        262 :         flags &lt;&lt;= bitidx;</span></a>
 <a name="536"><span class="lineNum">     536 </span>            : </a>
-<a name="537"><span class="lineNum">     537 </span><span class="lineCov">        266 :         word = READ_ONCE(bitmap[word_bitidx]);</span></a>
+<a name="537"><span class="lineNum">     537 </span><span class="lineCov">        262 :         word = READ_ONCE(bitmap[word_bitidx]);</span></a>
 <a name="538"><span class="lineNum">     538 </span>            :         for (;;) {</a>
-<a name="539"><span class="lineNum">     539 </span><span class="lineCov">        532 :                 old_word = cmpxchg(&amp;bitmap[word_bitidx], word, (word &amp; ~mask) | flags);</span></a>
-<a name="540"><span class="lineNum">     540 </span><span class="lineCov">        266 :                 if (word == old_word)</span></a>
+<a name="539"><span class="lineNum">     539 </span><span class="lineCov">        524 :                 old_word = cmpxchg(&amp;bitmap[word_bitidx], word, (word &amp; ~mask) | flags);</span></a>
+<a name="540"><span class="lineNum">     540 </span><span class="lineCov">        262 :                 if (word == old_word)</span></a>
 <a name="541"><span class="lineNum">     541 </span>            :                         break;</a>
 <a name="542"><span class="lineNum">     542 </span>            :                 word = old_word;</a>
 <a name="543"><span class="lineNum">     543 </span>            :         }</a>
-<a name="544"><span class="lineNum">     544 </span><span class="lineCov">        266 : }</span></a>
+<a name="544"><span class="lineNum">     544 </span><span class="lineCov">        262 : }</span></a>
 <a name="545"><span class="lineNum">     545 </span>            : </a>
-<a name="546"><span class="lineNum">     546 </span><span class="lineCov">        266 : void set_pageblock_migratetype(struct page *page, int migratetype)</span></a>
+<a name="546"><span class="lineNum">     546 </span><span class="lineCov">        262 : void set_pageblock_migratetype(struct page *page, int migratetype)</span></a>
 <a name="547"><span class="lineNum">     547 </span>            : {</a>
-<a name="548"><span class="lineNum">     548 </span><span class="lineCov">        266 :         if (unlikely(page_group_by_mobility_disabled &amp;&amp;</span></a>
+<a name="548"><span class="lineNum">     548 </span><span class="lineCov">        262 :         if (unlikely(page_group_by_mobility_disabled &amp;&amp;</span></a>
 <a name="549"><span class="lineNum">     549 </span>            :                      migratetype &lt; MIGRATE_PCPTYPES))</a>
 <a name="550"><span class="lineNum">     550 </span><span class="lineNoCov">          0 :                 migratetype = MIGRATE_UNMOVABLE;</span></a>
 <a name="551"><span class="lineNum">     551 </span>            : </a>
-<a name="552"><span class="lineNum">     552 </span><span class="lineCov">        266 :         set_pfnblock_flags_mask(page, (unsigned long)migratetype,</span></a>
-<a name="553"><span class="lineNum">     553 </span><span class="lineCov">        266 :                                 page_to_pfn(page), MIGRATETYPE_MASK);</span></a>
-<a name="554"><span class="lineNum">     554 </span><span class="lineCov">        266 : }</span></a>
+<a name="552"><span class="lineNum">     552 </span><span class="lineCov">        262 :         set_pfnblock_flags_mask(page, (unsigned long)migratetype,</span></a>
+<a name="553"><span class="lineNum">     553 </span><span class="lineCov">        262 :                                 page_to_pfn(page), MIGRATETYPE_MASK);</span></a>
+<a name="554"><span class="lineNum">     554 </span><span class="lineCov">        262 : }</span></a>
 <a name="555"><span class="lineNum">     555 </span>            : </a>
 <a name="556"><span class="lineNum">     556 </span>            : #ifdef CONFIG_DEBUG_VM</a>
 <a name="557"><span class="lineNum">     557 </span>            : static int page_outside_zone_boundaries(struct zone *zone, struct page *page)</a>
@@ -925,8 +925,8 @@
 <a name="863"><span class="lineNum">     863 </span>            : </a>
 <a name="864"><span class="lineNum">     864 </span>            : static inline void set_buddy_order(struct page *page, unsigned int order)</a>
 <a name="865"><span class="lineNum">     865 </span>            : {</a>
-<a name="866"><span class="lineNum">     866 </span><span class="lineCov">       1928 :         set_page_private(page, order);</span></a>
-<a name="867"><span class="lineNum">     867 </span><span class="lineCov">        964 :         __SetPageBuddy(page);</span></a>
+<a name="866"><span class="lineNum">     866 </span><span class="lineCov">       1924 :         set_page_private(page, order);</span></a>
+<a name="867"><span class="lineNum">     867 </span><span class="lineCov">        962 :         __SetPageBuddy(page);</span></a>
 <a name="868"><span class="lineNum">     868 </span>            : }</a>
 <a name="869"><span class="lineNum">     869 </span>            : </a>
 <a name="870"><span class="lineNum">     870 </span>            : /*</a>
@@ -945,7 +945,7 @@
 <a name="883"><span class="lineNum">     883 </span>            : static inline bool page_is_buddy(struct page *page, struct page *buddy,</a>
 <a name="884"><span class="lineNum">     884 </span>            :                                                         unsigned int order)</a>
 <a name="885"><span class="lineNum">     885 </span>            : {</a>
-<a name="886"><span class="lineNum">     886 </span><span class="lineCov">         74 :         if (!page_is_guard(buddy) &amp;&amp; !PageBuddy(buddy))</span></a>
+<a name="886"><span class="lineNum">     886 </span><span class="lineCov">         70 :         if (!page_is_guard(buddy) &amp;&amp; !PageBuddy(buddy))</span></a>
 <a name="887"><span class="lineNum">     887 </span>            :                 return false;</a>
 <a name="888"><span class="lineNum">     888 </span>            : </a>
 <a name="889"><span class="lineNum">     889 </span><span class="lineCov">         32 :         if (buddy_order(buddy) != order)</span></a>
@@ -964,21 +964,21 @@
 <a name="902"><span class="lineNum">     902 </span>            : }</a>
 <a name="903"><span class="lineNum">     903 </span>            : </a>
 <a name="904"><span class="lineNum">     904 </span>            : #ifdef CONFIG_COMPACTION</a>
-<a name="905"><span class="lineNum">     905 </span><span class="lineCov">        265 : static inline struct capture_control *task_capc(struct zone *zone)</span></a>
+<a name="905"><span class="lineNum">     905 </span><span class="lineCov">        263 : static inline struct capture_control *task_capc(struct zone *zone)</span></a>
 <a name="906"><span class="lineNum">     906 </span>            : {</a>
-<a name="907"><span class="lineNum">     907 </span><span class="lineCov">        265 :         struct capture_control *capc = current-&gt;capture_control;</span></a>
+<a name="907"><span class="lineNum">     907 </span><span class="lineCov">        263 :         struct capture_control *capc = current-&gt;capture_control;</span></a>
 <a name="908"><span class="lineNum">     908 </span>            : </a>
-<a name="909"><span class="lineNum">     909 </span><span class="lineCov">        265 :         return unlikely(capc) &amp;&amp;</span></a>
+<a name="909"><span class="lineNum">     909 </span><span class="lineCov">        263 :         return unlikely(capc) &amp;&amp;</span></a>
 <a name="910"><span class="lineNum">     910 </span><span class="lineNoCov">          0 :                 !(current-&gt;flags &amp; PF_KTHREAD) &amp;&amp;</span></a>
 <a name="911"><span class="lineNum">     911 </span><span class="lineNoCov">          0 :                 !capc-&gt;page &amp;&amp;</span></a>
-<a name="912"><span class="lineNum">     912 </span><span class="lineCov">        530 :                 capc-&gt;cc-&gt;zone == zone ? capc : NULL;</span></a>
+<a name="912"><span class="lineNum">     912 </span><span class="lineCov">        526 :                 capc-&gt;cc-&gt;zone == zone ? capc : NULL;</span></a>
 <a name="913"><span class="lineNum">     913 </span>            : }</a>
 <a name="914"><span class="lineNum">     914 </span>            : </a>
 <a name="915"><span class="lineNum">     915 </span>            : static inline bool</a>
 <a name="916"><span class="lineNum">     916 </span>            : compaction_capture(struct capture_control *capc, struct page *page,</a>
 <a name="917"><span class="lineNum">     917 </span>            :                    int order, int migratetype)</a>
 <a name="918"><span class="lineNum">     918 </span>            : {</a>
-<a name="919"><span class="lineNum">     919 </span><span class="lineCov">         29 :         if (!capc || order != capc-&gt;cc-&gt;order)</span></a>
+<a name="919"><span class="lineNum">     919 </span><span class="lineCov">         27 :         if (!capc || order != capc-&gt;cc-&gt;order)</span></a>
 <a name="920"><span class="lineNum">     920 </span>            :                 return false;</a>
 <a name="921"><span class="lineNum">     921 </span>            : </a>
 <a name="922"><span class="lineNum">     922 </span>            :         /* Do not accidentally pollute CMA or isolated regions*/</a>
@@ -1027,10 +1027,10 @@
 <a name="965"><span class="lineNum">     965 </span>            : static inline void add_to_free_list_tail(struct page *page, struct zone *zone,</a>
 <a name="966"><span class="lineNum">     966 </span>            :                                          unsigned int order, int migratetype)</a>
 <a name="967"><span class="lineNum">     967 </span>            : {</a>
-<a name="968"><span class="lineNum">     968 </span><span class="lineCov">        265 :         struct free_area *area = &amp;zone-&gt;free_area[order];</span></a>
+<a name="968"><span class="lineNum">     968 </span><span class="lineCov">        263 :         struct free_area *area = &amp;zone-&gt;free_area[order];</span></a>
 <a name="969"><span class="lineNum">     969 </span>            : </a>
-<a name="970"><span class="lineNum">     970 </span><span class="lineCov">        530 :         list_add_tail(&amp;page-&gt;lru, &amp;area-&gt;free_list[migratetype]);</span></a>
-<a name="971"><span class="lineNum">     971 </span><span class="lineCov">        265 :         area-&gt;nr_free++;</span></a>
+<a name="970"><span class="lineNum">     970 </span><span class="lineCov">        526 :         list_add_tail(&amp;page-&gt;lru, &amp;area-&gt;free_list[migratetype]);</span></a>
+<a name="971"><span class="lineNum">     971 </span><span class="lineCov">        263 :         area-&gt;nr_free++;</span></a>
 <a name="972"><span class="lineNum">     972 </span>            : }</a>
 <a name="973"><span class="lineNum">     973 </span>            : </a>
 <a name="974"><span class="lineNum">     974 </span>            : /*</a>
@@ -1109,13 +1109,13 @@
 <a name="1047"><span class="lineNum">    1047 </span>            :  * -- nyc</a>
 <a name="1048"><span class="lineNum">    1048 </span>            :  */</a>
 <a name="1049"><span class="lineNum">    1049 </span>            : </a>
-<a name="1050"><span class="lineNum">    1050 </span><span class="lineCov">        265 : static inline void __free_one_page(struct page *page,</span></a>
+<a name="1050"><span class="lineNum">    1050 </span><span class="lineCov">        263 : static inline void __free_one_page(struct page *page,</span></a>
 <a name="1051"><span class="lineNum">    1051 </span>            :                 unsigned long pfn,</a>
 <a name="1052"><span class="lineNum">    1052 </span>            :                 struct zone *zone, unsigned int order,</a>
 <a name="1053"><span class="lineNum">    1053 </span>            :                 int migratetype, fpi_t fpi_flags)</a>
 <a name="1054"><span class="lineNum">    1054 </span>            : {</a>
-<a name="1055"><span class="lineNum">    1055 </span><span class="lineCov">        265 :         struct capture_control *capc = task_capc(zone);</span></a>
-<a name="1056"><span class="lineNum">    1056 </span><span class="lineCov">        265 :         unsigned int max_order = pageblock_order;</span></a>
+<a name="1055"><span class="lineNum">    1055 </span><span class="lineCov">        263 :         struct capture_control *capc = task_capc(zone);</span></a>
+<a name="1056"><span class="lineNum">    1056 </span><span class="lineCov">        263 :         unsigned int max_order = pageblock_order;</span></a>
 <a name="1057"><span class="lineNum">    1057 </span>            :         unsigned long buddy_pfn;</a>
 <a name="1058"><span class="lineNum">    1058 </span>            :         unsigned long combined_pfn;</a>
 <a name="1059"><span class="lineNum">    1059 </span>            :         struct page *buddy;</a>
@@ -1125,23 +1125,23 @@
 <a name="1063"><span class="lineNum">    1063 </span>            :         VM_BUG_ON_PAGE(page-&gt;flags &amp; PAGE_FLAGS_CHECK_AT_PREP, page);</a>
 <a name="1064"><span class="lineNum">    1064 </span>            : </a>
 <a name="1065"><span class="lineNum">    1065 </span>            :         VM_BUG_ON(migratetype == -1);</a>
-<a name="1066"><span class="lineNum">    1066 </span><span class="lineCov">        265 :         if (likely(!is_migrate_isolate(migratetype)))</span></a>
-<a name="1067"><span class="lineNum">    1067 </span><span class="lineCov">        265 :                 __mod_zone_freepage_state(zone, 1 &lt;&lt; order, migratetype);</span></a>
+<a name="1066"><span class="lineNum">    1066 </span><span class="lineCov">        263 :         if (likely(!is_migrate_isolate(migratetype)))</span></a>
+<a name="1067"><span class="lineNum">    1067 </span><span class="lineCov">        263 :                 __mod_zone_freepage_state(zone, 1 &lt;&lt; order, migratetype);</span></a>
 <a name="1068"><span class="lineNum">    1068 </span>            : </a>
 <a name="1069"><span class="lineNum">    1069 </span>            :         VM_BUG_ON_PAGE(pfn &amp; ((1 &lt;&lt; order) - 1), page);</a>
 <a name="1070"><span class="lineNum">    1070 </span>            :         VM_BUG_ON_PAGE(bad_range(zone, page), page);</a>
 <a name="1071"><span class="lineNum">    1071 </span>            : </a>
 <a name="1072"><span class="lineNum">    1072 </span>            : continue_merging:</a>
-<a name="1073"><span class="lineNum">    1073 </span><span class="lineCov">        273 :         while (order &lt; max_order) {</span></a>
-<a name="1074"><span class="lineNum">    1074 </span><span class="lineCov">         58 :                 if (compaction_capture(capc, page, order, migratetype)) {</span></a>
+<a name="1073"><span class="lineNum">    1073 </span><span class="lineCov">        271 :         while (order &lt; max_order) {</span></a>
+<a name="1074"><span class="lineNum">    1074 </span><span class="lineCov">         54 :                 if (compaction_capture(capc, page, order, migratetype)) {</span></a>
 <a name="1075"><span class="lineNum">    1075 </span><span class="lineNoCov">          0 :                         __mod_zone_freepage_state(zone, -(1 &lt;&lt; order),</span></a>
 <a name="1076"><span class="lineNum">    1076 </span>            :                                                                 migratetype);</a>
 <a name="1077"><span class="lineNum">    1077 </span>            :                         return;</a>
 <a name="1078"><span class="lineNum">    1078 </span>            :                 }</a>
-<a name="1079"><span class="lineNum">    1079 </span><span class="lineCov">         29 :                 buddy_pfn = __find_buddy_pfn(pfn, order);</span></a>
-<a name="1080"><span class="lineNum">    1080 </span><span class="lineCov">         29 :                 buddy = page + (buddy_pfn - pfn);</span></a>
+<a name="1079"><span class="lineNum">    1079 </span><span class="lineCov">         27 :                 buddy_pfn = __find_buddy_pfn(pfn, order);</span></a>
+<a name="1080"><span class="lineNum">    1080 </span><span class="lineCov">         27 :                 buddy = page + (buddy_pfn - pfn);</span></a>
 <a name="1081"><span class="lineNum">    1081 </span>            : </a>
-<a name="1082"><span class="lineNum">    1082 </span><span class="lineCov">         29 :                 if (!page_is_buddy(page, buddy, order))</span></a>
+<a name="1082"><span class="lineNum">    1082 </span><span class="lineCov">         27 :                 if (!page_is_buddy(page, buddy, order))</span></a>
 <a name="1083"><span class="lineNum">    1083 </span>            :                         goto done_merging;</a>
 <a name="1084"><span class="lineNum">    1084 </span>            :                 /*</a>
 <a name="1085"><span class="lineNum">    1085 </span>            :                  * Our buddy is free or it is CONFIG_DEBUG_PAGEALLOC guard page,</a>
@@ -1184,16 +1184,16 @@
 <a name="1122"><span class="lineNum">    1122 </span>            :         }</a>
 <a name="1123"><span class="lineNum">    1123 </span>            : </a>
 <a name="1124"><span class="lineNum">    1124 </span>            : done_merging:</a>
-<a name="1125"><span class="lineNum">    1125 </span><span class="lineCov">        265 :         set_buddy_order(page, order);</span></a>
+<a name="1125"><span class="lineNum">    1125 </span><span class="lineCov">        263 :         set_buddy_order(page, order);</span></a>
 <a name="1126"><span class="lineNum">    1126 </span>            : </a>
-<a name="1127"><span class="lineNum">    1127 </span><span class="lineCov">        265 :         if (fpi_flags &amp; FPI_TO_TAIL)</span></a>
+<a name="1127"><span class="lineNum">    1127 </span><span class="lineCov">        263 :         if (fpi_flags &amp; FPI_TO_TAIL)</span></a>
 <a name="1128"><span class="lineNum">    1128 </span>            :                 to_tail = true;</a>
 <a name="1129"><span class="lineNum">    1129 </span><span class="lineCov">          8 :         else if (is_shuffle_order(order))</span></a>
 <a name="1130"><span class="lineNum">    1130 </span>            :                 to_tail = shuffle_pick_tail();</a>
 <a name="1131"><span class="lineNum">    1131 </span>            :         else</a>
 <a name="1132"><span class="lineNum">    1132 </span><span class="lineCov">          8 :                 to_tail = buddy_merge_likely(pfn, buddy_pfn, page, order);</span></a>
 <a name="1133"><span class="lineNum">    1133 </span>            : </a>
-<a name="1134"><span class="lineNum">    1134 </span><span class="lineCov">        265 :         if (to_tail)</span></a>
+<a name="1134"><span class="lineNum">    1134 </span><span class="lineCov">        263 :         if (to_tail)</span></a>
 <a name="1135"><span class="lineNum">    1135 </span>            :                 add_to_free_list_tail(page, zone, order, migratetype);</a>
 <a name="1136"><span class="lineNum">    1136 </span>            :         else</a>
 <a name="1137"><span class="lineNum">    1137 </span>            :                 add_to_free_list(page, zone, order, migratetype);</a>
@@ -1211,10 +1211,10 @@
 <a name="1149"><span class="lineNum">    1149 </span>            : static inline bool page_expected_state(struct page *page,</a>
 <a name="1150"><span class="lineNum">    1150 </span>            :                                         unsigned long check_flags)</a>
 <a name="1151"><span class="lineNum">    1151 </span>            : {</a>
-<a name="1152"><span class="lineNum">    1152 </span><span class="lineCov">     505036 :         if (unlikely(atomic_read(&amp;page-&gt;_mapcount) != -1))</span></a>
+<a name="1152"><span class="lineNum">    1152 </span><span class="lineCov">     505120 :         if (unlikely(atomic_read(&amp;page-&gt;_mapcount) != -1))</span></a>
 <a name="1153"><span class="lineNum">    1153 </span>            :                 return false;</a>
 <a name="1154"><span class="lineNum">    1154 </span>            : </a>
-<a name="1155"><span class="lineNum">    1155 </span><span class="lineCov">     505036 :         if (unlikely((unsigned long)page-&gt;mapping |</span></a>
+<a name="1155"><span class="lineNum">    1155 </span><span class="lineCov">     505120 :         if (unlikely((unsigned long)page-&gt;mapping |</span></a>
 <a name="1156"><span class="lineNum">    1156 </span>            :                         page_ref_count(page) |</a>
 <a name="1157"><span class="lineNum">    1157 </span>            : #ifdef CONFIG_MEMCG</a>
 <a name="1158"><span class="lineNum">    1158 </span>            :                         page-&gt;memcg_data |</a>
@@ -1254,9 +1254,9 @@
 <a name="1192"><span class="lineNum">    1192 </span>            :                  page_bad_reason(page, PAGE_FLAGS_CHECK_AT_FREE));</a>
 <a name="1193"><span class="lineNum">    1193 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="1194"><span class="lineNum">    1194 </span>            : </a>
-<a name="1195"><span class="lineNum">    1195 </span><span class="lineCov">     251265 : static inline int check_free_page(struct page *page)</span></a>
+<a name="1195"><span class="lineNum">    1195 </span><span class="lineCov">     251307 : static inline int check_free_page(struct page *page)</span></a>
 <a name="1196"><span class="lineNum">    1196 </span>            : {</a>
-<a name="1197"><span class="lineNum">    1197 </span><span class="lineCov">     251265 :         if (likely(page_expected_state(page, PAGE_FLAGS_CHECK_AT_FREE)))</span></a>
+<a name="1197"><span class="lineNum">    1197 </span><span class="lineCov">     251307 :         if (likely(page_expected_state(page, PAGE_FLAGS_CHECK_AT_FREE)))</span></a>
 <a name="1198"><span class="lineNum">    1198 </span>            :                 return 0;</a>
 <a name="1199"><span class="lineNum">    1199 </span>            : </a>
 <a name="1200"><span class="lineNum">    1200 </span>            :         /* Something has gone sideways, find it */</a>
@@ -1361,14 +1361,14 @@
 <a name="1299"><span class="lineNum">    1299 </span>            : static __always_inline bool free_pages_prepare(struct page *page,</a>
 <a name="1300"><span class="lineNum">    1300 </span>            :                         unsigned int order, bool check_free, fpi_t fpi_flags)</a>
 <a name="1301"><span class="lineNum">    1301 </span>            : {</a>
-<a name="1302"><span class="lineNum">    1302 </span><span class="lineCov">        268 :         int bad = 0;</span></a>
-<a name="1303"><span class="lineNum">    1303 </span><span class="lineCov">        268 :         bool init = want_init_on_free();</span></a>
+<a name="1302"><span class="lineNum">    1302 </span><span class="lineCov">        266 :         int bad = 0;</span></a>
+<a name="1303"><span class="lineNum">    1303 </span><span class="lineCov">        266 :         bool init = want_init_on_free();</span></a>
 <a name="1304"><span class="lineNum">    1304 </span>            : </a>
 <a name="1305"><span class="lineNum">    1305 </span>            :         VM_BUG_ON_PAGE(PageTail(page), page);</a>
 <a name="1306"><span class="lineNum">    1306 </span>            : </a>
-<a name="1307"><span class="lineNum">    1307 </span><span class="lineCov">        268 :         trace_mm_page_free(page, order);</span></a>
+<a name="1307"><span class="lineNum">    1307 </span><span class="lineCov">        266 :         trace_mm_page_free(page, order);</span></a>
 <a name="1308"><span class="lineNum">    1308 </span>            : </a>
-<a name="1309"><span class="lineNum">    1309 </span><span class="lineCov">        268 :         if (unlikely(PageHWPoison(page)) &amp;&amp; !order) {</span></a>
+<a name="1309"><span class="lineNum">    1309 </span><span class="lineCov">        266 :         if (unlikely(PageHWPoison(page)) &amp;&amp; !order) {</span></a>
 <a name="1310"><span class="lineNum">    1310 </span>            :                 /*</a>
 <a name="1311"><span class="lineNum">    1311 </span>            :                  * Do not let hwpoison pages hit pcplists/buddy</a>
 <a name="1312"><span class="lineNum">    1312 </span>            :                  * Untie memcg state and reset page's owner</a>
@@ -1384,8 +1384,8 @@
 <a name="1322"><span class="lineNum">    1322 </span>            :          * Check tail pages before head page information is cleared to</a>
 <a name="1323"><span class="lineNum">    1323 </span>            :          * avoid checking PageCompound for order-0 pages.</a>
 <a name="1324"><span class="lineNum">    1324 </span>            :          */</a>
-<a name="1325"><span class="lineNum">    1325 </span><span class="lineCov">        268 :         if (unlikely(order)) {</span></a>
-<a name="1326"><span class="lineNum">    1326 </span><span class="lineCov">        266 :                 bool compound = PageCompound(page);</span></a>
+<a name="1325"><span class="lineNum">    1325 </span><span class="lineCov">        266 :         if (unlikely(order)) {</span></a>
+<a name="1326"><span class="lineNum">    1326 </span><span class="lineCov">        264 :                 bool compound = PageCompound(page);</span></a>
 <a name="1327"><span class="lineNum">    1327 </span>            :                 int i;</a>
 <a name="1328"><span class="lineNum">    1328 </span>            : </a>
 <a name="1329"><span class="lineNum">    1329 </span>            :                 VM_BUG_ON_PAGE(compound &amp;&amp; compound_order(page) != order, page);</a>
@@ -1394,38 +1394,38 @@
 <a name="1332"><span class="lineNum">    1332 </span>            :                         ClearPageDoubleMap(page);</a>
 <a name="1333"><span class="lineNum">    1333 </span>            :                         ClearPageHasHWPoisoned(page);</a>
 <a name="1334"><span class="lineNum">    1334 </span>            :                 }</a>
-<a name="1335"><span class="lineNum">    1335 </span><span class="lineCov">     251000 :                 for (i = 1; i &lt; (1 &lt;&lt; order); i++) {</span></a>
-<a name="1336"><span class="lineNum">    1336 </span><span class="lineCov">     251000 :                         if (compound)</span></a>
+<a name="1335"><span class="lineNum">    1335 </span><span class="lineCov">     251044 :                 for (i = 1; i &lt; (1 &lt;&lt; order); i++) {</span></a>
+<a name="1336"><span class="lineNum">    1336 </span><span class="lineCov">     251044 :                         if (compound)</span></a>
 <a name="1337"><span class="lineNum">    1337 </span><span class="lineCov">        502 :                                 bad += free_tail_pages_check(page, page + i);</span></a>
-<a name="1338"><span class="lineNum">    1338 </span><span class="lineCov">     251000 :                         if (unlikely(check_free_page(page + i))) {</span></a>
+<a name="1338"><span class="lineNum">    1338 </span><span class="lineCov">     251044 :                         if (unlikely(check_free_page(page + i))) {</span></a>
 <a name="1339"><span class="lineNum">    1339 </span><span class="lineNoCov">          0 :                                 bad++;</span></a>
 <a name="1340"><span class="lineNum">    1340 </span><span class="lineNoCov">          0 :                                 continue;</span></a>
 <a name="1341"><span class="lineNum">    1341 </span>            :                         }</a>
-<a name="1342"><span class="lineNum">    1342 </span><span class="lineCov">     251000 :                         (page + i)-&gt;flags &amp;= ~PAGE_FLAGS_CHECK_AT_PREP;</span></a>
+<a name="1342"><span class="lineNum">    1342 </span><span class="lineCov">     251044 :                         (page + i)-&gt;flags &amp;= ~PAGE_FLAGS_CHECK_AT_PREP;</span></a>
 <a name="1343"><span class="lineNum">    1343 </span>            :                 }</a>
 <a name="1344"><span class="lineNum">    1344 </span>            :         }</a>
-<a name="1345"><span class="lineNum">    1345 </span><span class="lineCov">        268 :         if (PageMappingFlags(page))</span></a>
+<a name="1345"><span class="lineNum">    1345 </span><span class="lineCov">        266 :         if (PageMappingFlags(page))</span></a>
 <a name="1346"><span class="lineNum">    1346 </span><span class="lineNoCov">          0 :                 page-&gt;mapping = NULL;</span></a>
 <a name="1347"><span class="lineNum">    1347 </span>            :         if (memcg_kmem_enabled() &amp;&amp; PageMemcgKmem(page))</a>
 <a name="1348"><span class="lineNum">    1348 </span>            :                 __memcg_kmem_uncharge_page(page, order);</a>
 <a name="1349"><span class="lineNum">    1349 </span>            :         if (check_free)</a>
-<a name="1350"><span class="lineNum">    1350 </span><span class="lineCov">        265 :                 bad += check_free_page(page);</span></a>
-<a name="1351"><span class="lineNum">    1351 </span><span class="lineCov">        268 :         if (bad)</span></a>
+<a name="1350"><span class="lineNum">    1350 </span><span class="lineCov">        263 :                 bad += check_free_page(page);</span></a>
+<a name="1351"><span class="lineNum">    1351 </span><span class="lineCov">        266 :         if (bad)</span></a>
 <a name="1352"><span class="lineNum">    1352 </span>            :                 return false;</a>
 <a name="1353"><span class="lineNum">    1353 </span>            : </a>
-<a name="1354"><span class="lineNum">    1354 </span><span class="lineCov">        268 :         page_cpupid_reset_last(page);</span></a>
-<a name="1355"><span class="lineNum">    1355 </span><span class="lineCov">        268 :         page-&gt;flags &amp;= ~PAGE_FLAGS_CHECK_AT_PREP;</span></a>
+<a name="1354"><span class="lineNum">    1354 </span><span class="lineCov">        266 :         page_cpupid_reset_last(page);</span></a>
+<a name="1355"><span class="lineNum">    1355 </span><span class="lineCov">        266 :         page-&gt;flags &amp;= ~PAGE_FLAGS_CHECK_AT_PREP;</span></a>
 <a name="1356"><span class="lineNum">    1356 </span>            :         reset_page_owner(page, order);</a>
-<a name="1357"><span class="lineNum">    1357 </span><span class="lineCov">        268 :         page_table_check_free(page, order);</span></a>
+<a name="1357"><span class="lineNum">    1357 </span><span class="lineCov">        266 :         page_table_check_free(page, order);</span></a>
 <a name="1358"><span class="lineNum">    1358 </span>            : </a>
-<a name="1359"><span class="lineNum">    1359 </span><span class="lineCov">        268 :         if (!PageHighMem(page)) {</span></a>
+<a name="1359"><span class="lineNum">    1359 </span><span class="lineCov">        266 :         if (!PageHighMem(page)) {</span></a>
 <a name="1360"><span class="lineNum">    1360 </span>            :                 debug_check_no_locks_freed(page_address(page),</a>
 <a name="1361"><span class="lineNum">    1361 </span>            :                                            PAGE_SIZE &lt;&lt; order);</a>
 <a name="1362"><span class="lineNum">    1362 </span>            :                 debug_check_no_obj_freed(page_address(page),</a>
 <a name="1363"><span class="lineNum">    1363 </span>            :                                            PAGE_SIZE &lt;&lt; order);</a>
 <a name="1364"><span class="lineNum">    1364 </span>            :         }</a>
 <a name="1365"><span class="lineNum">    1365 </span>            : </a>
-<a name="1366"><span class="lineNum">    1366 </span><span class="lineCov">        268 :         kernel_poison_pages(page, 1 &lt;&lt; order);</span></a>
+<a name="1366"><span class="lineNum">    1366 </span><span class="lineCov">        266 :         kernel_poison_pages(page, 1 &lt;&lt; order);</span></a>
 <a name="1367"><span class="lineNum">    1367 </span>            : </a>
 <a name="1368"><span class="lineNum">    1368 </span>            :         /*</a>
 <a name="1369"><span class="lineNum">    1369 </span>            :          * As memory initialization might be integrated into KASAN,</a>
@@ -1435,14 +1435,14 @@
 <a name="1373"><span class="lineNum">    1373 </span>            :          * With hardware tag-based KASAN, memory tags must be set before the</a>
 <a name="1374"><span class="lineNum">    1374 </span>            :          * page becomes unavailable via debug_pagealloc or arch_free_page.</a>
 <a name="1375"><span class="lineNum">    1375 </span>            :          */</a>
-<a name="1376"><span class="lineNum">    1376 </span><span class="lineCov">        268 :         if (!should_skip_kasan_poison(page, fpi_flags)) {</span></a>
+<a name="1376"><span class="lineNum">    1376 </span><span class="lineCov">        266 :         if (!should_skip_kasan_poison(page, fpi_flags)) {</span></a>
 <a name="1377"><span class="lineNum">    1377 </span>            :                 kasan_poison_pages(page, order, init);</a>
 <a name="1378"><span class="lineNum">    1378 </span>            : </a>
 <a name="1379"><span class="lineNum">    1379 </span>            :                 /* Memory is already initialized if KASAN did it internally. */</a>
 <a name="1380"><span class="lineNum">    1380 </span>            :                 if (kasan_has_integrated_init())</a>
 <a name="1381"><span class="lineNum">    1381 </span>            :                         init = false;</a>
 <a name="1382"><span class="lineNum">    1382 </span>            :         }</a>
-<a name="1383"><span class="lineNum">    1383 </span><span class="lineCov">        268 :         if (init)</span></a>
+<a name="1383"><span class="lineNum">    1383 </span><span class="lineCov">        266 :         if (init)</span></a>
 <a name="1384"><span class="lineNum">    1384 </span><span class="lineNoCov">          0 :                 kernel_init_free_pages(page, 1 &lt;&lt; order);</span></a>
 <a name="1385"><span class="lineNum">    1385 </span>            : </a>
 <a name="1386"><span class="lineNum">    1386 </span>            :         /*</a>
@@ -1592,23 +1592,23 @@
 <a name="1530"><span class="lineNum">    1530 </span>            :         spin_unlock_irqrestore(&amp;zone-&gt;lock, flags);</a>
 <a name="1531"><span class="lineNum">    1531 </span>            : }</a>
 <a name="1532"><span class="lineNum">    1532 </span>            : </a>
-<a name="1533"><span class="lineNum">    1533 </span><span class="lineCov">     269548 : static void __meminit __init_single_page(struct page *page, unsigned long pfn,</span></a>
+<a name="1533"><span class="lineNum">    1533 </span><span class="lineCov">     266125 : static void __meminit __init_single_page(struct page *page, unsigned long pfn,</span></a>
 <a name="1534"><span class="lineNum">    1534 </span>            :                                 unsigned long zone, int nid)</a>
 <a name="1535"><span class="lineNum">    1535 </span>            : {</a>
-<a name="1536"><span class="lineNum">    1536 </span><span class="lineCov">     269548 :         mm_zero_struct_page(page);</span></a>
-<a name="1537"><span class="lineNum">    1537 </span><span class="lineCov">     539096 :         set_page_links(page, zone, nid, pfn);</span></a>
-<a name="1538"><span class="lineNum">    1538 </span><span class="lineCov">     269548 :         init_page_count(page);</span></a>
-<a name="1539"><span class="lineNum">    1539 </span><span class="lineCov">     269548 :         page_mapcount_reset(page);</span></a>
-<a name="1540"><span class="lineNum">    1540 </span><span class="lineCov">     269548 :         page_cpupid_reset_last(page);</span></a>
-<a name="1541"><span class="lineNum">    1541 </span><span class="lineCov">     269548 :         page_kasan_tag_reset(page);</span></a>
+<a name="1536"><span class="lineNum">    1536 </span><span class="lineCov">     266125 :         mm_zero_struct_page(page);</span></a>
+<a name="1537"><span class="lineNum">    1537 </span><span class="lineCov">     532250 :         set_page_links(page, zone, nid, pfn);</span></a>
+<a name="1538"><span class="lineNum">    1538 </span><span class="lineCov">     266125 :         init_page_count(page);</span></a>
+<a name="1539"><span class="lineNum">    1539 </span><span class="lineCov">     266125 :         page_mapcount_reset(page);</span></a>
+<a name="1540"><span class="lineNum">    1540 </span><span class="lineCov">     266125 :         page_cpupid_reset_last(page);</span></a>
+<a name="1541"><span class="lineNum">    1541 </span><span class="lineCov">     266125 :         page_kasan_tag_reset(page);</span></a>
 <a name="1542"><span class="lineNum">    1542 </span>            : </a>
-<a name="1543"><span class="lineNum">    1543 </span><span class="lineCov">     539096 :         INIT_LIST_HEAD(&amp;page-&gt;lru);</span></a>
+<a name="1543"><span class="lineNum">    1543 </span><span class="lineCov">     532250 :         INIT_LIST_HEAD(&amp;page-&gt;lru);</span></a>
 <a name="1544"><span class="lineNum">    1544 </span>            : #ifdef WANT_PAGE_VIRTUAL</a>
 <a name="1545"><span class="lineNum">    1545 </span>            :         /* The shift won't overflow because ZONE_NORMAL is below 4G. */</a>
 <a name="1546"><span class="lineNum">    1546 </span>            :         if (!is_highmem_idx(zone))</a>
 <a name="1547"><span class="lineNum">    1547 </span>            :                 set_page_address(page, __va(pfn &lt;&lt; PAGE_SHIFT));</a>
 <a name="1548"><span class="lineNum">    1548 </span>            : #endif</a>
-<a name="1549"><span class="lineNum">    1549 </span><span class="lineCov">     269548 : }</span></a>
+<a name="1549"><span class="lineNum">    1549 </span><span class="lineCov">     266125 : }</span></a>
 <a name="1550"><span class="lineNum">    1550 </span>            : </a>
 <a name="1551"><span class="lineNum">    1551 </span>            : #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT</a>
 <a name="1552"><span class="lineNum">    1552 </span>            : static void __meminit init_reserved_page(unsigned long pfn)</a>
@@ -1647,14 +1647,14 @@
 <a name="1585"><span class="lineNum">    1585 </span><span class="lineCov">         13 :         unsigned long start_pfn = PFN_DOWN(start);</span></a>
 <a name="1586"><span class="lineNum">    1586 </span><span class="lineCov">         13 :         unsigned long end_pfn = PFN_UP(end);</span></a>
 <a name="1587"><span class="lineNum">    1587 </span>            : </a>
-<a name="1588"><span class="lineNum">    1588 </span><span class="lineCov">      18563 :         for (; start_pfn &lt; end_pfn; start_pfn++) {</span></a>
-<a name="1589"><span class="lineNum">    1589 </span><span class="lineCov">      18550 :                 if (pfn_valid(start_pfn)) {</span></a>
-<a name="1590"><span class="lineNum">    1590 </span><span class="lineCov">      18550 :                         struct page *page = pfn_to_page(start_pfn);</span></a>
+<a name="1588"><span class="lineNum">    1588 </span><span class="lineCov">      15098 :         for (; start_pfn &lt; end_pfn; start_pfn++) {</span></a>
+<a name="1589"><span class="lineNum">    1589 </span><span class="lineCov">      15085 :                 if (pfn_valid(start_pfn)) {</span></a>
+<a name="1590"><span class="lineNum">    1590 </span><span class="lineCov">      15085 :                         struct page *page = pfn_to_page(start_pfn);</span></a>
 <a name="1591"><span class="lineNum">    1591 </span>            : </a>
-<a name="1592"><span class="lineNum">    1592 </span><span class="lineCov">      18550 :                         init_reserved_page(start_pfn);</span></a>
+<a name="1592"><span class="lineNum">    1592 </span><span class="lineCov">      15085 :                         init_reserved_page(start_pfn);</span></a>
 <a name="1593"><span class="lineNum">    1593 </span>            : </a>
 <a name="1594"><span class="lineNum">    1594 </span>            :                         /* Avoid false-positive PageTail() */</a>
-<a name="1595"><span class="lineNum">    1595 </span><span class="lineCov">      37100 :                         INIT_LIST_HEAD(&amp;page-&gt;lru);</span></a>
+<a name="1595"><span class="lineNum">    1595 </span><span class="lineCov">      30170 :                         INIT_LIST_HEAD(&amp;page-&gt;lru);</span></a>
 <a name="1596"><span class="lineNum">    1596 </span>            : </a>
 <a name="1597"><span class="lineNum">    1597 </span>            :                         /*</a>
 <a name="1598"><span class="lineNum">    1598 </span>            :                          * no need for atomic set_bit because the struct</a>
@@ -1666,34 +1666,34 @@
 <a name="1604"><span class="lineNum">    1604 </span>            :         }</a>
 <a name="1605"><span class="lineNum">    1605 </span><span class="lineCov">         13 : }</span></a>
 <a name="1606"><span class="lineNum">    1606 </span>            : </a>
-<a name="1607"><span class="lineNum">    1607 </span><span class="lineCov">        265 : static void __free_pages_ok(struct page *page, unsigned int order,</span></a>
+<a name="1607"><span class="lineNum">    1607 </span><span class="lineCov">        263 : static void __free_pages_ok(struct page *page, unsigned int order,</span></a>
 <a name="1608"><span class="lineNum">    1608 </span>            :                             fpi_t fpi_flags)</a>
 <a name="1609"><span class="lineNum">    1609 </span>            : {</a>
 <a name="1610"><span class="lineNum">    1610 </span>            :         unsigned long flags;</a>
 <a name="1611"><span class="lineNum">    1611 </span>            :         int migratetype;</a>
-<a name="1612"><span class="lineNum">    1612 </span><span class="lineCov">        265 :         unsigned long pfn = page_to_pfn(page);</span></a>
-<a name="1613"><span class="lineNum">    1613 </span><span class="lineCov">        265 :         struct zone *zone = page_zone(page);</span></a>
+<a name="1612"><span class="lineNum">    1612 </span><span class="lineCov">        263 :         unsigned long pfn = page_to_pfn(page);</span></a>
+<a name="1613"><span class="lineNum">    1613 </span><span class="lineCov">        263 :         struct zone *zone = page_zone(page);</span></a>
 <a name="1614"><span class="lineNum">    1614 </span>            : </a>
-<a name="1615"><span class="lineNum">    1615 </span><span class="lineCov">        265 :         if (!free_pages_prepare(page, order, true, fpi_flags))</span></a>
+<a name="1615"><span class="lineNum">    1615 </span><span class="lineCov">        263 :         if (!free_pages_prepare(page, order, true, fpi_flags))</span></a>
 <a name="1616"><span class="lineNum">    1616 </span>            :                 return;</a>
 <a name="1617"><span class="lineNum">    1617 </span>            : </a>
-<a name="1618"><span class="lineNum">    1618 </span><span class="lineCov">        265 :         migratetype = get_pfnblock_migratetype(page, pfn);</span></a>
+<a name="1618"><span class="lineNum">    1618 </span><span class="lineCov">        263 :         migratetype = get_pfnblock_migratetype(page, pfn);</span></a>
 <a name="1619"><span class="lineNum">    1619 </span>            : </a>
-<a name="1620"><span class="lineNum">    1620 </span><span class="lineCov">        265 :         spin_lock_irqsave(&amp;zone-&gt;lock, flags);</span></a>
+<a name="1620"><span class="lineNum">    1620 </span><span class="lineCov">        263 :         spin_lock_irqsave(&amp;zone-&gt;lock, flags);</span></a>
 <a name="1621"><span class="lineNum">    1621 </span>            :         if (unlikely(has_isolate_pageblock(zone) ||</a>
 <a name="1622"><span class="lineNum">    1622 </span>            :                 is_migrate_isolate(migratetype))) {</a>
 <a name="1623"><span class="lineNum">    1623 </span>            :                 migratetype = get_pfnblock_migratetype(page, pfn);</a>
 <a name="1624"><span class="lineNum">    1624 </span>            :         }</a>
-<a name="1625"><span class="lineNum">    1625 </span><span class="lineCov">        265 :         __free_one_page(page, pfn, zone, order, migratetype, fpi_flags);</span></a>
-<a name="1626"><span class="lineNum">    1626 </span><span class="lineCov">        530 :         spin_unlock_irqrestore(&amp;zone-&gt;lock, flags);</span></a>
+<a name="1625"><span class="lineNum">    1625 </span><span class="lineCov">        263 :         __free_one_page(page, pfn, zone, order, migratetype, fpi_flags);</span></a>
+<a name="1626"><span class="lineNum">    1626 </span><span class="lineCov">        526 :         spin_unlock_irqrestore(&amp;zone-&gt;lock, flags);</span></a>
 <a name="1627"><span class="lineNum">    1627 </span>            : </a>
-<a name="1628"><span class="lineNum">    1628 </span><span class="lineCov">        265 :         __count_vm_events(PGFREE, 1 &lt;&lt; order);</span></a>
+<a name="1628"><span class="lineNum">    1628 </span><span class="lineCov">        263 :         __count_vm_events(PGFREE, 1 &lt;&lt; order);</span></a>
 <a name="1629"><span class="lineNum">    1629 </span>            : }</a>
 <a name="1630"><span class="lineNum">    1630 </span>            : </a>
-<a name="1631"><span class="lineNum">    1631 </span><span class="lineCov">        257 : void __free_pages_core(struct page *page, unsigned int order)</span></a>
+<a name="1631"><span class="lineNum">    1631 </span><span class="lineCov">        255 : void __free_pages_core(struct page *page, unsigned int order)</span></a>
 <a name="1632"><span class="lineNum">    1632 </span>            : {</a>
-<a name="1633"><span class="lineNum">    1633 </span><span class="lineCov">        257 :         unsigned int nr_pages = 1 &lt;&lt; order;</span></a>
-<a name="1634"><span class="lineNum">    1634 </span><span class="lineCov">        257 :         struct page *p = page;</span></a>
+<a name="1633"><span class="lineNum">    1633 </span><span class="lineCov">        255 :         unsigned int nr_pages = 1 &lt;&lt; order;</span></a>
+<a name="1634"><span class="lineNum">    1634 </span><span class="lineCov">        255 :         struct page *p = page;</span></a>
 <a name="1635"><span class="lineNum">    1635 </span>            :         unsigned int loop;</a>
 <a name="1636"><span class="lineNum">    1636 </span>            : </a>
 <a name="1637"><span class="lineNum">    1637 </span>            :         /*</a>
@@ -1701,23 +1701,23 @@
 <a name="1639"><span class="lineNum">    1639 </span>            :          * of all pages to 1 (&quot;allocated&quot;/&quot;not free&quot;). We have to set the</a>
 <a name="1640"><span class="lineNum">    1640 </span>            :          * refcount of all involved pages to 0.</a>
 <a name="1641"><span class="lineNum">    1641 </span>            :          */</a>
-<a name="1642"><span class="lineNum">    1642 </span><span class="lineCov">        257 :         prefetchw(p);</span></a>
-<a name="1643"><span class="lineNum">    1643 </span><span class="lineCov">     251006 :         for (loop = 0; loop &lt; (nr_pages - 1); loop++, p++) {</span></a>
-<a name="1644"><span class="lineNum">    1644 </span><span class="lineCov">     250749 :                 prefetchw(p + 1);</span></a>
-<a name="1645"><span class="lineNum">    1645 </span><span class="lineCov">     250749 :                 __ClearPageReserved(p);</span></a>
-<a name="1646"><span class="lineNum">    1646 </span><span class="lineCov">     250749 :                 set_page_count(p, 0);</span></a>
+<a name="1642"><span class="lineNum">    1642 </span><span class="lineCov">        255 :         prefetchw(p);</span></a>
+<a name="1643"><span class="lineNum">    1643 </span><span class="lineCov">     251048 :         for (loop = 0; loop &lt; (nr_pages - 1); loop++, p++) {</span></a>
+<a name="1644"><span class="lineNum">    1644 </span><span class="lineCov">     250793 :                 prefetchw(p + 1);</span></a>
+<a name="1645"><span class="lineNum">    1645 </span><span class="lineCov">     250793 :                 __ClearPageReserved(p);</span></a>
+<a name="1646"><span class="lineNum">    1646 </span><span class="lineCov">     250793 :                 set_page_count(p, 0);</span></a>
 <a name="1647"><span class="lineNum">    1647 </span>            :         }</a>
-<a name="1648"><span class="lineNum">    1648 </span><span class="lineCov">        257 :         __ClearPageReserved(p);</span></a>
-<a name="1649"><span class="lineNum">    1649 </span><span class="lineCov">        257 :         set_page_count(p, 0);</span></a>
+<a name="1648"><span class="lineNum">    1648 </span><span class="lineCov">        255 :         __ClearPageReserved(p);</span></a>
+<a name="1649"><span class="lineNum">    1649 </span><span class="lineCov">        255 :         set_page_count(p, 0);</span></a>
 <a name="1650"><span class="lineNum">    1650 </span>            : </a>
-<a name="1651"><span class="lineNum">    1651 </span><span class="lineCov">        514 :         atomic_long_add(nr_pages, &amp;page_zone(page)-&gt;managed_pages);</span></a>
+<a name="1651"><span class="lineNum">    1651 </span><span class="lineCov">        510 :         atomic_long_add(nr_pages, &amp;page_zone(page)-&gt;managed_pages);</span></a>
 <a name="1652"><span class="lineNum">    1652 </span>            : </a>
 <a name="1653"><span class="lineNum">    1653 </span>            :         /*</a>
 <a name="1654"><span class="lineNum">    1654 </span>            :          * Bypass PCP and place fresh pages right to the tail, primarily</a>
 <a name="1655"><span class="lineNum">    1655 </span>            :          * relevant for memory onlining.</a>
 <a name="1656"><span class="lineNum">    1656 </span>            :          */</a>
-<a name="1657"><span class="lineNum">    1657 </span><span class="lineCov">        257 :         __free_pages_ok(page, order, FPI_TO_TAIL | FPI_SKIP_KASAN_POISON);</span></a>
-<a name="1658"><span class="lineNum">    1658 </span><span class="lineCov">        257 : }</span></a>
+<a name="1657"><span class="lineNum">    1657 </span><span class="lineCov">        255 :         __free_pages_ok(page, order, FPI_TO_TAIL | FPI_SKIP_KASAN_POISON);</span></a>
+<a name="1658"><span class="lineNum">    1658 </span><span class="lineCov">        255 : }</span></a>
 <a name="1659"><span class="lineNum">    1659 </span>            : </a>
 <a name="1660"><span class="lineNum">    1660 </span>            : #ifdef CONFIG_NUMA</a>
 <a name="1661"><span class="lineNum">    1661 </span>            : </a>
@@ -1771,12 +1771,12 @@
 <a name="1709"><span class="lineNum">    1709 </span>            : }</a>
 <a name="1710"><span class="lineNum">    1710 </span>            : #endif /* CONFIG_NUMA */</a>
 <a name="1711"><span class="lineNum">    1711 </span>            : </a>
-<a name="1712"><span class="lineNum">    1712 </span><span class="lineCov">        257 : void __init memblock_free_pages(struct page *page, unsigned long pfn,</span></a>
+<a name="1712"><span class="lineNum">    1712 </span><span class="lineCov">        255 : void __init memblock_free_pages(struct page *page, unsigned long pfn,</span></a>
 <a name="1713"><span class="lineNum">    1713 </span>            :                                                         unsigned int order)</a>
 <a name="1714"><span class="lineNum">    1714 </span>            : {</a>
-<a name="1715"><span class="lineNum">    1715 </span><span class="lineCov">        257 :         if (early_page_uninitialised(pfn))</span></a>
+<a name="1715"><span class="lineNum">    1715 </span><span class="lineCov">        255 :         if (early_page_uninitialised(pfn))</span></a>
 <a name="1716"><span class="lineNum">    1716 </span>            :                 return;</a>
-<a name="1717"><span class="lineNum">    1717 </span><span class="lineCov">        257 :         __free_pages_core(page, order);</span></a>
+<a name="1717"><span class="lineNum">    1717 </span><span class="lineCov">        255 :         __free_pages_core(page, order);</span></a>
 <a name="1718"><span class="lineNum">    1718 </span>            : }</a>
 <a name="1719"><span class="lineNum">    1719 </span>            : </a>
 <a name="1720"><span class="lineNum">    1720 </span>            : /*</a>
@@ -1794,32 +1794,32 @@
 <a name="1732"><span class="lineNum">    1732 </span>            :  * the first and last page of a pageblock and avoid checking each individual</a>
 <a name="1733"><span class="lineNum">    1733 </span>            :  * page in a pageblock.</a>
 <a name="1734"><span class="lineNum">    1734 </span>            :  */</a>
-<a name="1735"><span class="lineNum">    1735 </span><span class="lineCov">        264 : struct page *__pageblock_pfn_to_page(unsigned long start_pfn,</span></a>
+<a name="1735"><span class="lineNum">    1735 </span><span class="lineCov">        260 : struct page *__pageblock_pfn_to_page(unsigned long start_pfn,</span></a>
 <a name="1736"><span class="lineNum">    1736 </span>            :                                      unsigned long end_pfn, struct zone *zone)</a>
 <a name="1737"><span class="lineNum">    1737 </span>            : {</a>
 <a name="1738"><span class="lineNum">    1738 </span>            :         struct page *start_page;</a>
 <a name="1739"><span class="lineNum">    1739 </span>            :         struct page *end_page;</a>
 <a name="1740"><span class="lineNum">    1740 </span>            : </a>
 <a name="1741"><span class="lineNum">    1741 </span>            :         /* end_pfn is one past the range we are checking */</a>
-<a name="1742"><span class="lineNum">    1742 </span><span class="lineCov">        264 :         end_pfn--;</span></a>
+<a name="1742"><span class="lineNum">    1742 </span><span class="lineCov">        260 :         end_pfn--;</span></a>
 <a name="1743"><span class="lineNum">    1743 </span>            : </a>
-<a name="1744"><span class="lineNum">    1744 </span><span class="lineCov">        264 :         if (!pfn_valid(start_pfn) || !pfn_valid(end_pfn))</span></a>
+<a name="1744"><span class="lineNum">    1744 </span><span class="lineCov">        260 :         if (!pfn_valid(start_pfn) || !pfn_valid(end_pfn))</span></a>
 <a name="1745"><span class="lineNum">    1745 </span>            :                 return NULL;</a>
 <a name="1746"><span class="lineNum">    1746 </span>            : </a>
-<a name="1747"><span class="lineNum">    1747 </span><span class="lineCov">        264 :         start_page = pfn_to_online_page(start_pfn);</span></a>
-<a name="1748"><span class="lineNum">    1748 </span><span class="lineCov">        264 :         if (!start_page)</span></a>
+<a name="1747"><span class="lineNum">    1747 </span><span class="lineCov">        260 :         start_page = pfn_to_online_page(start_pfn);</span></a>
+<a name="1748"><span class="lineNum">    1748 </span><span class="lineCov">        260 :         if (!start_page)</span></a>
 <a name="1749"><span class="lineNum">    1749 </span>            :                 return NULL;</a>
 <a name="1750"><span class="lineNum">    1750 </span>            : </a>
-<a name="1751"><span class="lineNum">    1751 </span><span class="lineCov">        264 :         if (page_zone(start_page) != zone)</span></a>
+<a name="1751"><span class="lineNum">    1751 </span><span class="lineCov">        260 :         if (page_zone(start_page) != zone)</span></a>
 <a name="1752"><span class="lineNum">    1752 </span>            :                 return NULL;</a>
 <a name="1753"><span class="lineNum">    1753 </span>            : </a>
-<a name="1754"><span class="lineNum">    1754 </span><span class="lineCov">        264 :         end_page = pfn_to_page(end_pfn);</span></a>
+<a name="1754"><span class="lineNum">    1754 </span><span class="lineCov">        260 :         end_page = pfn_to_page(end_pfn);</span></a>
 <a name="1755"><span class="lineNum">    1755 </span>            : </a>
 <a name="1756"><span class="lineNum">    1756 </span>            :         /* This gives a shorter code than deriving page_zone(end_page) */</a>
-<a name="1757"><span class="lineNum">    1757 </span><span class="lineCov">        792 :         if (page_zone_id(start_page) != page_zone_id(end_page))</span></a>
+<a name="1757"><span class="lineNum">    1757 </span><span class="lineCov">        780 :         if (page_zone_id(start_page) != page_zone_id(end_page))</span></a>
 <a name="1758"><span class="lineNum">    1758 </span>            :                 return NULL;</a>
 <a name="1759"><span class="lineNum">    1759 </span>            : </a>
-<a name="1760"><span class="lineNum">    1760 </span><span class="lineCov">        264 :         return start_page;</span></a>
+<a name="1760"><span class="lineNum">    1760 </span><span class="lineCov">        260 :         return start_page;</span></a>
 <a name="1761"><span class="lineNum">    1761 </span>            : }</a>
 <a name="1762"><span class="lineNum">    1762 </span>            : </a>
 <a name="1763"><span class="lineNum">    1763 </span><span class="lineCov">          1 : void set_zone_contiguous(struct zone *zone)</span></a>
@@ -1828,16 +1828,16 @@
 <a name="1766"><span class="lineNum">    1766 </span>            :         unsigned long block_end_pfn;</a>
 <a name="1767"><span class="lineNum">    1767 </span>            : </a>
 <a name="1768"><span class="lineNum">    1768 </span><span class="lineCov">          1 :         block_end_pfn = ALIGN(block_start_pfn + 1, pageblock_nr_pages);</span></a>
-<a name="1769"><span class="lineNum">    1769 </span><span class="lineCov">        531 :         for (; block_start_pfn &lt; zone_end_pfn(zone);</span></a>
-<a name="1770"><span class="lineNum">    1770 </span><span class="lineCov">        264 :                         block_start_pfn = block_end_pfn,</span></a>
-<a name="1771"><span class="lineNum">    1771 </span><span class="lineCov">        264 :                          block_end_pfn += pageblock_nr_pages) {</span></a>
+<a name="1769"><span class="lineNum">    1769 </span><span class="lineCov">        523 :         for (; block_start_pfn &lt; zone_end_pfn(zone);</span></a>
+<a name="1770"><span class="lineNum">    1770 </span><span class="lineCov">        260 :                         block_start_pfn = block_end_pfn,</span></a>
+<a name="1771"><span class="lineNum">    1771 </span><span class="lineCov">        260 :                          block_end_pfn += pageblock_nr_pages) {</span></a>
 <a name="1772"><span class="lineNum">    1772 </span>            : </a>
-<a name="1773"><span class="lineNum">    1773 </span><span class="lineCov">        264 :                 block_end_pfn = min(block_end_pfn, zone_end_pfn(zone));</span></a>
+<a name="1773"><span class="lineNum">    1773 </span><span class="lineCov">        260 :                 block_end_pfn = min(block_end_pfn, zone_end_pfn(zone));</span></a>
 <a name="1774"><span class="lineNum">    1774 </span>            : </a>
-<a name="1775"><span class="lineNum">    1775 </span><span class="lineCov">        264 :                 if (!__pageblock_pfn_to_page(block_start_pfn,</span></a>
+<a name="1775"><span class="lineNum">    1775 </span><span class="lineCov">        260 :                 if (!__pageblock_pfn_to_page(block_start_pfn,</span></a>
 <a name="1776"><span class="lineNum">    1776 </span>            :                                              block_end_pfn, zone))</a>
 <a name="1777"><span class="lineNum">    1777 </span>            :                         return;</a>
-<a name="1778"><span class="lineNum">    1778 </span><span class="lineCov">        264 :                 cond_resched();</span></a>
+<a name="1778"><span class="lineNum">    1778 </span><span class="lineCov">        260 :                 cond_resched();</span></a>
 <a name="1779"><span class="lineNum">    1779 </span>            :         }</a>
 <a name="1780"><span class="lineNum">    1780 </span>            : </a>
 <a name="1781"><span class="lineNum">    1781 </span>            :         /* We confirm that there is no hole */</a>
@@ -3971,15 +3971,15 @@
 <a name="3909"><span class="lineNum">    3909 </span>            :                 return true;</a>
 <a name="3910"><span class="lineNum">    3910 </span>            : </a>
 <a name="3911"><span class="lineNum">    3911 </span>            :         /* For a high-order request, check at least one suitable page is free */</a>
-<a name="3912"><span class="lineNum">    3912 </span><span class="lineCov">        112 :         for (o = order; o &lt; MAX_ORDER; o++) {</span></a>
-<a name="3913"><span class="lineNum">    3913 </span><span class="lineCov">        112 :                 struct free_area *area = &amp;z-&gt;free_area[o];</span></a>
+<a name="3912"><span class="lineNum">    3912 </span><span class="lineCov">        120 :         for (o = order; o &lt; MAX_ORDER; o++) {</span></a>
+<a name="3913"><span class="lineNum">    3913 </span><span class="lineCov">        120 :                 struct free_area *area = &amp;z-&gt;free_area[o];</span></a>
 <a name="3914"><span class="lineNum">    3914 </span>            :                 int mt;</a>
 <a name="3915"><span class="lineNum">    3915 </span>            : </a>
-<a name="3916"><span class="lineNum">    3916 </span><span class="lineCov">        112 :                 if (!area-&gt;nr_free)</span></a>
-<a name="3917"><span class="lineNum">    3917 </span><span class="lineNoCov">          0 :                         continue;</span></a>
+<a name="3916"><span class="lineNum">    3916 </span><span class="lineCov">        120 :                 if (!area-&gt;nr_free)</span></a>
+<a name="3917"><span class="lineNum">    3917 </span><span class="lineCov">          8 :                         continue;</span></a>
 <a name="3918"><span class="lineNum">    3918 </span>            : </a>
-<a name="3919"><span class="lineNum">    3919 </span><span class="lineCov">         43 :                 for (mt = 0; mt &lt; MIGRATE_PCPTYPES; mt++) {</span></a>
-<a name="3920"><span class="lineNum">    3920 </span><span class="lineCov">        155 :                         if (!free_area_empty(area, mt))</span></a>
+<a name="3919"><span class="lineNum">    3919 </span><span class="lineCov">         35 :                 for (mt = 0; mt &lt; MIGRATE_PCPTYPES; mt++) {</span></a>
+<a name="3920"><span class="lineNum">    3920 </span><span class="lineCov">        147 :                         if (!free_area_empty(area, mt))</span></a>
 <a name="3921"><span class="lineNum">    3921 </span>            :                                 return true;</a>
 <a name="3922"><span class="lineNum">    3922 </span>            :                 }</a>
 <a name="3923"><span class="lineNum">    3923 </span>            : </a>
@@ -6578,11 +6578,11 @@
 <a name="6516"><span class="lineNum">    6516 </span>            : </a>
 <a name="6517"><span class="lineNum">    6517 </span>            : /* If zone is ZONE_MOVABLE but memory is mirrored, it is an overlapped init */</a>
 <a name="6518"><span class="lineNum">    6518 </span>            : static bool __meminit</a>
-<a name="6519"><span class="lineNum">    6519 </span><span class="lineCov">     269548 : overlap_memmap_init(unsigned long zone, unsigned long *pfn)</span></a>
+<a name="6519"><span class="lineNum">    6519 </span><span class="lineCov">     266125 : overlap_memmap_init(unsigned long zone, unsigned long *pfn)</span></a>
 <a name="6520"><span class="lineNum">    6520 </span>            : {</a>
 <a name="6521"><span class="lineNum">    6521 </span>            :         static struct memblock_region *r;</a>
 <a name="6522"><span class="lineNum">    6522 </span>            : </a>
-<a name="6523"><span class="lineNum">    6523 </span><span class="lineCov">     269548 :         if (mirrored_kernelcore &amp;&amp; zone == ZONE_MOVABLE) {</span></a>
+<a name="6523"><span class="lineNum">    6523 </span><span class="lineCov">     266125 :         if (mirrored_kernelcore &amp;&amp; zone == ZONE_MOVABLE) {</span></a>
 <a name="6524"><span class="lineNum">    6524 </span><span class="lineNoCov">          0 :                 if (!r || *pfn &gt;= memblock_region_memory_end_pfn(r)) {</span></a>
 <a name="6525"><span class="lineNum">    6525 </span><span class="lineNoCov">          0 :                         for_each_mem_region(r) {</span></a>
 <a name="6526"><span class="lineNum">    6526 </span><span class="lineNoCov">          0 :                                 if (*pfn &lt; memblock_region_memory_end_pfn(r))</span></a>
@@ -6636,21 +6636,21 @@
 <a name="6574"><span class="lineNum">    6574 </span>            :         }</a>
 <a name="6575"><span class="lineNum">    6575 </span>            : #endif</a>
 <a name="6576"><span class="lineNum">    6576 </span>            : </a>
-<a name="6577"><span class="lineNum">    6577 </span><span class="lineCov">     269550 :         for (pfn = start_pfn; pfn &lt; end_pfn; ) {</span></a>
+<a name="6577"><span class="lineNum">    6577 </span><span class="lineCov">     266127 :         for (pfn = start_pfn; pfn &lt; end_pfn; ) {</span></a>
 <a name="6578"><span class="lineNum">    6578 </span>            :                 /*</a>
 <a name="6579"><span class="lineNum">    6579 </span>            :                  * There can be holes in boot-time mem_map[]s handed to this</a>
 <a name="6580"><span class="lineNum">    6580 </span>            :                  * function.  They do not exist on hotplugged memory.</a>
 <a name="6581"><span class="lineNum">    6581 </span>            :                  */</a>
-<a name="6582"><span class="lineNum">    6582 </span><span class="lineCov">     269548 :                 if (context == MEMINIT_EARLY) {</span></a>
-<a name="6583"><span class="lineNum">    6583 </span><span class="lineCov">     269548 :                         if (overlap_memmap_init(zone, &amp;pfn))</span></a>
+<a name="6582"><span class="lineNum">    6582 </span><span class="lineCov">     266125 :                 if (context == MEMINIT_EARLY) {</span></a>
+<a name="6583"><span class="lineNum">    6583 </span><span class="lineCov">     266125 :                         if (overlap_memmap_init(zone, &amp;pfn))</span></a>
 <a name="6584"><span class="lineNum">    6584 </span><span class="lineNoCov">          0 :                                 continue;</span></a>
 <a name="6585"><span class="lineNum">    6585 </span>            :                         if (defer_init(nid, pfn, zone_end_pfn))</a>
 <a name="6586"><span class="lineNum">    6586 </span>            :                                 break;</a>
 <a name="6587"><span class="lineNum">    6587 </span>            :                 }</a>
 <a name="6588"><span class="lineNum">    6588 </span>            : </a>
-<a name="6589"><span class="lineNum">    6589 </span><span class="lineCov">     269548 :                 page = pfn_to_page(pfn);</span></a>
-<a name="6590"><span class="lineNum">    6590 </span><span class="lineCov">     269548 :                 __init_single_page(page, pfn, zone, nid);</span></a>
-<a name="6591"><span class="lineNum">    6591 </span><span class="lineCov">     269548 :                 if (context == MEMINIT_HOTPLUG)</span></a>
+<a name="6589"><span class="lineNum">    6589 </span><span class="lineCov">     266125 :                 page = pfn_to_page(pfn);</span></a>
+<a name="6590"><span class="lineNum">    6590 </span><span class="lineCov">     266125 :                 __init_single_page(page, pfn, zone, nid);</span></a>
+<a name="6591"><span class="lineNum">    6591 </span><span class="lineCov">     266125 :                 if (context == MEMINIT_HOTPLUG)</span></a>
 <a name="6592"><span class="lineNum">    6592 </span>            :                         __SetPageReserved(page);</a>
 <a name="6593"><span class="lineNum">    6593 </span>            : </a>
 <a name="6594"><span class="lineNum">    6594 </span>            :                 /*</a>
@@ -6658,11 +6658,11 @@
 <a name="6596"><span class="lineNum">    6596 </span>            :                  * such that unmovable allocations won't be scattered all</a>
 <a name="6597"><span class="lineNum">    6597 </span>            :                  * over the place during system boot.</a>
 <a name="6598"><span class="lineNum">    6598 </span>            :                  */</a>
-<a name="6599"><span class="lineNum">    6599 </span><span class="lineCov">     269548 :                 if (IS_ALIGNED(pfn, pageblock_nr_pages)) {</span></a>
-<a name="6600"><span class="lineNum">    6600 </span><span class="lineCov">        264 :                         set_pageblock_migratetype(page, migratetype);</span></a>
-<a name="6601"><span class="lineNum">    6601 </span><span class="lineCov">        264 :                         cond_resched();</span></a>
+<a name="6599"><span class="lineNum">    6599 </span><span class="lineCov">     266125 :                 if (IS_ALIGNED(pfn, pageblock_nr_pages)) {</span></a>
+<a name="6600"><span class="lineNum">    6600 </span><span class="lineCov">        260 :                         set_pageblock_migratetype(page, migratetype);</span></a>
+<a name="6601"><span class="lineNum">    6601 </span><span class="lineCov">        260 :                         cond_resched();</span></a>
 <a name="6602"><span class="lineNum">    6602 </span>            :                 }</a>
-<a name="6603"><span class="lineNum">    6603 </span><span class="lineCov">     269548 :                 pfn++;</span></a>
+<a name="6603"><span class="lineNum">    6603 </span><span class="lineCov">     266125 :                 pfn++;</span></a>
 <a name="6604"><span class="lineNum">    6604 </span>            :         }</a>
 <a name="6605"><span class="lineNum">    6605 </span><span class="lineCov">          1 : }</span></a>
 <a name="6606"><span class="lineNum">    6606 </span>            : </a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">14</td>
@@ -1305,26 +1305,26 @@
 <a name="1243"><span class="lineNum">    1243 </span>            :  * and therefore this has no security on its own. s represents the</a>
 <a name="1244"><span class="lineNum">    1244 </span>            :  * 128 or 256-bit SipHash state, while v represents a 128-bit input.</a>
 <a name="1245"><span class="lineNum">    1245 </span>            :  */</a>
-<a name="1246"><span class="lineNum">    1246 </span><span class="lineCov">          9 : static void fast_mix(unsigned long s[4], const unsigned long *v)</span></a>
+<a name="1246"><span class="lineNum">    1246 </span><span class="lineCov">         13 : static void fast_mix(unsigned long s[4], const unsigned long *v)</span></a>
 <a name="1247"><span class="lineNum">    1247 </span>            : {</a>
 <a name="1248"><span class="lineNum">    1248 </span>            :         size_t i;</a>
 <a name="1249"><span class="lineNum">    1249 </span>            : </a>
-<a name="1250"><span class="lineNum">    1250 </span><span class="lineCov">         27 :         for (i = 0; i &lt; 16 / sizeof(long); ++i) {</span></a>
-<a name="1251"><span class="lineNum">    1251 </span><span class="lineCov">         18 :                 s[3] ^= v[i];</span></a>
+<a name="1250"><span class="lineNum">    1250 </span><span class="lineCov">         39 :         for (i = 0; i &lt; 16 / sizeof(long); ++i) {</span></a>
+<a name="1251"><span class="lineNum">    1251 </span><span class="lineCov">         26 :                 s[3] ^= v[i];</span></a>
 <a name="1252"><span class="lineNum">    1252 </span>            : #ifdef CONFIG_64BIT</a>
-<a name="1253"><span class="lineNum">    1253 </span><span class="lineCov">         54 :                 s[0] += s[1]; s[1] = rol64(s[1], 13); s[1] ^= s[0]; s[0] = rol64(s[0], 32);</span></a>
-<a name="1254"><span class="lineNum">    1254 </span><span class="lineCov">         36 :                 s[2] += s[3]; s[3] = rol64(s[3], 16); s[3] ^= s[2];</span></a>
-<a name="1255"><span class="lineNum">    1255 </span><span class="lineCov">         36 :                 s[0] += s[3]; s[3] = rol64(s[3], 21); s[3] ^= s[0];</span></a>
-<a name="1256"><span class="lineNum">    1256 </span><span class="lineCov">         54 :                 s[2] += s[1]; s[1] = rol64(s[1], 17); s[1] ^= s[2]; s[2] = rol64(s[2], 32);</span></a>
+<a name="1253"><span class="lineNum">    1253 </span><span class="lineCov">         78 :                 s[0] += s[1]; s[1] = rol64(s[1], 13); s[1] ^= s[0]; s[0] = rol64(s[0], 32);</span></a>
+<a name="1254"><span class="lineNum">    1254 </span><span class="lineCov">         52 :                 s[2] += s[3]; s[3] = rol64(s[3], 16); s[3] ^= s[2];</span></a>
+<a name="1255"><span class="lineNum">    1255 </span><span class="lineCov">         52 :                 s[0] += s[3]; s[3] = rol64(s[3], 21); s[3] ^= s[0];</span></a>
+<a name="1256"><span class="lineNum">    1256 </span><span class="lineCov">         78 :                 s[2] += s[1]; s[1] = rol64(s[1], 17); s[1] ^= s[2]; s[2] = rol64(s[2], 32);</span></a>
 <a name="1257"><span class="lineNum">    1257 </span>            : #else</a>
 <a name="1258"><span class="lineNum">    1258 </span>            :                 s[0] += s[1]; s[1] = rol32(s[1],  5); s[1] ^= s[0]; s[0] = rol32(s[0], 16);</a>
 <a name="1259"><span class="lineNum">    1259 </span>            :                 s[2] += s[3]; s[3] = rol32(s[3],  8); s[3] ^= s[2];</a>
 <a name="1260"><span class="lineNum">    1260 </span>            :                 s[0] += s[3]; s[3] = rol32(s[3],  7); s[3] ^= s[0];</a>
 <a name="1261"><span class="lineNum">    1261 </span>            :                 s[2] += s[1]; s[1] = rol32(s[1], 13); s[1] ^= s[2]; s[2] = rol32(s[2], 16);</a>
 <a name="1262"><span class="lineNum">    1262 </span>            : #endif</a>
-<a name="1263"><span class="lineNum">    1263 </span><span class="lineCov">         18 :                 s[0] ^= v[i];</span></a>
+<a name="1263"><span class="lineNum">    1263 </span><span class="lineCov">         26 :                 s[0] ^= v[i];</span></a>
 <a name="1264"><span class="lineNum">    1264 </span>            :         }</a>
-<a name="1265"><span class="lineNum">    1265 </span><span class="lineCov">          9 : }</span></a>
+<a name="1265"><span class="lineNum">    1265 </span><span class="lineCov">         13 : }</span></a>
 <a name="1266"><span class="lineNum">    1266 </span>            : </a>
 <a name="1267"><span class="lineNum">    1267 </span>            : #ifdef CONFIG_SMP</a>
 <a name="1268"><span class="lineNum">    1268 </span>            : /*</a>
@@ -1351,17 +1351,17 @@
 <a name="1289"><span class="lineNum">    1289 </span>            : </a>
 <a name="1290"><span class="lineNum">    1290 </span>            : static unsigned long get_reg(struct fast_pool *f, struct pt_regs *regs)</a>
 <a name="1291"><span class="lineNum">    1291 </span>            : {</a>
-<a name="1292"><span class="lineNum">    1292 </span><span class="lineCov">          9 :         unsigned long *ptr = (unsigned long *)regs;</span></a>
+<a name="1292"><span class="lineNum">    1292 </span><span class="lineCov">         13 :         unsigned long *ptr = (unsigned long *)regs;</span></a>
 <a name="1293"><span class="lineNum">    1293 </span>            :         unsigned int idx;</a>
 <a name="1294"><span class="lineNum">    1294 </span>            : </a>
-<a name="1295"><span class="lineNum">    1295 </span><span class="lineCov">          9 :         if (regs == NULL)</span></a>
+<a name="1295"><span class="lineNum">    1295 </span><span class="lineCov">         13 :         if (regs == NULL)</span></a>
 <a name="1296"><span class="lineNum">    1296 </span>            :                 return 0;</a>
-<a name="1297"><span class="lineNum">    1297 </span><span class="lineCov">          9 :         idx = READ_ONCE(f-&gt;reg_idx);</span></a>
-<a name="1298"><span class="lineNum">    1298 </span><span class="lineCov">          9 :         if (idx &gt;= sizeof(struct pt_regs) / sizeof(unsigned long))</span></a>
+<a name="1297"><span class="lineNum">    1297 </span><span class="lineCov">         13 :         idx = READ_ONCE(f-&gt;reg_idx);</span></a>
+<a name="1298"><span class="lineNum">    1298 </span><span class="lineCov">         13 :         if (idx &gt;= sizeof(struct pt_regs) / sizeof(unsigned long))</span></a>
 <a name="1299"><span class="lineNum">    1299 </span><span class="lineNoCov">          0 :                 idx = 0;</span></a>
-<a name="1300"><span class="lineNum">    1300 </span><span class="lineCov">          9 :         ptr += idx++;</span></a>
-<a name="1301"><span class="lineNum">    1301 </span><span class="lineCov">          9 :         WRITE_ONCE(f-&gt;reg_idx, idx);</span></a>
-<a name="1302"><span class="lineNum">    1302 </span><span class="lineCov">          9 :         return *ptr;</span></a>
+<a name="1300"><span class="lineNum">    1300 </span><span class="lineCov">         13 :         ptr += idx++;</span></a>
+<a name="1301"><span class="lineNum">    1301 </span><span class="lineCov">         13 :         WRITE_ONCE(f-&gt;reg_idx, idx);</span></a>
+<a name="1302"><span class="lineNum">    1302 </span><span class="lineCov">         13 :         return *ptr;</span></a>
 <a name="1303"><span class="lineNum">    1303 </span>            : }</a>
 <a name="1304"><span class="lineNum">    1304 </span>            : </a>
 <a name="1305"><span class="lineNum">    1305 </span><span class="lineNoCov">          0 : static void mix_interrupt_randomness(struct work_struct *work)</span></a>
@@ -1404,12 +1404,12 @@
 <a name="1342"><span class="lineNum">    1342 </span><span class="lineNoCov">          0 :         memzero_explicit(pool, sizeof(pool));</span></a>
 <a name="1343"><span class="lineNum">    1343 </span>            : }</a>
 <a name="1344"><span class="lineNum">    1344 </span>            : </a>
-<a name="1345"><span class="lineNum">    1345 </span><span class="lineCov">          9 : void add_interrupt_randomness(int irq)</span></a>
+<a name="1345"><span class="lineNum">    1345 </span><span class="lineCov">         13 : void add_interrupt_randomness(int irq)</span></a>
 <a name="1346"><span class="lineNum">    1346 </span>            : {</a>
 <a name="1347"><span class="lineNum">    1347 </span>            :         enum { MIX_INFLIGHT = 1U &lt;&lt; 31 };</a>
-<a name="1348"><span class="lineNum">    1348 </span><span class="lineCov">          9 :         unsigned long cycles = random_get_entropy(), now = jiffies;</span></a>
-<a name="1349"><span class="lineNum">    1349 </span><span class="lineCov">          9 :         struct fast_pool *fast_pool = this_cpu_ptr(&amp;irq_randomness);</span></a>
-<a name="1350"><span class="lineNum">    1350 </span><span class="lineCov">          9 :         struct pt_regs *regs = get_irq_regs();</span></a>
+<a name="1348"><span class="lineNum">    1348 </span><span class="lineCov">         13 :         unsigned long cycles = random_get_entropy(), now = jiffies;</span></a>
+<a name="1349"><span class="lineNum">    1349 </span><span class="lineCov">         13 :         struct fast_pool *fast_pool = this_cpu_ptr(&amp;irq_randomness);</span></a>
+<a name="1350"><span class="lineNum">    1350 </span><span class="lineCov">         13 :         struct pt_regs *regs = get_irq_regs();</span></a>
 <a name="1351"><span class="lineNum">    1351 </span>            :         unsigned int new_count;</a>
 <a name="1352"><span class="lineNum">    1352 </span>            :         union {</a>
 <a name="1353"><span class="lineNum">    1353 </span>            :                 u32 u32[4];</a>
@@ -1418,11 +1418,11 @@
 <a name="1356"><span class="lineNum">    1356 </span>            :         } irq_data;</a>
 <a name="1357"><span class="lineNum">    1357 </span>            : </a>
 <a name="1358"><span class="lineNum">    1358 </span>            :         if (cycles == 0)</a>
-<a name="1359"><span class="lineNum">    1359 </span><span class="lineCov">          9 :                 cycles = get_reg(fast_pool, regs);</span></a>
+<a name="1359"><span class="lineNum">    1359 </span><span class="lineCov">         13 :                 cycles = get_reg(fast_pool, regs);</span></a>
 <a name="1360"><span class="lineNum">    1360 </span>            : </a>
 <a name="1361"><span class="lineNum">    1361 </span>            :         if (sizeof(unsigned long) == 8) {</a>
-<a name="1362"><span class="lineNum">    1362 </span><span class="lineCov">          9 :                 irq_data.u64[0] = cycles ^ rol64(now, 32) ^ irq;</span></a>
-<a name="1363"><span class="lineNum">    1363 </span><span class="lineCov">          9 :                 irq_data.u64[1] = regs ? instruction_pointer(regs) : _RET_IP_;</span></a>
+<a name="1362"><span class="lineNum">    1362 </span><span class="lineCov">         13 :                 irq_data.u64[0] = cycles ^ rol64(now, 32) ^ irq;</span></a>
+<a name="1363"><span class="lineNum">    1363 </span><span class="lineCov">         13 :                 irq_data.u64[1] = regs ? instruction_pointer(regs) : _RET_IP_;</span></a>
 <a name="1364"><span class="lineNum">    1364 </span>            :         } else {</a>
 <a name="1365"><span class="lineNum">    1365 </span>            :                 irq_data.u32[0] = cycles ^ irq;</a>
 <a name="1366"><span class="lineNum">    1366 </span>            :                 irq_data.u32[1] = now;</a>
@@ -1430,14 +1430,14 @@
 <a name="1368"><span class="lineNum">    1368 </span>            :                 irq_data.u32[3] = get_reg(fast_pool, regs);</a>
 <a name="1369"><span class="lineNum">    1369 </span>            :         }</a>
 <a name="1370"><span class="lineNum">    1370 </span>            : </a>
-<a name="1371"><span class="lineNum">    1371 </span><span class="lineCov">          9 :         fast_mix(fast_pool-&gt;pool, irq_data.longs);</span></a>
-<a name="1372"><span class="lineNum">    1372 </span><span class="lineCov">          9 :         new_count = ++fast_pool-&gt;count;</span></a>
+<a name="1371"><span class="lineNum">    1371 </span><span class="lineCov">         13 :         fast_mix(fast_pool-&gt;pool, irq_data.longs);</span></a>
+<a name="1372"><span class="lineNum">    1372 </span><span class="lineCov">         13 :         new_count = ++fast_pool-&gt;count;</span></a>
 <a name="1373"><span class="lineNum">    1373 </span>            : </a>
-<a name="1374"><span class="lineNum">    1374 </span><span class="lineCov">          9 :         if (new_count &amp; MIX_INFLIGHT)</span></a>
-<a name="1375"><span class="lineNum">    1375 </span><span class="lineCov">          9 :                 return;</span></a>
+<a name="1374"><span class="lineNum">    1374 </span><span class="lineCov">         13 :         if (new_count &amp; MIX_INFLIGHT)</span></a>
+<a name="1375"><span class="lineNum">    1375 </span><span class="lineCov">         13 :                 return;</span></a>
 <a name="1376"><span class="lineNum">    1376 </span>            : </a>
-<a name="1377"><span class="lineNum">    1377 </span><span class="lineCov">         18 :         if (new_count &lt; 64 &amp;&amp; (!time_after(now, fast_pool-&gt;last + HZ) ||</span></a>
-<a name="1378"><span class="lineNum">    1378 </span><span class="lineCov">          9 :                                unlikely(crng_init == 0)))</span></a>
+<a name="1377"><span class="lineNum">    1377 </span><span class="lineCov">         26 :         if (new_count &lt; 64 &amp;&amp; (!time_after(now, fast_pool-&gt;last + HZ) ||</span></a>
+<a name="1378"><span class="lineNum">    1378 </span><span class="lineCov">         13 :                                unlikely(crng_init == 0)))</span></a>
 <a name="1379"><span class="lineNum">    1379 </span>            :                 return;</a>
 <a name="1380"><span class="lineNum">    1380 </span>            : </a>
 <a name="1381"><span class="lineNum">    1381 </span><span class="lineNoCov">          0 :         if (unlikely(!fast_pool-&gt;mix.func))</span></a>

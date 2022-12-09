@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -128,12 +128,12 @@
 <a name="66"><span class="lineNum">      66 </span>            :                                unsigned long val, void *v,</a>
 <a name="67"><span class="lineNum">      67 </span>            :                                int nr_to_call, int *nr_calls)</a>
 <a name="68"><span class="lineNum">      68 </span>            : {</a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         11 :         int ret = NOTIFY_DONE;</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         15 :         int ret = NOTIFY_DONE;</span></a>
 <a name="70"><span class="lineNum">      70 </span>            :         struct notifier_block *nb, *next_nb;</a>
 <a name="71"><span class="lineNum">      71 </span>            : </a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">         11 :         nb = rcu_dereference_raw(*nl);</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">         15 :         nb = rcu_dereference_raw(*nl);</span></a>
 <a name="73"><span class="lineNum">      73 </span>            : </a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineCov">         13 :         while (nb &amp;&amp; nr_to_call) {</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">         17 :         while (nb &amp;&amp; nr_to_call) {</span></a>
 <a name="75"><span class="lineNum">      75 </span><span class="lineCov">          2 :                 next_nb = rcu_dereference_raw(nb-&gt;next);</span></a>
 <a name="76"><span class="lineNum">      76 </span>            : </a>
 <a name="77"><span class="lineNum">      77 </span>            : #ifdef CONFIG_DEBUG_NOTIFIERS</a>
@@ -448,10 +448,10 @@
 <a name="386"><span class="lineNum">     386 </span>            :  *      Otherwise the return value is the return value</a>
 <a name="387"><span class="lineNum">     387 </span>            :  *      of the last notifier function called.</a>
 <a name="388"><span class="lineNum">     388 </span>            :  */</a>
-<a name="389"><span class="lineNum">     389 </span><span class="lineCov">         10 : int raw_notifier_call_chain(struct raw_notifier_head *nh,</span></a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineCov">         14 : int raw_notifier_call_chain(struct raw_notifier_head *nh,</span></a>
 <a name="390"><span class="lineNum">     390 </span>            :                 unsigned long val, void *v)</a>
 <a name="391"><span class="lineNum">     391 </span>            : {</a>
-<a name="392"><span class="lineNum">     392 </span><span class="lineCov">         20 :         return notifier_call_chain(&amp;nh-&gt;head, val, v, -1, NULL);</span></a>
+<a name="392"><span class="lineNum">     392 </span><span class="lineCov">         28 :         return notifier_call_chain(&amp;nh-&gt;head, val, v, -1, NULL);</span></a>
 <a name="393"><span class="lineNum">     393 </span>            : }</a>
 <a name="394"><span class="lineNum">     394 </span>            : EXPORT_SYMBOL_GPL(raw_notifier_call_chain);</a>
 <a name="395"><span class="lineNum">     395 </span>            : </a>

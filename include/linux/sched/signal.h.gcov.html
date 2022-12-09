@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -436,7 +436,7 @@
 <a name="374"><span class="lineNum">     374 </span>            : </a>
 <a name="375"><span class="lineNum">     375 </span>            : static inline int task_sigpending(struct task_struct *p)</a>
 <a name="376"><span class="lineNum">     376 </span>            : {</a>
-<a name="377"><span class="lineNum">     377 </span><span class="lineCov">       1254 :         return unlikely(test_tsk_thread_flag(p,TIF_SIGPENDING));</span></a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineCov">       1256 :         return unlikely(test_tsk_thread_flag(p,TIF_SIGPENDING));</span></a>
 <a name="378"><span class="lineNum">     378 </span>            : }</a>
 <a name="379"><span class="lineNum">     379 </span>            : </a>
 <a name="380"><span class="lineNum">     380 </span>            : static inline int signal_pending(struct task_struct *p)</a>
@@ -446,9 +446,9 @@
 <a name="384"><span class="lineNum">     384 </span>            :          * behavior in terms of ensuring that we break out of wait loops</a>
 <a name="385"><span class="lineNum">     385 </span>            :          * so that notify signal callbacks can be processed.</a>
 <a name="386"><span class="lineNum">     386 </span>            :          */</a>
-<a name="387"><span class="lineNum">     387 </span><span class="lineCov">        826 :         if (unlikely(test_tsk_thread_flag(p, TIF_NOTIFY_SIGNAL)))</span></a>
+<a name="387"><span class="lineNum">     387 </span><span class="lineCov">        828 :         if (unlikely(test_tsk_thread_flag(p, TIF_NOTIFY_SIGNAL)))</span></a>
 <a name="388"><span class="lineNum">     388 </span>            :                 return 1;</a>
-<a name="389"><span class="lineNum">     389 </span><span class="lineCov">        413 :         return task_sigpending(p);</span></a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineCov">        414 :         return task_sigpending(p);</span></a>
 <a name="390"><span class="lineNum">     390 </span>            : }</a>
 <a name="391"><span class="lineNum">     391 </span>            : </a>
 <a name="392"><span class="lineNum">     392 </span>            : static inline int __fatal_signal_pending(struct task_struct *p)</a>
@@ -461,11 +461,11 @@
 <a name="399"><span class="lineNum">     399 </span><span class="lineCov">        107 :         return task_sigpending(p) &amp;&amp; __fatal_signal_pending(p);</span></a>
 <a name="400"><span class="lineNum">     400 </span>            : }</a>
 <a name="401"><span class="lineNum">     401 </span>            : </a>
-<a name="402"><span class="lineNum">     402 </span><span class="lineCov">        817 : static inline int signal_pending_state(unsigned int state, struct task_struct *p)</span></a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineCov">        819 : static inline int signal_pending_state(unsigned int state, struct task_struct *p)</span></a>
 <a name="403"><span class="lineNum">     403 </span>            : {</a>
-<a name="404"><span class="lineNum">     404 </span><span class="lineCov">        817 :         if (!(state &amp; (TASK_INTERRUPTIBLE | TASK_WAKEKILL)))</span></a>
+<a name="404"><span class="lineNum">     404 </span><span class="lineCov">        819 :         if (!(state &amp; (TASK_INTERRUPTIBLE | TASK_WAKEKILL)))</span></a>
 <a name="405"><span class="lineNum">     405 </span>            :                 return 0;</a>
-<a name="406"><span class="lineNum">     406 </span><span class="lineCov">        413 :         if (!signal_pending(p))</span></a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineCov">        414 :         if (!signal_pending(p))</span></a>
 <a name="407"><span class="lineNum">     407 </span>            :                 return 0;</a>
 <a name="408"><span class="lineNum">     408 </span>            : </a>
 <a name="409"><span class="lineNum">     409 </span><span class="lineNoCov">          0 :         return (state &amp; TASK_INTERRUPTIBLE) || __fatal_signal_pending(p);</span></a>

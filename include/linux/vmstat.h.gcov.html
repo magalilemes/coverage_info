@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -135,7 +135,7 @@
 <a name="73"><span class="lineNum">      73 </span>            : </a>
 <a name="74"><span class="lineNum">      74 </span>            : static inline void __count_vm_events(enum vm_event_item item, long delta)</a>
 <a name="75"><span class="lineNum">      75 </span>            : {</a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        748 :         raw_cpu_add(vm_event_states.event[item], delta);</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">        746 :         raw_cpu_add(vm_event_states.event[item], delta);</span></a>
 <a name="77"><span class="lineNum">      77 </span>            : }</a>
 <a name="78"><span class="lineNum">      78 </span>            : </a>
 <a name="79"><span class="lineNum">      79 </span><span class="lineNoCov">          0 : static inline void count_vm_events(enum vm_event_item item, long delta)</span></a>
@@ -227,8 +227,8 @@
 <a name="165"><span class="lineNum">     165 </span>            : static inline void zone_page_state_add(long x, struct zone *zone,</a>
 <a name="166"><span class="lineNum">     166 </span>            :                                  enum zone_stat_item item)</a>
 <a name="167"><span class="lineNum">     167 </span>            : {</a>
-<a name="168"><span class="lineNum">     168 </span><span class="lineCov">        600 :         atomic_long_add(x, &amp;zone-&gt;vm_stat[item]);</span></a>
-<a name="169"><span class="lineNum">     169 </span><span class="lineCov">        600 :         atomic_long_add(x, &amp;vm_zone_stat[item]);</span></a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">        596 :         atomic_long_add(x, &amp;zone-&gt;vm_stat[item]);</span></a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineCov">        596 :         atomic_long_add(x, &amp;vm_zone_stat[item]);</span></a>
 <a name="170"><span class="lineNum">     170 </span>            : }</a>
 <a name="171"><span class="lineNum">     171 </span>            : </a>
 <a name="172"><span class="lineNum">     172 </span>            : static inline void node_page_state_add(long x, struct pglist_data *pgdat,</a>
@@ -381,7 +381,7 @@
 <a name="319"><span class="lineNum">     319 </span>            : static inline void __mod_zone_page_state(struct zone *zone,</a>
 <a name="320"><span class="lineNum">     320 </span>            :                         enum zone_stat_item item, long delta)</a>
 <a name="321"><span class="lineNum">     321 </span>            : {</a>
-<a name="322"><span class="lineNum">     322 </span><span class="lineCov">        300 :         zone_page_state_add(delta, zone, item);</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineCov">        298 :         zone_page_state_add(delta, zone, item);</span></a>
 <a name="323"><span class="lineNum">     323 </span>            : }</a>
 <a name="324"><span class="lineNum">     324 </span>            : </a>
 <a name="325"><span class="lineNum">     325 </span>            : static inline void __mod_node_page_state(struct pglist_data *pgdat,</a>
@@ -552,7 +552,7 @@
 <a name="490"><span class="lineNum">     490 </span>            : static inline void __mod_zone_freepage_state(struct zone *zone, int nr_pages,</a>
 <a name="491"><span class="lineNum">     491 </span>            :                                              int migratetype)</a>
 <a name="492"><span class="lineNum">     492 </span>            : {</a>
-<a name="493"><span class="lineNum">     493 </span><span class="lineCov">        546 :         __mod_zone_page_state(zone, NR_FREE_PAGES, nr_pages);</span></a>
+<a name="493"><span class="lineNum">     493 </span><span class="lineCov">        542 :         __mod_zone_page_state(zone, NR_FREE_PAGES, nr_pages);</span></a>
 <a name="494"><span class="lineNum">     494 </span>            :         if (is_migrate_cma(migratetype))</a>
 <a name="495"><span class="lineNum">     495 </span>            :                 __mod_zone_page_state(zone, NR_FREE_CMA_PAGES, nr_pages);</a>
 <a name="496"><span class="lineNum">     496 </span>            : }</a>

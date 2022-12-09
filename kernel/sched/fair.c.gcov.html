@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">33</td>
@@ -240,14 +240,14 @@
 <a name="178"><span class="lineNum">     178 </span>            : </a>
 <a name="179"><span class="lineNum">     179 </span>            : static inline void update_load_add(struct load_weight *lw, unsigned long inc)</a>
 <a name="180"><span class="lineNum">     180 </span>            : {</a>
-<a name="181"><span class="lineNum">     181 </span><span class="lineCov">        725 :         lw-&gt;weight += inc;</span></a>
-<a name="182"><span class="lineNum">     182 </span><span class="lineCov">        725 :         lw-&gt;inv_weight = 0;</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">        727 :         lw-&gt;weight += inc;</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineCov">        727 :         lw-&gt;inv_weight = 0;</span></a>
 <a name="183"><span class="lineNum">     183 </span>            : }</a>
 <a name="184"><span class="lineNum">     184 </span>            : </a>
 <a name="185"><span class="lineNum">     185 </span>            : static inline void update_load_sub(struct load_weight *lw, unsigned long dec)</a>
 <a name="186"><span class="lineNum">     186 </span>            : {</a>
-<a name="187"><span class="lineNum">     187 </span><span class="lineCov">        616 :         lw-&gt;weight -= dec;</span></a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineCov">        616 :         lw-&gt;inv_weight = 0;</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">        618 :         lw-&gt;weight -= dec;</span></a>
+<a name="188"><span class="lineNum">     188 </span><span class="lineCov">        618 :         lw-&gt;inv_weight = 0;</span></a>
 <a name="189"><span class="lineNum">     189 </span>            : }</a>
 <a name="190"><span class="lineNum">     190 </span>            : </a>
 <a name="191"><span class="lineNum">     191 </span>            : static inline void update_load_set(struct load_weight *lw, unsigned long w)</a>
@@ -310,17 +310,17 @@
 <a name="248"><span class="lineNum">     248 </span>            : {</a>
 <a name="249"><span class="lineNum">     249 </span>            :         unsigned long w;</a>
 <a name="250"><span class="lineNum">     250 </span>            : </a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineCov">        108 :         if (likely(lw-&gt;inv_weight))</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineCov">        110 :         if (likely(lw-&gt;inv_weight))</span></a>
 <a name="252"><span class="lineNum">     252 </span>            :                 return;</a>
 <a name="253"><span class="lineNum">     253 </span>            : </a>
-<a name="254"><span class="lineNum">     254 </span><span class="lineCov">        108 :         w = scale_load_down(lw-&gt;weight);</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">        110 :         w = scale_load_down(lw-&gt;weight);</span></a>
 <a name="255"><span class="lineNum">     255 </span>            : </a>
-<a name="256"><span class="lineNum">     256 </span><span class="lineCov">        108 :         if (BITS_PER_LONG &gt; 32 &amp;&amp; unlikely(w &gt;= WMULT_CONST))</span></a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineCov">        110 :         if (BITS_PER_LONG &gt; 32 &amp;&amp; unlikely(w &gt;= WMULT_CONST))</span></a>
 <a name="257"><span class="lineNum">     257 </span><span class="lineNoCov">          0 :                 lw-&gt;inv_weight = 1;</span></a>
-<a name="258"><span class="lineNum">     258 </span><span class="lineCov">        108 :         else if (unlikely(!w))</span></a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineCov">        110 :         else if (unlikely(!w))</span></a>
 <a name="259"><span class="lineNum">     259 </span><span class="lineNoCov">          0 :                 lw-&gt;inv_weight = WMULT_CONST;</span></a>
 <a name="260"><span class="lineNum">     260 </span>            :         else</a>
-<a name="261"><span class="lineNum">     261 </span><span class="lineCov">        108 :                 lw-&gt;inv_weight = WMULT_CONST / w;</span></a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineCov">        110 :                 lw-&gt;inv_weight = WMULT_CONST / w;</span></a>
 <a name="262"><span class="lineNum">     262 </span>            : }</a>
 <a name="263"><span class="lineNum">     263 </span>            : </a>
 <a name="264"><span class="lineNum">     264 </span>            : /*</a>
@@ -335,31 +335,31 @@
 <a name="273"><span class="lineNum">     273 </span>            :  * Or, weight =&lt; lw.weight (because lw.weight is the runqueue weight), thus</a>
 <a name="274"><span class="lineNum">     274 </span>            :  * weight/lw.weight &lt;= 1, and therefore our shift will also be positive.</a>
 <a name="275"><span class="lineNum">     275 </span>            :  */</a>
-<a name="276"><span class="lineNum">     276 </span><span class="lineCov">        108 : static u64 __calc_delta(u64 delta_exec, unsigned long weight, struct load_weight *lw)</span></a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineCov">        110 : static u64 __calc_delta(u64 delta_exec, unsigned long weight, struct load_weight *lw)</span></a>
 <a name="277"><span class="lineNum">     277 </span>            : {</a>
-<a name="278"><span class="lineNum">     278 </span><span class="lineCov">        108 :         u64 fact = scale_load_down(weight);</span></a>
-<a name="279"><span class="lineNum">     279 </span><span class="lineCov">        108 :         u32 fact_hi = (u32)(fact &gt;&gt; 32);</span></a>
-<a name="280"><span class="lineNum">     280 </span><span class="lineCov">        108 :         int shift = WMULT_SHIFT;</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineCov">        110 :         u64 fact = scale_load_down(weight);</span></a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineCov">        110 :         u32 fact_hi = (u32)(fact &gt;&gt; 32);</span></a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineCov">        110 :         int shift = WMULT_SHIFT;</span></a>
 <a name="281"><span class="lineNum">     281 </span>            :         int fs;</a>
 <a name="282"><span class="lineNum">     282 </span>            : </a>
-<a name="283"><span class="lineNum">     283 </span><span class="lineCov">        108 :         __update_inv_weight(lw);</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineCov">        110 :         __update_inv_weight(lw);</span></a>
 <a name="284"><span class="lineNum">     284 </span>            : </a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineCov">        108 :         if (unlikely(fact_hi)) {</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">        110 :         if (unlikely(fact_hi)) {</span></a>
 <a name="286"><span class="lineNum">     286 </span><span class="lineNoCov">          0 :                 fs = fls(fact_hi);</span></a>
 <a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :                 shift -= fs;</span></a>
 <a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 :                 fact &gt;&gt;= fs;</span></a>
 <a name="289"><span class="lineNum">     289 </span>            :         }</a>
 <a name="290"><span class="lineNum">     290 </span>            : </a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineCov">        216 :         fact = mul_u32_u32(fact, lw-&gt;inv_weight);</span></a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineCov">        220 :         fact = mul_u32_u32(fact, lw-&gt;inv_weight);</span></a>
 <a name="292"><span class="lineNum">     292 </span>            : </a>
-<a name="293"><span class="lineNum">     293 </span><span class="lineCov">        108 :         fact_hi = (u32)(fact &gt;&gt; 32);</span></a>
-<a name="294"><span class="lineNum">     294 </span><span class="lineCov">        108 :         if (fact_hi) {</span></a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineCov">        110 :         fact_hi = (u32)(fact &gt;&gt; 32);</span></a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineCov">        110 :         if (fact_hi) {</span></a>
 <a name="295"><span class="lineNum">     295 </span><span class="lineNoCov">          0 :                 fs = fls(fact_hi);</span></a>
 <a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 :                 shift -= fs;</span></a>
 <a name="297"><span class="lineNum">     297 </span><span class="lineNoCov">          0 :                 fact &gt;&gt;= fs;</span></a>
 <a name="298"><span class="lineNum">     298 </span>            :         }</a>
 <a name="299"><span class="lineNum">     299 </span>            : </a>
-<a name="300"><span class="lineNum">     300 </span><span class="lineCov">        216 :         return mul_u64_u32_shr(delta_exec, fact, shift);</span></a>
+<a name="300"><span class="lineNum">     300 </span><span class="lineCov">        220 :         return mul_u64_u32_shr(delta_exec, fact, shift);</span></a>
 <a name="301"><span class="lineNum">     301 </span>            : }</a>
 <a name="302"><span class="lineNum">     302 </span>            : </a>
 <a name="303"><span class="lineNum">     303 </span>            : </a>
@@ -613,18 +613,18 @@
 <a name="551"><span class="lineNum">     551 </span>            : </a>
 <a name="552"><span class="lineNum">     552 </span>            : static inline u64 max_vruntime(u64 max_vruntime, u64 vruntime)</a>
 <a name="553"><span class="lineNum">     553 </span>            : {</a>
-<a name="554"><span class="lineNum">     554 </span><span class="lineCov">       1230 :         s64 delta = (s64)(vruntime - max_vruntime);</span></a>
-<a name="555"><span class="lineNum">     555 </span><span class="lineCov">       1230 :         if (delta &gt; 0)</span></a>
-<a name="556"><span class="lineNum">     556 </span><span class="lineCov">        515 :                 max_vruntime = vruntime;</span></a>
+<a name="554"><span class="lineNum">     554 </span><span class="lineCov">       1235 :         s64 delta = (s64)(vruntime - max_vruntime);</span></a>
+<a name="555"><span class="lineNum">     555 </span><span class="lineCov">       1235 :         if (delta &gt; 0)</span></a>
+<a name="556"><span class="lineNum">     556 </span><span class="lineCov">        514 :                 max_vruntime = vruntime;</span></a>
 <a name="557"><span class="lineNum">     557 </span>            : </a>
 <a name="558"><span class="lineNum">     558 </span>            :         return max_vruntime;</a>
 <a name="559"><span class="lineNum">     559 </span>            : }</a>
 <a name="560"><span class="lineNum">     560 </span>            : </a>
 <a name="561"><span class="lineNum">     561 </span>            : static inline u64 min_vruntime(u64 min_vruntime, u64 vruntime)</a>
 <a name="562"><span class="lineNum">     562 </span>            : {</a>
-<a name="563"><span class="lineNum">     563 </span><span class="lineCov">          1 :         s64 delta = (s64)(vruntime - min_vruntime);</span></a>
-<a name="564"><span class="lineNum">     564 </span><span class="lineCov">          1 :         if (delta &lt; 0)</span></a>
-<a name="565"><span class="lineNum">     565 </span><span class="lineCov">          1 :                 min_vruntime = vruntime;</span></a>
+<a name="563"><span class="lineNum">     563 </span><span class="lineCov">          3 :         s64 delta = (s64)(vruntime - min_vruntime);</span></a>
+<a name="564"><span class="lineNum">     564 </span><span class="lineCov">          3 :         if (delta &lt; 0)</span></a>
+<a name="565"><span class="lineNum">     565 </span><span class="lineCov">          3 :                 min_vruntime = vruntime;</span></a>
 <a name="566"><span class="lineNum">     566 </span>            : </a>
 <a name="567"><span class="lineNum">     567 </span>            :         return min_vruntime;</a>
 <a name="568"><span class="lineNum">     568 </span>            : }</a>
@@ -632,69 +632,69 @@
 <a name="570"><span class="lineNum">     570 </span>            : static inline bool entity_before(struct sched_entity *a,</a>
 <a name="571"><span class="lineNum">     571 </span>            :                                 struct sched_entity *b)</a>
 <a name="572"><span class="lineNum">     572 </span>            : {</a>
-<a name="573"><span class="lineNum">     573 </span><span class="lineCov">        226 :         return (s64)(a-&gt;vruntime - b-&gt;vruntime) &lt; 0;</span></a>
+<a name="573"><span class="lineNum">     573 </span><span class="lineCov">        218 :         return (s64)(a-&gt;vruntime - b-&gt;vruntime) &lt; 0;</span></a>
 <a name="574"><span class="lineNum">     574 </span>            : }</a>
 <a name="575"><span class="lineNum">     575 </span>            : </a>
 <a name="576"><span class="lineNum">     576 </span>            : #define __node_2_se(node) \</a>
 <a name="577"><span class="lineNum">     577 </span>            :         rb_entry((node), struct sched_entity, run_node)</a>
 <a name="578"><span class="lineNum">     578 </span>            : </a>
-<a name="579"><span class="lineNum">     579 </span><span class="lineCov">        615 : static void update_min_vruntime(struct cfs_rq *cfs_rq)</span></a>
+<a name="579"><span class="lineNum">     579 </span><span class="lineCov">        618 : static void update_min_vruntime(struct cfs_rq *cfs_rq)</span></a>
 <a name="580"><span class="lineNum">     580 </span>            : {</a>
-<a name="581"><span class="lineNum">     581 </span><span class="lineCov">        615 :         struct sched_entity *curr = cfs_rq-&gt;curr;</span></a>
-<a name="582"><span class="lineNum">     582 </span><span class="lineCov">        615 :         struct rb_node *leftmost = rb_first_cached(&amp;cfs_rq-&gt;tasks_timeline);</span></a>
+<a name="581"><span class="lineNum">     581 </span><span class="lineCov">        618 :         struct sched_entity *curr = cfs_rq-&gt;curr;</span></a>
+<a name="582"><span class="lineNum">     582 </span><span class="lineCov">        618 :         struct rb_node *leftmost = rb_first_cached(&amp;cfs_rq-&gt;tasks_timeline);</span></a>
 <a name="583"><span class="lineNum">     583 </span>            : </a>
-<a name="584"><span class="lineNum">     584 </span><span class="lineCov">        615 :         u64 vruntime = cfs_rq-&gt;min_vruntime;</span></a>
+<a name="584"><span class="lineNum">     584 </span><span class="lineCov">        618 :         u64 vruntime = cfs_rq-&gt;min_vruntime;</span></a>
 <a name="585"><span class="lineNum">     585 </span>            : </a>
-<a name="586"><span class="lineNum">     586 </span><span class="lineCov">        615 :         if (curr) {</span></a>
-<a name="587"><span class="lineNum">     587 </span><span class="lineCov">        615 :                 if (curr-&gt;on_rq)</span></a>
-<a name="588"><span class="lineNum">     588 </span><span class="lineCov">          2 :                         vruntime = curr-&gt;vruntime;</span></a>
+<a name="586"><span class="lineNum">     586 </span><span class="lineCov">        618 :         if (curr) {</span></a>
+<a name="587"><span class="lineNum">     587 </span><span class="lineCov">        618 :                 if (curr-&gt;on_rq)</span></a>
+<a name="588"><span class="lineNum">     588 </span><span class="lineCov">          3 :                         vruntime = curr-&gt;vruntime;</span></a>
 <a name="589"><span class="lineNum">     589 </span>            :                 else</a>
 <a name="590"><span class="lineNum">     590 </span>            :                         curr = NULL;</a>
 <a name="591"><span class="lineNum">     591 </span>            :         }</a>
 <a name="592"><span class="lineNum">     592 </span>            : </a>
-<a name="593"><span class="lineNum">     593 </span><span class="lineCov">        615 :         if (leftmost) { /* non-empty tree */</span></a>
-<a name="594"><span class="lineNum">     594 </span><span class="lineCov">        613 :                 struct sched_entity *se = __node_2_se(leftmost);</span></a>
+<a name="593"><span class="lineNum">     593 </span><span class="lineCov">        618 :         if (leftmost) { /* non-empty tree */</span></a>
+<a name="594"><span class="lineNum">     594 </span><span class="lineCov">        617 :                 struct sched_entity *se = __node_2_se(leftmost);</span></a>
 <a name="595"><span class="lineNum">     595 </span>            : </a>
-<a name="596"><span class="lineNum">     596 </span><span class="lineCov">        613 :                 if (!curr)</span></a>
-<a name="597"><span class="lineNum">     597 </span><span class="lineCov">        612 :                         vruntime = se-&gt;vruntime;</span></a>
+<a name="596"><span class="lineNum">     596 </span><span class="lineCov">        617 :                 if (!curr)</span></a>
+<a name="597"><span class="lineNum">     597 </span><span class="lineCov">        614 :                         vruntime = se-&gt;vruntime;</span></a>
 <a name="598"><span class="lineNum">     598 </span>            :                 else</a>
-<a name="599"><span class="lineNum">     599 </span><span class="lineCov">          1 :                         vruntime = min_vruntime(vruntime, se-&gt;vruntime);</span></a>
+<a name="599"><span class="lineNum">     599 </span><span class="lineCov">          3 :                         vruntime = min_vruntime(vruntime, se-&gt;vruntime);</span></a>
 <a name="600"><span class="lineNum">     600 </span>            :         }</a>
 <a name="601"><span class="lineNum">     601 </span>            : </a>
 <a name="602"><span class="lineNum">     602 </span>            :         /* ensure we never gain time by being placed backwards. */</a>
-<a name="603"><span class="lineNum">     603 </span><span class="lineCov">       1230 :         cfs_rq-&gt;min_vruntime = max_vruntime(cfs_rq-&gt;min_vruntime, vruntime);</span></a>
+<a name="603"><span class="lineNum">     603 </span><span class="lineCov">       1236 :         cfs_rq-&gt;min_vruntime = max_vruntime(cfs_rq-&gt;min_vruntime, vruntime);</span></a>
 <a name="604"><span class="lineNum">     604 </span>            : #ifndef CONFIG_64BIT</a>
 <a name="605"><span class="lineNum">     605 </span>            :         smp_wmb();</a>
 <a name="606"><span class="lineNum">     606 </span>            :         cfs_rq-&gt;min_vruntime_copy = cfs_rq-&gt;min_vruntime;</a>
 <a name="607"><span class="lineNum">     607 </span>            : #endif</a>
-<a name="608"><span class="lineNum">     608 </span><span class="lineCov">        615 : }</span></a>
+<a name="608"><span class="lineNum">     608 </span><span class="lineCov">        618 : }</span></a>
 <a name="609"><span class="lineNum">     609 </span>            : </a>
 <a name="610"><span class="lineNum">     610 </span>            : static inline bool __entity_less(struct rb_node *a, const struct rb_node *b)</a>
 <a name="611"><span class="lineNum">     611 </span>            : {</a>
-<a name="612"><span class="lineNum">     612 </span><span class="lineCov">        226 :         return entity_before(__node_2_se(a), __node_2_se(b));</span></a>
+<a name="612"><span class="lineNum">     612 </span><span class="lineCov">        218 :         return entity_before(__node_2_se(a), __node_2_se(b));</span></a>
 <a name="613"><span class="lineNum">     613 </span>            : }</a>
 <a name="614"><span class="lineNum">     614 </span>            : </a>
 <a name="615"><span class="lineNum">     615 </span>            : /*</a>
 <a name="616"><span class="lineNum">     616 </span>            :  * Enqueue an entity into the rb-tree:</a>
 <a name="617"><span class="lineNum">     617 </span>            :  */</a>
-<a name="618"><span class="lineNum">     618 </span><span class="lineCov">        619 : static void __enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)</span></a>
+<a name="618"><span class="lineNum">     618 </span><span class="lineCov">        621 : static void __enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)</span></a>
 <a name="619"><span class="lineNum">     619 </span>            : {</a>
-<a name="620"><span class="lineNum">     620 </span><span class="lineCov">       1238 :         rb_add_cached(&amp;se-&gt;run_node, &amp;cfs_rq-&gt;tasks_timeline, __entity_less);</span></a>
-<a name="621"><span class="lineNum">     621 </span><span class="lineCov">        619 : }</span></a>
+<a name="620"><span class="lineNum">     620 </span><span class="lineCov">       1242 :         rb_add_cached(&amp;se-&gt;run_node, &amp;cfs_rq-&gt;tasks_timeline, __entity_less);</span></a>
+<a name="621"><span class="lineNum">     621 </span><span class="lineCov">        621 : }</span></a>
 <a name="622"><span class="lineNum">     622 </span>            : </a>
 <a name="623"><span class="lineNum">     623 </span>            : static void __dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)</a>
 <a name="624"><span class="lineNum">     624 </span>            : {</a>
-<a name="625"><span class="lineNum">     625 </span><span class="lineCov">        618 :         rb_erase_cached(&amp;se-&gt;run_node, &amp;cfs_rq-&gt;tasks_timeline);</span></a>
+<a name="625"><span class="lineNum">     625 </span><span class="lineCov">        620 :         rb_erase_cached(&amp;se-&gt;run_node, &amp;cfs_rq-&gt;tasks_timeline);</span></a>
 <a name="626"><span class="lineNum">     626 </span>            : }</a>
 <a name="627"><span class="lineNum">     627 </span>            : </a>
 <a name="628"><span class="lineNum">     628 </span><span class="lineNoCov">          0 : struct sched_entity *__pick_first_entity(struct cfs_rq *cfs_rq)</span></a>
 <a name="629"><span class="lineNum">     629 </span>            : {</a>
-<a name="630"><span class="lineNum">     630 </span><span class="lineCov">        615 :         struct rb_node *left = rb_first_cached(&amp;cfs_rq-&gt;tasks_timeline);</span></a>
+<a name="630"><span class="lineNum">     630 </span><span class="lineCov">        617 :         struct rb_node *left = rb_first_cached(&amp;cfs_rq-&gt;tasks_timeline);</span></a>
 <a name="631"><span class="lineNum">     631 </span>            : </a>
-<a name="632"><span class="lineNum">     632 </span><span class="lineCov">        615 :         if (!left)</span></a>
+<a name="632"><span class="lineNum">     632 </span><span class="lineCov">        617 :         if (!left)</span></a>
 <a name="633"><span class="lineNum">     633 </span>            :                 return NULL;</a>
 <a name="634"><span class="lineNum">     634 </span>            : </a>
-<a name="635"><span class="lineNum">     635 </span><span class="lineCov">        615 :         return __node_2_se(left);</span></a>
+<a name="635"><span class="lineNum">     635 </span><span class="lineCov">        617 :         return __node_2_se(left);</span></a>
 <a name="636"><span class="lineNum">     636 </span>            : }</a>
 <a name="637"><span class="lineNum">     637 </span>            : </a>
 <a name="638"><span class="lineNum">     638 </span>            : static struct sched_entity *__pick_next_entity(struct sched_entity *se)</a>
@@ -745,7 +745,7 @@
 <a name="683"><span class="lineNum">     683 </span>            :  */</a>
 <a name="684"><span class="lineNum">     684 </span>            : static inline u64 calc_delta_fair(u64 delta, struct sched_entity *se)</a>
 <a name="685"><span class="lineNum">     685 </span>            : {</a>
-<a name="686"><span class="lineNum">     686 </span><span class="lineCov">        308 :         if (unlikely(se-&gt;load.weight != NICE_0_LOAD))</span></a>
+<a name="686"><span class="lineNum">     686 </span><span class="lineCov">        313 :         if (unlikely(se-&gt;load.weight != NICE_0_LOAD))</span></a>
 <a name="687"><span class="lineNum">     687 </span><span class="lineNoCov">          0 :                 delta = __calc_delta(delta, NICE_0_LOAD, &amp;se-&gt;load);</span></a>
 <a name="688"><span class="lineNum">     688 </span>            : </a>
 <a name="689"><span class="lineNum">     689 </span>            :         return delta;</a>
@@ -761,10 +761,10 @@
 <a name="699"><span class="lineNum">     699 </span>            :  */</a>
 <a name="700"><span class="lineNum">     700 </span>            : static u64 __sched_period(unsigned long nr_running)</a>
 <a name="701"><span class="lineNum">     701 </span>            : {</a>
-<a name="702"><span class="lineNum">     702 </span><span class="lineCov">        108 :         if (unlikely(nr_running &gt; sched_nr_latency))</span></a>
+<a name="702"><span class="lineNum">     702 </span><span class="lineCov">        110 :         if (unlikely(nr_running &gt; sched_nr_latency))</span></a>
 <a name="703"><span class="lineNum">     703 </span><span class="lineNoCov">          0 :                 return nr_running * sysctl_sched_min_granularity;</span></a>
 <a name="704"><span class="lineNum">     704 </span>            :         else</a>
-<a name="705"><span class="lineNum">     705 </span><span class="lineCov">        108 :                 return sysctl_sched_latency;</span></a>
+<a name="705"><span class="lineNum">     705 </span><span class="lineCov">        110 :                 return sysctl_sched_latency;</span></a>
 <a name="706"><span class="lineNum">     706 </span>            : }</a>
 <a name="707"><span class="lineNum">     707 </span>            : </a>
 <a name="708"><span class="lineNum">     708 </span>            : static bool sched_idle_cfs_rq(struct cfs_rq *cfs_rq);</a>
@@ -775,45 +775,45 @@
 <a name="713"><span class="lineNum">     713 </span>            :  *</a>
 <a name="714"><span class="lineNum">     714 </span>            :  * s = p*P[w/rw]</a>
 <a name="715"><span class="lineNum">     715 </span>            :  */</a>
-<a name="716"><span class="lineNum">     716 </span><span class="lineCov">        108 : static u64 sched_slice(struct cfs_rq *cfs_rq, struct sched_entity *se)</span></a>
+<a name="716"><span class="lineNum">     716 </span><span class="lineCov">        110 : static u64 sched_slice(struct cfs_rq *cfs_rq, struct sched_entity *se)</span></a>
 <a name="717"><span class="lineNum">     717 </span>            : {</a>
-<a name="718"><span class="lineNum">     718 </span><span class="lineCov">        108 :         unsigned int nr_running = cfs_rq-&gt;nr_running;</span></a>
-<a name="719"><span class="lineNum">     719 </span><span class="lineCov">        108 :         struct sched_entity *init_se = se;</span></a>
+<a name="718"><span class="lineNum">     718 </span><span class="lineCov">        110 :         unsigned int nr_running = cfs_rq-&gt;nr_running;</span></a>
+<a name="719"><span class="lineNum">     719 </span><span class="lineCov">        110 :         struct sched_entity *init_se = se;</span></a>
 <a name="720"><span class="lineNum">     720 </span>            :         unsigned int min_gran;</a>
 <a name="721"><span class="lineNum">     721 </span>            :         u64 slice;</a>
 <a name="722"><span class="lineNum">     722 </span>            : </a>
-<a name="723"><span class="lineNum">     723 </span><span class="lineCov">        108 :         if (sched_feat(ALT_PERIOD))</span></a>
-<a name="724"><span class="lineNum">     724 </span><span class="lineCov">        108 :                 nr_running = rq_of(cfs_rq)-&gt;cfs.h_nr_running;</span></a>
+<a name="723"><span class="lineNum">     723 </span><span class="lineCov">        110 :         if (sched_feat(ALT_PERIOD))</span></a>
+<a name="724"><span class="lineNum">     724 </span><span class="lineCov">        110 :                 nr_running = rq_of(cfs_rq)-&gt;cfs.h_nr_running;</span></a>
 <a name="725"><span class="lineNum">     725 </span>            : </a>
-<a name="726"><span class="lineNum">     726 </span><span class="lineCov">        108 :         slice = __sched_period(nr_running + !se-&gt;on_rq);</span></a>
+<a name="726"><span class="lineNum">     726 </span><span class="lineCov">        110 :         slice = __sched_period(nr_running + !se-&gt;on_rq);</span></a>
 <a name="727"><span class="lineNum">     727 </span>            : </a>
-<a name="728"><span class="lineNum">     728 </span><span class="lineCov">        108 :         for_each_sched_entity(se) {</span></a>
+<a name="728"><span class="lineNum">     728 </span><span class="lineCov">        110 :         for_each_sched_entity(se) {</span></a>
 <a name="729"><span class="lineNum">     729 </span>            :                 struct load_weight *load;</a>
 <a name="730"><span class="lineNum">     730 </span>            :                 struct load_weight lw;</a>
 <a name="731"><span class="lineNum">     731 </span>            :                 struct cfs_rq *qcfs_rq;</a>
 <a name="732"><span class="lineNum">     732 </span>            : </a>
-<a name="733"><span class="lineNum">     733 </span><span class="lineCov">        216 :                 qcfs_rq = cfs_rq_of(se);</span></a>
-<a name="734"><span class="lineNum">     734 </span><span class="lineCov">        108 :                 load = &amp;qcfs_rq-&gt;load;</span></a>
+<a name="733"><span class="lineNum">     733 </span><span class="lineCov">        220 :                 qcfs_rq = cfs_rq_of(se);</span></a>
+<a name="734"><span class="lineNum">     734 </span><span class="lineCov">        110 :                 load = &amp;qcfs_rq-&gt;load;</span></a>
 <a name="735"><span class="lineNum">     735 </span>            : </a>
-<a name="736"><span class="lineNum">     736 </span><span class="lineCov">        108 :                 if (unlikely(!se-&gt;on_rq)) {</span></a>
+<a name="736"><span class="lineNum">     736 </span><span class="lineCov">        110 :                 if (unlikely(!se-&gt;on_rq)) {</span></a>
 <a name="737"><span class="lineNum">     737 </span><span class="lineCov">        107 :                         lw = qcfs_rq-&gt;load;</span></a>
 <a name="738"><span class="lineNum">     738 </span>            : </a>
 <a name="739"><span class="lineNum">     739 </span><span class="lineCov">        214 :                         update_load_add(&amp;lw, se-&gt;load.weight);</span></a>
 <a name="740"><span class="lineNum">     740 </span><span class="lineCov">        107 :                         load = &amp;lw;</span></a>
 <a name="741"><span class="lineNum">     741 </span>            :                 }</a>
-<a name="742"><span class="lineNum">     742 </span><span class="lineCov">        108 :                 slice = __calc_delta(slice, se-&gt;load.weight, load);</span></a>
+<a name="742"><span class="lineNum">     742 </span><span class="lineCov">        110 :                 slice = __calc_delta(slice, se-&gt;load.weight, load);</span></a>
 <a name="743"><span class="lineNum">     743 </span>            :         }</a>
 <a name="744"><span class="lineNum">     744 </span>            : </a>
-<a name="745"><span class="lineNum">     745 </span><span class="lineCov">        108 :         if (sched_feat(BASE_SLICE)) {</span></a>
-<a name="746"><span class="lineNum">     746 </span><span class="lineCov">        108 :                 if (se_is_idle(init_se) &amp;&amp; !sched_idle_cfs_rq(cfs_rq))</span></a>
+<a name="745"><span class="lineNum">     745 </span><span class="lineCov">        110 :         if (sched_feat(BASE_SLICE)) {</span></a>
+<a name="746"><span class="lineNum">     746 </span><span class="lineCov">        110 :                 if (se_is_idle(init_se) &amp;&amp; !sched_idle_cfs_rq(cfs_rq))</span></a>
 <a name="747"><span class="lineNum">     747 </span>            :                         min_gran = sysctl_sched_idle_min_granularity;</a>
 <a name="748"><span class="lineNum">     748 </span>            :                 else</a>
-<a name="749"><span class="lineNum">     749 </span><span class="lineCov">        108 :                         min_gran = sysctl_sched_min_granularity;</span></a>
+<a name="749"><span class="lineNum">     749 </span><span class="lineCov">        110 :                         min_gran = sysctl_sched_min_granularity;</span></a>
 <a name="750"><span class="lineNum">     750 </span>            : </a>
-<a name="751"><span class="lineNum">     751 </span><span class="lineCov">        108 :                 slice = max_t(u64, slice, min_gran);</span></a>
+<a name="751"><span class="lineNum">     751 </span><span class="lineCov">        110 :                 slice = max_t(u64, slice, min_gran);</span></a>
 <a name="752"><span class="lineNum">     752 </span>            :         }</a>
 <a name="753"><span class="lineNum">     753 </span>            : </a>
-<a name="754"><span class="lineNum">     754 </span><span class="lineCov">        108 :         return slice;</span></a>
+<a name="754"><span class="lineNum">     754 </span><span class="lineCov">        110 :         return slice;</span></a>
 <a name="755"><span class="lineNum">     755 </span>            : }</a>
 <a name="756"><span class="lineNum">     756 </span>            : </a>
 <a name="757"><span class="lineNum">     757 </span>            : /*</a>
@@ -935,20 +935,20 @@
 <a name="873"><span class="lineNum">     873 </span>            : /*</a>
 <a name="874"><span class="lineNum">     874 </span>            :  * Update the current task's runtime statistics.</a>
 <a name="875"><span class="lineNum">     875 </span>            :  */</a>
-<a name="876"><span class="lineNum">     876 </span><span class="lineCov">       1861 : static void update_curr(struct cfs_rq *cfs_rq)</span></a>
+<a name="876"><span class="lineNum">     876 </span><span class="lineCov">       1863 : static void update_curr(struct cfs_rq *cfs_rq)</span></a>
 <a name="877"><span class="lineNum">     877 </span>            : {</a>
-<a name="878"><span class="lineNum">     878 </span><span class="lineCov">       1861 :         struct sched_entity *curr = cfs_rq-&gt;curr;</span></a>
-<a name="879"><span class="lineNum">     879 </span><span class="lineCov">       3722 :         u64 now = rq_clock_task(rq_of(cfs_rq));</span></a>
+<a name="878"><span class="lineNum">     878 </span><span class="lineCov">       1863 :         struct sched_entity *curr = cfs_rq-&gt;curr;</span></a>
+<a name="879"><span class="lineNum">     879 </span><span class="lineCov">       3726 :         u64 now = rq_clock_task(rq_of(cfs_rq));</span></a>
 <a name="880"><span class="lineNum">     880 </span>            :         u64 delta_exec;</a>
 <a name="881"><span class="lineNum">     881 </span>            : </a>
-<a name="882"><span class="lineNum">     882 </span><span class="lineCov">       1861 :         if (unlikely(!curr))</span></a>
+<a name="882"><span class="lineNum">     882 </span><span class="lineCov">       1863 :         if (unlikely(!curr))</span></a>
 <a name="883"><span class="lineNum">     883 </span>            :                 return;</a>
 <a name="884"><span class="lineNum">     884 </span>            : </a>
-<a name="885"><span class="lineNum">     885 </span><span class="lineCov">       1855 :         delta_exec = now - curr-&gt;exec_start;</span></a>
-<a name="886"><span class="lineNum">     886 </span><span class="lineCov">       1855 :         if (unlikely((s64)delta_exec &lt;= 0))</span></a>
+<a name="885"><span class="lineNum">     885 </span><span class="lineCov">       1857 :         delta_exec = now - curr-&gt;exec_start;</span></a>
+<a name="886"><span class="lineNum">     886 </span><span class="lineCov">       1857 :         if (unlikely((s64)delta_exec &lt;= 0))</span></a>
 <a name="887"><span class="lineNum">     887 </span>            :                 return;</a>
 <a name="888"><span class="lineNum">     888 </span>            : </a>
-<a name="889"><span class="lineNum">     889 </span><span class="lineCov">          2 :         curr-&gt;exec_start = now;</span></a>
+<a name="889"><span class="lineNum">     889 </span><span class="lineCov">          3 :         curr-&gt;exec_start = now;</span></a>
 <a name="890"><span class="lineNum">     890 </span>            : </a>
 <a name="891"><span class="lineNum">     891 </span>            :         if (schedstat_enabled()) {</a>
 <a name="892"><span class="lineNum">     892 </span>            :                 struct sched_statistics *stats;</a>
@@ -958,17 +958,17 @@
 <a name="896"><span class="lineNum">     896 </span>            :                                 max(delta_exec, stats-&gt;exec_max));</a>
 <a name="897"><span class="lineNum">     897 </span>            :         }</a>
 <a name="898"><span class="lineNum">     898 </span>            : </a>
-<a name="899"><span class="lineNum">     899 </span><span class="lineCov">          2 :         curr-&gt;sum_exec_runtime += delta_exec;</span></a>
+<a name="899"><span class="lineNum">     899 </span><span class="lineCov">          3 :         curr-&gt;sum_exec_runtime += delta_exec;</span></a>
 <a name="900"><span class="lineNum">     900 </span>            :         schedstat_add(cfs_rq-&gt;exec_clock, delta_exec);</a>
 <a name="901"><span class="lineNum">     901 </span>            : </a>
-<a name="902"><span class="lineNum">     902 </span><span class="lineCov">          2 :         curr-&gt;vruntime += calc_delta_fair(delta_exec, curr);</span></a>
-<a name="903"><span class="lineNum">     903 </span><span class="lineCov">          2 :         update_min_vruntime(cfs_rq);</span></a>
+<a name="902"><span class="lineNum">     902 </span><span class="lineCov">          3 :         curr-&gt;vruntime += calc_delta_fair(delta_exec, curr);</span></a>
+<a name="903"><span class="lineNum">     903 </span><span class="lineCov">          3 :         update_min_vruntime(cfs_rq);</span></a>
 <a name="904"><span class="lineNum">     904 </span>            : </a>
 <a name="905"><span class="lineNum">     905 </span>            :         if (entity_is_task(curr)) {</a>
-<a name="906"><span class="lineNum">     906 </span><span class="lineCov">          2 :                 struct task_struct *curtask = task_of(curr);</span></a>
+<a name="906"><span class="lineNum">     906 </span><span class="lineCov">          3 :                 struct task_struct *curtask = task_of(curr);</span></a>
 <a name="907"><span class="lineNum">     907 </span>            : </a>
-<a name="908"><span class="lineNum">     908 </span><span class="lineCov">          2 :                 trace_sched_stat_runtime(curtask, delta_exec, curr-&gt;vruntime);</span></a>
-<a name="909"><span class="lineNum">     909 </span><span class="lineCov">          2 :                 cgroup_account_cputime(curtask, delta_exec);</span></a>
+<a name="908"><span class="lineNum">     908 </span><span class="lineCov">          3 :                 trace_sched_stat_runtime(curtask, delta_exec, curr-&gt;vruntime);</span></a>
+<a name="909"><span class="lineNum">     909 </span><span class="lineCov">          3 :                 cgroup_account_cputime(curtask, delta_exec);</span></a>
 <a name="910"><span class="lineNum">     910 </span>            :                 account_group_exec_runtime(curtask, delta_exec);</a>
 <a name="911"><span class="lineNum">     911 </span>            :         }</a>
 <a name="912"><span class="lineNum">     912 </span>            : </a>
@@ -1001,7 +1001,7 @@
 <a name="939"><span class="lineNum">     939 </span>            : update_stats_wait_end_fair(struct cfs_rq *cfs_rq, struct sched_entity *se)</a>
 <a name="940"><span class="lineNum">     940 </span>            : {</a>
 <a name="941"><span class="lineNum">     941 </span>            :         struct sched_statistics *stats;</a>
-<a name="942"><span class="lineNum">     942 </span><span class="lineCov">        618 :         struct task_struct *p = NULL;</span></a>
+<a name="942"><span class="lineNum">     942 </span><span class="lineCov">        620 :         struct task_struct *p = NULL;</span></a>
 <a name="943"><span class="lineNum">     943 </span>            : </a>
 <a name="944"><span class="lineNum">     944 </span>            :         if (!schedstat_enabled())</a>
 <a name="945"><span class="lineNum">     945 </span>            :                 return;</a>
@@ -1098,7 +1098,7 @@
 <a name="1036"><span class="lineNum">    1036 </span>            :         /*</a>
 <a name="1037"><span class="lineNum">    1037 </span>            :          * We are starting a new run period:</a>
 <a name="1038"><span class="lineNum">    1038 </span>            :          */</a>
-<a name="1039"><span class="lineNum">    1039 </span><span class="lineCov">       1236 :         se-&gt;exec_start = rq_clock_task(rq_of(cfs_rq));</span></a>
+<a name="1039"><span class="lineNum">    1039 </span><span class="lineCov">       1240 :         se-&gt;exec_start = rq_clock_task(rq_of(cfs_rq));</span></a>
 <a name="1040"><span class="lineNum">    1040 </span>            : }</a>
 <a name="1041"><span class="lineNum">    1041 </span>            : </a>
 <a name="1042"><span class="lineNum">    1042 </span>            : /**************************************************</a>
@@ -3055,7 +3055,7 @@
 <a name="2993"><span class="lineNum">    2993 </span>            : static void</a>
 <a name="2994"><span class="lineNum">    2994 </span>            : account_entity_enqueue(struct cfs_rq *cfs_rq, struct sched_entity *se)</a>
 <a name="2995"><span class="lineNum">    2995 </span>            : {</a>
-<a name="2996"><span class="lineNum">    2996 </span><span class="lineCov">       1236 :         update_load_add(&amp;cfs_rq-&gt;load, se-&gt;load.weight);</span></a>
+<a name="2996"><span class="lineNum">    2996 </span><span class="lineCov">       1240 :         update_load_add(&amp;cfs_rq-&gt;load, se-&gt;load.weight);</span></a>
 <a name="2997"><span class="lineNum">    2997 </span>            : #ifdef CONFIG_SMP</a>
 <a name="2998"><span class="lineNum">    2998 </span>            :         if (entity_is_task(se)) {</a>
 <a name="2999"><span class="lineNum">    2999 </span>            :                 struct rq *rq = rq_of(cfs_rq);</a>
@@ -3064,23 +3064,23 @@
 <a name="3002"><span class="lineNum">    3002 </span>            :                 list_add(&amp;se-&gt;group_node, &amp;rq-&gt;cfs_tasks);</a>
 <a name="3003"><span class="lineNum">    3003 </span>            :         }</a>
 <a name="3004"><span class="lineNum">    3004 </span>            : #endif</a>
-<a name="3005"><span class="lineNum">    3005 </span><span class="lineCov">        618 :         cfs_rq-&gt;nr_running++;</span></a>
-<a name="3006"><span class="lineNum">    3006 </span><span class="lineCov">        618 :         if (se_is_idle(se))</span></a>
+<a name="3005"><span class="lineNum">    3005 </span><span class="lineCov">        620 :         cfs_rq-&gt;nr_running++;</span></a>
+<a name="3006"><span class="lineNum">    3006 </span><span class="lineCov">        620 :         if (se_is_idle(se))</span></a>
 <a name="3007"><span class="lineNum">    3007 </span>            :                 cfs_rq-&gt;idle_nr_running++;</a>
 <a name="3008"><span class="lineNum">    3008 </span>            : }</a>
 <a name="3009"><span class="lineNum">    3009 </span>            : </a>
 <a name="3010"><span class="lineNum">    3010 </span>            : static void</a>
 <a name="3011"><span class="lineNum">    3011 </span>            : account_entity_dequeue(struct cfs_rq *cfs_rq, struct sched_entity *se)</a>
 <a name="3012"><span class="lineNum">    3012 </span>            : {</a>
-<a name="3013"><span class="lineNum">    3013 </span><span class="lineCov">       1232 :         update_load_sub(&amp;cfs_rq-&gt;load, se-&gt;load.weight);</span></a>
+<a name="3013"><span class="lineNum">    3013 </span><span class="lineCov">       1236 :         update_load_sub(&amp;cfs_rq-&gt;load, se-&gt;load.weight);</span></a>
 <a name="3014"><span class="lineNum">    3014 </span>            : #ifdef CONFIG_SMP</a>
 <a name="3015"><span class="lineNum">    3015 </span>            :         if (entity_is_task(se)) {</a>
 <a name="3016"><span class="lineNum">    3016 </span>            :                 account_numa_dequeue(rq_of(cfs_rq), task_of(se));</a>
 <a name="3017"><span class="lineNum">    3017 </span>            :                 list_del_init(&amp;se-&gt;group_node);</a>
 <a name="3018"><span class="lineNum">    3018 </span>            :         }</a>
 <a name="3019"><span class="lineNum">    3019 </span>            : #endif</a>
-<a name="3020"><span class="lineNum">    3020 </span><span class="lineCov">        616 :         cfs_rq-&gt;nr_running--;</span></a>
-<a name="3021"><span class="lineNum">    3021 </span><span class="lineCov">        616 :         if (se_is_idle(se))</span></a>
+<a name="3020"><span class="lineNum">    3020 </span><span class="lineCov">        618 :         cfs_rq-&gt;nr_running--;</span></a>
+<a name="3021"><span class="lineNum">    3021 </span><span class="lineCov">        618 :         if (se_is_idle(se))</span></a>
 <a name="3022"><span class="lineNum">    3022 </span>            :                 cfs_rq-&gt;idle_nr_running--;</a>
 <a name="3023"><span class="lineNum">    3023 </span>            : }</a>
 <a name="3024"><span class="lineNum">    3024 </span>            : </a>
@@ -3341,7 +3341,7 @@
 <a name="3279"><span class="lineNum">    3279 </span>            : </a>
 <a name="3280"><span class="lineNum">    3280 </span>            : static inline void cfs_rq_util_change(struct cfs_rq *cfs_rq, int flags)</a>
 <a name="3281"><span class="lineNum">    3281 </span>            : {</a>
-<a name="3282"><span class="lineNum">    3282 </span><span class="lineCov">       1236 :         struct rq *rq = rq_of(cfs_rq);</span></a>
+<a name="3282"><span class="lineNum">    3282 </span><span class="lineCov">       1241 :         struct rq *rq = rq_of(cfs_rq);</span></a>
 <a name="3283"><span class="lineNum">    3283 </span>            : </a>
 <a name="3284"><span class="lineNum">    3284 </span>            :         if (&amp;rq-&gt;cfs == cfs_rq) {</a>
 <a name="3285"><span class="lineNum">    3285 </span>            :                 /*</a>
@@ -4259,7 +4259,7 @@
 <a name="4197"><span class="lineNum">    4197 </span>            : </a>
 <a name="4198"><span class="lineNum">    4198 </span>            : static inline void update_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se, int not_used1)</a>
 <a name="4199"><span class="lineNum">    4199 </span>            : {</a>
-<a name="4200"><span class="lineNum">    4200 </span><span class="lineCov">       1236 :         cfs_rq_util_change(cfs_rq, 0);</span></a>
+<a name="4200"><span class="lineNum">    4200 </span><span class="lineCov">       1241 :         cfs_rq_util_change(cfs_rq, 0);</span></a>
 <a name="4201"><span class="lineNum">    4201 </span>            : }</a>
 <a name="4202"><span class="lineNum">    4202 </span>            : </a>
 <a name="4203"><span class="lineNum">    4203 </span>            : static inline void remove_entity_load_avg(struct sched_entity *se) {}</a>
@@ -4290,7 +4290,7 @@
 <a name="4228"><span class="lineNum">    4228 </span>            : static void check_spread(struct cfs_rq *cfs_rq, struct sched_entity *se)</a>
 <a name="4229"><span class="lineNum">    4229 </span>            : {</a>
 <a name="4230"><span class="lineNum">    4230 </span>            : #ifdef CONFIG_SCHED_DEBUG</a>
-<a name="4231"><span class="lineNum">    4231 </span><span class="lineCov">       1235 :         s64 d = se-&gt;vruntime - cfs_rq-&gt;min_vruntime;</span></a>
+<a name="4231"><span class="lineNum">    4231 </span><span class="lineCov">       1239 :         s64 d = se-&gt;vruntime - cfs_rq-&gt;min_vruntime;</span></a>
 <a name="4232"><span class="lineNum">    4232 </span>            : </a>
 <a name="4233"><span class="lineNum">    4233 </span>            :         if (d &lt; 0)</a>
 <a name="4234"><span class="lineNum">    4234 </span>            :                 d = -d;</a>
@@ -4301,9 +4301,9 @@
 <a name="4239"><span class="lineNum">    4239 </span>            : }</a>
 <a name="4240"><span class="lineNum">    4240 </span>            : </a>
 <a name="4241"><span class="lineNum">    4241 </span>            : static void</a>
-<a name="4242"><span class="lineNum">    4242 </span><span class="lineCov">        615 : place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int initial)</span></a>
+<a name="4242"><span class="lineNum">    4242 </span><span class="lineCov">        617 : place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int initial)</span></a>
 <a name="4243"><span class="lineNum">    4243 </span>            : {</a>
-<a name="4244"><span class="lineNum">    4244 </span><span class="lineCov">        615 :         u64 vruntime = cfs_rq-&gt;min_vruntime;</span></a>
+<a name="4244"><span class="lineNum">    4244 </span><span class="lineCov">        617 :         u64 vruntime = cfs_rq-&gt;min_vruntime;</span></a>
 <a name="4245"><span class="lineNum">    4245 </span>            : </a>
 <a name="4246"><span class="lineNum">    4246 </span>            :         /*</a>
 <a name="4247"><span class="lineNum">    4247 </span>            :          * The 'current' period is already promised to the current tasks,</a>
@@ -4311,31 +4311,31 @@
 <a name="4249"><span class="lineNum">    4249 </span>            :          * little, place the new task so that it fits in the slot that</a>
 <a name="4250"><span class="lineNum">    4250 </span>            :          * stays open at the end.</a>
 <a name="4251"><span class="lineNum">    4251 </span>            :          */</a>
-<a name="4252"><span class="lineNum">    4252 </span><span class="lineCov">        615 :         if (initial &amp;&amp; sched_feat(START_DEBIT))</span></a>
+<a name="4252"><span class="lineNum">    4252 </span><span class="lineCov">        617 :         if (initial &amp;&amp; sched_feat(START_DEBIT))</span></a>
 <a name="4253"><span class="lineNum">    4253 </span><span class="lineCov">        107 :                 vruntime += sched_vslice(cfs_rq, se);</span></a>
 <a name="4254"><span class="lineNum">    4254 </span>            : </a>
 <a name="4255"><span class="lineNum">    4255 </span>            :         /* sleeps up to a single latency don't count. */</a>
-<a name="4256"><span class="lineNum">    4256 </span><span class="lineCov">        615 :         if (!initial) {</span></a>
+<a name="4256"><span class="lineNum">    4256 </span><span class="lineCov">        617 :         if (!initial) {</span></a>
 <a name="4257"><span class="lineNum">    4257 </span>            :                 unsigned long thresh;</a>
 <a name="4258"><span class="lineNum">    4258 </span>            : </a>
-<a name="4259"><span class="lineNum">    4259 </span><span class="lineCov">        508 :                 if (se_is_idle(se))</span></a>
+<a name="4259"><span class="lineNum">    4259 </span><span class="lineCov">        510 :                 if (se_is_idle(se))</span></a>
 <a name="4260"><span class="lineNum">    4260 </span>            :                         thresh = sysctl_sched_min_granularity;</a>
 <a name="4261"><span class="lineNum">    4261 </span>            :                 else</a>
-<a name="4262"><span class="lineNum">    4262 </span><span class="lineCov">        508 :                         thresh = sysctl_sched_latency;</span></a>
+<a name="4262"><span class="lineNum">    4262 </span><span class="lineCov">        510 :                         thresh = sysctl_sched_latency;</span></a>
 <a name="4263"><span class="lineNum">    4263 </span>            : </a>
 <a name="4264"><span class="lineNum">    4264 </span>            :                 /*</a>
 <a name="4265"><span class="lineNum">    4265 </span>            :                  * Halve their sleep time's effect, to allow</a>
 <a name="4266"><span class="lineNum">    4266 </span>            :                  * for a gentler effect of sleepers:</a>
 <a name="4267"><span class="lineNum">    4267 </span>            :                  */</a>
-<a name="4268"><span class="lineNum">    4268 </span><span class="lineCov">        508 :                 if (sched_feat(GENTLE_FAIR_SLEEPERS))</span></a>
-<a name="4269"><span class="lineNum">    4269 </span><span class="lineCov">        508 :                         thresh &gt;&gt;= 1;</span></a>
+<a name="4268"><span class="lineNum">    4268 </span><span class="lineCov">        510 :                 if (sched_feat(GENTLE_FAIR_SLEEPERS))</span></a>
+<a name="4269"><span class="lineNum">    4269 </span><span class="lineCov">        510 :                         thresh &gt;&gt;= 1;</span></a>
 <a name="4270"><span class="lineNum">    4270 </span>            : </a>
-<a name="4271"><span class="lineNum">    4271 </span><span class="lineCov">        508 :                 vruntime -= thresh;</span></a>
+<a name="4271"><span class="lineNum">    4271 </span><span class="lineCov">        510 :                 vruntime -= thresh;</span></a>
 <a name="4272"><span class="lineNum">    4272 </span>            :         }</a>
 <a name="4273"><span class="lineNum">    4273 </span>            : </a>
 <a name="4274"><span class="lineNum">    4274 </span>            :         /* ensure we never gain time by being placed backwards. */</a>
-<a name="4275"><span class="lineNum">    4275 </span><span class="lineCov">       1230 :         se-&gt;vruntime = max_vruntime(se-&gt;vruntime, vruntime);</span></a>
-<a name="4276"><span class="lineNum">    4276 </span><span class="lineCov">        615 : }</span></a>
+<a name="4275"><span class="lineNum">    4275 </span><span class="lineCov">       1234 :         se-&gt;vruntime = max_vruntime(se-&gt;vruntime, vruntime);</span></a>
+<a name="4276"><span class="lineNum">    4276 </span><span class="lineCov">        617 : }</span></a>
 <a name="4277"><span class="lineNum">    4277 </span>            : </a>
 <a name="4278"><span class="lineNum">    4278 </span>            : static void check_enqueue_throttle(struct cfs_rq *cfs_rq);</a>
 <a name="4279"><span class="lineNum">    4279 </span>            : </a>
@@ -4372,19 +4372,19 @@
 <a name="4310"><span class="lineNum">    4310 </span>            :  */</a>
 <a name="4311"><span class="lineNum">    4311 </span>            : </a>
 <a name="4312"><span class="lineNum">    4312 </span>            : static void</a>
-<a name="4313"><span class="lineNum">    4313 </span><span class="lineCov">        618 : enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)</span></a>
+<a name="4313"><span class="lineNum">    4313 </span><span class="lineCov">        620 : enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)</span></a>
 <a name="4314"><span class="lineNum">    4314 </span>            : {</a>
-<a name="4315"><span class="lineNum">    4315 </span><span class="lineCov">        618 :         bool renorm = !(flags &amp; ENQUEUE_WAKEUP) || (flags &amp; ENQUEUE_MIGRATED);</span></a>
-<a name="4316"><span class="lineNum">    4316 </span><span class="lineCov">        618 :         bool curr = cfs_rq-&gt;curr == se;</span></a>
+<a name="4315"><span class="lineNum">    4315 </span><span class="lineCov">        620 :         bool renorm = !(flags &amp; ENQUEUE_WAKEUP) || (flags &amp; ENQUEUE_MIGRATED);</span></a>
+<a name="4316"><span class="lineNum">    4316 </span><span class="lineCov">        620 :         bool curr = cfs_rq-&gt;curr == se;</span></a>
 <a name="4317"><span class="lineNum">    4317 </span>            : </a>
 <a name="4318"><span class="lineNum">    4318 </span>            :         /*</a>
 <a name="4319"><span class="lineNum">    4319 </span>            :          * If we're the current task, we must renormalise before calling</a>
 <a name="4320"><span class="lineNum">    4320 </span>            :          * update_curr().</a>
 <a name="4321"><span class="lineNum">    4321 </span>            :          */</a>
-<a name="4322"><span class="lineNum">    4322 </span><span class="lineCov">        618 :         if (renorm &amp;&amp; curr)</span></a>
+<a name="4322"><span class="lineNum">    4322 </span><span class="lineCov">        620 :         if (renorm &amp;&amp; curr)</span></a>
 <a name="4323"><span class="lineNum">    4323 </span><span class="lineNoCov">          0 :                 se-&gt;vruntime += cfs_rq-&gt;min_vruntime;</span></a>
 <a name="4324"><span class="lineNum">    4324 </span>            : </a>
-<a name="4325"><span class="lineNum">    4325 </span><span class="lineCov">        618 :         update_curr(cfs_rq);</span></a>
+<a name="4325"><span class="lineNum">    4325 </span><span class="lineCov">        620 :         update_curr(cfs_rq);</span></a>
 <a name="4326"><span class="lineNum">    4326 </span>            : </a>
 <a name="4327"><span class="lineNum">    4327 </span>            :         /*</a>
 <a name="4328"><span class="lineNum">    4328 </span>            :          * Otherwise, renormalise after, such that we're placed at the current</a>
@@ -4392,7 +4392,7 @@
 <a name="4330"><span class="lineNum">    4330 </span>            :          * placed in the past could significantly boost this task to the</a>
 <a name="4331"><span class="lineNum">    4331 </span>            :          * fairness detriment of existing tasks.</a>
 <a name="4332"><span class="lineNum">    4332 </span>            :          */</a>
-<a name="4333"><span class="lineNum">    4333 </span><span class="lineCov">        618 :         if (renorm &amp;&amp; !curr)</span></a>
+<a name="4333"><span class="lineNum">    4333 </span><span class="lineCov">        620 :         if (renorm &amp;&amp; !curr)</span></a>
 <a name="4334"><span class="lineNum">    4334 </span><span class="lineCov">        110 :                 se-&gt;vruntime += cfs_rq-&gt;min_vruntime;</span></a>
 <a name="4335"><span class="lineNum">    4335 </span>            : </a>
 <a name="4336"><span class="lineNum">    4336 </span>            :         /*</a>
@@ -4403,20 +4403,20 @@
 <a name="4341"><span class="lineNum">    4341 </span>            :          *     its group cfs_rq</a>
 <a name="4342"><span class="lineNum">    4342 </span>            :          *   - Add its new weight to cfs_rq-&gt;load.weight</a>
 <a name="4343"><span class="lineNum">    4343 </span>            :          */</a>
-<a name="4344"><span class="lineNum">    4344 </span><span class="lineCov">        618 :         update_load_avg(cfs_rq, se, UPDATE_TG | DO_ATTACH);</span></a>
-<a name="4345"><span class="lineNum">    4345 </span><span class="lineCov">        618 :         se_update_runnable(se);</span></a>
-<a name="4346"><span class="lineNum">    4346 </span><span class="lineCov">        618 :         update_cfs_group(se);</span></a>
-<a name="4347"><span class="lineNum">    4347 </span><span class="lineCov">       1236 :         account_entity_enqueue(cfs_rq, se);</span></a>
+<a name="4344"><span class="lineNum">    4344 </span><span class="lineCov">        620 :         update_load_avg(cfs_rq, se, UPDATE_TG | DO_ATTACH);</span></a>
+<a name="4345"><span class="lineNum">    4345 </span><span class="lineCov">        620 :         se_update_runnable(se);</span></a>
+<a name="4346"><span class="lineNum">    4346 </span><span class="lineCov">        620 :         update_cfs_group(se);</span></a>
+<a name="4347"><span class="lineNum">    4347 </span><span class="lineCov">       1240 :         account_entity_enqueue(cfs_rq, se);</span></a>
 <a name="4348"><span class="lineNum">    4348 </span>            : </a>
-<a name="4349"><span class="lineNum">    4349 </span><span class="lineCov">        618 :         if (flags &amp; ENQUEUE_WAKEUP)</span></a>
-<a name="4350"><span class="lineNum">    4350 </span><span class="lineCov">        508 :                 place_entity(cfs_rq, se, 0);</span></a>
+<a name="4349"><span class="lineNum">    4349 </span><span class="lineCov">        620 :         if (flags &amp; ENQUEUE_WAKEUP)</span></a>
+<a name="4350"><span class="lineNum">    4350 </span><span class="lineCov">        510 :                 place_entity(cfs_rq, se, 0);</span></a>
 <a name="4351"><span class="lineNum">    4351 </span>            : </a>
 <a name="4352"><span class="lineNum">    4352 </span>            :         check_schedstat_required();</a>
-<a name="4353"><span class="lineNum">    4353 </span><span class="lineCov">        618 :         update_stats_enqueue_fair(cfs_rq, se, flags);</span></a>
-<a name="4354"><span class="lineNum">    4354 </span><span class="lineCov">        618 :         check_spread(cfs_rq, se);</span></a>
-<a name="4355"><span class="lineNum">    4355 </span><span class="lineCov">        618 :         if (!curr)</span></a>
-<a name="4356"><span class="lineNum">    4356 </span><span class="lineCov">        618 :                 __enqueue_entity(cfs_rq, se);</span></a>
-<a name="4357"><span class="lineNum">    4357 </span><span class="lineCov">        618 :         se-&gt;on_rq = 1;</span></a>
+<a name="4353"><span class="lineNum">    4353 </span><span class="lineCov">        620 :         update_stats_enqueue_fair(cfs_rq, se, flags);</span></a>
+<a name="4354"><span class="lineNum">    4354 </span><span class="lineCov">        620 :         check_spread(cfs_rq, se);</span></a>
+<a name="4355"><span class="lineNum">    4355 </span><span class="lineCov">        620 :         if (!curr)</span></a>
+<a name="4356"><span class="lineNum">    4356 </span><span class="lineCov">        620 :                 __enqueue_entity(cfs_rq, se);</span></a>
+<a name="4357"><span class="lineNum">    4357 </span><span class="lineCov">        620 :         se-&gt;on_rq = 1;</span></a>
 <a name="4358"><span class="lineNum">    4358 </span>            : </a>
 <a name="4359"><span class="lineNum">    4359 </span>            :         /*</a>
 <a name="4360"><span class="lineNum">    4360 </span>            :          * When bandwidth control is enabled, cfs might have been removed</a>
@@ -4428,7 +4428,7 @@
 <a name="4366"><span class="lineNum">    4366 </span>            : </a>
 <a name="4367"><span class="lineNum">    4367 </span>            :         if (cfs_rq-&gt;nr_running == 1)</a>
 <a name="4368"><span class="lineNum">    4368 </span>            :                 check_enqueue_throttle(cfs_rq);</a>
-<a name="4369"><span class="lineNum">    4369 </span><span class="lineCov">        618 : }</span></a>
+<a name="4369"><span class="lineNum">    4369 </span><span class="lineCov">        620 : }</span></a>
 <a name="4370"><span class="lineNum">    4370 </span>            : </a>
 <a name="4371"><span class="lineNum">    4371 </span>            : static void __clear_buddies_last(struct sched_entity *se)</a>
 <a name="4372"><span class="lineNum">    4372 </span>            : {</a>
@@ -4443,12 +4443,12 @@
 <a name="4381"><span class="lineNum">    4381 </span>            : </a>
 <a name="4382"><span class="lineNum">    4382 </span>            : static void __clear_buddies_next(struct sched_entity *se)</a>
 <a name="4383"><span class="lineNum">    4383 </span>            : {</a>
-<a name="4384"><span class="lineNum">    4384 </span><span class="lineCov">        199 :         for_each_sched_entity(se) {</span></a>
-<a name="4385"><span class="lineNum">    4385 </span><span class="lineCov">        398 :                 struct cfs_rq *cfs_rq = cfs_rq_of(se);</span></a>
-<a name="4386"><span class="lineNum">    4386 </span><span class="lineCov">        199 :                 if (cfs_rq-&gt;next != se)</span></a>
+<a name="4384"><span class="lineNum">    4384 </span><span class="lineCov">        200 :         for_each_sched_entity(se) {</span></a>
+<a name="4385"><span class="lineNum">    4385 </span><span class="lineCov">        400 :                 struct cfs_rq *cfs_rq = cfs_rq_of(se);</span></a>
+<a name="4386"><span class="lineNum">    4386 </span><span class="lineCov">        200 :                 if (cfs_rq-&gt;next != se)</span></a>
 <a name="4387"><span class="lineNum">    4387 </span>            :                         break;</a>
 <a name="4388"><span class="lineNum">    4388 </span>            : </a>
-<a name="4389"><span class="lineNum">    4389 </span><span class="lineCov">        199 :                 cfs_rq-&gt;next = NULL;</span></a>
+<a name="4389"><span class="lineNum">    4389 </span><span class="lineCov">        200 :                 cfs_rq-&gt;next = NULL;</span></a>
 <a name="4390"><span class="lineNum">    4390 </span>            :         }</a>
 <a name="4391"><span class="lineNum">    4391 </span>            : }</a>
 <a name="4392"><span class="lineNum">    4392 </span>            : </a>
@@ -4463,27 +4463,27 @@
 <a name="4401"><span class="lineNum">    4401 </span>            :         }</a>
 <a name="4402"><span class="lineNum">    4402 </span>            : }</a>
 <a name="4403"><span class="lineNum">    4403 </span>            : </a>
-<a name="4404"><span class="lineNum">    4404 </span><span class="lineCov">       1235 : static void clear_buddies(struct cfs_rq *cfs_rq, struct sched_entity *se)</span></a>
+<a name="4404"><span class="lineNum">    4404 </span><span class="lineCov">       1241 : static void clear_buddies(struct cfs_rq *cfs_rq, struct sched_entity *se)</span></a>
 <a name="4405"><span class="lineNum">    4405 </span>            : {</a>
-<a name="4406"><span class="lineNum">    4406 </span><span class="lineCov">       1235 :         if (cfs_rq-&gt;last == se)</span></a>
+<a name="4406"><span class="lineNum">    4406 </span><span class="lineCov">       1241 :         if (cfs_rq-&gt;last == se)</span></a>
 <a name="4407"><span class="lineNum">    4407 </span>            :                 __clear_buddies_last(se);</a>
 <a name="4408"><span class="lineNum">    4408 </span>            : </a>
-<a name="4409"><span class="lineNum">    4409 </span><span class="lineCov">       1235 :         if (cfs_rq-&gt;next == se)</span></a>
+<a name="4409"><span class="lineNum">    4409 </span><span class="lineCov">       1241 :         if (cfs_rq-&gt;next == se)</span></a>
 <a name="4410"><span class="lineNum">    4410 </span>            :                 __clear_buddies_next(se);</a>
 <a name="4411"><span class="lineNum">    4411 </span>            : </a>
-<a name="4412"><span class="lineNum">    4412 </span><span class="lineCov">       1235 :         if (cfs_rq-&gt;skip == se)</span></a>
+<a name="4412"><span class="lineNum">    4412 </span><span class="lineCov">       1241 :         if (cfs_rq-&gt;skip == se)</span></a>
 <a name="4413"><span class="lineNum">    4413 </span>            :                 __clear_buddies_skip(se);</a>
-<a name="4414"><span class="lineNum">    4414 </span><span class="lineCov">       1235 : }</span></a>
+<a name="4414"><span class="lineNum">    4414 </span><span class="lineCov">       1241 : }</span></a>
 <a name="4415"><span class="lineNum">    4415 </span>            : </a>
 <a name="4416"><span class="lineNum">    4416 </span>            : static __always_inline void return_cfs_rq_runtime(struct cfs_rq *cfs_rq);</a>
 <a name="4417"><span class="lineNum">    4417 </span>            : </a>
 <a name="4418"><span class="lineNum">    4418 </span>            : static void</a>
-<a name="4419"><span class="lineNum">    4419 </span><span class="lineCov">        616 : dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)</span></a>
+<a name="4419"><span class="lineNum">    4419 </span><span class="lineCov">        618 : dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)</span></a>
 <a name="4420"><span class="lineNum">    4420 </span>            : {</a>
 <a name="4421"><span class="lineNum">    4421 </span>            :         /*</a>
 <a name="4422"><span class="lineNum">    4422 </span>            :          * Update run-time statistics of the 'current'.</a>
 <a name="4423"><span class="lineNum">    4423 </span>            :          */</a>
-<a name="4424"><span class="lineNum">    4424 </span><span class="lineCov">        616 :         update_curr(cfs_rq);</span></a>
+<a name="4424"><span class="lineNum">    4424 </span><span class="lineCov">        618 :         update_curr(cfs_rq);</span></a>
 <a name="4425"><span class="lineNum">    4425 </span>            : </a>
 <a name="4426"><span class="lineNum">    4426 </span>            :         /*</a>
 <a name="4427"><span class="lineNum">    4427 </span>            :          * When dequeuing a sched_entity, we must:</a>
@@ -4493,17 +4493,17 @@
 <a name="4431"><span class="lineNum">    4431 </span>            :          *   - For group entity, update its weight to reflect the new share</a>
 <a name="4432"><span class="lineNum">    4432 </span>            :          *     of its group cfs_rq.</a>
 <a name="4433"><span class="lineNum">    4433 </span>            :          */</a>
-<a name="4434"><span class="lineNum">    4434 </span><span class="lineCov">        616 :         update_load_avg(cfs_rq, se, UPDATE_TG);</span></a>
-<a name="4435"><span class="lineNum">    4435 </span><span class="lineCov">        616 :         se_update_runnable(se);</span></a>
+<a name="4434"><span class="lineNum">    4434 </span><span class="lineCov">        618 :         update_load_avg(cfs_rq, se, UPDATE_TG);</span></a>
+<a name="4435"><span class="lineNum">    4435 </span><span class="lineCov">        618 :         se_update_runnable(se);</span></a>
 <a name="4436"><span class="lineNum">    4436 </span>            : </a>
-<a name="4437"><span class="lineNum">    4437 </span><span class="lineCov">        616 :         update_stats_dequeue_fair(cfs_rq, se, flags);</span></a>
+<a name="4437"><span class="lineNum">    4437 </span><span class="lineCov">        618 :         update_stats_dequeue_fair(cfs_rq, se, flags);</span></a>
 <a name="4438"><span class="lineNum">    4438 </span>            : </a>
-<a name="4439"><span class="lineNum">    4439 </span><span class="lineCov">        616 :         clear_buddies(cfs_rq, se);</span></a>
+<a name="4439"><span class="lineNum">    4439 </span><span class="lineCov">        618 :         clear_buddies(cfs_rq, se);</span></a>
 <a name="4440"><span class="lineNum">    4440 </span>            : </a>
-<a name="4441"><span class="lineNum">    4441 </span><span class="lineCov">        616 :         if (se != cfs_rq-&gt;curr)</span></a>
+<a name="4441"><span class="lineNum">    4441 </span><span class="lineCov">        618 :         if (se != cfs_rq-&gt;curr)</span></a>
 <a name="4442"><span class="lineNum">    4442 </span>            :                 __dequeue_entity(cfs_rq, se);</a>
-<a name="4443"><span class="lineNum">    4443 </span><span class="lineCov">        616 :         se-&gt;on_rq = 0;</span></a>
-<a name="4444"><span class="lineNum">    4444 </span><span class="lineCov">       1232 :         account_entity_dequeue(cfs_rq, se);</span></a>
+<a name="4443"><span class="lineNum">    4443 </span><span class="lineCov">        618 :         se-&gt;on_rq = 0;</span></a>
+<a name="4444"><span class="lineNum">    4444 </span><span class="lineCov">       1236 :         account_entity_dequeue(cfs_rq, se);</span></a>
 <a name="4445"><span class="lineNum">    4445 </span>            : </a>
 <a name="4446"><span class="lineNum">    4446 </span>            :         /*</a>
 <a name="4447"><span class="lineNum">    4447 </span>            :          * Normalize after update_curr(); which will also have moved</a>
@@ -4511,13 +4511,13 @@
 <a name="4449"><span class="lineNum">    4449 </span>            :          * update_min_vruntime() again, which will discount @se's position and</a>
 <a name="4450"><span class="lineNum">    4450 </span>            :          * can move min_vruntime forward still more.</a>
 <a name="4451"><span class="lineNum">    4451 </span>            :          */</a>
-<a name="4452"><span class="lineNum">    4452 </span><span class="lineCov">        616 :         if (!(flags &amp; DEQUEUE_SLEEP))</span></a>
+<a name="4452"><span class="lineNum">    4452 </span><span class="lineCov">        618 :         if (!(flags &amp; DEQUEUE_SLEEP))</span></a>
 <a name="4453"><span class="lineNum">    4453 </span><span class="lineCov">          3 :                 se-&gt;vruntime -= cfs_rq-&gt;min_vruntime;</span></a>
 <a name="4454"><span class="lineNum">    4454 </span>            : </a>
 <a name="4455"><span class="lineNum">    4455 </span>            :         /* return excess runtime on last dequeue */</a>
-<a name="4456"><span class="lineNum">    4456 </span><span class="lineCov">        616 :         return_cfs_rq_runtime(cfs_rq);</span></a>
+<a name="4456"><span class="lineNum">    4456 </span><span class="lineCov">        618 :         return_cfs_rq_runtime(cfs_rq);</span></a>
 <a name="4457"><span class="lineNum">    4457 </span>            : </a>
-<a name="4458"><span class="lineNum">    4458 </span><span class="lineCov">        616 :         update_cfs_group(se);</span></a>
+<a name="4458"><span class="lineNum">    4458 </span><span class="lineCov">        618 :         update_cfs_group(se);</span></a>
 <a name="4459"><span class="lineNum">    4459 </span>            : </a>
 <a name="4460"><span class="lineNum">    4460 </span>            :         /*</a>
 <a name="4461"><span class="lineNum">    4461 </span>            :          * Now advance min_vruntime if @se was the entity holding it back,</a>
@@ -4525,30 +4525,30 @@
 <a name="4463"><span class="lineNum">    4463 </span>            :          * put back on, and if we advance min_vruntime, we'll be placed back</a>
 <a name="4464"><span class="lineNum">    4464 </span>            :          * further than we started -- ie. we'll be penalized.</a>
 <a name="4465"><span class="lineNum">    4465 </span>            :          */</a>
-<a name="4466"><span class="lineNum">    4466 </span><span class="lineCov">        616 :         if ((flags &amp; (DEQUEUE_SAVE | DEQUEUE_MOVE)) != DEQUEUE_SAVE)</span></a>
-<a name="4467"><span class="lineNum">    4467 </span><span class="lineCov">        613 :                 update_min_vruntime(cfs_rq);</span></a>
-<a name="4468"><span class="lineNum">    4468 </span><span class="lineCov">        616 : }</span></a>
+<a name="4466"><span class="lineNum">    4466 </span><span class="lineCov">        618 :         if ((flags &amp; (DEQUEUE_SAVE | DEQUEUE_MOVE)) != DEQUEUE_SAVE)</span></a>
+<a name="4467"><span class="lineNum">    4467 </span><span class="lineCov">        615 :                 update_min_vruntime(cfs_rq);</span></a>
+<a name="4468"><span class="lineNum">    4468 </span><span class="lineCov">        618 : }</span></a>
 <a name="4469"><span class="lineNum">    4469 </span>            : </a>
 <a name="4470"><span class="lineNum">    4470 </span>            : /*</a>
 <a name="4471"><span class="lineNum">    4471 </span>            :  * Preempt the current task with a newly woken task if needed:</a>
 <a name="4472"><span class="lineNum">    4472 </span>            :  */</a>
 <a name="4473"><span class="lineNum">    4473 </span>            : static void</a>
-<a name="4474"><span class="lineNum">    4474 </span><span class="lineCov">          1 : check_preempt_tick(struct cfs_rq *cfs_rq, struct sched_entity *curr)</span></a>
+<a name="4474"><span class="lineNum">    4474 </span><span class="lineCov">          3 : check_preempt_tick(struct cfs_rq *cfs_rq, struct sched_entity *curr)</span></a>
 <a name="4475"><span class="lineNum">    4475 </span>            : {</a>
 <a name="4476"><span class="lineNum">    4476 </span>            :         unsigned long ideal_runtime, delta_exec;</a>
 <a name="4477"><span class="lineNum">    4477 </span>            :         struct sched_entity *se;</a>
 <a name="4478"><span class="lineNum">    4478 </span>            :         s64 delta;</a>
 <a name="4479"><span class="lineNum">    4479 </span>            : </a>
-<a name="4480"><span class="lineNum">    4480 </span><span class="lineCov">          1 :         ideal_runtime = sched_slice(cfs_rq, curr);</span></a>
-<a name="4481"><span class="lineNum">    4481 </span><span class="lineCov">          1 :         delta_exec = curr-&gt;sum_exec_runtime - curr-&gt;prev_sum_exec_runtime;</span></a>
-<a name="4482"><span class="lineNum">    4482 </span><span class="lineCov">          1 :         if (delta_exec &gt; ideal_runtime) {</span></a>
-<a name="4483"><span class="lineNum">    4483 </span><span class="lineCov">          1 :                 resched_curr(rq_of(cfs_rq));</span></a>
+<a name="4480"><span class="lineNum">    4480 </span><span class="lineCov">          3 :         ideal_runtime = sched_slice(cfs_rq, curr);</span></a>
+<a name="4481"><span class="lineNum">    4481 </span><span class="lineCov">          3 :         delta_exec = curr-&gt;sum_exec_runtime - curr-&gt;prev_sum_exec_runtime;</span></a>
+<a name="4482"><span class="lineNum">    4482 </span><span class="lineCov">          3 :         if (delta_exec &gt; ideal_runtime) {</span></a>
+<a name="4483"><span class="lineNum">    4483 </span><span class="lineCov">          3 :                 resched_curr(rq_of(cfs_rq));</span></a>
 <a name="4484"><span class="lineNum">    4484 </span>            :                 /*</a>
 <a name="4485"><span class="lineNum">    4485 </span>            :                  * The current task ran long enough, ensure it doesn't get</a>
 <a name="4486"><span class="lineNum">    4486 </span>            :                  * re-elected due to buddy favours.</a>
 <a name="4487"><span class="lineNum">    4487 </span>            :                  */</a>
-<a name="4488"><span class="lineNum">    4488 </span><span class="lineCov">          1 :                 clear_buddies(cfs_rq, curr);</span></a>
-<a name="4489"><span class="lineNum">    4489 </span><span class="lineCov">          1 :                 return;</span></a>
+<a name="4488"><span class="lineNum">    4488 </span><span class="lineCov">          3 :                 clear_buddies(cfs_rq, curr);</span></a>
+<a name="4489"><span class="lineNum">    4489 </span><span class="lineCov">          3 :                 return;</span></a>
 <a name="4490"><span class="lineNum">    4490 </span>            :         }</a>
 <a name="4491"><span class="lineNum">    4491 </span>            : </a>
 <a name="4492"><span class="lineNum">    4492 </span>            :         /*</a>
@@ -4570,24 +4570,24 @@
 <a name="4508"><span class="lineNum">    4508 </span>            : }</a>
 <a name="4509"><span class="lineNum">    4509 </span>            : </a>
 <a name="4510"><span class="lineNum">    4510 </span>            : static void</a>
-<a name="4511"><span class="lineNum">    4511 </span><span class="lineCov">        618 : set_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)</span></a>
+<a name="4511"><span class="lineNum">    4511 </span><span class="lineCov">        620 : set_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)</span></a>
 <a name="4512"><span class="lineNum">    4512 </span>            : {</a>
-<a name="4513"><span class="lineNum">    4513 </span><span class="lineCov">        618 :         clear_buddies(cfs_rq, se);</span></a>
+<a name="4513"><span class="lineNum">    4513 </span><span class="lineCov">        620 :         clear_buddies(cfs_rq, se);</span></a>
 <a name="4514"><span class="lineNum">    4514 </span>            : </a>
 <a name="4515"><span class="lineNum">    4515 </span>            :         /* 'current' is not kept within the tree. */</a>
-<a name="4516"><span class="lineNum">    4516 </span><span class="lineCov">        618 :         if (se-&gt;on_rq) {</span></a>
+<a name="4516"><span class="lineNum">    4516 </span><span class="lineCov">        620 :         if (se-&gt;on_rq) {</span></a>
 <a name="4517"><span class="lineNum">    4517 </span>            :                 /*</a>
 <a name="4518"><span class="lineNum">    4518 </span>            :                  * Any task has to be enqueued before it get to execute on</a>
 <a name="4519"><span class="lineNum">    4519 </span>            :                  * a CPU. So account for the time it spent waiting on the</a>
 <a name="4520"><span class="lineNum">    4520 </span>            :                  * runqueue.</a>
 <a name="4521"><span class="lineNum">    4521 </span>            :                  */</a>
-<a name="4522"><span class="lineNum">    4522 </span><span class="lineCov">       1236 :                 update_stats_wait_end_fair(cfs_rq, se);</span></a>
+<a name="4522"><span class="lineNum">    4522 </span><span class="lineCov">       1240 :                 update_stats_wait_end_fair(cfs_rq, se);</span></a>
 <a name="4523"><span class="lineNum">    4523 </span>            :                 __dequeue_entity(cfs_rq, se);</a>
 <a name="4524"><span class="lineNum">    4524 </span>            :                 update_load_avg(cfs_rq, se, UPDATE_TG);</a>
 <a name="4525"><span class="lineNum">    4525 </span>            :         }</a>
 <a name="4526"><span class="lineNum">    4526 </span>            : </a>
-<a name="4527"><span class="lineNum">    4527 </span><span class="lineCov">       1236 :         update_stats_curr_start(cfs_rq, se);</span></a>
-<a name="4528"><span class="lineNum">    4528 </span><span class="lineCov">        618 :         cfs_rq-&gt;curr = se;</span></a>
+<a name="4527"><span class="lineNum">    4527 </span><span class="lineCov">       1240 :         update_stats_curr_start(cfs_rq, se);</span></a>
+<a name="4528"><span class="lineNum">    4528 </span><span class="lineCov">        620 :         cfs_rq-&gt;curr = se;</span></a>
 <a name="4529"><span class="lineNum">    4529 </span>            : </a>
 <a name="4530"><span class="lineNum">    4530 </span>            :         /*</a>
 <a name="4531"><span class="lineNum">    4531 </span>            :          * Track our maximum slice length, if the CPU's load is at</a>
@@ -4604,8 +4604,8 @@
 <a name="4542"><span class="lineNum">    4542 </span>            :                                     se-&gt;sum_exec_runtime - se-&gt;prev_sum_exec_runtime));</a>
 <a name="4543"><span class="lineNum">    4543 </span>            :         }</a>
 <a name="4544"><span class="lineNum">    4544 </span>            : </a>
-<a name="4545"><span class="lineNum">    4545 </span><span class="lineCov">        618 :         se-&gt;prev_sum_exec_runtime = se-&gt;sum_exec_runtime;</span></a>
-<a name="4546"><span class="lineNum">    4546 </span><span class="lineCov">        618 : }</span></a>
+<a name="4545"><span class="lineNum">    4545 </span><span class="lineCov">        620 :         se-&gt;prev_sum_exec_runtime = se-&gt;sum_exec_runtime;</span></a>
+<a name="4546"><span class="lineNum">    4546 </span><span class="lineCov">        620 : }</span></a>
 <a name="4547"><span class="lineNum">    4547 </span>            : </a>
 <a name="4548"><span class="lineNum">    4548 </span>            : static int</a>
 <a name="4549"><span class="lineNum">    4549 </span>            : wakeup_preempt_entity(struct sched_entity *curr, struct sched_entity *se);</a>
@@ -4618,25 +4618,25 @@
 <a name="4556"><span class="lineNum">    4556 </span>            :  * 4) do not run the &quot;skip&quot; process, if something else is available</a>
 <a name="4557"><span class="lineNum">    4557 </span>            :  */</a>
 <a name="4558"><span class="lineNum">    4558 </span>            : static struct sched_entity *</a>
-<a name="4559"><span class="lineNum">    4559 </span><span class="lineCov">        615 : pick_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *curr)</span></a>
+<a name="4559"><span class="lineNum">    4559 </span><span class="lineCov">        617 : pick_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *curr)</span></a>
 <a name="4560"><span class="lineNum">    4560 </span>            : {</a>
-<a name="4561"><span class="lineNum">    4561 </span><span class="lineCov">        615 :         struct sched_entity *left = __pick_first_entity(cfs_rq);</span></a>
+<a name="4561"><span class="lineNum">    4561 </span><span class="lineCov">        617 :         struct sched_entity *left = __pick_first_entity(cfs_rq);</span></a>
 <a name="4562"><span class="lineNum">    4562 </span>            :         struct sched_entity *se;</a>
 <a name="4563"><span class="lineNum">    4563 </span>            : </a>
 <a name="4564"><span class="lineNum">    4564 </span>            :         /*</a>
 <a name="4565"><span class="lineNum">    4565 </span>            :          * If curr is set we have to see if its left of the leftmost entity</a>
 <a name="4566"><span class="lineNum">    4566 </span>            :          * still in the tree, provided there was anything in the tree at all.</a>
 <a name="4567"><span class="lineNum">    4567 </span>            :          */</a>
-<a name="4568"><span class="lineNum">    4568 </span><span class="lineCov">        615 :         if (!left || (curr &amp;&amp; entity_before(curr, left)))</span></a>
+<a name="4568"><span class="lineNum">    4568 </span><span class="lineCov">        617 :         if (!left || (curr &amp;&amp; entity_before(curr, left)))</span></a>
 <a name="4569"><span class="lineNum">    4569 </span>            :                 left = curr;</a>
 <a name="4570"><span class="lineNum">    4570 </span>            : </a>
-<a name="4571"><span class="lineNum">    4571 </span><span class="lineCov">        615 :         se = left; /* ideally we run the leftmost entity */</span></a>
+<a name="4571"><span class="lineNum">    4571 </span><span class="lineCov">        617 :         se = left; /* ideally we run the leftmost entity */</span></a>
 <a name="4572"><span class="lineNum">    4572 </span>            : </a>
 <a name="4573"><span class="lineNum">    4573 </span>            :         /*</a>
 <a name="4574"><span class="lineNum">    4574 </span>            :          * Avoid running the skip buddy, if running something else can</a>
 <a name="4575"><span class="lineNum">    4575 </span>            :          * be done without getting too unfair.</a>
 <a name="4576"><span class="lineNum">    4576 </span>            :          */</a>
-<a name="4577"><span class="lineNum">    4577 </span><span class="lineCov">        615 :         if (cfs_rq-&gt;skip &amp;&amp; cfs_rq-&gt;skip == se) {</span></a>
+<a name="4577"><span class="lineNum">    4577 </span><span class="lineCov">        617 :         if (cfs_rq-&gt;skip &amp;&amp; cfs_rq-&gt;skip == se) {</span></a>
 <a name="4578"><span class="lineNum">    4578 </span>            :                 struct sched_entity *second;</a>
 <a name="4579"><span class="lineNum">    4579 </span>            : </a>
 <a name="4580"><span class="lineNum">    4580 </span><span class="lineNoCov">          0 :                 if (se == curr) {</span></a>
@@ -4651,60 +4651,60 @@
 <a name="4589"><span class="lineNum">    4589 </span><span class="lineNoCov">          0 :                         se = second;</span></a>
 <a name="4590"><span class="lineNum">    4590 </span>            :         }</a>
 <a name="4591"><span class="lineNum">    4591 </span>            : </a>
-<a name="4592"><span class="lineNum">    4592 </span><span class="lineCov">        615 :         if (cfs_rq-&gt;next &amp;&amp; wakeup_preempt_entity(cfs_rq-&gt;next, left) &lt; 1) {</span></a>
+<a name="4592"><span class="lineNum">    4592 </span><span class="lineCov">        617 :         if (cfs_rq-&gt;next &amp;&amp; wakeup_preempt_entity(cfs_rq-&gt;next, left) &lt; 1) {</span></a>
 <a name="4593"><span class="lineNum">    4593 </span>            :                 /*</a>
 <a name="4594"><span class="lineNum">    4594 </span>            :                  * Someone really wants this to run. If it's not unfair, run it.</a>
 <a name="4595"><span class="lineNum">    4595 </span>            :                  */</a>
-<a name="4596"><span class="lineNum">    4596 </span><span class="lineCov">        199 :                 se = cfs_rq-&gt;next;</span></a>
-<a name="4597"><span class="lineNum">    4597 </span><span class="lineCov">        416 :         } else if (cfs_rq-&gt;last &amp;&amp; wakeup_preempt_entity(cfs_rq-&gt;last, left) &lt; 1) {</span></a>
+<a name="4596"><span class="lineNum">    4596 </span><span class="lineCov">        200 :                 se = cfs_rq-&gt;next;</span></a>
+<a name="4597"><span class="lineNum">    4597 </span><span class="lineCov">        417 :         } else if (cfs_rq-&gt;last &amp;&amp; wakeup_preempt_entity(cfs_rq-&gt;last, left) &lt; 1) {</span></a>
 <a name="4598"><span class="lineNum">    4598 </span>            :                 /*</a>
 <a name="4599"><span class="lineNum">    4599 </span>            :                  * Prefer last buddy, try to return the CPU to a preempted task.</a>
 <a name="4600"><span class="lineNum">    4600 </span>            :                  */</a>
 <a name="4601"><span class="lineNum">    4601 </span><span class="lineNoCov">          0 :                 se = cfs_rq-&gt;last;</span></a>
 <a name="4602"><span class="lineNum">    4602 </span>            :         }</a>
 <a name="4603"><span class="lineNum">    4603 </span>            : </a>
-<a name="4604"><span class="lineNum">    4604 </span><span class="lineCov">        615 :         return se;</span></a>
+<a name="4604"><span class="lineNum">    4604 </span><span class="lineCov">        617 :         return se;</span></a>
 <a name="4605"><span class="lineNum">    4605 </span>            : }</a>
 <a name="4606"><span class="lineNum">    4606 </span>            : </a>
 <a name="4607"><span class="lineNum">    4607 </span>            : static bool check_cfs_rq_runtime(struct cfs_rq *cfs_rq);</a>
 <a name="4608"><span class="lineNum">    4608 </span>            : </a>
-<a name="4609"><span class="lineNum">    4609 </span><span class="lineCov">        617 : static void put_prev_entity(struct cfs_rq *cfs_rq, struct sched_entity *prev)</span></a>
+<a name="4609"><span class="lineNum">    4609 </span><span class="lineCov">        619 : static void put_prev_entity(struct cfs_rq *cfs_rq, struct sched_entity *prev)</span></a>
 <a name="4610"><span class="lineNum">    4610 </span>            : {</a>
 <a name="4611"><span class="lineNum">    4611 </span>            :         /*</a>
 <a name="4612"><span class="lineNum">    4612 </span>            :          * If still on the runqueue then deactivate_task()</a>
 <a name="4613"><span class="lineNum">    4613 </span>            :          * was not called and update_curr() has to be done:</a>
 <a name="4614"><span class="lineNum">    4614 </span>            :          */</a>
-<a name="4615"><span class="lineNum">    4615 </span><span class="lineCov">        617 :         if (prev-&gt;on_rq)</span></a>
+<a name="4615"><span class="lineNum">    4615 </span><span class="lineCov">        619 :         if (prev-&gt;on_rq)</span></a>
 <a name="4616"><span class="lineNum">    4616 </span><span class="lineCov">          1 :                 update_curr(cfs_rq);</span></a>
 <a name="4617"><span class="lineNum">    4617 </span>            : </a>
 <a name="4618"><span class="lineNum">    4618 </span>            :         /* throttle cfs_rqs exceeding runtime */</a>
-<a name="4619"><span class="lineNum">    4619 </span><span class="lineCov">        617 :         check_cfs_rq_runtime(cfs_rq);</span></a>
+<a name="4619"><span class="lineNum">    4619 </span><span class="lineCov">        619 :         check_cfs_rq_runtime(cfs_rq);</span></a>
 <a name="4620"><span class="lineNum">    4620 </span>            : </a>
-<a name="4621"><span class="lineNum">    4621 </span><span class="lineCov">        617 :         check_spread(cfs_rq, prev);</span></a>
+<a name="4621"><span class="lineNum">    4621 </span><span class="lineCov">        619 :         check_spread(cfs_rq, prev);</span></a>
 <a name="4622"><span class="lineNum">    4622 </span>            : </a>
-<a name="4623"><span class="lineNum">    4623 </span><span class="lineCov">        617 :         if (prev-&gt;on_rq) {</span></a>
+<a name="4623"><span class="lineNum">    4623 </span><span class="lineCov">        619 :         if (prev-&gt;on_rq) {</span></a>
 <a name="4624"><span class="lineNum">    4624 </span><span class="lineCov">          1 :                 update_stats_wait_start_fair(cfs_rq, prev);</span></a>
 <a name="4625"><span class="lineNum">    4625 </span>            :                 /* Put 'current' back into the tree. */</a>
 <a name="4626"><span class="lineNum">    4626 </span><span class="lineCov">          1 :                 __enqueue_entity(cfs_rq, prev);</span></a>
 <a name="4627"><span class="lineNum">    4627 </span>            :                 /* in !on_rq case, update occurred at dequeue */</a>
 <a name="4628"><span class="lineNum">    4628 </span><span class="lineCov">          1 :                 update_load_avg(cfs_rq, prev, 0);</span></a>
 <a name="4629"><span class="lineNum">    4629 </span>            :         }</a>
-<a name="4630"><span class="lineNum">    4630 </span><span class="lineCov">        617 :         cfs_rq-&gt;curr = NULL;</span></a>
-<a name="4631"><span class="lineNum">    4631 </span><span class="lineCov">        617 : }</span></a>
+<a name="4630"><span class="lineNum">    4630 </span><span class="lineCov">        619 :         cfs_rq-&gt;curr = NULL;</span></a>
+<a name="4631"><span class="lineNum">    4631 </span><span class="lineCov">        619 : }</span></a>
 <a name="4632"><span class="lineNum">    4632 </span>            : </a>
 <a name="4633"><span class="lineNum">    4633 </span>            : static void</a>
-<a name="4634"><span class="lineNum">    4634 </span><span class="lineCov">          2 : entity_tick(struct cfs_rq *cfs_rq, struct sched_entity *curr, int queued)</span></a>
+<a name="4634"><span class="lineNum">    4634 </span><span class="lineCov">          3 : entity_tick(struct cfs_rq *cfs_rq, struct sched_entity *curr, int queued)</span></a>
 <a name="4635"><span class="lineNum">    4635 </span>            : {</a>
 <a name="4636"><span class="lineNum">    4636 </span>            :         /*</a>
 <a name="4637"><span class="lineNum">    4637 </span>            :          * Update run-time statistics of the 'current'.</a>
 <a name="4638"><span class="lineNum">    4638 </span>            :          */</a>
-<a name="4639"><span class="lineNum">    4639 </span><span class="lineCov">          2 :         update_curr(cfs_rq);</span></a>
+<a name="4639"><span class="lineNum">    4639 </span><span class="lineCov">          3 :         update_curr(cfs_rq);</span></a>
 <a name="4640"><span class="lineNum">    4640 </span>            : </a>
 <a name="4641"><span class="lineNum">    4641 </span>            :         /*</a>
 <a name="4642"><span class="lineNum">    4642 </span>            :          * Ensure that runnable average is periodically updated.</a>
 <a name="4643"><span class="lineNum">    4643 </span>            :          */</a>
-<a name="4644"><span class="lineNum">    4644 </span><span class="lineCov">          2 :         update_load_avg(cfs_rq, curr, UPDATE_TG);</span></a>
-<a name="4645"><span class="lineNum">    4645 </span><span class="lineCov">          2 :         update_cfs_group(curr);</span></a>
+<a name="4644"><span class="lineNum">    4644 </span><span class="lineCov">          3 :         update_load_avg(cfs_rq, curr, UPDATE_TG);</span></a>
+<a name="4645"><span class="lineNum">    4645 </span><span class="lineCov">          3 :         update_cfs_group(curr);</span></a>
 <a name="4646"><span class="lineNum">    4646 </span>            : </a>
 <a name="4647"><span class="lineNum">    4647 </span>            : #ifdef CONFIG_SCHED_HRTICK</a>
 <a name="4648"><span class="lineNum">    4648 </span>            :         /*</a>
@@ -4723,9 +4723,9 @@
 <a name="4661"><span class="lineNum">    4661 </span>            :                 return;</a>
 <a name="4662"><span class="lineNum">    4662 </span>            : #endif</a>
 <a name="4663"><span class="lineNum">    4663 </span>            : </a>
-<a name="4664"><span class="lineNum">    4664 </span><span class="lineCov">          2 :         if (cfs_rq-&gt;nr_running &gt; 1)</span></a>
-<a name="4665"><span class="lineNum">    4665 </span><span class="lineCov">          1 :                 check_preempt_tick(cfs_rq, curr);</span></a>
-<a name="4666"><span class="lineNum">    4666 </span><span class="lineCov">          2 : }</span></a>
+<a name="4664"><span class="lineNum">    4664 </span><span class="lineCov">          3 :         if (cfs_rq-&gt;nr_running &gt; 1)</span></a>
+<a name="4665"><span class="lineNum">    4665 </span><span class="lineCov">          3 :                 check_preempt_tick(cfs_rq, curr);</span></a>
+<a name="4666"><span class="lineNum">    4666 </span><span class="lineCov">          3 : }</span></a>
 <a name="4667"><span class="lineNum">    4667 </span>            : </a>
 <a name="4668"><span class="lineNum">    4668 </span>            : </a>
 <a name="4669"><span class="lineNum">    4669 </span>            : /**************************************************</a>
@@ -5677,7 +5677,7 @@
 <a name="5615"><span class="lineNum">    5615 </span>            : /* Runqueue only has SCHED_IDLE tasks enqueued */</a>
 <a name="5616"><span class="lineNum">    5616 </span>            : static int sched_idle_rq(struct rq *rq)</a>
 <a name="5617"><span class="lineNum">    5617 </span>            : {</a>
-<a name="5618"><span class="lineNum">    5618 </span><span class="lineCov">       1232 :         return unlikely(rq-&gt;nr_running == rq-&gt;cfs.idle_h_nr_running &amp;&amp;</span></a>
+<a name="5618"><span class="lineNum">    5618 </span><span class="lineCov">       1236 :         return unlikely(rq-&gt;nr_running == rq-&gt;cfs.idle_h_nr_running &amp;&amp;</span></a>
 <a name="5619"><span class="lineNum">    5619 </span>            :                         rq-&gt;nr_running);</a>
 <a name="5620"><span class="lineNum">    5620 </span>            : }</a>
 <a name="5621"><span class="lineNum">    5621 </span>            : </a>
@@ -5705,12 +5705,12 @@
 <a name="5643"><span class="lineNum">    5643 </span>            :  * then put the task into the rbtree:</a>
 <a name="5644"><span class="lineNum">    5644 </span>            :  */</a>
 <a name="5645"><span class="lineNum">    5645 </span>            : static void</a>
-<a name="5646"><span class="lineNum">    5646 </span><span class="lineCov">        618 : enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)</span></a>
+<a name="5646"><span class="lineNum">    5646 </span><span class="lineCov">        620 : enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)</span></a>
 <a name="5647"><span class="lineNum">    5647 </span>            : {</a>
 <a name="5648"><span class="lineNum">    5648 </span>            :         struct cfs_rq *cfs_rq;</a>
-<a name="5649"><span class="lineNum">    5649 </span><span class="lineCov">        618 :         struct sched_entity *se = &amp;p-&gt;se;</span></a>
-<a name="5650"><span class="lineNum">    5650 </span><span class="lineCov">       1236 :         int idle_h_nr_running = task_has_idle_policy(p);</span></a>
-<a name="5651"><span class="lineNum">    5651 </span><span class="lineCov">        618 :         int task_new = !(flags &amp; ENQUEUE_WAKEUP);</span></a>
+<a name="5649"><span class="lineNum">    5649 </span><span class="lineCov">        620 :         struct sched_entity *se = &amp;p-&gt;se;</span></a>
+<a name="5650"><span class="lineNum">    5650 </span><span class="lineCov">       1240 :         int idle_h_nr_running = task_has_idle_policy(p);</span></a>
+<a name="5651"><span class="lineNum">    5651 </span><span class="lineCov">        620 :         int task_new = !(flags &amp; ENQUEUE_WAKEUP);</span></a>
 <a name="5652"><span class="lineNum">    5652 </span>            : </a>
 <a name="5653"><span class="lineNum">    5653 </span>            :         /*</a>
 <a name="5654"><span class="lineNum">    5654 </span>            :          * The code below (indirectly) updates schedutil which looks at</a>
@@ -5718,7 +5718,7 @@
 <a name="5656"><span class="lineNum">    5656 </span>            :          * Let's add the task's estimated utilization to the cfs_rq's</a>
 <a name="5657"><span class="lineNum">    5657 </span>            :          * estimated utilization, before we update schedutil.</a>
 <a name="5658"><span class="lineNum">    5658 </span>            :          */</a>
-<a name="5659"><span class="lineNum">    5659 </span><span class="lineCov">        618 :         util_est_enqueue(&amp;rq-&gt;cfs, p);</span></a>
+<a name="5659"><span class="lineNum">    5659 </span><span class="lineCov">        620 :         util_est_enqueue(&amp;rq-&gt;cfs, p);</span></a>
 <a name="5660"><span class="lineNum">    5660 </span>            : </a>
 <a name="5661"><span class="lineNum">    5661 </span>            :         /*</a>
 <a name="5662"><span class="lineNum">    5662 </span>            :          * If in_iowait is set, the code below may not trigger any cpufreq</a>
@@ -5728,14 +5728,14 @@
 <a name="5666"><span class="lineNum">    5666 </span>            :         if (p-&gt;in_iowait)</a>
 <a name="5667"><span class="lineNum">    5667 </span>            :                 cpufreq_update_util(rq, SCHED_CPUFREQ_IOWAIT);</a>
 <a name="5668"><span class="lineNum">    5668 </span>            : </a>
-<a name="5669"><span class="lineNum">    5669 </span><span class="lineCov">       1236 :         for_each_sched_entity(se) {</span></a>
-<a name="5670"><span class="lineNum">    5670 </span><span class="lineCov">        618 :                 if (se-&gt;on_rq)</span></a>
+<a name="5669"><span class="lineNum">    5669 </span><span class="lineCov">       1240 :         for_each_sched_entity(se) {</span></a>
+<a name="5670"><span class="lineNum">    5670 </span><span class="lineCov">        620 :                 if (se-&gt;on_rq)</span></a>
 <a name="5671"><span class="lineNum">    5671 </span>            :                         break;</a>
-<a name="5672"><span class="lineNum">    5672 </span><span class="lineCov">       1236 :                 cfs_rq = cfs_rq_of(se);</span></a>
-<a name="5673"><span class="lineNum">    5673 </span><span class="lineCov">        618 :                 enqueue_entity(cfs_rq, se, flags);</span></a>
+<a name="5672"><span class="lineNum">    5672 </span><span class="lineCov">       1240 :                 cfs_rq = cfs_rq_of(se);</span></a>
+<a name="5673"><span class="lineNum">    5673 </span><span class="lineCov">        620 :                 enqueue_entity(cfs_rq, se, flags);</span></a>
 <a name="5674"><span class="lineNum">    5674 </span>            : </a>
-<a name="5675"><span class="lineNum">    5675 </span><span class="lineCov">        618 :                 cfs_rq-&gt;h_nr_running++;</span></a>
-<a name="5676"><span class="lineNum">    5676 </span><span class="lineCov">        618 :                 cfs_rq-&gt;idle_h_nr_running += idle_h_nr_running;</span></a>
+<a name="5675"><span class="lineNum">    5675 </span><span class="lineCov">        620 :                 cfs_rq-&gt;h_nr_running++;</span></a>
+<a name="5676"><span class="lineNum">    5676 </span><span class="lineCov">        620 :                 cfs_rq-&gt;idle_h_nr_running += idle_h_nr_running;</span></a>
 <a name="5677"><span class="lineNum">    5677 </span>            : </a>
 <a name="5678"><span class="lineNum">    5678 </span>            :                 if (cfs_rq_is_idle(cfs_rq))</a>
 <a name="5679"><span class="lineNum">    5679 </span>            :                         idle_h_nr_running = 1;</a>
@@ -5773,7 +5773,7 @@
 <a name="5711"><span class="lineNum">    5711 </span>            :         }</a>
 <a name="5712"><span class="lineNum">    5712 </span>            : </a>
 <a name="5713"><span class="lineNum">    5713 </span>            :         /* At this point se is NULL and we are at root level*/</a>
-<a name="5714"><span class="lineNum">    5714 </span><span class="lineCov">       1236 :         add_nr_running(rq, 1);</span></a>
+<a name="5714"><span class="lineNum">    5714 </span><span class="lineCov">       1240 :         add_nr_running(rq, 1);</span></a>
 <a name="5715"><span class="lineNum">    5715 </span>            : </a>
 <a name="5716"><span class="lineNum">    5716 </span>            :         /*</a>
 <a name="5717"><span class="lineNum">    5717 </span>            :          * Since new tasks are assigned an initial util_avg equal to</a>
@@ -5808,10 +5808,10 @@
 <a name="5746"><span class="lineNum">    5746 </span>            :                 }</a>
 <a name="5747"><span class="lineNum">    5747 </span>            :         }</a>
 <a name="5748"><span class="lineNum">    5748 </span>            : </a>
-<a name="5749"><span class="lineNum">    5749 </span><span class="lineCov">        618 :         assert_list_leaf_cfs_rq(rq);</span></a>
+<a name="5749"><span class="lineNum">    5749 </span><span class="lineCov">        620 :         assert_list_leaf_cfs_rq(rq);</span></a>
 <a name="5750"><span class="lineNum">    5750 </span>            : </a>
-<a name="5751"><span class="lineNum">    5751 </span><span class="lineCov">        618 :         hrtick_update(rq);</span></a>
-<a name="5752"><span class="lineNum">    5752 </span><span class="lineCov">        618 : }</span></a>
+<a name="5751"><span class="lineNum">    5751 </span><span class="lineCov">        620 :         hrtick_update(rq);</span></a>
+<a name="5752"><span class="lineNum">    5752 </span><span class="lineCov">        620 : }</span></a>
 <a name="5753"><span class="lineNum">    5753 </span>            : </a>
 <a name="5754"><span class="lineNum">    5754 </span>            : static void set_next_buddy(struct sched_entity *se);</a>
 <a name="5755"><span class="lineNum">    5755 </span>            : </a>
@@ -5820,22 +5820,22 @@
 <a name="5758"><span class="lineNum">    5758 </span>            :  * decreased. We remove the task from the rbtree and</a>
 <a name="5759"><span class="lineNum">    5759 </span>            :  * update the fair scheduling stats:</a>
 <a name="5760"><span class="lineNum">    5760 </span>            :  */</a>
-<a name="5761"><span class="lineNum">    5761 </span><span class="lineCov">        616 : static void dequeue_task_fair(struct rq *rq, struct task_struct *p, int flags)</span></a>
+<a name="5761"><span class="lineNum">    5761 </span><span class="lineCov">        618 : static void dequeue_task_fair(struct rq *rq, struct task_struct *p, int flags)</span></a>
 <a name="5762"><span class="lineNum">    5762 </span>            : {</a>
 <a name="5763"><span class="lineNum">    5763 </span>            :         struct cfs_rq *cfs_rq;</a>
-<a name="5764"><span class="lineNum">    5764 </span><span class="lineCov">        616 :         struct sched_entity *se = &amp;p-&gt;se;</span></a>
-<a name="5765"><span class="lineNum">    5765 </span><span class="lineCov">        616 :         int task_sleep = flags &amp; DEQUEUE_SLEEP;</span></a>
-<a name="5766"><span class="lineNum">    5766 </span><span class="lineCov">       1232 :         int idle_h_nr_running = task_has_idle_policy(p);</span></a>
-<a name="5767"><span class="lineNum">    5767 </span><span class="lineCov">       1232 :         bool was_sched_idle = sched_idle_rq(rq);</span></a>
+<a name="5764"><span class="lineNum">    5764 </span><span class="lineCov">        618 :         struct sched_entity *se = &amp;p-&gt;se;</span></a>
+<a name="5765"><span class="lineNum">    5765 </span><span class="lineCov">        618 :         int task_sleep = flags &amp; DEQUEUE_SLEEP;</span></a>
+<a name="5766"><span class="lineNum">    5766 </span><span class="lineCov">       1236 :         int idle_h_nr_running = task_has_idle_policy(p);</span></a>
+<a name="5767"><span class="lineNum">    5767 </span><span class="lineCov">       1236 :         bool was_sched_idle = sched_idle_rq(rq);</span></a>
 <a name="5768"><span class="lineNum">    5768 </span>            : </a>
-<a name="5769"><span class="lineNum">    5769 </span><span class="lineCov">        616 :         util_est_dequeue(&amp;rq-&gt;cfs, p);</span></a>
+<a name="5769"><span class="lineNum">    5769 </span><span class="lineCov">        618 :         util_est_dequeue(&amp;rq-&gt;cfs, p);</span></a>
 <a name="5770"><span class="lineNum">    5770 </span>            : </a>
 <a name="5771"><span class="lineNum">    5771 </span><span class="lineCov">          1 :         for_each_sched_entity(se) {</span></a>
-<a name="5772"><span class="lineNum">    5772 </span><span class="lineCov">       1232 :                 cfs_rq = cfs_rq_of(se);</span></a>
-<a name="5773"><span class="lineNum">    5773 </span><span class="lineCov">        616 :                 dequeue_entity(cfs_rq, se, flags);</span></a>
+<a name="5772"><span class="lineNum">    5772 </span><span class="lineCov">       1236 :                 cfs_rq = cfs_rq_of(se);</span></a>
+<a name="5773"><span class="lineNum">    5773 </span><span class="lineCov">        618 :                 dequeue_entity(cfs_rq, se, flags);</span></a>
 <a name="5774"><span class="lineNum">    5774 </span>            : </a>
-<a name="5775"><span class="lineNum">    5775 </span><span class="lineCov">        616 :                 cfs_rq-&gt;h_nr_running--;</span></a>
-<a name="5776"><span class="lineNum">    5776 </span><span class="lineCov">        616 :                 cfs_rq-&gt;idle_h_nr_running -= idle_h_nr_running;</span></a>
+<a name="5775"><span class="lineNum">    5775 </span><span class="lineCov">        618 :                 cfs_rq-&gt;h_nr_running--;</span></a>
+<a name="5776"><span class="lineNum">    5776 </span><span class="lineCov">        618 :                 cfs_rq-&gt;idle_h_nr_running -= idle_h_nr_running;</span></a>
 <a name="5777"><span class="lineNum">    5777 </span>            : </a>
 <a name="5778"><span class="lineNum">    5778 </span>            :                 if (cfs_rq_is_idle(cfs_rq))</a>
 <a name="5779"><span class="lineNum">    5779 </span>            :                         idle_h_nr_running = 1;</a>
@@ -5845,7 +5845,7 @@
 <a name="5783"><span class="lineNum">    5783 </span>            :                         goto dequeue_throttle;</a>
 <a name="5784"><span class="lineNum">    5784 </span>            : </a>
 <a name="5785"><span class="lineNum">    5785 </span>            :                 /* Don't dequeue parent if it has other entities besides us */</a>
-<a name="5786"><span class="lineNum">    5786 </span><span class="lineCov">        616 :                 if (cfs_rq-&gt;load.weight) {</span></a>
+<a name="5786"><span class="lineNum">    5786 </span><span class="lineCov">        618 :                 if (cfs_rq-&gt;load.weight) {</span></a>
 <a name="5787"><span class="lineNum">    5787 </span>            :                         /* Avoid re-evaluating load for this entity: */</a>
 <a name="5788"><span class="lineNum">    5788 </span>            :                         se = parent_entity(se);</a>
 <a name="5789"><span class="lineNum">    5789 </span>            :                         /*</a>
@@ -5859,7 +5859,7 @@
 <a name="5797"><span class="lineNum">    5797 </span><span class="lineCov">          1 :                 flags |= DEQUEUE_SLEEP;</span></a>
 <a name="5798"><span class="lineNum">    5798 </span>            :         }</a>
 <a name="5799"><span class="lineNum">    5799 </span>            : </a>
-<a name="5800"><span class="lineNum">    5800 </span><span class="lineCov">        616 :         for_each_sched_entity(se) {</span></a>
+<a name="5800"><span class="lineNum">    5800 </span><span class="lineCov">        618 :         for_each_sched_entity(se) {</span></a>
 <a name="5801"><span class="lineNum">    5801 </span><span class="lineNoCov">          0 :                 cfs_rq = cfs_rq_of(se);</span></a>
 <a name="5802"><span class="lineNum">    5802 </span>            : </a>
 <a name="5803"><span class="lineNum">    5803 </span><span class="lineNoCov">          0 :                 update_load_avg(cfs_rq, se, UPDATE_TG);</span></a>
@@ -5879,16 +5879,16 @@
 <a name="5817"><span class="lineNum">    5817 </span>            :         }</a>
 <a name="5818"><span class="lineNum">    5818 </span>            : </a>
 <a name="5819"><span class="lineNum">    5819 </span>            :         /* At this point se is NULL and we are at root level*/</a>
-<a name="5820"><span class="lineNum">    5820 </span><span class="lineCov">       1232 :         sub_nr_running(rq, 1);</span></a>
+<a name="5820"><span class="lineNum">    5820 </span><span class="lineCov">       1236 :         sub_nr_running(rq, 1);</span></a>
 <a name="5821"><span class="lineNum">    5821 </span>            : </a>
 <a name="5822"><span class="lineNum">    5822 </span>            :         /* balance early to pull high priority tasks */</a>
-<a name="5823"><span class="lineNum">    5823 </span><span class="lineCov">       1232 :         if (unlikely(!was_sched_idle &amp;&amp; sched_idle_rq(rq)))</span></a>
+<a name="5823"><span class="lineNum">    5823 </span><span class="lineCov">       1236 :         if (unlikely(!was_sched_idle &amp;&amp; sched_idle_rq(rq)))</span></a>
 <a name="5824"><span class="lineNum">    5824 </span><span class="lineNoCov">          0 :                 rq-&gt;next_balance = jiffies;</span></a>
 <a name="5825"><span class="lineNum">    5825 </span>            : </a>
 <a name="5826"><span class="lineNum">    5826 </span>            : dequeue_throttle:</a>
-<a name="5827"><span class="lineNum">    5827 </span><span class="lineCov">        616 :         util_est_update(&amp;rq-&gt;cfs, p, task_sleep);</span></a>
-<a name="5828"><span class="lineNum">    5828 </span><span class="lineCov">        616 :         hrtick_update(rq);</span></a>
-<a name="5829"><span class="lineNum">    5829 </span><span class="lineCov">        616 : }</span></a>
+<a name="5827"><span class="lineNum">    5827 </span><span class="lineCov">        618 :         util_est_update(&amp;rq-&gt;cfs, p, task_sleep);</span></a>
+<a name="5828"><span class="lineNum">    5828 </span><span class="lineCov">        618 :         hrtick_update(rq);</span></a>
+<a name="5829"><span class="lineNum">    5829 </span><span class="lineCov">        618 : }</span></a>
 <a name="5830"><span class="lineNum">    5830 </span>            : </a>
 <a name="5831"><span class="lineNum">    5831 </span>            : #ifdef CONFIG_SMP</a>
 <a name="5832"><span class="lineNum">    5832 </span>            : </a>
@@ -7116,7 +7116,7 @@
 <a name="7054"><span class="lineNum">    7054 </span>            : </a>
 <a name="7055"><span class="lineNum">    7055 </span>            : static unsigned long wakeup_gran(struct sched_entity *se)</a>
 <a name="7056"><span class="lineNum">    7056 </span>            : {</a>
-<a name="7057"><span class="lineNum">    7057 </span><span class="lineCov">        199 :         unsigned long gran = sysctl_sched_wakeup_granularity;</span></a>
+<a name="7057"><span class="lineNum">    7057 </span><span class="lineCov">        203 :         unsigned long gran = sysctl_sched_wakeup_granularity;</span></a>
 <a name="7058"><span class="lineNum">    7058 </span>            : </a>
 <a name="7059"><span class="lineNum">    7059 </span>            :         /*</a>
 <a name="7060"><span class="lineNum">    7060 </span>            :          * Since its curr running now, convert the gran from real-time</a>
@@ -7131,7 +7131,7 @@
 <a name="7069"><span class="lineNum">    7069 </span>            :          * This is especially important for buddies when the leftmost</a>
 <a name="7070"><span class="lineNum">    7070 </span>            :          * task is higher priority than the buddy.</a>
 <a name="7071"><span class="lineNum">    7071 </span>            :          */</a>
-<a name="7072"><span class="lineNum">    7072 </span><span class="lineCov">        199 :         return calc_delta_fair(gran, se);</span></a>
+<a name="7072"><span class="lineNum">    7072 </span><span class="lineCov">        203 :         return calc_delta_fair(gran, se);</span></a>
 <a name="7073"><span class="lineNum">    7073 </span>            : }</a>
 <a name="7074"><span class="lineNum">    7074 </span>            : </a>
 <a name="7075"><span class="lineNum">    7075 </span>            : /*</a>
@@ -7149,15 +7149,15 @@
 <a name="7087"><span class="lineNum">    7087 </span>            :  *</a>
 <a name="7088"><span class="lineNum">    7088 </span>            :  */</a>
 <a name="7089"><span class="lineNum">    7089 </span>            : static int</a>
-<a name="7090"><span class="lineNum">    7090 </span><span class="lineCov">        718 : wakeup_preempt_entity(struct sched_entity *curr, struct sched_entity *se)</span></a>
+<a name="7090"><span class="lineNum">    7090 </span><span class="lineCov">        716 : wakeup_preempt_entity(struct sched_entity *curr, struct sched_entity *se)</span></a>
 <a name="7091"><span class="lineNum">    7091 </span>            : {</a>
-<a name="7092"><span class="lineNum">    7092 </span><span class="lineCov">        718 :         s64 gran, vdiff = curr-&gt;vruntime - se-&gt;vruntime;</span></a>
+<a name="7092"><span class="lineNum">    7092 </span><span class="lineCov">        716 :         s64 gran, vdiff = curr-&gt;vruntime - se-&gt;vruntime;</span></a>
 <a name="7093"><span class="lineNum">    7093 </span>            : </a>
-<a name="7094"><span class="lineNum">    7094 </span><span class="lineCov">        718 :         if (vdiff &lt;= 0)</span></a>
+<a name="7094"><span class="lineNum">    7094 </span><span class="lineCov">        716 :         if (vdiff &lt;= 0)</span></a>
 <a name="7095"><span class="lineNum">    7095 </span>            :                 return -1;</a>
 <a name="7096"><span class="lineNum">    7096 </span>            : </a>
-<a name="7097"><span class="lineNum">    7097 </span><span class="lineCov">        199 :         gran = wakeup_gran(se);</span></a>
-<a name="7098"><span class="lineNum">    7098 </span><span class="lineCov">        199 :         if (vdiff &gt; gran)</span></a>
+<a name="7097"><span class="lineNum">    7097 </span><span class="lineCov">        203 :         gran = wakeup_gran(se);</span></a>
+<a name="7098"><span class="lineNum">    7098 </span><span class="lineCov">        203 :         if (vdiff &gt; gran)</span></a>
 <a name="7099"><span class="lineNum">    7099 </span>            :                 return 1;</a>
 <a name="7100"><span class="lineNum">    7100 </span>            : </a>
 <a name="7101"><span class="lineNum">    7101 </span>            :         return 0;</a>
@@ -7174,14 +7174,14 @@
 <a name="7112"><span class="lineNum">    7112 </span>            :         }</a>
 <a name="7113"><span class="lineNum">    7113 </span>            : }</a>
 <a name="7114"><span class="lineNum">    7114 </span>            : </a>
-<a name="7115"><span class="lineNum">    7115 </span><span class="lineCov">        199 : static void set_next_buddy(struct sched_entity *se)</span></a>
+<a name="7115"><span class="lineNum">    7115 </span><span class="lineCov">        200 : static void set_next_buddy(struct sched_entity *se)</span></a>
 <a name="7116"><span class="lineNum">    7116 </span>            : {</a>
-<a name="7117"><span class="lineNum">    7117 </span><span class="lineCov">        398 :         for_each_sched_entity(se) {</span></a>
-<a name="7118"><span class="lineNum">    7118 </span><span class="lineCov">        199 :                 if (SCHED_WARN_ON(!se-&gt;on_rq))</span></a>
+<a name="7117"><span class="lineNum">    7117 </span><span class="lineCov">        400 :         for_each_sched_entity(se) {</span></a>
+<a name="7118"><span class="lineNum">    7118 </span><span class="lineCov">        200 :                 if (SCHED_WARN_ON(!se-&gt;on_rq))</span></a>
 <a name="7119"><span class="lineNum">    7119 </span>            :                         return;</a>
-<a name="7120"><span class="lineNum">    7120 </span><span class="lineCov">        199 :                 if (se_is_idle(se))</span></a>
+<a name="7120"><span class="lineNum">    7120 </span><span class="lineCov">        200 :                 if (se_is_idle(se))</span></a>
 <a name="7121"><span class="lineNum">    7121 </span>            :                         return;</a>
-<a name="7122"><span class="lineNum">    7122 </span><span class="lineCov">        398 :                 cfs_rq_of(se)-&gt;next = se;</span></a>
+<a name="7122"><span class="lineNum">    7122 </span><span class="lineCov">        400 :                 cfs_rq_of(se)-&gt;next = se;</span></a>
 <a name="7123"><span class="lineNum">    7123 </span>            :         }</a>
 <a name="7124"><span class="lineNum">    7124 </span>            : }</a>
 <a name="7125"><span class="lineNum">    7125 </span>            : </a>
@@ -7194,16 +7194,16 @@
 <a name="7132"><span class="lineNum">    7132 </span>            : /*</a>
 <a name="7133"><span class="lineNum">    7133 </span>            :  * Preempt the current task with a newly woken task if needed:</a>
 <a name="7134"><span class="lineNum">    7134 </span>            :  */</a>
-<a name="7135"><span class="lineNum">    7135 </span><span class="lineCov">        612 : static void check_preempt_wakeup(struct rq *rq, struct task_struct *p, int wake_flags)</span></a>
+<a name="7135"><span class="lineNum">    7135 </span><span class="lineCov">        614 : static void check_preempt_wakeup(struct rq *rq, struct task_struct *p, int wake_flags)</span></a>
 <a name="7136"><span class="lineNum">    7136 </span>            : {</a>
-<a name="7137"><span class="lineNum">    7137 </span><span class="lineCov">        612 :         struct task_struct *curr = rq-&gt;curr;</span></a>
-<a name="7138"><span class="lineNum">    7138 </span><span class="lineCov">        612 :         struct sched_entity *se = &amp;curr-&gt;se, *pse = &amp;p-&gt;se;</span></a>
-<a name="7139"><span class="lineNum">    7139 </span><span class="lineCov">       1224 :         struct cfs_rq *cfs_rq = task_cfs_rq(curr);</span></a>
-<a name="7140"><span class="lineNum">    7140 </span><span class="lineCov">        612 :         int scale = cfs_rq-&gt;nr_running &gt;= sched_nr_latency;</span></a>
-<a name="7141"><span class="lineNum">    7141 </span><span class="lineCov">        612 :         int next_buddy_marked = 0;</span></a>
+<a name="7137"><span class="lineNum">    7137 </span><span class="lineCov">        614 :         struct task_struct *curr = rq-&gt;curr;</span></a>
+<a name="7138"><span class="lineNum">    7138 </span><span class="lineCov">        614 :         struct sched_entity *se = &amp;curr-&gt;se, *pse = &amp;p-&gt;se;</span></a>
+<a name="7139"><span class="lineNum">    7139 </span><span class="lineCov">       1228 :         struct cfs_rq *cfs_rq = task_cfs_rq(curr);</span></a>
+<a name="7140"><span class="lineNum">    7140 </span><span class="lineCov">        614 :         int scale = cfs_rq-&gt;nr_running &gt;= sched_nr_latency;</span></a>
+<a name="7141"><span class="lineNum">    7141 </span><span class="lineCov">        614 :         int next_buddy_marked = 0;</span></a>
 <a name="7142"><span class="lineNum">    7142 </span>            :         int cse_is_idle, pse_is_idle;</a>
 <a name="7143"><span class="lineNum">    7143 </span>            : </a>
-<a name="7144"><span class="lineNum">    7144 </span><span class="lineCov">        612 :         if (unlikely(se == pse))</span></a>
+<a name="7144"><span class="lineNum">    7144 </span><span class="lineCov">        614 :         if (unlikely(se == pse))</span></a>
 <a name="7145"><span class="lineNum">    7145 </span>            :                 return;</a>
 <a name="7146"><span class="lineNum">    7146 </span>            : </a>
 <a name="7147"><span class="lineNum">    7147 </span>            :         /*</a>
@@ -7212,10 +7212,10 @@
 <a name="7150"><span class="lineNum">    7150 </span>            :          * lead to a throttle).  This both saves work and prevents false</a>
 <a name="7151"><span class="lineNum">    7151 </span>            :          * next-buddy nomination below.</a>
 <a name="7152"><span class="lineNum">    7152 </span>            :          */</a>
-<a name="7153"><span class="lineNum">    7153 </span><span class="lineCov">        612 :         if (unlikely(throttled_hierarchy(cfs_rq_of(pse))))</span></a>
+<a name="7153"><span class="lineNum">    7153 </span><span class="lineCov">        614 :         if (unlikely(throttled_hierarchy(cfs_rq_of(pse))))</span></a>
 <a name="7154"><span class="lineNum">    7154 </span>            :                 return;</a>
 <a name="7155"><span class="lineNum">    7155 </span>            : </a>
-<a name="7156"><span class="lineNum">    7156 </span><span class="lineCov">        612 :         if (sched_feat(NEXT_BUDDY) &amp;&amp; scale &amp;&amp; !(wake_flags &amp; WF_FORK)) {</span></a>
+<a name="7156"><span class="lineNum">    7156 </span><span class="lineCov">        614 :         if (sched_feat(NEXT_BUDDY) &amp;&amp; scale &amp;&amp; !(wake_flags &amp; WF_FORK)) {</span></a>
 <a name="7157"><span class="lineNum">    7157 </span><span class="lineNoCov">          0 :                 set_next_buddy(pse);</span></a>
 <a name="7158"><span class="lineNum">    7158 </span><span class="lineNoCov">          0 :                 next_buddy_marked = 1;</span></a>
 <a name="7159"><span class="lineNum">    7159 </span>            :         }</a>
@@ -7230,11 +7230,11 @@
 <a name="7168"><span class="lineNum">    7168 </span>            :          * prevents us from potentially nominating it as a false LAST_BUDDY</a>
 <a name="7169"><span class="lineNum">    7169 </span>            :          * below.</a>
 <a name="7170"><span class="lineNum">    7170 </span>            :          */</a>
-<a name="7171"><span class="lineNum">    7171 </span><span class="lineCov">        612 :         if (test_tsk_need_resched(curr))</span></a>
+<a name="7171"><span class="lineNum">    7171 </span><span class="lineCov">        614 :         if (test_tsk_need_resched(curr))</span></a>
 <a name="7172"><span class="lineNum">    7172 </span>            :                 return;</a>
 <a name="7173"><span class="lineNum">    7173 </span>            : </a>
 <a name="7174"><span class="lineNum">    7174 </span>            :         /* Idle tasks are by definition preempted by non-idle tasks. */</a>
-<a name="7175"><span class="lineNum">    7175 </span><span class="lineCov">       1038 :         if (unlikely(task_has_idle_policy(curr)) &amp;&amp;</span></a>
+<a name="7175"><span class="lineNum">    7175 </span><span class="lineCov">       1032 :         if (unlikely(task_has_idle_policy(curr)) &amp;&amp;</span></a>
 <a name="7176"><span class="lineNum">    7176 </span><span class="lineNoCov">          0 :             likely(!task_has_idle_policy(p)))</span></a>
 <a name="7177"><span class="lineNum">    7177 </span>            :                 goto preempt;</a>
 <a name="7178"><span class="lineNum">    7178 </span>            : </a>
@@ -7242,14 +7242,14 @@
 <a name="7180"><span class="lineNum">    7180 </span>            :          * Batch and idle tasks do not preempt non-idle tasks (their preemption</a>
 <a name="7181"><span class="lineNum">    7181 </span>            :          * is driven by the tick):</a>
 <a name="7182"><span class="lineNum">    7182 </span>            :          */</a>
-<a name="7183"><span class="lineNum">    7183 </span><span class="lineCov">        519 :         if (unlikely(p-&gt;policy != SCHED_NORMAL) || !sched_feat(WAKEUP_PREEMPTION))</span></a>
+<a name="7183"><span class="lineNum">    7183 </span><span class="lineCov">        516 :         if (unlikely(p-&gt;policy != SCHED_NORMAL) || !sched_feat(WAKEUP_PREEMPTION))</span></a>
 <a name="7184"><span class="lineNum">    7184 </span>            :                 return;</a>
 <a name="7185"><span class="lineNum">    7185 </span>            : </a>
-<a name="7186"><span class="lineNum">    7186 </span><span class="lineCov">        519 :         find_matching_se(&amp;se, &amp;pse);</span></a>
-<a name="7187"><span class="lineNum">    7187 </span><span class="lineCov">        519 :         BUG_ON(!pse);</span></a>
+<a name="7186"><span class="lineNum">    7186 </span><span class="lineCov">        516 :         find_matching_se(&amp;se, &amp;pse);</span></a>
+<a name="7187"><span class="lineNum">    7187 </span><span class="lineCov">        516 :         BUG_ON(!pse);</span></a>
 <a name="7188"><span class="lineNum">    7188 </span>            : </a>
-<a name="7189"><span class="lineNum">    7189 </span><span class="lineCov">        519 :         cse_is_idle = se_is_idle(se);</span></a>
-<a name="7190"><span class="lineNum">    7190 </span><span class="lineCov">        519 :         pse_is_idle = se_is_idle(pse);</span></a>
+<a name="7189"><span class="lineNum">    7189 </span><span class="lineCov">        516 :         cse_is_idle = se_is_idle(se);</span></a>
+<a name="7190"><span class="lineNum">    7190 </span><span class="lineCov">        516 :         pse_is_idle = se_is_idle(pse);</span></a>
 <a name="7191"><span class="lineNum">    7191 </span>            : </a>
 <a name="7192"><span class="lineNum">    7192 </span>            :         /*</a>
 <a name="7193"><span class="lineNum">    7193 </span>            :          * Preempt an idle group in favor of a non-idle group (and don't preempt</a>
@@ -7260,21 +7260,21 @@
 <a name="7198"><span class="lineNum">    7198 </span>            :         if (cse_is_idle != pse_is_idle)</a>
 <a name="7199"><span class="lineNum">    7199 </span>            :                 return;</a>
 <a name="7200"><span class="lineNum">    7200 </span>            : </a>
-<a name="7201"><span class="lineNum">    7201 </span><span class="lineCov">       1038 :         update_curr(cfs_rq_of(se));</span></a>
-<a name="7202"><span class="lineNum">    7202 </span><span class="lineCov">        519 :         if (wakeup_preempt_entity(se, pse) == 1) {</span></a>
+<a name="7201"><span class="lineNum">    7201 </span><span class="lineCov">       1032 :         update_curr(cfs_rq_of(se));</span></a>
+<a name="7202"><span class="lineNum">    7202 </span><span class="lineCov">        516 :         if (wakeup_preempt_entity(se, pse) == 1) {</span></a>
 <a name="7203"><span class="lineNum">    7203 </span>            :                 /*</a>
 <a name="7204"><span class="lineNum">    7204 </span>            :                  * Bias pick_next to pick the sched entity that is</a>
 <a name="7205"><span class="lineNum">    7205 </span>            :                  * triggering this preemption.</a>
 <a name="7206"><span class="lineNum">    7206 </span>            :                  */</a>
-<a name="7207"><span class="lineNum">    7207 </span><span class="lineCov">        199 :                 if (!next_buddy_marked)</span></a>
-<a name="7208"><span class="lineNum">    7208 </span><span class="lineCov">        199 :                         set_next_buddy(pse);</span></a>
+<a name="7207"><span class="lineNum">    7207 </span><span class="lineCov">        200 :                 if (!next_buddy_marked)</span></a>
+<a name="7208"><span class="lineNum">    7208 </span><span class="lineCov">        200 :                         set_next_buddy(pse);</span></a>
 <a name="7209"><span class="lineNum">    7209 </span>            :                 goto preempt;</a>
 <a name="7210"><span class="lineNum">    7210 </span>            :         }</a>
 <a name="7211"><span class="lineNum">    7211 </span>            : </a>
 <a name="7212"><span class="lineNum">    7212 </span>            :         return;</a>
 <a name="7213"><span class="lineNum">    7213 </span>            : </a>
 <a name="7214"><span class="lineNum">    7214 </span>            : preempt:</a>
-<a name="7215"><span class="lineNum">    7215 </span><span class="lineCov">        199 :         resched_curr(rq);</span></a>
+<a name="7215"><span class="lineNum">    7215 </span><span class="lineCov">        200 :         resched_curr(rq);</span></a>
 <a name="7216"><span class="lineNum">    7216 </span>            :         /*</a>
 <a name="7217"><span class="lineNum">    7217 </span>            :          * Only set the backward buddy when the current task is still</a>
 <a name="7218"><span class="lineNum">    7218 </span>            :          * on the rq. This can happen when a wakeup gets interleaved</a>
@@ -7284,10 +7284,10 @@
 <a name="7222"><span class="lineNum">    7222 </span>            :          * Also, during early boot the idle thread is in the fair class,</a>
 <a name="7223"><span class="lineNum">    7223 </span>            :          * for obvious reasons its a bad idea to schedule back to it.</a>
 <a name="7224"><span class="lineNum">    7224 </span>            :          */</a>
-<a name="7225"><span class="lineNum">    7225 </span><span class="lineCov">        199 :         if (unlikely(!se-&gt;on_rq || curr == rq-&gt;idle))</span></a>
+<a name="7225"><span class="lineNum">    7225 </span><span class="lineCov">        200 :         if (unlikely(!se-&gt;on_rq || curr == rq-&gt;idle))</span></a>
 <a name="7226"><span class="lineNum">    7226 </span>            :                 return;</a>
 <a name="7227"><span class="lineNum">    7227 </span>            : </a>
-<a name="7228"><span class="lineNum">    7228 </span><span class="lineCov">        199 :         if (sched_feat(LAST_BUDDY) &amp;&amp; scale &amp;&amp; entity_is_task(se))</span></a>
+<a name="7228"><span class="lineNum">    7228 </span><span class="lineCov">        200 :         if (sched_feat(LAST_BUDDY) &amp;&amp; scale &amp;&amp; entity_is_task(se))</span></a>
 <a name="7229"><span class="lineNum">    7229 </span><span class="lineNoCov">          0 :                 set_last_buddy(se);</span></a>
 <a name="7230"><span class="lineNum">    7230 </span>            : }</a>
 <a name="7231"><span class="lineNum">    7231 </span>            : </a>
@@ -7325,15 +7325,15 @@
 <a name="7263"><span class="lineNum">    7263 </span>            : #endif</a>
 <a name="7264"><span class="lineNum">    7264 </span>            : </a>
 <a name="7265"><span class="lineNum">    7265 </span>            : struct task_struct *</a>
-<a name="7266"><span class="lineNum">    7266 </span><span class="lineCov">        616 : pick_next_task_fair(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)</span></a>
+<a name="7266"><span class="lineNum">    7266 </span><span class="lineCov">        618 : pick_next_task_fair(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)</span></a>
 <a name="7267"><span class="lineNum">    7267 </span>            : {</a>
-<a name="7268"><span class="lineNum">    7268 </span><span class="lineCov">        616 :         struct cfs_rq *cfs_rq = &amp;rq-&gt;cfs;</span></a>
+<a name="7268"><span class="lineNum">    7268 </span><span class="lineCov">        618 :         struct cfs_rq *cfs_rq = &amp;rq-&gt;cfs;</span></a>
 <a name="7269"><span class="lineNum">    7269 </span>            :         struct sched_entity *se;</a>
 <a name="7270"><span class="lineNum">    7270 </span>            :         struct task_struct *p;</a>
 <a name="7271"><span class="lineNum">    7271 </span>            :         int new_tasks;</a>
 <a name="7272"><span class="lineNum">    7272 </span>            : </a>
 <a name="7273"><span class="lineNum">    7273 </span>            : again:</a>
-<a name="7274"><span class="lineNum">    7274 </span><span class="lineCov">        616 :         if (!sched_fair_runnable(rq))</span></a>
+<a name="7274"><span class="lineNum">    7274 </span><span class="lineCov">        618 :         if (!sched_fair_runnable(rq))</span></a>
 <a name="7275"><span class="lineNum">    7275 </span>            :                 goto idle;</a>
 <a name="7276"><span class="lineNum">    7276 </span>            : </a>
 <a name="7277"><span class="lineNum">    7277 </span>            : #ifdef CONFIG_FAIR_GROUP_SCHED</a>
@@ -7414,16 +7414,16 @@
 <a name="7352"><span class="lineNum">    7352 </span>            :         goto done;</a>
 <a name="7353"><span class="lineNum">    7353 </span>            : simple:</a>
 <a name="7354"><span class="lineNum">    7354 </span>            : #endif</a>
-<a name="7355"><span class="lineNum">    7355 </span><span class="lineCov">        615 :         if (prev)</span></a>
-<a name="7356"><span class="lineNum">    7356 </span><span class="lineCov">        615 :                 put_prev_task(rq, prev);</span></a>
+<a name="7355"><span class="lineNum">    7355 </span><span class="lineCov">        617 :         if (prev)</span></a>
+<a name="7356"><span class="lineNum">    7356 </span><span class="lineCov">        617 :                 put_prev_task(rq, prev);</span></a>
 <a name="7357"><span class="lineNum">    7357 </span>            : </a>
 <a name="7358"><span class="lineNum">    7358 </span>            :         do {</a>
-<a name="7359"><span class="lineNum">    7359 </span><span class="lineCov">        615 :                 se = pick_next_entity(cfs_rq, NULL);</span></a>
-<a name="7360"><span class="lineNum">    7360 </span><span class="lineCov">        615 :                 set_next_entity(cfs_rq, se);</span></a>
-<a name="7361"><span class="lineNum">    7361 </span><span class="lineCov">        615 :                 cfs_rq = group_cfs_rq(se);</span></a>
+<a name="7359"><span class="lineNum">    7359 </span><span class="lineCov">        617 :                 se = pick_next_entity(cfs_rq, NULL);</span></a>
+<a name="7360"><span class="lineNum">    7360 </span><span class="lineCov">        617 :                 set_next_entity(cfs_rq, se);</span></a>
+<a name="7361"><span class="lineNum">    7361 </span><span class="lineCov">        617 :                 cfs_rq = group_cfs_rq(se);</span></a>
 <a name="7362"><span class="lineNum">    7362 </span>            :         } while (cfs_rq);</a>
 <a name="7363"><span class="lineNum">    7363 </span>            : </a>
-<a name="7364"><span class="lineNum">    7364 </span><span class="lineCov">        615 :         p = task_of(se);</span></a>
+<a name="7364"><span class="lineNum">    7364 </span><span class="lineCov">        617 :         p = task_of(se);</span></a>
 <a name="7365"><span class="lineNum">    7365 </span>            : </a>
 <a name="7366"><span class="lineNum">    7366 </span>            : done: __maybe_unused;</a>
 <a name="7367"><span class="lineNum">    7367 </span>            : #ifdef CONFIG_SMP</a>
@@ -7435,12 +7435,12 @@
 <a name="7373"><span class="lineNum">    7373 </span>            :         list_move(&amp;p-&gt;se.group_node, &amp;rq-&gt;cfs_tasks);</a>
 <a name="7374"><span class="lineNum">    7374 </span>            : #endif</a>
 <a name="7375"><span class="lineNum">    7375 </span>            : </a>
-<a name="7376"><span class="lineNum">    7376 </span><span class="lineCov">        615 :         if (hrtick_enabled_fair(rq))</span></a>
+<a name="7376"><span class="lineNum">    7376 </span><span class="lineCov">        617 :         if (hrtick_enabled_fair(rq))</span></a>
 <a name="7377"><span class="lineNum">    7377 </span>            :                 hrtick_start_fair(rq, p);</a>
 <a name="7378"><span class="lineNum">    7378 </span>            : </a>
-<a name="7379"><span class="lineNum">    7379 </span><span class="lineCov">        615 :         update_misfit_status(p, rq);</span></a>
+<a name="7379"><span class="lineNum">    7379 </span><span class="lineCov">        617 :         update_misfit_status(p, rq);</span></a>
 <a name="7380"><span class="lineNum">    7380 </span>            : </a>
-<a name="7381"><span class="lineNum">    7381 </span><span class="lineCov">        615 :         return p;</span></a>
+<a name="7381"><span class="lineNum">    7381 </span><span class="lineCov">        617 :         return p;</span></a>
 <a name="7382"><span class="lineNum">    7382 </span>            : </a>
 <a name="7383"><span class="lineNum">    7383 </span>            : idle:</a>
 <a name="7384"><span class="lineNum">    7384 </span>            :         if (!rf)</a>
@@ -7476,16 +7476,16 @@
 <a name="7414"><span class="lineNum">    7414 </span>            : /*</a>
 <a name="7415"><span class="lineNum">    7415 </span>            :  * Account for a descheduled task:</a>
 <a name="7416"><span class="lineNum">    7416 </span>            :  */</a>
-<a name="7417"><span class="lineNum">    7417 </span><span class="lineCov">        617 : static void put_prev_task_fair(struct rq *rq, struct task_struct *prev)</span></a>
+<a name="7417"><span class="lineNum">    7417 </span><span class="lineCov">        619 : static void put_prev_task_fair(struct rq *rq, struct task_struct *prev)</span></a>
 <a name="7418"><span class="lineNum">    7418 </span>            : {</a>
-<a name="7419"><span class="lineNum">    7419 </span><span class="lineCov">        617 :         struct sched_entity *se = &amp;prev-&gt;se;</span></a>
+<a name="7419"><span class="lineNum">    7419 </span><span class="lineCov">        619 :         struct sched_entity *se = &amp;prev-&gt;se;</span></a>
 <a name="7420"><span class="lineNum">    7420 </span>            :         struct cfs_rq *cfs_rq;</a>
 <a name="7421"><span class="lineNum">    7421 </span>            : </a>
-<a name="7422"><span class="lineNum">    7422 </span><span class="lineCov">       1234 :         for_each_sched_entity(se) {</span></a>
-<a name="7423"><span class="lineNum">    7423 </span><span class="lineCov">       1234 :                 cfs_rq = cfs_rq_of(se);</span></a>
-<a name="7424"><span class="lineNum">    7424 </span><span class="lineCov">        617 :                 put_prev_entity(cfs_rq, se);</span></a>
+<a name="7422"><span class="lineNum">    7422 </span><span class="lineCov">       1238 :         for_each_sched_entity(se) {</span></a>
+<a name="7423"><span class="lineNum">    7423 </span><span class="lineCov">       1238 :                 cfs_rq = cfs_rq_of(se);</span></a>
+<a name="7424"><span class="lineNum">    7424 </span><span class="lineCov">        619 :                 put_prev_entity(cfs_rq, se);</span></a>
 <a name="7425"><span class="lineNum">    7425 </span>            :         }</a>
-<a name="7426"><span class="lineNum">    7426 </span><span class="lineCov">        617 : }</span></a>
+<a name="7426"><span class="lineNum">    7426 </span><span class="lineCov">        619 : }</span></a>
 <a name="7427"><span class="lineNum">    7427 </span>            : </a>
 <a name="7428"><span class="lineNum">    7428 </span>            : /*</a>
 <a name="7429"><span class="lineNum">    7429 </span>            :  * sched_yield() is very simple</a>
@@ -11264,24 +11264,24 @@
 <a name="11202"><span class="lineNum">   11202 </span>            :  * and everything must be accessed through the @rq and @curr passed in</a>
 <a name="11203"><span class="lineNum">   11203 </span>            :  * parameters.</a>
 <a name="11204"><span class="lineNum">   11204 </span>            :  */</a>
-<a name="11205"><span class="lineNum">   11205 </span><span class="lineCov">          2 : static void task_tick_fair(struct rq *rq, struct task_struct *curr, int queued)</span></a>
+<a name="11205"><span class="lineNum">   11205 </span><span class="lineCov">          3 : static void task_tick_fair(struct rq *rq, struct task_struct *curr, int queued)</span></a>
 <a name="11206"><span class="lineNum">   11206 </span>            : {</a>
 <a name="11207"><span class="lineNum">   11207 </span>            :         struct cfs_rq *cfs_rq;</a>
-<a name="11208"><span class="lineNum">   11208 </span><span class="lineCov">          2 :         struct sched_entity *se = &amp;curr-&gt;se;</span></a>
+<a name="11208"><span class="lineNum">   11208 </span><span class="lineCov">          3 :         struct sched_entity *se = &amp;curr-&gt;se;</span></a>
 <a name="11209"><span class="lineNum">   11209 </span>            : </a>
-<a name="11210"><span class="lineNum">   11210 </span><span class="lineCov">          4 :         for_each_sched_entity(se) {</span></a>
-<a name="11211"><span class="lineNum">   11211 </span><span class="lineCov">          4 :                 cfs_rq = cfs_rq_of(se);</span></a>
-<a name="11212"><span class="lineNum">   11212 </span><span class="lineCov">          2 :                 entity_tick(cfs_rq, se, queued);</span></a>
+<a name="11210"><span class="lineNum">   11210 </span><span class="lineCov">          6 :         for_each_sched_entity(se) {</span></a>
+<a name="11211"><span class="lineNum">   11211 </span><span class="lineCov">          6 :                 cfs_rq = cfs_rq_of(se);</span></a>
+<a name="11212"><span class="lineNum">   11212 </span><span class="lineCov">          3 :                 entity_tick(cfs_rq, se, queued);</span></a>
 <a name="11213"><span class="lineNum">   11213 </span>            :         }</a>
 <a name="11214"><span class="lineNum">   11214 </span>            : </a>
-<a name="11215"><span class="lineNum">   11215 </span><span class="lineCov">          2 :         if (static_branch_unlikely(&amp;sched_numa_balancing))</span></a>
+<a name="11215"><span class="lineNum">   11215 </span><span class="lineCov">          3 :         if (static_branch_unlikely(&amp;sched_numa_balancing))</span></a>
 <a name="11216"><span class="lineNum">   11216 </span>            :                 task_tick_numa(rq, curr);</a>
 <a name="11217"><span class="lineNum">   11217 </span>            : </a>
-<a name="11218"><span class="lineNum">   11218 </span><span class="lineCov">          2 :         update_misfit_status(curr, rq);</span></a>
-<a name="11219"><span class="lineNum">   11219 </span><span class="lineCov">          2 :         update_overutilized_status(task_rq(curr));</span></a>
+<a name="11218"><span class="lineNum">   11218 </span><span class="lineCov">          3 :         update_misfit_status(curr, rq);</span></a>
+<a name="11219"><span class="lineNum">   11219 </span><span class="lineCov">          3 :         update_overutilized_status(task_rq(curr));</span></a>
 <a name="11220"><span class="lineNum">   11220 </span>            : </a>
-<a name="11221"><span class="lineNum">   11221 </span><span class="lineCov">          2 :         task_tick_core(rq, curr);</span></a>
-<a name="11222"><span class="lineNum">   11222 </span><span class="lineCov">          2 : }</span></a>
+<a name="11221"><span class="lineNum">   11221 </span><span class="lineCov">          3 :         task_tick_core(rq, curr);</span></a>
+<a name="11222"><span class="lineNum">   11222 </span><span class="lineCov">          3 : }</span></a>
 <a name="11223"><span class="lineNum">   11223 </span>            : </a>
 <a name="11224"><span class="lineNum">   11224 </span>            : /*</a>
 <a name="11225"><span class="lineNum">   11225 </span>            :  * called on fork with the child task as argument from the parent's context</a>

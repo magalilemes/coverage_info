@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">11</td>
@@ -561,15 +561,15 @@
 <a name="499"><span class="lineNum">     499 </span><span class="lineNoCov">          0 :         return irq_wait_for_poll(desc);</span></a>
 <a name="500"><span class="lineNum">     500 </span>            : }</a>
 <a name="501"><span class="lineNum">     501 </span>            : </a>
-<a name="502"><span class="lineNum">     502 </span><span class="lineCov">          9 : static bool irq_may_run(struct irq_desc *desc)</span></a>
+<a name="502"><span class="lineNum">     502 </span><span class="lineCov">         13 : static bool irq_may_run(struct irq_desc *desc)</span></a>
 <a name="503"><span class="lineNum">     503 </span>            : {</a>
-<a name="504"><span class="lineNum">     504 </span><span class="lineCov">          9 :         unsigned int mask = IRQD_IRQ_INPROGRESS | IRQD_WAKEUP_ARMED;</span></a>
+<a name="504"><span class="lineNum">     504 </span><span class="lineCov">         13 :         unsigned int mask = IRQD_IRQ_INPROGRESS | IRQD_WAKEUP_ARMED;</span></a>
 <a name="505"><span class="lineNum">     505 </span>            : </a>
 <a name="506"><span class="lineNum">     506 </span>            :         /*</a>
 <a name="507"><span class="lineNum">     507 </span>            :          * If the interrupt is not in progress and is not an armed</a>
 <a name="508"><span class="lineNum">     508 </span>            :          * wakeup interrupt, proceed.</a>
 <a name="509"><span class="lineNum">     509 </span>            :          */</a>
-<a name="510"><span class="lineNum">     510 </span><span class="lineCov">         18 :         if (!irqd_has_set(&amp;desc-&gt;irq_data, mask))</span></a>
+<a name="510"><span class="lineNum">     510 </span><span class="lineCov">         26 :         if (!irqd_has_set(&amp;desc-&gt;irq_data, mask))</span></a>
 <a name="511"><span class="lineNum">     511 </span>            :                 return true;</a>
 <a name="512"><span class="lineNum">     512 </span>            : </a>
 <a name="513"><span class="lineNum">     513 </span>            :         /*</a>
@@ -832,13 +832,13 @@
 <a name="770"><span class="lineNum">     770 </span>            :  *      the handler was running. If all pending interrupts are handled, the</a>
 <a name="771"><span class="lineNum">     771 </span>            :  *      loop is left.</a>
 <a name="772"><span class="lineNum">     772 </span>            :  */</a>
-<a name="773"><span class="lineNum">     773 </span><span class="lineCov">          9 : void handle_edge_irq(struct irq_desc *desc)</span></a>
+<a name="773"><span class="lineNum">     773 </span><span class="lineCov">         13 : void handle_edge_irq(struct irq_desc *desc)</span></a>
 <a name="774"><span class="lineNum">     774 </span>            : {</a>
-<a name="775"><span class="lineNum">     775 </span><span class="lineCov">          9 :         raw_spin_lock(&amp;desc-&gt;lock);</span></a>
+<a name="775"><span class="lineNum">     775 </span><span class="lineCov">         13 :         raw_spin_lock(&amp;desc-&gt;lock);</span></a>
 <a name="776"><span class="lineNum">     776 </span>            : </a>
-<a name="777"><span class="lineNum">     777 </span><span class="lineCov">          9 :         desc-&gt;istate &amp;= ~(IRQS_REPLAY | IRQS_WAITING);</span></a>
+<a name="777"><span class="lineNum">     777 </span><span class="lineCov">         13 :         desc-&gt;istate &amp;= ~(IRQS_REPLAY | IRQS_WAITING);</span></a>
 <a name="778"><span class="lineNum">     778 </span>            : </a>
-<a name="779"><span class="lineNum">     779 </span><span class="lineCov">          9 :         if (!irq_may_run(desc)) {</span></a>
+<a name="779"><span class="lineNum">     779 </span><span class="lineCov">         13 :         if (!irq_may_run(desc)) {</span></a>
 <a name="780"><span class="lineNum">     780 </span><span class="lineNoCov">          0 :                 desc-&gt;istate |= IRQS_PENDING;</span></a>
 <a name="781"><span class="lineNum">     781 </span><span class="lineNoCov">          0 :                 mask_ack_irq(desc);</span></a>
 <a name="782"><span class="lineNum">     782 </span><span class="lineNoCov">          0 :                 goto out_unlock;</span></a>
@@ -848,19 +848,19 @@
 <a name="786"><span class="lineNum">     786 </span>            :          * If its disabled or no action available then mask it and get</a>
 <a name="787"><span class="lineNum">     787 </span>            :          * out of here.</a>
 <a name="788"><span class="lineNum">     788 </span>            :          */</a>
-<a name="789"><span class="lineNum">     789 </span><span class="lineCov">         18 :         if (irqd_irq_disabled(&amp;desc-&gt;irq_data) || !desc-&gt;action) {</span></a>
+<a name="789"><span class="lineNum">     789 </span><span class="lineCov">         26 :         if (irqd_irq_disabled(&amp;desc-&gt;irq_data) || !desc-&gt;action) {</span></a>
 <a name="790"><span class="lineNum">     790 </span><span class="lineNoCov">          0 :                 desc-&gt;istate |= IRQS_PENDING;</span></a>
 <a name="791"><span class="lineNum">     791 </span><span class="lineNoCov">          0 :                 mask_ack_irq(desc);</span></a>
 <a name="792"><span class="lineNum">     792 </span><span class="lineNoCov">          0 :                 goto out_unlock;</span></a>
 <a name="793"><span class="lineNum">     793 </span>            :         }</a>
 <a name="794"><span class="lineNum">     794 </span>            : </a>
-<a name="795"><span class="lineNum">     795 </span><span class="lineCov">          9 :         kstat_incr_irqs_this_cpu(desc);</span></a>
+<a name="795"><span class="lineNum">     795 </span><span class="lineCov">         13 :         kstat_incr_irqs_this_cpu(desc);</span></a>
 <a name="796"><span class="lineNum">     796 </span>            : </a>
 <a name="797"><span class="lineNum">     797 </span>            :         /* Start handling the irq */</a>
-<a name="798"><span class="lineNum">     798 </span><span class="lineCov">          9 :         desc-&gt;irq_data.chip-&gt;irq_ack(&amp;desc-&gt;irq_data);</span></a>
+<a name="798"><span class="lineNum">     798 </span><span class="lineCov">         13 :         desc-&gt;irq_data.chip-&gt;irq_ack(&amp;desc-&gt;irq_data);</span></a>
 <a name="799"><span class="lineNum">     799 </span>            : </a>
 <a name="800"><span class="lineNum">     800 </span>            :         do {</a>
-<a name="801"><span class="lineNum">     801 </span><span class="lineCov">          9 :                 if (unlikely(!desc-&gt;action)) {</span></a>
+<a name="801"><span class="lineNum">     801 </span><span class="lineCov">         13 :                 if (unlikely(!desc-&gt;action)) {</span></a>
 <a name="802"><span class="lineNum">     802 </span>            :                         mask_irq(desc);</a>
 <a name="803"><span class="lineNum">     803 </span>            :                         goto out_unlock;</a>
 <a name="804"><span class="lineNum">     804 </span>            :                 }</a>
@@ -870,20 +870,20 @@
 <a name="808"><span class="lineNum">     808 </span>            :                  * one, we could have masked the irq.</a>
 <a name="809"><span class="lineNum">     809 </span>            :                  * Reenable it, if it was not disabled in meantime.</a>
 <a name="810"><span class="lineNum">     810 </span>            :                  */</a>
-<a name="811"><span class="lineNum">     811 </span><span class="lineCov">          9 :                 if (unlikely(desc-&gt;istate &amp; IRQS_PENDING)) {</span></a>
+<a name="811"><span class="lineNum">     811 </span><span class="lineCov">         13 :                 if (unlikely(desc-&gt;istate &amp; IRQS_PENDING)) {</span></a>
 <a name="812"><span class="lineNum">     812 </span><span class="lineNoCov">          0 :                         if (!irqd_irq_disabled(&amp;desc-&gt;irq_data) &amp;&amp;</span></a>
 <a name="813"><span class="lineNum">     813 </span><span class="lineNoCov">          0 :                             irqd_irq_masked(&amp;desc-&gt;irq_data))</span></a>
 <a name="814"><span class="lineNum">     814 </span>            :                                 unmask_irq(desc);</a>
 <a name="815"><span class="lineNum">     815 </span>            :                 }</a>
 <a name="816"><span class="lineNum">     816 </span>            : </a>
-<a name="817"><span class="lineNum">     817 </span><span class="lineCov">          9 :                 handle_irq_event(desc);</span></a>
+<a name="817"><span class="lineNum">     817 </span><span class="lineCov">         13 :                 handle_irq_event(desc);</span></a>
 <a name="818"><span class="lineNum">     818 </span>            : </a>
-<a name="819"><span class="lineNum">     819 </span><span class="lineCov">          9 :         } while ((desc-&gt;istate &amp; IRQS_PENDING) &amp;&amp;</span></a>
-<a name="820"><span class="lineNum">     820 </span><span class="lineCov">          9 :                  !irqd_irq_disabled(&amp;desc-&gt;irq_data));</span></a>
+<a name="819"><span class="lineNum">     819 </span><span class="lineCov">         13 :         } while ((desc-&gt;istate &amp; IRQS_PENDING) &amp;&amp;</span></a>
+<a name="820"><span class="lineNum">     820 </span><span class="lineCov">         13 :                  !irqd_irq_disabled(&amp;desc-&gt;irq_data));</span></a>
 <a name="821"><span class="lineNum">     821 </span>            : </a>
 <a name="822"><span class="lineNum">     822 </span>            : out_unlock:</a>
-<a name="823"><span class="lineNum">     823 </span><span class="lineCov">          9 :         raw_spin_unlock(&amp;desc-&gt;lock);</span></a>
-<a name="824"><span class="lineNum">     824 </span><span class="lineCov">          9 : }</span></a>
+<a name="823"><span class="lineNum">     823 </span><span class="lineCov">         13 :         raw_spin_unlock(&amp;desc-&gt;lock);</span></a>
+<a name="824"><span class="lineNum">     824 </span><span class="lineCov">         13 : }</span></a>
 <a name="825"><span class="lineNum">     825 </span>            : EXPORT_SYMBOL(handle_edge_irq);</a>
 <a name="826"><span class="lineNum">     826 </span>            : </a>
 <a name="827"><span class="lineNum">     827 </span>            : #ifdef CONFIG_IRQ_EDGE_EOI_HANDLER</a>

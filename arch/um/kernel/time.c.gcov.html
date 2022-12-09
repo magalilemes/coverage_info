@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">8</td>
@@ -656,7 +656,7 @@
 <a name="594"><span class="lineNum">     594 </span>            : #define time_travel_del_event(e) do { } while (0)</a>
 <a name="595"><span class="lineNum">     595 </span>            : #endif</a>
 <a name="596"><span class="lineNum">     596 </span>            : </a>
-<a name="597"><span class="lineNum">     597 </span><span class="lineCov">          9 : void timer_handler(int sig, struct siginfo *unused_si, struct uml_pt_regs *regs)</span></a>
+<a name="597"><span class="lineNum">     597 </span><span class="lineCov">         13 : void timer_handler(int sig, struct siginfo *unused_si, struct uml_pt_regs *regs)</span></a>
 <a name="598"><span class="lineNum">     598 </span>            : {</a>
 <a name="599"><span class="lineNum">     599 </span>            :         unsigned long flags;</a>
 <a name="600"><span class="lineNum">     600 </span>            : </a>
@@ -671,10 +671,10 @@
 <a name="609"><span class="lineNum">     609 </span>            :         if (time_travel_mode == TT_MODE_BASIC)</a>
 <a name="610"><span class="lineNum">     610 </span>            :                 time_travel_handle_real_alarm();</a>
 <a name="611"><span class="lineNum">     611 </span>            : </a>
-<a name="612"><span class="lineNum">     612 </span><span class="lineCov">          9 :         local_irq_save(flags);</span></a>
-<a name="613"><span class="lineNum">     613 </span><span class="lineCov">          9 :         do_IRQ(TIMER_IRQ, regs);</span></a>
-<a name="614"><span class="lineNum">     614 </span><span class="lineCov">         18 :         local_irq_restore(flags);</span></a>
-<a name="615"><span class="lineNum">     615 </span><span class="lineCov">          9 : }</span></a>
+<a name="612"><span class="lineNum">     612 </span><span class="lineCov">         13 :         local_irq_save(flags);</span></a>
+<a name="613"><span class="lineNum">     613 </span><span class="lineCov">         13 :         do_IRQ(TIMER_IRQ, regs);</span></a>
+<a name="614"><span class="lineNum">     614 </span><span class="lineCov">         26 :         local_irq_restore(flags);</span></a>
+<a name="615"><span class="lineNum">     615 </span><span class="lineCov">         13 : }</span></a>
 <a name="616"><span class="lineNum">     616 </span>            : </a>
 <a name="617"><span class="lineNum">     617 </span><span class="lineCov">          1 : static int itimer_shutdown(struct clock_event_device *evt)</span></a>
 <a name="618"><span class="lineNum">     618 </span>            : {</a>
@@ -752,17 +752,17 @@
 <a name="690"><span class="lineNum">     690 </span>            :         .mult                   = 1,</a>
 <a name="691"><span class="lineNum">     691 </span>            : };</a>
 <a name="692"><span class="lineNum">     692 </span>            : </a>
-<a name="693"><span class="lineNum">     693 </span><span class="lineCov">          9 : static irqreturn_t um_timer(int irq, void *dev)</span></a>
+<a name="693"><span class="lineNum">     693 </span><span class="lineCov">         13 : static irqreturn_t um_timer(int irq, void *dev)</span></a>
 <a name="694"><span class="lineNum">     694 </span>            : {</a>
-<a name="695"><span class="lineNum">     695 </span><span class="lineCov">          9 :         if (get_current()-&gt;mm != NULL)</span></a>
+<a name="695"><span class="lineNum">     695 </span><span class="lineCov">         13 :         if (get_current()-&gt;mm != NULL)</span></a>
 <a name="696"><span class="lineNum">     696 </span>            :         {</a>
 <a name="697"><span class="lineNum">     697 </span>            :         /* userspace - relay signal, results in correct userspace timers */</a>
 <a name="698"><span class="lineNum">     698 </span><span class="lineNoCov">          0 :                 os_alarm_process(get_current()-&gt;mm-&gt;context.id.u.pid);</span></a>
 <a name="699"><span class="lineNum">     699 </span>            :         }</a>
 <a name="700"><span class="lineNum">     700 </span>            : </a>
-<a name="701"><span class="lineNum">     701 </span><span class="lineCov">          9 :         (*timer_clockevent.event_handler)(&amp;timer_clockevent);</span></a>
+<a name="701"><span class="lineNum">     701 </span><span class="lineCov">         13 :         (*timer_clockevent.event_handler)(&amp;timer_clockevent);</span></a>
 <a name="702"><span class="lineNum">     702 </span>            : </a>
-<a name="703"><span class="lineNum">     703 </span><span class="lineCov">          9 :         return IRQ_HANDLED;</span></a>
+<a name="703"><span class="lineNum">     703 </span><span class="lineCov">         13 :         return IRQ_HANDLED;</span></a>
 <a name="704"><span class="lineNum">     704 </span>            : }</a>
 <a name="705"><span class="lineNum">     705 </span>            : </a>
 <a name="706"><span class="lineNum">     706 </span><span class="lineCov">        197 : static u64 timer_read(struct clocksource *cs)</span></a>

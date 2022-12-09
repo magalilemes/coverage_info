@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">9</td>
-            <td class="headerCovTableEntry">302</td>
+            <td class="headerCovTableEntry">304</td>
             <td class="headerCovTableEntryLo">3.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -2243,14 +2243,14 @@
 <a name="2181"><span class="lineNum">    2181 </span><span class="lineNoCov">          0 :         struct drm_device *dev = pci_get_drvdata(pdev);</span></a>
 <a name="2182"><span class="lineNum">    2182 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = drm_to_adev(dev);</span></a>
 <a name="2183"><span class="lineNum">    2183 </span>            : </a>
-<a name="2184"><span class="lineNum">    2184 </span><span class="lineNoCov">          0 :         drm_dev_unplug(dev);</span></a>
-<a name="2185"><span class="lineNum">    2185 </span>            : </a>
-<a name="2186"><span class="lineNum">    2186 </span><span class="lineNoCov">          0 :         if (adev-&gt;pm.rpm_mode != AMDGPU_RUNPM_NONE) {</span></a>
-<a name="2187"><span class="lineNum">    2187 </span><span class="lineNoCov">          0 :                 pm_runtime_get_sync(dev-&gt;dev);</span></a>
-<a name="2188"><span class="lineNum">    2188 </span><span class="lineNoCov">          0 :                 pm_runtime_forbid(dev-&gt;dev);</span></a>
-<a name="2189"><span class="lineNum">    2189 </span>            :         }</a>
+<a name="2184"><span class="lineNum">    2184 </span><span class="lineNoCov">          0 :         if (adev-&gt;pm.rpm_mode != AMDGPU_RUNPM_NONE) {</span></a>
+<a name="2185"><span class="lineNum">    2185 </span><span class="lineNoCov">          0 :                 pm_runtime_get_sync(dev-&gt;dev);</span></a>
+<a name="2186"><span class="lineNum">    2186 </span><span class="lineNoCov">          0 :                 pm_runtime_forbid(dev-&gt;dev);</span></a>
+<a name="2187"><span class="lineNum">    2187 </span>            :         }</a>
+<a name="2188"><span class="lineNum">    2188 </span>            : </a>
+<a name="2189"><span class="lineNum">    2189 </span><span class="lineNoCov">          0 :         amdgpu_driver_unload_kms(dev);</span></a>
 <a name="2190"><span class="lineNum">    2190 </span>            : </a>
-<a name="2191"><span class="lineNum">    2191 </span><span class="lineNoCov">          0 :         amdgpu_driver_unload_kms(dev);</span></a>
+<a name="2191"><span class="lineNum">    2191 </span><span class="lineNoCov">          0 :         drm_dev_unplug(dev);</span></a>
 <a name="2192"><span class="lineNum">    2192 </span>            : </a>
 <a name="2193"><span class="lineNum">    2193 </span>            :         /*</a>
 <a name="2194"><span class="lineNum">    2194 </span>            :          * Flush any in flight DMA operations from device.</a>
@@ -2625,240 +2625,243 @@
 <a name="2563"><span class="lineNum">    2563 </span><span class="lineNoCov">          0 :                 amdgpu_device_baco_exit(drm_dev);</span></a>
 <a name="2564"><span class="lineNum">    2564 </span>            :         }</a>
 <a name="2565"><span class="lineNum">    2565 </span><span class="lineNoCov">          0 :         ret = amdgpu_device_resume(drm_dev, false);</span></a>
-<a name="2566"><span class="lineNum">    2566 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
-<a name="2567"><span class="lineNum">    2567 </span>            :                 return ret;</a>
-<a name="2568"><span class="lineNum">    2568 </span>            : </a>
-<a name="2569"><span class="lineNum">    2569 </span><span class="lineNoCov">          0 :         if (amdgpu_device_supports_px(drm_dev))</span></a>
-<a name="2570"><span class="lineNum">    2570 </span><span class="lineNoCov">          0 :                 drm_dev-&gt;switch_power_state = DRM_SWITCH_POWER_ON;</span></a>
-<a name="2571"><span class="lineNum">    2571 </span><span class="lineNoCov">          0 :         adev-&gt;in_runpm = false;</span></a>
-<a name="2572"><span class="lineNum">    2572 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="2573"><span class="lineNum">    2573 </span>            : }</a>
-<a name="2574"><span class="lineNum">    2574 </span>            : </a>
-<a name="2575"><span class="lineNum">    2575 </span><span class="lineNoCov">          0 : static int amdgpu_pmops_runtime_idle(struct device *dev)</span></a>
-<a name="2576"><span class="lineNum">    2576 </span>            : {</a>
-<a name="2577"><span class="lineNum">    2577 </span><span class="lineNoCov">          0 :         struct drm_device *drm_dev = dev_get_drvdata(dev);</span></a>
-<a name="2578"><span class="lineNum">    2578 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = drm_to_adev(drm_dev);</span></a>
-<a name="2579"><span class="lineNum">    2579 </span>            :         /* we don't want the main rpm_idle to call suspend - we want to autosuspend */</a>
-<a name="2580"><span class="lineNum">    2580 </span><span class="lineNoCov">          0 :         int ret = 1;</span></a>
-<a name="2581"><span class="lineNum">    2581 </span>            : </a>
-<a name="2582"><span class="lineNum">    2582 </span><span class="lineNoCov">          0 :         if (adev-&gt;pm.rpm_mode == AMDGPU_RUNPM_NONE) {</span></a>
-<a name="2583"><span class="lineNum">    2583 </span><span class="lineNoCov">          0 :                 pm_runtime_forbid(dev);</span></a>
-<a name="2584"><span class="lineNum">    2584 </span><span class="lineNoCov">          0 :                 return -EBUSY;</span></a>
-<a name="2585"><span class="lineNum">    2585 </span>            :         }</a>
-<a name="2586"><span class="lineNum">    2586 </span>            : </a>
-<a name="2587"><span class="lineNum">    2587 </span><span class="lineNoCov">          0 :         ret = amdgpu_runtime_idle_check_display(dev);</span></a>
-<a name="2588"><span class="lineNum">    2588 </span>            : </a>
-<a name="2589"><span class="lineNum">    2589 </span><span class="lineNoCov">          0 :         pm_runtime_mark_last_busy(dev);</span></a>
-<a name="2590"><span class="lineNum">    2590 </span><span class="lineNoCov">          0 :         pm_runtime_autosuspend(dev);</span></a>
-<a name="2591"><span class="lineNum">    2591 </span><span class="lineNoCov">          0 :         return ret;</span></a>
-<a name="2592"><span class="lineNum">    2592 </span>            : }</a>
-<a name="2593"><span class="lineNum">    2593 </span>            : </a>
-<a name="2594"><span class="lineNum">    2594 </span><span class="lineNoCov">          0 : long amdgpu_drm_ioctl(struct file *filp,</span></a>
-<a name="2595"><span class="lineNum">    2595 </span>            :                       unsigned int cmd, unsigned long arg)</a>
-<a name="2596"><span class="lineNum">    2596 </span>            : {</a>
-<a name="2597"><span class="lineNum">    2597 </span><span class="lineNoCov">          0 :         struct drm_file *file_priv = filp-&gt;private_data;</span></a>
-<a name="2598"><span class="lineNum">    2598 </span>            :         struct drm_device *dev;</a>
-<a name="2599"><span class="lineNum">    2599 </span>            :         long ret;</a>
-<a name="2600"><span class="lineNum">    2600 </span><span class="lineNoCov">          0 :         dev = file_priv-&gt;minor-&gt;dev;</span></a>
-<a name="2601"><span class="lineNum">    2601 </span><span class="lineNoCov">          0 :         ret = pm_runtime_get_sync(dev-&gt;dev);</span></a>
-<a name="2602"><span class="lineNum">    2602 </span><span class="lineNoCov">          0 :         if (ret &lt; 0)</span></a>
-<a name="2603"><span class="lineNum">    2603 </span>            :                 goto out;</a>
-<a name="2604"><span class="lineNum">    2604 </span>            : </a>
-<a name="2605"><span class="lineNum">    2605 </span><span class="lineNoCov">          0 :         ret = drm_ioctl(filp, cmd, arg);</span></a>
-<a name="2606"><span class="lineNum">    2606 </span>            : </a>
-<a name="2607"><span class="lineNum">    2607 </span><span class="lineNoCov">          0 :         pm_runtime_mark_last_busy(dev-&gt;dev);</span></a>
-<a name="2608"><span class="lineNum">    2608 </span>            : out:</a>
-<a name="2609"><span class="lineNum">    2609 </span><span class="lineNoCov">          0 :         pm_runtime_put_autosuspend(dev-&gt;dev);</span></a>
-<a name="2610"><span class="lineNum">    2610 </span><span class="lineNoCov">          0 :         return ret;</span></a>
-<a name="2611"><span class="lineNum">    2611 </span>            : }</a>
-<a name="2612"><span class="lineNum">    2612 </span>            : </a>
-<a name="2613"><span class="lineNum">    2613 </span>            : static const struct dev_pm_ops amdgpu_pm_ops = {</a>
-<a name="2614"><span class="lineNum">    2614 </span>            :         .prepare = amdgpu_pmops_prepare,</a>
-<a name="2615"><span class="lineNum">    2615 </span>            :         .complete = amdgpu_pmops_complete,</a>
-<a name="2616"><span class="lineNum">    2616 </span>            :         .suspend = amdgpu_pmops_suspend,</a>
-<a name="2617"><span class="lineNum">    2617 </span>            :         .suspend_noirq = amdgpu_pmops_suspend_noirq,</a>
-<a name="2618"><span class="lineNum">    2618 </span>            :         .resume = amdgpu_pmops_resume,</a>
-<a name="2619"><span class="lineNum">    2619 </span>            :         .freeze = amdgpu_pmops_freeze,</a>
-<a name="2620"><span class="lineNum">    2620 </span>            :         .thaw = amdgpu_pmops_thaw,</a>
-<a name="2621"><span class="lineNum">    2621 </span>            :         .poweroff = amdgpu_pmops_poweroff,</a>
-<a name="2622"><span class="lineNum">    2622 </span>            :         .restore = amdgpu_pmops_restore,</a>
-<a name="2623"><span class="lineNum">    2623 </span>            :         .runtime_suspend = amdgpu_pmops_runtime_suspend,</a>
-<a name="2624"><span class="lineNum">    2624 </span>            :         .runtime_resume = amdgpu_pmops_runtime_resume,</a>
-<a name="2625"><span class="lineNum">    2625 </span>            :         .runtime_idle = amdgpu_pmops_runtime_idle,</a>
-<a name="2626"><span class="lineNum">    2626 </span>            : };</a>
-<a name="2627"><span class="lineNum">    2627 </span>            : </a>
-<a name="2628"><span class="lineNum">    2628 </span><span class="lineNoCov">          0 : static int amdgpu_flush(struct file *f, fl_owner_t id)</span></a>
-<a name="2629"><span class="lineNum">    2629 </span>            : {</a>
-<a name="2630"><span class="lineNum">    2630 </span><span class="lineNoCov">          0 :         struct drm_file *file_priv = f-&gt;private_data;</span></a>
-<a name="2631"><span class="lineNum">    2631 </span><span class="lineNoCov">          0 :         struct amdgpu_fpriv *fpriv = file_priv-&gt;driver_priv;</span></a>
-<a name="2632"><span class="lineNum">    2632 </span><span class="lineNoCov">          0 :         long timeout = MAX_WAIT_SCHED_ENTITY_Q_EMPTY;</span></a>
-<a name="2633"><span class="lineNum">    2633 </span>            : </a>
-<a name="2634"><span class="lineNum">    2634 </span><span class="lineNoCov">          0 :         timeout = amdgpu_ctx_mgr_entity_flush(&amp;fpriv-&gt;ctx_mgr, timeout);</span></a>
-<a name="2635"><span class="lineNum">    2635 </span><span class="lineNoCov">          0 :         timeout = amdgpu_vm_wait_idle(&amp;fpriv-&gt;vm, timeout);</span></a>
+<a name="2566"><span class="lineNum">    2566 </span><span class="lineNoCov">          0 :         if (ret) {</span></a>
+<a name="2567"><span class="lineNum">    2567 </span><span class="lineNoCov">          0 :                 if (amdgpu_device_supports_px(drm_dev))</span></a>
+<a name="2568"><span class="lineNum">    2568 </span><span class="lineNoCov">          0 :                         pci_disable_device(pdev);</span></a>
+<a name="2569"><span class="lineNum">    2569 </span>            :                 return ret;</a>
+<a name="2570"><span class="lineNum">    2570 </span>            :         }</a>
+<a name="2571"><span class="lineNum">    2571 </span>            : </a>
+<a name="2572"><span class="lineNum">    2572 </span><span class="lineNoCov">          0 :         if (amdgpu_device_supports_px(drm_dev))</span></a>
+<a name="2573"><span class="lineNum">    2573 </span><span class="lineNoCov">          0 :                 drm_dev-&gt;switch_power_state = DRM_SWITCH_POWER_ON;</span></a>
+<a name="2574"><span class="lineNum">    2574 </span><span class="lineNoCov">          0 :         adev-&gt;in_runpm = false;</span></a>
+<a name="2575"><span class="lineNum">    2575 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="2576"><span class="lineNum">    2576 </span>            : }</a>
+<a name="2577"><span class="lineNum">    2577 </span>            : </a>
+<a name="2578"><span class="lineNum">    2578 </span><span class="lineNoCov">          0 : static int amdgpu_pmops_runtime_idle(struct device *dev)</span></a>
+<a name="2579"><span class="lineNum">    2579 </span>            : {</a>
+<a name="2580"><span class="lineNum">    2580 </span><span class="lineNoCov">          0 :         struct drm_device *drm_dev = dev_get_drvdata(dev);</span></a>
+<a name="2581"><span class="lineNum">    2581 </span><span class="lineNoCov">          0 :         struct amdgpu_device *adev = drm_to_adev(drm_dev);</span></a>
+<a name="2582"><span class="lineNum">    2582 </span>            :         /* we don't want the main rpm_idle to call suspend - we want to autosuspend */</a>
+<a name="2583"><span class="lineNum">    2583 </span><span class="lineNoCov">          0 :         int ret = 1;</span></a>
+<a name="2584"><span class="lineNum">    2584 </span>            : </a>
+<a name="2585"><span class="lineNum">    2585 </span><span class="lineNoCov">          0 :         if (adev-&gt;pm.rpm_mode == AMDGPU_RUNPM_NONE) {</span></a>
+<a name="2586"><span class="lineNum">    2586 </span><span class="lineNoCov">          0 :                 pm_runtime_forbid(dev);</span></a>
+<a name="2587"><span class="lineNum">    2587 </span><span class="lineNoCov">          0 :                 return -EBUSY;</span></a>
+<a name="2588"><span class="lineNum">    2588 </span>            :         }</a>
+<a name="2589"><span class="lineNum">    2589 </span>            : </a>
+<a name="2590"><span class="lineNum">    2590 </span><span class="lineNoCov">          0 :         ret = amdgpu_runtime_idle_check_display(dev);</span></a>
+<a name="2591"><span class="lineNum">    2591 </span>            : </a>
+<a name="2592"><span class="lineNum">    2592 </span><span class="lineNoCov">          0 :         pm_runtime_mark_last_busy(dev);</span></a>
+<a name="2593"><span class="lineNum">    2593 </span><span class="lineNoCov">          0 :         pm_runtime_autosuspend(dev);</span></a>
+<a name="2594"><span class="lineNum">    2594 </span><span class="lineNoCov">          0 :         return ret;</span></a>
+<a name="2595"><span class="lineNum">    2595 </span>            : }</a>
+<a name="2596"><span class="lineNum">    2596 </span>            : </a>
+<a name="2597"><span class="lineNum">    2597 </span><span class="lineNoCov">          0 : long amdgpu_drm_ioctl(struct file *filp,</span></a>
+<a name="2598"><span class="lineNum">    2598 </span>            :                       unsigned int cmd, unsigned long arg)</a>
+<a name="2599"><span class="lineNum">    2599 </span>            : {</a>
+<a name="2600"><span class="lineNum">    2600 </span><span class="lineNoCov">          0 :         struct drm_file *file_priv = filp-&gt;private_data;</span></a>
+<a name="2601"><span class="lineNum">    2601 </span>            :         struct drm_device *dev;</a>
+<a name="2602"><span class="lineNum">    2602 </span>            :         long ret;</a>
+<a name="2603"><span class="lineNum">    2603 </span><span class="lineNoCov">          0 :         dev = file_priv-&gt;minor-&gt;dev;</span></a>
+<a name="2604"><span class="lineNum">    2604 </span><span class="lineNoCov">          0 :         ret = pm_runtime_get_sync(dev-&gt;dev);</span></a>
+<a name="2605"><span class="lineNum">    2605 </span><span class="lineNoCov">          0 :         if (ret &lt; 0)</span></a>
+<a name="2606"><span class="lineNum">    2606 </span>            :                 goto out;</a>
+<a name="2607"><span class="lineNum">    2607 </span>            : </a>
+<a name="2608"><span class="lineNum">    2608 </span><span class="lineNoCov">          0 :         ret = drm_ioctl(filp, cmd, arg);</span></a>
+<a name="2609"><span class="lineNum">    2609 </span>            : </a>
+<a name="2610"><span class="lineNum">    2610 </span><span class="lineNoCov">          0 :         pm_runtime_mark_last_busy(dev-&gt;dev);</span></a>
+<a name="2611"><span class="lineNum">    2611 </span>            : out:</a>
+<a name="2612"><span class="lineNum">    2612 </span><span class="lineNoCov">          0 :         pm_runtime_put_autosuspend(dev-&gt;dev);</span></a>
+<a name="2613"><span class="lineNum">    2613 </span><span class="lineNoCov">          0 :         return ret;</span></a>
+<a name="2614"><span class="lineNum">    2614 </span>            : }</a>
+<a name="2615"><span class="lineNum">    2615 </span>            : </a>
+<a name="2616"><span class="lineNum">    2616 </span>            : static const struct dev_pm_ops amdgpu_pm_ops = {</a>
+<a name="2617"><span class="lineNum">    2617 </span>            :         .prepare = amdgpu_pmops_prepare,</a>
+<a name="2618"><span class="lineNum">    2618 </span>            :         .complete = amdgpu_pmops_complete,</a>
+<a name="2619"><span class="lineNum">    2619 </span>            :         .suspend = amdgpu_pmops_suspend,</a>
+<a name="2620"><span class="lineNum">    2620 </span>            :         .suspend_noirq = amdgpu_pmops_suspend_noirq,</a>
+<a name="2621"><span class="lineNum">    2621 </span>            :         .resume = amdgpu_pmops_resume,</a>
+<a name="2622"><span class="lineNum">    2622 </span>            :         .freeze = amdgpu_pmops_freeze,</a>
+<a name="2623"><span class="lineNum">    2623 </span>            :         .thaw = amdgpu_pmops_thaw,</a>
+<a name="2624"><span class="lineNum">    2624 </span>            :         .poweroff = amdgpu_pmops_poweroff,</a>
+<a name="2625"><span class="lineNum">    2625 </span>            :         .restore = amdgpu_pmops_restore,</a>
+<a name="2626"><span class="lineNum">    2626 </span>            :         .runtime_suspend = amdgpu_pmops_runtime_suspend,</a>
+<a name="2627"><span class="lineNum">    2627 </span>            :         .runtime_resume = amdgpu_pmops_runtime_resume,</a>
+<a name="2628"><span class="lineNum">    2628 </span>            :         .runtime_idle = amdgpu_pmops_runtime_idle,</a>
+<a name="2629"><span class="lineNum">    2629 </span>            : };</a>
+<a name="2630"><span class="lineNum">    2630 </span>            : </a>
+<a name="2631"><span class="lineNum">    2631 </span><span class="lineNoCov">          0 : static int amdgpu_flush(struct file *f, fl_owner_t id)</span></a>
+<a name="2632"><span class="lineNum">    2632 </span>            : {</a>
+<a name="2633"><span class="lineNum">    2633 </span><span class="lineNoCov">          0 :         struct drm_file *file_priv = f-&gt;private_data;</span></a>
+<a name="2634"><span class="lineNum">    2634 </span><span class="lineNoCov">          0 :         struct amdgpu_fpriv *fpriv = file_priv-&gt;driver_priv;</span></a>
+<a name="2635"><span class="lineNum">    2635 </span><span class="lineNoCov">          0 :         long timeout = MAX_WAIT_SCHED_ENTITY_Q_EMPTY;</span></a>
 <a name="2636"><span class="lineNum">    2636 </span>            : </a>
-<a name="2637"><span class="lineNum">    2637 </span><span class="lineNoCov">          0 :         return timeout &gt;= 0 ? 0 : timeout;</span></a>
-<a name="2638"><span class="lineNum">    2638 </span>            : }</a>
+<a name="2637"><span class="lineNum">    2637 </span><span class="lineNoCov">          0 :         timeout = amdgpu_ctx_mgr_entity_flush(&amp;fpriv-&gt;ctx_mgr, timeout);</span></a>
+<a name="2638"><span class="lineNum">    2638 </span><span class="lineNoCov">          0 :         timeout = amdgpu_vm_wait_idle(&amp;fpriv-&gt;vm, timeout);</span></a>
 <a name="2639"><span class="lineNum">    2639 </span>            : </a>
-<a name="2640"><span class="lineNum">    2640 </span>            : static const struct file_operations amdgpu_driver_kms_fops = {</a>
-<a name="2641"><span class="lineNum">    2641 </span>            :         .owner = THIS_MODULE,</a>
-<a name="2642"><span class="lineNum">    2642 </span>            :         .open = drm_open,</a>
-<a name="2643"><span class="lineNum">    2643 </span>            :         .flush = amdgpu_flush,</a>
-<a name="2644"><span class="lineNum">    2644 </span>            :         .release = drm_release,</a>
-<a name="2645"><span class="lineNum">    2645 </span>            :         .unlocked_ioctl = amdgpu_drm_ioctl,</a>
-<a name="2646"><span class="lineNum">    2646 </span>            :         .mmap = drm_gem_mmap,</a>
-<a name="2647"><span class="lineNum">    2647 </span>            :         .poll = drm_poll,</a>
-<a name="2648"><span class="lineNum">    2648 </span>            :         .read = drm_read,</a>
-<a name="2649"><span class="lineNum">    2649 </span>            : #ifdef CONFIG_COMPAT</a>
-<a name="2650"><span class="lineNum">    2650 </span>            :         .compat_ioctl = amdgpu_kms_compat_ioctl,</a>
-<a name="2651"><span class="lineNum">    2651 </span>            : #endif</a>
-<a name="2652"><span class="lineNum">    2652 </span>            : #ifdef CONFIG_PROC_FS</a>
-<a name="2653"><span class="lineNum">    2653 </span>            :         .show_fdinfo = amdgpu_show_fdinfo</a>
+<a name="2640"><span class="lineNum">    2640 </span><span class="lineNoCov">          0 :         return timeout &gt;= 0 ? 0 : timeout;</span></a>
+<a name="2641"><span class="lineNum">    2641 </span>            : }</a>
+<a name="2642"><span class="lineNum">    2642 </span>            : </a>
+<a name="2643"><span class="lineNum">    2643 </span>            : static const struct file_operations amdgpu_driver_kms_fops = {</a>
+<a name="2644"><span class="lineNum">    2644 </span>            :         .owner = THIS_MODULE,</a>
+<a name="2645"><span class="lineNum">    2645 </span>            :         .open = drm_open,</a>
+<a name="2646"><span class="lineNum">    2646 </span>            :         .flush = amdgpu_flush,</a>
+<a name="2647"><span class="lineNum">    2647 </span>            :         .release = drm_release,</a>
+<a name="2648"><span class="lineNum">    2648 </span>            :         .unlocked_ioctl = amdgpu_drm_ioctl,</a>
+<a name="2649"><span class="lineNum">    2649 </span>            :         .mmap = drm_gem_mmap,</a>
+<a name="2650"><span class="lineNum">    2650 </span>            :         .poll = drm_poll,</a>
+<a name="2651"><span class="lineNum">    2651 </span>            :         .read = drm_read,</a>
+<a name="2652"><span class="lineNum">    2652 </span>            : #ifdef CONFIG_COMPAT</a>
+<a name="2653"><span class="lineNum">    2653 </span>            :         .compat_ioctl = amdgpu_kms_compat_ioctl,</a>
 <a name="2654"><span class="lineNum">    2654 </span>            : #endif</a>
-<a name="2655"><span class="lineNum">    2655 </span>            : };</a>
-<a name="2656"><span class="lineNum">    2656 </span>            : </a>
-<a name="2657"><span class="lineNum">    2657 </span><span class="lineNoCov">          0 : int amdgpu_file_to_fpriv(struct file *filp, struct amdgpu_fpriv **fpriv)</span></a>
-<a name="2658"><span class="lineNum">    2658 </span>            : {</a>
-<a name="2659"><span class="lineNum">    2659 </span>            :         struct drm_file *file;</a>
-<a name="2660"><span class="lineNum">    2660 </span>            : </a>
-<a name="2661"><span class="lineNum">    2661 </span><span class="lineNoCov">          0 :         if (!filp)</span></a>
-<a name="2662"><span class="lineNum">    2662 </span>            :                 return -EINVAL;</a>
+<a name="2655"><span class="lineNum">    2655 </span>            : #ifdef CONFIG_PROC_FS</a>
+<a name="2656"><span class="lineNum">    2656 </span>            :         .show_fdinfo = amdgpu_show_fdinfo</a>
+<a name="2657"><span class="lineNum">    2657 </span>            : #endif</a>
+<a name="2658"><span class="lineNum">    2658 </span>            : };</a>
+<a name="2659"><span class="lineNum">    2659 </span>            : </a>
+<a name="2660"><span class="lineNum">    2660 </span><span class="lineNoCov">          0 : int amdgpu_file_to_fpriv(struct file *filp, struct amdgpu_fpriv **fpriv)</span></a>
+<a name="2661"><span class="lineNum">    2661 </span>            : {</a>
+<a name="2662"><span class="lineNum">    2662 </span>            :         struct drm_file *file;</a>
 <a name="2663"><span class="lineNum">    2663 </span>            : </a>
-<a name="2664"><span class="lineNum">    2664 </span><span class="lineNoCov">          0 :         if (filp-&gt;f_op != &amp;amdgpu_driver_kms_fops) {</span></a>
+<a name="2664"><span class="lineNum">    2664 </span><span class="lineNoCov">          0 :         if (!filp)</span></a>
 <a name="2665"><span class="lineNum">    2665 </span>            :                 return -EINVAL;</a>
-<a name="2666"><span class="lineNum">    2666 </span>            :         }</a>
-<a name="2667"><span class="lineNum">    2667 </span>            : </a>
-<a name="2668"><span class="lineNum">    2668 </span><span class="lineNoCov">          0 :         file = filp-&gt;private_data;</span></a>
-<a name="2669"><span class="lineNum">    2669 </span><span class="lineNoCov">          0 :         *fpriv = file-&gt;driver_priv;</span></a>
-<a name="2670"><span class="lineNum">    2670 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="2671"><span class="lineNum">    2671 </span>            : }</a>
-<a name="2672"><span class="lineNum">    2672 </span>            : </a>
-<a name="2673"><span class="lineNum">    2673 </span>            : const struct drm_ioctl_desc amdgpu_ioctls_kms[] = {</a>
-<a name="2674"><span class="lineNum">    2674 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_GEM_CREATE, amdgpu_gem_create_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
-<a name="2675"><span class="lineNum">    2675 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_CTX, amdgpu_ctx_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
-<a name="2676"><span class="lineNum">    2676 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_VM, amdgpu_vm_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
-<a name="2677"><span class="lineNum">    2677 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_SCHED, amdgpu_sched_ioctl, DRM_MASTER),</a>
-<a name="2678"><span class="lineNum">    2678 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_BO_LIST, amdgpu_bo_list_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
-<a name="2679"><span class="lineNum">    2679 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_FENCE_TO_HANDLE, amdgpu_cs_fence_to_handle_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
-<a name="2680"><span class="lineNum">    2680 </span>            :         /* KMS */</a>
-<a name="2681"><span class="lineNum">    2681 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_GEM_MMAP, amdgpu_gem_mmap_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
-<a name="2682"><span class="lineNum">    2682 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_GEM_WAIT_IDLE, amdgpu_gem_wait_idle_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
-<a name="2683"><span class="lineNum">    2683 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_CS, amdgpu_cs_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
-<a name="2684"><span class="lineNum">    2684 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_INFO, amdgpu_info_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
-<a name="2685"><span class="lineNum">    2685 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_WAIT_CS, amdgpu_cs_wait_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
-<a name="2686"><span class="lineNum">    2686 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_WAIT_FENCES, amdgpu_cs_wait_fences_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
-<a name="2687"><span class="lineNum">    2687 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_GEM_METADATA, amdgpu_gem_metadata_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
-<a name="2688"><span class="lineNum">    2688 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_GEM_VA, amdgpu_gem_va_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
-<a name="2689"><span class="lineNum">    2689 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_GEM_OP, amdgpu_gem_op_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
-<a name="2690"><span class="lineNum">    2690 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_GEM_USERPTR, amdgpu_gem_userptr_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
-<a name="2691"><span class="lineNum">    2691 </span>            : };</a>
-<a name="2692"><span class="lineNum">    2692 </span>            : </a>
-<a name="2693"><span class="lineNum">    2693 </span>            : static const struct drm_driver amdgpu_kms_driver = {</a>
-<a name="2694"><span class="lineNum">    2694 </span>            :         .driver_features =</a>
-<a name="2695"><span class="lineNum">    2695 </span>            :             DRIVER_ATOMIC |</a>
-<a name="2696"><span class="lineNum">    2696 </span>            :             DRIVER_GEM |</a>
-<a name="2697"><span class="lineNum">    2697 </span>            :             DRIVER_RENDER | DRIVER_MODESET | DRIVER_SYNCOBJ |</a>
-<a name="2698"><span class="lineNum">    2698 </span>            :             DRIVER_SYNCOBJ_TIMELINE,</a>
-<a name="2699"><span class="lineNum">    2699 </span>            :         .open = amdgpu_driver_open_kms,</a>
-<a name="2700"><span class="lineNum">    2700 </span>            :         .postclose = amdgpu_driver_postclose_kms,</a>
-<a name="2701"><span class="lineNum">    2701 </span>            :         .lastclose = amdgpu_driver_lastclose_kms,</a>
-<a name="2702"><span class="lineNum">    2702 </span>            :         .ioctls = amdgpu_ioctls_kms,</a>
-<a name="2703"><span class="lineNum">    2703 </span>            :         .num_ioctls = ARRAY_SIZE(amdgpu_ioctls_kms),</a>
-<a name="2704"><span class="lineNum">    2704 </span>            :         .dumb_create = amdgpu_mode_dumb_create,</a>
-<a name="2705"><span class="lineNum">    2705 </span>            :         .dumb_map_offset = amdgpu_mode_dumb_mmap,</a>
-<a name="2706"><span class="lineNum">    2706 </span>            :         .fops = &amp;amdgpu_driver_kms_fops,</a>
-<a name="2707"><span class="lineNum">    2707 </span>            :         .release = &amp;amdgpu_driver_release_kms,</a>
-<a name="2708"><span class="lineNum">    2708 </span>            : </a>
-<a name="2709"><span class="lineNum">    2709 </span>            :         .prime_handle_to_fd = drm_gem_prime_handle_to_fd,</a>
-<a name="2710"><span class="lineNum">    2710 </span>            :         .prime_fd_to_handle = drm_gem_prime_fd_to_handle,</a>
-<a name="2711"><span class="lineNum">    2711 </span>            :         .gem_prime_import = amdgpu_gem_prime_import,</a>
-<a name="2712"><span class="lineNum">    2712 </span>            :         .gem_prime_mmap = drm_gem_prime_mmap,</a>
-<a name="2713"><span class="lineNum">    2713 </span>            : </a>
-<a name="2714"><span class="lineNum">    2714 </span>            :         .name = DRIVER_NAME,</a>
-<a name="2715"><span class="lineNum">    2715 </span>            :         .desc = DRIVER_DESC,</a>
-<a name="2716"><span class="lineNum">    2716 </span>            :         .date = DRIVER_DATE,</a>
-<a name="2717"><span class="lineNum">    2717 </span>            :         .major = KMS_DRIVER_MAJOR,</a>
-<a name="2718"><span class="lineNum">    2718 </span>            :         .minor = KMS_DRIVER_MINOR,</a>
-<a name="2719"><span class="lineNum">    2719 </span>            :         .patchlevel = KMS_DRIVER_PATCHLEVEL,</a>
-<a name="2720"><span class="lineNum">    2720 </span>            : };</a>
-<a name="2721"><span class="lineNum">    2721 </span>            : </a>
-<a name="2722"><span class="lineNum">    2722 </span>            : static struct pci_error_handlers amdgpu_pci_err_handler = {</a>
-<a name="2723"><span class="lineNum">    2723 </span>            :         .error_detected = amdgpu_pci_error_detected,</a>
-<a name="2724"><span class="lineNum">    2724 </span>            :         .mmio_enabled   = amdgpu_pci_mmio_enabled,</a>
-<a name="2725"><span class="lineNum">    2725 </span>            :         .slot_reset     = amdgpu_pci_slot_reset,</a>
-<a name="2726"><span class="lineNum">    2726 </span>            :         .resume         = amdgpu_pci_resume,</a>
-<a name="2727"><span class="lineNum">    2727 </span>            : };</a>
-<a name="2728"><span class="lineNum">    2728 </span>            : </a>
-<a name="2729"><span class="lineNum">    2729 </span>            : extern const struct attribute_group amdgpu_vram_mgr_attr_group;</a>
-<a name="2730"><span class="lineNum">    2730 </span>            : extern const struct attribute_group amdgpu_gtt_mgr_attr_group;</a>
-<a name="2731"><span class="lineNum">    2731 </span>            : extern const struct attribute_group amdgpu_vbios_version_attr_group;</a>
-<a name="2732"><span class="lineNum">    2732 </span>            : </a>
-<a name="2733"><span class="lineNum">    2733 </span>            : static const struct attribute_group *amdgpu_sysfs_groups[] = {</a>
-<a name="2734"><span class="lineNum">    2734 </span>            :         &amp;amdgpu_vram_mgr_attr_group,</a>
-<a name="2735"><span class="lineNum">    2735 </span>            :         &amp;amdgpu_gtt_mgr_attr_group,</a>
-<a name="2736"><span class="lineNum">    2736 </span>            :         &amp;amdgpu_vbios_version_attr_group,</a>
-<a name="2737"><span class="lineNum">    2737 </span>            :         NULL,</a>
-<a name="2738"><span class="lineNum">    2738 </span>            : };</a>
-<a name="2739"><span class="lineNum">    2739 </span>            : </a>
-<a name="2740"><span class="lineNum">    2740 </span>            : </a>
-<a name="2741"><span class="lineNum">    2741 </span>            : static struct pci_driver amdgpu_kms_pci_driver = {</a>
-<a name="2742"><span class="lineNum">    2742 </span>            :         .name = DRIVER_NAME,</a>
-<a name="2743"><span class="lineNum">    2743 </span>            :         .id_table = pciidlist,</a>
-<a name="2744"><span class="lineNum">    2744 </span>            :         .probe = amdgpu_pci_probe,</a>
-<a name="2745"><span class="lineNum">    2745 </span>            :         .remove = amdgpu_pci_remove,</a>
-<a name="2746"><span class="lineNum">    2746 </span>            :         .shutdown = amdgpu_pci_shutdown,</a>
-<a name="2747"><span class="lineNum">    2747 </span>            :         .driver.pm = &amp;amdgpu_pm_ops,</a>
-<a name="2748"><span class="lineNum">    2748 </span>            :         .err_handler = &amp;amdgpu_pci_err_handler,</a>
-<a name="2749"><span class="lineNum">    2749 </span>            :         .dev_groups = amdgpu_sysfs_groups,</a>
-<a name="2750"><span class="lineNum">    2750 </span>            : };</a>
-<a name="2751"><span class="lineNum">    2751 </span>            : </a>
-<a name="2752"><span class="lineNum">    2752 </span><span class="lineCov">          1 : static int __init amdgpu_init(void)</span></a>
-<a name="2753"><span class="lineNum">    2753 </span>            : {</a>
-<a name="2754"><span class="lineNum">    2754 </span>            :         int r;</a>
-<a name="2755"><span class="lineNum">    2755 </span>            : </a>
-<a name="2756"><span class="lineNum">    2756 </span><span class="lineCov">          1 :         if (drm_firmware_drivers_only())</span></a>
-<a name="2757"><span class="lineNum">    2757 </span>            :                 return -EINVAL;</a>
+<a name="2666"><span class="lineNum">    2666 </span>            : </a>
+<a name="2667"><span class="lineNum">    2667 </span><span class="lineNoCov">          0 :         if (filp-&gt;f_op != &amp;amdgpu_driver_kms_fops) {</span></a>
+<a name="2668"><span class="lineNum">    2668 </span>            :                 return -EINVAL;</a>
+<a name="2669"><span class="lineNum">    2669 </span>            :         }</a>
+<a name="2670"><span class="lineNum">    2670 </span>            : </a>
+<a name="2671"><span class="lineNum">    2671 </span><span class="lineNoCov">          0 :         file = filp-&gt;private_data;</span></a>
+<a name="2672"><span class="lineNum">    2672 </span><span class="lineNoCov">          0 :         *fpriv = file-&gt;driver_priv;</span></a>
+<a name="2673"><span class="lineNum">    2673 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="2674"><span class="lineNum">    2674 </span>            : }</a>
+<a name="2675"><span class="lineNum">    2675 </span>            : </a>
+<a name="2676"><span class="lineNum">    2676 </span>            : const struct drm_ioctl_desc amdgpu_ioctls_kms[] = {</a>
+<a name="2677"><span class="lineNum">    2677 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_GEM_CREATE, amdgpu_gem_create_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
+<a name="2678"><span class="lineNum">    2678 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_CTX, amdgpu_ctx_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
+<a name="2679"><span class="lineNum">    2679 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_VM, amdgpu_vm_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
+<a name="2680"><span class="lineNum">    2680 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_SCHED, amdgpu_sched_ioctl, DRM_MASTER),</a>
+<a name="2681"><span class="lineNum">    2681 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_BO_LIST, amdgpu_bo_list_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
+<a name="2682"><span class="lineNum">    2682 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_FENCE_TO_HANDLE, amdgpu_cs_fence_to_handle_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
+<a name="2683"><span class="lineNum">    2683 </span>            :         /* KMS */</a>
+<a name="2684"><span class="lineNum">    2684 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_GEM_MMAP, amdgpu_gem_mmap_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
+<a name="2685"><span class="lineNum">    2685 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_GEM_WAIT_IDLE, amdgpu_gem_wait_idle_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
+<a name="2686"><span class="lineNum">    2686 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_CS, amdgpu_cs_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
+<a name="2687"><span class="lineNum">    2687 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_INFO, amdgpu_info_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
+<a name="2688"><span class="lineNum">    2688 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_WAIT_CS, amdgpu_cs_wait_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
+<a name="2689"><span class="lineNum">    2689 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_WAIT_FENCES, amdgpu_cs_wait_fences_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
+<a name="2690"><span class="lineNum">    2690 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_GEM_METADATA, amdgpu_gem_metadata_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
+<a name="2691"><span class="lineNum">    2691 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_GEM_VA, amdgpu_gem_va_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
+<a name="2692"><span class="lineNum">    2692 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_GEM_OP, amdgpu_gem_op_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
+<a name="2693"><span class="lineNum">    2693 </span>            :         DRM_IOCTL_DEF_DRV(AMDGPU_GEM_USERPTR, amdgpu_gem_userptr_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),</a>
+<a name="2694"><span class="lineNum">    2694 </span>            : };</a>
+<a name="2695"><span class="lineNum">    2695 </span>            : </a>
+<a name="2696"><span class="lineNum">    2696 </span>            : static const struct drm_driver amdgpu_kms_driver = {</a>
+<a name="2697"><span class="lineNum">    2697 </span>            :         .driver_features =</a>
+<a name="2698"><span class="lineNum">    2698 </span>            :             DRIVER_ATOMIC |</a>
+<a name="2699"><span class="lineNum">    2699 </span>            :             DRIVER_GEM |</a>
+<a name="2700"><span class="lineNum">    2700 </span>            :             DRIVER_RENDER | DRIVER_MODESET | DRIVER_SYNCOBJ |</a>
+<a name="2701"><span class="lineNum">    2701 </span>            :             DRIVER_SYNCOBJ_TIMELINE,</a>
+<a name="2702"><span class="lineNum">    2702 </span>            :         .open = amdgpu_driver_open_kms,</a>
+<a name="2703"><span class="lineNum">    2703 </span>            :         .postclose = amdgpu_driver_postclose_kms,</a>
+<a name="2704"><span class="lineNum">    2704 </span>            :         .lastclose = amdgpu_driver_lastclose_kms,</a>
+<a name="2705"><span class="lineNum">    2705 </span>            :         .ioctls = amdgpu_ioctls_kms,</a>
+<a name="2706"><span class="lineNum">    2706 </span>            :         .num_ioctls = ARRAY_SIZE(amdgpu_ioctls_kms),</a>
+<a name="2707"><span class="lineNum">    2707 </span>            :         .dumb_create = amdgpu_mode_dumb_create,</a>
+<a name="2708"><span class="lineNum">    2708 </span>            :         .dumb_map_offset = amdgpu_mode_dumb_mmap,</a>
+<a name="2709"><span class="lineNum">    2709 </span>            :         .fops = &amp;amdgpu_driver_kms_fops,</a>
+<a name="2710"><span class="lineNum">    2710 </span>            :         .release = &amp;amdgpu_driver_release_kms,</a>
+<a name="2711"><span class="lineNum">    2711 </span>            : </a>
+<a name="2712"><span class="lineNum">    2712 </span>            :         .prime_handle_to_fd = drm_gem_prime_handle_to_fd,</a>
+<a name="2713"><span class="lineNum">    2713 </span>            :         .prime_fd_to_handle = drm_gem_prime_fd_to_handle,</a>
+<a name="2714"><span class="lineNum">    2714 </span>            :         .gem_prime_import = amdgpu_gem_prime_import,</a>
+<a name="2715"><span class="lineNum">    2715 </span>            :         .gem_prime_mmap = drm_gem_prime_mmap,</a>
+<a name="2716"><span class="lineNum">    2716 </span>            : </a>
+<a name="2717"><span class="lineNum">    2717 </span>            :         .name = DRIVER_NAME,</a>
+<a name="2718"><span class="lineNum">    2718 </span>            :         .desc = DRIVER_DESC,</a>
+<a name="2719"><span class="lineNum">    2719 </span>            :         .date = DRIVER_DATE,</a>
+<a name="2720"><span class="lineNum">    2720 </span>            :         .major = KMS_DRIVER_MAJOR,</a>
+<a name="2721"><span class="lineNum">    2721 </span>            :         .minor = KMS_DRIVER_MINOR,</a>
+<a name="2722"><span class="lineNum">    2722 </span>            :         .patchlevel = KMS_DRIVER_PATCHLEVEL,</a>
+<a name="2723"><span class="lineNum">    2723 </span>            : };</a>
+<a name="2724"><span class="lineNum">    2724 </span>            : </a>
+<a name="2725"><span class="lineNum">    2725 </span>            : static struct pci_error_handlers amdgpu_pci_err_handler = {</a>
+<a name="2726"><span class="lineNum">    2726 </span>            :         .error_detected = amdgpu_pci_error_detected,</a>
+<a name="2727"><span class="lineNum">    2727 </span>            :         .mmio_enabled   = amdgpu_pci_mmio_enabled,</a>
+<a name="2728"><span class="lineNum">    2728 </span>            :         .slot_reset     = amdgpu_pci_slot_reset,</a>
+<a name="2729"><span class="lineNum">    2729 </span>            :         .resume         = amdgpu_pci_resume,</a>
+<a name="2730"><span class="lineNum">    2730 </span>            : };</a>
+<a name="2731"><span class="lineNum">    2731 </span>            : </a>
+<a name="2732"><span class="lineNum">    2732 </span>            : extern const struct attribute_group amdgpu_vram_mgr_attr_group;</a>
+<a name="2733"><span class="lineNum">    2733 </span>            : extern const struct attribute_group amdgpu_gtt_mgr_attr_group;</a>
+<a name="2734"><span class="lineNum">    2734 </span>            : extern const struct attribute_group amdgpu_vbios_version_attr_group;</a>
+<a name="2735"><span class="lineNum">    2735 </span>            : </a>
+<a name="2736"><span class="lineNum">    2736 </span>            : static const struct attribute_group *amdgpu_sysfs_groups[] = {</a>
+<a name="2737"><span class="lineNum">    2737 </span>            :         &amp;amdgpu_vram_mgr_attr_group,</a>
+<a name="2738"><span class="lineNum">    2738 </span>            :         &amp;amdgpu_gtt_mgr_attr_group,</a>
+<a name="2739"><span class="lineNum">    2739 </span>            :         &amp;amdgpu_vbios_version_attr_group,</a>
+<a name="2740"><span class="lineNum">    2740 </span>            :         NULL,</a>
+<a name="2741"><span class="lineNum">    2741 </span>            : };</a>
+<a name="2742"><span class="lineNum">    2742 </span>            : </a>
+<a name="2743"><span class="lineNum">    2743 </span>            : </a>
+<a name="2744"><span class="lineNum">    2744 </span>            : static struct pci_driver amdgpu_kms_pci_driver = {</a>
+<a name="2745"><span class="lineNum">    2745 </span>            :         .name = DRIVER_NAME,</a>
+<a name="2746"><span class="lineNum">    2746 </span>            :         .id_table = pciidlist,</a>
+<a name="2747"><span class="lineNum">    2747 </span>            :         .probe = amdgpu_pci_probe,</a>
+<a name="2748"><span class="lineNum">    2748 </span>            :         .remove = amdgpu_pci_remove,</a>
+<a name="2749"><span class="lineNum">    2749 </span>            :         .shutdown = amdgpu_pci_shutdown,</a>
+<a name="2750"><span class="lineNum">    2750 </span>            :         .driver.pm = &amp;amdgpu_pm_ops,</a>
+<a name="2751"><span class="lineNum">    2751 </span>            :         .err_handler = &amp;amdgpu_pci_err_handler,</a>
+<a name="2752"><span class="lineNum">    2752 </span>            :         .dev_groups = amdgpu_sysfs_groups,</a>
+<a name="2753"><span class="lineNum">    2753 </span>            : };</a>
+<a name="2754"><span class="lineNum">    2754 </span>            : </a>
+<a name="2755"><span class="lineNum">    2755 </span><span class="lineCov">          1 : static int __init amdgpu_init(void)</span></a>
+<a name="2756"><span class="lineNum">    2756 </span>            : {</a>
+<a name="2757"><span class="lineNum">    2757 </span>            :         int r;</a>
 <a name="2758"><span class="lineNum">    2758 </span>            : </a>
-<a name="2759"><span class="lineNum">    2759 </span><span class="lineCov">          1 :         r = amdgpu_sync_init();</span></a>
-<a name="2760"><span class="lineNum">    2760 </span><span class="lineCov">          1 :         if (r)</span></a>
-<a name="2761"><span class="lineNum">    2761 </span>            :                 goto error_sync;</a>
-<a name="2762"><span class="lineNum">    2762 </span>            : </a>
-<a name="2763"><span class="lineNum">    2763 </span><span class="lineCov">          1 :         r = amdgpu_fence_slab_init();</span></a>
-<a name="2764"><span class="lineNum">    2764 </span><span class="lineCov">          1 :         if (r)</span></a>
-<a name="2765"><span class="lineNum">    2765 </span>            :                 goto error_fence;</a>
-<a name="2766"><span class="lineNum">    2766 </span>            : </a>
-<a name="2767"><span class="lineNum">    2767 </span><span class="lineCov">          1 :         DRM_INFO(&quot;amdgpu kernel modesetting enabled.\n&quot;);</span></a>
-<a name="2768"><span class="lineNum">    2768 </span>            :         amdgpu_register_atpx_handler();</a>
-<a name="2769"><span class="lineNum">    2769 </span>            :         amdgpu_acpi_detect();</a>
-<a name="2770"><span class="lineNum">    2770 </span>            : </a>
-<a name="2771"><span class="lineNum">    2771 </span>            :         /* Ignore KFD init failures. Normal when CONFIG_HSA_AMD is not set. */</a>
-<a name="2772"><span class="lineNum">    2772 </span><span class="lineCov">          1 :         amdgpu_amdkfd_init();</span></a>
+<a name="2759"><span class="lineNum">    2759 </span><span class="lineCov">          1 :         if (drm_firmware_drivers_only())</span></a>
+<a name="2760"><span class="lineNum">    2760 </span>            :                 return -EINVAL;</a>
+<a name="2761"><span class="lineNum">    2761 </span>            : </a>
+<a name="2762"><span class="lineNum">    2762 </span><span class="lineCov">          1 :         r = amdgpu_sync_init();</span></a>
+<a name="2763"><span class="lineNum">    2763 </span><span class="lineCov">          1 :         if (r)</span></a>
+<a name="2764"><span class="lineNum">    2764 </span>            :                 goto error_sync;</a>
+<a name="2765"><span class="lineNum">    2765 </span>            : </a>
+<a name="2766"><span class="lineNum">    2766 </span><span class="lineCov">          1 :         r = amdgpu_fence_slab_init();</span></a>
+<a name="2767"><span class="lineNum">    2767 </span><span class="lineCov">          1 :         if (r)</span></a>
+<a name="2768"><span class="lineNum">    2768 </span>            :                 goto error_fence;</a>
+<a name="2769"><span class="lineNum">    2769 </span>            : </a>
+<a name="2770"><span class="lineNum">    2770 </span><span class="lineCov">          1 :         DRM_INFO(&quot;amdgpu kernel modesetting enabled.\n&quot;);</span></a>
+<a name="2771"><span class="lineNum">    2771 </span>            :         amdgpu_register_atpx_handler();</a>
+<a name="2772"><span class="lineNum">    2772 </span>            :         amdgpu_acpi_detect();</a>
 <a name="2773"><span class="lineNum">    2773 </span>            : </a>
-<a name="2774"><span class="lineNum">    2774 </span>            :         /* let modprobe override vga console setting */</a>
-<a name="2775"><span class="lineNum">    2775 </span><span class="lineCov">          1 :         return pci_register_driver(&amp;amdgpu_kms_pci_driver);</span></a>
+<a name="2774"><span class="lineNum">    2774 </span>            :         /* Ignore KFD init failures. Normal when CONFIG_HSA_AMD is not set. */</a>
+<a name="2775"><span class="lineNum">    2775 </span><span class="lineCov">          1 :         amdgpu_amdkfd_init();</span></a>
 <a name="2776"><span class="lineNum">    2776 </span>            : </a>
-<a name="2777"><span class="lineNum">    2777 </span>            : error_fence:</a>
-<a name="2778"><span class="lineNum">    2778 </span><span class="lineNoCov">          0 :         amdgpu_sync_fini();</span></a>
+<a name="2777"><span class="lineNum">    2777 </span>            :         /* let modprobe override vga console setting */</a>
+<a name="2778"><span class="lineNum">    2778 </span><span class="lineCov">          1 :         return pci_register_driver(&amp;amdgpu_kms_pci_driver);</span></a>
 <a name="2779"><span class="lineNum">    2779 </span>            : </a>
-<a name="2780"><span class="lineNum">    2780 </span>            : error_sync:</a>
-<a name="2781"><span class="lineNum">    2781 </span>            :         return r;</a>
-<a name="2782"><span class="lineNum">    2782 </span>            : }</a>
-<a name="2783"><span class="lineNum">    2783 </span>            : </a>
-<a name="2784"><span class="lineNum">    2784 </span><span class="lineNoCov">          0 : static void __exit amdgpu_exit(void)</span></a>
-<a name="2785"><span class="lineNum">    2785 </span>            : {</a>
-<a name="2786"><span class="lineNum">    2786 </span><span class="lineNoCov">          0 :         amdgpu_amdkfd_fini();</span></a>
-<a name="2787"><span class="lineNum">    2787 </span><span class="lineNoCov">          0 :         pci_unregister_driver(&amp;amdgpu_kms_pci_driver);</span></a>
-<a name="2788"><span class="lineNum">    2788 </span>            :         amdgpu_unregister_atpx_handler();</a>
-<a name="2789"><span class="lineNum">    2789 </span><span class="lineNoCov">          0 :         amdgpu_sync_fini();</span></a>
-<a name="2790"><span class="lineNum">    2790 </span><span class="lineNoCov">          0 :         amdgpu_fence_slab_fini();</span></a>
-<a name="2791"><span class="lineNum">    2791 </span>            :         mmu_notifier_synchronize();</a>
-<a name="2792"><span class="lineNum">    2792 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="2793"><span class="lineNum">    2793 </span>            : </a>
-<a name="2794"><span class="lineNum">    2794 </span>            : module_init(amdgpu_init);</a>
-<a name="2795"><span class="lineNum">    2795 </span>            : module_exit(amdgpu_exit);</a>
+<a name="2780"><span class="lineNum">    2780 </span>            : error_fence:</a>
+<a name="2781"><span class="lineNum">    2781 </span><span class="lineNoCov">          0 :         amdgpu_sync_fini();</span></a>
+<a name="2782"><span class="lineNum">    2782 </span>            : </a>
+<a name="2783"><span class="lineNum">    2783 </span>            : error_sync:</a>
+<a name="2784"><span class="lineNum">    2784 </span>            :         return r;</a>
+<a name="2785"><span class="lineNum">    2785 </span>            : }</a>
+<a name="2786"><span class="lineNum">    2786 </span>            : </a>
+<a name="2787"><span class="lineNum">    2787 </span><span class="lineNoCov">          0 : static void __exit amdgpu_exit(void)</span></a>
+<a name="2788"><span class="lineNum">    2788 </span>            : {</a>
+<a name="2789"><span class="lineNum">    2789 </span><span class="lineNoCov">          0 :         amdgpu_amdkfd_fini();</span></a>
+<a name="2790"><span class="lineNum">    2790 </span><span class="lineNoCov">          0 :         pci_unregister_driver(&amp;amdgpu_kms_pci_driver);</span></a>
+<a name="2791"><span class="lineNum">    2791 </span>            :         amdgpu_unregister_atpx_handler();</a>
+<a name="2792"><span class="lineNum">    2792 </span><span class="lineNoCov">          0 :         amdgpu_sync_fini();</span></a>
+<a name="2793"><span class="lineNum">    2793 </span><span class="lineNoCov">          0 :         amdgpu_fence_slab_fini();</span></a>
+<a name="2794"><span class="lineNum">    2794 </span>            :         mmu_notifier_synchronize();</a>
+<a name="2795"><span class="lineNum">    2795 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="2796"><span class="lineNum">    2796 </span>            : </a>
-<a name="2797"><span class="lineNum">    2797 </span>            : MODULE_AUTHOR(DRIVER_AUTHOR);</a>
-<a name="2798"><span class="lineNum">    2798 </span>            : MODULE_DESCRIPTION(DRIVER_DESC);</a>
-<a name="2799"><span class="lineNum">    2799 </span>            : MODULE_LICENSE(&quot;GPL and additional rights&quot;);</a>
+<a name="2797"><span class="lineNum">    2797 </span>            : module_init(amdgpu_init);</a>
+<a name="2798"><span class="lineNum">    2798 </span>            : module_exit(amdgpu_exit);</a>
+<a name="2799"><span class="lineNum">    2799 </span>            : </a>
+<a name="2800"><span class="lineNum">    2800 </span>            : MODULE_AUTHOR(DRIVER_AUTHOR);</a>
+<a name="2801"><span class="lineNum">    2801 </span>            : MODULE_DESCRIPTION(DRIVER_DESC);</a>
+<a name="2802"><span class="lineNum">    2802 </span>            : MODULE_LICENSE(&quot;GPL and additional rights&quot;);</a>
 </pre>
       </td>
     </tr>

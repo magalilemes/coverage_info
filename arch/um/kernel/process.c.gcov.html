@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -106,7 +106,7 @@
 <a name="44"><span class="lineNum">      44 </span>            : static inline int external_pid(void)</a>
 <a name="45"><span class="lineNum">      45 </span>            : {</a>
 <a name="46"><span class="lineNum">      46 </span>            :         /* FIXME: Need to look up userspace_pid by cpu */</a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">        616 :         return userspace_pid[0];</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">        618 :         return userspace_pid[0];</span></a>
 <a name="48"><span class="lineNum">      48 </span>            : }</a>
 <a name="49"><span class="lineNum">      49 </span>            : </a>
 <a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 : int pid_to_processor_id(int pid)</span></a>
@@ -139,21 +139,21 @@
 <a name="77"><span class="lineNum">      77 </span>            : </a>
 <a name="78"><span class="lineNum">      78 </span>            : static inline void set_current(struct task_struct *task)</a>
 <a name="79"><span class="lineNum">      79 </span>            : {</a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">       1232 :         cpu_tasks[task_thread_info(task)-&gt;cpu] = ((struct cpu_task)</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">       1236 :         cpu_tasks[task_thread_info(task)-&gt;cpu] = ((struct cpu_task)</span></a>
 <a name="81"><span class="lineNum">      81 </span>            :                 { external_pid(), task });</a>
 <a name="82"><span class="lineNum">      82 </span>            : }</a>
 <a name="83"><span class="lineNum">      83 </span>            : </a>
 <a name="84"><span class="lineNum">      84 </span>            : extern void arch_switch_to(struct task_struct *to);</a>
 <a name="85"><span class="lineNum">      85 </span>            : </a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        616 : void *__switch_to(struct task_struct *from, struct task_struct *to)</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">        618 : void *__switch_to(struct task_struct *from, struct task_struct *to)</span></a>
 <a name="87"><span class="lineNum">      87 </span>            : {</a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">        616 :         to-&gt;thread.prev_sched = from;</span></a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        616 :         set_current(to);</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">        618 :         to-&gt;thread.prev_sched = from;</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">        618 :         set_current(to);</span></a>
 <a name="90"><span class="lineNum">      90 </span>            : </a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineCov">        616 :         switch_threads(&amp;from-&gt;thread.switch_buf, &amp;to-&gt;thread.switch_buf);</span></a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineCov">        509 :         arch_switch_to(current);</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">        618 :         switch_threads(&amp;from-&gt;thread.switch_buf, &amp;to-&gt;thread.switch_buf);</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">        511 :         arch_switch_to(current);</span></a>
 <a name="93"><span class="lineNum">      93 </span>            : </a>
-<a name="94"><span class="lineNum">      94 </span><span class="lineCov">        509 :         return current-&gt;thread.prev_sched;</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineCov">        511 :         return current-&gt;thread.prev_sched;</span></a>
 <a name="95"><span class="lineNum">      95 </span>            : }</a>
 <a name="96"><span class="lineNum">      96 </span>            : </a>
 <a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 : void interrupt_end(void)</span></a>

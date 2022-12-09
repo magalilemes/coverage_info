@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -286,17 +286,17 @@
 <a name="224"><span class="lineNum">     224 </span>            : </a>
 <a name="225"><span class="lineNum">     225 </span>            : static inline void irqd_clear(struct irq_data *d, unsigned int mask)</a>
 <a name="226"><span class="lineNum">     226 </span>            : {</a>
-<a name="227"><span class="lineNum">     227 </span><span class="lineCov">         15 :         __irqd_to_state(d) &amp;= ~mask;</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineCov">         19 :         __irqd_to_state(d) &amp;= ~mask;</span></a>
 <a name="228"><span class="lineNum">     228 </span>            : }</a>
 <a name="229"><span class="lineNum">     229 </span>            : </a>
 <a name="230"><span class="lineNum">     230 </span>            : static inline void irqd_set(struct irq_data *d, unsigned int mask)</a>
 <a name="231"><span class="lineNum">     231 </span>            : {</a>
-<a name="232"><span class="lineNum">     232 </span><span class="lineCov">        267 :         __irqd_to_state(d) |= mask;</span></a>
+<a name="232"><span class="lineNum">     232 </span><span class="lineCov">        271 :         __irqd_to_state(d) |= mask;</span></a>
 <a name="233"><span class="lineNum">     233 </span>            : }</a>
 <a name="234"><span class="lineNum">     234 </span>            : </a>
 <a name="235"><span class="lineNum">     235 </span>            : static inline bool irqd_has_set(struct irq_data *d, unsigned int mask)</a>
 <a name="236"><span class="lineNum">     236 </span>            : {</a>
-<a name="237"><span class="lineNum">     237 </span><span class="lineCov">          9 :         return __irqd_to_state(d) &amp; mask;</span></a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineCov">         13 :         return __irqd_to_state(d) &amp; mask;</span></a>
 <a name="238"><span class="lineNum">     238 </span>            : }</a>
 <a name="239"><span class="lineNum">     239 </span>            : </a>
 <a name="240"><span class="lineNum">     240 </span>            : static inline void irq_state_set_disabled(struct irq_desc *desc)</a>
@@ -313,14 +313,14 @@
 <a name="251"><span class="lineNum">     251 </span>            : </a>
 <a name="252"><span class="lineNum">     252 </span>            : static inline void __kstat_incr_irqs_this_cpu(struct irq_desc *desc)</a>
 <a name="253"><span class="lineNum">     253 </span>            : {</a>
-<a name="254"><span class="lineNum">     254 </span><span class="lineCov">          9 :         __this_cpu_inc(*desc-&gt;kstat_irqs);</span></a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineCov">          9 :         __this_cpu_inc(kstat.irqs_sum);</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">         13 :         __this_cpu_inc(*desc-&gt;kstat_irqs);</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineCov">         13 :         __this_cpu_inc(kstat.irqs_sum);</span></a>
 <a name="256"><span class="lineNum">     256 </span>            : }</a>
 <a name="257"><span class="lineNum">     257 </span>            : </a>
 <a name="258"><span class="lineNum">     258 </span>            : static inline void kstat_incr_irqs_this_cpu(struct irq_desc *desc)</a>
 <a name="259"><span class="lineNum">     259 </span>            : {</a>
-<a name="260"><span class="lineNum">     260 </span><span class="lineCov">          9 :         __kstat_incr_irqs_this_cpu(desc);</span></a>
-<a name="261"><span class="lineNum">     261 </span><span class="lineCov">          9 :         desc-&gt;tot_count++;</span></a>
+<a name="260"><span class="lineNum">     260 </span><span class="lineCov">         13 :         __kstat_incr_irqs_this_cpu(desc);</span></a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineCov">         13 :         desc-&gt;tot_count++;</span></a>
 <a name="262"><span class="lineNum">     262 </span>            : }</a>
 <a name="263"><span class="lineNum">     263 </span>            : </a>
 <a name="264"><span class="lineNum">     264 </span>            : static inline int irq_desc_get_node(struct irq_desc *desc)</a>

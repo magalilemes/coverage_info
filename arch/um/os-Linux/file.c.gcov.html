@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">9</td>
@@ -302,23 +302,23 @@
 <a name="240"><span class="lineNum">     240 </span>            :         return err;</a>
 <a name="241"><span class="lineNum">     241 </span>            : }</a>
 <a name="242"><span class="lineNum">     242 </span>            : </a>
-<a name="243"><span class="lineNum">     243 </span><span class="lineCov">          5 : void os_close_file(int fd)</span></a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineCov">          1 : void os_close_file(int fd)</span></a>
 <a name="244"><span class="lineNum">     244 </span>            : {</a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineCov">          5 :         close(fd);</span></a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineCov">          5 : }</span></a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineCov">          5 : int os_fsync_file(int fd)</span></a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineCov">          1 :         close(fd);</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineCov">          1 : }</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineCov">          1 : int os_fsync_file(int fd)</span></a>
 <a name="248"><span class="lineNum">     248 </span>            : {</a>
-<a name="249"><span class="lineNum">     249 </span><span class="lineCov">          5 :         if (fsync(fd) &lt; 0)</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineCov">          1 :         if (fsync(fd) &lt; 0)</span></a>
 <a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 :             return -errno;</span></a>
 <a name="251"><span class="lineNum">     251 </span>            :         return 0;</a>
 <a name="252"><span class="lineNum">     252 </span>            : }</a>
 <a name="253"><span class="lineNum">     253 </span>            : </a>
-<a name="254"><span class="lineNum">     254 </span><span class="lineCov">          5 : int os_seek_file(int fd, unsigned long long offset)</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineCov">          1 : int os_seek_file(int fd, unsigned long long offset)</span></a>
 <a name="255"><span class="lineNum">     255 </span>            : {</a>
 <a name="256"><span class="lineNum">     256 </span>            :         unsigned long long actual;</a>
 <a name="257"><span class="lineNum">     257 </span>            : </a>
-<a name="258"><span class="lineNum">     258 </span><span class="lineCov">          5 :         actual = lseek64(fd, offset, SEEK_SET);</span></a>
-<a name="259"><span class="lineNum">     259 </span><span class="lineCov">          5 :         if (actual != offset)</span></a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineCov">          1 :         actual = lseek64(fd, offset, SEEK_SET);</span></a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineCov">          1 :         if (actual != offset)</span></a>
 <a name="260"><span class="lineNum">     260 </span><span class="lineNoCov">          0 :                 return -errno;</span></a>
 <a name="261"><span class="lineNum">     261 </span>            :         return 0;</a>
 <a name="262"><span class="lineNum">     262 </span>            : }</a>
@@ -341,11 +341,11 @@
 <a name="279"><span class="lineNum">     279 </span>            :         return n;</a>
 <a name="280"><span class="lineNum">     280 </span>            : }</a>
 <a name="281"><span class="lineNum">     281 </span>            : </a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineCov">          5 : int os_write_file(int fd, const void *buf, int len)</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineCov">          1 : int os_write_file(int fd, const void *buf, int len)</span></a>
 <a name="283"><span class="lineNum">     283 </span>            : {</a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          5 :         int n = write(fd, (void *) buf, len);</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineCov">          1 :         int n = write(fd, (void *) buf, len);</span></a>
 <a name="285"><span class="lineNum">     285 </span>            : </a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          5 :         if (n &lt; 0)</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">          1 :         if (n &lt; 0)</span></a>
 <a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :                 return -errno;</span></a>
 <a name="288"><span class="lineNum">     288 </span>            :         return n;</a>
 <a name="289"><span class="lineNum">     289 </span>            : }</a>
@@ -423,13 +423,13 @@
 <a name="361"><span class="lineNum">     361 </span><span class="lineNoCov">          0 :         return 0;</span></a>
 <a name="362"><span class="lineNum">     362 </span>            : }</a>
 <a name="363"><span class="lineNum">     363 </span>            : </a>
-<a name="364"><span class="lineNum">     364 </span><span class="lineCov">         15 : int os_set_exec_close(int fd)</span></a>
+<a name="364"><span class="lineNum">     364 </span><span class="lineCov">          3 : int os_set_exec_close(int fd)</span></a>
 <a name="365"><span class="lineNum">     365 </span>            : {</a>
 <a name="366"><span class="lineNum">     366 </span>            :         int err;</a>
 <a name="367"><span class="lineNum">     367 </span>            : </a>
-<a name="368"><span class="lineNum">     368 </span><span class="lineCov">         15 :         CATCH_EINTR(err = fcntl(fd, F_SETFD, FD_CLOEXEC));</span></a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineCov">          3 :         CATCH_EINTR(err = fcntl(fd, F_SETFD, FD_CLOEXEC));</span></a>
 <a name="369"><span class="lineNum">     369 </span>            : </a>
-<a name="370"><span class="lineNum">     370 </span><span class="lineCov">         15 :         if (err &lt; 0)</span></a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineCov">          3 :         if (err &lt; 0)</span></a>
 <a name="371"><span class="lineNum">     371 </span><span class="lineNoCov">          0 :                 return -errno;</span></a>
 <a name="372"><span class="lineNum">     372 </span>            :         return err;</a>
 <a name="373"><span class="lineNum">     373 </span>            : }</a>
@@ -463,24 +463,24 @@
 <a name="401"><span class="lineNum">     401 </span><span class="lineNoCov">          0 :         return err;</span></a>
 <a name="402"><span class="lineNum">     402 </span>            : }</a>
 <a name="403"><span class="lineNum">     403 </span>            : </a>
-<a name="404"><span class="lineNum">     404 </span><span class="lineCov">          5 : int os_set_fd_async(int fd)</span></a>
+<a name="404"><span class="lineNum">     404 </span><span class="lineCov">          1 : int os_set_fd_async(int fd)</span></a>
 <a name="405"><span class="lineNum">     405 </span>            : {</a>
 <a name="406"><span class="lineNum">     406 </span>            :         int err, flags;</a>
 <a name="407"><span class="lineNum">     407 </span>            : </a>
-<a name="408"><span class="lineNum">     408 </span><span class="lineCov">          5 :         flags = fcntl(fd, F_GETFL);</span></a>
-<a name="409"><span class="lineNum">     409 </span><span class="lineCov">          5 :         if (flags &lt; 0)</span></a>
+<a name="408"><span class="lineNum">     408 </span><span class="lineCov">          1 :         flags = fcntl(fd, F_GETFL);</span></a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineCov">          1 :         if (flags &lt; 0)</span></a>
 <a name="410"><span class="lineNum">     410 </span><span class="lineNoCov">          0 :                 return -errno;</span></a>
 <a name="411"><span class="lineNum">     411 </span>            : </a>
-<a name="412"><span class="lineNum">     412 </span><span class="lineCov">          5 :         flags |= O_ASYNC | O_NONBLOCK;</span></a>
-<a name="413"><span class="lineNum">     413 </span><span class="lineCov">          5 :         if (fcntl(fd, F_SETFL, flags) &lt; 0) {</span></a>
+<a name="412"><span class="lineNum">     412 </span><span class="lineCov">          1 :         flags |= O_ASYNC | O_NONBLOCK;</span></a>
+<a name="413"><span class="lineNum">     413 </span><span class="lineCov">          1 :         if (fcntl(fd, F_SETFL, flags) &lt; 0) {</span></a>
 <a name="414"><span class="lineNum">     414 </span><span class="lineNoCov">          0 :                 err = -errno;</span></a>
 <a name="415"><span class="lineNum">     415 </span><span class="lineNoCov">          0 :                 printk(UM_KERN_ERR &quot;os_set_fd_async : failed to set O_ASYNC &quot;</span></a>
 <a name="416"><span class="lineNum">     416 </span>            :                        &quot;and O_NONBLOCK on fd # %d, errno = %d\n&quot;, fd, errno);</a>
 <a name="417"><span class="lineNum">     417 </span><span class="lineNoCov">          0 :                 return err;</span></a>
 <a name="418"><span class="lineNum">     418 </span>            :         }</a>
 <a name="419"><span class="lineNum">     419 </span>            : </a>
-<a name="420"><span class="lineNum">     420 </span><span class="lineCov">         10 :         if ((fcntl(fd, F_SETSIG, SIGIO) &lt; 0) ||</span></a>
-<a name="421"><span class="lineNum">     421 </span><span class="lineCov">          5 :             (fcntl(fd, F_SETOWN, os_getpid()) &lt; 0)) {</span></a>
+<a name="420"><span class="lineNum">     420 </span><span class="lineCov">          2 :         if ((fcntl(fd, F_SETSIG, SIGIO) &lt; 0) ||</span></a>
+<a name="421"><span class="lineNum">     421 </span><span class="lineCov">          1 :             (fcntl(fd, F_SETOWN, os_getpid()) &lt; 0)) {</span></a>
 <a name="422"><span class="lineNum">     422 </span><span class="lineNoCov">          0 :                 err = -errno;</span></a>
 <a name="423"><span class="lineNum">     423 </span><span class="lineNoCov">          0 :                 printk(UM_KERN_ERR &quot;os_set_fd_async : Failed to fcntl F_SETOWN &quot;</span></a>
 <a name="424"><span class="lineNum">     424 </span>            :                        &quot;(or F_SETSIG) fd %d, errno = %d\n&quot;, fd, errno);</a>
@@ -504,20 +504,20 @@
 <a name="442"><span class="lineNum">     442 </span>            :         return 0;</a>
 <a name="443"><span class="lineNum">     443 </span>            : }</a>
 <a name="444"><span class="lineNum">     444 </span>            : </a>
-<a name="445"><span class="lineNum">     445 </span><span class="lineCov">         15 : int os_set_fd_block(int fd, int blocking)</span></a>
+<a name="445"><span class="lineNum">     445 </span><span class="lineCov">          3 : int os_set_fd_block(int fd, int blocking)</span></a>
 <a name="446"><span class="lineNum">     446 </span>            : {</a>
 <a name="447"><span class="lineNum">     447 </span>            :         int flags;</a>
 <a name="448"><span class="lineNum">     448 </span>            : </a>
-<a name="449"><span class="lineNum">     449 </span><span class="lineCov">         15 :         flags = fcntl(fd, F_GETFL);</span></a>
-<a name="450"><span class="lineNum">     450 </span><span class="lineCov">         15 :         if (flags &lt; 0)</span></a>
+<a name="449"><span class="lineNum">     449 </span><span class="lineCov">          3 :         flags = fcntl(fd, F_GETFL);</span></a>
+<a name="450"><span class="lineNum">     450 </span><span class="lineCov">          3 :         if (flags &lt; 0)</span></a>
 <a name="451"><span class="lineNum">     451 </span><span class="lineNoCov">          0 :                 return -errno;</span></a>
 <a name="452"><span class="lineNum">     452 </span>            : </a>
-<a name="453"><span class="lineNum">     453 </span><span class="lineCov">         15 :         if (blocking)</span></a>
+<a name="453"><span class="lineNum">     453 </span><span class="lineCov">          3 :         if (blocking)</span></a>
 <a name="454"><span class="lineNum">     454 </span><span class="lineNoCov">          0 :                 flags &amp;= ~O_NONBLOCK;</span></a>
 <a name="455"><span class="lineNum">     455 </span>            :         else</a>
-<a name="456"><span class="lineNum">     456 </span><span class="lineCov">         15 :                 flags |= O_NONBLOCK;</span></a>
+<a name="456"><span class="lineNum">     456 </span><span class="lineCov">          3 :                 flags |= O_NONBLOCK;</span></a>
 <a name="457"><span class="lineNum">     457 </span>            : </a>
-<a name="458"><span class="lineNum">     458 </span><span class="lineCov">         15 :         if (fcntl(fd, F_SETFL, flags) &lt; 0)</span></a>
+<a name="458"><span class="lineNum">     458 </span><span class="lineCov">          3 :         if (fcntl(fd, F_SETFL, flags) &lt; 0)</span></a>
 <a name="459"><span class="lineNum">     459 </span><span class="lineNoCov">          0 :                 return -errno;</span></a>
 <a name="460"><span class="lineNum">     460 </span>            : </a>
 <a name="461"><span class="lineNum">     461 </span>            :         return 0;</a>
@@ -604,37 +604,37 @@
 <a name="542"><span class="lineNum">     542 </span><span class="lineNoCov">          0 :         return new;</span></a>
 <a name="543"><span class="lineNum">     543 </span>            : }</a>
 <a name="544"><span class="lineNum">     544 </span>            : </a>
-<a name="545"><span class="lineNum">     545 </span><span class="lineCov">          5 : int os_create_unix_socket(const char *file, int len, int close_on_exec)</span></a>
+<a name="545"><span class="lineNum">     545 </span><span class="lineCov">          1 : int os_create_unix_socket(const char *file, int len, int close_on_exec)</span></a>
 <a name="546"><span class="lineNum">     546 </span>            : {</a>
 <a name="547"><span class="lineNum">     547 </span>            :         struct sockaddr_un addr;</a>
 <a name="548"><span class="lineNum">     548 </span>            :         int sock, err;</a>
 <a name="549"><span class="lineNum">     549 </span>            : </a>
-<a name="550"><span class="lineNum">     550 </span><span class="lineCov">          5 :         sock = socket(PF_UNIX, SOCK_DGRAM, 0);</span></a>
-<a name="551"><span class="lineNum">     551 </span><span class="lineCov">          5 :         if (sock &lt; 0)</span></a>
+<a name="550"><span class="lineNum">     550 </span><span class="lineCov">          1 :         sock = socket(PF_UNIX, SOCK_DGRAM, 0);</span></a>
+<a name="551"><span class="lineNum">     551 </span><span class="lineCov">          1 :         if (sock &lt; 0)</span></a>
 <a name="552"><span class="lineNum">     552 </span><span class="lineNoCov">          0 :                 return -errno;</span></a>
 <a name="553"><span class="lineNum">     553 </span>            : </a>
-<a name="554"><span class="lineNum">     554 </span><span class="lineCov">          5 :         if (close_on_exec) {</span></a>
-<a name="555"><span class="lineNum">     555 </span><span class="lineCov">          5 :                 err = os_set_exec_close(sock);</span></a>
-<a name="556"><span class="lineNum">     556 </span><span class="lineCov">          5 :                 if (err &lt; 0)</span></a>
+<a name="554"><span class="lineNum">     554 </span><span class="lineCov">          1 :         if (close_on_exec) {</span></a>
+<a name="555"><span class="lineNum">     555 </span><span class="lineCov">          1 :                 err = os_set_exec_close(sock);</span></a>
+<a name="556"><span class="lineNum">     556 </span><span class="lineCov">          1 :                 if (err &lt; 0)</span></a>
 <a name="557"><span class="lineNum">     557 </span><span class="lineNoCov">          0 :                         printk(UM_KERN_ERR &quot;create_unix_socket : &quot;</span></a>
 <a name="558"><span class="lineNum">     558 </span>            :                                &quot;close_on_exec failed, err = %d&quot;, -err);</a>
 <a name="559"><span class="lineNum">     559 </span>            :         }</a>
 <a name="560"><span class="lineNum">     560 </span>            : </a>
-<a name="561"><span class="lineNum">     561 </span><span class="lineCov">          5 :         addr.sun_family = AF_UNIX;</span></a>
+<a name="561"><span class="lineNum">     561 </span><span class="lineCov">          1 :         addr.sun_family = AF_UNIX;</span></a>
 <a name="562"><span class="lineNum">     562 </span>            : </a>
-<a name="563"><span class="lineNum">     563 </span><span class="lineCov">          5 :         snprintf(addr.sun_path, len, &quot;%s&quot;, file);</span></a>
+<a name="563"><span class="lineNum">     563 </span><span class="lineCov">          1 :         snprintf(addr.sun_path, len, &quot;%s&quot;, file);</span></a>
 <a name="564"><span class="lineNum">     564 </span>            : </a>
-<a name="565"><span class="lineNum">     565 </span><span class="lineCov">          5 :         err = bind(sock, (struct sockaddr *) &amp;addr, sizeof(addr));</span></a>
-<a name="566"><span class="lineNum">     566 </span><span class="lineCov">          5 :         if (err &lt; 0)</span></a>
+<a name="565"><span class="lineNum">     565 </span><span class="lineCov">          1 :         err = bind(sock, (struct sockaddr *) &amp;addr, sizeof(addr));</span></a>
+<a name="566"><span class="lineNum">     566 </span><span class="lineCov">          1 :         if (err &lt; 0)</span></a>
 <a name="567"><span class="lineNum">     567 </span><span class="lineNoCov">          0 :                 return -errno;</span></a>
 <a name="568"><span class="lineNum">     568 </span>            : </a>
 <a name="569"><span class="lineNum">     569 </span>            :         return sock;</a>
 <a name="570"><span class="lineNum">     570 </span>            : }</a>
 <a name="571"><span class="lineNum">     571 </span>            : </a>
-<a name="572"><span class="lineNum">     572 </span><span class="lineCov">          5 : void os_flush_stdout(void)</span></a>
+<a name="572"><span class="lineNum">     572 </span><span class="lineCov">          1 : void os_flush_stdout(void)</span></a>
 <a name="573"><span class="lineNum">     573 </span>            : {</a>
-<a name="574"><span class="lineNum">     574 </span><span class="lineCov">          5 :         fflush(stdout);</span></a>
-<a name="575"><span class="lineNum">     575 </span><span class="lineCov">          5 : }</span></a>
+<a name="574"><span class="lineNum">     574 </span><span class="lineCov">          1 :         fflush(stdout);</span></a>
+<a name="575"><span class="lineNum">     575 </span><span class="lineCov">          1 : }</span></a>
 <a name="576"><span class="lineNum">     576 </span>            : </a>
 <a name="577"><span class="lineNum">     577 </span><span class="lineNoCov">          0 : int os_lock_file(int fd, int excl)</span></a>
 <a name="578"><span class="lineNum">     578 </span>            : {</a>

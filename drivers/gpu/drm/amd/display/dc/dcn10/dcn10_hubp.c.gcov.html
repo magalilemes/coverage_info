@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">472</td>
+            <td class="headerCovTableEntry">470</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -1270,185 +1270,182 @@
 <a name="1208"><span class="lineNum">    1208 </span><span class="lineNoCov">          0 :                         src_y_offset = pos-&gt;y - pos-&gt;x_hotspot - param-&gt;viewport.y;</span></a>
 <a name="1209"><span class="lineNum">    1209 </span>            :                 }</a>
 <a name="1210"><span class="lineNum">    1210 </span><span class="lineNoCov">          0 :         } else if (param-&gt;rotation == ROTATION_ANGLE_180) {</span></a>
-<a name="1211"><span class="lineNum">    1211 </span><span class="lineNoCov">          0 :                 src_x_offset = pos-&gt;x - param-&gt;viewport.x;</span></a>
-<a name="1212"><span class="lineNum">    1212 </span><span class="lineNoCov">          0 :                 src_y_offset = pos-&gt;y - param-&gt;viewport.y;</span></a>
-<a name="1213"><span class="lineNum">    1213 </span>            :         }</a>
-<a name="1214"><span class="lineNum">    1214 </span>            : </a>
-<a name="1215"><span class="lineNum">    1215 </span><span class="lineNoCov">          0 :         if (param-&gt;mirror) {</span></a>
-<a name="1216"><span class="lineNum">    1216 </span><span class="lineNoCov">          0 :                 x_hotspot = param-&gt;viewport.width - x_hotspot;</span></a>
-<a name="1217"><span class="lineNum">    1217 </span><span class="lineNoCov">          0 :                 src_x_offset = param-&gt;viewport.x + param-&gt;viewport.width - src_x_offset;</span></a>
-<a name="1218"><span class="lineNum">    1218 </span>            :         }</a>
-<a name="1219"><span class="lineNum">    1219 </span>            : </a>
-<a name="1220"><span class="lineNum">    1220 </span><span class="lineNoCov">          0 :         dst_x_offset = (src_x_offset &gt;= 0) ? src_x_offset : 0;</span></a>
-<a name="1221"><span class="lineNum">    1221 </span><span class="lineNoCov">          0 :         dst_x_offset *= param-&gt;ref_clk_khz;</span></a>
-<a name="1222"><span class="lineNum">    1222 </span><span class="lineNoCov">          0 :         dst_x_offset /= param-&gt;pixel_clk_khz;</span></a>
-<a name="1223"><span class="lineNum">    1223 </span>            : </a>
-<a name="1224"><span class="lineNum">    1224 </span><span class="lineNoCov">          0 :         ASSERT(param-&gt;h_scale_ratio.value);</span></a>
-<a name="1225"><span class="lineNum">    1225 </span>            : </a>
-<a name="1226"><span class="lineNum">    1226 </span><span class="lineNoCov">          0 :         if (param-&gt;h_scale_ratio.value)</span></a>
-<a name="1227"><span class="lineNum">    1227 </span><span class="lineNoCov">          0 :                 dst_x_offset = dc_fixpt_floor(dc_fixpt_div(</span></a>
-<a name="1228"><span class="lineNum">    1228 </span>            :                                 dc_fixpt_from_int(dst_x_offset),</a>
-<a name="1229"><span class="lineNum">    1229 </span>            :                                 param-&gt;h_scale_ratio));</a>
+<a name="1211"><span class="lineNum">    1211 </span><span class="lineNoCov">          0 :                 if (!param-&gt;mirror)</span></a>
+<a name="1212"><span class="lineNum">    1212 </span><span class="lineNoCov">          0 :                         src_x_offset = pos-&gt;x - param-&gt;viewport.x;</span></a>
+<a name="1213"><span class="lineNum">    1213 </span>            : </a>
+<a name="1214"><span class="lineNum">    1214 </span><span class="lineNoCov">          0 :                 src_y_offset = pos-&gt;y - param-&gt;viewport.y;</span></a>
+<a name="1215"><span class="lineNum">    1215 </span>            :         }</a>
+<a name="1216"><span class="lineNum">    1216 </span>            : </a>
+<a name="1217"><span class="lineNum">    1217 </span><span class="lineNoCov">          0 :         dst_x_offset = (src_x_offset &gt;= 0) ? src_x_offset : 0;</span></a>
+<a name="1218"><span class="lineNum">    1218 </span><span class="lineNoCov">          0 :         dst_x_offset *= param-&gt;ref_clk_khz;</span></a>
+<a name="1219"><span class="lineNum">    1219 </span><span class="lineNoCov">          0 :         dst_x_offset /= param-&gt;pixel_clk_khz;</span></a>
+<a name="1220"><span class="lineNum">    1220 </span>            : </a>
+<a name="1221"><span class="lineNum">    1221 </span><span class="lineNoCov">          0 :         ASSERT(param-&gt;h_scale_ratio.value);</span></a>
+<a name="1222"><span class="lineNum">    1222 </span>            : </a>
+<a name="1223"><span class="lineNum">    1223 </span><span class="lineNoCov">          0 :         if (param-&gt;h_scale_ratio.value)</span></a>
+<a name="1224"><span class="lineNum">    1224 </span><span class="lineNoCov">          0 :                 dst_x_offset = dc_fixpt_floor(dc_fixpt_div(</span></a>
+<a name="1225"><span class="lineNum">    1225 </span>            :                                 dc_fixpt_from_int(dst_x_offset),</a>
+<a name="1226"><span class="lineNum">    1226 </span>            :                                 param-&gt;h_scale_ratio));</a>
+<a name="1227"><span class="lineNum">    1227 </span>            : </a>
+<a name="1228"><span class="lineNum">    1228 </span><span class="lineNoCov">          0 :         if (src_x_offset &gt;= (int)param-&gt;viewport.width)</span></a>
+<a name="1229"><span class="lineNum">    1229 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond right edge*/</span></a>
 <a name="1230"><span class="lineNum">    1230 </span>            : </a>
-<a name="1231"><span class="lineNum">    1231 </span><span class="lineNoCov">          0 :         if (src_x_offset &gt;= (int)param-&gt;viewport.width)</span></a>
-<a name="1232"><span class="lineNum">    1232 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond right edge*/</span></a>
+<a name="1231"><span class="lineNum">    1231 </span><span class="lineNoCov">          0 :         if (src_x_offset + cursor_width &lt;= 0)</span></a>
+<a name="1232"><span class="lineNum">    1232 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond left edge*/</span></a>
 <a name="1233"><span class="lineNum">    1233 </span>            : </a>
-<a name="1234"><span class="lineNum">    1234 </span><span class="lineNoCov">          0 :         if (src_x_offset + cursor_width &lt;= 0)</span></a>
-<a name="1235"><span class="lineNum">    1235 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond left edge*/</span></a>
+<a name="1234"><span class="lineNum">    1234 </span><span class="lineNoCov">          0 :         if (src_y_offset &gt;= (int)param-&gt;viewport.height)</span></a>
+<a name="1235"><span class="lineNum">    1235 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond bottom edge*/</span></a>
 <a name="1236"><span class="lineNum">    1236 </span>            : </a>
-<a name="1237"><span class="lineNum">    1237 </span><span class="lineNoCov">          0 :         if (src_y_offset &gt;= (int)param-&gt;viewport.height)</span></a>
-<a name="1238"><span class="lineNum">    1238 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond bottom edge*/</span></a>
+<a name="1237"><span class="lineNum">    1237 </span><span class="lineNoCov">          0 :         if (src_y_offset + cursor_height &lt;= 0)</span></a>
+<a name="1238"><span class="lineNum">    1238 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond top edge*/</span></a>
 <a name="1239"><span class="lineNum">    1239 </span>            : </a>
-<a name="1240"><span class="lineNum">    1240 </span><span class="lineNoCov">          0 :         if (src_y_offset + cursor_height &lt;= 0)</span></a>
-<a name="1241"><span class="lineNum">    1241 </span><span class="lineNoCov">          0 :                 cur_en = 0;  /* not visible beyond top edge*/</span></a>
+<a name="1240"><span class="lineNum">    1240 </span><span class="lineNoCov">          0 :         if (cur_en &amp;&amp; REG_READ(CURSOR_SURFACE_ADDRESS) == 0)</span></a>
+<a name="1241"><span class="lineNum">    1241 </span><span class="lineNoCov">          0 :                 hubp-&gt;funcs-&gt;set_cursor_attributes(hubp, &amp;hubp-&gt;curs_attr);</span></a>
 <a name="1242"><span class="lineNum">    1242 </span>            : </a>
-<a name="1243"><span class="lineNum">    1243 </span><span class="lineNoCov">          0 :         if (cur_en &amp;&amp; REG_READ(CURSOR_SURFACE_ADDRESS) == 0)</span></a>
-<a name="1244"><span class="lineNum">    1244 </span><span class="lineNoCov">          0 :                 hubp-&gt;funcs-&gt;set_cursor_attributes(hubp, &amp;hubp-&gt;curs_attr);</span></a>
+<a name="1243"><span class="lineNum">    1243 </span><span class="lineNoCov">          0 :         REG_UPDATE(CURSOR_CONTROL,</span></a>
+<a name="1244"><span class="lineNum">    1244 </span>            :                         CURSOR_ENABLE, cur_en);</a>
 <a name="1245"><span class="lineNum">    1245 </span>            : </a>
-<a name="1246"><span class="lineNum">    1246 </span><span class="lineNoCov">          0 :         REG_UPDATE(CURSOR_CONTROL,</span></a>
-<a name="1247"><span class="lineNum">    1247 </span>            :                         CURSOR_ENABLE, cur_en);</a>
-<a name="1248"><span class="lineNum">    1248 </span>            : </a>
-<a name="1249"><span class="lineNum">    1249 </span><span class="lineNoCov">          0 :         REG_SET_2(CURSOR_POSITION, 0,</span></a>
-<a name="1250"><span class="lineNum">    1250 </span>            :                         CURSOR_X_POSITION, pos-&gt;x,</a>
-<a name="1251"><span class="lineNum">    1251 </span>            :                         CURSOR_Y_POSITION, pos-&gt;y);</a>
-<a name="1252"><span class="lineNum">    1252 </span>            : </a>
-<a name="1253"><span class="lineNum">    1253 </span><span class="lineNoCov">          0 :         REG_SET_2(CURSOR_HOT_SPOT, 0,</span></a>
-<a name="1254"><span class="lineNum">    1254 </span>            :                         CURSOR_HOT_SPOT_X, x_hotspot,</a>
-<a name="1255"><span class="lineNum">    1255 </span>            :                         CURSOR_HOT_SPOT_Y, y_hotspot);</a>
-<a name="1256"><span class="lineNum">    1256 </span>            : </a>
-<a name="1257"><span class="lineNum">    1257 </span><span class="lineNoCov">          0 :         REG_SET(CURSOR_DST_OFFSET, 0,</span></a>
-<a name="1258"><span class="lineNum">    1258 </span>            :                         CURSOR_DST_X_OFFSET, dst_x_offset);</a>
-<a name="1259"><span class="lineNum">    1259 </span>            :         /* TODO Handle surface pixel formats other than 4:4:4 */</a>
-<a name="1260"><span class="lineNum">    1260 </span>            : }</a>
-<a name="1261"><span class="lineNum">    1261 </span>            : </a>
-<a name="1262"><span class="lineNum">    1262 </span>            : /**</a>
-<a name="1263"><span class="lineNum">    1263 </span>            :  * hubp1_clk_cntl - Disable or enable clocks for DCHUBP</a>
+<a name="1246"><span class="lineNum">    1246 </span><span class="lineNoCov">          0 :         REG_SET_2(CURSOR_POSITION, 0,</span></a>
+<a name="1247"><span class="lineNum">    1247 </span>            :                         CURSOR_X_POSITION, pos-&gt;x,</a>
+<a name="1248"><span class="lineNum">    1248 </span>            :                         CURSOR_Y_POSITION, pos-&gt;y);</a>
+<a name="1249"><span class="lineNum">    1249 </span>            : </a>
+<a name="1250"><span class="lineNum">    1250 </span><span class="lineNoCov">          0 :         REG_SET_2(CURSOR_HOT_SPOT, 0,</span></a>
+<a name="1251"><span class="lineNum">    1251 </span>            :                         CURSOR_HOT_SPOT_X, x_hotspot,</a>
+<a name="1252"><span class="lineNum">    1252 </span>            :                         CURSOR_HOT_SPOT_Y, y_hotspot);</a>
+<a name="1253"><span class="lineNum">    1253 </span>            : </a>
+<a name="1254"><span class="lineNum">    1254 </span><span class="lineNoCov">          0 :         REG_SET(CURSOR_DST_OFFSET, 0,</span></a>
+<a name="1255"><span class="lineNum">    1255 </span>            :                         CURSOR_DST_X_OFFSET, dst_x_offset);</a>
+<a name="1256"><span class="lineNum">    1256 </span>            :         /* TODO Handle surface pixel formats other than 4:4:4 */</a>
+<a name="1257"><span class="lineNum">    1257 </span>            : }</a>
+<a name="1258"><span class="lineNum">    1258 </span>            : </a>
+<a name="1259"><span class="lineNum">    1259 </span>            : /**</a>
+<a name="1260"><span class="lineNum">    1260 </span>            :  * hubp1_clk_cntl - Disable or enable clocks for DCHUBP</a>
+<a name="1261"><span class="lineNum">    1261 </span>            :  *</a>
+<a name="1262"><span class="lineNum">    1262 </span>            :  * @hubp: hubp struct reference.</a>
+<a name="1263"><span class="lineNum">    1263 </span>            :  * @enable: Set true for enabling gate clock.</a>
 <a name="1264"><span class="lineNum">    1264 </span>            :  *</a>
-<a name="1265"><span class="lineNum">    1265 </span>            :  * @hubp: hubp struct reference.</a>
-<a name="1266"><span class="lineNum">    1266 </span>            :  * @enable: Set true for enabling gate clock.</a>
-<a name="1267"><span class="lineNum">    1267 </span>            :  *</a>
-<a name="1268"><span class="lineNum">    1268 </span>            :  * When enabling/disabling DCHUBP clock, we affect dcfclk/dppclk.</a>
-<a name="1269"><span class="lineNum">    1269 </span>            :  */</a>
-<a name="1270"><span class="lineNum">    1270 </span><span class="lineNoCov">          0 : void hubp1_clk_cntl(struct hubp *hubp, bool enable)</span></a>
-<a name="1271"><span class="lineNum">    1271 </span>            : {</a>
-<a name="1272"><span class="lineNum">    1272 </span><span class="lineNoCov">          0 :         struct dcn10_hubp *hubp1 = TO_DCN10_HUBP(hubp);</span></a>
-<a name="1273"><span class="lineNum">    1273 </span><span class="lineNoCov">          0 :         uint32_t clk_enable = enable ? 1 : 0;</span></a>
+<a name="1265"><span class="lineNum">    1265 </span>            :  * When enabling/disabling DCHUBP clock, we affect dcfclk/dppclk.</a>
+<a name="1266"><span class="lineNum">    1266 </span>            :  */</a>
+<a name="1267"><span class="lineNum">    1267 </span><span class="lineNoCov">          0 : void hubp1_clk_cntl(struct hubp *hubp, bool enable)</span></a>
+<a name="1268"><span class="lineNum">    1268 </span>            : {</a>
+<a name="1269"><span class="lineNum">    1269 </span><span class="lineNoCov">          0 :         struct dcn10_hubp *hubp1 = TO_DCN10_HUBP(hubp);</span></a>
+<a name="1270"><span class="lineNum">    1270 </span><span class="lineNoCov">          0 :         uint32_t clk_enable = enable ? 1 : 0;</span></a>
+<a name="1271"><span class="lineNum">    1271 </span>            : </a>
+<a name="1272"><span class="lineNum">    1272 </span><span class="lineNoCov">          0 :         REG_UPDATE(HUBP_CLK_CNTL, HUBP_CLOCK_ENABLE, clk_enable);</span></a>
+<a name="1273"><span class="lineNum">    1273 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="1274"><span class="lineNum">    1274 </span>            : </a>
-<a name="1275"><span class="lineNum">    1275 </span><span class="lineNoCov">          0 :         REG_UPDATE(HUBP_CLK_CNTL, HUBP_CLOCK_ENABLE, clk_enable);</span></a>
-<a name="1276"><span class="lineNum">    1276 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="1277"><span class="lineNum">    1277 </span>            : </a>
-<a name="1278"><span class="lineNum">    1278 </span><span class="lineNoCov">          0 : void hubp1_vtg_sel(struct hubp *hubp, uint32_t otg_inst)</span></a>
-<a name="1279"><span class="lineNum">    1279 </span>            : {</a>
-<a name="1280"><span class="lineNum">    1280 </span><span class="lineNoCov">          0 :         struct dcn10_hubp *hubp1 = TO_DCN10_HUBP(hubp);</span></a>
+<a name="1275"><span class="lineNum">    1275 </span><span class="lineNoCov">          0 : void hubp1_vtg_sel(struct hubp *hubp, uint32_t otg_inst)</span></a>
+<a name="1276"><span class="lineNum">    1276 </span>            : {</a>
+<a name="1277"><span class="lineNum">    1277 </span><span class="lineNoCov">          0 :         struct dcn10_hubp *hubp1 = TO_DCN10_HUBP(hubp);</span></a>
+<a name="1278"><span class="lineNum">    1278 </span>            : </a>
+<a name="1279"><span class="lineNum">    1279 </span><span class="lineNoCov">          0 :         REG_UPDATE(DCHUBP_CNTL, HUBP_VTG_SEL, otg_inst);</span></a>
+<a name="1280"><span class="lineNum">    1280 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="1281"><span class="lineNum">    1281 </span>            : </a>
-<a name="1282"><span class="lineNum">    1282 </span><span class="lineNoCov">          0 :         REG_UPDATE(DCHUBP_CNTL, HUBP_VTG_SEL, otg_inst);</span></a>
-<a name="1283"><span class="lineNum">    1283 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="1284"><span class="lineNum">    1284 </span>            : </a>
-<a name="1285"><span class="lineNum">    1285 </span><span class="lineNoCov">          0 : bool hubp1_in_blank(struct hubp *hubp)</span></a>
-<a name="1286"><span class="lineNum">    1286 </span>            : {</a>
-<a name="1287"><span class="lineNum">    1287 </span>            :         uint32_t in_blank;</a>
-<a name="1288"><span class="lineNum">    1288 </span><span class="lineNoCov">          0 :         struct dcn10_hubp *hubp1 = TO_DCN10_HUBP(hubp);</span></a>
-<a name="1289"><span class="lineNum">    1289 </span>            : </a>
-<a name="1290"><span class="lineNum">    1290 </span><span class="lineNoCov">          0 :         REG_GET(DCHUBP_CNTL, HUBP_IN_BLANK, &amp;in_blank);</span></a>
-<a name="1291"><span class="lineNum">    1291 </span><span class="lineNoCov">          0 :         return in_blank ? true : false;</span></a>
-<a name="1292"><span class="lineNum">    1292 </span>            : }</a>
-<a name="1293"><span class="lineNum">    1293 </span>            : </a>
-<a name="1294"><span class="lineNum">    1294 </span><span class="lineNoCov">          0 : void hubp1_soft_reset(struct hubp *hubp, bool reset)</span></a>
-<a name="1295"><span class="lineNum">    1295 </span>            : {</a>
-<a name="1296"><span class="lineNum">    1296 </span><span class="lineNoCov">          0 :         struct dcn10_hubp *hubp1 = TO_DCN10_HUBP(hubp);</span></a>
+<a name="1282"><span class="lineNum">    1282 </span><span class="lineNoCov">          0 : bool hubp1_in_blank(struct hubp *hubp)</span></a>
+<a name="1283"><span class="lineNum">    1283 </span>            : {</a>
+<a name="1284"><span class="lineNum">    1284 </span>            :         uint32_t in_blank;</a>
+<a name="1285"><span class="lineNum">    1285 </span><span class="lineNoCov">          0 :         struct dcn10_hubp *hubp1 = TO_DCN10_HUBP(hubp);</span></a>
+<a name="1286"><span class="lineNum">    1286 </span>            : </a>
+<a name="1287"><span class="lineNum">    1287 </span><span class="lineNoCov">          0 :         REG_GET(DCHUBP_CNTL, HUBP_IN_BLANK, &amp;in_blank);</span></a>
+<a name="1288"><span class="lineNum">    1288 </span><span class="lineNoCov">          0 :         return in_blank ? true : false;</span></a>
+<a name="1289"><span class="lineNum">    1289 </span>            : }</a>
+<a name="1290"><span class="lineNum">    1290 </span>            : </a>
+<a name="1291"><span class="lineNum">    1291 </span><span class="lineNoCov">          0 : void hubp1_soft_reset(struct hubp *hubp, bool reset)</span></a>
+<a name="1292"><span class="lineNum">    1292 </span>            : {</a>
+<a name="1293"><span class="lineNum">    1293 </span><span class="lineNoCov">          0 :         struct dcn10_hubp *hubp1 = TO_DCN10_HUBP(hubp);</span></a>
+<a name="1294"><span class="lineNum">    1294 </span>            : </a>
+<a name="1295"><span class="lineNum">    1295 </span><span class="lineNoCov">          0 :         REG_UPDATE(DCHUBP_CNTL, HUBP_DISABLE, reset ? 1 : 0);</span></a>
+<a name="1296"><span class="lineNum">    1296 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="1297"><span class="lineNum">    1297 </span>            : </a>
-<a name="1298"><span class="lineNum">    1298 </span><span class="lineNoCov">          0 :         REG_UPDATE(DCHUBP_CNTL, HUBP_DISABLE, reset ? 1 : 0);</span></a>
-<a name="1299"><span class="lineNum">    1299 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="1300"><span class="lineNum">    1300 </span>            : </a>
-<a name="1301"><span class="lineNum">    1301 </span>            : /**</a>
-<a name="1302"><span class="lineNum">    1302 </span>            :  * hubp1_set_flip_int - Enable surface flip interrupt</a>
-<a name="1303"><span class="lineNum">    1303 </span>            :  *</a>
-<a name="1304"><span class="lineNum">    1304 </span>            :  * @hubp: hubp struct reference.</a>
-<a name="1305"><span class="lineNum">    1305 </span>            :  */</a>
-<a name="1306"><span class="lineNum">    1306 </span><span class="lineNoCov">          0 : void hubp1_set_flip_int(struct hubp *hubp)</span></a>
-<a name="1307"><span class="lineNum">    1307 </span>            : {</a>
-<a name="1308"><span class="lineNum">    1308 </span><span class="lineNoCov">          0 :         struct dcn10_hubp *hubp1 = TO_DCN10_HUBP(hubp);</span></a>
+<a name="1298"><span class="lineNum">    1298 </span>            : /**</a>
+<a name="1299"><span class="lineNum">    1299 </span>            :  * hubp1_set_flip_int - Enable surface flip interrupt</a>
+<a name="1300"><span class="lineNum">    1300 </span>            :  *</a>
+<a name="1301"><span class="lineNum">    1301 </span>            :  * @hubp: hubp struct reference.</a>
+<a name="1302"><span class="lineNum">    1302 </span>            :  */</a>
+<a name="1303"><span class="lineNum">    1303 </span><span class="lineNoCov">          0 : void hubp1_set_flip_int(struct hubp *hubp)</span></a>
+<a name="1304"><span class="lineNum">    1304 </span>            : {</a>
+<a name="1305"><span class="lineNum">    1305 </span><span class="lineNoCov">          0 :         struct dcn10_hubp *hubp1 = TO_DCN10_HUBP(hubp);</span></a>
+<a name="1306"><span class="lineNum">    1306 </span>            : </a>
+<a name="1307"><span class="lineNum">    1307 </span><span class="lineNoCov">          0 :         REG_UPDATE(DCSURF_SURFACE_FLIP_INTERRUPT,</span></a>
+<a name="1308"><span class="lineNum">    1308 </span>            :                 SURFACE_FLIP_INT_MASK, 1);</a>
 <a name="1309"><span class="lineNum">    1309 </span>            : </a>
-<a name="1310"><span class="lineNum">    1310 </span><span class="lineNoCov">          0 :         REG_UPDATE(DCSURF_SURFACE_FLIP_INTERRUPT,</span></a>
-<a name="1311"><span class="lineNum">    1311 </span>            :                 SURFACE_FLIP_INT_MASK, 1);</a>
+<a name="1310"><span class="lineNum">    1310 </span><span class="lineNoCov">          0 :         return;</span></a>
+<a name="1311"><span class="lineNum">    1311 </span>            : }</a>
 <a name="1312"><span class="lineNum">    1312 </span>            : </a>
-<a name="1313"><span class="lineNum">    1313 </span><span class="lineNoCov">          0 :         return;</span></a>
-<a name="1314"><span class="lineNum">    1314 </span>            : }</a>
-<a name="1315"><span class="lineNum">    1315 </span>            : </a>
-<a name="1316"><span class="lineNum">    1316 </span>            : /**</a>
-<a name="1317"><span class="lineNum">    1317 </span>            :  * hubp1_wait_pipe_read_start - wait for hubp ret path starting read.</a>
-<a name="1318"><span class="lineNum">    1318 </span>            :  *</a>
-<a name="1319"><span class="lineNum">    1319 </span>            :  * @hubp: hubp struct reference.</a>
-<a name="1320"><span class="lineNum">    1320 </span>            :  */</a>
-<a name="1321"><span class="lineNum">    1321 </span><span class="lineNoCov">          0 : static void hubp1_wait_pipe_read_start(struct hubp *hubp)</span></a>
-<a name="1322"><span class="lineNum">    1322 </span>            : {</a>
-<a name="1323"><span class="lineNum">    1323 </span><span class="lineNoCov">          0 :         struct dcn10_hubp *hubp1 = TO_DCN10_HUBP(hubp);</span></a>
-<a name="1324"><span class="lineNum">    1324 </span>            : </a>
-<a name="1325"><span class="lineNum">    1325 </span><span class="lineNoCov">          0 :         REG_WAIT(HUBPRET_READ_LINE_STATUS,</span></a>
-<a name="1326"><span class="lineNum">    1326 </span>            :                 PIPE_READ_VBLANK, 0,</a>
-<a name="1327"><span class="lineNum">    1327 </span>            :                  1, 1000);</a>
-<a name="1328"><span class="lineNum">    1328 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="1329"><span class="lineNum">    1329 </span>            : </a>
-<a name="1330"><span class="lineNum">    1330 </span><span class="lineNoCov">          0 : void hubp1_init(struct hubp *hubp)</span></a>
-<a name="1331"><span class="lineNum">    1331 </span>            : {</a>
-<a name="1332"><span class="lineNum">    1332 </span>            :         //do nothing</a>
-<a name="1333"><span class="lineNum">    1333 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="1334"><span class="lineNum">    1334 </span>            : static const struct hubp_funcs dcn10_hubp_funcs = {</a>
-<a name="1335"><span class="lineNum">    1335 </span>            :         .hubp_program_surface_flip_and_addr =</a>
-<a name="1336"><span class="lineNum">    1336 </span>            :                         hubp1_program_surface_flip_and_addr,</a>
-<a name="1337"><span class="lineNum">    1337 </span>            :         .hubp_program_surface_config =</a>
-<a name="1338"><span class="lineNum">    1338 </span>            :                         hubp1_program_surface_config,</a>
-<a name="1339"><span class="lineNum">    1339 </span>            :         .hubp_is_flip_pending = hubp1_is_flip_pending,</a>
-<a name="1340"><span class="lineNum">    1340 </span>            :         .hubp_setup = hubp1_setup,</a>
-<a name="1341"><span class="lineNum">    1341 </span>            :         .hubp_setup_interdependent = hubp1_setup_interdependent,</a>
-<a name="1342"><span class="lineNum">    1342 </span>            :         .hubp_set_vm_system_aperture_settings = hubp1_set_vm_system_aperture_settings,</a>
-<a name="1343"><span class="lineNum">    1343 </span>            :         .hubp_set_vm_context0_settings = hubp1_set_vm_context0_settings,</a>
-<a name="1344"><span class="lineNum">    1344 </span>            :         .set_blank = hubp1_set_blank,</a>
-<a name="1345"><span class="lineNum">    1345 </span>            :         .dcc_control = hubp1_dcc_control,</a>
-<a name="1346"><span class="lineNum">    1346 </span>            :         .mem_program_viewport = min_set_viewport,</a>
-<a name="1347"><span class="lineNum">    1347 </span>            :         .set_hubp_blank_en = hubp1_set_hubp_blank_en,</a>
-<a name="1348"><span class="lineNum">    1348 </span>            :         .set_cursor_attributes  = hubp1_cursor_set_attributes,</a>
-<a name="1349"><span class="lineNum">    1349 </span>            :         .set_cursor_position    = hubp1_cursor_set_position,</a>
-<a name="1350"><span class="lineNum">    1350 </span>            :         .hubp_disconnect = hubp1_disconnect,</a>
-<a name="1351"><span class="lineNum">    1351 </span>            :         .hubp_clk_cntl = hubp1_clk_cntl,</a>
-<a name="1352"><span class="lineNum">    1352 </span>            :         .hubp_vtg_sel = hubp1_vtg_sel,</a>
-<a name="1353"><span class="lineNum">    1353 </span>            :         .hubp_read_state = hubp1_read_state,</a>
-<a name="1354"><span class="lineNum">    1354 </span>            :         .hubp_clear_underflow = hubp1_clear_underflow,</a>
-<a name="1355"><span class="lineNum">    1355 </span>            :         .hubp_disable_control =  hubp1_disable_control,</a>
-<a name="1356"><span class="lineNum">    1356 </span>            :         .hubp_get_underflow_status = hubp1_get_underflow_status,</a>
-<a name="1357"><span class="lineNum">    1357 </span>            :         .hubp_init = hubp1_init,</a>
-<a name="1358"><span class="lineNum">    1358 </span>            : </a>
-<a name="1359"><span class="lineNum">    1359 </span>            :         .dmdata_set_attributes = NULL,</a>
-<a name="1360"><span class="lineNum">    1360 </span>            :         .dmdata_load = NULL,</a>
-<a name="1361"><span class="lineNum">    1361 </span>            :         .hubp_soft_reset = hubp1_soft_reset,</a>
-<a name="1362"><span class="lineNum">    1362 </span>            :         .hubp_in_blank = hubp1_in_blank,</a>
-<a name="1363"><span class="lineNum">    1363 </span>            :         .hubp_set_flip_int = hubp1_set_flip_int,</a>
-<a name="1364"><span class="lineNum">    1364 </span>            :         .hubp_wait_pipe_read_start = hubp1_wait_pipe_read_start,</a>
-<a name="1365"><span class="lineNum">    1365 </span>            : };</a>
-<a name="1366"><span class="lineNum">    1366 </span>            : </a>
-<a name="1367"><span class="lineNum">    1367 </span>            : /*****************************************/</a>
-<a name="1368"><span class="lineNum">    1368 </span>            : /* Constructor, Destructor               */</a>
-<a name="1369"><span class="lineNum">    1369 </span>            : /*****************************************/</a>
-<a name="1370"><span class="lineNum">    1370 </span>            : </a>
-<a name="1371"><span class="lineNum">    1371 </span><span class="lineNoCov">          0 : void dcn10_hubp_construct(</span></a>
-<a name="1372"><span class="lineNum">    1372 </span>            :         struct dcn10_hubp *hubp1,</a>
-<a name="1373"><span class="lineNum">    1373 </span>            :         struct dc_context *ctx,</a>
-<a name="1374"><span class="lineNum">    1374 </span>            :         uint32_t inst,</a>
-<a name="1375"><span class="lineNum">    1375 </span>            :         const struct dcn_mi_registers *hubp_regs,</a>
-<a name="1376"><span class="lineNum">    1376 </span>            :         const struct dcn_mi_shift *hubp_shift,</a>
-<a name="1377"><span class="lineNum">    1377 </span>            :         const struct dcn_mi_mask *hubp_mask)</a>
-<a name="1378"><span class="lineNum">    1378 </span>            : {</a>
-<a name="1379"><span class="lineNum">    1379 </span><span class="lineNoCov">          0 :         hubp1-&gt;base.funcs = &amp;dcn10_hubp_funcs;</span></a>
-<a name="1380"><span class="lineNum">    1380 </span><span class="lineNoCov">          0 :         hubp1-&gt;base.ctx = ctx;</span></a>
-<a name="1381"><span class="lineNum">    1381 </span><span class="lineNoCov">          0 :         hubp1-&gt;hubp_regs = hubp_regs;</span></a>
-<a name="1382"><span class="lineNum">    1382 </span><span class="lineNoCov">          0 :         hubp1-&gt;hubp_shift = hubp_shift;</span></a>
-<a name="1383"><span class="lineNum">    1383 </span><span class="lineNoCov">          0 :         hubp1-&gt;hubp_mask = hubp_mask;</span></a>
-<a name="1384"><span class="lineNum">    1384 </span><span class="lineNoCov">          0 :         hubp1-&gt;base.inst = inst;</span></a>
-<a name="1385"><span class="lineNum">    1385 </span><span class="lineNoCov">          0 :         hubp1-&gt;base.opp_id = OPP_ID_INVALID;</span></a>
-<a name="1386"><span class="lineNum">    1386 </span><span class="lineNoCov">          0 :         hubp1-&gt;base.mpcc_id = 0xf;</span></a>
-<a name="1387"><span class="lineNum">    1387 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="1388"><span class="lineNum">    1388 </span>            : </a>
-<a name="1389"><span class="lineNum">    1389 </span>            : </a>
+<a name="1313"><span class="lineNum">    1313 </span>            : /**</a>
+<a name="1314"><span class="lineNum">    1314 </span>            :  * hubp1_wait_pipe_read_start - wait for hubp ret path starting read.</a>
+<a name="1315"><span class="lineNum">    1315 </span>            :  *</a>
+<a name="1316"><span class="lineNum">    1316 </span>            :  * @hubp: hubp struct reference.</a>
+<a name="1317"><span class="lineNum">    1317 </span>            :  */</a>
+<a name="1318"><span class="lineNum">    1318 </span><span class="lineNoCov">          0 : static void hubp1_wait_pipe_read_start(struct hubp *hubp)</span></a>
+<a name="1319"><span class="lineNum">    1319 </span>            : {</a>
+<a name="1320"><span class="lineNum">    1320 </span><span class="lineNoCov">          0 :         struct dcn10_hubp *hubp1 = TO_DCN10_HUBP(hubp);</span></a>
+<a name="1321"><span class="lineNum">    1321 </span>            : </a>
+<a name="1322"><span class="lineNum">    1322 </span><span class="lineNoCov">          0 :         REG_WAIT(HUBPRET_READ_LINE_STATUS,</span></a>
+<a name="1323"><span class="lineNum">    1323 </span>            :                 PIPE_READ_VBLANK, 0,</a>
+<a name="1324"><span class="lineNum">    1324 </span>            :                  1, 1000);</a>
+<a name="1325"><span class="lineNum">    1325 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1326"><span class="lineNum">    1326 </span>            : </a>
+<a name="1327"><span class="lineNum">    1327 </span><span class="lineNoCov">          0 : void hubp1_init(struct hubp *hubp)</span></a>
+<a name="1328"><span class="lineNum">    1328 </span>            : {</a>
+<a name="1329"><span class="lineNum">    1329 </span>            :         //do nothing</a>
+<a name="1330"><span class="lineNum">    1330 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1331"><span class="lineNum">    1331 </span>            : static const struct hubp_funcs dcn10_hubp_funcs = {</a>
+<a name="1332"><span class="lineNum">    1332 </span>            :         .hubp_program_surface_flip_and_addr =</a>
+<a name="1333"><span class="lineNum">    1333 </span>            :                         hubp1_program_surface_flip_and_addr,</a>
+<a name="1334"><span class="lineNum">    1334 </span>            :         .hubp_program_surface_config =</a>
+<a name="1335"><span class="lineNum">    1335 </span>            :                         hubp1_program_surface_config,</a>
+<a name="1336"><span class="lineNum">    1336 </span>            :         .hubp_is_flip_pending = hubp1_is_flip_pending,</a>
+<a name="1337"><span class="lineNum">    1337 </span>            :         .hubp_setup = hubp1_setup,</a>
+<a name="1338"><span class="lineNum">    1338 </span>            :         .hubp_setup_interdependent = hubp1_setup_interdependent,</a>
+<a name="1339"><span class="lineNum">    1339 </span>            :         .hubp_set_vm_system_aperture_settings = hubp1_set_vm_system_aperture_settings,</a>
+<a name="1340"><span class="lineNum">    1340 </span>            :         .hubp_set_vm_context0_settings = hubp1_set_vm_context0_settings,</a>
+<a name="1341"><span class="lineNum">    1341 </span>            :         .set_blank = hubp1_set_blank,</a>
+<a name="1342"><span class="lineNum">    1342 </span>            :         .dcc_control = hubp1_dcc_control,</a>
+<a name="1343"><span class="lineNum">    1343 </span>            :         .mem_program_viewport = min_set_viewport,</a>
+<a name="1344"><span class="lineNum">    1344 </span>            :         .set_hubp_blank_en = hubp1_set_hubp_blank_en,</a>
+<a name="1345"><span class="lineNum">    1345 </span>            :         .set_cursor_attributes  = hubp1_cursor_set_attributes,</a>
+<a name="1346"><span class="lineNum">    1346 </span>            :         .set_cursor_position    = hubp1_cursor_set_position,</a>
+<a name="1347"><span class="lineNum">    1347 </span>            :         .hubp_disconnect = hubp1_disconnect,</a>
+<a name="1348"><span class="lineNum">    1348 </span>            :         .hubp_clk_cntl = hubp1_clk_cntl,</a>
+<a name="1349"><span class="lineNum">    1349 </span>            :         .hubp_vtg_sel = hubp1_vtg_sel,</a>
+<a name="1350"><span class="lineNum">    1350 </span>            :         .hubp_read_state = hubp1_read_state,</a>
+<a name="1351"><span class="lineNum">    1351 </span>            :         .hubp_clear_underflow = hubp1_clear_underflow,</a>
+<a name="1352"><span class="lineNum">    1352 </span>            :         .hubp_disable_control =  hubp1_disable_control,</a>
+<a name="1353"><span class="lineNum">    1353 </span>            :         .hubp_get_underflow_status = hubp1_get_underflow_status,</a>
+<a name="1354"><span class="lineNum">    1354 </span>            :         .hubp_init = hubp1_init,</a>
+<a name="1355"><span class="lineNum">    1355 </span>            : </a>
+<a name="1356"><span class="lineNum">    1356 </span>            :         .dmdata_set_attributes = NULL,</a>
+<a name="1357"><span class="lineNum">    1357 </span>            :         .dmdata_load = NULL,</a>
+<a name="1358"><span class="lineNum">    1358 </span>            :         .hubp_soft_reset = hubp1_soft_reset,</a>
+<a name="1359"><span class="lineNum">    1359 </span>            :         .hubp_in_blank = hubp1_in_blank,</a>
+<a name="1360"><span class="lineNum">    1360 </span>            :         .hubp_set_flip_int = hubp1_set_flip_int,</a>
+<a name="1361"><span class="lineNum">    1361 </span>            :         .hubp_wait_pipe_read_start = hubp1_wait_pipe_read_start,</a>
+<a name="1362"><span class="lineNum">    1362 </span>            : };</a>
+<a name="1363"><span class="lineNum">    1363 </span>            : </a>
+<a name="1364"><span class="lineNum">    1364 </span>            : /*****************************************/</a>
+<a name="1365"><span class="lineNum">    1365 </span>            : /* Constructor, Destructor               */</a>
+<a name="1366"><span class="lineNum">    1366 </span>            : /*****************************************/</a>
+<a name="1367"><span class="lineNum">    1367 </span>            : </a>
+<a name="1368"><span class="lineNum">    1368 </span><span class="lineNoCov">          0 : void dcn10_hubp_construct(</span></a>
+<a name="1369"><span class="lineNum">    1369 </span>            :         struct dcn10_hubp *hubp1,</a>
+<a name="1370"><span class="lineNum">    1370 </span>            :         struct dc_context *ctx,</a>
+<a name="1371"><span class="lineNum">    1371 </span>            :         uint32_t inst,</a>
+<a name="1372"><span class="lineNum">    1372 </span>            :         const struct dcn_mi_registers *hubp_regs,</a>
+<a name="1373"><span class="lineNum">    1373 </span>            :         const struct dcn_mi_shift *hubp_shift,</a>
+<a name="1374"><span class="lineNum">    1374 </span>            :         const struct dcn_mi_mask *hubp_mask)</a>
+<a name="1375"><span class="lineNum">    1375 </span>            : {</a>
+<a name="1376"><span class="lineNum">    1376 </span><span class="lineNoCov">          0 :         hubp1-&gt;base.funcs = &amp;dcn10_hubp_funcs;</span></a>
+<a name="1377"><span class="lineNum">    1377 </span><span class="lineNoCov">          0 :         hubp1-&gt;base.ctx = ctx;</span></a>
+<a name="1378"><span class="lineNum">    1378 </span><span class="lineNoCov">          0 :         hubp1-&gt;hubp_regs = hubp_regs;</span></a>
+<a name="1379"><span class="lineNum">    1379 </span><span class="lineNoCov">          0 :         hubp1-&gt;hubp_shift = hubp_shift;</span></a>
+<a name="1380"><span class="lineNum">    1380 </span><span class="lineNoCov">          0 :         hubp1-&gt;hubp_mask = hubp_mask;</span></a>
+<a name="1381"><span class="lineNum">    1381 </span><span class="lineNoCov">          0 :         hubp1-&gt;base.inst = inst;</span></a>
+<a name="1382"><span class="lineNum">    1382 </span><span class="lineNoCov">          0 :         hubp1-&gt;base.opp_id = OPP_ID_INVALID;</span></a>
+<a name="1383"><span class="lineNum">    1383 </span><span class="lineNoCov">          0 :         hubp1-&gt;base.mpcc_id = 0xf;</span></a>
+<a name="1384"><span class="lineNum">    1384 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="1385"><span class="lineNum">    1385 </span>            : </a>
+<a name="1386"><span class="lineNum">    1386 </span>            : </a>
 </pre>
       </td>
     </tr>

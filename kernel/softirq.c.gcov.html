@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">14</td>
@@ -653,25 +653,25 @@
 <a name="591"><span class="lineNum">     591 </span>            : /**</a>
 <a name="592"><span class="lineNum">     592 </span>            :  * irq_enter_rcu - Enter an interrupt context with RCU watching</a>
 <a name="593"><span class="lineNum">     593 </span>            :  */</a>
-<a name="594"><span class="lineNum">     594 </span><span class="lineCov">          9 : void irq_enter_rcu(void)</span></a>
+<a name="594"><span class="lineNum">     594 </span><span class="lineCov">         13 : void irq_enter_rcu(void)</span></a>
 <a name="595"><span class="lineNum">     595 </span>            : {</a>
-<a name="596"><span class="lineNum">     596 </span><span class="lineCov">          9 :         __irq_enter_raw();</span></a>
+<a name="596"><span class="lineNum">     596 </span><span class="lineCov">         13 :         __irq_enter_raw();</span></a>
 <a name="597"><span class="lineNum">     597 </span>            : </a>
-<a name="598"><span class="lineNum">     598 </span><span class="lineCov">         18 :         if (tick_nohz_full_cpu(smp_processor_id()) ||</span></a>
-<a name="599"><span class="lineNum">     599 </span><span class="lineCov">         18 :             (is_idle_task(current) &amp;&amp; (irq_count() == HARDIRQ_OFFSET)))</span></a>
+<a name="598"><span class="lineNum">     598 </span><span class="lineCov">         26 :         if (tick_nohz_full_cpu(smp_processor_id()) ||</span></a>
+<a name="599"><span class="lineNum">     599 </span><span class="lineCov">         26 :             (is_idle_task(current) &amp;&amp; (irq_count() == HARDIRQ_OFFSET)))</span></a>
 <a name="600"><span class="lineNum">     600 </span>            :                 tick_irq_enter();</a>
 <a name="601"><span class="lineNum">     601 </span>            : </a>
-<a name="602"><span class="lineNum">     602 </span><span class="lineCov">          9 :         account_hardirq_enter(current);</span></a>
-<a name="603"><span class="lineNum">     603 </span><span class="lineCov">          9 : }</span></a>
+<a name="602"><span class="lineNum">     602 </span><span class="lineCov">         13 :         account_hardirq_enter(current);</span></a>
+<a name="603"><span class="lineNum">     603 </span><span class="lineCov">         13 : }</span></a>
 <a name="604"><span class="lineNum">     604 </span>            : </a>
 <a name="605"><span class="lineNum">     605 </span>            : /**</a>
 <a name="606"><span class="lineNum">     606 </span>            :  * irq_enter - Enter an interrupt context including RCU update</a>
 <a name="607"><span class="lineNum">     607 </span>            :  */</a>
-<a name="608"><span class="lineNum">     608 </span><span class="lineCov">          9 : void irq_enter(void)</span></a>
+<a name="608"><span class="lineNum">     608 </span><span class="lineCov">         13 : void irq_enter(void)</span></a>
 <a name="609"><span class="lineNum">     609 </span>            : {</a>
 <a name="610"><span class="lineNum">     610 </span>            :         rcu_irq_enter();</a>
-<a name="611"><span class="lineNum">     611 </span><span class="lineCov">          9 :         irq_enter_rcu();</span></a>
-<a name="612"><span class="lineNum">     612 </span><span class="lineCov">          9 : }</span></a>
+<a name="611"><span class="lineNum">     611 </span><span class="lineCov">         13 :         irq_enter_rcu();</span></a>
+<a name="612"><span class="lineNum">     612 </span><span class="lineCov">         13 : }</span></a>
 <a name="613"><span class="lineNum">     613 </span>            : </a>
 <a name="614"><span class="lineNum">     614 </span>            : static inline void tick_irq_exit(void)</a>
 <a name="615"><span class="lineNum">     615 </span>            : {</a>
@@ -686,20 +686,20 @@
 <a name="624"><span class="lineNum">     624 </span>            : #endif</a>
 <a name="625"><span class="lineNum">     625 </span>            : }</a>
 <a name="626"><span class="lineNum">     626 </span>            : </a>
-<a name="627"><span class="lineNum">     627 </span><span class="lineCov">          9 : static inline void __irq_exit_rcu(void)</span></a>
+<a name="627"><span class="lineNum">     627 </span><span class="lineCov">         13 : static inline void __irq_exit_rcu(void)</span></a>
 <a name="628"><span class="lineNum">     628 </span>            : {</a>
 <a name="629"><span class="lineNum">     629 </span>            : #ifndef __ARCH_IRQ_EXIT_IRQS_DISABLED</a>
 <a name="630"><span class="lineNum">     630 </span>            :         local_irq_disable();</a>
 <a name="631"><span class="lineNum">     631 </span>            : #else</a>
 <a name="632"><span class="lineNum">     632 </span>            :         lockdep_assert_irqs_disabled();</a>
 <a name="633"><span class="lineNum">     633 </span>            : #endif</a>
-<a name="634"><span class="lineNum">     634 </span><span class="lineCov">         18 :         account_hardirq_exit(current);</span></a>
-<a name="635"><span class="lineNum">     635 </span><span class="lineCov">          9 :         preempt_count_sub(HARDIRQ_OFFSET);</span></a>
-<a name="636"><span class="lineNum">     636 </span><span class="lineCov">          9 :         if (!in_interrupt() &amp;&amp; local_softirq_pending())</span></a>
+<a name="634"><span class="lineNum">     634 </span><span class="lineCov">         26 :         account_hardirq_exit(current);</span></a>
+<a name="635"><span class="lineNum">     635 </span><span class="lineCov">         13 :         preempt_count_sub(HARDIRQ_OFFSET);</span></a>
+<a name="636"><span class="lineNum">     636 </span><span class="lineCov">         13 :         if (!in_interrupt() &amp;&amp; local_softirq_pending())</span></a>
 <a name="637"><span class="lineNum">     637 </span><span class="lineNoCov">          0 :                 invoke_softirq();</span></a>
 <a name="638"><span class="lineNum">     638 </span>            : </a>
 <a name="639"><span class="lineNum">     639 </span>            :         tick_irq_exit();</a>
-<a name="640"><span class="lineNum">     640 </span><span class="lineCov">          9 : }</span></a>
+<a name="640"><span class="lineNum">     640 </span><span class="lineCov">         13 : }</span></a>
 <a name="641"><span class="lineNum">     641 </span>            : </a>
 <a name="642"><span class="lineNum">     642 </span>            : /**</a>
 <a name="643"><span class="lineNum">     643 </span>            :  * irq_exit_rcu() - Exit an interrupt context without updating RCU</a>
@@ -718,13 +718,13 @@
 <a name="656"><span class="lineNum">     656 </span>            :  *</a>
 <a name="657"><span class="lineNum">     657 </span>            :  * Also processes softirqs if needed and possible.</a>
 <a name="658"><span class="lineNum">     658 </span>            :  */</a>
-<a name="659"><span class="lineNum">     659 </span><span class="lineCov">          9 : void irq_exit(void)</span></a>
+<a name="659"><span class="lineNum">     659 </span><span class="lineCov">         13 : void irq_exit(void)</span></a>
 <a name="660"><span class="lineNum">     660 </span>            : {</a>
-<a name="661"><span class="lineNum">     661 </span><span class="lineCov">          9 :         __irq_exit_rcu();</span></a>
+<a name="661"><span class="lineNum">     661 </span><span class="lineCov">         13 :         __irq_exit_rcu();</span></a>
 <a name="662"><span class="lineNum">     662 </span>            :         rcu_irq_exit();</a>
 <a name="663"><span class="lineNum">     663 </span>            :          /* must be last! */</a>
 <a name="664"><span class="lineNum">     664 </span>            :         lockdep_hardirq_exit();</a>
-<a name="665"><span class="lineNum">     665 </span><span class="lineCov">          9 : }</span></a>
+<a name="665"><span class="lineNum">     665 </span><span class="lineCov">         13 : }</span></a>
 <a name="666"><span class="lineNum">     666 </span>            : </a>
 <a name="667"><span class="lineNum">     667 </span>            : /*</a>
 <a name="668"><span class="lineNum">     668 </span>            :  * This function must run with irqs disabled!</a>

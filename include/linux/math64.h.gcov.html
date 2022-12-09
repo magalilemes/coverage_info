@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -212,7 +212,7 @@
 <a name="150"><span class="lineNum">     150 </span>            :  */</a>
 <a name="151"><span class="lineNum">     151 </span>            : static inline u64 mul_u32_u32(u32 a, u32 b)</a>
 <a name="152"><span class="lineNum">     152 </span>            : {</a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineCov">        216 :         return (u64)a * b;</span></a>
+<a name="153"><span class="lineNum">     153 </span><span class="lineCov">        220 :         return (u64)a * b;</span></a>
 <a name="154"><span class="lineNum">     154 </span>            : }</a>
 <a name="155"><span class="lineNum">     155 </span>            : #endif</a>
 <a name="156"><span class="lineNum">     156 </span>            : </a>
@@ -240,11 +240,11 @@
 <a name="178"><span class="lineNum">     178 </span>            :         u32 ah, al;</a>
 <a name="179"><span class="lineNum">     179 </span>            :         u64 ret;</a>
 <a name="180"><span class="lineNum">     180 </span>            : </a>
-<a name="181"><span class="lineNum">     181 </span><span class="lineCov">        108 :         al = a;</span></a>
-<a name="182"><span class="lineNum">     182 </span><span class="lineCov">        108 :         ah = a &gt;&gt; 32;</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineCov">        110 :         al = a;</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineCov">        110 :         ah = a &gt;&gt; 32;</span></a>
 <a name="183"><span class="lineNum">     183 </span>            : </a>
-<a name="184"><span class="lineNum">     184 </span><span class="lineCov">        108 :         ret = mul_u32_u32(al, mul) &gt;&gt; shift;</span></a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineCov">        108 :         if (ah)</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">        110 :         ret = mul_u32_u32(al, mul) &gt;&gt; shift;</span></a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineCov">        110 :         if (ah)</span></a>
 <a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :                 ret += mul_u32_u32(ah, mul) &lt;&lt; (32 - shift);</span></a>
 <a name="187"><span class="lineNum">     187 </span>            : </a>
 <a name="188"><span class="lineNum">     188 </span>            :         return ret;</a>

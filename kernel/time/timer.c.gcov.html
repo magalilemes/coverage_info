@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">17</td>
@@ -901,8 +901,8 @@
 <a name="839"><span class="lineNum">     839 </span>            :                 return 0;</a>
 <a name="840"><span class="lineNum">     840 </span>            : </a>
 <a name="841"><span class="lineNum">     841 </span><span class="lineCov">        190 :         if (hlist_is_singular_node(&amp;timer-&gt;entry, base-&gt;vectors + idx)) {</span></a>
-<a name="842"><span class="lineNum">     842 </span><span class="lineCov">        188 :                 __clear_bit(idx, base-&gt;pending_map);</span></a>
-<a name="843"><span class="lineNum">     843 </span><span class="lineCov">         94 :                 base-&gt;next_expiry_recalc = true;</span></a>
+<a name="842"><span class="lineNum">     842 </span><span class="lineCov">        190 :                 __clear_bit(idx, base-&gt;pending_map);</span></a>
+<a name="843"><span class="lineNum">     843 </span><span class="lineCov">         95 :                 base-&gt;next_expiry_recalc = true;</span></a>
 <a name="844"><span class="lineNum">     844 </span>            :         }</a>
 <a name="845"><span class="lineNum">     845 </span>            : </a>
 <a name="846"><span class="lineNum">     846 </span><span class="lineCov">        190 :         detach_timer(timer, clear_pending);</span></a>
@@ -1817,13 +1817,13 @@
 <a name="1755"><span class="lineNum">    1755 </span>            : /*</a>
 <a name="1756"><span class="lineNum">    1756 </span>            :  * Called by the local, per-CPU timer interrupt on SMP.</a>
 <a name="1757"><span class="lineNum">    1757 </span>            :  */</a>
-<a name="1758"><span class="lineNum">    1758 </span><span class="lineCov">          9 : static void run_local_timers(void)</span></a>
+<a name="1758"><span class="lineNum">    1758 </span><span class="lineCov">         13 : static void run_local_timers(void)</span></a>
 <a name="1759"><span class="lineNum">    1759 </span>            : {</a>
-<a name="1760"><span class="lineNum">    1760 </span><span class="lineCov">          9 :         struct timer_base *base = this_cpu_ptr(&amp;timer_bases[BASE_STD]);</span></a>
+<a name="1760"><span class="lineNum">    1760 </span><span class="lineCov">         13 :         struct timer_base *base = this_cpu_ptr(&amp;timer_bases[BASE_STD]);</span></a>
 <a name="1761"><span class="lineNum">    1761 </span>            : </a>
-<a name="1762"><span class="lineNum">    1762 </span><span class="lineCov">          9 :         hrtimer_run_queues();</span></a>
+<a name="1762"><span class="lineNum">    1762 </span><span class="lineCov">         13 :         hrtimer_run_queues();</span></a>
 <a name="1763"><span class="lineNum">    1763 </span>            :         /* Raise the softirq only if required. */</a>
-<a name="1764"><span class="lineNum">    1764 </span><span class="lineCov">          9 :         if (time_before(jiffies, base-&gt;next_expiry)) {</span></a>
+<a name="1764"><span class="lineNum">    1764 </span><span class="lineCov">         13 :         if (time_before(jiffies, base-&gt;next_expiry)) {</span></a>
 <a name="1765"><span class="lineNum">    1765 </span>            :                 if (!IS_ENABLED(CONFIG_NO_HZ_COMMON))</a>
 <a name="1766"><span class="lineNum">    1766 </span>            :                         return;</a>
 <a name="1767"><span class="lineNum">    1767 </span>            :                 /* CPU is awake, so check the deferrable base. */</a>
@@ -1838,24 +1838,24 @@
 <a name="1776"><span class="lineNum">    1776 </span>            :  * Called from the timer interrupt handler to charge one tick to the current</a>
 <a name="1777"><span class="lineNum">    1777 </span>            :  * process.  user_tick is 1 if the tick is user time, 0 for system.</a>
 <a name="1778"><span class="lineNum">    1778 </span>            :  */</a>
-<a name="1779"><span class="lineNum">    1779 </span><span class="lineCov">          9 : void update_process_times(int user_tick)</span></a>
+<a name="1779"><span class="lineNum">    1779 </span><span class="lineCov">         13 : void update_process_times(int user_tick)</span></a>
 <a name="1780"><span class="lineNum">    1780 </span>            : {</a>
-<a name="1781"><span class="lineNum">    1781 </span><span class="lineCov">          9 :         struct task_struct *p = current;</span></a>
+<a name="1781"><span class="lineNum">    1781 </span><span class="lineCov">         13 :         struct task_struct *p = current;</span></a>
 <a name="1782"><span class="lineNum">    1782 </span>            : </a>
-<a name="1783"><span class="lineNum">    1783 </span><span class="lineCov">         18 :         PRANDOM_ADD_NOISE(jiffies, user_tick, p, 0);</span></a>
+<a name="1783"><span class="lineNum">    1783 </span><span class="lineCov">         26 :         PRANDOM_ADD_NOISE(jiffies, user_tick, p, 0);</span></a>
 <a name="1784"><span class="lineNum">    1784 </span>            : </a>
 <a name="1785"><span class="lineNum">    1785 </span>            :         /* Note: this timer irq context must be accounted for as well. */</a>
-<a name="1786"><span class="lineNum">    1786 </span><span class="lineCov">          9 :         account_process_tick(p, user_tick);</span></a>
-<a name="1787"><span class="lineNum">    1787 </span><span class="lineCov">          9 :         run_local_timers();</span></a>
-<a name="1788"><span class="lineNum">    1788 </span><span class="lineCov">          9 :         rcu_sched_clock_irq(user_tick);</span></a>
+<a name="1786"><span class="lineNum">    1786 </span><span class="lineCov">         13 :         account_process_tick(p, user_tick);</span></a>
+<a name="1787"><span class="lineNum">    1787 </span><span class="lineCov">         13 :         run_local_timers();</span></a>
+<a name="1788"><span class="lineNum">    1788 </span><span class="lineCov">         13 :         rcu_sched_clock_irq(user_tick);</span></a>
 <a name="1789"><span class="lineNum">    1789 </span>            : #ifdef CONFIG_IRQ_WORK</a>
-<a name="1790"><span class="lineNum">    1790 </span><span class="lineCov">          9 :         if (in_irq())</span></a>
-<a name="1791"><span class="lineNum">    1791 </span><span class="lineCov">          9 :                 irq_work_tick();</span></a>
+<a name="1790"><span class="lineNum">    1790 </span><span class="lineCov">         13 :         if (in_irq())</span></a>
+<a name="1791"><span class="lineNum">    1791 </span><span class="lineCov">         13 :                 irq_work_tick();</span></a>
 <a name="1792"><span class="lineNum">    1792 </span>            : #endif</a>
-<a name="1793"><span class="lineNum">    1793 </span><span class="lineCov">          9 :         scheduler_tick();</span></a>
+<a name="1793"><span class="lineNum">    1793 </span><span class="lineCov">         13 :         scheduler_tick();</span></a>
 <a name="1794"><span class="lineNum">    1794 </span>            :         if (IS_ENABLED(CONFIG_POSIX_TIMERS))</a>
-<a name="1795"><span class="lineNum">    1795 </span><span class="lineCov">          9 :                 run_posix_cpu_timers();</span></a>
-<a name="1796"><span class="lineNum">    1796 </span><span class="lineCov">          9 : }</span></a>
+<a name="1795"><span class="lineNum">    1795 </span><span class="lineCov">         13 :                 run_posix_cpu_timers();</span></a>
+<a name="1796"><span class="lineNum">    1796 </span><span class="lineCov">         13 : }</span></a>
 <a name="1797"><span class="lineNum">    1797 </span>            : </a>
 <a name="1798"><span class="lineNum">    1798 </span>            : /*</a>
 <a name="1799"><span class="lineNum">    1799 </span>            :  * Since schedule_timeout()'s timer is defined on the stack, it must store</a>

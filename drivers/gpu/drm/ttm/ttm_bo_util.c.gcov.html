@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">259</td>
+            <td class="headerCovTableEntry">261</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -301,432 +301,435 @@
 <a name="239"><span class="lineNum">     239 </span><span class="lineNoCov">          0 :         if (fbo-&gt;base.resource) {</span></a>
 <a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 :                 ttm_resource_set_bo(fbo-&gt;base.resource, &amp;fbo-&gt;base);</span></a>
 <a name="241"><span class="lineNum">     241 </span><span class="lineNoCov">          0 :                 bo-&gt;resource = NULL;</span></a>
-<a name="242"><span class="lineNum">     242 </span>            :         }</a>
-<a name="243"><span class="lineNum">     243 </span>            : </a>
-<a name="244"><span class="lineNum">     244 </span><span class="lineNoCov">          0 :         dma_resv_init(&amp;fbo-&gt;base.base._resv);</span></a>
-<a name="245"><span class="lineNum">     245 </span><span class="lineNoCov">          0 :         fbo-&gt;base.base.dev = NULL;</span></a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 :         ret = dma_resv_trylock(&amp;fbo-&gt;base.base._resv);</span></a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 :         WARN_ON(!ret);</span></a>
-<a name="248"><span class="lineNum">     248 </span>            : </a>
-<a name="249"><span class="lineNum">     249 </span><span class="lineNoCov">          0 :         ret = dma_resv_reserve_fences(&amp;fbo-&gt;base.base._resv, 1);</span></a>
-<a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 :         if (ret) {</span></a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 :                 kfree(fbo);</span></a>
-<a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 :                 return ret;</span></a>
-<a name="253"><span class="lineNum">     253 </span>            :         }</a>
-<a name="254"><span class="lineNum">     254 </span>            : </a>
-<a name="255"><span class="lineNum">     255 </span><span class="lineNoCov">          0 :         ttm_bo_get(bo);</span></a>
-<a name="256"><span class="lineNum">     256 </span><span class="lineNoCov">          0 :         fbo-&gt;bo = bo;</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineNoCov">          0 :                 ttm_bo_set_bulk_move(&amp;fbo-&gt;base, NULL);</span></a>
+<a name="243"><span class="lineNum">     243 </span>            :         } else {</a>
+<a name="244"><span class="lineNum">     244 </span><span class="lineNoCov">          0 :                 fbo-&gt;base.bulk_move = NULL;</span></a>
+<a name="245"><span class="lineNum">     245 </span>            :         }</a>
+<a name="246"><span class="lineNum">     246 </span>            : </a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 :         dma_resv_init(&amp;fbo-&gt;base.base._resv);</span></a>
+<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 :         fbo-&gt;base.base.dev = NULL;</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineNoCov">          0 :         ret = dma_resv_trylock(&amp;fbo-&gt;base.base._resv);</span></a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 :         WARN_ON(!ret);</span></a>
+<a name="251"><span class="lineNum">     251 </span>            : </a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 :         ret = dma_resv_reserve_fences(&amp;fbo-&gt;base.base._resv, 1);</span></a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 :         if (ret) {</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineNoCov">          0 :                 kfree(fbo);</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineNoCov">          0 :                 return ret;</span></a>
+<a name="256"><span class="lineNum">     256 </span>            :         }</a>
 <a name="257"><span class="lineNum">     257 </span>            : </a>
-<a name="258"><span class="lineNum">     258 </span><span class="lineNoCov">          0 :         ttm_bo_move_to_lru_tail_unlocked(&amp;fbo-&gt;base);</span></a>
-<a name="259"><span class="lineNum">     259 </span>            : </a>
-<a name="260"><span class="lineNum">     260 </span><span class="lineNoCov">          0 :         *new_obj = &amp;fbo-&gt;base;</span></a>
-<a name="261"><span class="lineNum">     261 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="262"><span class="lineNum">     262 </span>            : }</a>
-<a name="263"><span class="lineNum">     263 </span>            : </a>
-<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 : pgprot_t ttm_io_prot(struct ttm_buffer_object *bo, struct ttm_resource *res,</span></a>
-<a name="265"><span class="lineNum">     265 </span>            :                      pgprot_t tmp)</a>
-<a name="266"><span class="lineNum">     266 </span>            : {</a>
-<a name="267"><span class="lineNum">     267 </span>            :         struct ttm_resource_manager *man;</a>
-<a name="268"><span class="lineNum">     268 </span>            :         enum ttm_caching caching;</a>
-<a name="269"><span class="lineNum">     269 </span>            : </a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineNoCov">          0 :         man = ttm_manager_type(bo-&gt;bdev, res-&gt;mem_type);</span></a>
-<a name="271"><span class="lineNum">     271 </span><span class="lineNoCov">          0 :         caching = man-&gt;use_tt ? bo-&gt;ttm-&gt;caching : res-&gt;bus.caching;</span></a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineNoCov">          0 :         ttm_bo_get(bo);</span></a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineNoCov">          0 :         fbo-&gt;bo = bo;</span></a>
+<a name="260"><span class="lineNum">     260 </span>            : </a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineNoCov">          0 :         ttm_bo_move_to_lru_tail_unlocked(&amp;fbo-&gt;base);</span></a>
+<a name="262"><span class="lineNum">     262 </span>            : </a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineNoCov">          0 :         *new_obj = &amp;fbo-&gt;base;</span></a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="265"><span class="lineNum">     265 </span>            : }</a>
+<a name="266"><span class="lineNum">     266 </span>            : </a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 : pgprot_t ttm_io_prot(struct ttm_buffer_object *bo, struct ttm_resource *res,</span></a>
+<a name="268"><span class="lineNum">     268 </span>            :                      pgprot_t tmp)</a>
+<a name="269"><span class="lineNum">     269 </span>            : {</a>
+<a name="270"><span class="lineNum">     270 </span>            :         struct ttm_resource_manager *man;</a>
+<a name="271"><span class="lineNum">     271 </span>            :         enum ttm_caching caching;</a>
 <a name="272"><span class="lineNum">     272 </span>            : </a>
-<a name="273"><span class="lineNum">     273 </span><span class="lineNoCov">          0 :         return ttm_prot_from_caching(caching, tmp);</span></a>
-<a name="274"><span class="lineNum">     274 </span>            : }</a>
-<a name="275"><span class="lineNum">     275 </span>            : EXPORT_SYMBOL(ttm_io_prot);</a>
-<a name="276"><span class="lineNum">     276 </span>            : </a>
-<a name="277"><span class="lineNum">     277 </span><span class="lineNoCov">          0 : static int ttm_bo_ioremap(struct ttm_buffer_object *bo,</span></a>
-<a name="278"><span class="lineNum">     278 </span>            :                           unsigned long offset,</a>
-<a name="279"><span class="lineNum">     279 </span>            :                           unsigned long size,</a>
-<a name="280"><span class="lineNum">     280 </span>            :                           struct ttm_bo_kmap_obj *map)</a>
-<a name="281"><span class="lineNum">     281 </span>            : {</a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 :         struct ttm_resource *mem = bo-&gt;resource;</span></a>
-<a name="283"><span class="lineNum">     283 </span>            : </a>
-<a name="284"><span class="lineNum">     284 </span><span class="lineNoCov">          0 :         if (bo-&gt;resource-&gt;bus.addr) {</span></a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 :                 map-&gt;bo_kmap_type = ttm_bo_map_premapped;</span></a>
-<a name="286"><span class="lineNum">     286 </span><span class="lineNoCov">          0 :                 map-&gt;virtual = ((u8 *)bo-&gt;resource-&gt;bus.addr) + offset;</span></a>
-<a name="287"><span class="lineNum">     287 </span>            :         } else {</a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 :                 resource_size_t res = bo-&gt;resource-&gt;bus.offset + offset;</span></a>
-<a name="289"><span class="lineNum">     289 </span>            : </a>
-<a name="290"><span class="lineNum">     290 </span><span class="lineNoCov">          0 :                 map-&gt;bo_kmap_type = ttm_bo_map_iomap;</span></a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 :                 if (mem-&gt;bus.caching == ttm_write_combined)</span></a>
-<a name="292"><span class="lineNum">     292 </span><span class="lineNoCov">          0 :                         map-&gt;virtual = ioremap_wc(res, size);</span></a>
-<a name="293"><span class="lineNum">     293 </span>            : #ifdef CONFIG_X86</a>
-<a name="294"><span class="lineNum">     294 </span>            :                 else if (mem-&gt;bus.caching == ttm_cached)</a>
-<a name="295"><span class="lineNum">     295 </span>            :                         map-&gt;virtual = ioremap_cache(res, size);</a>
-<a name="296"><span class="lineNum">     296 </span>            : #endif</a>
-<a name="297"><span class="lineNum">     297 </span>            :                 else</a>
-<a name="298"><span class="lineNum">     298 </span><span class="lineNoCov">          0 :                         map-&gt;virtual = ioremap(res, size);</span></a>
-<a name="299"><span class="lineNum">     299 </span>            :         }</a>
-<a name="300"><span class="lineNum">     300 </span><span class="lineNoCov">          0 :         return (!map-&gt;virtual) ? -ENOMEM : 0;</span></a>
-<a name="301"><span class="lineNum">     301 </span>            : }</a>
-<a name="302"><span class="lineNum">     302 </span>            : </a>
-<a name="303"><span class="lineNum">     303 </span><span class="lineNoCov">          0 : static int ttm_bo_kmap_ttm(struct ttm_buffer_object *bo,</span></a>
-<a name="304"><span class="lineNum">     304 </span>            :                            unsigned long start_page,</a>
-<a name="305"><span class="lineNum">     305 </span>            :                            unsigned long num_pages,</a>
-<a name="306"><span class="lineNum">     306 </span>            :                            struct ttm_bo_kmap_obj *map)</a>
-<a name="307"><span class="lineNum">     307 </span>            : {</a>
-<a name="308"><span class="lineNum">     308 </span><span class="lineNoCov">          0 :         struct ttm_resource *mem = bo-&gt;resource;</span></a>
-<a name="309"><span class="lineNum">     309 </span><span class="lineNoCov">          0 :         struct ttm_operation_ctx ctx = {</span></a>
-<a name="310"><span class="lineNum">     310 </span>            :                 .interruptible = false,</a>
-<a name="311"><span class="lineNum">     311 </span>            :                 .no_wait_gpu = false</a>
-<a name="312"><span class="lineNum">     312 </span>            :         };</a>
-<a name="313"><span class="lineNum">     313 </span><span class="lineNoCov">          0 :         struct ttm_tt *ttm = bo-&gt;ttm;</span></a>
-<a name="314"><span class="lineNum">     314 </span>            :         pgprot_t prot;</a>
-<a name="315"><span class="lineNum">     315 </span>            :         int ret;</a>
-<a name="316"><span class="lineNum">     316 </span>            : </a>
-<a name="317"><span class="lineNum">     317 </span><span class="lineNoCov">          0 :         BUG_ON(!ttm);</span></a>
-<a name="318"><span class="lineNum">     318 </span>            : </a>
-<a name="319"><span class="lineNum">     319 </span><span class="lineNoCov">          0 :         ret = ttm_tt_populate(bo-&gt;bdev, ttm, &amp;ctx);</span></a>
-<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
-<a name="321"><span class="lineNum">     321 </span>            :                 return ret;</a>
-<a name="322"><span class="lineNum">     322 </span>            : </a>
-<a name="323"><span class="lineNum">     323 </span><span class="lineNoCov">          0 :         if (num_pages == 1 &amp;&amp; ttm-&gt;caching == ttm_cached) {</span></a>
-<a name="324"><span class="lineNum">     324 </span>            :                 /*</a>
-<a name="325"><span class="lineNum">     325 </span>            :                  * We're mapping a single page, and the desired</a>
-<a name="326"><span class="lineNum">     326 </span>            :                  * page protection is consistent with the bo.</a>
-<a name="327"><span class="lineNum">     327 </span>            :                  */</a>
-<a name="328"><span class="lineNum">     328 </span>            : </a>
-<a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 :                 map-&gt;bo_kmap_type = ttm_bo_map_kmap;</span></a>
-<a name="330"><span class="lineNum">     330 </span><span class="lineNoCov">          0 :                 map-&gt;page = ttm-&gt;pages[start_page];</span></a>
-<a name="331"><span class="lineNum">     331 </span><span class="lineNoCov">          0 :                 map-&gt;virtual = kmap(map-&gt;page);</span></a>
-<a name="332"><span class="lineNum">     332 </span>            :         } else {</a>
-<a name="333"><span class="lineNum">     333 </span>            :                 /*</a>
-<a name="334"><span class="lineNum">     334 </span>            :                  * We need to use vmap to get the desired page protection</a>
-<a name="335"><span class="lineNum">     335 </span>            :                  * or to make the buffer object look contiguous.</a>
-<a name="336"><span class="lineNum">     336 </span>            :                  */</a>
-<a name="337"><span class="lineNum">     337 </span><span class="lineNoCov">          0 :                 prot = ttm_io_prot(bo, mem, PAGE_KERNEL);</span></a>
-<a name="338"><span class="lineNum">     338 </span><span class="lineNoCov">          0 :                 map-&gt;bo_kmap_type = ttm_bo_map_vmap;</span></a>
-<a name="339"><span class="lineNum">     339 </span><span class="lineNoCov">          0 :                 map-&gt;virtual = vmap(ttm-&gt;pages + start_page, num_pages,</span></a>
-<a name="340"><span class="lineNum">     340 </span>            :                                     0, prot);</a>
-<a name="341"><span class="lineNum">     341 </span>            :         }</a>
-<a name="342"><span class="lineNum">     342 </span><span class="lineNoCov">          0 :         return (!map-&gt;virtual) ? -ENOMEM : 0;</span></a>
-<a name="343"><span class="lineNum">     343 </span>            : }</a>
-<a name="344"><span class="lineNum">     344 </span>            : </a>
-<a name="345"><span class="lineNum">     345 </span><span class="lineNoCov">          0 : int ttm_bo_kmap(struct ttm_buffer_object *bo,</span></a>
-<a name="346"><span class="lineNum">     346 </span>            :                 unsigned long start_page, unsigned long num_pages,</a>
-<a name="347"><span class="lineNum">     347 </span>            :                 struct ttm_bo_kmap_obj *map)</a>
-<a name="348"><span class="lineNum">     348 </span>            : {</a>
-<a name="349"><span class="lineNum">     349 </span>            :         unsigned long offset, size;</a>
-<a name="350"><span class="lineNum">     350 </span>            :         int ret;</a>
-<a name="351"><span class="lineNum">     351 </span>            : </a>
-<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 :         map-&gt;virtual = NULL;</span></a>
-<a name="353"><span class="lineNum">     353 </span><span class="lineNoCov">          0 :         map-&gt;bo = bo;</span></a>
-<a name="354"><span class="lineNum">     354 </span><span class="lineNoCov">          0 :         if (num_pages &gt; bo-&gt;resource-&gt;num_pages)</span></a>
-<a name="355"><span class="lineNum">     355 </span>            :                 return -EINVAL;</a>
-<a name="356"><span class="lineNum">     356 </span><span class="lineNoCov">          0 :         if ((start_page + num_pages) &gt; bo-&gt;resource-&gt;num_pages)</span></a>
-<a name="357"><span class="lineNum">     357 </span>            :                 return -EINVAL;</a>
-<a name="358"><span class="lineNum">     358 </span>            : </a>
-<a name="359"><span class="lineNum">     359 </span><span class="lineNoCov">          0 :         ret = ttm_mem_io_reserve(bo-&gt;bdev, bo-&gt;resource);</span></a>
-<a name="360"><span class="lineNum">     360 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
-<a name="361"><span class="lineNum">     361 </span>            :                 return ret;</a>
-<a name="362"><span class="lineNum">     362 </span><span class="lineNoCov">          0 :         if (!bo-&gt;resource-&gt;bus.is_iomem) {</span></a>
-<a name="363"><span class="lineNum">     363 </span><span class="lineNoCov">          0 :                 return ttm_bo_kmap_ttm(bo, start_page, num_pages, map);</span></a>
-<a name="364"><span class="lineNum">     364 </span>            :         } else {</a>
-<a name="365"><span class="lineNum">     365 </span><span class="lineNoCov">          0 :                 offset = start_page &lt;&lt; PAGE_SHIFT;</span></a>
-<a name="366"><span class="lineNum">     366 </span><span class="lineNoCov">          0 :                 size = num_pages &lt;&lt; PAGE_SHIFT;</span></a>
-<a name="367"><span class="lineNum">     367 </span><span class="lineNoCov">          0 :                 return ttm_bo_ioremap(bo, offset, size, map);</span></a>
-<a name="368"><span class="lineNum">     368 </span>            :         }</a>
-<a name="369"><span class="lineNum">     369 </span>            : }</a>
-<a name="370"><span class="lineNum">     370 </span>            : EXPORT_SYMBOL(ttm_bo_kmap);</a>
-<a name="371"><span class="lineNum">     371 </span>            : </a>
-<a name="372"><span class="lineNum">     372 </span><span class="lineNoCov">          0 : void ttm_bo_kunmap(struct ttm_bo_kmap_obj *map)</span></a>
-<a name="373"><span class="lineNum">     373 </span>            : {</a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 :         if (!map-&gt;virtual)</span></a>
-<a name="375"><span class="lineNum">     375 </span>            :                 return;</a>
-<a name="376"><span class="lineNum">     376 </span><span class="lineNoCov">          0 :         switch (map-&gt;bo_kmap_type) {</span></a>
-<a name="377"><span class="lineNum">     377 </span>            :         case ttm_bo_map_iomap:</a>
-<a name="378"><span class="lineNum">     378 </span><span class="lineNoCov">          0 :                 iounmap(map-&gt;virtual);</span></a>
-<a name="379"><span class="lineNum">     379 </span><span class="lineNoCov">          0 :                 break;</span></a>
-<a name="380"><span class="lineNum">     380 </span>            :         case ttm_bo_map_vmap:</a>
-<a name="381"><span class="lineNum">     381 </span><span class="lineNoCov">          0 :                 vunmap(map-&gt;virtual);</span></a>
+<a name="273"><span class="lineNum">     273 </span><span class="lineNoCov">          0 :         man = ttm_manager_type(bo-&gt;bdev, res-&gt;mem_type);</span></a>
+<a name="274"><span class="lineNum">     274 </span><span class="lineNoCov">          0 :         caching = man-&gt;use_tt ? bo-&gt;ttm-&gt;caching : res-&gt;bus.caching;</span></a>
+<a name="275"><span class="lineNum">     275 </span>            : </a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 :         return ttm_prot_from_caching(caching, tmp);</span></a>
+<a name="277"><span class="lineNum">     277 </span>            : }</a>
+<a name="278"><span class="lineNum">     278 </span>            : EXPORT_SYMBOL(ttm_io_prot);</a>
+<a name="279"><span class="lineNum">     279 </span>            : </a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineNoCov">          0 : static int ttm_bo_ioremap(struct ttm_buffer_object *bo,</span></a>
+<a name="281"><span class="lineNum">     281 </span>            :                           unsigned long offset,</a>
+<a name="282"><span class="lineNum">     282 </span>            :                           unsigned long size,</a>
+<a name="283"><span class="lineNum">     283 </span>            :                           struct ttm_bo_kmap_obj *map)</a>
+<a name="284"><span class="lineNum">     284 </span>            : {</a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 :         struct ttm_resource *mem = bo-&gt;resource;</span></a>
+<a name="286"><span class="lineNum">     286 </span>            : </a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :         if (bo-&gt;resource-&gt;bus.addr) {</span></a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 :                 map-&gt;bo_kmap_type = ttm_bo_map_premapped;</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 :                 map-&gt;virtual = ((u8 *)bo-&gt;resource-&gt;bus.addr) + offset;</span></a>
+<a name="290"><span class="lineNum">     290 </span>            :         } else {</a>
+<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 :                 resource_size_t res = bo-&gt;resource-&gt;bus.offset + offset;</span></a>
+<a name="292"><span class="lineNum">     292 </span>            : </a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 :                 map-&gt;bo_kmap_type = ttm_bo_map_iomap;</span></a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineNoCov">          0 :                 if (mem-&gt;bus.caching == ttm_write_combined)</span></a>
+<a name="295"><span class="lineNum">     295 </span><span class="lineNoCov">          0 :                         map-&gt;virtual = ioremap_wc(res, size);</span></a>
+<a name="296"><span class="lineNum">     296 </span>            : #ifdef CONFIG_X86</a>
+<a name="297"><span class="lineNum">     297 </span>            :                 else if (mem-&gt;bus.caching == ttm_cached)</a>
+<a name="298"><span class="lineNum">     298 </span>            :                         map-&gt;virtual = ioremap_cache(res, size);</a>
+<a name="299"><span class="lineNum">     299 </span>            : #endif</a>
+<a name="300"><span class="lineNum">     300 </span>            :                 else</a>
+<a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 :                         map-&gt;virtual = ioremap(res, size);</span></a>
+<a name="302"><span class="lineNum">     302 </span>            :         }</a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineNoCov">          0 :         return (!map-&gt;virtual) ? -ENOMEM : 0;</span></a>
+<a name="304"><span class="lineNum">     304 </span>            : }</a>
+<a name="305"><span class="lineNum">     305 </span>            : </a>
+<a name="306"><span class="lineNum">     306 </span><span class="lineNoCov">          0 : static int ttm_bo_kmap_ttm(struct ttm_buffer_object *bo,</span></a>
+<a name="307"><span class="lineNum">     307 </span>            :                            unsigned long start_page,</a>
+<a name="308"><span class="lineNum">     308 </span>            :                            unsigned long num_pages,</a>
+<a name="309"><span class="lineNum">     309 </span>            :                            struct ttm_bo_kmap_obj *map)</a>
+<a name="310"><span class="lineNum">     310 </span>            : {</a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineNoCov">          0 :         struct ttm_resource *mem = bo-&gt;resource;</span></a>
+<a name="312"><span class="lineNum">     312 </span><span class="lineNoCov">          0 :         struct ttm_operation_ctx ctx = {</span></a>
+<a name="313"><span class="lineNum">     313 </span>            :                 .interruptible = false,</a>
+<a name="314"><span class="lineNum">     314 </span>            :                 .no_wait_gpu = false</a>
+<a name="315"><span class="lineNum">     315 </span>            :         };</a>
+<a name="316"><span class="lineNum">     316 </span><span class="lineNoCov">          0 :         struct ttm_tt *ttm = bo-&gt;ttm;</span></a>
+<a name="317"><span class="lineNum">     317 </span>            :         pgprot_t prot;</a>
+<a name="318"><span class="lineNum">     318 </span>            :         int ret;</a>
+<a name="319"><span class="lineNum">     319 </span>            : </a>
+<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 :         BUG_ON(!ttm);</span></a>
+<a name="321"><span class="lineNum">     321 </span>            : </a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 :         ret = ttm_tt_populate(bo-&gt;bdev, ttm, &amp;ctx);</span></a>
+<a name="323"><span class="lineNum">     323 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="324"><span class="lineNum">     324 </span>            :                 return ret;</a>
+<a name="325"><span class="lineNum">     325 </span>            : </a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 :         if (num_pages == 1 &amp;&amp; ttm-&gt;caching == ttm_cached) {</span></a>
+<a name="327"><span class="lineNum">     327 </span>            :                 /*</a>
+<a name="328"><span class="lineNum">     328 </span>            :                  * We're mapping a single page, and the desired</a>
+<a name="329"><span class="lineNum">     329 </span>            :                  * page protection is consistent with the bo.</a>
+<a name="330"><span class="lineNum">     330 </span>            :                  */</a>
+<a name="331"><span class="lineNum">     331 </span>            : </a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 :                 map-&gt;bo_kmap_type = ttm_bo_map_kmap;</span></a>
+<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 :                 map-&gt;page = ttm-&gt;pages[start_page];</span></a>
+<a name="334"><span class="lineNum">     334 </span><span class="lineNoCov">          0 :                 map-&gt;virtual = kmap(map-&gt;page);</span></a>
+<a name="335"><span class="lineNum">     335 </span>            :         } else {</a>
+<a name="336"><span class="lineNum">     336 </span>            :                 /*</a>
+<a name="337"><span class="lineNum">     337 </span>            :                  * We need to use vmap to get the desired page protection</a>
+<a name="338"><span class="lineNum">     338 </span>            :                  * or to make the buffer object look contiguous.</a>
+<a name="339"><span class="lineNum">     339 </span>            :                  */</a>
+<a name="340"><span class="lineNum">     340 </span><span class="lineNoCov">          0 :                 prot = ttm_io_prot(bo, mem, PAGE_KERNEL);</span></a>
+<a name="341"><span class="lineNum">     341 </span><span class="lineNoCov">          0 :                 map-&gt;bo_kmap_type = ttm_bo_map_vmap;</span></a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineNoCov">          0 :                 map-&gt;virtual = vmap(ttm-&gt;pages + start_page, num_pages,</span></a>
+<a name="343"><span class="lineNum">     343 </span>            :                                     0, prot);</a>
+<a name="344"><span class="lineNum">     344 </span>            :         }</a>
+<a name="345"><span class="lineNum">     345 </span><span class="lineNoCov">          0 :         return (!map-&gt;virtual) ? -ENOMEM : 0;</span></a>
+<a name="346"><span class="lineNum">     346 </span>            : }</a>
+<a name="347"><span class="lineNum">     347 </span>            : </a>
+<a name="348"><span class="lineNum">     348 </span><span class="lineNoCov">          0 : int ttm_bo_kmap(struct ttm_buffer_object *bo,</span></a>
+<a name="349"><span class="lineNum">     349 </span>            :                 unsigned long start_page, unsigned long num_pages,</a>
+<a name="350"><span class="lineNum">     350 </span>            :                 struct ttm_bo_kmap_obj *map)</a>
+<a name="351"><span class="lineNum">     351 </span>            : {</a>
+<a name="352"><span class="lineNum">     352 </span>            :         unsigned long offset, size;</a>
+<a name="353"><span class="lineNum">     353 </span>            :         int ret;</a>
+<a name="354"><span class="lineNum">     354 </span>            : </a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineNoCov">          0 :         map-&gt;virtual = NULL;</span></a>
+<a name="356"><span class="lineNum">     356 </span><span class="lineNoCov">          0 :         map-&gt;bo = bo;</span></a>
+<a name="357"><span class="lineNum">     357 </span><span class="lineNoCov">          0 :         if (num_pages &gt; bo-&gt;resource-&gt;num_pages)</span></a>
+<a name="358"><span class="lineNum">     358 </span>            :                 return -EINVAL;</a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineNoCov">          0 :         if ((start_page + num_pages) &gt; bo-&gt;resource-&gt;num_pages)</span></a>
+<a name="360"><span class="lineNum">     360 </span>            :                 return -EINVAL;</a>
+<a name="361"><span class="lineNum">     361 </span>            : </a>
+<a name="362"><span class="lineNum">     362 </span><span class="lineNoCov">          0 :         ret = ttm_mem_io_reserve(bo-&gt;bdev, bo-&gt;resource);</span></a>
+<a name="363"><span class="lineNum">     363 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="364"><span class="lineNum">     364 </span>            :                 return ret;</a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineNoCov">          0 :         if (!bo-&gt;resource-&gt;bus.is_iomem) {</span></a>
+<a name="366"><span class="lineNum">     366 </span><span class="lineNoCov">          0 :                 return ttm_bo_kmap_ttm(bo, start_page, num_pages, map);</span></a>
+<a name="367"><span class="lineNum">     367 </span>            :         } else {</a>
+<a name="368"><span class="lineNum">     368 </span><span class="lineNoCov">          0 :                 offset = start_page &lt;&lt; PAGE_SHIFT;</span></a>
+<a name="369"><span class="lineNum">     369 </span><span class="lineNoCov">          0 :                 size = num_pages &lt;&lt; PAGE_SHIFT;</span></a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 :                 return ttm_bo_ioremap(bo, offset, size, map);</span></a>
+<a name="371"><span class="lineNum">     371 </span>            :         }</a>
+<a name="372"><span class="lineNum">     372 </span>            : }</a>
+<a name="373"><span class="lineNum">     373 </span>            : EXPORT_SYMBOL(ttm_bo_kmap);</a>
+<a name="374"><span class="lineNum">     374 </span>            : </a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineNoCov">          0 : void ttm_bo_kunmap(struct ttm_bo_kmap_obj *map)</span></a>
+<a name="376"><span class="lineNum">     376 </span>            : {</a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineNoCov">          0 :         if (!map-&gt;virtual)</span></a>
+<a name="378"><span class="lineNum">     378 </span>            :                 return;</a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineNoCov">          0 :         switch (map-&gt;bo_kmap_type) {</span></a>
+<a name="380"><span class="lineNum">     380 </span>            :         case ttm_bo_map_iomap:</a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineNoCov">          0 :                 iounmap(map-&gt;virtual);</span></a>
 <a name="382"><span class="lineNum">     382 </span><span class="lineNoCov">          0 :                 break;</span></a>
-<a name="383"><span class="lineNum">     383 </span>            :         case ttm_bo_map_kmap:</a>
-<a name="384"><span class="lineNum">     384 </span>            :                 kunmap(map-&gt;page);</a>
-<a name="385"><span class="lineNum">     385 </span>            :                 break;</a>
-<a name="386"><span class="lineNum">     386 </span>            :         case ttm_bo_map_premapped:</a>
-<a name="387"><span class="lineNum">     387 </span>            :                 break;</a>
-<a name="388"><span class="lineNum">     388 </span>            :         default:</a>
-<a name="389"><span class="lineNum">     389 </span><span class="lineNoCov">          0 :                 BUG();</span></a>
-<a name="390"><span class="lineNum">     390 </span>            :         }</a>
-<a name="391"><span class="lineNum">     391 </span><span class="lineNoCov">          0 :         ttm_mem_io_free(map-&gt;bo-&gt;bdev, map-&gt;bo-&gt;resource);</span></a>
-<a name="392"><span class="lineNum">     392 </span><span class="lineNoCov">          0 :         map-&gt;virtual = NULL;</span></a>
-<a name="393"><span class="lineNum">     393 </span><span class="lineNoCov">          0 :         map-&gt;page = NULL;</span></a>
-<a name="394"><span class="lineNum">     394 </span>            : }</a>
-<a name="395"><span class="lineNum">     395 </span>            : EXPORT_SYMBOL(ttm_bo_kunmap);</a>
-<a name="396"><span class="lineNum">     396 </span>            : </a>
-<a name="397"><span class="lineNum">     397 </span><span class="lineNoCov">          0 : int ttm_bo_vmap(struct ttm_buffer_object *bo, struct iosys_map *map)</span></a>
-<a name="398"><span class="lineNum">     398 </span>            : {</a>
-<a name="399"><span class="lineNum">     399 </span><span class="lineNoCov">          0 :         struct ttm_resource *mem = bo-&gt;resource;</span></a>
-<a name="400"><span class="lineNum">     400 </span>            :         int ret;</a>
-<a name="401"><span class="lineNum">     401 </span>            : </a>
-<a name="402"><span class="lineNum">     402 </span><span class="lineNoCov">          0 :         ret = ttm_mem_io_reserve(bo-&gt;bdev, mem);</span></a>
-<a name="403"><span class="lineNum">     403 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
-<a name="404"><span class="lineNum">     404 </span>            :                 return ret;</a>
-<a name="405"><span class="lineNum">     405 </span>            : </a>
-<a name="406"><span class="lineNum">     406 </span><span class="lineNoCov">          0 :         if (mem-&gt;bus.is_iomem) {</span></a>
-<a name="407"><span class="lineNum">     407 </span>            :                 void __iomem *vaddr_iomem;</a>
+<a name="383"><span class="lineNum">     383 </span>            :         case ttm_bo_map_vmap:</a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineNoCov">          0 :                 vunmap(map-&gt;virtual);</span></a>
+<a name="385"><span class="lineNum">     385 </span><span class="lineNoCov">          0 :                 break;</span></a>
+<a name="386"><span class="lineNum">     386 </span>            :         case ttm_bo_map_kmap:</a>
+<a name="387"><span class="lineNum">     387 </span>            :                 kunmap(map-&gt;page);</a>
+<a name="388"><span class="lineNum">     388 </span>            :                 break;</a>
+<a name="389"><span class="lineNum">     389 </span>            :         case ttm_bo_map_premapped:</a>
+<a name="390"><span class="lineNum">     390 </span>            :                 break;</a>
+<a name="391"><span class="lineNum">     391 </span>            :         default:</a>
+<a name="392"><span class="lineNum">     392 </span><span class="lineNoCov">          0 :                 BUG();</span></a>
+<a name="393"><span class="lineNum">     393 </span>            :         }</a>
+<a name="394"><span class="lineNum">     394 </span><span class="lineNoCov">          0 :         ttm_mem_io_free(map-&gt;bo-&gt;bdev, map-&gt;bo-&gt;resource);</span></a>
+<a name="395"><span class="lineNum">     395 </span><span class="lineNoCov">          0 :         map-&gt;virtual = NULL;</span></a>
+<a name="396"><span class="lineNum">     396 </span><span class="lineNoCov">          0 :         map-&gt;page = NULL;</span></a>
+<a name="397"><span class="lineNum">     397 </span>            : }</a>
+<a name="398"><span class="lineNum">     398 </span>            : EXPORT_SYMBOL(ttm_bo_kunmap);</a>
+<a name="399"><span class="lineNum">     399 </span>            : </a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineNoCov">          0 : int ttm_bo_vmap(struct ttm_buffer_object *bo, struct iosys_map *map)</span></a>
+<a name="401"><span class="lineNum">     401 </span>            : {</a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineNoCov">          0 :         struct ttm_resource *mem = bo-&gt;resource;</span></a>
+<a name="403"><span class="lineNum">     403 </span>            :         int ret;</a>
+<a name="404"><span class="lineNum">     404 </span>            : </a>
+<a name="405"><span class="lineNum">     405 </span><span class="lineNoCov">          0 :         ret = ttm_mem_io_reserve(bo-&gt;bdev, mem);</span></a>
+<a name="406"><span class="lineNum">     406 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="407"><span class="lineNum">     407 </span>            :                 return ret;</a>
 <a name="408"><span class="lineNum">     408 </span>            : </a>
-<a name="409"><span class="lineNum">     409 </span><span class="lineNoCov">          0 :                 if (mem-&gt;bus.addr)</span></a>
-<a name="410"><span class="lineNum">     410 </span>            :                         vaddr_iomem = (void __iomem *)mem-&gt;bus.addr;</a>
-<a name="411"><span class="lineNum">     411 </span><span class="lineNoCov">          0 :                 else if (mem-&gt;bus.caching == ttm_write_combined)</span></a>
-<a name="412"><span class="lineNum">     412 </span><span class="lineNoCov">          0 :                         vaddr_iomem = ioremap_wc(mem-&gt;bus.offset,</span></a>
-<a name="413"><span class="lineNum">     413 </span>            :                                                  bo-&gt;base.size);</a>
-<a name="414"><span class="lineNum">     414 </span>            : #ifdef CONFIG_X86</a>
-<a name="415"><span class="lineNum">     415 </span>            :                 else if (mem-&gt;bus.caching == ttm_cached)</a>
-<a name="416"><span class="lineNum">     416 </span>            :                         vaddr_iomem = ioremap_cache(mem-&gt;bus.offset,</a>
-<a name="417"><span class="lineNum">     417 </span>            :                                                   bo-&gt;base.size);</a>
-<a name="418"><span class="lineNum">     418 </span>            : #endif</a>
-<a name="419"><span class="lineNum">     419 </span>            :                 else</a>
-<a name="420"><span class="lineNum">     420 </span><span class="lineNoCov">          0 :                         vaddr_iomem = ioremap(mem-&gt;bus.offset, bo-&gt;base.size);</span></a>
-<a name="421"><span class="lineNum">     421 </span>            : </a>
-<a name="422"><span class="lineNum">     422 </span><span class="lineNoCov">          0 :                 if (!vaddr_iomem)</span></a>
-<a name="423"><span class="lineNum">     423 </span>            :                         return -ENOMEM;</a>
+<a name="409"><span class="lineNum">     409 </span><span class="lineNoCov">          0 :         if (mem-&gt;bus.is_iomem) {</span></a>
+<a name="410"><span class="lineNum">     410 </span>            :                 void __iomem *vaddr_iomem;</a>
+<a name="411"><span class="lineNum">     411 </span>            : </a>
+<a name="412"><span class="lineNum">     412 </span><span class="lineNoCov">          0 :                 if (mem-&gt;bus.addr)</span></a>
+<a name="413"><span class="lineNum">     413 </span>            :                         vaddr_iomem = (void __iomem *)mem-&gt;bus.addr;</a>
+<a name="414"><span class="lineNum">     414 </span><span class="lineNoCov">          0 :                 else if (mem-&gt;bus.caching == ttm_write_combined)</span></a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineNoCov">          0 :                         vaddr_iomem = ioremap_wc(mem-&gt;bus.offset,</span></a>
+<a name="416"><span class="lineNum">     416 </span>            :                                                  bo-&gt;base.size);</a>
+<a name="417"><span class="lineNum">     417 </span>            : #ifdef CONFIG_X86</a>
+<a name="418"><span class="lineNum">     418 </span>            :                 else if (mem-&gt;bus.caching == ttm_cached)</a>
+<a name="419"><span class="lineNum">     419 </span>            :                         vaddr_iomem = ioremap_cache(mem-&gt;bus.offset,</a>
+<a name="420"><span class="lineNum">     420 </span>            :                                                   bo-&gt;base.size);</a>
+<a name="421"><span class="lineNum">     421 </span>            : #endif</a>
+<a name="422"><span class="lineNum">     422 </span>            :                 else</a>
+<a name="423"><span class="lineNum">     423 </span><span class="lineNoCov">          0 :                         vaddr_iomem = ioremap(mem-&gt;bus.offset, bo-&gt;base.size);</span></a>
 <a name="424"><span class="lineNum">     424 </span>            : </a>
-<a name="425"><span class="lineNum">     425 </span>            :                 iosys_map_set_vaddr_iomem(map, vaddr_iomem);</a>
-<a name="426"><span class="lineNum">     426 </span>            : </a>
-<a name="427"><span class="lineNum">     427 </span>            :         } else {</a>
-<a name="428"><span class="lineNum">     428 </span><span class="lineNoCov">          0 :                 struct ttm_operation_ctx ctx = {</span></a>
-<a name="429"><span class="lineNum">     429 </span>            :                         .interruptible = false,</a>
-<a name="430"><span class="lineNum">     430 </span>            :                         .no_wait_gpu = false</a>
-<a name="431"><span class="lineNum">     431 </span>            :                 };</a>
-<a name="432"><span class="lineNum">     432 </span><span class="lineNoCov">          0 :                 struct ttm_tt *ttm = bo-&gt;ttm;</span></a>
-<a name="433"><span class="lineNum">     433 </span>            :                 pgprot_t prot;</a>
-<a name="434"><span class="lineNum">     434 </span>            :                 void *vaddr;</a>
-<a name="435"><span class="lineNum">     435 </span>            : </a>
-<a name="436"><span class="lineNum">     436 </span><span class="lineNoCov">          0 :                 ret = ttm_tt_populate(bo-&gt;bdev, ttm, &amp;ctx);</span></a>
-<a name="437"><span class="lineNum">     437 </span><span class="lineNoCov">          0 :                 if (ret)</span></a>
-<a name="438"><span class="lineNum">     438 </span><span class="lineNoCov">          0 :                         return ret;</span></a>
-<a name="439"><span class="lineNum">     439 </span>            : </a>
-<a name="440"><span class="lineNum">     440 </span>            :                 /*</a>
-<a name="441"><span class="lineNum">     441 </span>            :                  * We need to use vmap to get the desired page protection</a>
-<a name="442"><span class="lineNum">     442 </span>            :                  * or to make the buffer object look contiguous.</a>
-<a name="443"><span class="lineNum">     443 </span>            :                  */</a>
-<a name="444"><span class="lineNum">     444 </span><span class="lineNoCov">          0 :                 prot = ttm_io_prot(bo, mem, PAGE_KERNEL);</span></a>
-<a name="445"><span class="lineNum">     445 </span><span class="lineNoCov">          0 :                 vaddr = vmap(ttm-&gt;pages, ttm-&gt;num_pages, 0, prot);</span></a>
-<a name="446"><span class="lineNum">     446 </span><span class="lineNoCov">          0 :                 if (!vaddr)</span></a>
-<a name="447"><span class="lineNum">     447 </span>            :                         return -ENOMEM;</a>
-<a name="448"><span class="lineNum">     448 </span>            : </a>
-<a name="449"><span class="lineNum">     449 </span><span class="lineNoCov">          0 :                 iosys_map_set_vaddr(map, vaddr);</span></a>
-<a name="450"><span class="lineNum">     450 </span>            :         }</a>
+<a name="425"><span class="lineNum">     425 </span><span class="lineNoCov">          0 :                 if (!vaddr_iomem)</span></a>
+<a name="426"><span class="lineNum">     426 </span>            :                         return -ENOMEM;</a>
+<a name="427"><span class="lineNum">     427 </span>            : </a>
+<a name="428"><span class="lineNum">     428 </span>            :                 iosys_map_set_vaddr_iomem(map, vaddr_iomem);</a>
+<a name="429"><span class="lineNum">     429 </span>            : </a>
+<a name="430"><span class="lineNum">     430 </span>            :         } else {</a>
+<a name="431"><span class="lineNum">     431 </span><span class="lineNoCov">          0 :                 struct ttm_operation_ctx ctx = {</span></a>
+<a name="432"><span class="lineNum">     432 </span>            :                         .interruptible = false,</a>
+<a name="433"><span class="lineNum">     433 </span>            :                         .no_wait_gpu = false</a>
+<a name="434"><span class="lineNum">     434 </span>            :                 };</a>
+<a name="435"><span class="lineNum">     435 </span><span class="lineNoCov">          0 :                 struct ttm_tt *ttm = bo-&gt;ttm;</span></a>
+<a name="436"><span class="lineNum">     436 </span>            :                 pgprot_t prot;</a>
+<a name="437"><span class="lineNum">     437 </span>            :                 void *vaddr;</a>
+<a name="438"><span class="lineNum">     438 </span>            : </a>
+<a name="439"><span class="lineNum">     439 </span><span class="lineNoCov">          0 :                 ret = ttm_tt_populate(bo-&gt;bdev, ttm, &amp;ctx);</span></a>
+<a name="440"><span class="lineNum">     440 </span><span class="lineNoCov">          0 :                 if (ret)</span></a>
+<a name="441"><span class="lineNum">     441 </span><span class="lineNoCov">          0 :                         return ret;</span></a>
+<a name="442"><span class="lineNum">     442 </span>            : </a>
+<a name="443"><span class="lineNum">     443 </span>            :                 /*</a>
+<a name="444"><span class="lineNum">     444 </span>            :                  * We need to use vmap to get the desired page protection</a>
+<a name="445"><span class="lineNum">     445 </span>            :                  * or to make the buffer object look contiguous.</a>
+<a name="446"><span class="lineNum">     446 </span>            :                  */</a>
+<a name="447"><span class="lineNum">     447 </span><span class="lineNoCov">          0 :                 prot = ttm_io_prot(bo, mem, PAGE_KERNEL);</span></a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineNoCov">          0 :                 vaddr = vmap(ttm-&gt;pages, ttm-&gt;num_pages, 0, prot);</span></a>
+<a name="449"><span class="lineNum">     449 </span><span class="lineNoCov">          0 :                 if (!vaddr)</span></a>
+<a name="450"><span class="lineNum">     450 </span>            :                         return -ENOMEM;</a>
 <a name="451"><span class="lineNum">     451 </span>            : </a>
-<a name="452"><span class="lineNum">     452 </span>            :         return 0;</a>
-<a name="453"><span class="lineNum">     453 </span>            : }</a>
-<a name="454"><span class="lineNum">     454 </span>            : EXPORT_SYMBOL(ttm_bo_vmap);</a>
-<a name="455"><span class="lineNum">     455 </span>            : </a>
-<a name="456"><span class="lineNum">     456 </span><span class="lineNoCov">          0 : void ttm_bo_vunmap(struct ttm_buffer_object *bo, struct iosys_map *map)</span></a>
-<a name="457"><span class="lineNum">     457 </span>            : {</a>
-<a name="458"><span class="lineNum">     458 </span><span class="lineNoCov">          0 :         struct ttm_resource *mem = bo-&gt;resource;</span></a>
-<a name="459"><span class="lineNum">     459 </span>            : </a>
-<a name="460"><span class="lineNum">     460 </span><span class="lineNoCov">          0 :         if (iosys_map_is_null(map))</span></a>
-<a name="461"><span class="lineNum">     461 </span>            :                 return;</a>
+<a name="452"><span class="lineNum">     452 </span><span class="lineNoCov">          0 :                 iosys_map_set_vaddr(map, vaddr);</span></a>
+<a name="453"><span class="lineNum">     453 </span>            :         }</a>
+<a name="454"><span class="lineNum">     454 </span>            : </a>
+<a name="455"><span class="lineNum">     455 </span>            :         return 0;</a>
+<a name="456"><span class="lineNum">     456 </span>            : }</a>
+<a name="457"><span class="lineNum">     457 </span>            : EXPORT_SYMBOL(ttm_bo_vmap);</a>
+<a name="458"><span class="lineNum">     458 </span>            : </a>
+<a name="459"><span class="lineNum">     459 </span><span class="lineNoCov">          0 : void ttm_bo_vunmap(struct ttm_buffer_object *bo, struct iosys_map *map)</span></a>
+<a name="460"><span class="lineNum">     460 </span>            : {</a>
+<a name="461"><span class="lineNum">     461 </span><span class="lineNoCov">          0 :         struct ttm_resource *mem = bo-&gt;resource;</span></a>
 <a name="462"><span class="lineNum">     462 </span>            : </a>
-<a name="463"><span class="lineNum">     463 </span><span class="lineNoCov">          0 :         if (!map-&gt;is_iomem)</span></a>
-<a name="464"><span class="lineNum">     464 </span><span class="lineNoCov">          0 :                 vunmap(map-&gt;vaddr);</span></a>
-<a name="465"><span class="lineNum">     465 </span><span class="lineNoCov">          0 :         else if (!mem-&gt;bus.addr)</span></a>
-<a name="466"><span class="lineNum">     466 </span><span class="lineNoCov">          0 :                 iounmap(map-&gt;vaddr_iomem);</span></a>
-<a name="467"><span class="lineNum">     467 </span><span class="lineNoCov">          0 :         iosys_map_clear(map);</span></a>
-<a name="468"><span class="lineNum">     468 </span>            : </a>
-<a name="469"><span class="lineNum">     469 </span><span class="lineNoCov">          0 :         ttm_mem_io_free(bo-&gt;bdev, bo-&gt;resource);</span></a>
-<a name="470"><span class="lineNum">     470 </span>            : }</a>
-<a name="471"><span class="lineNum">     471 </span>            : EXPORT_SYMBOL(ttm_bo_vunmap);</a>
-<a name="472"><span class="lineNum">     472 </span>            : </a>
-<a name="473"><span class="lineNum">     473 </span><span class="lineNoCov">          0 : static int ttm_bo_wait_free_node(struct ttm_buffer_object *bo,</span></a>
-<a name="474"><span class="lineNum">     474 </span>            :                                  bool dst_use_tt)</a>
-<a name="475"><span class="lineNum">     475 </span>            : {</a>
-<a name="476"><span class="lineNum">     476 </span>            :         int ret;</a>
-<a name="477"><span class="lineNum">     477 </span><span class="lineNoCov">          0 :         ret = ttm_bo_wait(bo, false, false);</span></a>
-<a name="478"><span class="lineNum">     478 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
-<a name="479"><span class="lineNum">     479 </span>            :                 return ret;</a>
-<a name="480"><span class="lineNum">     480 </span>            : </a>
-<a name="481"><span class="lineNum">     481 </span><span class="lineNoCov">          0 :         if (!dst_use_tt)</span></a>
-<a name="482"><span class="lineNum">     482 </span><span class="lineNoCov">          0 :                 ttm_bo_tt_destroy(bo);</span></a>
-<a name="483"><span class="lineNum">     483 </span><span class="lineNoCov">          0 :         ttm_resource_free(bo, &amp;bo-&gt;resource);</span></a>
-<a name="484"><span class="lineNum">     484 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="485"><span class="lineNum">     485 </span>            : }</a>
-<a name="486"><span class="lineNum">     486 </span>            : </a>
-<a name="487"><span class="lineNum">     487 </span><span class="lineNoCov">          0 : static int ttm_bo_move_to_ghost(struct ttm_buffer_object *bo,</span></a>
-<a name="488"><span class="lineNum">     488 </span>            :                                 struct dma_fence *fence,</a>
-<a name="489"><span class="lineNum">     489 </span>            :                                 bool dst_use_tt)</a>
-<a name="490"><span class="lineNum">     490 </span>            : {</a>
-<a name="491"><span class="lineNum">     491 </span>            :         struct ttm_buffer_object *ghost_obj;</a>
-<a name="492"><span class="lineNum">     492 </span>            :         int ret;</a>
-<a name="493"><span class="lineNum">     493 </span>            : </a>
-<a name="494"><span class="lineNum">     494 </span>            :         /**</a>
-<a name="495"><span class="lineNum">     495 </span>            :          * This should help pipeline ordinary buffer moves.</a>
-<a name="496"><span class="lineNum">     496 </span>            :          *</a>
-<a name="497"><span class="lineNum">     497 </span>            :          * Hang old buffer memory on a new buffer object,</a>
-<a name="498"><span class="lineNum">     498 </span>            :          * and leave it to be released when the GPU</a>
-<a name="499"><span class="lineNum">     499 </span>            :          * operation has completed.</a>
-<a name="500"><span class="lineNum">     500 </span>            :          */</a>
-<a name="501"><span class="lineNum">     501 </span>            : </a>
-<a name="502"><span class="lineNum">     502 </span><span class="lineNoCov">          0 :         ret = ttm_buffer_object_transfer(bo, &amp;ghost_obj);</span></a>
-<a name="503"><span class="lineNum">     503 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
-<a name="504"><span class="lineNum">     504 </span>            :                 return ret;</a>
-<a name="505"><span class="lineNum">     505 </span>            : </a>
-<a name="506"><span class="lineNum">     506 </span><span class="lineNoCov">          0 :         dma_resv_add_fence(&amp;ghost_obj-&gt;base._resv, fence,</span></a>
-<a name="507"><span class="lineNum">     507 </span>            :                            DMA_RESV_USAGE_KERNEL);</a>
+<a name="463"><span class="lineNum">     463 </span><span class="lineNoCov">          0 :         if (iosys_map_is_null(map))</span></a>
+<a name="464"><span class="lineNum">     464 </span>            :                 return;</a>
+<a name="465"><span class="lineNum">     465 </span>            : </a>
+<a name="466"><span class="lineNum">     466 </span><span class="lineNoCov">          0 :         if (!map-&gt;is_iomem)</span></a>
+<a name="467"><span class="lineNum">     467 </span><span class="lineNoCov">          0 :                 vunmap(map-&gt;vaddr);</span></a>
+<a name="468"><span class="lineNum">     468 </span><span class="lineNoCov">          0 :         else if (!mem-&gt;bus.addr)</span></a>
+<a name="469"><span class="lineNum">     469 </span><span class="lineNoCov">          0 :                 iounmap(map-&gt;vaddr_iomem);</span></a>
+<a name="470"><span class="lineNum">     470 </span><span class="lineNoCov">          0 :         iosys_map_clear(map);</span></a>
+<a name="471"><span class="lineNum">     471 </span>            : </a>
+<a name="472"><span class="lineNum">     472 </span><span class="lineNoCov">          0 :         ttm_mem_io_free(bo-&gt;bdev, bo-&gt;resource);</span></a>
+<a name="473"><span class="lineNum">     473 </span>            : }</a>
+<a name="474"><span class="lineNum">     474 </span>            : EXPORT_SYMBOL(ttm_bo_vunmap);</a>
+<a name="475"><span class="lineNum">     475 </span>            : </a>
+<a name="476"><span class="lineNum">     476 </span><span class="lineNoCov">          0 : static int ttm_bo_wait_free_node(struct ttm_buffer_object *bo,</span></a>
+<a name="477"><span class="lineNum">     477 </span>            :                                  bool dst_use_tt)</a>
+<a name="478"><span class="lineNum">     478 </span>            : {</a>
+<a name="479"><span class="lineNum">     479 </span>            :         int ret;</a>
+<a name="480"><span class="lineNum">     480 </span><span class="lineNoCov">          0 :         ret = ttm_bo_wait(bo, false, false);</span></a>
+<a name="481"><span class="lineNum">     481 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="482"><span class="lineNum">     482 </span>            :                 return ret;</a>
+<a name="483"><span class="lineNum">     483 </span>            : </a>
+<a name="484"><span class="lineNum">     484 </span><span class="lineNoCov">          0 :         if (!dst_use_tt)</span></a>
+<a name="485"><span class="lineNum">     485 </span><span class="lineNoCov">          0 :                 ttm_bo_tt_destroy(bo);</span></a>
+<a name="486"><span class="lineNum">     486 </span><span class="lineNoCov">          0 :         ttm_resource_free(bo, &amp;bo-&gt;resource);</span></a>
+<a name="487"><span class="lineNum">     487 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="488"><span class="lineNum">     488 </span>            : }</a>
+<a name="489"><span class="lineNum">     489 </span>            : </a>
+<a name="490"><span class="lineNum">     490 </span><span class="lineNoCov">          0 : static int ttm_bo_move_to_ghost(struct ttm_buffer_object *bo,</span></a>
+<a name="491"><span class="lineNum">     491 </span>            :                                 struct dma_fence *fence,</a>
+<a name="492"><span class="lineNum">     492 </span>            :                                 bool dst_use_tt)</a>
+<a name="493"><span class="lineNum">     493 </span>            : {</a>
+<a name="494"><span class="lineNum">     494 </span>            :         struct ttm_buffer_object *ghost_obj;</a>
+<a name="495"><span class="lineNum">     495 </span>            :         int ret;</a>
+<a name="496"><span class="lineNum">     496 </span>            : </a>
+<a name="497"><span class="lineNum">     497 </span>            :         /**</a>
+<a name="498"><span class="lineNum">     498 </span>            :          * This should help pipeline ordinary buffer moves.</a>
+<a name="499"><span class="lineNum">     499 </span>            :          *</a>
+<a name="500"><span class="lineNum">     500 </span>            :          * Hang old buffer memory on a new buffer object,</a>
+<a name="501"><span class="lineNum">     501 </span>            :          * and leave it to be released when the GPU</a>
+<a name="502"><span class="lineNum">     502 </span>            :          * operation has completed.</a>
+<a name="503"><span class="lineNum">     503 </span>            :          */</a>
+<a name="504"><span class="lineNum">     504 </span>            : </a>
+<a name="505"><span class="lineNum">     505 </span><span class="lineNoCov">          0 :         ret = ttm_buffer_object_transfer(bo, &amp;ghost_obj);</span></a>
+<a name="506"><span class="lineNum">     506 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="507"><span class="lineNum">     507 </span>            :                 return ret;</a>
 <a name="508"><span class="lineNum">     508 </span>            : </a>
-<a name="509"><span class="lineNum">     509 </span>            :         /**</a>
-<a name="510"><span class="lineNum">     510 </span>            :          * If we're not moving to fixed memory, the TTM object</a>
-<a name="511"><span class="lineNum">     511 </span>            :          * needs to stay alive. Otherwhise hang it on the ghost</a>
-<a name="512"><span class="lineNum">     512 </span>            :          * bo to be unbound and destroyed.</a>
-<a name="513"><span class="lineNum">     513 </span>            :          */</a>
-<a name="514"><span class="lineNum">     514 </span>            : </a>
-<a name="515"><span class="lineNum">     515 </span><span class="lineNoCov">          0 :         if (dst_use_tt)</span></a>
-<a name="516"><span class="lineNum">     516 </span><span class="lineNoCov">          0 :                 ghost_obj-&gt;ttm = NULL;</span></a>
-<a name="517"><span class="lineNum">     517 </span>            :         else</a>
-<a name="518"><span class="lineNum">     518 </span><span class="lineNoCov">          0 :                 bo-&gt;ttm = NULL;</span></a>
-<a name="519"><span class="lineNum">     519 </span>            : </a>
-<a name="520"><span class="lineNum">     520 </span><span class="lineNoCov">          0 :         dma_resv_unlock(&amp;ghost_obj-&gt;base._resv);</span></a>
-<a name="521"><span class="lineNum">     521 </span><span class="lineNoCov">          0 :         ttm_bo_put(ghost_obj);</span></a>
-<a name="522"><span class="lineNum">     522 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="523"><span class="lineNum">     523 </span>            : }</a>
-<a name="524"><span class="lineNum">     524 </span>            : </a>
-<a name="525"><span class="lineNum">     525 </span><span class="lineNoCov">          0 : static void ttm_bo_move_pipeline_evict(struct ttm_buffer_object *bo,</span></a>
-<a name="526"><span class="lineNum">     526 </span>            :                                        struct dma_fence *fence)</a>
-<a name="527"><span class="lineNum">     527 </span>            : {</a>
-<a name="528"><span class="lineNum">     528 </span><span class="lineNoCov">          0 :         struct ttm_device *bdev = bo-&gt;bdev;</span></a>
-<a name="529"><span class="lineNum">     529 </span>            :         struct ttm_resource_manager *from;</a>
-<a name="530"><span class="lineNum">     530 </span>            : </a>
-<a name="531"><span class="lineNum">     531 </span><span class="lineNoCov">          0 :         from = ttm_manager_type(bdev, bo-&gt;resource-&gt;mem_type);</span></a>
-<a name="532"><span class="lineNum">     532 </span>            : </a>
-<a name="533"><span class="lineNum">     533 </span>            :         /**</a>
-<a name="534"><span class="lineNum">     534 </span>            :          * BO doesn't have a TTM we need to bind/unbind. Just remember</a>
-<a name="535"><span class="lineNum">     535 </span>            :          * this eviction and free up the allocation</a>
-<a name="536"><span class="lineNum">     536 </span>            :          */</a>
-<a name="537"><span class="lineNum">     537 </span><span class="lineNoCov">          0 :         spin_lock(&amp;from-&gt;move_lock);</span></a>
-<a name="538"><span class="lineNum">     538 </span><span class="lineNoCov">          0 :         if (!from-&gt;move || dma_fence_is_later(fence, from-&gt;move)) {</span></a>
-<a name="539"><span class="lineNum">     539 </span><span class="lineNoCov">          0 :                 dma_fence_put(from-&gt;move);</span></a>
-<a name="540"><span class="lineNum">     540 </span><span class="lineNoCov">          0 :                 from-&gt;move = dma_fence_get(fence);</span></a>
-<a name="541"><span class="lineNum">     541 </span>            :         }</a>
-<a name="542"><span class="lineNum">     542 </span><span class="lineNoCov">          0 :         spin_unlock(&amp;from-&gt;move_lock);</span></a>
-<a name="543"><span class="lineNum">     543 </span>            : </a>
-<a name="544"><span class="lineNum">     544 </span><span class="lineNoCov">          0 :         ttm_resource_free(bo, &amp;bo-&gt;resource);</span></a>
-<a name="545"><span class="lineNum">     545 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="509"><span class="lineNum">     509 </span><span class="lineNoCov">          0 :         dma_resv_add_fence(&amp;ghost_obj-&gt;base._resv, fence,</span></a>
+<a name="510"><span class="lineNum">     510 </span>            :                            DMA_RESV_USAGE_KERNEL);</a>
+<a name="511"><span class="lineNum">     511 </span>            : </a>
+<a name="512"><span class="lineNum">     512 </span>            :         /**</a>
+<a name="513"><span class="lineNum">     513 </span>            :          * If we're not moving to fixed memory, the TTM object</a>
+<a name="514"><span class="lineNum">     514 </span>            :          * needs to stay alive. Otherwhise hang it on the ghost</a>
+<a name="515"><span class="lineNum">     515 </span>            :          * bo to be unbound and destroyed.</a>
+<a name="516"><span class="lineNum">     516 </span>            :          */</a>
+<a name="517"><span class="lineNum">     517 </span>            : </a>
+<a name="518"><span class="lineNum">     518 </span><span class="lineNoCov">          0 :         if (dst_use_tt)</span></a>
+<a name="519"><span class="lineNum">     519 </span><span class="lineNoCov">          0 :                 ghost_obj-&gt;ttm = NULL;</span></a>
+<a name="520"><span class="lineNum">     520 </span>            :         else</a>
+<a name="521"><span class="lineNum">     521 </span><span class="lineNoCov">          0 :                 bo-&gt;ttm = NULL;</span></a>
+<a name="522"><span class="lineNum">     522 </span>            : </a>
+<a name="523"><span class="lineNum">     523 </span><span class="lineNoCov">          0 :         dma_resv_unlock(&amp;ghost_obj-&gt;base._resv);</span></a>
+<a name="524"><span class="lineNum">     524 </span><span class="lineNoCov">          0 :         ttm_bo_put(ghost_obj);</span></a>
+<a name="525"><span class="lineNum">     525 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="526"><span class="lineNum">     526 </span>            : }</a>
+<a name="527"><span class="lineNum">     527 </span>            : </a>
+<a name="528"><span class="lineNum">     528 </span><span class="lineNoCov">          0 : static void ttm_bo_move_pipeline_evict(struct ttm_buffer_object *bo,</span></a>
+<a name="529"><span class="lineNum">     529 </span>            :                                        struct dma_fence *fence)</a>
+<a name="530"><span class="lineNum">     530 </span>            : {</a>
+<a name="531"><span class="lineNum">     531 </span><span class="lineNoCov">          0 :         struct ttm_device *bdev = bo-&gt;bdev;</span></a>
+<a name="532"><span class="lineNum">     532 </span>            :         struct ttm_resource_manager *from;</a>
+<a name="533"><span class="lineNum">     533 </span>            : </a>
+<a name="534"><span class="lineNum">     534 </span><span class="lineNoCov">          0 :         from = ttm_manager_type(bdev, bo-&gt;resource-&gt;mem_type);</span></a>
+<a name="535"><span class="lineNum">     535 </span>            : </a>
+<a name="536"><span class="lineNum">     536 </span>            :         /**</a>
+<a name="537"><span class="lineNum">     537 </span>            :          * BO doesn't have a TTM we need to bind/unbind. Just remember</a>
+<a name="538"><span class="lineNum">     538 </span>            :          * this eviction and free up the allocation</a>
+<a name="539"><span class="lineNum">     539 </span>            :          */</a>
+<a name="540"><span class="lineNum">     540 </span><span class="lineNoCov">          0 :         spin_lock(&amp;from-&gt;move_lock);</span></a>
+<a name="541"><span class="lineNum">     541 </span><span class="lineNoCov">          0 :         if (!from-&gt;move || dma_fence_is_later(fence, from-&gt;move)) {</span></a>
+<a name="542"><span class="lineNum">     542 </span><span class="lineNoCov">          0 :                 dma_fence_put(from-&gt;move);</span></a>
+<a name="543"><span class="lineNum">     543 </span><span class="lineNoCov">          0 :                 from-&gt;move = dma_fence_get(fence);</span></a>
+<a name="544"><span class="lineNum">     544 </span>            :         }</a>
+<a name="545"><span class="lineNum">     545 </span><span class="lineNoCov">          0 :         spin_unlock(&amp;from-&gt;move_lock);</span></a>
 <a name="546"><span class="lineNum">     546 </span>            : </a>
-<a name="547"><span class="lineNum">     547 </span><span class="lineNoCov">          0 : int ttm_bo_move_accel_cleanup(struct ttm_buffer_object *bo,</span></a>
-<a name="548"><span class="lineNum">     548 </span>            :                               struct dma_fence *fence,</a>
-<a name="549"><span class="lineNum">     549 </span>            :                               bool evict,</a>
-<a name="550"><span class="lineNum">     550 </span>            :                               bool pipeline,</a>
-<a name="551"><span class="lineNum">     551 </span>            :                               struct ttm_resource *new_mem)</a>
-<a name="552"><span class="lineNum">     552 </span>            : {</a>
-<a name="553"><span class="lineNum">     553 </span><span class="lineNoCov">          0 :         struct ttm_device *bdev = bo-&gt;bdev;</span></a>
-<a name="554"><span class="lineNum">     554 </span><span class="lineNoCov">          0 :         struct ttm_resource_manager *from = ttm_manager_type(bdev, bo-&gt;resource-&gt;mem_type);</span></a>
-<a name="555"><span class="lineNum">     555 </span><span class="lineNoCov">          0 :         struct ttm_resource_manager *man = ttm_manager_type(bdev, new_mem-&gt;mem_type);</span></a>
-<a name="556"><span class="lineNum">     556 </span><span class="lineNoCov">          0 :         int ret = 0;</span></a>
-<a name="557"><span class="lineNum">     557 </span>            : </a>
-<a name="558"><span class="lineNum">     558 </span><span class="lineNoCov">          0 :         dma_resv_add_fence(bo-&gt;base.resv, fence, DMA_RESV_USAGE_KERNEL);</span></a>
-<a name="559"><span class="lineNum">     559 </span><span class="lineNoCov">          0 :         if (!evict)</span></a>
-<a name="560"><span class="lineNum">     560 </span><span class="lineNoCov">          0 :                 ret = ttm_bo_move_to_ghost(bo, fence, man-&gt;use_tt);</span></a>
-<a name="561"><span class="lineNum">     561 </span><span class="lineNoCov">          0 :         else if (!from-&gt;use_tt &amp;&amp; pipeline)</span></a>
-<a name="562"><span class="lineNum">     562 </span><span class="lineNoCov">          0 :                 ttm_bo_move_pipeline_evict(bo, fence);</span></a>
-<a name="563"><span class="lineNum">     563 </span>            :         else</a>
-<a name="564"><span class="lineNum">     564 </span><span class="lineNoCov">          0 :                 ret = ttm_bo_wait_free_node(bo, man-&gt;use_tt);</span></a>
-<a name="565"><span class="lineNum">     565 </span>            : </a>
-<a name="566"><span class="lineNum">     566 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
-<a name="567"><span class="lineNum">     567 </span>            :                 return ret;</a>
+<a name="547"><span class="lineNum">     547 </span><span class="lineNoCov">          0 :         ttm_resource_free(bo, &amp;bo-&gt;resource);</span></a>
+<a name="548"><span class="lineNum">     548 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="549"><span class="lineNum">     549 </span>            : </a>
+<a name="550"><span class="lineNum">     550 </span><span class="lineNoCov">          0 : int ttm_bo_move_accel_cleanup(struct ttm_buffer_object *bo,</span></a>
+<a name="551"><span class="lineNum">     551 </span>            :                               struct dma_fence *fence,</a>
+<a name="552"><span class="lineNum">     552 </span>            :                               bool evict,</a>
+<a name="553"><span class="lineNum">     553 </span>            :                               bool pipeline,</a>
+<a name="554"><span class="lineNum">     554 </span>            :                               struct ttm_resource *new_mem)</a>
+<a name="555"><span class="lineNum">     555 </span>            : {</a>
+<a name="556"><span class="lineNum">     556 </span><span class="lineNoCov">          0 :         struct ttm_device *bdev = bo-&gt;bdev;</span></a>
+<a name="557"><span class="lineNum">     557 </span><span class="lineNoCov">          0 :         struct ttm_resource_manager *from = ttm_manager_type(bdev, bo-&gt;resource-&gt;mem_type);</span></a>
+<a name="558"><span class="lineNum">     558 </span><span class="lineNoCov">          0 :         struct ttm_resource_manager *man = ttm_manager_type(bdev, new_mem-&gt;mem_type);</span></a>
+<a name="559"><span class="lineNum">     559 </span><span class="lineNoCov">          0 :         int ret = 0;</span></a>
+<a name="560"><span class="lineNum">     560 </span>            : </a>
+<a name="561"><span class="lineNum">     561 </span><span class="lineNoCov">          0 :         dma_resv_add_fence(bo-&gt;base.resv, fence, DMA_RESV_USAGE_KERNEL);</span></a>
+<a name="562"><span class="lineNum">     562 </span><span class="lineNoCov">          0 :         if (!evict)</span></a>
+<a name="563"><span class="lineNum">     563 </span><span class="lineNoCov">          0 :                 ret = ttm_bo_move_to_ghost(bo, fence, man-&gt;use_tt);</span></a>
+<a name="564"><span class="lineNum">     564 </span><span class="lineNoCov">          0 :         else if (!from-&gt;use_tt &amp;&amp; pipeline)</span></a>
+<a name="565"><span class="lineNum">     565 </span><span class="lineNoCov">          0 :                 ttm_bo_move_pipeline_evict(bo, fence);</span></a>
+<a name="566"><span class="lineNum">     566 </span>            :         else</a>
+<a name="567"><span class="lineNum">     567 </span><span class="lineNoCov">          0 :                 ret = ttm_bo_wait_free_node(bo, man-&gt;use_tt);</span></a>
 <a name="568"><span class="lineNum">     568 </span>            : </a>
-<a name="569"><span class="lineNum">     569 </span><span class="lineNoCov">          0 :         ttm_bo_assign_mem(bo, new_mem);</span></a>
-<a name="570"><span class="lineNum">     570 </span>            : </a>
-<a name="571"><span class="lineNum">     571 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="572"><span class="lineNum">     572 </span>            : }</a>
-<a name="573"><span class="lineNum">     573 </span>            : EXPORT_SYMBOL(ttm_bo_move_accel_cleanup);</a>
-<a name="574"><span class="lineNum">     574 </span>            : </a>
-<a name="575"><span class="lineNum">     575 </span><span class="lineNoCov">          0 : void ttm_bo_move_sync_cleanup(struct ttm_buffer_object *bo,</span></a>
-<a name="576"><span class="lineNum">     576 </span>            :                               struct ttm_resource *new_mem)</a>
-<a name="577"><span class="lineNum">     577 </span>            : {</a>
-<a name="578"><span class="lineNum">     578 </span><span class="lineNoCov">          0 :         struct ttm_device *bdev = bo-&gt;bdev;</span></a>
-<a name="579"><span class="lineNum">     579 </span><span class="lineNoCov">          0 :         struct ttm_resource_manager *man = ttm_manager_type(bdev, new_mem-&gt;mem_type);</span></a>
-<a name="580"><span class="lineNum">     580 </span>            :         int ret;</a>
-<a name="581"><span class="lineNum">     581 </span>            : </a>
-<a name="582"><span class="lineNum">     582 </span><span class="lineNoCov">          0 :         ret = ttm_bo_wait_free_node(bo, man-&gt;use_tt);</span></a>
-<a name="583"><span class="lineNum">     583 </span><span class="lineNoCov">          0 :         if (WARN_ON(ret))</span></a>
-<a name="584"><span class="lineNum">     584 </span>            :                 return;</a>
-<a name="585"><span class="lineNum">     585 </span>            : </a>
-<a name="586"><span class="lineNum">     586 </span><span class="lineNoCov">          0 :         ttm_bo_assign_mem(bo, new_mem);</span></a>
-<a name="587"><span class="lineNum">     587 </span>            : }</a>
-<a name="588"><span class="lineNum">     588 </span>            : EXPORT_SYMBOL(ttm_bo_move_sync_cleanup);</a>
-<a name="589"><span class="lineNum">     589 </span>            : </a>
-<a name="590"><span class="lineNum">     590 </span>            : /**</a>
-<a name="591"><span class="lineNum">     591 </span>            :  * ttm_bo_pipeline_gutting - purge the contents of a bo</a>
-<a name="592"><span class="lineNum">     592 </span>            :  * @bo: The buffer object</a>
-<a name="593"><span class="lineNum">     593 </span>            :  *</a>
-<a name="594"><span class="lineNum">     594 </span>            :  * Purge the contents of a bo, async if the bo is not idle.</a>
-<a name="595"><span class="lineNum">     595 </span>            :  * After a successful call, the bo is left unpopulated in</a>
-<a name="596"><span class="lineNum">     596 </span>            :  * system placement. The function may wait uninterruptible</a>
-<a name="597"><span class="lineNum">     597 </span>            :  * for idle on OOM.</a>
-<a name="598"><span class="lineNum">     598 </span>            :  *</a>
-<a name="599"><span class="lineNum">     599 </span>            :  * Return: 0 if successful, negative error code on failure.</a>
-<a name="600"><span class="lineNum">     600 </span>            :  */</a>
-<a name="601"><span class="lineNum">     601 </span><span class="lineNoCov">          0 : int ttm_bo_pipeline_gutting(struct ttm_buffer_object *bo)</span></a>
-<a name="602"><span class="lineNum">     602 </span>            : {</a>
-<a name="603"><span class="lineNum">     603 </span>            :         static const struct ttm_place sys_mem = { .mem_type = TTM_PL_SYSTEM };</a>
-<a name="604"><span class="lineNum">     604 </span>            :         struct ttm_buffer_object *ghost;</a>
-<a name="605"><span class="lineNum">     605 </span>            :         struct ttm_resource *sys_res;</a>
-<a name="606"><span class="lineNum">     606 </span>            :         struct ttm_tt *ttm;</a>
-<a name="607"><span class="lineNum">     607 </span>            :         int ret;</a>
-<a name="608"><span class="lineNum">     608 </span>            : </a>
-<a name="609"><span class="lineNum">     609 </span><span class="lineNoCov">          0 :         ret = ttm_resource_alloc(bo, &amp;sys_mem, &amp;sys_res);</span></a>
-<a name="610"><span class="lineNum">     610 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
-<a name="611"><span class="lineNum">     611 </span>            :                 return ret;</a>
-<a name="612"><span class="lineNum">     612 </span>            : </a>
-<a name="613"><span class="lineNum">     613 </span>            :         /* If already idle, no need for ghost object dance. */</a>
-<a name="614"><span class="lineNum">     614 </span><span class="lineNoCov">          0 :         ret = ttm_bo_wait(bo, false, true);</span></a>
-<a name="615"><span class="lineNum">     615 </span><span class="lineNoCov">          0 :         if (ret != -EBUSY) {</span></a>
-<a name="616"><span class="lineNum">     616 </span><span class="lineNoCov">          0 :                 if (!bo-&gt;ttm) {</span></a>
-<a name="617"><span class="lineNum">     617 </span>            :                         /* See comment below about clearing. */</a>
-<a name="618"><span class="lineNum">     618 </span><span class="lineNoCov">          0 :                         ret = ttm_tt_create(bo, true);</span></a>
-<a name="619"><span class="lineNum">     619 </span><span class="lineNoCov">          0 :                         if (ret)</span></a>
-<a name="620"><span class="lineNum">     620 </span>            :                                 goto error_free_sys_mem;</a>
-<a name="621"><span class="lineNum">     621 </span>            :                 } else {</a>
-<a name="622"><span class="lineNum">     622 </span><span class="lineNoCov">          0 :                         ttm_tt_unpopulate(bo-&gt;bdev, bo-&gt;ttm);</span></a>
-<a name="623"><span class="lineNum">     623 </span><span class="lineNoCov">          0 :                         if (bo-&gt;type == ttm_bo_type_device)</span></a>
-<a name="624"><span class="lineNum">     624 </span><span class="lineNoCov">          0 :                                 ttm_tt_mark_for_clear(bo-&gt;ttm);</span></a>
-<a name="625"><span class="lineNum">     625 </span>            :                 }</a>
-<a name="626"><span class="lineNum">     626 </span><span class="lineNoCov">          0 :                 ttm_resource_free(bo, &amp;bo-&gt;resource);</span></a>
-<a name="627"><span class="lineNum">     627 </span><span class="lineNoCov">          0 :                 ttm_bo_assign_mem(bo, sys_res);</span></a>
-<a name="628"><span class="lineNum">     628 </span><span class="lineNoCov">          0 :                 return 0;</span></a>
-<a name="629"><span class="lineNum">     629 </span>            :         }</a>
-<a name="630"><span class="lineNum">     630 </span>            : </a>
-<a name="631"><span class="lineNum">     631 </span>            :         /*</a>
-<a name="632"><span class="lineNum">     632 </span>            :          * We need an unpopulated ttm_tt after giving our current one,</a>
-<a name="633"><span class="lineNum">     633 </span>            :          * if any, to the ghost object. And we can't afford to fail</a>
-<a name="634"><span class="lineNum">     634 </span>            :          * creating one *after* the operation. If the bo subsequently gets</a>
-<a name="635"><span class="lineNum">     635 </span>            :          * resurrected, make sure it's cleared (if ttm_bo_type_device)</a>
-<a name="636"><span class="lineNum">     636 </span>            :          * to avoid leaking sensitive information to user-space.</a>
-<a name="637"><span class="lineNum">     637 </span>            :          */</a>
-<a name="638"><span class="lineNum">     638 </span>            : </a>
-<a name="639"><span class="lineNum">     639 </span><span class="lineNoCov">          0 :         ttm = bo-&gt;ttm;</span></a>
-<a name="640"><span class="lineNum">     640 </span><span class="lineNoCov">          0 :         bo-&gt;ttm = NULL;</span></a>
-<a name="641"><span class="lineNum">     641 </span><span class="lineNoCov">          0 :         ret = ttm_tt_create(bo, true);</span></a>
-<a name="642"><span class="lineNum">     642 </span><span class="lineNoCov">          0 :         swap(bo-&gt;ttm, ttm);</span></a>
-<a name="643"><span class="lineNum">     643 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
-<a name="644"><span class="lineNum">     644 </span>            :                 goto error_free_sys_mem;</a>
-<a name="645"><span class="lineNum">     645 </span>            : </a>
-<a name="646"><span class="lineNum">     646 </span><span class="lineNoCov">          0 :         ret = ttm_buffer_object_transfer(bo, &amp;ghost);</span></a>
-<a name="647"><span class="lineNum">     647 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
-<a name="648"><span class="lineNum">     648 </span>            :                 goto error_destroy_tt;</a>
-<a name="649"><span class="lineNum">     649 </span>            : </a>
-<a name="650"><span class="lineNum">     650 </span><span class="lineNoCov">          0 :         ret = dma_resv_copy_fences(&amp;ghost-&gt;base._resv, bo-&gt;base.resv);</span></a>
-<a name="651"><span class="lineNum">     651 </span>            :         /* Last resort, wait for the BO to be idle when we are OOM */</a>
-<a name="652"><span class="lineNum">     652 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
-<a name="653"><span class="lineNum">     653 </span><span class="lineNoCov">          0 :                 ttm_bo_wait(bo, false, false);</span></a>
-<a name="654"><span class="lineNum">     654 </span>            : </a>
-<a name="655"><span class="lineNum">     655 </span><span class="lineNoCov">          0 :         dma_resv_unlock(&amp;ghost-&gt;base._resv);</span></a>
-<a name="656"><span class="lineNum">     656 </span><span class="lineNoCov">          0 :         ttm_bo_put(ghost);</span></a>
-<a name="657"><span class="lineNum">     657 </span><span class="lineNoCov">          0 :         bo-&gt;ttm = ttm;</span></a>
-<a name="658"><span class="lineNum">     658 </span><span class="lineNoCov">          0 :         ttm_bo_assign_mem(bo, sys_res);</span></a>
-<a name="659"><span class="lineNum">     659 </span><span class="lineNoCov">          0 :         return 0;</span></a>
-<a name="660"><span class="lineNum">     660 </span>            : </a>
-<a name="661"><span class="lineNum">     661 </span>            : error_destroy_tt:</a>
-<a name="662"><span class="lineNum">     662 </span><span class="lineNoCov">          0 :         ttm_tt_destroy(bo-&gt;bdev, ttm);</span></a>
+<a name="569"><span class="lineNum">     569 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="570"><span class="lineNum">     570 </span>            :                 return ret;</a>
+<a name="571"><span class="lineNum">     571 </span>            : </a>
+<a name="572"><span class="lineNum">     572 </span><span class="lineNoCov">          0 :         ttm_bo_assign_mem(bo, new_mem);</span></a>
+<a name="573"><span class="lineNum">     573 </span>            : </a>
+<a name="574"><span class="lineNum">     574 </span><span class="lineNoCov">          0 :         return 0;</span></a>
+<a name="575"><span class="lineNum">     575 </span>            : }</a>
+<a name="576"><span class="lineNum">     576 </span>            : EXPORT_SYMBOL(ttm_bo_move_accel_cleanup);</a>
+<a name="577"><span class="lineNum">     577 </span>            : </a>
+<a name="578"><span class="lineNum">     578 </span><span class="lineNoCov">          0 : void ttm_bo_move_sync_cleanup(struct ttm_buffer_object *bo,</span></a>
+<a name="579"><span class="lineNum">     579 </span>            :                               struct ttm_resource *new_mem)</a>
+<a name="580"><span class="lineNum">     580 </span>            : {</a>
+<a name="581"><span class="lineNum">     581 </span><span class="lineNoCov">          0 :         struct ttm_device *bdev = bo-&gt;bdev;</span></a>
+<a name="582"><span class="lineNum">     582 </span><span class="lineNoCov">          0 :         struct ttm_resource_manager *man = ttm_manager_type(bdev, new_mem-&gt;mem_type);</span></a>
+<a name="583"><span class="lineNum">     583 </span>            :         int ret;</a>
+<a name="584"><span class="lineNum">     584 </span>            : </a>
+<a name="585"><span class="lineNum">     585 </span><span class="lineNoCov">          0 :         ret = ttm_bo_wait_free_node(bo, man-&gt;use_tt);</span></a>
+<a name="586"><span class="lineNum">     586 </span><span class="lineNoCov">          0 :         if (WARN_ON(ret))</span></a>
+<a name="587"><span class="lineNum">     587 </span>            :                 return;</a>
+<a name="588"><span class="lineNum">     588 </span>            : </a>
+<a name="589"><span class="lineNum">     589 </span><span class="lineNoCov">          0 :         ttm_bo_assign_mem(bo, new_mem);</span></a>
+<a name="590"><span class="lineNum">     590 </span>            : }</a>
+<a name="591"><span class="lineNum">     591 </span>            : EXPORT_SYMBOL(ttm_bo_move_sync_cleanup);</a>
+<a name="592"><span class="lineNum">     592 </span>            : </a>
+<a name="593"><span class="lineNum">     593 </span>            : /**</a>
+<a name="594"><span class="lineNum">     594 </span>            :  * ttm_bo_pipeline_gutting - purge the contents of a bo</a>
+<a name="595"><span class="lineNum">     595 </span>            :  * @bo: The buffer object</a>
+<a name="596"><span class="lineNum">     596 </span>            :  *</a>
+<a name="597"><span class="lineNum">     597 </span>            :  * Purge the contents of a bo, async if the bo is not idle.</a>
+<a name="598"><span class="lineNum">     598 </span>            :  * After a successful call, the bo is left unpopulated in</a>
+<a name="599"><span class="lineNum">     599 </span>            :  * system placement. The function may wait uninterruptible</a>
+<a name="600"><span class="lineNum">     600 </span>            :  * for idle on OOM.</a>
+<a name="601"><span class="lineNum">     601 </span>            :  *</a>
+<a name="602"><span class="lineNum">     602 </span>            :  * Return: 0 if successful, negative error code on failure.</a>
+<a name="603"><span class="lineNum">     603 </span>            :  */</a>
+<a name="604"><span class="lineNum">     604 </span><span class="lineNoCov">          0 : int ttm_bo_pipeline_gutting(struct ttm_buffer_object *bo)</span></a>
+<a name="605"><span class="lineNum">     605 </span>            : {</a>
+<a name="606"><span class="lineNum">     606 </span>            :         static const struct ttm_place sys_mem = { .mem_type = TTM_PL_SYSTEM };</a>
+<a name="607"><span class="lineNum">     607 </span>            :         struct ttm_buffer_object *ghost;</a>
+<a name="608"><span class="lineNum">     608 </span>            :         struct ttm_resource *sys_res;</a>
+<a name="609"><span class="lineNum">     609 </span>            :         struct ttm_tt *ttm;</a>
+<a name="610"><span class="lineNum">     610 </span>            :         int ret;</a>
+<a name="611"><span class="lineNum">     611 </span>            : </a>
+<a name="612"><span class="lineNum">     612 </span><span class="lineNoCov">          0 :         ret = ttm_resource_alloc(bo, &amp;sys_mem, &amp;sys_res);</span></a>
+<a name="613"><span class="lineNum">     613 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="614"><span class="lineNum">     614 </span>            :                 return ret;</a>
+<a name="615"><span class="lineNum">     615 </span>            : </a>
+<a name="616"><span class="lineNum">     616 </span>            :         /* If already idle, no need for ghost object dance. */</a>
+<a name="617"><span class="lineNum">     617 </span><span class="lineNoCov">          0 :         ret = ttm_bo_wait(bo, false, true);</span></a>
+<a name="618"><span class="lineNum">     618 </span><span class="lineNoCov">          0 :         if (ret != -EBUSY) {</span></a>
+<a name="619"><span class="lineNum">     619 </span><span class="lineNoCov">          0 :                 if (!bo-&gt;ttm) {</span></a>
+<a name="620"><span class="lineNum">     620 </span>            :                         /* See comment below about clearing. */</a>
+<a name="621"><span class="lineNum">     621 </span><span class="lineNoCov">          0 :                         ret = ttm_tt_create(bo, true);</span></a>
+<a name="622"><span class="lineNum">     622 </span><span class="lineNoCov">          0 :                         if (ret)</span></a>
+<a name="623"><span class="lineNum">     623 </span>            :                                 goto error_free_sys_mem;</a>
+<a name="624"><span class="lineNum">     624 </span>            :                 } else {</a>
+<a name="625"><span class="lineNum">     625 </span><span class="lineNoCov">          0 :                         ttm_tt_unpopulate(bo-&gt;bdev, bo-&gt;ttm);</span></a>
+<a name="626"><span class="lineNum">     626 </span><span class="lineNoCov">          0 :                         if (bo-&gt;type == ttm_bo_type_device)</span></a>
+<a name="627"><span class="lineNum">     627 </span><span class="lineNoCov">          0 :                                 ttm_tt_mark_for_clear(bo-&gt;ttm);</span></a>
+<a name="628"><span class="lineNum">     628 </span>            :                 }</a>
+<a name="629"><span class="lineNum">     629 </span><span class="lineNoCov">          0 :                 ttm_resource_free(bo, &amp;bo-&gt;resource);</span></a>
+<a name="630"><span class="lineNum">     630 </span><span class="lineNoCov">          0 :                 ttm_bo_assign_mem(bo, sys_res);</span></a>
+<a name="631"><span class="lineNum">     631 </span><span class="lineNoCov">          0 :                 return 0;</span></a>
+<a name="632"><span class="lineNum">     632 </span>            :         }</a>
+<a name="633"><span class="lineNum">     633 </span>            : </a>
+<a name="634"><span class="lineNum">     634 </span>            :         /*</a>
+<a name="635"><span class="lineNum">     635 </span>            :          * We need an unpopulated ttm_tt after giving our current one,</a>
+<a name="636"><span class="lineNum">     636 </span>            :          * if any, to the ghost object. And we can't afford to fail</a>
+<a name="637"><span class="lineNum">     637 </span>            :          * creating one *after* the operation. If the bo subsequently gets</a>
+<a name="638"><span class="lineNum">     638 </span>            :          * resurrected, make sure it's cleared (if ttm_bo_type_device)</a>
+<a name="639"><span class="lineNum">     639 </span>            :          * to avoid leaking sensitive information to user-space.</a>
+<a name="640"><span class="lineNum">     640 </span>            :          */</a>
+<a name="641"><span class="lineNum">     641 </span>            : </a>
+<a name="642"><span class="lineNum">     642 </span><span class="lineNoCov">          0 :         ttm = bo-&gt;ttm;</span></a>
+<a name="643"><span class="lineNum">     643 </span><span class="lineNoCov">          0 :         bo-&gt;ttm = NULL;</span></a>
+<a name="644"><span class="lineNum">     644 </span><span class="lineNoCov">          0 :         ret = ttm_tt_create(bo, true);</span></a>
+<a name="645"><span class="lineNum">     645 </span><span class="lineNoCov">          0 :         swap(bo-&gt;ttm, ttm);</span></a>
+<a name="646"><span class="lineNum">     646 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="647"><span class="lineNum">     647 </span>            :                 goto error_free_sys_mem;</a>
+<a name="648"><span class="lineNum">     648 </span>            : </a>
+<a name="649"><span class="lineNum">     649 </span><span class="lineNoCov">          0 :         ret = ttm_buffer_object_transfer(bo, &amp;ghost);</span></a>
+<a name="650"><span class="lineNum">     650 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="651"><span class="lineNum">     651 </span>            :                 goto error_destroy_tt;</a>
+<a name="652"><span class="lineNum">     652 </span>            : </a>
+<a name="653"><span class="lineNum">     653 </span><span class="lineNoCov">          0 :         ret = dma_resv_copy_fences(&amp;ghost-&gt;base._resv, bo-&gt;base.resv);</span></a>
+<a name="654"><span class="lineNum">     654 </span>            :         /* Last resort, wait for the BO to be idle when we are OOM */</a>
+<a name="655"><span class="lineNum">     655 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="656"><span class="lineNum">     656 </span><span class="lineNoCov">          0 :                 ttm_bo_wait(bo, false, false);</span></a>
+<a name="657"><span class="lineNum">     657 </span>            : </a>
+<a name="658"><span class="lineNum">     658 </span><span class="lineNoCov">          0 :         dma_resv_unlock(&amp;ghost-&gt;base._resv);</span></a>
+<a name="659"><span class="lineNum">     659 </span><span class="lineNoCov">          0 :         ttm_bo_put(ghost);</span></a>
+<a name="660"><span class="lineNum">     660 </span><span class="lineNoCov">          0 :         bo-&gt;ttm = ttm;</span></a>
+<a name="661"><span class="lineNum">     661 </span><span class="lineNoCov">          0 :         ttm_bo_assign_mem(bo, sys_res);</span></a>
+<a name="662"><span class="lineNum">     662 </span><span class="lineNoCov">          0 :         return 0;</span></a>
 <a name="663"><span class="lineNum">     663 </span>            : </a>
-<a name="664"><span class="lineNum">     664 </span>            : error_free_sys_mem:</a>
-<a name="665"><span class="lineNum">     665 </span><span class="lineNoCov">          0 :         ttm_resource_free(bo, &amp;sys_res);</span></a>
-<a name="666"><span class="lineNum">     666 </span><span class="lineNoCov">          0 :         return ret;</span></a>
-<a name="667"><span class="lineNum">     667 </span>            : }</a>
+<a name="664"><span class="lineNum">     664 </span>            : error_destroy_tt:</a>
+<a name="665"><span class="lineNum">     665 </span><span class="lineNoCov">          0 :         ttm_tt_destroy(bo-&gt;bdev, ttm);</span></a>
+<a name="666"><span class="lineNum">     666 </span>            : </a>
+<a name="667"><span class="lineNum">     667 </span>            : error_free_sys_mem:</a>
+<a name="668"><span class="lineNum">     668 </span><span class="lineNoCov">          0 :         ttm_resource_free(bo, &amp;sys_res);</span></a>
+<a name="669"><span class="lineNum">     669 </span><span class="lineNoCov">          0 :         return ret;</span></a>
+<a name="670"><span class="lineNum">     670 </span>            : }</a>
 </pre>
       </td>
     </tr>

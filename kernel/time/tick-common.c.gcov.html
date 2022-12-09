@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">9</td>
@@ -144,34 +144,34 @@
 <a name="82"><span class="lineNum">      82 </span>            : /*</a>
 <a name="83"><span class="lineNum">      83 </span>            :  * Periodic tick</a>
 <a name="84"><span class="lineNum">      84 </span>            :  */</a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">          9 : static void tick_periodic(int cpu)</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">         13 : static void tick_periodic(int cpu)</span></a>
 <a name="86"><span class="lineNum">      86 </span>            : {</a>
-<a name="87"><span class="lineNum">      87 </span><span class="lineCov">          9 :         if (tick_do_timer_cpu == cpu) {</span></a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineCov">          9 :                 raw_spin_lock(&amp;jiffies_lock);</span></a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineCov">         18 :                 write_seqcount_begin(&amp;jiffies_seq);</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineCov">         13 :         if (tick_do_timer_cpu == cpu) {</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">         13 :                 raw_spin_lock(&amp;jiffies_lock);</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">         26 :                 write_seqcount_begin(&amp;jiffies_seq);</span></a>
 <a name="90"><span class="lineNum">      90 </span>            : </a>
 <a name="91"><span class="lineNum">      91 </span>            :                 /* Keep track of the next tick event */</a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineCov">          9 :                 tick_next_period = ktime_add_ns(tick_next_period, TICK_NSEC);</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">         13 :                 tick_next_period = ktime_add_ns(tick_next_period, TICK_NSEC);</span></a>
 <a name="93"><span class="lineNum">      93 </span>            : </a>
-<a name="94"><span class="lineNum">      94 </span><span class="lineCov">          9 :                 do_timer(1);</span></a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineCov">         18 :                 write_seqcount_end(&amp;jiffies_seq);</span></a>
-<a name="96"><span class="lineNum">      96 </span><span class="lineCov">          9 :                 raw_spin_unlock(&amp;jiffies_lock);</span></a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineCov">          9 :                 update_wall_time();</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineCov">         13 :                 do_timer(1);</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">         26 :                 write_seqcount_end(&amp;jiffies_seq);</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineCov">         13 :                 raw_spin_unlock(&amp;jiffies_lock);</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">         13 :                 update_wall_time();</span></a>
 <a name="98"><span class="lineNum">      98 </span>            :         }</a>
 <a name="99"><span class="lineNum">      99 </span>            : </a>
-<a name="100"><span class="lineNum">     100 </span><span class="lineCov">          9 :         update_process_times(user_mode(get_irq_regs()));</span></a>
-<a name="101"><span class="lineNum">     101 </span><span class="lineCov">          9 :         profile_tick(CPU_PROFILING);</span></a>
-<a name="102"><span class="lineNum">     102 </span><span class="lineCov">          9 : }</span></a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineCov">         13 :         update_process_times(user_mode(get_irq_regs()));</span></a>
+<a name="101"><span class="lineNum">     101 </span><span class="lineCov">         13 :         profile_tick(CPU_PROFILING);</span></a>
+<a name="102"><span class="lineNum">     102 </span><span class="lineCov">         13 : }</span></a>
 <a name="103"><span class="lineNum">     103 </span>            : </a>
 <a name="104"><span class="lineNum">     104 </span>            : /*</a>
 <a name="105"><span class="lineNum">     105 </span>            :  * Event handler for periodic ticks</a>
 <a name="106"><span class="lineNum">     106 </span>            :  */</a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">          9 : void tick_handle_periodic(struct clock_event_device *dev)</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">         13 : void tick_handle_periodic(struct clock_event_device *dev)</span></a>
 <a name="108"><span class="lineNum">     108 </span>            : {</a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">          9 :         int cpu = smp_processor_id();</span></a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineCov">          9 :         ktime_t next = dev-&gt;next_event;</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">         13 :         int cpu = smp_processor_id();</span></a>
+<a name="110"><span class="lineNum">     110 </span><span class="lineCov">         13 :         ktime_t next = dev-&gt;next_event;</span></a>
 <a name="111"><span class="lineNum">     111 </span>            : </a>
-<a name="112"><span class="lineNum">     112 </span><span class="lineCov">          9 :         tick_periodic(cpu);</span></a>
+<a name="112"><span class="lineNum">     112 </span><span class="lineCov">         13 :         tick_periodic(cpu);</span></a>
 <a name="113"><span class="lineNum">     113 </span>            : </a>
 <a name="114"><span class="lineNum">     114 </span>            : #if defined(CONFIG_HIGH_RES_TIMERS) || defined(CONFIG_NO_HZ_COMMON)</a>
 <a name="115"><span class="lineNum">     115 </span>            :         /*</a>
@@ -183,7 +183,7 @@
 <a name="121"><span class="lineNum">     121 </span>            :                 return;</a>
 <a name="122"><span class="lineNum">     122 </span>            : #endif</a>
 <a name="123"><span class="lineNum">     123 </span>            : </a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineCov">          9 :         if (!clockevent_state_oneshot(dev))</span></a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineCov">         13 :         if (!clockevent_state_oneshot(dev))</span></a>
 <a name="125"><span class="lineNum">     125 </span>            :                 return;</a>
 <a name="126"><span class="lineNum">     126 </span>            :         for (;;) {</a>
 <a name="127"><span class="lineNum">     127 </span>            :                 /*</a>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">15</td>
@@ -542,13 +542,13 @@
 <a name="480"><span class="lineNum">     480 </span>            :  * strlen - Find the length of a string</a>
 <a name="481"><span class="lineNum">     481 </span>            :  * @s: The string to be sized</a>
 <a name="482"><span class="lineNum">     482 </span>            :  */</a>
-<a name="483"><span class="lineNum">     483 </span><span class="lineCov">      32767 : size_t strlen(const char *s)</span></a>
+<a name="483"><span class="lineNum">     483 </span><span class="lineCov">      32777 : size_t strlen(const char *s)</span></a>
 <a name="484"><span class="lineNum">     484 </span>            : {</a>
 <a name="485"><span class="lineNum">     485 </span>            :         const char *sc;</a>
 <a name="486"><span class="lineNum">     486 </span>            : </a>
-<a name="487"><span class="lineNum">     487 </span><span class="lineCov">     295742 :         for (sc = s; *sc != '\0'; ++sc)</span></a>
+<a name="487"><span class="lineNum">     487 </span><span class="lineCov">     295752 :         for (sc = s; *sc != '\0'; ++sc)</span></a>
 <a name="488"><span class="lineNum">     488 </span>            :                 /* nothing */;</a>
-<a name="489"><span class="lineNum">     489 </span><span class="lineCov">      34167 :         return sc - s;</span></a>
+<a name="489"><span class="lineNum">     489 </span><span class="lineCov">      34177 :         return sc - s;</span></a>
 <a name="490"><span class="lineNum">     490 </span>            : }</a>
 <a name="491"><span class="lineNum">     491 </span>            : EXPORT_SYMBOL(strlen);</a>
 <a name="492"><span class="lineNum">     492 </span>            : #endif</a>
@@ -609,12 +609,12 @@
 <a name="547"><span class="lineNum">     547 </span>            :         const char *r;</a>
 <a name="548"><span class="lineNum">     548 </span><span class="lineCov">          1 :         size_t count = 0;</span></a>
 <a name="549"><span class="lineNum">     549 </span>            : </a>
-<a name="550"><span class="lineNum">     550 </span><span class="lineCov">          4 :         for (p = s; *p != '\0'; ++p) {</span></a>
-<a name="551"><span class="lineNum">     551 </span><span class="lineCov">          3 :                 for (r = reject; *r != '\0'; ++r) {</span></a>
-<a name="552"><span class="lineNum">     552 </span><span class="lineCov">          4 :                         if (*p == *r)</span></a>
+<a name="550"><span class="lineNum">     550 </span><span class="lineCov">          3 :         for (p = s; *p != '\0'; ++p) {</span></a>
+<a name="551"><span class="lineNum">     551 </span><span class="lineCov">          2 :                 for (r = reject; *r != '\0'; ++r) {</span></a>
+<a name="552"><span class="lineNum">     552 </span><span class="lineCov">          3 :                         if (*p == *r)</span></a>
 <a name="553"><span class="lineNum">     553 </span>            :                                 return count;</a>
 <a name="554"><span class="lineNum">     554 </span>            :                 }</a>
-<a name="555"><span class="lineNum">     555 </span><span class="lineCov">          3 :                 ++count;</span></a>
+<a name="555"><span class="lineNum">     555 </span><span class="lineCov">          2 :                 ++count;</span></a>
 <a name="556"><span class="lineNum">     556 </span>            :         }</a>
 <a name="557"><span class="lineNum">     557 </span>            :         return count;</a>
 <a name="558"><span class="lineNum">     558 </span>            : }</a>
@@ -954,8 +954,8 @@
 <a name="892"><span class="lineNum">     892 </span><span class="lineCov">        407 : void *memchr(const void *s, int c, size_t n)</span></a>
 <a name="893"><span class="lineNum">     893 </span>            : {</a>
 <a name="894"><span class="lineNum">     894 </span><span class="lineCov">        407 :         const unsigned char *p = s;</span></a>
-<a name="895"><span class="lineNum">     895 </span><span class="lineCov">      22722 :         while (n-- != 0) {</span></a>
-<a name="896"><span class="lineNum">     896 </span><span class="lineCov">      21938 :                 if ((unsigned char)c == *p++) {</span></a>
+<a name="895"><span class="lineNum">     895 </span><span class="lineCov">      22710 :         while (n-- != 0) {</span></a>
+<a name="896"><span class="lineNum">     896 </span><span class="lineCov">      21926 :                 if ((unsigned char)c == *p++) {</span></a>
 <a name="897"><span class="lineNum">     897 </span>            :                         return (void *)(p - 1);</a>
 <a name="898"><span class="lineNum">     898 </span>            :                 }</a>
 <a name="899"><span class="lineNum">     899 </span>            :         }</a>

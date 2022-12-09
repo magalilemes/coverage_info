@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -166,9 +166,9 @@
 <a name="104"><span class="lineNum">     104 </span>            :          * is the only cgroup, then nothing else should be necessary.</a>
 <a name="105"><span class="lineNum">     105 </span>            :          *</a>
 <a name="106"><span class="lineNum">     106 </span>            :          */</a>
-<a name="107"><span class="lineNum">     107 </span><span class="lineCov">          8 :         __this_cpu_add(kernel_cpustat.cpustat[index], tmp);</span></a>
+<a name="107"><span class="lineNum">     107 </span><span class="lineCov">         12 :         __this_cpu_add(kernel_cpustat.cpustat[index], tmp);</span></a>
 <a name="108"><span class="lineNum">     108 </span>            : </a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineCov">          8 :         cgroup_account_cputime_field(p, index, tmp);</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineCov">         12 :         cgroup_account_cputime_field(p, index, tmp);</span></a>
 <a name="110"><span class="lineNum">     110 </span>            : }</a>
 <a name="111"><span class="lineNum">     111 </span>            : </a>
 <a name="112"><span class="lineNum">     112 </span>            : /*</a>
@@ -181,16 +181,16 @@
 <a name="119"><span class="lineNum">     119 </span>            :         int index;</a>
 <a name="120"><span class="lineNum">     120 </span>            : </a>
 <a name="121"><span class="lineNum">     121 </span>            :         /* Add user time to process. */</a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">          8 :         p-&gt;utime += cputime;</span></a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineCov">          8 :         account_group_user_time(p, cputime);</span></a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">         12 :         p-&gt;utime += cputime;</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineCov">         12 :         account_group_user_time(p, cputime);</span></a>
 <a name="124"><span class="lineNum">     124 </span>            : </a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineCov">         16 :         index = (task_nice(p) &gt; 0) ? CPUTIME_NICE : CPUTIME_USER;</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineCov">         24 :         index = (task_nice(p) &gt; 0) ? CPUTIME_NICE : CPUTIME_USER;</span></a>
 <a name="126"><span class="lineNum">     126 </span>            : </a>
 <a name="127"><span class="lineNum">     127 </span>            :         /* Add user time to cpustat. */</a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineCov">         16 :         task_group_account_field(p, index, cputime);</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">         24 :         task_group_account_field(p, index, cputime);</span></a>
 <a name="129"><span class="lineNum">     129 </span>            : </a>
 <a name="130"><span class="lineNum">     130 </span>            :         /* Account for user time used */</a>
-<a name="131"><span class="lineNum">     131 </span><span class="lineCov">          8 :         acct_account_cputime(p);</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineCov">         12 :         acct_account_cputime(p);</span></a>
 <a name="132"><span class="lineNum">     132 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="133"><span class="lineNum">     133 </span>            : </a>
 <a name="134"><span class="lineNum">     134 </span>            : /*</a>
@@ -527,7 +527,7 @@
 <a name="465"><span class="lineNum">     465 </span>            :  * @p: the process that the CPU time gets accounted to</a>
 <a name="466"><span class="lineNum">     466 </span>            :  * @user_tick: indicates if the tick is a user or a system tick</a>
 <a name="467"><span class="lineNum">     467 </span>            :  */</a>
-<a name="468"><span class="lineNum">     468 </span><span class="lineCov">          9 : void account_process_tick(struct task_struct *p, int user_tick)</span></a>
+<a name="468"><span class="lineNum">     468 </span><span class="lineCov">         13 : void account_process_tick(struct task_struct *p, int user_tick)</span></a>
 <a name="469"><span class="lineNum">     469 </span>            : {</a>
 <a name="470"><span class="lineNum">     470 </span>            :         u64 cputime, steal;</a>
 <a name="471"><span class="lineNum">     471 </span>            : </a>
@@ -539,15 +539,15 @@
 <a name="477"><span class="lineNum">     477 </span>            :                 return;</a>
 <a name="478"><span class="lineNum">     478 </span>            :         }</a>
 <a name="479"><span class="lineNum">     479 </span>            : </a>
-<a name="480"><span class="lineNum">     480 </span><span class="lineCov">          9 :         cputime = TICK_NSEC;</span></a>
-<a name="481"><span class="lineNum">     481 </span><span class="lineCov">          9 :         steal = steal_account_process_time(ULONG_MAX);</span></a>
+<a name="480"><span class="lineNum">     480 </span><span class="lineCov">         13 :         cputime = TICK_NSEC;</span></a>
+<a name="481"><span class="lineNum">     481 </span><span class="lineCov">         13 :         steal = steal_account_process_time(ULONG_MAX);</span></a>
 <a name="482"><span class="lineNum">     482 </span>            : </a>
 <a name="483"><span class="lineNum">     483 </span>            :         if (steal &gt;= cputime)</a>
 <a name="484"><span class="lineNum">     484 </span>            :                 return;</a>
 <a name="485"><span class="lineNum">     485 </span>            : </a>
-<a name="486"><span class="lineNum">     486 </span><span class="lineCov">          9 :         cputime -= steal;</span></a>
+<a name="486"><span class="lineNum">     486 </span><span class="lineCov">         13 :         cputime -= steal;</span></a>
 <a name="487"><span class="lineNum">     487 </span>            : </a>
-<a name="488"><span class="lineNum">     488 </span><span class="lineCov">          9 :         if (user_tick)</span></a>
+<a name="488"><span class="lineNum">     488 </span><span class="lineCov">         13 :         if (user_tick)</span></a>
 <a name="489"><span class="lineNum">     489 </span>            :                 account_user_time(p, cputime);</a>
 <a name="490"><span class="lineNum">     490 </span><span class="lineCov">          2 :         else if ((p != this_rq()-&gt;idle) || (irq_count() != HARDIRQ_OFFSET))</span></a>
 <a name="491"><span class="lineNum">     491 </span><span class="lineNoCov">          0 :                 account_system_time(p, HARDIRQ_OFFSET, cputime);</span></a>

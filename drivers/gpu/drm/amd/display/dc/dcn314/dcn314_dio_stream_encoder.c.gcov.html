@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">130</td>
+            <td class="headerCovTableEntry">131</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -379,149 +379,150 @@
 <a name="317"><span class="lineNum">     317 </span>            :         /* switch DP encoder to CRTC data, but reset it the fifo first. It may happen</a>
 <a name="318"><span class="lineNum">     318 </span>            :          * that it overflows during mode transition, and sometimes doesn't recover.</a>
 <a name="319"><span class="lineNum">     319 </span>            :          */</a>
-<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 :         REG_UPDATE(DP_STEER_FIFO, DP_STEER_FIFO_RESET, 1);</span></a>
-<a name="321"><span class="lineNum">     321 </span><span class="lineNoCov">          0 :         udelay(10);</span></a>
-<a name="322"><span class="lineNum">     322 </span>            : </a>
-<a name="323"><span class="lineNum">     323 </span><span class="lineNoCov">          0 :         REG_UPDATE(DP_STEER_FIFO, DP_STEER_FIFO_RESET, 0);</span></a>
-<a name="324"><span class="lineNum">     324 </span>            : </a>
-<a name="325"><span class="lineNum">     325 </span>            :         /* DIG Resync FIFO now needs to be explicitly enabled. */</a>
-<a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 :         enc314_enable_fifo(enc);</span></a>
-<a name="327"><span class="lineNum">     327 </span>            : </a>
-<a name="328"><span class="lineNum">     328 </span>            :         /* wait 100us for DIG/DP logic to prime</a>
-<a name="329"><span class="lineNum">     329 </span>            :          * (i.e. a few video lines)</a>
-<a name="330"><span class="lineNum">     330 </span>            :          */</a>
-<a name="331"><span class="lineNum">     331 </span><span class="lineNoCov">          0 :         udelay(100);</span></a>
-<a name="332"><span class="lineNum">     332 </span>            : </a>
-<a name="333"><span class="lineNum">     333 </span>            :         /* the hardware would start sending video at the start of the next DP</a>
-<a name="334"><span class="lineNum">     334 </span>            :          * frame (i.e. rising edge of the vblank).</a>
-<a name="335"><span class="lineNum">     335 </span>            :          * NOTE: We used to program DP_VID_STREAM_DIS_DEFER = 2 here, but this</a>
-<a name="336"><span class="lineNum">     336 </span>            :          * register has no effect on enable transition! HW always guarantees</a>
-<a name="337"><span class="lineNum">     337 </span>            :          * VID_STREAM enable at start of next frame, and this is not</a>
-<a name="338"><span class="lineNum">     338 </span>            :          * programmable</a>
-<a name="339"><span class="lineNum">     339 </span>            :          */</a>
-<a name="340"><span class="lineNum">     340 </span>            : </a>
-<a name="341"><span class="lineNum">     341 </span><span class="lineNoCov">          0 :         REG_UPDATE(DP_VID_STREAM_CNTL, DP_VID_STREAM_ENABLE, true);</span></a>
-<a name="342"><span class="lineNum">     342 </span>            : </a>
-<a name="343"><span class="lineNum">     343 </span><span class="lineNoCov">          0 :         dp_source_sequence_trace(link, DPCD_SOURCE_SEQ_AFTER_ENABLE_DP_VID_STREAM);</span></a>
-<a name="344"><span class="lineNum">     344 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="345"><span class="lineNum">     345 </span>            : </a>
-<a name="346"><span class="lineNum">     346 </span>            : /* Set DSC-related configuration.</a>
-<a name="347"><span class="lineNum">     347 </span>            :  *   dsc_mode: 0 disables DSC, other values enable DSC in specified format</a>
-<a name="348"><span class="lineNum">     348 </span>            :  *   sc_bytes_per_pixel: DP_DSC_BYTES_PER_PIXEL removed in DCN32</a>
-<a name="349"><span class="lineNum">     349 </span>            :  *   dsc_slice_width: DP_DSC_SLICE_WIDTH removed in DCN32</a>
-<a name="350"><span class="lineNum">     350 </span>            :  */</a>
-<a name="351"><span class="lineNum">     351 </span><span class="lineNoCov">          0 : static void enc314_dp_set_dsc_config(struct stream_encoder *enc,</span></a>
-<a name="352"><span class="lineNum">     352 </span>            :                                         enum optc_dsc_mode dsc_mode,</a>
-<a name="353"><span class="lineNum">     353 </span>            :                                         uint32_t dsc_bytes_per_pixel,</a>
-<a name="354"><span class="lineNum">     354 </span>            :                                         uint32_t dsc_slice_width)</a>
-<a name="355"><span class="lineNum">     355 </span>            : {</a>
-<a name="356"><span class="lineNum">     356 </span><span class="lineNoCov">          0 :         struct dcn10_stream_encoder *enc1 = DCN10STRENC_FROM_STRENC(enc);</span></a>
-<a name="357"><span class="lineNum">     357 </span>            : </a>
-<a name="358"><span class="lineNum">     358 </span><span class="lineNoCov">          0 :         REG_UPDATE(DP_DSC_CNTL, DP_DSC_MODE, dsc_mode == OPTC_DSC_DISABLED ? 0 : 1);</span></a>
-<a name="359"><span class="lineNum">     359 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="360"><span class="lineNum">     360 </span>            : </a>
-<a name="361"><span class="lineNum">     361 </span>            : /* this function read dsc related register fields to be logged later in dcn10_log_hw_state</a>
-<a name="362"><span class="lineNum">     362 </span>            :  * into a dcn_dsc_state struct.</a>
-<a name="363"><span class="lineNum">     363 </span>            :  */</a>
-<a name="364"><span class="lineNum">     364 </span><span class="lineNoCov">          0 : static void enc314_read_state(struct stream_encoder *enc, struct enc_state *s)</span></a>
-<a name="365"><span class="lineNum">     365 </span>            : {</a>
-<a name="366"><span class="lineNum">     366 </span><span class="lineNoCov">          0 :         struct dcn10_stream_encoder *enc1 = DCN10STRENC_FROM_STRENC(enc);</span></a>
-<a name="367"><span class="lineNum">     367 </span>            : </a>
-<a name="368"><span class="lineNum">     368 </span>            :         //if dsc is enabled, continue to read</a>
-<a name="369"><span class="lineNum">     369 </span><span class="lineNoCov">          0 :         REG_GET(DP_DSC_CNTL, DP_DSC_MODE, &amp;s-&gt;dsc_mode);</span></a>
-<a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 :         if (s-&gt;dsc_mode) {</span></a>
-<a name="371"><span class="lineNum">     371 </span><span class="lineNoCov">          0 :                 REG_GET(DP_GSP11_CNTL, DP_SEC_GSP11_LINE_NUM, &amp;s-&gt;sec_gsp_pps_line_num);</span></a>
-<a name="372"><span class="lineNum">     372 </span>            : </a>
-<a name="373"><span class="lineNum">     373 </span><span class="lineNoCov">          0 :                 REG_GET(DP_MSA_VBID_MISC, DP_VBID6_LINE_REFERENCE, &amp;s-&gt;vbid6_line_reference);</span></a>
-<a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 :                 REG_GET(DP_MSA_VBID_MISC, DP_VBID6_LINE_NUM, &amp;s-&gt;vbid6_line_num);</span></a>
-<a name="375"><span class="lineNum">     375 </span>            : </a>
-<a name="376"><span class="lineNum">     376 </span><span class="lineNoCov">          0 :                 REG_GET(DP_GSP11_CNTL, DP_SEC_GSP11_ENABLE, &amp;s-&gt;sec_gsp_pps_enable);</span></a>
-<a name="377"><span class="lineNum">     377 </span><span class="lineNoCov">          0 :                 REG_GET(DP_SEC_CNTL, DP_SEC_STREAM_ENABLE, &amp;s-&gt;sec_stream_enable);</span></a>
-<a name="378"><span class="lineNum">     378 </span>            :         }</a>
-<a name="379"><span class="lineNum">     379 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="380"><span class="lineNum">     380 </span>            : </a>
-<a name="381"><span class="lineNum">     381 </span><span class="lineNoCov">          0 : static void enc314_set_dig_input_mode(struct stream_encoder *enc, unsigned int pix_per_container)</span></a>
-<a name="382"><span class="lineNum">     382 </span>            : {</a>
-<a name="383"><span class="lineNum">     383 </span><span class="lineNoCov">          0 :         struct dcn10_stream_encoder *enc1 = DCN10STRENC_FROM_STRENC(enc);</span></a>
-<a name="384"><span class="lineNum">     384 </span>            : </a>
-<a name="385"><span class="lineNum">     385 </span>            :         // The naming of this field is confusing, what it means is the output mode of otg, which</a>
-<a name="386"><span class="lineNum">     386 </span>            :         // is the input mode of the dig</a>
-<a name="387"><span class="lineNum">     387 </span><span class="lineNoCov">          0 :         REG_UPDATE(DIG_FIFO_CTRL0, DIG_FIFO_OUTPUT_PIXEL_MODE, pix_per_container == 2 ? 0x1 : 0x0);</span></a>
-<a name="388"><span class="lineNum">     388 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="389"><span class="lineNum">     389 </span>            : </a>
+<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 :         REG_UPDATE(DIG_FIFO_CTRL0, DIG_FIFO_READ_START_LEVEL, 0x7);</span></a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineNoCov">          0 :         REG_UPDATE(DP_STEER_FIFO, DP_STEER_FIFO_RESET, 1);</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 :         udelay(10);</span></a>
+<a name="323"><span class="lineNum">     323 </span>            : </a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineNoCov">          0 :         REG_UPDATE(DP_STEER_FIFO, DP_STEER_FIFO_RESET, 0);</span></a>
+<a name="325"><span class="lineNum">     325 </span>            : </a>
+<a name="326"><span class="lineNum">     326 </span>            :         /* DIG Resync FIFO now needs to be explicitly enabled. */</a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineNoCov">          0 :         enc314_enable_fifo(enc);</span></a>
+<a name="328"><span class="lineNum">     328 </span>            : </a>
+<a name="329"><span class="lineNum">     329 </span>            :         /* wait 100us for DIG/DP logic to prime</a>
+<a name="330"><span class="lineNum">     330 </span>            :          * (i.e. a few video lines)</a>
+<a name="331"><span class="lineNum">     331 </span>            :          */</a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 :         udelay(100);</span></a>
+<a name="333"><span class="lineNum">     333 </span>            : </a>
+<a name="334"><span class="lineNum">     334 </span>            :         /* the hardware would start sending video at the start of the next DP</a>
+<a name="335"><span class="lineNum">     335 </span>            :          * frame (i.e. rising edge of the vblank).</a>
+<a name="336"><span class="lineNum">     336 </span>            :          * NOTE: We used to program DP_VID_STREAM_DIS_DEFER = 2 here, but this</a>
+<a name="337"><span class="lineNum">     337 </span>            :          * register has no effect on enable transition! HW always guarantees</a>
+<a name="338"><span class="lineNum">     338 </span>            :          * VID_STREAM enable at start of next frame, and this is not</a>
+<a name="339"><span class="lineNum">     339 </span>            :          * programmable</a>
+<a name="340"><span class="lineNum">     340 </span>            :          */</a>
+<a name="341"><span class="lineNum">     341 </span>            : </a>
+<a name="342"><span class="lineNum">     342 </span><span class="lineNoCov">          0 :         REG_UPDATE(DP_VID_STREAM_CNTL, DP_VID_STREAM_ENABLE, true);</span></a>
+<a name="343"><span class="lineNum">     343 </span>            : </a>
+<a name="344"><span class="lineNum">     344 </span><span class="lineNoCov">          0 :         dp_source_sequence_trace(link, DPCD_SOURCE_SEQ_AFTER_ENABLE_DP_VID_STREAM);</span></a>
+<a name="345"><span class="lineNum">     345 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="346"><span class="lineNum">     346 </span>            : </a>
+<a name="347"><span class="lineNum">     347 </span>            : /* Set DSC-related configuration.</a>
+<a name="348"><span class="lineNum">     348 </span>            :  *   dsc_mode: 0 disables DSC, other values enable DSC in specified format</a>
+<a name="349"><span class="lineNum">     349 </span>            :  *   sc_bytes_per_pixel: DP_DSC_BYTES_PER_PIXEL removed in DCN32</a>
+<a name="350"><span class="lineNum">     350 </span>            :  *   dsc_slice_width: DP_DSC_SLICE_WIDTH removed in DCN32</a>
+<a name="351"><span class="lineNum">     351 </span>            :  */</a>
+<a name="352"><span class="lineNum">     352 </span><span class="lineNoCov">          0 : static void enc314_dp_set_dsc_config(struct stream_encoder *enc,</span></a>
+<a name="353"><span class="lineNum">     353 </span>            :                                         enum optc_dsc_mode dsc_mode,</a>
+<a name="354"><span class="lineNum">     354 </span>            :                                         uint32_t dsc_bytes_per_pixel,</a>
+<a name="355"><span class="lineNum">     355 </span>            :                                         uint32_t dsc_slice_width)</a>
+<a name="356"><span class="lineNum">     356 </span>            : {</a>
+<a name="357"><span class="lineNum">     357 </span><span class="lineNoCov">          0 :         struct dcn10_stream_encoder *enc1 = DCN10STRENC_FROM_STRENC(enc);</span></a>
+<a name="358"><span class="lineNum">     358 </span>            : </a>
+<a name="359"><span class="lineNum">     359 </span><span class="lineNoCov">          0 :         REG_UPDATE(DP_DSC_CNTL, DP_DSC_MODE, dsc_mode == OPTC_DSC_DISABLED ? 0 : 1);</span></a>
+<a name="360"><span class="lineNum">     360 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="361"><span class="lineNum">     361 </span>            : </a>
+<a name="362"><span class="lineNum">     362 </span>            : /* this function read dsc related register fields to be logged later in dcn10_log_hw_state</a>
+<a name="363"><span class="lineNum">     363 </span>            :  * into a dcn_dsc_state struct.</a>
+<a name="364"><span class="lineNum">     364 </span>            :  */</a>
+<a name="365"><span class="lineNum">     365 </span><span class="lineNoCov">          0 : static void enc314_read_state(struct stream_encoder *enc, struct enc_state *s)</span></a>
+<a name="366"><span class="lineNum">     366 </span>            : {</a>
+<a name="367"><span class="lineNum">     367 </span><span class="lineNoCov">          0 :         struct dcn10_stream_encoder *enc1 = DCN10STRENC_FROM_STRENC(enc);</span></a>
+<a name="368"><span class="lineNum">     368 </span>            : </a>
+<a name="369"><span class="lineNum">     369 </span>            :         //if dsc is enabled, continue to read</a>
+<a name="370"><span class="lineNum">     370 </span><span class="lineNoCov">          0 :         REG_GET(DP_DSC_CNTL, DP_DSC_MODE, &amp;s-&gt;dsc_mode);</span></a>
+<a name="371"><span class="lineNum">     371 </span><span class="lineNoCov">          0 :         if (s-&gt;dsc_mode) {</span></a>
+<a name="372"><span class="lineNum">     372 </span><span class="lineNoCov">          0 :                 REG_GET(DP_GSP11_CNTL, DP_SEC_GSP11_LINE_NUM, &amp;s-&gt;sec_gsp_pps_line_num);</span></a>
+<a name="373"><span class="lineNum">     373 </span>            : </a>
+<a name="374"><span class="lineNum">     374 </span><span class="lineNoCov">          0 :                 REG_GET(DP_MSA_VBID_MISC, DP_VBID6_LINE_REFERENCE, &amp;s-&gt;vbid6_line_reference);</span></a>
+<a name="375"><span class="lineNum">     375 </span><span class="lineNoCov">          0 :                 REG_GET(DP_MSA_VBID_MISC, DP_VBID6_LINE_NUM, &amp;s-&gt;vbid6_line_num);</span></a>
+<a name="376"><span class="lineNum">     376 </span>            : </a>
+<a name="377"><span class="lineNum">     377 </span><span class="lineNoCov">          0 :                 REG_GET(DP_GSP11_CNTL, DP_SEC_GSP11_ENABLE, &amp;s-&gt;sec_gsp_pps_enable);</span></a>
+<a name="378"><span class="lineNum">     378 </span><span class="lineNoCov">          0 :                 REG_GET(DP_SEC_CNTL, DP_SEC_STREAM_ENABLE, &amp;s-&gt;sec_stream_enable);</span></a>
+<a name="379"><span class="lineNum">     379 </span>            :         }</a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="381"><span class="lineNum">     381 </span>            : </a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineNoCov">          0 : static void enc314_set_dig_input_mode(struct stream_encoder *enc, unsigned int pix_per_container)</span></a>
+<a name="383"><span class="lineNum">     383 </span>            : {</a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineNoCov">          0 :         struct dcn10_stream_encoder *enc1 = DCN10STRENC_FROM_STRENC(enc);</span></a>
+<a name="385"><span class="lineNum">     385 </span>            : </a>
+<a name="386"><span class="lineNum">     386 </span>            :         // The naming of this field is confusing, what it means is the output mode of otg, which</a>
+<a name="387"><span class="lineNum">     387 </span>            :         // is the input mode of the dig</a>
+<a name="388"><span class="lineNum">     388 </span><span class="lineNoCov">          0 :         REG_UPDATE(DIG_FIFO_CTRL0, DIG_FIFO_OUTPUT_PIXEL_MODE, pix_per_container == 2 ? 0x1 : 0x0);</span></a>
+<a name="389"><span class="lineNum">     389 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="390"><span class="lineNum">     390 </span>            : </a>
-<a name="391"><span class="lineNum">     391 </span>            : static const struct stream_encoder_funcs dcn314_str_enc_funcs = {</a>
-<a name="392"><span class="lineNum">     392 </span>            :         .dp_set_odm_combine =</a>
-<a name="393"><span class="lineNum">     393 </span>            :                 enc314_dp_set_odm_combine,</a>
-<a name="394"><span class="lineNum">     394 </span>            :         .dp_set_stream_attribute =</a>
-<a name="395"><span class="lineNum">     395 </span>            :                 enc2_stream_encoder_dp_set_stream_attribute,</a>
-<a name="396"><span class="lineNum">     396 </span>            :         .hdmi_set_stream_attribute =</a>
-<a name="397"><span class="lineNum">     397 </span>            :                 enc314_stream_encoder_hdmi_set_stream_attribute,</a>
-<a name="398"><span class="lineNum">     398 </span>            :         .dvi_set_stream_attribute =</a>
-<a name="399"><span class="lineNum">     399 </span>            :                 enc314_stream_encoder_dvi_set_stream_attribute,</a>
-<a name="400"><span class="lineNum">     400 </span>            :         .set_throttled_vcp_size =</a>
-<a name="401"><span class="lineNum">     401 </span>            :                 enc1_stream_encoder_set_throttled_vcp_size,</a>
-<a name="402"><span class="lineNum">     402 </span>            :         .update_hdmi_info_packets =</a>
-<a name="403"><span class="lineNum">     403 </span>            :                 enc3_stream_encoder_update_hdmi_info_packets,</a>
-<a name="404"><span class="lineNum">     404 </span>            :         .stop_hdmi_info_packets =</a>
-<a name="405"><span class="lineNum">     405 </span>            :                 enc3_stream_encoder_stop_hdmi_info_packets,</a>
-<a name="406"><span class="lineNum">     406 </span>            :         .update_dp_info_packets =</a>
-<a name="407"><span class="lineNum">     407 </span>            :                 enc3_stream_encoder_update_dp_info_packets,</a>
-<a name="408"><span class="lineNum">     408 </span>            :         .stop_dp_info_packets =</a>
-<a name="409"><span class="lineNum">     409 </span>            :                 enc1_stream_encoder_stop_dp_info_packets,</a>
-<a name="410"><span class="lineNum">     410 </span>            :         .dp_blank =</a>
-<a name="411"><span class="lineNum">     411 </span>            :                 enc1_stream_encoder_dp_blank,</a>
-<a name="412"><span class="lineNum">     412 </span>            :         .dp_unblank =</a>
-<a name="413"><span class="lineNum">     413 </span>            :                 enc314_stream_encoder_dp_unblank,</a>
-<a name="414"><span class="lineNum">     414 </span>            :         .audio_mute_control = enc3_audio_mute_control,</a>
-<a name="415"><span class="lineNum">     415 </span>            : </a>
-<a name="416"><span class="lineNum">     416 </span>            :         .dp_audio_setup = enc3_se_dp_audio_setup,</a>
-<a name="417"><span class="lineNum">     417 </span>            :         .dp_audio_enable = enc3_se_dp_audio_enable,</a>
-<a name="418"><span class="lineNum">     418 </span>            :         .dp_audio_disable = enc1_se_dp_audio_disable,</a>
-<a name="419"><span class="lineNum">     419 </span>            : </a>
-<a name="420"><span class="lineNum">     420 </span>            :         .hdmi_audio_setup = enc3_se_hdmi_audio_setup,</a>
-<a name="421"><span class="lineNum">     421 </span>            :         .hdmi_audio_disable = enc1_se_hdmi_audio_disable,</a>
-<a name="422"><span class="lineNum">     422 </span>            :         .setup_stereo_sync  = enc1_setup_stereo_sync,</a>
-<a name="423"><span class="lineNum">     423 </span>            :         .set_avmute = enc1_stream_encoder_set_avmute,</a>
-<a name="424"><span class="lineNum">     424 </span>            :         .dig_connect_to_otg = enc1_dig_connect_to_otg,</a>
-<a name="425"><span class="lineNum">     425 </span>            :         .dig_source_otg = enc1_dig_source_otg,</a>
-<a name="426"><span class="lineNum">     426 </span>            : </a>
-<a name="427"><span class="lineNum">     427 </span>            :         .dp_get_pixel_format  = enc1_stream_encoder_dp_get_pixel_format,</a>
-<a name="428"><span class="lineNum">     428 </span>            : </a>
-<a name="429"><span class="lineNum">     429 </span>            :         .enc_read_state = enc314_read_state,</a>
-<a name="430"><span class="lineNum">     430 </span>            :         .dp_set_dsc_config = enc314_dp_set_dsc_config,</a>
-<a name="431"><span class="lineNum">     431 </span>            :         .dp_set_dsc_pps_info_packet = enc3_dp_set_dsc_pps_info_packet,</a>
-<a name="432"><span class="lineNum">     432 </span>            :         .set_dynamic_metadata = enc2_set_dynamic_metadata,</a>
-<a name="433"><span class="lineNum">     433 </span>            :         .hdmi_reset_stream_attribute = enc1_reset_hdmi_stream_attribute,</a>
-<a name="434"><span class="lineNum">     434 </span>            : </a>
-<a name="435"><span class="lineNum">     435 </span>            :         .enable_fifo = enc314_enable_fifo,</a>
-<a name="436"><span class="lineNum">     436 </span>            :         .disable_fifo = enc314_disable_fifo,</a>
-<a name="437"><span class="lineNum">     437 </span>            :         .set_input_mode = enc314_set_dig_input_mode,</a>
-<a name="438"><span class="lineNum">     438 </span>            : };</a>
-<a name="439"><span class="lineNum">     439 </span>            : </a>
-<a name="440"><span class="lineNum">     440 </span><span class="lineNoCov">          0 : void dcn314_dio_stream_encoder_construct(</span></a>
-<a name="441"><span class="lineNum">     441 </span>            :         struct dcn10_stream_encoder *enc1,</a>
-<a name="442"><span class="lineNum">     442 </span>            :         struct dc_context *ctx,</a>
-<a name="443"><span class="lineNum">     443 </span>            :         struct dc_bios *bp,</a>
-<a name="444"><span class="lineNum">     444 </span>            :         enum engine_id eng_id,</a>
-<a name="445"><span class="lineNum">     445 </span>            :         struct vpg *vpg,</a>
-<a name="446"><span class="lineNum">     446 </span>            :         struct afmt *afmt,</a>
-<a name="447"><span class="lineNum">     447 </span>            :         const struct dcn10_stream_enc_registers *regs,</a>
-<a name="448"><span class="lineNum">     448 </span>            :         const struct dcn10_stream_encoder_shift *se_shift,</a>
-<a name="449"><span class="lineNum">     449 </span>            :         const struct dcn10_stream_encoder_mask *se_mask)</a>
-<a name="450"><span class="lineNum">     450 </span>            : {</a>
-<a name="451"><span class="lineNum">     451 </span><span class="lineNoCov">          0 :         enc1-&gt;base.funcs = &amp;dcn314_str_enc_funcs;</span></a>
-<a name="452"><span class="lineNum">     452 </span><span class="lineNoCov">          0 :         enc1-&gt;base.ctx = ctx;</span></a>
-<a name="453"><span class="lineNum">     453 </span><span class="lineNoCov">          0 :         enc1-&gt;base.id = eng_id;</span></a>
-<a name="454"><span class="lineNum">     454 </span><span class="lineNoCov">          0 :         enc1-&gt;base.bp = bp;</span></a>
-<a name="455"><span class="lineNum">     455 </span><span class="lineNoCov">          0 :         enc1-&gt;base.vpg = vpg;</span></a>
-<a name="456"><span class="lineNum">     456 </span><span class="lineNoCov">          0 :         enc1-&gt;base.afmt = afmt;</span></a>
-<a name="457"><span class="lineNum">     457 </span><span class="lineNoCov">          0 :         enc1-&gt;regs = regs;</span></a>
-<a name="458"><span class="lineNum">     458 </span><span class="lineNoCov">          0 :         enc1-&gt;se_shift = se_shift;</span></a>
-<a name="459"><span class="lineNum">     459 </span><span class="lineNoCov">          0 :         enc1-&gt;se_mask = se_mask;</span></a>
-<a name="460"><span class="lineNum">     460 </span><span class="lineNoCov">          0 :         enc1-&gt;base.stream_enc_inst = vpg-&gt;inst;</span></a>
-<a name="461"><span class="lineNum">     461 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="462"><span class="lineNum">     462 </span>            : </a>
+<a name="391"><span class="lineNum">     391 </span>            : </a>
+<a name="392"><span class="lineNum">     392 </span>            : static const struct stream_encoder_funcs dcn314_str_enc_funcs = {</a>
+<a name="393"><span class="lineNum">     393 </span>            :         .dp_set_odm_combine =</a>
+<a name="394"><span class="lineNum">     394 </span>            :                 enc314_dp_set_odm_combine,</a>
+<a name="395"><span class="lineNum">     395 </span>            :         .dp_set_stream_attribute =</a>
+<a name="396"><span class="lineNum">     396 </span>            :                 enc2_stream_encoder_dp_set_stream_attribute,</a>
+<a name="397"><span class="lineNum">     397 </span>            :         .hdmi_set_stream_attribute =</a>
+<a name="398"><span class="lineNum">     398 </span>            :                 enc314_stream_encoder_hdmi_set_stream_attribute,</a>
+<a name="399"><span class="lineNum">     399 </span>            :         .dvi_set_stream_attribute =</a>
+<a name="400"><span class="lineNum">     400 </span>            :                 enc314_stream_encoder_dvi_set_stream_attribute,</a>
+<a name="401"><span class="lineNum">     401 </span>            :         .set_throttled_vcp_size =</a>
+<a name="402"><span class="lineNum">     402 </span>            :                 enc1_stream_encoder_set_throttled_vcp_size,</a>
+<a name="403"><span class="lineNum">     403 </span>            :         .update_hdmi_info_packets =</a>
+<a name="404"><span class="lineNum">     404 </span>            :                 enc3_stream_encoder_update_hdmi_info_packets,</a>
+<a name="405"><span class="lineNum">     405 </span>            :         .stop_hdmi_info_packets =</a>
+<a name="406"><span class="lineNum">     406 </span>            :                 enc3_stream_encoder_stop_hdmi_info_packets,</a>
+<a name="407"><span class="lineNum">     407 </span>            :         .update_dp_info_packets =</a>
+<a name="408"><span class="lineNum">     408 </span>            :                 enc3_stream_encoder_update_dp_info_packets,</a>
+<a name="409"><span class="lineNum">     409 </span>            :         .stop_dp_info_packets =</a>
+<a name="410"><span class="lineNum">     410 </span>            :                 enc1_stream_encoder_stop_dp_info_packets,</a>
+<a name="411"><span class="lineNum">     411 </span>            :         .dp_blank =</a>
+<a name="412"><span class="lineNum">     412 </span>            :                 enc1_stream_encoder_dp_blank,</a>
+<a name="413"><span class="lineNum">     413 </span>            :         .dp_unblank =</a>
+<a name="414"><span class="lineNum">     414 </span>            :                 enc314_stream_encoder_dp_unblank,</a>
+<a name="415"><span class="lineNum">     415 </span>            :         .audio_mute_control = enc3_audio_mute_control,</a>
+<a name="416"><span class="lineNum">     416 </span>            : </a>
+<a name="417"><span class="lineNum">     417 </span>            :         .dp_audio_setup = enc3_se_dp_audio_setup,</a>
+<a name="418"><span class="lineNum">     418 </span>            :         .dp_audio_enable = enc3_se_dp_audio_enable,</a>
+<a name="419"><span class="lineNum">     419 </span>            :         .dp_audio_disable = enc1_se_dp_audio_disable,</a>
+<a name="420"><span class="lineNum">     420 </span>            : </a>
+<a name="421"><span class="lineNum">     421 </span>            :         .hdmi_audio_setup = enc3_se_hdmi_audio_setup,</a>
+<a name="422"><span class="lineNum">     422 </span>            :         .hdmi_audio_disable = enc1_se_hdmi_audio_disable,</a>
+<a name="423"><span class="lineNum">     423 </span>            :         .setup_stereo_sync  = enc1_setup_stereo_sync,</a>
+<a name="424"><span class="lineNum">     424 </span>            :         .set_avmute = enc1_stream_encoder_set_avmute,</a>
+<a name="425"><span class="lineNum">     425 </span>            :         .dig_connect_to_otg = enc1_dig_connect_to_otg,</a>
+<a name="426"><span class="lineNum">     426 </span>            :         .dig_source_otg = enc1_dig_source_otg,</a>
+<a name="427"><span class="lineNum">     427 </span>            : </a>
+<a name="428"><span class="lineNum">     428 </span>            :         .dp_get_pixel_format  = enc1_stream_encoder_dp_get_pixel_format,</a>
+<a name="429"><span class="lineNum">     429 </span>            : </a>
+<a name="430"><span class="lineNum">     430 </span>            :         .enc_read_state = enc314_read_state,</a>
+<a name="431"><span class="lineNum">     431 </span>            :         .dp_set_dsc_config = enc314_dp_set_dsc_config,</a>
+<a name="432"><span class="lineNum">     432 </span>            :         .dp_set_dsc_pps_info_packet = enc3_dp_set_dsc_pps_info_packet,</a>
+<a name="433"><span class="lineNum">     433 </span>            :         .set_dynamic_metadata = enc2_set_dynamic_metadata,</a>
+<a name="434"><span class="lineNum">     434 </span>            :         .hdmi_reset_stream_attribute = enc1_reset_hdmi_stream_attribute,</a>
+<a name="435"><span class="lineNum">     435 </span>            : </a>
+<a name="436"><span class="lineNum">     436 </span>            :         .enable_fifo = enc314_enable_fifo,</a>
+<a name="437"><span class="lineNum">     437 </span>            :         .disable_fifo = enc314_disable_fifo,</a>
+<a name="438"><span class="lineNum">     438 </span>            :         .set_input_mode = enc314_set_dig_input_mode,</a>
+<a name="439"><span class="lineNum">     439 </span>            : };</a>
+<a name="440"><span class="lineNum">     440 </span>            : </a>
+<a name="441"><span class="lineNum">     441 </span><span class="lineNoCov">          0 : void dcn314_dio_stream_encoder_construct(</span></a>
+<a name="442"><span class="lineNum">     442 </span>            :         struct dcn10_stream_encoder *enc1,</a>
+<a name="443"><span class="lineNum">     443 </span>            :         struct dc_context *ctx,</a>
+<a name="444"><span class="lineNum">     444 </span>            :         struct dc_bios *bp,</a>
+<a name="445"><span class="lineNum">     445 </span>            :         enum engine_id eng_id,</a>
+<a name="446"><span class="lineNum">     446 </span>            :         struct vpg *vpg,</a>
+<a name="447"><span class="lineNum">     447 </span>            :         struct afmt *afmt,</a>
+<a name="448"><span class="lineNum">     448 </span>            :         const struct dcn10_stream_enc_registers *regs,</a>
+<a name="449"><span class="lineNum">     449 </span>            :         const struct dcn10_stream_encoder_shift *se_shift,</a>
+<a name="450"><span class="lineNum">     450 </span>            :         const struct dcn10_stream_encoder_mask *se_mask)</a>
+<a name="451"><span class="lineNum">     451 </span>            : {</a>
+<a name="452"><span class="lineNum">     452 </span><span class="lineNoCov">          0 :         enc1-&gt;base.funcs = &amp;dcn314_str_enc_funcs;</span></a>
+<a name="453"><span class="lineNum">     453 </span><span class="lineNoCov">          0 :         enc1-&gt;base.ctx = ctx;</span></a>
+<a name="454"><span class="lineNum">     454 </span><span class="lineNoCov">          0 :         enc1-&gt;base.id = eng_id;</span></a>
+<a name="455"><span class="lineNum">     455 </span><span class="lineNoCov">          0 :         enc1-&gt;base.bp = bp;</span></a>
+<a name="456"><span class="lineNum">     456 </span><span class="lineNoCov">          0 :         enc1-&gt;base.vpg = vpg;</span></a>
+<a name="457"><span class="lineNum">     457 </span><span class="lineNoCov">          0 :         enc1-&gt;base.afmt = afmt;</span></a>
+<a name="458"><span class="lineNum">     458 </span><span class="lineNoCov">          0 :         enc1-&gt;regs = regs;</span></a>
+<a name="459"><span class="lineNum">     459 </span><span class="lineNoCov">          0 :         enc1-&gt;se_shift = se_shift;</span></a>
+<a name="460"><span class="lineNum">     460 </span><span class="lineNoCov">          0 :         enc1-&gt;se_mask = se_mask;</span></a>
+<a name="461"><span class="lineNum">     461 </span><span class="lineNoCov">          0 :         enc1-&gt;base.stream_enc_inst = vpg-&gt;inst;</span></a>
+<a name="462"><span class="lineNum">     462 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="463"><span class="lineNum">     463 </span>            : </a>
 </pre>
       </td>
     </tr>

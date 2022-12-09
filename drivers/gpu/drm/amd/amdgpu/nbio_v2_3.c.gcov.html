@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">226</td>
+            <td class="headerCovTableEntry">227</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -442,193 +442,200 @@
 <a name="380"><span class="lineNum">     380 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPCIE_LC_CNTL, data);</span></a>
 <a name="381"><span class="lineNum">     381 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="382"><span class="lineNum">     382 </span>            : </a>
-<a name="383"><span class="lineNum">     383 </span><span class="lineNoCov">          0 : static void nbio_v2_3_program_ltr(struct amdgpu_device *adev)</span></a>
-<a name="384"><span class="lineNum">     384 </span>            : {</a>
-<a name="385"><span class="lineNum">     385 </span>            :         uint32_t def, data;</a>
-<a name="386"><span class="lineNum">     386 </span>            : </a>
-<a name="387"><span class="lineNum">     387 </span><span class="lineNoCov">          0 :         WREG32_PCIE(smnRCC_EP_DEV0_0_EP_PCIE_TX_LTR_CNTL, 0x75EB);</span></a>
-<a name="388"><span class="lineNum">     388 </span>            : </a>
-<a name="389"><span class="lineNum">     389 </span><span class="lineNoCov">          0 :         def = data = RREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP2);</span></a>
-<a name="390"><span class="lineNum">     390 </span><span class="lineNoCov">          0 :         data &amp;= ~RCC_BIF_STRAP2__STRAP_LTR_IN_ASPML1_DIS_MASK;</span></a>
-<a name="391"><span class="lineNum">     391 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="392"><span class="lineNum">     392 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP2, data);</span></a>
-<a name="393"><span class="lineNum">     393 </span>            : </a>
-<a name="394"><span class="lineNum">     394 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnRCC_EP_DEV0_0_EP_PCIE_TX_LTR_CNTL);</span></a>
-<a name="395"><span class="lineNum">     395 </span><span class="lineNoCov">          0 :         data &amp;= ~EP_PCIE_TX_LTR_CNTL__LTR_PRIV_MSG_DIS_IN_PM_NON_D0_MASK;</span></a>
-<a name="396"><span class="lineNum">     396 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="397"><span class="lineNum">     397 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnRCC_EP_DEV0_0_EP_PCIE_TX_LTR_CNTL, data);</span></a>
-<a name="398"><span class="lineNum">     398 </span>            : </a>
-<a name="399"><span class="lineNum">     399 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnBIF_CFG_DEV0_EPF0_DEVICE_CNTL2);</span></a>
-<a name="400"><span class="lineNum">     400 </span><span class="lineNoCov">          0 :         data |= BIF_CFG_DEV0_EPF0_DEVICE_CNTL2__LTR_EN_MASK;</span></a>
-<a name="401"><span class="lineNum">     401 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="402"><span class="lineNum">     402 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnBIF_CFG_DEV0_EPF0_DEVICE_CNTL2, data);</span></a>
-<a name="403"><span class="lineNum">     403 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="404"><span class="lineNum">     404 </span>            : </a>
-<a name="405"><span class="lineNum">     405 </span><span class="lineNoCov">          0 : static void nbio_v2_3_program_aspm(struct amdgpu_device *adev)</span></a>
-<a name="406"><span class="lineNum">     406 </span>            : {</a>
-<a name="407"><span class="lineNum">     407 </span>            :         uint32_t def, data;</a>
-<a name="408"><span class="lineNum">     408 </span>            : </a>
-<a name="409"><span class="lineNum">     409 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnPCIE_LC_CNTL);</span></a>
-<a name="410"><span class="lineNum">     410 </span><span class="lineNoCov">          0 :         data &amp;= ~PCIE_LC_CNTL__LC_L1_INACTIVITY_MASK;</span></a>
-<a name="411"><span class="lineNum">     411 </span><span class="lineNoCov">          0 :         data &amp;= ~PCIE_LC_CNTL__LC_L0S_INACTIVITY_MASK;</span></a>
-<a name="412"><span class="lineNum">     412 </span><span class="lineNoCov">          0 :         data |= PCIE_LC_CNTL__LC_PMI_TO_L1_DIS_MASK;</span></a>
-<a name="413"><span class="lineNum">     413 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="414"><span class="lineNum">     414 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPCIE_LC_CNTL, data);</span></a>
-<a name="415"><span class="lineNum">     415 </span>            : </a>
-<a name="416"><span class="lineNum">     416 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnPCIE_LC_CNTL7);</span></a>
-<a name="417"><span class="lineNum">     417 </span><span class="lineNoCov">          0 :         data |= PCIE_LC_CNTL7__LC_NBIF_ASPM_INPUT_EN_MASK;</span></a>
-<a name="418"><span class="lineNum">     418 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="419"><span class="lineNum">     419 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPCIE_LC_CNTL7, data);</span></a>
-<a name="420"><span class="lineNum">     420 </span>            : </a>
-<a name="421"><span class="lineNum">     421 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnNBIF_MGCG_CTRL_LCLK);</span></a>
-<a name="422"><span class="lineNum">     422 </span><span class="lineNoCov">          0 :         data |= NBIF_MGCG_CTRL_LCLK__NBIF_MGCG_REG_DIS_LCLK_MASK;</span></a>
-<a name="423"><span class="lineNum">     423 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="424"><span class="lineNum">     424 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnNBIF_MGCG_CTRL_LCLK, data);</span></a>
-<a name="425"><span class="lineNum">     425 </span>            : </a>
-<a name="426"><span class="lineNum">     426 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnPCIE_LC_CNTL3);</span></a>
-<a name="427"><span class="lineNum">     427 </span><span class="lineNoCov">          0 :         data |= PCIE_LC_CNTL3__LC_DSC_DONT_ENTER_L23_AFTER_PME_ACK_MASK;</span></a>
-<a name="428"><span class="lineNum">     428 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="429"><span class="lineNum">     429 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPCIE_LC_CNTL3, data);</span></a>
-<a name="430"><span class="lineNum">     430 </span>            : </a>
-<a name="431"><span class="lineNum">     431 </span><span class="lineNoCov">          0 :         def = data = RREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP3);</span></a>
-<a name="432"><span class="lineNum">     432 </span><span class="lineNoCov">          0 :         data &amp;= ~RCC_BIF_STRAP3__STRAP_VLINK_ASPM_IDLE_TIMER_MASK;</span></a>
-<a name="433"><span class="lineNum">     433 </span><span class="lineNoCov">          0 :         data &amp;= ~RCC_BIF_STRAP3__STRAP_VLINK_PM_L1_ENTRY_TIMER_MASK;</span></a>
-<a name="434"><span class="lineNum">     434 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="435"><span class="lineNum">     435 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP3, data);</span></a>
-<a name="436"><span class="lineNum">     436 </span>            : </a>
-<a name="437"><span class="lineNum">     437 </span><span class="lineNoCov">          0 :         def = data = RREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP5);</span></a>
-<a name="438"><span class="lineNum">     438 </span><span class="lineNoCov">          0 :         data &amp;= ~RCC_BIF_STRAP5__STRAP_VLINK_LDN_ENTRY_TIMER_MASK;</span></a>
-<a name="439"><span class="lineNum">     439 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="440"><span class="lineNum">     440 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP5, data);</span></a>
-<a name="441"><span class="lineNum">     441 </span>            : </a>
-<a name="442"><span class="lineNum">     442 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnBIF_CFG_DEV0_EPF0_DEVICE_CNTL2);</span></a>
-<a name="443"><span class="lineNum">     443 </span><span class="lineNoCov">          0 :         data &amp;= ~BIF_CFG_DEV0_EPF0_DEVICE_CNTL2__LTR_EN_MASK;</span></a>
-<a name="444"><span class="lineNum">     444 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="445"><span class="lineNum">     445 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnBIF_CFG_DEV0_EPF0_DEVICE_CNTL2, data);</span></a>
-<a name="446"><span class="lineNum">     446 </span>            : </a>
-<a name="447"><span class="lineNum">     447 </span><span class="lineNoCov">          0 :         WREG32_PCIE(smnBIF_CFG_DEV0_EPF0_PCIE_LTR_CAP, 0x10011001);</span></a>
-<a name="448"><span class="lineNum">     448 </span>            : </a>
-<a name="449"><span class="lineNum">     449 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnPSWUSP0_PCIE_LC_CNTL2);</span></a>
-<a name="450"><span class="lineNum">     450 </span><span class="lineNoCov">          0 :         data |= PSWUSP0_PCIE_LC_CNTL2__LC_ALLOW_PDWN_IN_L1_MASK |</span></a>
-<a name="451"><span class="lineNum">     451 </span>            :                 PSWUSP0_PCIE_LC_CNTL2__LC_ALLOW_PDWN_IN_L23_MASK;</a>
-<a name="452"><span class="lineNum">     452 </span><span class="lineNoCov">          0 :         data &amp;= ~PSWUSP0_PCIE_LC_CNTL2__LC_RCV_L0_TO_RCV_L0S_DIS_MASK;</span></a>
-<a name="453"><span class="lineNum">     453 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="454"><span class="lineNum">     454 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPSWUSP0_PCIE_LC_CNTL2, data);</span></a>
-<a name="455"><span class="lineNum">     455 </span>            : </a>
-<a name="456"><span class="lineNum">     456 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnPCIE_LC_CNTL6);</span></a>
-<a name="457"><span class="lineNum">     457 </span><span class="lineNoCov">          0 :         data |= PCIE_LC_CNTL6__LC_L1_POWERDOWN_MASK |</span></a>
-<a name="458"><span class="lineNum">     458 </span>            :                 PCIE_LC_CNTL6__LC_RX_L0S_STANDBY_EN_MASK;</a>
-<a name="459"><span class="lineNum">     459 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="460"><span class="lineNum">     460 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPCIE_LC_CNTL6, data);</span></a>
-<a name="461"><span class="lineNum">     461 </span>            : </a>
-<a name="462"><span class="lineNum">     462 </span><span class="lineNoCov">          0 :         nbio_v2_3_program_ltr(adev);</span></a>
-<a name="463"><span class="lineNum">     463 </span>            : </a>
-<a name="464"><span class="lineNum">     464 </span><span class="lineNoCov">          0 :         def = data = RREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP3);</span></a>
-<a name="465"><span class="lineNum">     465 </span><span class="lineNoCov">          0 :         data |= 0x5DE0 &lt;&lt; RCC_BIF_STRAP3__STRAP_VLINK_ASPM_IDLE_TIMER__SHIFT;</span></a>
-<a name="466"><span class="lineNum">     466 </span><span class="lineNoCov">          0 :         data |= 0x0010 &lt;&lt; RCC_BIF_STRAP3__STRAP_VLINK_PM_L1_ENTRY_TIMER__SHIFT;</span></a>
-<a name="467"><span class="lineNum">     467 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="468"><span class="lineNum">     468 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP3, data);</span></a>
+<a name="383"><span class="lineNum">     383 </span>            : #ifdef CONFIG_PCIEASPM</a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineNoCov">          0 : static void nbio_v2_3_program_ltr(struct amdgpu_device *adev)</span></a>
+<a name="385"><span class="lineNum">     385 </span>            : {</a>
+<a name="386"><span class="lineNum">     386 </span>            :         uint32_t def, data;</a>
+<a name="387"><span class="lineNum">     387 </span>            : </a>
+<a name="388"><span class="lineNum">     388 </span><span class="lineNoCov">          0 :         WREG32_PCIE(smnRCC_EP_DEV0_0_EP_PCIE_TX_LTR_CNTL, 0x75EB);</span></a>
+<a name="389"><span class="lineNum">     389 </span>            : </a>
+<a name="390"><span class="lineNum">     390 </span><span class="lineNoCov">          0 :         def = data = RREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP2);</span></a>
+<a name="391"><span class="lineNum">     391 </span><span class="lineNoCov">          0 :         data &amp;= ~RCC_BIF_STRAP2__STRAP_LTR_IN_ASPML1_DIS_MASK;</span></a>
+<a name="392"><span class="lineNum">     392 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="393"><span class="lineNum">     393 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP2, data);</span></a>
+<a name="394"><span class="lineNum">     394 </span>            : </a>
+<a name="395"><span class="lineNum">     395 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnRCC_EP_DEV0_0_EP_PCIE_TX_LTR_CNTL);</span></a>
+<a name="396"><span class="lineNum">     396 </span><span class="lineNoCov">          0 :         data &amp;= ~EP_PCIE_TX_LTR_CNTL__LTR_PRIV_MSG_DIS_IN_PM_NON_D0_MASK;</span></a>
+<a name="397"><span class="lineNum">     397 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="398"><span class="lineNum">     398 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnRCC_EP_DEV0_0_EP_PCIE_TX_LTR_CNTL, data);</span></a>
+<a name="399"><span class="lineNum">     399 </span>            : </a>
+<a name="400"><span class="lineNum">     400 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnBIF_CFG_DEV0_EPF0_DEVICE_CNTL2);</span></a>
+<a name="401"><span class="lineNum">     401 </span><span class="lineNoCov">          0 :         data |= BIF_CFG_DEV0_EPF0_DEVICE_CNTL2__LTR_EN_MASK;</span></a>
+<a name="402"><span class="lineNum">     402 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="403"><span class="lineNum">     403 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnBIF_CFG_DEV0_EPF0_DEVICE_CNTL2, data);</span></a>
+<a name="404"><span class="lineNum">     404 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="405"><span class="lineNum">     405 </span>            : #endif</a>
+<a name="406"><span class="lineNum">     406 </span>            : </a>
+<a name="407"><span class="lineNum">     407 </span><span class="lineNoCov">          0 : static void nbio_v2_3_program_aspm(struct amdgpu_device *adev)</span></a>
+<a name="408"><span class="lineNum">     408 </span>            : {</a>
+<a name="409"><span class="lineNum">     409 </span>            : #ifdef CONFIG_PCIEASPM</a>
+<a name="410"><span class="lineNum">     410 </span>            :         uint32_t def, data;</a>
+<a name="411"><span class="lineNum">     411 </span>            : </a>
+<a name="412"><span class="lineNum">     412 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnPCIE_LC_CNTL);</span></a>
+<a name="413"><span class="lineNum">     413 </span><span class="lineNoCov">          0 :         data &amp;= ~PCIE_LC_CNTL__LC_L1_INACTIVITY_MASK;</span></a>
+<a name="414"><span class="lineNum">     414 </span><span class="lineNoCov">          0 :         data &amp;= ~PCIE_LC_CNTL__LC_L0S_INACTIVITY_MASK;</span></a>
+<a name="415"><span class="lineNum">     415 </span><span class="lineNoCov">          0 :         data |= PCIE_LC_CNTL__LC_PMI_TO_L1_DIS_MASK;</span></a>
+<a name="416"><span class="lineNum">     416 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="417"><span class="lineNum">     417 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPCIE_LC_CNTL, data);</span></a>
+<a name="418"><span class="lineNum">     418 </span>            : </a>
+<a name="419"><span class="lineNum">     419 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnPCIE_LC_CNTL7);</span></a>
+<a name="420"><span class="lineNum">     420 </span><span class="lineNoCov">          0 :         data |= PCIE_LC_CNTL7__LC_NBIF_ASPM_INPUT_EN_MASK;</span></a>
+<a name="421"><span class="lineNum">     421 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="422"><span class="lineNum">     422 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPCIE_LC_CNTL7, data);</span></a>
+<a name="423"><span class="lineNum">     423 </span>            : </a>
+<a name="424"><span class="lineNum">     424 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnNBIF_MGCG_CTRL_LCLK);</span></a>
+<a name="425"><span class="lineNum">     425 </span><span class="lineNoCov">          0 :         data |= NBIF_MGCG_CTRL_LCLK__NBIF_MGCG_REG_DIS_LCLK_MASK;</span></a>
+<a name="426"><span class="lineNum">     426 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="427"><span class="lineNum">     427 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnNBIF_MGCG_CTRL_LCLK, data);</span></a>
+<a name="428"><span class="lineNum">     428 </span>            : </a>
+<a name="429"><span class="lineNum">     429 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnPCIE_LC_CNTL3);</span></a>
+<a name="430"><span class="lineNum">     430 </span><span class="lineNoCov">          0 :         data |= PCIE_LC_CNTL3__LC_DSC_DONT_ENTER_L23_AFTER_PME_ACK_MASK;</span></a>
+<a name="431"><span class="lineNum">     431 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="432"><span class="lineNum">     432 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPCIE_LC_CNTL3, data);</span></a>
+<a name="433"><span class="lineNum">     433 </span>            : </a>
+<a name="434"><span class="lineNum">     434 </span><span class="lineNoCov">          0 :         def = data = RREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP3);</span></a>
+<a name="435"><span class="lineNum">     435 </span><span class="lineNoCov">          0 :         data &amp;= ~RCC_BIF_STRAP3__STRAP_VLINK_ASPM_IDLE_TIMER_MASK;</span></a>
+<a name="436"><span class="lineNum">     436 </span><span class="lineNoCov">          0 :         data &amp;= ~RCC_BIF_STRAP3__STRAP_VLINK_PM_L1_ENTRY_TIMER_MASK;</span></a>
+<a name="437"><span class="lineNum">     437 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="438"><span class="lineNum">     438 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP3, data);</span></a>
+<a name="439"><span class="lineNum">     439 </span>            : </a>
+<a name="440"><span class="lineNum">     440 </span><span class="lineNoCov">          0 :         def = data = RREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP5);</span></a>
+<a name="441"><span class="lineNum">     441 </span><span class="lineNoCov">          0 :         data &amp;= ~RCC_BIF_STRAP5__STRAP_VLINK_LDN_ENTRY_TIMER_MASK;</span></a>
+<a name="442"><span class="lineNum">     442 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="443"><span class="lineNum">     443 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP5, data);</span></a>
+<a name="444"><span class="lineNum">     444 </span>            : </a>
+<a name="445"><span class="lineNum">     445 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnBIF_CFG_DEV0_EPF0_DEVICE_CNTL2);</span></a>
+<a name="446"><span class="lineNum">     446 </span><span class="lineNoCov">          0 :         data &amp;= ~BIF_CFG_DEV0_EPF0_DEVICE_CNTL2__LTR_EN_MASK;</span></a>
+<a name="447"><span class="lineNum">     447 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnBIF_CFG_DEV0_EPF0_DEVICE_CNTL2, data);</span></a>
+<a name="449"><span class="lineNum">     449 </span>            : </a>
+<a name="450"><span class="lineNum">     450 </span><span class="lineNoCov">          0 :         WREG32_PCIE(smnBIF_CFG_DEV0_EPF0_PCIE_LTR_CAP, 0x10011001);</span></a>
+<a name="451"><span class="lineNum">     451 </span>            : </a>
+<a name="452"><span class="lineNum">     452 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnPSWUSP0_PCIE_LC_CNTL2);</span></a>
+<a name="453"><span class="lineNum">     453 </span><span class="lineNoCov">          0 :         data |= PSWUSP0_PCIE_LC_CNTL2__LC_ALLOW_PDWN_IN_L1_MASK |</span></a>
+<a name="454"><span class="lineNum">     454 </span>            :                 PSWUSP0_PCIE_LC_CNTL2__LC_ALLOW_PDWN_IN_L23_MASK;</a>
+<a name="455"><span class="lineNum">     455 </span><span class="lineNoCov">          0 :         data &amp;= ~PSWUSP0_PCIE_LC_CNTL2__LC_RCV_L0_TO_RCV_L0S_DIS_MASK;</span></a>
+<a name="456"><span class="lineNum">     456 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="457"><span class="lineNum">     457 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPSWUSP0_PCIE_LC_CNTL2, data);</span></a>
+<a name="458"><span class="lineNum">     458 </span>            : </a>
+<a name="459"><span class="lineNum">     459 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnPCIE_LC_CNTL6);</span></a>
+<a name="460"><span class="lineNum">     460 </span><span class="lineNoCov">          0 :         data |= PCIE_LC_CNTL6__LC_L1_POWERDOWN_MASK |</span></a>
+<a name="461"><span class="lineNum">     461 </span>            :                 PCIE_LC_CNTL6__LC_RX_L0S_STANDBY_EN_MASK;</a>
+<a name="462"><span class="lineNum">     462 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="463"><span class="lineNum">     463 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPCIE_LC_CNTL6, data);</span></a>
+<a name="464"><span class="lineNum">     464 </span>            : </a>
+<a name="465"><span class="lineNum">     465 </span>            :         /* Don't bother about LTR if LTR is not enabled</a>
+<a name="466"><span class="lineNum">     466 </span>            :          * in the path */</a>
+<a name="467"><span class="lineNum">     467 </span><span class="lineNoCov">          0 :         if (adev-&gt;pdev-&gt;ltr_path)</span></a>
+<a name="468"><span class="lineNum">     468 </span><span class="lineNoCov">          0 :                 nbio_v2_3_program_ltr(adev);</span></a>
 <a name="469"><span class="lineNum">     469 </span>            : </a>
-<a name="470"><span class="lineNum">     470 </span><span class="lineNoCov">          0 :         def = data = RREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP5);</span></a>
-<a name="471"><span class="lineNum">     471 </span><span class="lineNoCov">          0 :         data |= 0x0010 &lt;&lt; RCC_BIF_STRAP5__STRAP_VLINK_LDN_ENTRY_TIMER__SHIFT;</span></a>
-<a name="472"><span class="lineNum">     472 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="473"><span class="lineNum">     473 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP5, data);</span></a>
-<a name="474"><span class="lineNum">     474 </span>            : </a>
-<a name="475"><span class="lineNum">     475 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnPCIE_LC_CNTL);</span></a>
-<a name="476"><span class="lineNum">     476 </span><span class="lineNoCov">          0 :         data &amp;= ~PCIE_LC_CNTL__LC_L0S_INACTIVITY_MASK;</span></a>
-<a name="477"><span class="lineNum">     477 </span><span class="lineNoCov">          0 :         data |= 0x9 &lt;&lt; PCIE_LC_CNTL__LC_L1_INACTIVITY__SHIFT;</span></a>
-<a name="478"><span class="lineNum">     478 </span><span class="lineNoCov">          0 :         data |= 0x1 &lt;&lt; PCIE_LC_CNTL__LC_PMI_TO_L1_DIS__SHIFT;</span></a>
-<a name="479"><span class="lineNum">     479 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="480"><span class="lineNum">     480 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPCIE_LC_CNTL, data);</span></a>
-<a name="481"><span class="lineNum">     481 </span>            : </a>
-<a name="482"><span class="lineNum">     482 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnPCIE_LC_CNTL3);</span></a>
-<a name="483"><span class="lineNum">     483 </span><span class="lineNoCov">          0 :         data &amp;= ~PCIE_LC_CNTL3__LC_DSC_DONT_ENTER_L23_AFTER_PME_ACK_MASK;</span></a>
-<a name="484"><span class="lineNum">     484 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
-<a name="485"><span class="lineNum">     485 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPCIE_LC_CNTL3, data);</span></a>
-<a name="486"><span class="lineNum">     486 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="470"><span class="lineNum">     470 </span><span class="lineNoCov">          0 :         def = data = RREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP3);</span></a>
+<a name="471"><span class="lineNum">     471 </span><span class="lineNoCov">          0 :         data |= 0x5DE0 &lt;&lt; RCC_BIF_STRAP3__STRAP_VLINK_ASPM_IDLE_TIMER__SHIFT;</span></a>
+<a name="472"><span class="lineNum">     472 </span><span class="lineNoCov">          0 :         data |= 0x0010 &lt;&lt; RCC_BIF_STRAP3__STRAP_VLINK_PM_L1_ENTRY_TIMER__SHIFT;</span></a>
+<a name="473"><span class="lineNum">     473 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="474"><span class="lineNum">     474 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP3, data);</span></a>
+<a name="475"><span class="lineNum">     475 </span>            : </a>
+<a name="476"><span class="lineNum">     476 </span><span class="lineNoCov">          0 :         def = data = RREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP5);</span></a>
+<a name="477"><span class="lineNum">     477 </span><span class="lineNoCov">          0 :         data |= 0x0010 &lt;&lt; RCC_BIF_STRAP5__STRAP_VLINK_LDN_ENTRY_TIMER__SHIFT;</span></a>
+<a name="478"><span class="lineNum">     478 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="479"><span class="lineNum">     479 </span><span class="lineNoCov">          0 :                 WREG32_SOC15(NBIO, 0, mmRCC_BIF_STRAP5, data);</span></a>
+<a name="480"><span class="lineNum">     480 </span>            : </a>
+<a name="481"><span class="lineNum">     481 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnPCIE_LC_CNTL);</span></a>
+<a name="482"><span class="lineNum">     482 </span><span class="lineNoCov">          0 :         data &amp;= ~PCIE_LC_CNTL__LC_L0S_INACTIVITY_MASK;</span></a>
+<a name="483"><span class="lineNum">     483 </span><span class="lineNoCov">          0 :         data |= 0x9 &lt;&lt; PCIE_LC_CNTL__LC_L1_INACTIVITY__SHIFT;</span></a>
+<a name="484"><span class="lineNum">     484 </span><span class="lineNoCov">          0 :         data |= 0x1 &lt;&lt; PCIE_LC_CNTL__LC_PMI_TO_L1_DIS__SHIFT;</span></a>
+<a name="485"><span class="lineNum">     485 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="486"><span class="lineNum">     486 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPCIE_LC_CNTL, data);</span></a>
 <a name="487"><span class="lineNum">     487 </span>            : </a>
-<a name="488"><span class="lineNum">     488 </span><span class="lineNoCov">          0 : static void nbio_v2_3_apply_lc_spc_mode_wa(struct amdgpu_device *adev)</span></a>
-<a name="489"><span class="lineNum">     489 </span>            : {</a>
-<a name="490"><span class="lineNum">     490 </span><span class="lineNoCov">          0 :         uint32_t reg_data = 0;</span></a>
-<a name="491"><span class="lineNum">     491 </span><span class="lineNoCov">          0 :         uint32_t link_width = 0;</span></a>
-<a name="492"><span class="lineNum">     492 </span>            : </a>
-<a name="493"><span class="lineNum">     493 </span><span class="lineNoCov">          0 :         if (!((adev-&gt;asic_type &gt;= CHIP_NAVI10) &amp;&amp;</span></a>
-<a name="494"><span class="lineNum">     494 </span>            :              (adev-&gt;asic_type &lt;= CHIP_NAVI12)))</a>
-<a name="495"><span class="lineNum">     495 </span>            :                 return;</a>
-<a name="496"><span class="lineNum">     496 </span>            : </a>
-<a name="497"><span class="lineNum">     497 </span><span class="lineNoCov">          0 :         reg_data = RREG32_PCIE(smnPCIE_LC_LINK_WIDTH_CNTL);</span></a>
-<a name="498"><span class="lineNum">     498 </span><span class="lineNoCov">          0 :         link_width = (reg_data &amp; PCIE_LC_LINK_WIDTH_CNTL__LC_LINK_WIDTH_RD_MASK)</span></a>
-<a name="499"><span class="lineNum">     499 </span><span class="lineNoCov">          0 :                 &gt;&gt; PCIE_LC_LINK_WIDTH_CNTL__LC_LINK_WIDTH_RD__SHIFT;</span></a>
-<a name="500"><span class="lineNum">     500 </span>            : </a>
-<a name="501"><span class="lineNum">     501 </span>            :         /*</a>
-<a name="502"><span class="lineNum">     502 </span>            :          * Program PCIE_LC_CNTL6.LC_SPC_MODE_8GT to 0x2 (4 symbols per clock data)</a>
-<a name="503"><span class="lineNum">     503 </span>            :          * if link_width is 0x3 (x4)</a>
-<a name="504"><span class="lineNum">     504 </span>            :          */</a>
-<a name="505"><span class="lineNum">     505 </span><span class="lineNoCov">          0 :         if (0x3 == link_width) {</span></a>
-<a name="506"><span class="lineNum">     506 </span><span class="lineNoCov">          0 :                 reg_data = RREG32_PCIE(smnPCIE_LC_CNTL6);</span></a>
-<a name="507"><span class="lineNum">     507 </span><span class="lineNoCov">          0 :                 reg_data &amp;= ~PCIE_LC_CNTL6__LC_SPC_MODE_8GT_MASK;</span></a>
-<a name="508"><span class="lineNum">     508 </span><span class="lineNoCov">          0 :                 reg_data |= (0x2 &lt;&lt; PCIE_LC_CNTL6__LC_SPC_MODE_8GT__SHIFT);</span></a>
-<a name="509"><span class="lineNum">     509 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPCIE_LC_CNTL6, reg_data);</span></a>
-<a name="510"><span class="lineNum">     510 </span>            :         }</a>
-<a name="511"><span class="lineNum">     511 </span>            : }</a>
-<a name="512"><span class="lineNum">     512 </span>            : </a>
-<a name="513"><span class="lineNum">     513 </span><span class="lineNoCov">          0 : static void nbio_v2_3_apply_l1_link_width_reconfig_wa(struct amdgpu_device *adev)</span></a>
-<a name="514"><span class="lineNum">     514 </span>            : {</a>
-<a name="515"><span class="lineNum">     515 </span><span class="lineNoCov">          0 :         uint32_t reg_data = 0;</span></a>
-<a name="516"><span class="lineNum">     516 </span>            : </a>
-<a name="517"><span class="lineNum">     517 </span><span class="lineNoCov">          0 :         if (adev-&gt;asic_type != CHIP_NAVI10)</span></a>
-<a name="518"><span class="lineNum">     518 </span>            :                 return;</a>
+<a name="488"><span class="lineNum">     488 </span><span class="lineNoCov">          0 :         def = data = RREG32_PCIE(smnPCIE_LC_CNTL3);</span></a>
+<a name="489"><span class="lineNum">     489 </span><span class="lineNoCov">          0 :         data &amp;= ~PCIE_LC_CNTL3__LC_DSC_DONT_ENTER_L23_AFTER_PME_ACK_MASK;</span></a>
+<a name="490"><span class="lineNum">     490 </span><span class="lineNoCov">          0 :         if (def != data)</span></a>
+<a name="491"><span class="lineNum">     491 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPCIE_LC_CNTL3, data);</span></a>
+<a name="492"><span class="lineNum">     492 </span>            : #endif</a>
+<a name="493"><span class="lineNum">     493 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="494"><span class="lineNum">     494 </span>            : </a>
+<a name="495"><span class="lineNum">     495 </span><span class="lineNoCov">          0 : static void nbio_v2_3_apply_lc_spc_mode_wa(struct amdgpu_device *adev)</span></a>
+<a name="496"><span class="lineNum">     496 </span>            : {</a>
+<a name="497"><span class="lineNum">     497 </span><span class="lineNoCov">          0 :         uint32_t reg_data = 0;</span></a>
+<a name="498"><span class="lineNum">     498 </span><span class="lineNoCov">          0 :         uint32_t link_width = 0;</span></a>
+<a name="499"><span class="lineNum">     499 </span>            : </a>
+<a name="500"><span class="lineNum">     500 </span><span class="lineNoCov">          0 :         if (!((adev-&gt;asic_type &gt;= CHIP_NAVI10) &amp;&amp;</span></a>
+<a name="501"><span class="lineNum">     501 </span>            :              (adev-&gt;asic_type &lt;= CHIP_NAVI12)))</a>
+<a name="502"><span class="lineNum">     502 </span>            :                 return;</a>
+<a name="503"><span class="lineNum">     503 </span>            : </a>
+<a name="504"><span class="lineNum">     504 </span><span class="lineNoCov">          0 :         reg_data = RREG32_PCIE(smnPCIE_LC_LINK_WIDTH_CNTL);</span></a>
+<a name="505"><span class="lineNum">     505 </span><span class="lineNoCov">          0 :         link_width = (reg_data &amp; PCIE_LC_LINK_WIDTH_CNTL__LC_LINK_WIDTH_RD_MASK)</span></a>
+<a name="506"><span class="lineNum">     506 </span><span class="lineNoCov">          0 :                 &gt;&gt; PCIE_LC_LINK_WIDTH_CNTL__LC_LINK_WIDTH_RD__SHIFT;</span></a>
+<a name="507"><span class="lineNum">     507 </span>            : </a>
+<a name="508"><span class="lineNum">     508 </span>            :         /*</a>
+<a name="509"><span class="lineNum">     509 </span>            :          * Program PCIE_LC_CNTL6.LC_SPC_MODE_8GT to 0x2 (4 symbols per clock data)</a>
+<a name="510"><span class="lineNum">     510 </span>            :          * if link_width is 0x3 (x4)</a>
+<a name="511"><span class="lineNum">     511 </span>            :          */</a>
+<a name="512"><span class="lineNum">     512 </span><span class="lineNoCov">          0 :         if (0x3 == link_width) {</span></a>
+<a name="513"><span class="lineNum">     513 </span><span class="lineNoCov">          0 :                 reg_data = RREG32_PCIE(smnPCIE_LC_CNTL6);</span></a>
+<a name="514"><span class="lineNum">     514 </span><span class="lineNoCov">          0 :                 reg_data &amp;= ~PCIE_LC_CNTL6__LC_SPC_MODE_8GT_MASK;</span></a>
+<a name="515"><span class="lineNum">     515 </span><span class="lineNoCov">          0 :                 reg_data |= (0x2 &lt;&lt; PCIE_LC_CNTL6__LC_SPC_MODE_8GT__SHIFT);</span></a>
+<a name="516"><span class="lineNum">     516 </span><span class="lineNoCov">          0 :                 WREG32_PCIE(smnPCIE_LC_CNTL6, reg_data);</span></a>
+<a name="517"><span class="lineNum">     517 </span>            :         }</a>
+<a name="518"><span class="lineNum">     518 </span>            : }</a>
 <a name="519"><span class="lineNum">     519 </span>            : </a>
-<a name="520"><span class="lineNum">     520 </span><span class="lineNoCov">          0 :         reg_data = RREG32_PCIE(smnPCIE_LC_LINK_WIDTH_CNTL);</span></a>
-<a name="521"><span class="lineNum">     521 </span><span class="lineNoCov">          0 :         reg_data |= PCIE_LC_LINK_WIDTH_CNTL__LC_L1_RECONFIG_EN_MASK;</span></a>
-<a name="522"><span class="lineNum">     522 </span><span class="lineNoCov">          0 :         WREG32_PCIE(smnPCIE_LC_LINK_WIDTH_CNTL, reg_data);</span></a>
-<a name="523"><span class="lineNum">     523 </span>            : }</a>
-<a name="524"><span class="lineNum">     524 </span>            : </a>
-<a name="525"><span class="lineNum">     525 </span><span class="lineNoCov">          0 : static void nbio_v2_3_clear_doorbell_interrupt(struct amdgpu_device *adev)</span></a>
-<a name="526"><span class="lineNum">     526 </span>            : {</a>
-<a name="527"><span class="lineNum">     527 </span>            :         uint32_t reg, reg_data;</a>
-<a name="528"><span class="lineNum">     528 </span>            : </a>
-<a name="529"><span class="lineNum">     529 </span><span class="lineNoCov">          0 :         if (adev-&gt;ip_versions[NBIO_HWIP][0] != IP_VERSION(3, 3, 0))</span></a>
-<a name="530"><span class="lineNum">     530 </span>            :                 return;</a>
+<a name="520"><span class="lineNum">     520 </span><span class="lineNoCov">          0 : static void nbio_v2_3_apply_l1_link_width_reconfig_wa(struct amdgpu_device *adev)</span></a>
+<a name="521"><span class="lineNum">     521 </span>            : {</a>
+<a name="522"><span class="lineNum">     522 </span><span class="lineNoCov">          0 :         uint32_t reg_data = 0;</span></a>
+<a name="523"><span class="lineNum">     523 </span>            : </a>
+<a name="524"><span class="lineNum">     524 </span><span class="lineNoCov">          0 :         if (adev-&gt;asic_type != CHIP_NAVI10)</span></a>
+<a name="525"><span class="lineNum">     525 </span>            :                 return;</a>
+<a name="526"><span class="lineNum">     526 </span>            : </a>
+<a name="527"><span class="lineNum">     527 </span><span class="lineNoCov">          0 :         reg_data = RREG32_PCIE(smnPCIE_LC_LINK_WIDTH_CNTL);</span></a>
+<a name="528"><span class="lineNum">     528 </span><span class="lineNoCov">          0 :         reg_data |= PCIE_LC_LINK_WIDTH_CNTL__LC_L1_RECONFIG_EN_MASK;</span></a>
+<a name="529"><span class="lineNum">     529 </span><span class="lineNoCov">          0 :         WREG32_PCIE(smnPCIE_LC_LINK_WIDTH_CNTL, reg_data);</span></a>
+<a name="530"><span class="lineNum">     530 </span>            : }</a>
 <a name="531"><span class="lineNum">     531 </span>            : </a>
-<a name="532"><span class="lineNum">     532 </span><span class="lineNoCov">          0 :         reg = RREG32_SOC15(NBIO, 0, mmBIF_RB_CNTL);</span></a>
-<a name="533"><span class="lineNum">     533 </span>            : </a>
-<a name="534"><span class="lineNum">     534 </span>            :         /* Clear Interrupt Status</a>
-<a name="535"><span class="lineNum">     535 </span>            :          */</a>
-<a name="536"><span class="lineNum">     536 </span><span class="lineNoCov">          0 :         if ((reg &amp; BIF_RB_CNTL__RB_ENABLE_MASK) == 0) {</span></a>
-<a name="537"><span class="lineNum">     537 </span><span class="lineNoCov">          0 :                 reg = RREG32_SOC15(NBIO, 0, mmBIF_DOORBELL_INT_CNTL);</span></a>
-<a name="538"><span class="lineNum">     538 </span><span class="lineNoCov">          0 :                 if (reg &amp; BIF_DOORBELL_INT_CNTL__DOORBELL_INTERRUPT_STATUS_MASK) {</span></a>
-<a name="539"><span class="lineNum">     539 </span><span class="lineNoCov">          0 :                         reg_data = 1 &lt;&lt; BIF_DOORBELL_INT_CNTL__DOORBELL_INTERRUPT_CLEAR__SHIFT;</span></a>
-<a name="540"><span class="lineNum">     540 </span><span class="lineNoCov">          0 :                         WREG32_SOC15(NBIO, 0, mmBIF_DOORBELL_INT_CNTL, reg_data);</span></a>
-<a name="541"><span class="lineNum">     541 </span>            :                 }</a>
-<a name="542"><span class="lineNum">     542 </span>            :         }</a>
-<a name="543"><span class="lineNum">     543 </span>            : }</a>
-<a name="544"><span class="lineNum">     544 </span>            : </a>
-<a name="545"><span class="lineNum">     545 </span>            : const struct amdgpu_nbio_funcs nbio_v2_3_funcs = {</a>
-<a name="546"><span class="lineNum">     546 </span>            :         .get_hdp_flush_req_offset = nbio_v2_3_get_hdp_flush_req_offset,</a>
-<a name="547"><span class="lineNum">     547 </span>            :         .get_hdp_flush_done_offset = nbio_v2_3_get_hdp_flush_done_offset,</a>
-<a name="548"><span class="lineNum">     548 </span>            :         .get_pcie_index_offset = nbio_v2_3_get_pcie_index_offset,</a>
-<a name="549"><span class="lineNum">     549 </span>            :         .get_pcie_data_offset = nbio_v2_3_get_pcie_data_offset,</a>
-<a name="550"><span class="lineNum">     550 </span>            :         .get_rev_id = nbio_v2_3_get_rev_id,</a>
-<a name="551"><span class="lineNum">     551 </span>            :         .mc_access_enable = nbio_v2_3_mc_access_enable,</a>
-<a name="552"><span class="lineNum">     552 </span>            :         .get_memsize = nbio_v2_3_get_memsize,</a>
-<a name="553"><span class="lineNum">     553 </span>            :         .sdma_doorbell_range = nbio_v2_3_sdma_doorbell_range,</a>
-<a name="554"><span class="lineNum">     554 </span>            :         .vcn_doorbell_range = nbio_v2_3_vcn_doorbell_range,</a>
-<a name="555"><span class="lineNum">     555 </span>            :         .enable_doorbell_aperture = nbio_v2_3_enable_doorbell_aperture,</a>
-<a name="556"><span class="lineNum">     556 </span>            :         .enable_doorbell_selfring_aperture = nbio_v2_3_enable_doorbell_selfring_aperture,</a>
-<a name="557"><span class="lineNum">     557 </span>            :         .ih_doorbell_range = nbio_v2_3_ih_doorbell_range,</a>
-<a name="558"><span class="lineNum">     558 </span>            :         .update_medium_grain_clock_gating = nbio_v2_3_update_medium_grain_clock_gating,</a>
-<a name="559"><span class="lineNum">     559 </span>            :         .update_medium_grain_light_sleep = nbio_v2_3_update_medium_grain_light_sleep,</a>
-<a name="560"><span class="lineNum">     560 </span>            :         .get_clockgating_state = nbio_v2_3_get_clockgating_state,</a>
-<a name="561"><span class="lineNum">     561 </span>            :         .ih_control = nbio_v2_3_ih_control,</a>
-<a name="562"><span class="lineNum">     562 </span>            :         .init_registers = nbio_v2_3_init_registers,</a>
-<a name="563"><span class="lineNum">     563 </span>            :         .remap_hdp_registers = nbio_v2_3_remap_hdp_registers,</a>
-<a name="564"><span class="lineNum">     564 </span>            :         .enable_aspm = nbio_v2_3_enable_aspm,</a>
-<a name="565"><span class="lineNum">     565 </span>            :         .program_aspm =  nbio_v2_3_program_aspm,</a>
-<a name="566"><span class="lineNum">     566 </span>            :         .apply_lc_spc_mode_wa = nbio_v2_3_apply_lc_spc_mode_wa,</a>
-<a name="567"><span class="lineNum">     567 </span>            :         .apply_l1_link_width_reconfig_wa = nbio_v2_3_apply_l1_link_width_reconfig_wa,</a>
-<a name="568"><span class="lineNum">     568 </span>            :         .clear_doorbell_interrupt = nbio_v2_3_clear_doorbell_interrupt,</a>
-<a name="569"><span class="lineNum">     569 </span>            : };</a>
+<a name="532"><span class="lineNum">     532 </span><span class="lineNoCov">          0 : static void nbio_v2_3_clear_doorbell_interrupt(struct amdgpu_device *adev)</span></a>
+<a name="533"><span class="lineNum">     533 </span>            : {</a>
+<a name="534"><span class="lineNum">     534 </span>            :         uint32_t reg, reg_data;</a>
+<a name="535"><span class="lineNum">     535 </span>            : </a>
+<a name="536"><span class="lineNum">     536 </span><span class="lineNoCov">          0 :         if (adev-&gt;ip_versions[NBIO_HWIP][0] != IP_VERSION(3, 3, 0))</span></a>
+<a name="537"><span class="lineNum">     537 </span>            :                 return;</a>
+<a name="538"><span class="lineNum">     538 </span>            : </a>
+<a name="539"><span class="lineNum">     539 </span><span class="lineNoCov">          0 :         reg = RREG32_SOC15(NBIO, 0, mmBIF_RB_CNTL);</span></a>
+<a name="540"><span class="lineNum">     540 </span>            : </a>
+<a name="541"><span class="lineNum">     541 </span>            :         /* Clear Interrupt Status</a>
+<a name="542"><span class="lineNum">     542 </span>            :          */</a>
+<a name="543"><span class="lineNum">     543 </span><span class="lineNoCov">          0 :         if ((reg &amp; BIF_RB_CNTL__RB_ENABLE_MASK) == 0) {</span></a>
+<a name="544"><span class="lineNum">     544 </span><span class="lineNoCov">          0 :                 reg = RREG32_SOC15(NBIO, 0, mmBIF_DOORBELL_INT_CNTL);</span></a>
+<a name="545"><span class="lineNum">     545 </span><span class="lineNoCov">          0 :                 if (reg &amp; BIF_DOORBELL_INT_CNTL__DOORBELL_INTERRUPT_STATUS_MASK) {</span></a>
+<a name="546"><span class="lineNum">     546 </span><span class="lineNoCov">          0 :                         reg_data = 1 &lt;&lt; BIF_DOORBELL_INT_CNTL__DOORBELL_INTERRUPT_CLEAR__SHIFT;</span></a>
+<a name="547"><span class="lineNum">     547 </span><span class="lineNoCov">          0 :                         WREG32_SOC15(NBIO, 0, mmBIF_DOORBELL_INT_CNTL, reg_data);</span></a>
+<a name="548"><span class="lineNum">     548 </span>            :                 }</a>
+<a name="549"><span class="lineNum">     549 </span>            :         }</a>
+<a name="550"><span class="lineNum">     550 </span>            : }</a>
+<a name="551"><span class="lineNum">     551 </span>            : </a>
+<a name="552"><span class="lineNum">     552 </span>            : const struct amdgpu_nbio_funcs nbio_v2_3_funcs = {</a>
+<a name="553"><span class="lineNum">     553 </span>            :         .get_hdp_flush_req_offset = nbio_v2_3_get_hdp_flush_req_offset,</a>
+<a name="554"><span class="lineNum">     554 </span>            :         .get_hdp_flush_done_offset = nbio_v2_3_get_hdp_flush_done_offset,</a>
+<a name="555"><span class="lineNum">     555 </span>            :         .get_pcie_index_offset = nbio_v2_3_get_pcie_index_offset,</a>
+<a name="556"><span class="lineNum">     556 </span>            :         .get_pcie_data_offset = nbio_v2_3_get_pcie_data_offset,</a>
+<a name="557"><span class="lineNum">     557 </span>            :         .get_rev_id = nbio_v2_3_get_rev_id,</a>
+<a name="558"><span class="lineNum">     558 </span>            :         .mc_access_enable = nbio_v2_3_mc_access_enable,</a>
+<a name="559"><span class="lineNum">     559 </span>            :         .get_memsize = nbio_v2_3_get_memsize,</a>
+<a name="560"><span class="lineNum">     560 </span>            :         .sdma_doorbell_range = nbio_v2_3_sdma_doorbell_range,</a>
+<a name="561"><span class="lineNum">     561 </span>            :         .vcn_doorbell_range = nbio_v2_3_vcn_doorbell_range,</a>
+<a name="562"><span class="lineNum">     562 </span>            :         .enable_doorbell_aperture = nbio_v2_3_enable_doorbell_aperture,</a>
+<a name="563"><span class="lineNum">     563 </span>            :         .enable_doorbell_selfring_aperture = nbio_v2_3_enable_doorbell_selfring_aperture,</a>
+<a name="564"><span class="lineNum">     564 </span>            :         .ih_doorbell_range = nbio_v2_3_ih_doorbell_range,</a>
+<a name="565"><span class="lineNum">     565 </span>            :         .update_medium_grain_clock_gating = nbio_v2_3_update_medium_grain_clock_gating,</a>
+<a name="566"><span class="lineNum">     566 </span>            :         .update_medium_grain_light_sleep = nbio_v2_3_update_medium_grain_light_sleep,</a>
+<a name="567"><span class="lineNum">     567 </span>            :         .get_clockgating_state = nbio_v2_3_get_clockgating_state,</a>
+<a name="568"><span class="lineNum">     568 </span>            :         .ih_control = nbio_v2_3_ih_control,</a>
+<a name="569"><span class="lineNum">     569 </span>            :         .init_registers = nbio_v2_3_init_registers,</a>
+<a name="570"><span class="lineNum">     570 </span>            :         .remap_hdp_registers = nbio_v2_3_remap_hdp_registers,</a>
+<a name="571"><span class="lineNum">     571 </span>            :         .enable_aspm = nbio_v2_3_enable_aspm,</a>
+<a name="572"><span class="lineNum">     572 </span>            :         .program_aspm =  nbio_v2_3_program_aspm,</a>
+<a name="573"><span class="lineNum">     573 </span>            :         .apply_lc_spc_mode_wa = nbio_v2_3_apply_lc_spc_mode_wa,</a>
+<a name="574"><span class="lineNum">     574 </span>            :         .apply_l1_link_width_reconfig_wa = nbio_v2_3_apply_l1_link_width_reconfig_wa,</a>
+<a name="575"><span class="lineNum">     575 </span>            :         .clear_doorbell_interrupt = nbio_v2_3_clear_doorbell_interrupt,</a>
+<a name="576"><span class="lineNum">     576 </span>            : };</a>
 </pre>
       </td>
     </tr>

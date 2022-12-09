@@ -32,12 +32,12 @@
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">119</td>
+            <td class="headerCovTableEntry">115</td>
             <td class="headerCovTableEntryLo">0.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -163,260 +163,254 @@
 <a name="101"><span class="lineNum">     101 </span>            :                                                    uint32_t umc_reg_offset,</a>
 <a name="102"><span class="lineNum">     102 </span>            :                                                    unsigned long *error_count)</a>
 <a name="103"><span class="lineNum">     103 </span>            : {</a>
-<a name="104"><span class="lineNum">     104 </span>            :         uint32_t ecc_err_cnt, ecc_err_cnt_addr;</a>
-<a name="105"><span class="lineNum">     105 </span>            :         uint64_t mc_umc_status;</a>
-<a name="106"><span class="lineNum">     106 </span>            :         uint32_t mc_umc_status_addr;</a>
-<a name="107"><span class="lineNum">     107 </span>            : </a>
-<a name="108"><span class="lineNum">     108 </span>            :         /* UMC 8_10 registers */</a>
-<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 :         ecc_err_cnt_addr =</span></a>
-<a name="110"><span class="lineNum">     110 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(UMC, 0, regUMCCH0_0_GeccErrCnt);</span></a>
-<a name="111"><span class="lineNum">     111 </span><span class="lineNoCov">          0 :         mc_umc_status_addr =</span></a>
-<a name="112"><span class="lineNum">     112 </span>            :                 SOC15_REG_OFFSET(UMC, 0, regMCA_UMC_UMC0_MCUMC_STATUST0);</a>
-<a name="113"><span class="lineNum">     113 </span>            : </a>
-<a name="114"><span class="lineNum">     114 </span><span class="lineNoCov">          0 :         ecc_err_cnt = RREG32_PCIE((ecc_err_cnt_addr + umc_reg_offset) * 4);</span></a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineNoCov">          0 :         *error_count +=</span></a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 :                 (REG_GET_FIELD(ecc_err_cnt, UMCCH0_0_GeccErrCnt, GeccErrCnt) -</span></a>
-<a name="117"><span class="lineNum">     117 </span>            :                  UMC_V8_10_CE_CNT_INIT);</a>
-<a name="118"><span class="lineNum">     118 </span>            : </a>
-<a name="119"><span class="lineNum">     119 </span>            :         /* Check for SRAM correctable error, MCUMC_STATUS is a 64 bit register */</a>
-<a name="120"><span class="lineNum">     120 </span><span class="lineNoCov">          0 :         mc_umc_status = RREG64_PCIE((mc_umc_status_addr + umc_reg_offset) * 4);</span></a>
-<a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 :         if (REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, Val) == 1 &amp;&amp;</span></a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 :             REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, CECC) == 1)</span></a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :                 *error_count += 1;</span></a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="125"><span class="lineNum">     125 </span>            : </a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineNoCov">          0 : static void umc_v8_10_query_uncorrectable_error_count(struct amdgpu_device *adev,</span></a>
-<a name="127"><span class="lineNum">     127 </span>            :                                                       uint32_t umc_reg_offset,</a>
-<a name="128"><span class="lineNum">     128 </span>            :                                                       unsigned long *error_count)</a>
-<a name="129"><span class="lineNum">     129 </span>            : {</a>
-<a name="130"><span class="lineNum">     130 </span>            :         uint64_t mc_umc_status;</a>
-<a name="131"><span class="lineNum">     131 </span>            :         uint32_t mc_umc_status_addr;</a>
-<a name="132"><span class="lineNum">     132 </span>            : </a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineNoCov">          0 :         mc_umc_status_addr = SOC15_REG_OFFSET(UMC, 0, regMCA_UMC_UMC0_MCUMC_STATUST0);</span></a>
-<a name="134"><span class="lineNum">     134 </span>            : </a>
-<a name="135"><span class="lineNum">     135 </span>            :         /* Check the MCUMC_STATUS. */</a>
-<a name="136"><span class="lineNum">     136 </span><span class="lineNoCov">          0 :         mc_umc_status = RREG64_PCIE((mc_umc_status_addr + umc_reg_offset) * 4);</span></a>
-<a name="137"><span class="lineNum">     137 </span><span class="lineNoCov">          0 :         if ((REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, Val) == 1) &amp;&amp;</span></a>
-<a name="138"><span class="lineNum">     138 </span>            :             (REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, Deferred) == 1 ||</a>
-<a name="139"><span class="lineNum">     139 </span>            :             REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, UECC) == 1 ||</a>
-<a name="140"><span class="lineNum">     140 </span>            :             REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, PCC) == 1 ||</a>
-<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 :             REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, UC) == 1 ||</span></a>
-<a name="142"><span class="lineNum">     142 </span>            :             REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, TCC) == 1))</a>
-<a name="143"><span class="lineNum">     143 </span><span class="lineNoCov">          0 :                 *error_count += 1;</span></a>
-<a name="144"><span class="lineNum">     144 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="145"><span class="lineNum">     145 </span>            : </a>
-<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 : static void umc_v8_10_query_ras_error_count(struct amdgpu_device *adev,</span></a>
-<a name="147"><span class="lineNum">     147 </span>            :                                            void *ras_error_status)</a>
-<a name="148"><span class="lineNum">     148 </span>            : {</a>
-<a name="149"><span class="lineNum">     149 </span><span class="lineNoCov">          0 :         struct ras_err_data *err_data = (struct ras_err_data *)ras_error_status;</span></a>
-<a name="150"><span class="lineNum">     150 </span>            : </a>
-<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 :         uint32_t node_inst       = 0;</span></a>
-<a name="152"><span class="lineNum">     152 </span><span class="lineNoCov">          0 :         uint32_t umc_inst        = 0;</span></a>
-<a name="153"><span class="lineNum">     153 </span><span class="lineNoCov">          0 :         uint32_t ch_inst         = 0;</span></a>
-<a name="154"><span class="lineNum">     154 </span><span class="lineNoCov">          0 :         uint32_t umc_reg_offset  = 0;</span></a>
+<a name="104"><span class="lineNum">     104 </span>            :         uint64_t mc_umc_status;</a>
+<a name="105"><span class="lineNum">     105 </span>            :         uint32_t mc_umc_status_addr;</a>
+<a name="106"><span class="lineNum">     106 </span>            : </a>
+<a name="107"><span class="lineNum">     107 </span>            :         /* UMC 8_10 registers */</a>
+<a name="108"><span class="lineNum">     108 </span><span class="lineNoCov">          0 :         mc_umc_status_addr =</span></a>
+<a name="109"><span class="lineNum">     109 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(UMC, 0, regMCA_UMC_UMC0_MCUMC_STATUST0);</span></a>
+<a name="110"><span class="lineNum">     110 </span>            : </a>
+<a name="111"><span class="lineNum">     111 </span>            :         /* Rely on MCUMC_STATUS for correctable error counter</a>
+<a name="112"><span class="lineNum">     112 </span>            :          * MCUMC_STATUS is a 64 bit register</a>
+<a name="113"><span class="lineNum">     113 </span>            :          */</a>
+<a name="114"><span class="lineNum">     114 </span><span class="lineNoCov">          0 :         mc_umc_status = RREG64_PCIE((mc_umc_status_addr + umc_reg_offset) * 4);</span></a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineNoCov">          0 :         if (REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, Val) == 1 &amp;&amp;</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 :             REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, CECC) == 1)</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineNoCov">          0 :                 *error_count += 1;</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="119"><span class="lineNum">     119 </span>            : </a>
+<a name="120"><span class="lineNum">     120 </span><span class="lineNoCov">          0 : static void umc_v8_10_query_uncorrectable_error_count(struct amdgpu_device *adev,</span></a>
+<a name="121"><span class="lineNum">     121 </span>            :                                                       uint32_t umc_reg_offset,</a>
+<a name="122"><span class="lineNum">     122 </span>            :                                                       unsigned long *error_count)</a>
+<a name="123"><span class="lineNum">     123 </span>            : {</a>
+<a name="124"><span class="lineNum">     124 </span>            :         uint64_t mc_umc_status;</a>
+<a name="125"><span class="lineNum">     125 </span>            :         uint32_t mc_umc_status_addr;</a>
+<a name="126"><span class="lineNum">     126 </span>            : </a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineNoCov">          0 :         mc_umc_status_addr = SOC15_REG_OFFSET(UMC, 0, regMCA_UMC_UMC0_MCUMC_STATUST0);</span></a>
+<a name="128"><span class="lineNum">     128 </span>            : </a>
+<a name="129"><span class="lineNum">     129 </span>            :         /* Check the MCUMC_STATUS. */</a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineNoCov">          0 :         mc_umc_status = RREG64_PCIE((mc_umc_status_addr + umc_reg_offset) * 4);</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineNoCov">          0 :         if ((REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, Val) == 1) &amp;&amp;</span></a>
+<a name="132"><span class="lineNum">     132 </span>            :             (REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, Deferred) == 1 ||</a>
+<a name="133"><span class="lineNum">     133 </span>            :             REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, UECC) == 1 ||</a>
+<a name="134"><span class="lineNum">     134 </span>            :             REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, PCC) == 1 ||</a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 :             REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, UC) == 1 ||</span></a>
+<a name="136"><span class="lineNum">     136 </span>            :             REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, TCC) == 1))</a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineNoCov">          0 :                 *error_count += 1;</span></a>
+<a name="138"><span class="lineNum">     138 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="139"><span class="lineNum">     139 </span>            : </a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineNoCov">          0 : static void umc_v8_10_query_ras_error_count(struct amdgpu_device *adev,</span></a>
+<a name="141"><span class="lineNum">     141 </span>            :                                            void *ras_error_status)</a>
+<a name="142"><span class="lineNum">     142 </span>            : {</a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineNoCov">          0 :         struct ras_err_data *err_data = (struct ras_err_data *)ras_error_status;</span></a>
+<a name="144"><span class="lineNum">     144 </span>            : </a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineNoCov">          0 :         uint32_t node_inst       = 0;</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 :         uint32_t umc_inst        = 0;</span></a>
+<a name="147"><span class="lineNum">     147 </span><span class="lineNoCov">          0 :         uint32_t ch_inst         = 0;</span></a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineNoCov">          0 :         uint32_t umc_reg_offset  = 0;</span></a>
+<a name="149"><span class="lineNum">     149 </span>            : </a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineNoCov">          0 :         LOOP_UMC_EACH_NODE_INST_AND_CH(node_inst, umc_inst, ch_inst) {</span></a>
+<a name="151"><span class="lineNum">     151 </span><span class="lineNoCov">          0 :                 umc_reg_offset = get_umc_v8_10_reg_offset(adev,</span></a>
+<a name="152"><span class="lineNum">     152 </span>            :                                                 node_inst,</a>
+<a name="153"><span class="lineNum">     153 </span>            :                                                 umc_inst,</a>
+<a name="154"><span class="lineNum">     154 </span>            :                                                 ch_inst);</a>
 <a name="155"><span class="lineNum">     155 </span>            : </a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 :         LOOP_UMC_EACH_NODE_INST_AND_CH(node_inst, umc_inst, ch_inst) {</span></a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineNoCov">          0 :                 umc_reg_offset = get_umc_v8_10_reg_offset(adev,</span></a>
-<a name="158"><span class="lineNum">     158 </span>            :                                                 node_inst,</a>
-<a name="159"><span class="lineNum">     159 </span>            :                                                 umc_inst,</a>
-<a name="160"><span class="lineNum">     160 </span>            :                                                 ch_inst);</a>
-<a name="161"><span class="lineNum">     161 </span>            : </a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineNoCov">          0 :                 umc_v8_10_query_correctable_error_count(adev,</span></a>
-<a name="163"><span class="lineNum">     163 </span>            :                                                 umc_reg_offset,</a>
-<a name="164"><span class="lineNum">     164 </span>            :                                                 &amp;(err_data-&gt;ce_count));</a>
-<a name="165"><span class="lineNum">     165 </span><span class="lineNoCov">          0 :                 umc_v8_10_query_uncorrectable_error_count(adev,</span></a>
-<a name="166"><span class="lineNum">     166 </span>            :                                                 umc_reg_offset,</a>
-<a name="167"><span class="lineNum">     167 </span>            :                                                 &amp;(err_data-&gt;ue_count));</a>
-<a name="168"><span class="lineNum">     168 </span>            :         }</a>
-<a name="169"><span class="lineNum">     169 </span>            : </a>
-<a name="170"><span class="lineNum">     170 </span><span class="lineNoCov">          0 :         umc_v8_10_clear_error_count(adev);</span></a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="172"><span class="lineNum">     172 </span>            : </a>
-<a name="173"><span class="lineNum">     173 </span>            : static uint32_t umc_v8_10_get_col_bit(uint32_t channel_num)</a>
-<a name="174"><span class="lineNum">     174 </span>            : {</a>
-<a name="175"><span class="lineNum">     175 </span><span class="lineNoCov">          0 :         uint32_t t = 0;</span></a>
-<a name="176"><span class="lineNum">     176 </span>            : </a>
-<a name="177"><span class="lineNum">     177 </span><span class="lineNoCov">          0 :         for (t = 0; t &lt; ARRAY_SIZE(umc_v8_10_channelnum_map_colbit_table); t++)</span></a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineNoCov">          0 :                 if (channel_num == umc_v8_10_channelnum_map_colbit_table[t].channel_num)</span></a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineNoCov">          0 :                         return umc_v8_10_channelnum_map_colbit_table[t].col_bit;</span></a>
-<a name="180"><span class="lineNum">     180 </span>            : </a>
-<a name="181"><span class="lineNum">     181 </span>            :         /* Failed to get col_bit. */</a>
-<a name="182"><span class="lineNum">     182 </span>            :         return U32_MAX;</a>
-<a name="183"><span class="lineNum">     183 </span>            : }</a>
-<a name="184"><span class="lineNum">     184 </span>            : </a>
-<a name="185"><span class="lineNum">     185 </span>            : /*</a>
-<a name="186"><span class="lineNum">     186 </span>            :  * Mapping normal address to soc physical address in swizzle mode.</a>
-<a name="187"><span class="lineNum">     187 </span>            :  */</a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineNoCov">          0 : static int umc_v8_10_swizzle_mode_na_to_pa(struct amdgpu_device *adev,</span></a>
-<a name="189"><span class="lineNum">     189 </span>            :                                         uint32_t channel_idx,</a>
-<a name="190"><span class="lineNum">     190 </span>            :                                         uint64_t na, uint64_t *soc_pa)</a>
-<a name="191"><span class="lineNum">     191 </span>            : {</a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 :         uint32_t channel_num = UMC_V8_10_TOTAL_CHANNEL_NUM(adev);</span></a>
-<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :         uint32_t col_bit = umc_v8_10_get_col_bit(channel_num);</span></a>
-<a name="194"><span class="lineNum">     194 </span>            :         uint64_t tmp_addr;</a>
-<a name="195"><span class="lineNum">     195 </span>            : </a>
-<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :         if (col_bit == U32_MAX)</span></a>
-<a name="197"><span class="lineNum">     197 </span>            :                 return -1;</a>
+<a name="156"><span class="lineNum">     156 </span><span class="lineNoCov">          0 :                 umc_v8_10_query_correctable_error_count(adev,</span></a>
+<a name="157"><span class="lineNum">     157 </span>            :                                                 umc_reg_offset,</a>
+<a name="158"><span class="lineNum">     158 </span>            :                                                 &amp;(err_data-&gt;ce_count));</a>
+<a name="159"><span class="lineNum">     159 </span><span class="lineNoCov">          0 :                 umc_v8_10_query_uncorrectable_error_count(adev,</span></a>
+<a name="160"><span class="lineNum">     160 </span>            :                                                 umc_reg_offset,</a>
+<a name="161"><span class="lineNum">     161 </span>            :                                                 &amp;(err_data-&gt;ue_count));</a>
+<a name="162"><span class="lineNum">     162 </span>            :         }</a>
+<a name="163"><span class="lineNum">     163 </span>            : </a>
+<a name="164"><span class="lineNum">     164 </span><span class="lineNoCov">          0 :         umc_v8_10_clear_error_count(adev);</span></a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="166"><span class="lineNum">     166 </span>            : </a>
+<a name="167"><span class="lineNum">     167 </span>            : static uint32_t umc_v8_10_get_col_bit(uint32_t channel_num)</a>
+<a name="168"><span class="lineNum">     168 </span>            : {</a>
+<a name="169"><span class="lineNum">     169 </span><span class="lineNoCov">          0 :         uint32_t t = 0;</span></a>
+<a name="170"><span class="lineNum">     170 </span>            : </a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineNoCov">          0 :         for (t = 0; t &lt; ARRAY_SIZE(umc_v8_10_channelnum_map_colbit_table); t++)</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineNoCov">          0 :                 if (channel_num == umc_v8_10_channelnum_map_colbit_table[t].channel_num)</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineNoCov">          0 :                         return umc_v8_10_channelnum_map_colbit_table[t].col_bit;</span></a>
+<a name="174"><span class="lineNum">     174 </span>            : </a>
+<a name="175"><span class="lineNum">     175 </span>            :         /* Failed to get col_bit. */</a>
+<a name="176"><span class="lineNum">     176 </span>            :         return U32_MAX;</a>
+<a name="177"><span class="lineNum">     177 </span>            : }</a>
+<a name="178"><span class="lineNum">     178 </span>            : </a>
+<a name="179"><span class="lineNum">     179 </span>            : /*</a>
+<a name="180"><span class="lineNum">     180 </span>            :  * Mapping normal address to soc physical address in swizzle mode.</a>
+<a name="181"><span class="lineNum">     181 </span>            :  */</a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineNoCov">          0 : static int umc_v8_10_swizzle_mode_na_to_pa(struct amdgpu_device *adev,</span></a>
+<a name="183"><span class="lineNum">     183 </span>            :                                         uint32_t channel_idx,</a>
+<a name="184"><span class="lineNum">     184 </span>            :                                         uint64_t na, uint64_t *soc_pa)</a>
+<a name="185"><span class="lineNum">     185 </span>            : {</a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :         uint32_t channel_num = UMC_V8_10_TOTAL_CHANNEL_NUM(adev);</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 :         uint32_t col_bit = umc_v8_10_get_col_bit(channel_num);</span></a>
+<a name="188"><span class="lineNum">     188 </span>            :         uint64_t tmp_addr;</a>
+<a name="189"><span class="lineNum">     189 </span>            : </a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :         if (col_bit == U32_MAX)</span></a>
+<a name="191"><span class="lineNum">     191 </span>            :                 return -1;</a>
+<a name="192"><span class="lineNum">     192 </span>            : </a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineNoCov">          0 :         tmp_addr = SWIZZLE_MODE_TMP_ADDR(na, channel_num, channel_idx);</span></a>
+<a name="194"><span class="lineNum">     194 </span><span class="lineNoCov">          0 :         *soc_pa = SWIZZLE_MODE_ADDR_HI(tmp_addr, col_bit) |</span></a>
+<a name="195"><span class="lineNum">     195 </span><span class="lineNoCov">          0 :                 SWIZZLE_MODE_ADDR_MID(na, col_bit) |</span></a>
+<a name="196"><span class="lineNum">     196 </span><span class="lineNoCov">          0 :                 SWIZZLE_MODE_ADDR_LOW(tmp_addr, col_bit) |</span></a>
+<a name="197"><span class="lineNum">     197 </span><span class="lineNoCov">          0 :                 SWIZZLE_MODE_ADDR_LSB(na);</span></a>
 <a name="198"><span class="lineNum">     198 </span>            : </a>
-<a name="199"><span class="lineNum">     199 </span><span class="lineNoCov">          0 :         tmp_addr = SWIZZLE_MODE_TMP_ADDR(na, channel_num, channel_idx);</span></a>
-<a name="200"><span class="lineNum">     200 </span><span class="lineNoCov">          0 :         *soc_pa = SWIZZLE_MODE_ADDR_HI(tmp_addr, col_bit) |</span></a>
-<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 :                 SWIZZLE_MODE_ADDR_MID(na, col_bit) |</span></a>
-<a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 :                 SWIZZLE_MODE_ADDR_LOW(tmp_addr, col_bit) |</span></a>
-<a name="203"><span class="lineNum">     203 </span><span class="lineNoCov">          0 :                 SWIZZLE_MODE_ADDR_LSB(na);</span></a>
-<a name="204"><span class="lineNum">     204 </span>            : </a>
-<a name="205"><span class="lineNum">     205 </span>            :         return 0;</a>
-<a name="206"><span class="lineNum">     206 </span>            : }</a>
-<a name="207"><span class="lineNum">     207 </span>            : </a>
-<a name="208"><span class="lineNum">     208 </span><span class="lineNoCov">          0 : static void umc_v8_10_query_error_address(struct amdgpu_device *adev,</span></a>
-<a name="209"><span class="lineNum">     209 </span>            :                                          struct ras_err_data *err_data,</a>
-<a name="210"><span class="lineNum">     210 </span>            :                                          uint32_t umc_reg_offset,</a>
-<a name="211"><span class="lineNum">     211 </span>            :                                          uint32_t node_inst,</a>
-<a name="212"><span class="lineNum">     212 </span>            :                                          uint32_t ch_inst,</a>
-<a name="213"><span class="lineNum">     213 </span>            :                                          uint32_t umc_inst)</a>
-<a name="214"><span class="lineNum">     214 </span>            : {</a>
-<a name="215"><span class="lineNum">     215 </span>            :         uint64_t mc_umc_status_addr;</a>
-<a name="216"><span class="lineNum">     216 </span>            :         uint64_t mc_umc_status, err_addr;</a>
-<a name="217"><span class="lineNum">     217 </span>            :         uint32_t channel_index;</a>
-<a name="218"><span class="lineNum">     218 </span>            : </a>
-<a name="219"><span class="lineNum">     219 </span><span class="lineNoCov">          0 :         mc_umc_status_addr =</span></a>
-<a name="220"><span class="lineNum">     220 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(UMC, 0, regMCA_UMC_UMC0_MCUMC_STATUST0);</span></a>
-<a name="221"><span class="lineNum">     221 </span><span class="lineNoCov">          0 :         mc_umc_status = RREG64_PCIE((mc_umc_status_addr + umc_reg_offset) * 4);</span></a>
-<a name="222"><span class="lineNum">     222 </span>            : </a>
-<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 :         if (mc_umc_status == 0)</span></a>
-<a name="224"><span class="lineNum">     224 </span>            :                 return;</a>
+<a name="199"><span class="lineNum">     199 </span>            :         return 0;</a>
+<a name="200"><span class="lineNum">     200 </span>            : }</a>
+<a name="201"><span class="lineNum">     201 </span>            : </a>
+<a name="202"><span class="lineNum">     202 </span><span class="lineNoCov">          0 : static void umc_v8_10_query_error_address(struct amdgpu_device *adev,</span></a>
+<a name="203"><span class="lineNum">     203 </span>            :                                          struct ras_err_data *err_data,</a>
+<a name="204"><span class="lineNum">     204 </span>            :                                          uint32_t umc_reg_offset,</a>
+<a name="205"><span class="lineNum">     205 </span>            :                                          uint32_t node_inst,</a>
+<a name="206"><span class="lineNum">     206 </span>            :                                          uint32_t ch_inst,</a>
+<a name="207"><span class="lineNum">     207 </span>            :                                          uint32_t umc_inst)</a>
+<a name="208"><span class="lineNum">     208 </span>            : {</a>
+<a name="209"><span class="lineNum">     209 </span>            :         uint64_t mc_umc_status_addr;</a>
+<a name="210"><span class="lineNum">     210 </span>            :         uint64_t mc_umc_status, err_addr;</a>
+<a name="211"><span class="lineNum">     211 </span>            :         uint32_t channel_index;</a>
+<a name="212"><span class="lineNum">     212 </span>            : </a>
+<a name="213"><span class="lineNum">     213 </span><span class="lineNoCov">          0 :         mc_umc_status_addr =</span></a>
+<a name="214"><span class="lineNum">     214 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(UMC, 0, regMCA_UMC_UMC0_MCUMC_STATUST0);</span></a>
+<a name="215"><span class="lineNum">     215 </span><span class="lineNoCov">          0 :         mc_umc_status = RREG64_PCIE((mc_umc_status_addr + umc_reg_offset) * 4);</span></a>
+<a name="216"><span class="lineNum">     216 </span>            : </a>
+<a name="217"><span class="lineNum">     217 </span><span class="lineNoCov">          0 :         if (mc_umc_status == 0)</span></a>
+<a name="218"><span class="lineNum">     218 </span>            :                 return;</a>
+<a name="219"><span class="lineNum">     219 </span>            : </a>
+<a name="220"><span class="lineNum">     220 </span><span class="lineNoCov">          0 :         if (!err_data-&gt;err_addr) {</span></a>
+<a name="221"><span class="lineNum">     221 </span>            :                 /* clear umc status */</a>
+<a name="222"><span class="lineNum">     222 </span><span class="lineNoCov">          0 :                 WREG64_PCIE((mc_umc_status_addr + umc_reg_offset) * 4, 0x0ULL);</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 :                 return;</span></a>
+<a name="224"><span class="lineNum">     224 </span>            :         }</a>
 <a name="225"><span class="lineNum">     225 </span>            : </a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineNoCov">          0 :         if (!err_data-&gt;err_addr) {</span></a>
-<a name="227"><span class="lineNum">     227 </span>            :                 /* clear umc status */</a>
-<a name="228"><span class="lineNum">     228 </span><span class="lineNoCov">          0 :                 WREG64_PCIE((mc_umc_status_addr + umc_reg_offset) * 4, 0x0ULL);</span></a>
-<a name="229"><span class="lineNum">     229 </span><span class="lineNoCov">          0 :                 return;</span></a>
-<a name="230"><span class="lineNum">     230 </span>            :         }</a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineNoCov">          0 :         channel_index =</span></a>
+<a name="227"><span class="lineNum">     227 </span><span class="lineNoCov">          0 :                 adev-&gt;umc.channel_idx_tbl[node_inst * adev-&gt;umc.umc_inst_num *</span></a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineNoCov">          0 :                                         adev-&gt;umc.channel_inst_num +</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineNoCov">          0 :                                         umc_inst * adev-&gt;umc.channel_inst_num +</span></a>
+<a name="230"><span class="lineNum">     230 </span>            :                                         ch_inst];</a>
 <a name="231"><span class="lineNum">     231 </span>            : </a>
-<a name="232"><span class="lineNum">     232 </span><span class="lineNoCov">          0 :         channel_index =</span></a>
-<a name="233"><span class="lineNum">     233 </span><span class="lineNoCov">          0 :                 adev-&gt;umc.channel_idx_tbl[node_inst * adev-&gt;umc.umc_inst_num *</span></a>
-<a name="234"><span class="lineNum">     234 </span><span class="lineNoCov">          0 :                                         adev-&gt;umc.channel_inst_num +</span></a>
-<a name="235"><span class="lineNum">     235 </span><span class="lineNoCov">          0 :                                         umc_inst * adev-&gt;umc.channel_inst_num +</span></a>
-<a name="236"><span class="lineNum">     236 </span>            :                                         ch_inst];</a>
-<a name="237"><span class="lineNum">     237 </span>            : </a>
-<a name="238"><span class="lineNum">     238 </span>            :         /* calculate error address if ue/ce error is detected */</a>
-<a name="239"><span class="lineNum">     239 </span><span class="lineNoCov">          0 :         if (REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, Val) == 1 &amp;&amp;</span></a>
-<a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 :             REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, AddrV) == 1 &amp;&amp;</span></a>
-<a name="241"><span class="lineNum">     241 </span><span class="lineNoCov">          0 :             (REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, UECC) == 1 ||</span></a>
-<a name="242"><span class="lineNum">     242 </span>            :              REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, CECC) == 1)) {</a>
-<a name="243"><span class="lineNum">     243 </span>            :                 uint32_t addr_lsb;</a>
-<a name="244"><span class="lineNum">     244 </span>            :                 uint64_t mc_umc_addrt0;</a>
-<a name="245"><span class="lineNum">     245 </span>            : </a>
-<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 :                 mc_umc_addrt0 = SOC15_REG_OFFSET(UMC, 0, regMCA_UMC_UMC0_MCUMC_ADDRT0);</span></a>
-<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 :                 err_addr = RREG64_PCIE((mc_umc_addrt0 + umc_reg_offset) * 4);</span></a>
-<a name="248"><span class="lineNum">     248 </span><span class="lineNoCov">          0 :                 err_addr = REG_GET_FIELD(err_addr, MCA_UMC_UMC0_MCUMC_ADDRT0, ErrorAddr);</span></a>
-<a name="249"><span class="lineNum">     249 </span>            : </a>
-<a name="250"><span class="lineNum">     250 </span>            :                 /* the lowest lsb bits should be ignored */</a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 :                 addr_lsb = REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, AddrLsb);</span></a>
-<a name="252"><span class="lineNum">     252 </span>            : </a>
-<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 :                 err_addr &amp;= ~((0x1ULL &lt;&lt; addr_lsb) - 1);</span></a>
-<a name="254"><span class="lineNum">     254 </span>            : </a>
-<a name="255"><span class="lineNum">     255 </span>            :                 /* we only save ue error information currently, ce is skipped */</a>
-<a name="256"><span class="lineNum">     256 </span><span class="lineNoCov">          0 :                 if (REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, UECC) == 1) {</span></a>
-<a name="257"><span class="lineNum">     257 </span><span class="lineNoCov">          0 :                         uint64_t na_err_addr_base = err_addr &amp; ~(0x3ULL &lt;&lt; UMC_V8_10_NA_C5_BIT);</span></a>
-<a name="258"><span class="lineNum">     258 </span>            :                         uint64_t na_err_addr, retired_page_addr;</a>
-<a name="259"><span class="lineNum">     259 </span><span class="lineNoCov">          0 :                         uint32_t col = 0;</span></a>
-<a name="260"><span class="lineNum">     260 </span><span class="lineNoCov">          0 :                         int ret = 0;</span></a>
-<a name="261"><span class="lineNum">     261 </span>            : </a>
-<a name="262"><span class="lineNum">     262 </span>            :                         /* loop for all possibilities of [C6 C5] in normal address. */</a>
-<a name="263"><span class="lineNum">     263 </span><span class="lineNoCov">          0 :                         for (col = 0; col &lt; UMC_V8_10_NA_COL_2BITS_POWER_OF_2_NUM; col++) {</span></a>
-<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 :                                 na_err_addr = na_err_addr_base | (col &lt;&lt; UMC_V8_10_NA_C5_BIT);</span></a>
-<a name="265"><span class="lineNum">     265 </span>            : </a>
-<a name="266"><span class="lineNum">     266 </span>            :                                 /* Mapping normal error address to retired soc physical address. */</a>
-<a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 :                                 ret = umc_v8_10_swizzle_mode_na_to_pa(adev, channel_index,</span></a>
-<a name="268"><span class="lineNum">     268 </span>            :                                                                 na_err_addr, &amp;retired_page_addr);</a>
-<a name="269"><span class="lineNum">     269 </span><span class="lineNoCov">          0 :                                 if (ret) {</span></a>
-<a name="270"><span class="lineNum">     270 </span><span class="lineNoCov">          0 :                                         dev_err(adev-&gt;dev, &quot;Failed to map pa from umc na.\n&quot;);</span></a>
-<a name="271"><span class="lineNum">     271 </span><span class="lineNoCov">          0 :                                         break;</span></a>
-<a name="272"><span class="lineNum">     272 </span>            :                                 }</a>
-<a name="273"><span class="lineNum">     273 </span><span class="lineNoCov">          0 :                                 dev_info(adev-&gt;dev, &quot;Error Address(PA): 0x%llx\n&quot;,</span></a>
-<a name="274"><span class="lineNum">     274 </span>            :                                         retired_page_addr);</a>
-<a name="275"><span class="lineNum">     275 </span><span class="lineNoCov">          0 :                                 amdgpu_umc_fill_error_record(err_data, na_err_addr,</span></a>
-<a name="276"><span class="lineNum">     276 </span>            :                                                 retired_page_addr, channel_index, umc_inst);</a>
-<a name="277"><span class="lineNum">     277 </span>            :                         }</a>
-<a name="278"><span class="lineNum">     278 </span>            :                 }</a>
-<a name="279"><span class="lineNum">     279 </span>            :         }</a>
-<a name="280"><span class="lineNum">     280 </span>            : </a>
-<a name="281"><span class="lineNum">     281 </span>            :         /* clear umc status */</a>
-<a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 :         WREG64_PCIE((mc_umc_status_addr + umc_reg_offset) * 4, 0x0ULL);</span></a>
-<a name="283"><span class="lineNum">     283 </span>            : }</a>
-<a name="284"><span class="lineNum">     284 </span>            : </a>
-<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 : static void umc_v8_10_query_ras_error_address(struct amdgpu_device *adev,</span></a>
-<a name="286"><span class="lineNum">     286 </span>            :                                              void *ras_error_status)</a>
-<a name="287"><span class="lineNum">     287 </span>            : {</a>
-<a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 :         struct ras_err_data *err_data = (struct ras_err_data *)ras_error_status;</span></a>
-<a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 :         uint32_t node_inst       = 0;</span></a>
-<a name="290"><span class="lineNum">     290 </span><span class="lineNoCov">          0 :         uint32_t umc_inst        = 0;</span></a>
-<a name="291"><span class="lineNum">     291 </span><span class="lineNoCov">          0 :         uint32_t ch_inst         = 0;</span></a>
-<a name="292"><span class="lineNum">     292 </span><span class="lineNoCov">          0 :         uint32_t umc_reg_offset  = 0;</span></a>
+<a name="232"><span class="lineNum">     232 </span>            :         /* calculate error address if ue/ce error is detected */</a>
+<a name="233"><span class="lineNum">     233 </span><span class="lineNoCov">          0 :         if (REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, Val) == 1 &amp;&amp;</span></a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineNoCov">          0 :             REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, AddrV) == 1 &amp;&amp;</span></a>
+<a name="235"><span class="lineNum">     235 </span><span class="lineNoCov">          0 :             (REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, UECC) == 1 ||</span></a>
+<a name="236"><span class="lineNum">     236 </span>            :              REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, CECC) == 1)) {</a>
+<a name="237"><span class="lineNum">     237 </span>            :                 uint32_t addr_lsb;</a>
+<a name="238"><span class="lineNum">     238 </span>            :                 uint64_t mc_umc_addrt0;</a>
+<a name="239"><span class="lineNum">     239 </span>            : </a>
+<a name="240"><span class="lineNum">     240 </span><span class="lineNoCov">          0 :                 mc_umc_addrt0 = SOC15_REG_OFFSET(UMC, 0, regMCA_UMC_UMC0_MCUMC_ADDRT0);</span></a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineNoCov">          0 :                 err_addr = RREG64_PCIE((mc_umc_addrt0 + umc_reg_offset) * 4);</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineNoCov">          0 :                 err_addr = REG_GET_FIELD(err_addr, MCA_UMC_UMC0_MCUMC_ADDRT0, ErrorAddr);</span></a>
+<a name="243"><span class="lineNum">     243 </span>            : </a>
+<a name="244"><span class="lineNum">     244 </span>            :                 /* the lowest lsb bits should be ignored */</a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineNoCov">          0 :                 addr_lsb = REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, AddrLsb);</span></a>
+<a name="246"><span class="lineNum">     246 </span>            : </a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 :                 err_addr &amp;= ~((0x1ULL &lt;&lt; addr_lsb) - 1);</span></a>
+<a name="248"><span class="lineNum">     248 </span>            : </a>
+<a name="249"><span class="lineNum">     249 </span>            :                 /* we only save ue error information currently, ce is skipped */</a>
+<a name="250"><span class="lineNum">     250 </span><span class="lineNoCov">          0 :                 if (REG_GET_FIELD(mc_umc_status, MCA_UMC_UMC0_MCUMC_STATUST0, UECC) == 1) {</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 :                         uint64_t na_err_addr_base = err_addr &amp; ~(0x3ULL &lt;&lt; UMC_V8_10_NA_C5_BIT);</span></a>
+<a name="252"><span class="lineNum">     252 </span>            :                         uint64_t na_err_addr, retired_page_addr;</a>
+<a name="253"><span class="lineNum">     253 </span><span class="lineNoCov">          0 :                         uint32_t col = 0;</span></a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineNoCov">          0 :                         int ret = 0;</span></a>
+<a name="255"><span class="lineNum">     255 </span>            : </a>
+<a name="256"><span class="lineNum">     256 </span>            :                         /* loop for all possibilities of [C6 C5] in normal address. */</a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineNoCov">          0 :                         for (col = 0; col &lt; UMC_V8_10_NA_COL_2BITS_POWER_OF_2_NUM; col++) {</span></a>
+<a name="258"><span class="lineNum">     258 </span><span class="lineNoCov">          0 :                                 na_err_addr = na_err_addr_base | (col &lt;&lt; UMC_V8_10_NA_C5_BIT);</span></a>
+<a name="259"><span class="lineNum">     259 </span>            : </a>
+<a name="260"><span class="lineNum">     260 </span>            :                                 /* Mapping normal error address to retired soc physical address. */</a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineNoCov">          0 :                                 ret = umc_v8_10_swizzle_mode_na_to_pa(adev, channel_index,</span></a>
+<a name="262"><span class="lineNum">     262 </span>            :                                                                 na_err_addr, &amp;retired_page_addr);</a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineNoCov">          0 :                                 if (ret) {</span></a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 :                                         dev_err(adev-&gt;dev, &quot;Failed to map pa from umc na.\n&quot;);</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineNoCov">          0 :                                         break;</span></a>
+<a name="266"><span class="lineNum">     266 </span>            :                                 }</a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineNoCov">          0 :                                 dev_info(adev-&gt;dev, &quot;Error Address(PA): 0x%llx\n&quot;,</span></a>
+<a name="268"><span class="lineNum">     268 </span>            :                                         retired_page_addr);</a>
+<a name="269"><span class="lineNum">     269 </span><span class="lineNoCov">          0 :                                 amdgpu_umc_fill_error_record(err_data, na_err_addr,</span></a>
+<a name="270"><span class="lineNum">     270 </span>            :                                                 retired_page_addr, channel_index, umc_inst);</a>
+<a name="271"><span class="lineNum">     271 </span>            :                         }</a>
+<a name="272"><span class="lineNum">     272 </span>            :                 }</a>
+<a name="273"><span class="lineNum">     273 </span>            :         }</a>
+<a name="274"><span class="lineNum">     274 </span>            : </a>
+<a name="275"><span class="lineNum">     275 </span>            :         /* clear umc status */</a>
+<a name="276"><span class="lineNum">     276 </span><span class="lineNoCov">          0 :         WREG64_PCIE((mc_umc_status_addr + umc_reg_offset) * 4, 0x0ULL);</span></a>
+<a name="277"><span class="lineNum">     277 </span>            : }</a>
+<a name="278"><span class="lineNum">     278 </span>            : </a>
+<a name="279"><span class="lineNum">     279 </span><span class="lineNoCov">          0 : static void umc_v8_10_query_ras_error_address(struct amdgpu_device *adev,</span></a>
+<a name="280"><span class="lineNum">     280 </span>            :                                              void *ras_error_status)</a>
+<a name="281"><span class="lineNum">     281 </span>            : {</a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineNoCov">          0 :         struct ras_err_data *err_data = (struct ras_err_data *)ras_error_status;</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 :         uint32_t node_inst       = 0;</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineNoCov">          0 :         uint32_t umc_inst        = 0;</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 :         uint32_t ch_inst         = 0;</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineNoCov">          0 :         uint32_t umc_reg_offset  = 0;</span></a>
+<a name="287"><span class="lineNum">     287 </span>            : </a>
+<a name="288"><span class="lineNum">     288 </span><span class="lineNoCov">          0 :         LOOP_UMC_EACH_NODE_INST_AND_CH(node_inst, umc_inst, ch_inst) {</span></a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 :                 umc_reg_offset = get_umc_v8_10_reg_offset(adev,</span></a>
+<a name="290"><span class="lineNum">     290 </span>            :                                                 node_inst,</a>
+<a name="291"><span class="lineNum">     291 </span>            :                                                 umc_inst,</a>
+<a name="292"><span class="lineNum">     292 </span>            :                                                 ch_inst);</a>
 <a name="293"><span class="lineNum">     293 </span>            : </a>
-<a name="294"><span class="lineNum">     294 </span><span class="lineNoCov">          0 :         LOOP_UMC_EACH_NODE_INST_AND_CH(node_inst, umc_inst, ch_inst) {</span></a>
-<a name="295"><span class="lineNum">     295 </span><span class="lineNoCov">          0 :                 umc_reg_offset = get_umc_v8_10_reg_offset(adev,</span></a>
-<a name="296"><span class="lineNum">     296 </span>            :                                                 node_inst,</a>
-<a name="297"><span class="lineNum">     297 </span>            :                                                 umc_inst,</a>
-<a name="298"><span class="lineNum">     298 </span>            :                                                 ch_inst);</a>
-<a name="299"><span class="lineNum">     299 </span>            : </a>
-<a name="300"><span class="lineNum">     300 </span><span class="lineNoCov">          0 :                 umc_v8_10_query_error_address(adev,</span></a>
-<a name="301"><span class="lineNum">     301 </span>            :                                         err_data,</a>
-<a name="302"><span class="lineNum">     302 </span>            :                                         umc_reg_offset,</a>
-<a name="303"><span class="lineNum">     303 </span>            :                                         node_inst,</a>
-<a name="304"><span class="lineNum">     304 </span>            :                                         ch_inst,</a>
-<a name="305"><span class="lineNum">     305 </span>            :                                         umc_inst);</a>
-<a name="306"><span class="lineNum">     306 </span>            :         }</a>
-<a name="307"><span class="lineNum">     307 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="294"><span class="lineNum">     294 </span><span class="lineNoCov">          0 :                 umc_v8_10_query_error_address(adev,</span></a>
+<a name="295"><span class="lineNum">     295 </span>            :                                         err_data,</a>
+<a name="296"><span class="lineNum">     296 </span>            :                                         umc_reg_offset,</a>
+<a name="297"><span class="lineNum">     297 </span>            :                                         node_inst,</a>
+<a name="298"><span class="lineNum">     298 </span>            :                                         ch_inst,</a>
+<a name="299"><span class="lineNum">     299 </span>            :                                         umc_inst);</a>
+<a name="300"><span class="lineNum">     300 </span>            :         }</a>
+<a name="301"><span class="lineNum">     301 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="302"><span class="lineNum">     302 </span>            : </a>
+<a name="303"><span class="lineNum">     303 </span><span class="lineNoCov">          0 : static void umc_v8_10_err_cnt_init_per_channel(struct amdgpu_device *adev,</span></a>
+<a name="304"><span class="lineNum">     304 </span>            :                                               uint32_t umc_reg_offset)</a>
+<a name="305"><span class="lineNum">     305 </span>            : {</a>
+<a name="306"><span class="lineNum">     306 </span>            :         uint32_t ecc_err_cnt_sel, ecc_err_cnt_sel_addr;</a>
+<a name="307"><span class="lineNum">     307 </span>            :         uint32_t ecc_err_cnt_addr;</a>
 <a name="308"><span class="lineNum">     308 </span>            : </a>
-<a name="309"><span class="lineNum">     309 </span><span class="lineNoCov">          0 : static void umc_v8_10_err_cnt_init_per_channel(struct amdgpu_device *adev,</span></a>
-<a name="310"><span class="lineNum">     310 </span>            :                                               uint32_t umc_reg_offset)</a>
-<a name="311"><span class="lineNum">     311 </span>            : {</a>
-<a name="312"><span class="lineNum">     312 </span>            :         uint32_t ecc_err_cnt_sel, ecc_err_cnt_sel_addr;</a>
-<a name="313"><span class="lineNum">     313 </span>            :         uint32_t ecc_err_cnt_addr;</a>
-<a name="314"><span class="lineNum">     314 </span>            : </a>
-<a name="315"><span class="lineNum">     315 </span><span class="lineNoCov">          0 :         ecc_err_cnt_sel_addr =</span></a>
-<a name="316"><span class="lineNum">     316 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(UMC, 0, regUMCCH0_0_GeccErrCntSel);</span></a>
-<a name="317"><span class="lineNum">     317 </span><span class="lineNoCov">          0 :         ecc_err_cnt_addr =</span></a>
-<a name="318"><span class="lineNum">     318 </span>            :                 SOC15_REG_OFFSET(UMC, 0, regUMCCH0_0_GeccErrCnt);</a>
-<a name="319"><span class="lineNum">     319 </span>            : </a>
-<a name="320"><span class="lineNum">     320 </span><span class="lineNoCov">          0 :         ecc_err_cnt_sel = RREG32_PCIE((ecc_err_cnt_sel_addr + umc_reg_offset) * 4);</span></a>
-<a name="321"><span class="lineNum">     321 </span>            : </a>
-<a name="322"><span class="lineNum">     322 </span>            :         /* set ce error interrupt type to APIC based interrupt */</a>
-<a name="323"><span class="lineNum">     323 </span><span class="lineNoCov">          0 :         ecc_err_cnt_sel = REG_SET_FIELD(ecc_err_cnt_sel, UMCCH0_0_GeccErrCntSel,</span></a>
-<a name="324"><span class="lineNum">     324 </span>            :                                         GeccErrInt, 0x1);</a>
-<a name="325"><span class="lineNum">     325 </span><span class="lineNoCov">          0 :         WREG32_PCIE((ecc_err_cnt_sel_addr + umc_reg_offset) * 4, ecc_err_cnt_sel);</span></a>
-<a name="326"><span class="lineNum">     326 </span>            :         /* set error count to initial value */</a>
-<a name="327"><span class="lineNum">     327 </span><span class="lineNoCov">          0 :         WREG32_PCIE((ecc_err_cnt_addr + umc_reg_offset) * 4, UMC_V8_10_CE_CNT_INIT);</span></a>
-<a name="328"><span class="lineNum">     328 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="329"><span class="lineNum">     329 </span>            : </a>
-<a name="330"><span class="lineNum">     330 </span><span class="lineNoCov">          0 : static void umc_v8_10_err_cnt_init(struct amdgpu_device *adev)</span></a>
-<a name="331"><span class="lineNum">     331 </span>            : {</a>
-<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 :         uint32_t node_inst       = 0;</span></a>
-<a name="333"><span class="lineNum">     333 </span><span class="lineNoCov">          0 :         uint32_t umc_inst        = 0;</span></a>
-<a name="334"><span class="lineNum">     334 </span><span class="lineNoCov">          0 :         uint32_t ch_inst         = 0;</span></a>
-<a name="335"><span class="lineNum">     335 </span><span class="lineNoCov">          0 :         uint32_t umc_reg_offset  = 0;</span></a>
+<a name="309"><span class="lineNum">     309 </span><span class="lineNoCov">          0 :         ecc_err_cnt_sel_addr =</span></a>
+<a name="310"><span class="lineNum">     310 </span><span class="lineNoCov">          0 :                 SOC15_REG_OFFSET(UMC, 0, regUMCCH0_0_GeccErrCntSel);</span></a>
+<a name="311"><span class="lineNum">     311 </span><span class="lineNoCov">          0 :         ecc_err_cnt_addr =</span></a>
+<a name="312"><span class="lineNum">     312 </span>            :                 SOC15_REG_OFFSET(UMC, 0, regUMCCH0_0_GeccErrCnt);</a>
+<a name="313"><span class="lineNum">     313 </span>            : </a>
+<a name="314"><span class="lineNum">     314 </span><span class="lineNoCov">          0 :         ecc_err_cnt_sel = RREG32_PCIE((ecc_err_cnt_sel_addr + umc_reg_offset) * 4);</span></a>
+<a name="315"><span class="lineNum">     315 </span>            : </a>
+<a name="316"><span class="lineNum">     316 </span>            :         /* set ce error interrupt type to APIC based interrupt */</a>
+<a name="317"><span class="lineNum">     317 </span><span class="lineNoCov">          0 :         ecc_err_cnt_sel = REG_SET_FIELD(ecc_err_cnt_sel, UMCCH0_0_GeccErrCntSel,</span></a>
+<a name="318"><span class="lineNum">     318 </span>            :                                         GeccErrInt, 0x1);</a>
+<a name="319"><span class="lineNum">     319 </span><span class="lineNoCov">          0 :         WREG32_PCIE((ecc_err_cnt_sel_addr + umc_reg_offset) * 4, ecc_err_cnt_sel);</span></a>
+<a name="320"><span class="lineNum">     320 </span>            :         /* set error count to initial value */</a>
+<a name="321"><span class="lineNum">     321 </span><span class="lineNoCov">          0 :         WREG32_PCIE((ecc_err_cnt_addr + umc_reg_offset) * 4, UMC_V8_10_CE_CNT_INIT);</span></a>
+<a name="322"><span class="lineNum">     322 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="323"><span class="lineNum">     323 </span>            : </a>
+<a name="324"><span class="lineNum">     324 </span><span class="lineNoCov">          0 : static void umc_v8_10_err_cnt_init(struct amdgpu_device *adev)</span></a>
+<a name="325"><span class="lineNum">     325 </span>            : {</a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineNoCov">          0 :         uint32_t node_inst       = 0;</span></a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineNoCov">          0 :         uint32_t umc_inst        = 0;</span></a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineNoCov">          0 :         uint32_t ch_inst         = 0;</span></a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineNoCov">          0 :         uint32_t umc_reg_offset  = 0;</span></a>
+<a name="330"><span class="lineNum">     330 </span>            : </a>
+<a name="331"><span class="lineNum">     331 </span><span class="lineNoCov">          0 :         LOOP_UMC_EACH_NODE_INST_AND_CH(node_inst, umc_inst, ch_inst) {</span></a>
+<a name="332"><span class="lineNum">     332 </span><span class="lineNoCov">          0 :                 umc_reg_offset = get_umc_v8_10_reg_offset(adev,</span></a>
+<a name="333"><span class="lineNum">     333 </span>            :                                                 node_inst,</a>
+<a name="334"><span class="lineNum">     334 </span>            :                                                 umc_inst,</a>
+<a name="335"><span class="lineNum">     335 </span>            :                                                 ch_inst);</a>
 <a name="336"><span class="lineNum">     336 </span>            : </a>
-<a name="337"><span class="lineNum">     337 </span><span class="lineNoCov">          0 :         LOOP_UMC_EACH_NODE_INST_AND_CH(node_inst, umc_inst, ch_inst) {</span></a>
-<a name="338"><span class="lineNum">     338 </span><span class="lineNoCov">          0 :                 umc_reg_offset = get_umc_v8_10_reg_offset(adev,</span></a>
-<a name="339"><span class="lineNum">     339 </span>            :                                                 node_inst,</a>
-<a name="340"><span class="lineNum">     340 </span>            :                                                 umc_inst,</a>
-<a name="341"><span class="lineNum">     341 </span>            :                                                 ch_inst);</a>
-<a name="342"><span class="lineNum">     342 </span>            : </a>
-<a name="343"><span class="lineNum">     343 </span><span class="lineNoCov">          0 :                 umc_v8_10_err_cnt_init_per_channel(adev, umc_reg_offset);</span></a>
-<a name="344"><span class="lineNum">     344 </span>            :         }</a>
-<a name="345"><span class="lineNum">     345 </span><span class="lineNoCov">          0 : }</span></a>
-<a name="346"><span class="lineNum">     346 </span>            : </a>
-<a name="347"><span class="lineNum">     347 </span>            : const struct amdgpu_ras_block_hw_ops umc_v8_10_ras_hw_ops = {</a>
-<a name="348"><span class="lineNum">     348 </span>            :         .query_ras_error_count = umc_v8_10_query_ras_error_count,</a>
-<a name="349"><span class="lineNum">     349 </span>            :         .query_ras_error_address = umc_v8_10_query_ras_error_address,</a>
-<a name="350"><span class="lineNum">     350 </span>            : };</a>
-<a name="351"><span class="lineNum">     351 </span>            : </a>
-<a name="352"><span class="lineNum">     352 </span>            : struct amdgpu_umc_ras umc_v8_10_ras = {</a>
-<a name="353"><span class="lineNum">     353 </span>            :         .ras_block = {</a>
-<a name="354"><span class="lineNum">     354 </span>            :                 .hw_ops = &amp;umc_v8_10_ras_hw_ops,</a>
-<a name="355"><span class="lineNum">     355 </span>            :         },</a>
-<a name="356"><span class="lineNum">     356 </span>            :         .err_cnt_init = umc_v8_10_err_cnt_init,</a>
-<a name="357"><span class="lineNum">     357 </span>            : };</a>
+<a name="337"><span class="lineNum">     337 </span><span class="lineNoCov">          0 :                 umc_v8_10_err_cnt_init_per_channel(adev, umc_reg_offset);</span></a>
+<a name="338"><span class="lineNum">     338 </span>            :         }</a>
+<a name="339"><span class="lineNum">     339 </span><span class="lineNoCov">          0 : }</span></a>
+<a name="340"><span class="lineNum">     340 </span>            : </a>
+<a name="341"><span class="lineNum">     341 </span>            : const struct amdgpu_ras_block_hw_ops umc_v8_10_ras_hw_ops = {</a>
+<a name="342"><span class="lineNum">     342 </span>            :         .query_ras_error_count = umc_v8_10_query_ras_error_count,</a>
+<a name="343"><span class="lineNum">     343 </span>            :         .query_ras_error_address = umc_v8_10_query_ras_error_address,</a>
+<a name="344"><span class="lineNum">     344 </span>            : };</a>
+<a name="345"><span class="lineNum">     345 </span>            : </a>
+<a name="346"><span class="lineNum">     346 </span>            : struct amdgpu_umc_ras umc_v8_10_ras = {</a>
+<a name="347"><span class="lineNum">     347 </span>            :         .ras_block = {</a>
+<a name="348"><span class="lineNum">     348 </span>            :                 .hw_ops = &amp;umc_v8_10_ras_hw_ops,</a>
+<a name="349"><span class="lineNum">     349 </span>            :         },</a>
+<a name="350"><span class="lineNum">     350 </span>            :         .err_cnt_init = umc_v8_10_err_cnt_init,</a>
+<a name="351"><span class="lineNum">     351 </span>            : };</a>
 </pre>
       </td>
     </tr>

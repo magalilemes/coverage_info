@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2022-08-30 20:32:10</td>
+            <td class="headerValue">2022-12-09 01:23:36</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -178,7 +178,7 @@
 <a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 :         dto_params.timing = &amp;pipe_ctx-&gt;stream-&gt;timing;</span></a>
 <a name="117"><span class="lineNum">     117 </span><span class="lineNoCov">          0 :         dto_params.ref_dtbclk_khz = dc-&gt;clk_mgr-&gt;funcs-&gt;get_dtb_ref_clk_frequency(dc-&gt;clk_mgr);</span></a>
 <a name="118"><span class="lineNum">     118 </span>            : </a>
-<a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 :         dccg-&gt;funcs-&gt;set_dpstreamclk(dccg, DTBCLK0, tg-&gt;inst, link_enc-&gt;inst);</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 :         dccg-&gt;funcs-&gt;set_dpstreamclk(dccg, DTBCLK0, tg-&gt;inst, stream_enc-&gt;inst);</span></a>
 <a name="120"><span class="lineNum">     120 </span><span class="lineNoCov">          0 :         dccg-&gt;funcs-&gt;enable_symclk32_se(dccg, stream_enc-&gt;inst, phyd32clk);</span></a>
 <a name="121"><span class="lineNum">     121 </span><span class="lineNoCov">          0 :         dccg-&gt;funcs-&gt;set_dtbclk_dto(dccg, &amp;dto_params);</span></a>
 <a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 :         stream_enc-&gt;funcs-&gt;enable_stream(stream_enc);</span></a>
@@ -199,7 +199,7 @@
 <a name="137"><span class="lineNum">     137 </span><span class="lineNoCov">          0 :         stream_enc-&gt;funcs-&gt;disable(stream_enc);</span></a>
 <a name="138"><span class="lineNum">     138 </span><span class="lineNoCov">          0 :         dccg-&gt;funcs-&gt;set_dtbclk_dto(dccg, &amp;dto_params);</span></a>
 <a name="139"><span class="lineNum">     139 </span><span class="lineNoCov">          0 :         dccg-&gt;funcs-&gt;disable_symclk32_se(dccg, stream_enc-&gt;inst);</span></a>
-<a name="140"><span class="lineNum">     140 </span><span class="lineNoCov">          0 :         dccg-&gt;funcs-&gt;set_dpstreamclk(dccg, REFCLK, tg-&gt;inst,  pipe_ctx-&gt;link_res.hpo_dp_link_enc-&gt;inst);</span></a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineNoCov">          0 :         dccg-&gt;funcs-&gt;set_dpstreamclk(dccg, REFCLK, tg-&gt;inst, stream_enc-&gt;inst);</span></a>
 <a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 : }</span></a>
 <a name="142"><span class="lineNum">     142 </span>            : </a>
 <a name="143"><span class="lineNum">     143 </span><span class="lineNoCov">          0 : static void setup_hpo_dp_stream_attribute(struct pipe_ctx *pipe_ctx)</span></a>
